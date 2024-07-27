@@ -8,8 +8,8 @@ import {
   MagnifierIcon,
   ReportIcon,
   SettingsIcon,
-} from "@/public/assets/icons";
-import Routes from "@/app/_Routes/routes";
+} from "@/public/assets/icons"; 
+import Routes from "@/lib/_Routes/routes";
 
 export const sidebarContents = [
   {
