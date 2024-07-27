@@ -67,7 +67,7 @@ const MissionPlanRoute = `${ChecklistPath}/mission-plan`;
 
 const ChecklistRoute = {
   // OVERVIEW ROUTE
-  ChecklistOverview: () => `${ChecklistPath}/overview`,
+  ChecklistOverview: () => `${ChecklistPath}`,
 
   // ORGNANISATIONAL STRUCTURE
   OrganizationStructureRoute: () => OrganizationStructure,
