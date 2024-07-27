@@ -134,7 +134,7 @@ const DashboardSidebar = () => {
             </div>
             <Image
               src={LogoMini}
-              alt="mance logo"
+              alt="mini mance logo"
               className="pb-2 w-full "
             />
           </div>
