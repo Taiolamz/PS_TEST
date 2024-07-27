@@ -1,14 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CollapseIcon, LogoutIcon, ManceLogo } from "@/public/assets/icons";
+import {
+  CollapseIcon,
+  LogoMini,
+  LogoutIcon,
+  ManceLogo,
+} from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { sidebarContents } from "../../sidebar-paths";
+import { useState } from "react";
 
 const DashboardSidebar = () => {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const handleCollaspe = () => {
+    setOpen((prev) => !prev);
+  };
   const timeDisplay = (
     <div className="mt-3 relative">
       {/* <div className="bg-primary w-[208px] h-[92px] absolute bottom-0 -z-5 border-0 rounded-[7px]"></div> */}
@@ -86,25 +96,50 @@ const DashboardSidebar = () => {
   );
 
   return (
-    <div className="bg-[#015858] relative w-[240px] h-screen py-0 flex flex-col overflow-auto customScrollbar">
-      <div className="space-y-4 pt-3 sticky top-0 bg-[#015858] z-[80] px-4">
-        <div className="flex gap-3 items-center mt-3 cursor-pointer">
-          <Image src={CollapseIcon} alt="collapse" />
-          <p className="text-sm text-white ">Collapse</p>
-        </div>
-        <Image
-          src={ManceLogo}
-          alt="mance logo"
-          className="border-b pb-2 border-custom-gray  pr-10 w-full "
-        />
-      </div>
-      <div className="flex overflow-y-auto ml-4 ">
-        {sidebarLayout}
-      </div>
-      <div className="space-y-4 sticky pb-3 bottom-0 bg-[#015858] z-[80] mx-4">
-        {timeDisplay}
-        {logout}
-      </div>
+    <div
+      className={`bg-[#015858] relative transition-all ease-linear w-[${
+        open ? "80px" : "240px"
+      }] h-screen py-0 flex flex-col overflow-auto customScrollbar`}
+    >
+      {!open ? (
+        <>
+          <div className="space-y-4 pt-3 sticky top-0 bg-[#015858] z-[80] px-4">
+            <div
+              onClick={handleCollaspe}
+              className="flex gap-3 items-center mt-3 cursor-pointer"
+            >
+              <Image src={CollapseIcon} alt="collapse" />
+              <p className="text-sm text-white ">Collapse</p>
+            </div>
+            <Image
+              src={ManceLogo}
+              alt="mance logo"
+              className="border-b pb-2 border-custom-gray  pr-10 w-full "
+            />
+          </div>
+          <div className="flex overflow-y-auto ml-4 ">{sidebarLayout}</div>
+          <div className="space-y-4 sticky pb-3 bottom-0 bg-[#015858] z-[80] mx-4">
+            {timeDisplay}
+            {logout}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="space-y-4 pt-3 sticky top-0 bg-[#015858] z-[80] px-4">
+            <div
+              onClick={handleCollaspe}
+              className="flex  items-center mt-3 cursor-pointer"
+            >
+              <Image src={CollapseIcon} alt="collapse" className="mx-auto" />
+            </div>
+            <Image
+              src={LogoMini}
+              alt="mance logo"
+              className="pb-2 w-full "
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

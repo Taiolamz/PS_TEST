@@ -12,7 +12,7 @@ const DashboardLayout = ({
 }: DashboardLayoutType) => {
   return (
     <div className="flex bg-white">
-      <DashboardSidebar />
+      <DashboardSidebar/>
       <div className={`w-full h-screen overflow-y-auto ${className}`}>
         <DashboardNav dynamiccontent={dynamiccontent} />
         <div className="relative">{children}</div>

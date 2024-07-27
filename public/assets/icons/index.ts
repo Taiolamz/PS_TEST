@@ -31,3 +31,4 @@ export { default as UsersIcon } from "./Users.svg";
 export { default as CircleTimes } from "./CircleTimes.svg";
 export { default as PlusIcon } from "./PlusIcon.svg";
 export { default as GrayPlusIcon } from "./GrayPlusIcon.svg";
+export { default as LogoMini } from "./LogoMini.svg";
