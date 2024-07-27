@@ -1,0 +1,137 @@
+.inboxcontainer {
+  padding: 3.5rem 4rem;
+  background: var(--duller-blue);
+}
+/* Navigation Section */
+.inboxcontainer .inbox-skeleton-wrapper .skeleton-wrapper {
+ margin-bottom: 20px;
+}
+.inboxnavbarContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.inboxnavgroup {
+  display: inline-flex;
+  gap: 3.9rem;
+}
+
+.inboxnavbtn {
+  color: #818080;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 0.56rem 0.63rem;
+  border-radius: 0.625rem;
+}
+
+/* .inboxnavgroup .active {
+  background: var(--primary-color);
+  color: white;
+} */
+.inboxcontainer .inboxnavbtn.active {
+  background: var(--primary-color) !important;
+  color: white;
+}
+
+.inboxnavbtn:active {
+  background: var(--primary-color);
+  color: white;
+}
+a.notifynavbtn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.inboxdivider {
+  border: 1px solid #d9d9d9;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* Content` */
+.inboxcontent {
+  margin: 2rem 4rem 0 4rem;
+}
+
+/* Inbox Request Display */
+.inboxdisplay {
+  display: flex;
+  justify-content: space-between;
+  color: #818080;
+  font-style: normal;
+  line-height: normal;
+}
+
+/* Request Display Left */
+.inboxdisplayinfo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.inboxdisplayicon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inboxdisplayicon p {
+  color: var(--black);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.inboxdisplayicontxt {
+  color: #818080;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Request Display Right */
+.inboxdisplaycard {
+  border-radius: 0.625rem;
+  border: 1.5px solid #818080;
+
+  display: inline-flex;
+  padding: 1.5rem 10rem 1.5rem 1.5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5625rem;
+}
+
+.inboxdisplaycard header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.inboxdisplaycard p {
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Inbox Request Filter */
+.inboxfilterbox {
+  margin-top: 0.75rem;
+}
+
+.inboxfilter {
+  padding: 0.75rem 0.8rem 0.75rem 0.88rem;
+  border-radius: 5px;
+  border: 2px solid #818080;
+  color: #818080;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+/* Main Inbox Card Section */
+.inboxrequest {
+  margin-top: 3rem;
+}

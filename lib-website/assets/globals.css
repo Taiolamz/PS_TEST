@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+
+
+:root {
+    --text-color: #6e7c87;
+    --text-color2: #9aa6ac;
+    --text-color3: #162238;
+    --text-color4: #5a5b5f;
+    --btn-color: #008080;
+    --btn-second: #f8ffff;
+    --btn-hover-backgroundColor: #339e8d;
+    --btn-solid-color: #fff;
+    --btn-light-color: #f4f4f4;
+    --hover-color: #ffffff;
+    --text-size: 15px;
+    --shadow-color: #95b5c9;
+    --footer-link-color: #3e4345;
+    --error-color: #CC0905;
+    --input-bg: #f6f8f9;
+    --input-border: #e5e9eb;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+
+* {
+    font-family: "Outfit", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lexend", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px var(--btn-solid-color);
+    padding: 0;
+    margin: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: var(--footer-link-color);
+}
+
+
