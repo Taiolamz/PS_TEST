@@ -36,31 +36,29 @@ export const LoginSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 export const RegistrationSchema = [
-  yup
-    .object()
-    .shape({
-      organization_name: yup.string().required("Organization name is required"),
-      employees_range: yup.string().required("Select number of employees"),
-      address: yup.string().required("Address name is required"),
-      city: yup.string().required("City name is required"),
-      country: yup.string().required("Country name is required"),
-      state: yup.string().required("State name is required"),
-      password: yup
-        .string()
-        .required("Password is required")
-        .min(8, "Must have 8 characters")
-        .test(
-          'minNumbersOrSymbols',
-          'Must include one number or one special character',
-          value => /[0-9]/.test(value) || /[!@#$%^&*(),.?":{}|<>]/.test(value)
-        )
-        .test("minLowercase", "Must include capital letters", (value) =>
-          /[a-z]/.test(value)
-        )
-        .test("minUppercase", "Must include small letters", (value) =>
-          /[A-Z]/.test(value)
-        ),
-    }),
+  yup.object().shape({
+    organization_name: yup.string().required("Organization name is required"),
+    employees_range: yup.string().required("Select number of employees"),
+    address: yup.string().required("Address name is required"),
+    city: yup.string().required("City name is required"),
+    country: yup.string().required("Country name is required"),
+    state: yup.string().required("State name is required"),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(8, "Must have 8 characters")
+      .test(
+        "minNumbersOrSymbols",
+        "Must include one number or one special character",
+        (value) => /[0-9]/.test(value) || /[!@#$%^&*(),.?":{}|<>]/.test(value)
+      )
+      .test("minLowercase", "Must include capital letters", (value) =>
+        /[a-z]/.test(value)
+      )
+      .test("minUppercase", "Must include small letters", (value) =>
+        /[A-Z]/.test(value)
+      ),
+  }),
   yup.object().shape({
     first_name: yup.string().required("First name is required"),
     last_name: yup.string().required("Last name is required"),
@@ -71,3 +69,22 @@ export const RegistrationSchema = [
     designation: yup.string().required("Designation name is required"),
   }),
 ];
+
+export const ResetPasswordSchema = yup.object().shape({
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Must have 8 characters")
+    .test(
+      "minNumbersOrSymbols",
+      "Must include one number or one special character",
+      (value) => /[0-9]/.test(value) || /[!@#$%^&*(),.?":{}|<>]/.test(value)
+    )
+    .test("minLowercase", "Must include capital letters", (value) =>
+      /[a-z]/.test(value)
+    )
+    .test("minUppercase", "Must include small letters", (value) =>
+      /[A-Z]/.test(value)
+    ),
+    password_confirmation: yup.string().oneOf([yup.ref('password')], 'Password must match')
+});

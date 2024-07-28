@@ -3,10 +3,8 @@ import PasswordChecker from '@/components/password-checker';
 import TogglePassword from '@/components/toggle-password';
 import { Input } from '@/components/ui/input';
 import { COUNTRIES, NUMBER_OF_EMPLOYEES, STATES } from '@/utils/data';
-import { passwordValidations } from '@/utils/schema';
-import { CheckIcon } from '@radix-ui/react-icons';
-import React, { useState } from 'react';
-import { passwordValidation as pv } from "@/utils/schema";
+import { passwordValidations, passwordValidation as pv } from '@/utils/schema';
+import { useState } from 'react';
 
 interface OrganizationInformationProps {
     formik: any

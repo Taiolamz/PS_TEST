@@ -15,7 +15,7 @@ export default function LoadingModal({ show, handleClose, icon, title, message }
     <ModalContainer
       show={show}
       handleClose={handleClose}
-      modalClass="rounded-[.5rem] md:w-[10.8rem] md:max-w-[8.8rem] lg:w-[10.5rem] lg:max-w-[8.5rem]"
+      modalClass="rounded-[.5rem] w-[10.8rem] md:max-w-[8.8rem] lg:w-[10.5rem] lg:max-w-[8.5rem]"
     >
       <section>
         <div className="">

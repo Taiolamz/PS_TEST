@@ -1,16 +1,10 @@
-import CustomSelect from '@/components/custom-select';
-import TogglePassword from '@/components/toggle-password';
 import { Input } from '@/components/ui/input';
-import { COUNTRIES, NUMBER_OF_EMPLOYEES, STATES } from '@/utils/data';
-import { CheckIcon } from '@radix-ui/react-icons';
-import React, { useState } from 'react';
 
 interface EmployeeInformationProps {
     formik: any
 }
 
 const EmployeeInformation = ({ formik }: EmployeeInformationProps) => {
-    const [showPassword, setShowPassword] = useState(false)
 
     return (
         <div>
