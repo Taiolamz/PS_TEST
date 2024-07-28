@@ -171,9 +171,6 @@ const SignupPage = () => {
         content={
           <div className="my-8 flex justify-center flex-col items-center">
             <InputOTPGenerator length={6} onChange={(code) => setOTP(code)} />
-            {/* <p className="text-[#CC0905] text-xs mb-2 mt-[1.625rem]">
-              0:20 mins remaining
-            </p> */}
           </div>
         }
         footerContent={<>
