@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function EmployeeAndRoles() {
+export default function AddEmployee() {
   return (
     <div>page</div>
   )
