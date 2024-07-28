@@ -1,7 +1,7 @@
 import React from "react";
-import { DashboardLayout } from "./_components/DashboardLayout";
+import { DashboardLayout } from "./_components/dashboard-layout";
 import Link from "next/link";
-import Routes from "@/lib/_Routes/routes";
+import Routes from "@/lib/routes/routes";
 
 const Dashboard = () => {
   return (
