@@ -67,6 +67,64 @@ export const authApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        forgotPassword: builder.mutation({
+            query: (payload) => ({
+                url: `/password/forgot`,
+                method: 'POST',
+                body: payload
+                
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
+        verifyOTP: builder.mutation({
+            query: (payload) => ({
+                url: `/verify-otp`,
+                method: 'POST',
+                body: payload
+                
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
+        resendOTP: builder.mutation({
+            query: (payload) => ({
+                url: `/resend-otp`,
+                method: 'POST',
+                body: payload
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
+        resetPassword: builder.mutation({
+            query: (payload) => ({
+                url: `/password/reset`,
+                method: 'POST',
+                body: payload
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
         logout: builder.mutation({
             query: () => ({
                 url: `/logout`,
@@ -87,4 +145,4 @@ export const authApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useAdminVerifyOTPMutation, useAdminResendOTPMutation } = authApi
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useAdminVerifyOTPMutation, useAdminResendOTPMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyOTPMutation, useResendOTPMutation } = authApi
