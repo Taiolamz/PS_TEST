@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import DashboardSidebar from "./Dashboard-Sidebar";
-import DashboardNav from "./Dashboard-Navbar";
+import DashboardSidebar from "./dashboard-sidebar";
+import DashboardNav from "./dashboard-navbar";
 
 const DashboardLayout = ({
   children,
