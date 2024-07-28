@@ -15,8 +15,10 @@ import {
 } from "./_steps";
 import { Button } from "@/components/ui/button";
 import { steps } from "./data";
-import { useFormik } from "formik";
+import { FormikProvider, useFormik } from "formik";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
+import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
+import { toast } from "sonner";
 
 const Onboarding = () => {
   const router = useRouter();
@@ -29,18 +31,51 @@ const Onboarding = () => {
     return step;
   };
 
+  const [
+    onboarding,
+    {
+      isLoading: isOnboardingLoading,
+      isSuccess: onboardingSuccess,
+      reset: onboardingReset,
+    },
+  ] = useOnboardingMutation();
+
+  const keyMapping: Record<string, string> = {
+    vision: "vision",
+    mission: "mission",
+    brand_colour: "brand_colour",
+    logo: "logo",
+    end_fy: "end_fy",
+    start_fy: "start_fy",
+    probation_duration: "probation_duration",
+    opening_time: "opening_time",
+    fy_title: "fy_title",
+    closing_time: "closing_time",
+    hierarchy: "hierarchy",
+    staff_levels: "staff_levels",
+  };
+
   const handleFormSubmit = async () => {
-    if (ui === "organization-information") {
-      formik.setErrors({});
-      formik.setTouched({});
-      router.push(`${location}?ui=employee-information`);
-    }
-    if (ui === "employee-information") {
-      //   register({ ...formik.values })
-      //     .unwrap()
-      //     .then((payload) => {
-      //       toast.success("Account Registered Successfully");
-      //     });
+    // if (ui === "organization-information") {
+    //   formik.setErrors({});
+    //   formik.setTouched({});
+    //   router.push(`${location}?ui=employee-information`);
+    // }
+    const formDataToSend = new FormData();
+
+    Object.entries(formik.values).forEach(([key, value]) => {
+      const mappedKey = keyMapping[key] || key;
+
+      formDataToSend.append(mappedKey, JSON.stringify(value));
+      console.log(`${key}:${value}`);
+    });
+
+    if (getCurrentStep() === 6) {
+      onboarding({ ...formik.values })
+        .unwrap()
+        .then((payload) => {
+          toast.success("Account Registered Successfully");
+        });
       // router.push(`${location}?ui=employee-information`)
     }
   };
@@ -49,27 +84,20 @@ const Onboarding = () => {
     initialValues: {
       vision: "",
       mission: "",
-      color: "",
-      logo_input: null,
-      startPeriod: "",
-      endPeriod: "",
-      probationPeriod: "",
-      openingTime: "",
-      title: "",
-      closingTime: "",
-      hierarchy: {
-        subsidiary: false,
-        branches: false,
-        department: false,
-        units: false,
-      },
-      staffLevel: [],
+      brand_colour: "",
+      logo: null,
+      end_fy: "",
+      start_fy: "",
+      probation_duration: "",
+      opening_time: "",
+      fy_title: "",
+      closing_time: "",
+      hierarchy: "",
+      staff_levels: [{ name: "", position: "" }],
     },
     validationSchema: OnbaordingSchema,
     onSubmit: handleFormSubmit,
   });
-
-  console.log({ ...formik.values });
 
   return (
     <section className="">
@@ -86,44 +114,51 @@ const Onboarding = () => {
           <HiChevronDoubleLeft width={10} height={10} /> Back
         </button>
       </div>
-      <form className="px-10 xl:pl-[9.375rem]" onSubmit={formik.handleSubmit}>
-        <h1 className="text-2xl font-bold text-[#162238] mb-16">
-          {`Welcome ITH Holdings! Let's setup your organization`}
-        </h1>
-        {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
-        {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
-        {getCurrentStep() === 3 && <OperationsParameter formik={formik} />}
-        {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
-        {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-        {getCurrentStep() === 6 && <Preview />}
-        <div className="flex justify-start items-center gap-[1.625rem] mt-8">
-          <button
-            type="button"
-            // onClick={prevStep}
-            className="text-pry inline-flex gap-1.5"
-          >
-            <ArrowLeftCircle width={24} height={24} /> Skip to Dashboard
-          </button>
-          {getCurrentStep() < steps.length ? (
-            <Button
+      <FormikProvider value={formik}>
+        <form className="px-10 xl:pl-[9.375rem]" onSubmit={formik.handleSubmit}>
+          <h1 className="text-2xl font-bold text-[#162238] mb-16">
+            {`Welcome ITH Holdings! Let's setup your organization`}
+          </h1>
+          {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
+          {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
+          {getCurrentStep() === 3 && <OperationsParameter formik={formik} />}
+          {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
+          {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
+          {getCurrentStep() === 6 && <Preview />}
+          <div className="flex justify-start items-center gap-[1.625rem] mt-8">
+            <button
               type="button"
-              className=""
-              onClick={() => {
-                getCurrentStep() < steps.length &&
-                  router.push(
-                    `${location}?ui=${ui}&step=${getCurrentStep() + 1}`
-                  );
-              }}
+              // onClick={prevStep}
+              className="text-pry inline-flex gap-1.5"
             >
-              Next
-            </Button>
-          ) : (
-            <Button type="button" onClick={() => null}>
-              Save
-            </Button>
-          )}
-        </div>
-      </form>
+              <ArrowLeftCircle width={24} height={24} /> Skip to Dashboard
+            </button>
+            {getCurrentStep() < steps.length ? (
+              <Button
+                type="button"
+                className=""
+                onClick={() => {
+                  getCurrentStep() < steps.length &&
+                    router.push(
+                      `${location}?ui=${ui}&step=${getCurrentStep() + 1}`
+                    );
+                }}
+              >
+                Next
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={handleFormSubmit}
+                loading={isOnboardingLoading}
+                loadingText="Save"
+              >
+                Save
+              </Button>
+            )}
+          </div>
+        </form>
+      </FormikProvider>
     </section>
   );
 };

@@ -2,6 +2,7 @@
 
 import { Textarea } from "@/components/ui/textarea";
 import { FormHeader } from "../_components";
+import { Field } from "formik";
 
 interface OrganizationStatementProps {
   formik: any;
@@ -36,13 +37,13 @@ const OrganizationStatement = ({ formik }: OrganizationStatementProps) => {
           </label>
           <Textarea
             rows={4}
-            id="mision"
-            name="mision"
+            id="mission"
+            name="mission"
             onChange={formik.handleChange}
             className="border p-2 w-full"
-            value={formik.values.mision}
-            touched={formik.touched.mision}
-            error={formik.errors.mision}
+            value={formik.values.mission}
+            touched={formik.touched.mission}
+            error={formik.errors.mission}
           />
         </div>
       </div>

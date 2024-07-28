@@ -3,6 +3,8 @@ import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomTimeInput from "@/components/custom-time-picker";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 interface OperationsParameterProps {
   formik: any;
@@ -14,6 +16,16 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
   ) => {
     formik.setFieldValue(name, newDate.format("YYYY-MM-DD"));
   };
+
+  const handleTimeChange = (
+    newDate: { format: (arg0: string) => any },
+    name: string
+  ) => {
+    // console.log(newDate);
+    formik.setFieldValue(name, newDate.format("HH:mm:ss A"));
+  };
+
+  console.log(formik.values);
 
   return (
     <section className="max-w-[54.625rem] h-[calc(100vh_-_22rem)] overflow-y-scroll px-4 scroll-hidden">
@@ -35,12 +47,12 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
               </label>
               <Input
                 type="text"
-                id="title"
-                name="title"
+                id="fy_title"
+                name="fy_title"
                 onChange={formik.handleChange}
-                value={formik.values.title}
-                touched={formik.touched.title}
-                error={formik.errors.title}
+                value={formik.values.fy_title}
+                touched={formik.touched.fy_title}
+                error={formik.errors.fy_title}
                 placeholder="2022 Financial Year"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300  sm:text-sm"
               />
@@ -48,26 +60,26 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
 
             <div className="basis-1/4">
               <CustomDateInput
-                id="startPeriod"
-                name="startPeriod"
+                id="start_fy"
+                name="start_fy"
                 label="Start Period"
                 selected={formik.value}
-                handleChange={(date) => handleChange(date, "startPeriod")}
-                touched={formik.touched.mision}
-                error={formik.errors.mision}
+                handleChange={(date) => handleChange(date, "start_fy")}
+                touched={formik.touched.start_fy}
+                error={formik.errors.start_fy}
                 className="relative"
                 // iconClass="top-4"
               />
             </div>
             <div className="basis-1/4">
               <CustomDateInput
-                id="endPeriod"
-                name="endPeriod"
+                id="end_fy"
+                name="end_fy"
                 label="End Period"
                 selected={formik.value}
-                handleChange={(date) => handleChange(date, "endPeriod")}
-                touched={formik.touched.mision}
-                error={formik.errors.mision}
+                handleChange={(date) => handleChange(date, "end_fy")}
+                touched={formik.touched.end_fy}
+                error={formik.errors.end_fy}
                 className="relative"
                 // iconClass="top-4"
               />
@@ -89,12 +101,12 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
             <Input
               type="text"
               placeholder="3 Months"
-              id="probationPeriod"
-              name="probationPeriod"
-              value={formik.values.probationPeriod}
+              id="probation_duration"
+              name="probation_duration"
+              value={formik.values.probation_duration}
               onChange={formik.handleChange}
-              touched={formik.touched.probationPeriod}
-              error={formik.errors.probationPeriod}
+              touched={formik.touched.probation_duration}
+              error={formik.errors.probation_duration}
               className="mt-1 block w-full px-3 py-2 border border-gray-300  sm:text-sm"
             />
           </div>
@@ -107,30 +119,24 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
           <div className="flex space-x-2 mt-2">
             <div className="w-1/2">
               <CustomTimeInput
-                id="openingTime"
+                id="opening_time"
                 label="Opening Time"
                 name="openingTime"
-                selected={formik.value}
-                handleChange={(date) => handleChange(date, "openingTime")}
-                touched={formik.touched.openingTime}
-                error={formik.errors.openingTime}
+                selected={formik.values.closing_time}
+                handleChange={(date) => handleTimeChange(date, "opening_time")}
+                touched={formik.touched.opening_time}
+                error={formik.errors.opening_time}
               />
             </div>
             <div className="w-1/2">
               <CustomTimeInput
-                // id=""
-                // label="Closing Time"
-                // selected={new Date()}
-                // handleChange={() => null}
-                // error=""
-
-                id="closingTime"
+                id="closing_time"
                 label="Closing Time"
                 name="closingTime"
-                selected={formik.values.closingTime}
-                handleChange={(date) => handleChange(date, "closingTime")}
-                touched={formik.touched.closingTime}
-                error={formik.errors.closingTime}
+                selected={formik.values.closing_time}
+                handleChange={(date) => handleTimeChange(date, "closing_time")}
+                touched={formik.touched.closing_time}
+                error={formik.errors.closing_time}
               />
             </div>
           </div>

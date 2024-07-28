@@ -27,7 +27,7 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
       setLogo(file);
       setLogoName(file?.name);
 
-      formik.setFieldValue("logo_input", file?.name);
+      formik.setFieldValue("logo", file);
     }
   };
 
@@ -51,13 +51,13 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
         </p>
         <div className="border flex max-w-[16.0625rem] items-center">
           <Input
-            id="color"
-            name="color"
+            id="brand_colour"
+            name="brand_colour"
             className="w-[3.3125rem] p-0 m-0 border-0"
             type="color"
             onChange={formik.handleChange}
-            touched={formik.touched.color}
-            error={formik.errors.color}
+            touched={formik.touched.brand_colour}
+            error={formik.errors.brand_colour}
           />
           <p className="text-center w-full text-[#252C32] uppercase">{color}</p>
         </div>

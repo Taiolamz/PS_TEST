@@ -112,8 +112,6 @@ const SignupPage = () => {
     onSubmit: handleFormSubmit,
   });
 
-  console.log({ ...formik.values });
-
   const { timeLeft, startTimer, isTimerElapsed } = useTimeout({
     initialTime: 30,
   });

@@ -66,9 +66,7 @@ export default function CustomTimeInput({
           error && touched && "border-red-500"
         )}
         containerClassName="w-full"
-        onOpenPickNewDate={onOpenPickNewDate}
         onChange={handleChange}
-        value={selected}
         className={cn("teal", className)}
         disableDayPicker
         format="hh:mm:ss A"
