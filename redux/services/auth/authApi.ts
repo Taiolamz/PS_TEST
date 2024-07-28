@@ -72,7 +72,36 @@ export const authApi = baseApi.injectEndpoints({
                 url: `/password/forgot`,
                 method: 'POST',
                 body: payload
-
+                
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
+        verifyOTP: builder.mutation({
+            query: (payload) => ({
+                url: `/verify-otp`,
+                method: 'POST',
+                body: payload
+                
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
+        resendOTP: builder.mutation({
+            query: (payload) => ({
+                url: `/resend-otp`,
+                method: 'POST',
+                body: payload
             }),
             async onQueryStarted(arg, {queryFulfilled, dispatch}){
                 try {
@@ -116,4 +145,4 @@ export const authApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useAdminVerifyOTPMutation, useAdminResendOTPMutation, useForgotPasswordMutation, useResetPasswordMutation } = authApi
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useAdminVerifyOTPMutation, useAdminResendOTPMutation, useForgotPasswordMutation, useResetPasswordMutation, useVerifyOTPMutation, useResendOTPMutation } = authApi

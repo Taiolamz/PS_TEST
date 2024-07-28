@@ -1,15 +1,20 @@
 "use client";
+import { Dictionary } from "@/@types/dictionary";
 import { ChangePasswordModal } from "@/components/atoms/modals";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import LoadingModal from "@/components/atoms/modals/loading";
 import { InputOTPGenerator } from "@/components/otp-generator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useForgotPasswordMutation } from "@/redux/services/auth/authApi";
+import { useForgotPasswordMutation, useResendOTPMutation, useResetPasswordMutation, useVerifyOTPMutation } from "@/redux/services/auth/authApi";
 import { timeToMinuteSecond } from "@/utils/helpers";
 import useTimeout from "@/utils/hooks/useTimeout";
+import routesPath from "@/utils/routes";
+import { ResetPasswordSchema } from "@/utils/schema";
 import { useFormik } from "formik";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import * as yup from "yup"
 
 type Props = {};
@@ -22,22 +27,81 @@ enum NotWorkEmails {
   // Add other non-work email domains here
 }
 
+const { LOGIN } = routesPath
+
 const ResetPassword = () => {
-  const [passwordResetData, setPasswordResetData] = useState({})
+  const [passwordResetData, setPasswordResetData] = useState<Dictionary>({})
   const [showVerifyOTP, setShowVerifyOTP] = useState(false)
+  const [redirectToLogin, setRedirectToLogin] = useState(false)
   const [OTP, setOTP] = useState<any>("")
 
-  const [forgotPassword, { isLoading: isSendingPasswordResetLink, isSuccess: isSentPasswordResetLink }] = useForgotPasswordMutation()
+  const [forgotPassword, { isLoading: isSendingPasswordResetLink, isSuccess: isSentPasswordResetLink, reset: resetSendPasswordReset }] = useForgotPasswordMutation()
+  const [resetPassword, { isLoading: isResetingPassword, isSuccess: isSuccessPasswordReset, reset: resetPasswordReset }] = useResetPasswordMutation()
+  const [verifyOTP, { isLoading: isVerifyingOTP, isSuccess: OTPVerified, reset: resetVerifyOTP }] = useVerifyOTPMutation()
+  const [resendOTP, { isLoading: isResendingOTP, isSuccess: OTPResent, reset: resetResendOTP }] = useResendOTPMutation()
+
+  const router = useRouter()
 
   const { timeLeft, startTimer, isTimerElapsed } = useTimeout({ initialTime: 30 });
+
+  const handleVerifyOTP = (OTP) => {
+    const payload = {
+      code: OTP,
+      email: formik.values.email,
+      otpType: "email-verification"
+    }
+    verifyOTP(payload)
+      .unwrap()
+      .then((payload) => {
+        setPasswordResetData(payload)
+        toast.success('OTP Verified Successfully')
+        setShowVerifyOTP(false)
+      })
+  }
+
+  const handleResendOTP = () => {
+    const payload = {
+      email: formik.values.email,
+      otpType: "email-verification"
+    }
+    resendOTP({...payload})
+      .unwrap()
+      .then((payload) => {
+        toast.success('OTP Resent Successfully')
+        startTimer()
+      })
+  }
 
   const handleFormSubmit = async () => {
     forgotPassword({ ...formik.values })
       .unwrap()
-      .then((payload) => {
-        setPasswordResetData(payload)
+      .then(() => {})
+  }
+  
+  const handleResetPassword = async () => {
+    resetPassword({ ...formik_pr.values, ...passwordResetData, reference: passwordResetData.data, email: formik.values.email })
+      .unwrap()
+      .then(() => {
+        resetPasswordReset()
+        toast.success('Password Reset Successfully')
+        new Promise(() => {
+          toast.loading("Redirecting to login...")
+          setTimeout(() => {
+            toast.dismiss()
+            router.push(LOGIN)
+          }, 2000);
+        })
       })
   }
+  const formik_pr = useFormik({
+    initialValues: {
+        password: "",
+        password_confirmation: ""
+    },
+    validationSchema: ResetPasswordSchema,
+    onSubmit: handleResetPassword
+})
+
 
   const formik = useFormik({
     initialValues: { email: "" },
@@ -82,14 +146,14 @@ const ResetPassword = () => {
 
       {/* Email Sent Modal */}
       <ConfirmationModal
-        show={false}
-        handleClose={() => null}
+        show={isSentPasswordResetLink}
+        handleClose={() => resetSendPasswordReset()}
         hasCloseButton={false}
         icon="/svgs/mail-sent.svg"
         title="Sent! check your email"
         message="Mail sent! Check your inbox to get your recovery otp and create your a new password."
         handleClick={() => {
-          // resetRegistration()
+          resetSendPasswordReset()
           setShowVerifyOTP(true)
         }}
         actionBtnTitle="Continue"
@@ -102,7 +166,7 @@ const ResetPassword = () => {
         hasCloseButton={false}
         title="Verify your email address"
         message={<span>A Six digit recovery OTP code has been sent to your email <span className="font-semibold">{formik.values.email}</span></span>}
-        handleClick={() => null}
+        handleClick={() => handleVerifyOTP(OTP)}
         actionBtnTitle="Verify OTP"
         actionBtnLoading={false}
         disableActionBtn={OTP.length < 6}
@@ -119,19 +183,21 @@ const ResetPassword = () => {
               <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">Didn’t get the code? <Button
                 disabled={false}
                 variant="link" className="px-0 text-primary font-normal"
-                onClick={() => null}
+                onClick={() => handleResendOTP()}
               >Resend</Button> </span>
             )
           }
         </>}
       />
       <ChangePasswordModal
-        show={false}
+        formik={formik_pr}
+        show={OTPVerified}
+        loading={isResetingPassword}
         handleClose={() => null}
-        handleClick={() => null}
+        handleClick={() => formik_pr.handleSubmit()}
       />
       <LoadingModal
-        show={false}
+        show={isVerifyingOTP || isResendingOTP}
         handleClose={() => null}
       />
     </div>
