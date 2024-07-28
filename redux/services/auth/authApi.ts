@@ -67,6 +67,35 @@ export const authApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        forgotPassword: builder.mutation({
+            query: (payload) => ({
+                url: `/password/forgot`,
+                method: 'POST',
+                body: payload
+
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
+        resetPassword: builder.mutation({
+            query: (payload) => ({
+                url: `/password/reset`,
+                method: 'POST',
+                body: payload
+            }),
+            async onQueryStarted(arg, {queryFulfilled, dispatch}){
+                try {
+                    const result = await queryFulfilled
+                } catch (error: any) {
+                    // console.log('Error:', error)
+                }
+            }
+        }),
         logout: builder.mutation({
             query: () => ({
                 url: `/logout`,
@@ -87,4 +116,4 @@ export const authApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useAdminVerifyOTPMutation, useAdminResendOTPMutation } = authApi
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useAdminVerifyOTPMutation, useAdminResendOTPMutation, useForgotPasswordMutation, useResetPasswordMutation } = authApi
