@@ -167,6 +167,7 @@ input:-webkit-autofill:hover {
   --text-color4: #5a5b5f;
   --btn-color: #008080;
   --btn-second: #f8ffff;
+  --bg-primary-05: rgba(0, 128, 128, 0.1);
   --btn-hover-backgroundColor: #339e8d;
   --btn-solid-color: #fff;
   --btn-light-color: #f4f4f4;
@@ -209,4 +210,3 @@ input:-webkit-autofill:hover {
   border-radius: 5px;
   background-color: var(--footer-link-color);
 }
-
