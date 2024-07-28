@@ -5,12 +5,12 @@ import Icon from "../icon/Icon";
 type Props = {
   handleLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   logoName: string;
+  setLogo: (item: any) => void;
 };
 
-const LogoUpload = ({ handleLogoChange, logoName }: Props) => {
-
+const LogoUpload = ({ handleLogoChange, logoName, setLogo }: Props) => {
   const handleRemoveLogo = () => {
-    // setLogo("");
+    setLogo("");
   };
   return (
     <div>
@@ -36,11 +36,11 @@ const LogoUpload = ({ handleLogoChange, logoName }: Props) => {
               accept=".jpg,.png,.jpeg"
               onChange={handleLogoChange}
               className="hidden"
-              id="logo-input" 
-              name={""} 
+              id="logo_input"
+              name={""}
             />
             <label
-              htmlFor="logo-input"
+              htmlFor="logo_input"
               className="cursor-pointer border p-2 w-full text-sm"
             >
               Choose File
