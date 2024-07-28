@@ -23,7 +23,7 @@ export const checklistDetails = [
         isChecked: false,
         label: "Add Unit",
       },
-    ],
+    ], 
     isAllChecked: false,
     path: Routes.ChecklistRoute.SubsidiaryRoute(),
   },
