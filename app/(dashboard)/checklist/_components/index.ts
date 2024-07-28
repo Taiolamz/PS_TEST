@@ -1,2 +1,2 @@
-export { default as ChecklistOverviewLayout } from "./Checklist-Overview-Layout";
-export { default as ChecklistOverviewContent } from "./Checklist-Overview-Content";
+export { default as ChecklistOverviewLayout } from "./checklist-overview-layout";
+export { default as ChecklistOverviewContent } from "./checklist-overview-content";

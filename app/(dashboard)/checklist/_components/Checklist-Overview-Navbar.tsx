@@ -1,4 +1,4 @@
-import Routes from "@/lib/_Routes/routes";
+import Routes from "@/lib/routes/routes";
 import { CircleArrowLeft } from "@/public/assets/icons";
 import Link from "next/link";
 import React from "react";

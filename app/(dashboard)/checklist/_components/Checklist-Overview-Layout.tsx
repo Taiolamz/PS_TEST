@@ -1,5 +1,5 @@
 import React from "react";
-import ChecklistOverviewNavbar from "./Checklist-Overview-Navbar";
+import ChecklistOverviewNavbar from "./checklist-overview-navbar";
 
 interface PropType {
   children: React.ReactNode;

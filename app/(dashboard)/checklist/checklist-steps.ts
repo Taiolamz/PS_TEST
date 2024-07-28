@@ -1,5 +1,4 @@
-import Routes from "@/lib/_Routes/routes";
-
+import Routes from "@/lib/routes/routes";
 
 export const checklistDetails = [
   {
@@ -23,7 +22,7 @@ export const checklistDetails = [
         isChecked: false,
         label: "Add Unit",
       },
-    ], 
+    ],
     isAllChecked: false,
     path: Routes.ChecklistRoute.SubsidiaryRoute(),
   },
@@ -52,4 +51,3 @@ export const checklistDetails = [
     path: Routes.ChecklistRoute.MissionPlanTemplateRoute(),
   },
 ];
-

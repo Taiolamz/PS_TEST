@@ -97,9 +97,9 @@ const DashboardSidebar = () => {
 
   return (
     <div
-      className={`bg-[#015858] relative transition-all ease-linear w-[${
-        open ? "80px" : "240px"
-      }] h-screen py-0 flex flex-col overflow-auto customScrollbar`}
+      className={`bg-[#015858] relative transition-all ease-linear ${
+        open ? "w-[80px]" : "w-[260px]"
+      } h-screen py-0 flex flex-col overflow-auto customScrollbar`}
     >
       {!open ? (
         <>
