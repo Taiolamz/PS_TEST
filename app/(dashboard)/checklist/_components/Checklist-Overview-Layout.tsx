@@ -7,15 +7,9 @@ interface PropType {
 
 const ChecklistOverviewLayout = ({ children }: PropType) => {
   return (
-    <div className="relative min-h-screen flex flex-col">
+    <div className="relative min-h-screen ">
       <ChecklistOverviewNavbar />
-      <div className=" h-screen relative  ">
-        <div className="absolute bottom-0 w-screen h-[calc(100%-47px)]  overflow-auto flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center  justify-center">
-            {children}
-          </div>
-        </div>
-      </div>
+      <div className=" flex justify-center mt-[58px] mx-auto h-screen">{children}</div>
     </div>
   );
 };

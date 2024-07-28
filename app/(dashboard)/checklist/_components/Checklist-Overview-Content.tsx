@@ -28,7 +28,10 @@ const ChecklistOverviewContent = () => {
         </div>
         <div className="flex gap-2 items-center">
           <p className="text-warning text-sm">0% completed</p>
-          <Progress value={0} className="w-[150px] bg-custom-bg" />
+          <Progress
+            value={0}
+            className="w-[150px] h-2 bg-custom-bg *:bg-warning"
+          />
         </div>
       </div>
       <div className="flex flex-col gap-4 mt-1">
