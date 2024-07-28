@@ -1,13 +1,13 @@
 "use client";
 
 import { ManceLoader } from "@/components/custom-loader";
-import { ModalButtonOpen } from "@/components/dashboard/pages";
 import { Button } from "@/components/ui/button";
 // import { useUserStore } from "@/providers/user-store-provider";
 import { DoubleGrayLeftArrow } from "@/public/assets/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
+import { ModalButtonOpen } from "../modal-button";
 
 const ChecklistNavbar = ({
   title,
@@ -19,16 +19,16 @@ const ChecklistNavbar = ({
   onCancel,
   loading,
 }: DashboardSettingsNavType) => {
-//   const setUser = useUserStore((state) => state.setUser);
+  //   const setUser = useUserStore((state) => state.setUser);
 
-//   const handleGetUserDetails = useCallback(() => {
-//     const user = JSON.parse(localStorage.getItem("user-details") as string);
-//     setUser(user);
-//   }, [setUser]);
+  //   const handleGetUserDetails = useCallback(() => {
+  //     const user = JSON.parse(localStorage.getItem("user-details") as string);
+  //     setUser(user);
+  //   }, [setUser]);
 
-//   useEffect(() => {
-//     handleGetUserDetails();
-//   }, [handleGetUserDetails]);
+  //   useEffect(() => {
+  //     handleGetUserDetails();
+  //   }, [handleGetUserDetails]);
 
   const router = useRouter();
   const goBack = () => router.back();

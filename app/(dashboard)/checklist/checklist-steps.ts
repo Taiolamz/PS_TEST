@@ -51,3 +51,119 @@ export const checklistDetails = [
     path: Routes.ChecklistRoute.MissionPlanTemplateRoute(),
   },
 ];
+
+export const missionPlanDetails = [
+  {
+    label: "C-Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "Entry Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "C-Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "Entry Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "C-Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "Entry Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "C-Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "Entry Level Mission Plan",
+    content: "",
+    path: "",
+  },
+  {
+    label: "C-Level Mission Plan",
+    content: "",
+    path: "",
+  },
+];
+
+export const missionContentModal = [
+  {
+    label: "Name of Financial Year",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Mission Statement",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Strategic Pillars",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Strategic Intent/Behaviour",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Measure of Success",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Freedom & Constraints",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Specified Tasks",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+  {
+    label: "Implied Tasks",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: false,
+  },
+];
+
+export const checklistSidebar = [
+  {
+    title: "Organizational structure",
+    items: ["Add subsidiary", "Add Branches", "Add Department", "Add unit"],
+    path: Routes.ChecklistRoute.OrganizationStructureRoute(),
+  },
+  {
+    title: "Setup Employees and Roles",
+    path: Routes.ChecklistRoute.SetupEmployeesAndRolesRoute(),
+  },
+  {
+    title: "Mission Plan",
+    items: ["Create Mission Plan Template", "Approval flow"],
+    path: Routes.ChecklistRoute.MissionPlanTemplateRoute(),
+  },
+];

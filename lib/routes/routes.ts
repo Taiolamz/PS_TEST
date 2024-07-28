@@ -71,10 +71,10 @@ const ChecklistRoute = {
 
   // ORGNANISATIONAL STRUCTURE
   OrganizationStructureRoute: () => OrganizationStructure,
-  SubsidiaryRoute: () => `${OrganizationStructure}/subsidiary`,
-  BranchesRoute: () => `${OrganizationStructure}/branches`,
-  DepartmentRoute: () => `${OrganizationStructure}/department`,
-  UnitRoute: () => `${OrganizationStructure}/unit`,
+  SubsidiaryRoute: () => `${ChecklistPath}/subsidiary`,
+  BranchesRoute: () => `${ChecklistPath}/branches`,
+  DepartmentRoute: () => `${ChecklistPath}/department`,
+  UnitRoute: () => `${ChecklistPath}/unit`,
 
   // CREATE ROUTE
   AddSubsidiary: () => `${ChecklistRoute.SubsidiaryRoute()}/add-subsidiary`,
@@ -84,7 +84,7 @@ const ChecklistRoute = {
 
   // SETUP EMPLOYEES AND ROLES
   SetupEmployeesAndRolesRoute: () =>
-    `${ChecklistPath}/setup-employees-and-roles`,
+    `${ChecklistPath}/employee-and-roles`,
   AddEmployeesAndRolesRoute: () =>
     `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employees`,
 
