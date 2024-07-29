@@ -50,6 +50,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         value={value}
         error={error}
         touched={touched}
+        {...props}
       />
     );
   }

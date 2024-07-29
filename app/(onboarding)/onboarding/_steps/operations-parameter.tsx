@@ -35,7 +35,7 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
           <h3 className="block mb-4 text-sm font-medium text-[#162238]">
             1. Fiscal Year
           </h3>
-          <div className="flex gap-6">
+          <div className="flex gap-6 items-center">
             <div className="basis-1/2">
               <label className="block text-[#5A5B5F] text-[0.8125rem]">
                 Title
@@ -62,6 +62,7 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
                 handleChange={(date) => handleChange(date, "start_fy")}
                 touched={formik.touched.start_fy}
                 error={formik.errors.start_fy}
+                labelClass="mb-1"
                 className="relative"
                 // iconClass="top-4"
               />
@@ -75,6 +76,7 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
                 handleChange={(date) => handleChange(date, "end_fy")}
                 touched={formik.touched.end_fy}
                 error={formik.errors.end_fy}
+                labelClass="mb-1"
                 className="relative"
                 // iconClass="top-4"
               />
