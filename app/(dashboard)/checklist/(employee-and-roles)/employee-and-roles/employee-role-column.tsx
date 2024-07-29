@@ -69,14 +69,16 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     accessorKey: "gender",
     header: () => <div className="text-right">Gender</div>,
     cell: ({ row }: any) => (
-      <div className="capitalize">{row.getValue("gender")?.slice(0, 1)}</div>
+      <div className="capitalize text-right">
+        {row.getValue("gender")?.slice(0, 1)}
+      </div>
     ),
   },
   {
     accessorKey: "email",
     header: () => <div className="text-right">Work Email</div>,
     cell: ({ row }) => (
-      <div className=" lowercase">
+      <div className=" lowercase text-right">
         {row.getValue("email") ? row.getValue("email") : "Not Assigned"}
       </div>
     ),
@@ -85,7 +87,7 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     accessorKey: "resumption_date",
     header: () => <div className="text-right">Resumption Date</div>,
     cell: ({ row }) => (
-      <div className=" capitalize">
+      <div className=" capitalize text-right">
         {format(row.getValue("resumption_date"), "PPP")}
       </div>
     ),
@@ -94,7 +96,7 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     accessorKey: "line_manager",
     header: () => <div className="text-right">Line Manager</div>,
     cell: ({ row }) => (
-      <div className="capitalize">
+      <div className="capitalize text-right">
         {row.getValue("line_manager")
           ? row.getValue("line_manager")
           : "Not Assigned"}
@@ -105,7 +107,7 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     accessorKey: "job_title",
     header: () => <div className="text-right">Job Title</div>,
     cell: ({ row }) => (
-      <div className="capitalize">
+      <div className="capitalize text-right">
         {row.getValue("job_title") ? row.getValue("job_title") : "Not Assigned"}
       </div>
     ),
@@ -114,7 +116,7 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     accessorKey: "status",
     header: () => <div className="text-right">Status</div>,
     cell: ({ row }: any) => (
-      <div className="capitalize">
+      <div className="capitalize text-right">
         <Badge
           variant={
             row?.getValue("status")?.toLowerCase() === "pending"
@@ -135,7 +137,12 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const { id } = row?.original;
-      return <TableActionMenu id={id} />;
+      return (
+        <div className="ml-5">
+          {" "}
+          <TableActionMenu id={id} />
+        </div>
+      );
     },
   },
 ];
