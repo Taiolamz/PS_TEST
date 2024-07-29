@@ -48,7 +48,7 @@ const ResetPassword = () => {
     const payload = {
       code: OTP,
       email: formik.values.email,
-      otpType: "email-verification"
+      otpType: "password_reset"
     }
     verifyOTP(payload)
       .unwrap()
@@ -164,7 +164,7 @@ const ResetPassword = () => {
         show={showVerifyOTP}
         handleClose={() => setShowVerifyOTP(false)}
         hasCloseButton={false}
-        title="Verify your email address"
+        title="Recover Password"
         message={<span>A Six digit recovery OTP code has been sent to your email <span className="font-semibold">{formik.values.email}</span></span>}
         handleClick={() => handleVerifyOTP(OTP)}
         actionBtnTitle="Verify OTP"
