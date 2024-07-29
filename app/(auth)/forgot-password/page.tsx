@@ -76,7 +76,7 @@ const ResetPassword = () => {
     initialTime: 30,
   });
 
-  const handleVerifyOTP = (OTP) => {
+  const handleVerifyOTP = (OTP: any) => {
     const payload = {
       code: OTP,
       email: formik.values.email,
