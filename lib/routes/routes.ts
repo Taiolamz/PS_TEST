@@ -96,7 +96,9 @@ const ChecklistRoute = {
     `${ChecklistRoute.MissionPlanTemplateRoute()}/add-template`,
 
   // APRPOVAL FLOW
-  ApprovalFlowRoute: () => `${MissionPlanRoute}/approval-flow`,
+  ApprovalFlowRoute: () => `${ChecklistPath}/mission-approval-flow`,
+  AddApprovalFlowRoute: () => `${ChecklistRoute.ApprovalFlowRoute()}/add-flow`,
+  // ApprovalFlowRoute: () => `${MissionPlanRoute}/mission-approval-flow`,
 };
 
 const Routes = {

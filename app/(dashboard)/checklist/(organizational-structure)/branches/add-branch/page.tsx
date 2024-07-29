@@ -24,8 +24,6 @@ const AddBranch = () => {
     isLoadingSubsidiaries,
     headOfBranches,
   } = useBranch({ cancelPath: cancelRoute });
-
-  console.log(formik?.values?.country)
   return (
     <ChecklistLayout
       onCancel={handleCancelDialog}
