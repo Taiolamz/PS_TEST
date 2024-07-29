@@ -1,6 +1,5 @@
 "use client";
 
-import Icon from "@/components/icon/Icon";
 import { ArrowLeftCircle } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
@@ -55,29 +54,34 @@ const Onboarding = () => {
     staff_levels: "staff_levels",
   };
 
-  const handleFormSubmit = async () => {
-    // if (ui === "organization-information") {
-    //   formik.setErrors({});
-    //   formik.setTouched({});
-    //   router.push(`${location}?ui=employee-information`);
-    // }
+  const onSubmit = async () => {
     const formDataToSend = new FormData();
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
 
-      formDataToSend.append(mappedKey, JSON.stringify(value));
-      console.log(`${key}:${value}`);
+      if (key === "logo" && logo) {
+        formDataToSend.append(mappedKey, logo);
+      } else if (Array.isArray(value) || typeof value === "object") {
+        formDataToSend.append(mappedKey, JSON.stringify(value));
+      } else {
+        formDataToSend.append(mappedKey, value as string);
+      }
     });
 
-    if (getCurrentStep() === 6) {
-      onboarding({ ...formik.values })
+    // Might be added later from the backend
+    const appraisalCycle = "annual";
+    formDataToSend.append("appraisal_cycle", appraisalCycle);
+
+    try {
+      // const response = await setupOrganization(formDataToSend);
+
+      onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
           toast.success("Account Registered Successfully");
         });
-      // router.push(`${location}?ui=employee-information`)
-    }
+    } catch (error) {}
   };
 
   const formik = useFormik({
@@ -96,8 +100,10 @@ const Onboarding = () => {
       staff_levels: [{ name: "", position: "" }],
     },
     validationSchema: OnbaordingSchema,
-    onSubmit: handleFormSubmit,
+    onSubmit: onSubmit,
   });
+
+  const logo = formik.values.logo;
 
   return (
     <section className="">
@@ -149,7 +155,7 @@ const Onboarding = () => {
             ) : (
               <Button
                 type="button"
-                onClick={handleFormSubmit}
+                onClick={onSubmit}
                 loading={isOnboardingLoading}
                 loadingText="Save"
               >

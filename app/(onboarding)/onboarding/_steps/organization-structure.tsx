@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { FormHeader } from "../_components";
 import CustomCheckbox from "@/components/custom-checkbox";
 import { useState } from "react";

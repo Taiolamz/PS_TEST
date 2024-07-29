@@ -3,8 +3,6 @@ import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomTimeInput from "@/components/custom-time-picker";
-import DatePicker from "react-multi-date-picker";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 interface OperationsParameterProps {
   formik: any;
@@ -21,11 +19,8 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
     newDate: { format: (arg0: string) => any },
     name: string
   ) => {
-    // console.log(newDate);
     formik.setFieldValue(name, newDate.format("HH:mm:ss A"));
   };
-
-  console.log(formik.values);
 
   return (
     <section className="max-w-[54.625rem] h-[calc(100vh_-_22rem)] overflow-y-scroll px-4 scroll-hidden">

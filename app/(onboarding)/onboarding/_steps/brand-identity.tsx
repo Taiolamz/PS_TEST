@@ -12,14 +12,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   const [logo, setLogo] = useState<File | null>(null);
   const [logoName, setLogoName] = useState("");
 
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const hexCode = e.target.value;
-    if (hexCode) {
-      setColor(hexCode);
-    }
-  };
-
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target.files?.[0];

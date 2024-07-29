@@ -2,7 +2,6 @@
 
 import { Textarea } from "@/components/ui/textarea";
 import { FormHeader } from "../_components";
-import { Field } from "formik";
 
 interface OrganizationStatementProps {
   formik: any;
