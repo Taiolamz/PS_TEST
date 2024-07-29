@@ -158,6 +158,7 @@ const Onboarding = () => {
                 onClick={onSubmit}
                 loading={isOnboardingLoading}
                 loadingText="Save"
+                disabled={isOnboardingLoading}
               >
                 Save
               </Button>
