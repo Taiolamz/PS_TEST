@@ -6,7 +6,12 @@ import LoadingModal from "@/components/atoms/modals/loading";
 import { InputOTPGenerator } from "@/components/otp-generator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useForgotPasswordMutation, useResendOTPMutation, useResetPasswordMutation, useVerifyOTPMutation } from "@/redux/services/auth/authApi";
+import {
+  useForgotPasswordMutation,
+  useResendOTPMutation,
+  useResetPasswordMutation,
+  useVerifyOTPMutation,
+} from "@/redux/services/auth/authApi";
 import { timeToMinuteSecond } from "@/utils/helpers";
 import useTimeout from "@/utils/hooks/useTimeout";
 import routesPath from "@/utils/routes";
@@ -16,7 +21,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import * as yup from "yup"
+import * as yup from "yup";
 
 type Props = {};
 
@@ -28,89 +33,127 @@ enum NotWorkEmails {
   // Add other non-work email domains here
 }
 
-const { LOGIN } = routesPath
+const { LOGIN } = routesPath;
 
 const ResetPassword = () => {
-  const [passwordResetData, setPasswordResetData] = useState<Dictionary>({})
-  const [showVerifyOTP, setShowVerifyOTP] = useState(false)
-  const [redirectToLogin, setRedirectToLogin] = useState(false)
-  const [OTP, setOTP] = useState<any>("")
+  const [passwordResetData, setPasswordResetData] = useState<Dictionary>({});
+  const [showVerifyOTP, setShowVerifyOTP] = useState(false);
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const [OTP, setOTP] = useState<any>("");
 
-  const [forgotPassword, { isLoading: isSendingPasswordResetLink, isSuccess: isSentPasswordResetLink, reset: resetSendPasswordReset }] = useForgotPasswordMutation()
-  const [resetPassword, { isLoading: isResetingPassword, isSuccess: isSuccessPasswordReset, reset: resetPasswordReset }] = useResetPasswordMutation()
-  const [verifyOTP, { isLoading: isVerifyingOTP, isSuccess: OTPVerified, reset: resetVerifyOTP }] = useVerifyOTPMutation()
-  const [resendOTP, { isLoading: isResendingOTP, isSuccess: OTPResent, reset: resetResendOTP }] = useResendOTPMutation()
+  const [
+    forgotPassword,
+    {
+      isLoading: isSendingPasswordResetLink,
+      isSuccess: isSentPasswordResetLink,
+      reset: resetSendPasswordReset,
+    },
+  ] = useForgotPasswordMutation();
+  const [
+    resetPassword,
+    {
+      isLoading: isResetingPassword,
+      isSuccess: isSuccessPasswordReset,
+      reset: resetPasswordReset,
+    },
+  ] = useResetPasswordMutation();
+  const [
+    verifyOTP,
+    {
+      isLoading: isVerifyingOTP,
+      isSuccess: OTPVerified,
+      reset: resetVerifyOTP,
+    },
+  ] = useVerifyOTPMutation();
+  const [
+    resendOTP,
+    { isLoading: isResendingOTP, isSuccess: OTPResent, reset: resetResendOTP },
+  ] = useResendOTPMutation();
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { timeLeft, startTimer, isTimerElapsed } = useTimeout({ initialTime: 30 });
+  const { timeLeft, startTimer, isTimerElapsed } = useTimeout({
+    initialTime: 30,
+  });
 
   const handleVerifyOTP = (OTP) => {
     const payload = {
       code: OTP,
       email: formik.values.email,
+<<<<<<< HEAD
       otpType: "password_reset"
     }
+=======
+      otpType: "email-verification",
+    };
+>>>>>>> f649649 (checklist-revamp)
     verifyOTP(payload)
       .unwrap()
       .then((payload) => {
-        setPasswordResetData(payload)
-        toast.success('OTP Verified Successfully')
-        setShowVerifyOTP(false)
-      })
-  }
+        setPasswordResetData(payload);
+        toast.success("OTP Verified Successfully");
+        setShowVerifyOTP(false);
+      });
+  };
 
   const handleResendOTP = () => {
     const payload = {
       email: formik.values.email,
-      otpType: "email-verification"
-    }
-    resendOTP({...payload})
+      otpType: "email-verification",
+    };
+    resendOTP({ ...payload })
       .unwrap()
       .then((payload) => {
-        toast.success('OTP Resent Successfully')
-        startTimer()
-      })
-  }
+        toast.success("OTP Resent Successfully");
+        startTimer();
+      });
+  };
 
   const handleFormSubmit = async () => {
     forgotPassword({ ...formik.values })
       .unwrap()
-      .then(() => {})
-  }
-  
+      .then(() => {});
+  };
+
   const handleResetPassword = async () => {
-    resetPassword({ ...formik_pr.values, ...passwordResetData, reference: passwordResetData.data, email: formik.values.email })
+    resetPassword({
+      ...formik_pr.values,
+      ...passwordResetData,
+      reference: passwordResetData.data,
+      email: formik.values.email,
+    })
       .unwrap()
       .then(() => {
-        resetPasswordReset()
-        toast.success('Password Reset Successfully')
+        resetPasswordReset();
+        toast.success("Password Reset Successfully");
         new Promise(() => {
-          toast.loading("Redirecting to login...")
+          toast.loading("Redirecting to login...");
           setTimeout(() => {
-            toast.dismiss()
-            router.push(LOGIN)
+            toast.dismiss();
+            router.push(LOGIN);
           }, 2000);
-        })
-      })
-  }
+        });
+      });
+  };
   const formik_pr = useFormik({
     initialValues: {
-        password: "",
-        password_confirmation: ""
+      password: "",
+      password_confirmation: "",
     },
     validationSchema: ResetPasswordSchema,
-    onSubmit: handleResetPassword
-})
-
+    onSubmit: handleResetPassword,
+  });
 
   const formik = useFormik({
     initialValues: { email: "" },
     validationSchema: yup.object().shape({
-      email: yup.string().email("Enter a valid email").required("Enter your email address")
+      email: yup
+        .string()
+        .email("Enter a valid email")
+        .required("Enter your email address"),
     }),
-    onSubmit: handleFormSubmit
-  })
+    onSubmit: handleFormSubmit,
+  });
 
   return (
     <div className="max-w-[26.5625rem] flex flex-col gap-4 lg:mr-20">
@@ -155,8 +198,8 @@ const ResetPassword = () => {
         title="Sent! check your email"
         message="Mail sent! Check your inbox to get your recovery otp and create your a new password."
         handleClick={() => {
-          resetSendPasswordReset()
-          setShowVerifyOTP(true)
+          resetSendPasswordReset();
+          setShowVerifyOTP(true);
         }}
         actionBtnTitle="Continue"
       />
@@ -166,8 +209,18 @@ const ResetPassword = () => {
         show={showVerifyOTP}
         handleClose={() => setShowVerifyOTP(false)}
         hasCloseButton={false}
+<<<<<<< HEAD
         title="Recover Password"
         message={<span>A Six digit recovery OTP code has been sent to your email <span className="font-semibold">{formik.values.email}</span></span>}
+=======
+        title="Verify your email address"
+        message={
+          <span>
+            A Six digit recovery OTP code has been sent to your email{" "}
+            <span className="font-semibold">{formik.values.email}</span>
+          </span>
+        }
+>>>>>>> f649649 (checklist-revamp)
         handleClick={() => handleVerifyOTP(OTP)}
         actionBtnTitle="Verify OTP"
         actionBtnLoading={false}
@@ -177,19 +230,28 @@ const ResetPassword = () => {
             <InputOTPGenerator length={6} onChange={(code) => setOTP(code)} />
           </div>
         }
-        footerContent={<>
-          {
-            !isTimerElapsed ? (
-              <div className="text-[#CC0905] text-center text-sm font-normal mt-8"> {timeToMinuteSecond(timeLeft)} mins remaining</div>
+        footerContent={
+          <>
+            {!isTimerElapsed ? (
+              <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
+                {" "}
+                {timeToMinuteSecond(timeLeft)} mins remaining
+              </div>
             ) : (
-              <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">Didn’t get the code? <Button
-                disabled={false}
-                variant="link" className="px-0 text-primary font-normal"
-                onClick={() => handleResendOTP()}
-              >Resend</Button> </span>
-            )
-          }
-        </>}
+              <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
+                Didn’t get the code?{" "}
+                <Button
+                  disabled={false}
+                  variant="link"
+                  className="px-0 text-primary font-normal"
+                  onClick={() => handleResendOTP()}
+                >
+                  Resend
+                </Button>{" "}
+              </span>
+            )}
+          </>
+        }
       />
       <ChangePasswordModal
         formik={formik_pr}

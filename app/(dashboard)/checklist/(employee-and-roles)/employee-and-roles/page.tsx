@@ -1,28 +1,54 @@
 "use client";
 import { ChecklistLayout } from "../../_components/checklist-layout";
 import { UsersIcon } from "@/public/assets/icons";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import useDisclosure from "../../_hooks/useDisclosure";
 import DashboardTable from "../../_components/checklist-dashboard-table";
 import BulkRequirementModal from "../../_components/bulk-requrement-modal";
-import { employeerolesColumns } from "./employee-role-table-data";
+import { employeerolesColumns } from "./employee-role-column";
 import BulkUploadModal from "../../_components/bulk-upload-modal";
 import DashboardModal from "../../_components/checklist-dashboard-modal";
 import CancelModal from "../../_components/cancel-modal";
 import ProceedModal from "../../_components/proceed-modal";
 import EmptyState from "../../_components/empty-state";
 import Routes from "@/lib/routes/routes";
+import { useGetEmployeesQuery } from "@/redux/services/checklist/employeeApi";
 
 export default function EmployeeAndRoles() {
   const emptyStateClass = "flex justify-center items-center";
   const router = useRouter();
-  const [search, setSearch] = useState<string>(""); //Search input controller
-  const [searchQuery, setSearchQuery] = useState<string>(""); //Search query for endpoint
+  // const [search, setSearch] = useState<string>(""); //Search input controller
+  // const [searchQuery, setSearchQuery] = useState<string>(""); //Search query for endpoint
   const [status, setStatus] = useState<string>(""); //pending/rejected state
-  const [template, setTemplate] = useState<string>(""); //Template format csv/xlsv
-  const [pageSize, setPageSize] = useState<number>(10); //Pagination
+  // const [template, setTemplate] = useState<string>(""); //Template format csv/xlsv
+  // const [pageSize, setPageSize] = useState<number>(10); //Pagination
   const [file, setFile] = useState<File | null>(null); //upload file (csv)
+
+  const {
+    data: employeeData,
+    isLoading: isLoadingEmployees,
+    isFetching: isFetchingEmployees,
+  } = useGetEmployeesQuery({
+    to: 0,
+    total: 0,
+    per_page: 50,
+    currentPage: 0,
+    next_page_url: "",
+    prev_page_url: "",
+  });
+
+  const employees = employeeData ?? [];
+
+  const employeesColumnData = useMemo(
+    () => employeerolesColumns,
+    [isFetchingEmployees]
+  );
+  // const employeesColumnData = useMemo(
+  //   () => employeerolesColumns(isFetchingEmployees),
+  //   [isFetchingEmployees]
+  // );
+
   const {
     isOpen: openProceedModal,
     open: onOpenProceeModal,
@@ -72,8 +98,17 @@ export default function EmployeeAndRoles() {
     }
   };
 
-  const handleBulkRequirementDialog = (val?: string) => {
-    val && setTemplate(val);
+  // const handleBulkRequirementDialog = (val?: string) => {
+  //   val && setTemplate(val);
+  //   onOpenBulkRequirementModal();
+  //   closeBulkUploadModal();
+  //   if (openBulkRequirementModal) {
+  //     onOpenBulkUploadModal();
+  //     closeBulkRequirementModal();
+  //   }
+  // };
+
+  const handleBulkRequirementDialog = () => {
     onOpenBulkRequirementModal();
     closeBulkUploadModal();
     if (openBulkRequirementModal) {
@@ -125,25 +160,25 @@ export default function EmployeeAndRoles() {
     console.log("handle csv");
   };
 
-  const handleAddSubsidiary = () => {
+  const handleAddEmployee = () => {
     const path = Routes.ChecklistRoute.AddEmployeesAndRolesRoute();
     router.push(path);
   };
   return (
     <ChecklistLayout
-      //   onCancel={handleCancelDialog}
+      onCancel={handleCancelDialog}
       title="Employee"
       step={`Step 1 of 1`}
-      btnDisabled
+      btnDisabled={employees?.length < 1}
       showBtn
-      className={true ? emptyStateClass : ""}
-      shouldProceed={false}
-      //   onProceedBtn={handleProceedDialog}
+      className={employees?.length < 1 ? emptyStateClass : ""}
+      shouldProceed
+      onProceedBtn={handleProceedDialog}
     >
-      {true ? (
-        // If data is empty
+      {employees?.length < 1 ? (
         <EmptyState
-          textTitle="new staff"
+          loading={isLoadingEmployees}
+          textTitle="New Staff"
           btnTitle="Employee"
           href={Routes.ChecklistRoute.AddEmployeesAndRolesRoute()}
           create
@@ -155,9 +190,9 @@ export default function EmployeeAndRoles() {
           header="Employee"
           isFilterDrop // show display filter or not
           filterOptions={["pending", "rejected"]} // filter options of your choice
-          searchVal={search} //Search input value
+          // searchVal={search} //Search input value
           filterCheck={(val: string) => {
-            //If filter checkbook is clicked
+            // If filter checkbook is clicked
             return val === status;
           }}
           filterOnCheck={(value: string) => {
@@ -172,15 +207,16 @@ export default function EmployeeAndRoles() {
           //   //handle change in Search input value
           //   setSearch(e.target.value);
           // }}
-          handleSearchClick={() => setSearchQuery(search)} //handle click on search input
-          data={employeeRolesData}
-          columns={employeerolesColumns}
-          href={Routes.ChecklistRoute.AddEmployeesAndRolesRoute()}
+          // handleSearchClick={() => setSearchQuery(search)} //handle click on search input
+          data={employees}
+          columns={employeesColumnData}
+          // href={Routes.ChecklistRoute.AddEmployeesAndRolesRoute()}
           onBulkUploadBtn={handleBulkUploadDialog}
           onOpenBtnChange={handleBtnDrop}
           newBtnOpen={openNewBtn}
+          isLoading={isFetchingEmployees}
           // isLoading={searchloading} // handle loading state while searching for result
-          onManualBtn={handleAddSubsidiary}
+          onManualBtn={handleAddEmployee}
           onPdfChange={handlePdfChange} //handle download pdf
           onCsvChange={handleCsvChange} //handle download csv
         />
@@ -208,8 +244,10 @@ export default function EmployeeAndRoles() {
       >
         <BulkUploadModal
           onCancel={handleBulkUploadDialog}
-          onSampleCsvDownload={() => handleBulkRequirementDialog("csv")}
-          onSampleExcelDownload={() => handleBulkRequirementDialog("xlsv")}
+          onSampleCsvDownload={handleBulkRequirementDialog}
+          onSampleExcelDownload={handleBulkRequirementDialog}
+          // onSampleCsvDownload={() => handleBulkRequirementDialog("csv")}
+          // onSampleExcelDownload={() => handleBulkRequirementDialog("xlsv")}
           onBulkUpload={handleBulkUploadDialog}
           setFile={setFile}
         />
@@ -222,7 +260,8 @@ export default function EmployeeAndRoles() {
       >
         <BulkRequirementModal
           onTemplateDownload={() => {
-            console.log(template, "fetch employee template");
+            console.log("fetch employee template");
+            // console.log(template, "fetch employee template");
           }}
           onCancel={handleBulkRequirementDialog}
         />
@@ -230,31 +269,3 @@ export default function EmployeeAndRoles() {
     </ChecklistLayout>
   );
 }
-
-const employeeRolesData = [
-  {
-    id: "string",
-    first_name: "string",
-    last_name: "string",
-    middle_name: "string",
-    maiden_name: "string",
-    gender: "string",
-    date_of_birth: "12-02-2023",
-    resumption_date: "12-03-2024",
-    phone_number: "string",
-    staff_number: "string",
-    level: "string",
-    designation: "string",
-    email: "string",
-    line_manager_email: "string",
-    organization_id: "string",
-    department_id: "string",
-    branch_id: "string",
-    unit_id: "string",
-    status: "string",
-    role_id: "string",
-    reason: "string",
-    created_at: "string",
-    updated_at: "string",
-  },
-];

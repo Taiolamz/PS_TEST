@@ -7,3 +7,18 @@ export const ManceLoader = () => (
     <p className="text-xs font-medium">Loading...</p>
   </div>
 );
+
+export const PageLoader = () => (
+  <div className="flex flex-col gap-2 items-center">
+    <div
+      className="inline-block h-[80px] w-[80px] animate-spin rounded-full border-4 border-solid border-primary border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+      role="status"
+    >
+      <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+        Loading...
+      </span>
+    </div>
+
+    <p className="text-xs font-medium">Fetching data...</p>
+  </div>
+);

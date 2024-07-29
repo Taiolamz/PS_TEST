@@ -78,18 +78,18 @@ const ChecklistRoute = {
 
   // CREATE ROUTE
   AddSubsidiary: () => `${ChecklistRoute.SubsidiaryRoute()}/add-subsidiary`,
-  AddBranches: () => `${ChecklistRoute.BranchesRoute()}/add-branches`, //change route on development
+  AddBranches: () => `${ChecklistRoute.BranchesRoute()}/add-branch`, //change route on development
   AddDepartment: () => `${ChecklistRoute.DepartmentRoute()}/add-department`, //change route on development
   AddUnit: () => `${ChecklistRoute.UnitRoute()}/add-unit`, //change route on development
 
   // SETUP EMPLOYEES AND ROLES
-  SetupEmployeesAndRolesRoute: () =>
-    `${ChecklistPath}/employee-and-roles`,
+  SetupEmployeesAndRolesRoute: () => `${ChecklistPath}/employee-and-roles`,
   AddEmployeesAndRolesRoute: () =>
     `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employees`,
 
   // MISSION PLAN
-  MissionPlanTemplateRoute: () => `${MissionPlanRoute}/mission-plan-template`,
+  MissionPlanTemplateRoute: () => `${ChecklistPath}/mission-plan-template`,
+  // MissionPlanTemplateRoute: () => `${MissionPlanRoute}/mission-plan-template`,
   MissionPlanTemplateLevelRoute: () =>
     `${ChecklistRoute.MissionPlanTemplateRoute()}/level`,
   AddMissionPlanTemplateRoute: () =>
