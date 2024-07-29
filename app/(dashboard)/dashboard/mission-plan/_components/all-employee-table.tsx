@@ -164,6 +164,10 @@ const AllEmployeeTable = ({ data, columns }: AllEmployeeTableType) => {
           <div className="flex gap-5 items-center ml-auto">
             <div className="grid place-items-center relative">
               <Input
+                id=""
+                name=""
+                value=""
+                onChange={() => null}
                 placeholder="Search"
                 className="border-custom-divider bg-white w-[250px] placeholder:text-custom-gray-scale-300 font-normal text-xs border  rounded-[6px] text-custom-dark-blue"
               />
