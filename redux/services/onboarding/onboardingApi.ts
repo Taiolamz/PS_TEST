@@ -9,6 +9,7 @@ export const onboardingApi = baseApi.injectEndpoints({
         url: `admin/organization/set-organization`,
         method: "POST",
         body: payload,
+        formData: true,
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
