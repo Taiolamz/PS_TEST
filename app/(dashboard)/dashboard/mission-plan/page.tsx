@@ -2,7 +2,7 @@ import Image from "next/image";
 import { StatsIcon } from "@/public/assets/icons";
 import { GrayPlusIcon } from "@/public/assets/icons";
 import React from "react";
-import Link from "next/link"; 
+import Link from "next/link";
 import { DashboardLayout } from "../_components/dashboard-layout";
 import YearMissionPlanCard from "./_components/year-mission-plan-card";
 
@@ -32,26 +32,11 @@ export default function page() {
         <p className="text-lg font-medium">All Mission Plan</p>
         <div className=" mt-5 w-full grid grid-cols-4 gap-4">
           {kickstartcard}
-          <YearMissionPlanCard
-            state="completed"
-            href="mission-plan/2023/missionplan"
-          />
-          <YearMissionPlanCard
-            state="completed"
-            href="mission-plan/2023/missionplan"
-          />
-          <YearMissionPlanCard
-            state="in-progress"
-            href="mission-plan/2023/missionplan"
-          />
-          <YearMissionPlanCard
-            state="completed"
-            href="mission-plan/2023/missionplan"
-          />
-          <YearMissionPlanCard
-            state="in-progress"
-            href="mission-plan/2023/missionplan"
-          />
+          <YearMissionPlanCard state="completed" href="mission-plan/2023" />
+          <YearMissionPlanCard state="completed" href="mission-plan/2023" />
+          <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
+          <YearMissionPlanCard state="completed" href="mission-plan/2023" />
+          <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
         </div>
       </div>
     </DashboardLayout>
