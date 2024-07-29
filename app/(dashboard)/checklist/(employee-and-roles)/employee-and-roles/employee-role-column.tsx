@@ -76,9 +76,9 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
   },
   {
     accessorKey: "email",
-    header: () => <div className="text-right">Work Email</div>,
+    header: () => <div className="text-left ml-[50px]">Work Email</div>,
     cell: ({ row }) => (
-      <div className=" lowercase text-right">
+      <div className=" lowercase text-left ml-[50px]">
         {row.getValue("email") ? row.getValue("email") : "Not Assigned"}
       </div>
     ),
@@ -86,11 +86,16 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
   {
     accessorKey: "resumption_date",
     header: () => <div className="text-right">Resumption Date</div>,
-    cell: ({ row }) => (
-      <div className=" capitalize text-right">
-        {format(row.getValue("resumption_date"), "PPP")}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const resumptionDate = row.getValue("resumption_date");
+      return (
+        <div className="capitalize text-right">
+          {resumptionDate
+            ? format(new Date(resumptionDate as Date), "yyyy/MM/dd")
+            : ""}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "line_manager",

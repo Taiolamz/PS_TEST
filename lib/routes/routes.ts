@@ -85,7 +85,7 @@ const ChecklistRoute = {
   // SETUP EMPLOYEES AND ROLES
   SetupEmployeesAndRolesRoute: () => `${ChecklistPath}/employee-and-roles`,
   AddEmployeesAndRolesRoute: () =>
-    `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employees`,
+    `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employee`,
 
   // MISSION PLAN
   MissionPlanTemplateRoute: () => `${ChecklistPath}/mission-plan-template`,
