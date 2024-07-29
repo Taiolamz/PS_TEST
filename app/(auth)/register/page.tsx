@@ -84,7 +84,7 @@ const SignupPage = () => {
       });
   };
 
-  const handleVerifyOTP = (OTP) => {
+  const handleVerifyOTP = (OTP: any) => {
     adminVerifyOTP({ code: OTP })
       .unwrap()
       .then(() => {
