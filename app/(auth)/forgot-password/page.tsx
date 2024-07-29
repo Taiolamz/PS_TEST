@@ -12,6 +12,7 @@ import useTimeout from "@/utils/hooks/useTimeout";
 import routesPath from "@/utils/routes";
 import { ResetPasswordSchema } from "@/utils/schema";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -48,7 +49,7 @@ const ResetPassword = () => {
     const payload = {
       code: OTP,
       email: formik.values.email,
-      otpType: "email-verification"
+      otpType: "password_reset"
     }
     verifyOTP(payload)
       .unwrap()
@@ -130,8 +131,8 @@ const ResetPassword = () => {
               placeholder="Input email"
             />
           </div>
-          <div className="ml-auto">
-            <Button
+          <div className="flex items-center justify-between">
+          <Button
               loading={isSendingPasswordResetLink}
               disabled={isSendingPasswordResetLink}
               loadingText="Send"
@@ -141,6 +142,7 @@ const ResetPassword = () => {
               Send
             </Button>
           </div>
+            <span className="text-sm text-center block mt-4"> Already have an account? <Link href={LOGIN}className="text-primary hover:underline">Login</Link></span>
         </div>
       </form>
 
@@ -164,7 +166,7 @@ const ResetPassword = () => {
         show={showVerifyOTP}
         handleClose={() => setShowVerifyOTP(false)}
         hasCloseButton={false}
-        title="Verify your email address"
+        title="Recover Password"
         message={<span>A Six digit recovery OTP code has been sent to your email <span className="font-semibold">{formik.values.email}</span></span>}
         handleClick={() => handleVerifyOTP(OTP)}
         actionBtnTitle="Verify OTP"
@@ -200,6 +202,7 @@ const ResetPassword = () => {
         show={isVerifyingOTP || isResendingOTP}
         handleClose={() => null}
       />
+      
     </div>
   );
 };
