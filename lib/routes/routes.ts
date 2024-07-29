@@ -85,7 +85,7 @@ const ChecklistRoute = {
   // SETUP EMPLOYEES AND ROLES
   SetupEmployeesAndRolesRoute: () => `${ChecklistPath}/employee-and-roles`,
   AddEmployeesAndRolesRoute: () =>
-    `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employees`,
+    `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employee`,
 
   // MISSION PLAN
   MissionPlanTemplateRoute: () => `${ChecklistPath}/mission-plan-template`,
@@ -96,7 +96,9 @@ const ChecklistRoute = {
     `${ChecklistRoute.MissionPlanTemplateRoute()}/add-template`,
 
   // APRPOVAL FLOW
-  ApprovalFlowRoute: () => `${MissionPlanRoute}/approval-flow`,
+  ApprovalFlowRoute: () => `${ChecklistPath}/mission-approval-flow`,
+  AddApprovalFlowRoute: () => `${ChecklistRoute.ApprovalFlowRoute()}/add-flow`,
+  // ApprovalFlowRoute: () => `${MissionPlanRoute}/mission-approval-flow`,
 };
 
 const Routes = {

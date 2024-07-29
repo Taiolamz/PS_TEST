@@ -14,6 +14,7 @@ const EmptyState = ({
   icon,
   isNotBulkUpload,
   loading,
+  viewText,
 }: EmptyStateType) => {
   return (
     <>
@@ -32,7 +33,7 @@ const EmptyState = ({
 
           <Button className="text-custom-gray-scale-white px-8">
             <Link href={href}>{`${
-              !create ? "Create" : "Add"
+              !create ? viewText || "Create" : "Add"
             } ${btnTitle}`}</Link>
           </Button>
 
