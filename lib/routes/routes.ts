@@ -78,7 +78,7 @@ const ChecklistRoute = {
 
   // CREATE ROUTE
   AddSubsidiary: () => `${ChecklistRoute.SubsidiaryRoute()}/add-subsidiary`,
-  AddBranches: () => `${ChecklistRoute.BranchesRoute()}/add-branches`, //change route on development
+  AddBranches: () => `${ChecklistRoute.BranchesRoute()}/add-branch`, //change route on development
   AddDepartment: () => `${ChecklistRoute.DepartmentRoute()}/add-department`, //change route on development
   AddUnit: () => `${ChecklistRoute.UnitRoute()}/add-unit`, //change route on development
 

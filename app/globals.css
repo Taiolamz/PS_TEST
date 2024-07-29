@@ -207,8 +207,4 @@ input:-webkit-autofill:hover {
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background-color: var(--footer-link-color);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> f649649 (checklist-revamp)
