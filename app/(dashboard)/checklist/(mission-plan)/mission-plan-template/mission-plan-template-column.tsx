@@ -18,13 +18,6 @@ type CreatedBy = {
   profile_picture: string;
 };
 
-// export type MissionPlanData = {
-//   id: string;
-//   process_name: string;
-//   assigned_to: string[];
-//   created_by: CreatedBy;
-// };
-
 export const missionPlanData: MissionPlanTemplateData[] = [
   {
     id: "dsjflsd4",
@@ -98,17 +91,15 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "process_name",
+    accessorKey: "name",
     header: "Process Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("process_name")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "assigned_to",
     header: "Assigned To",
     cell: ({ row }) => {
-      const assignedTo = row.getValue("assigned_to") as string[];
+      const assignedTo = row.getValue("assignees") as string[];
       return (
         <div className="flex gap-2 items-center">
           <div className="flex gap-2">
@@ -171,19 +162,19 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
   {
     accessorKey: "created_by",
     header: "Created by",
-    cell: ({ row }) => {
-      const created_by = row.getValue("created_by") as CreatedBy;
-      return (
-        <div className="flex items-center capitalize">
-          <Image
-            src={created_by.profile_picture}
-            alt={created_by.name}
-            className="w-8 h-8 rounded-full mr-2"
-          />
-          {created_by.name}
-        </div>
-      );
-    },
+    // cell: ({ row }) => {
+    //   const created_by = row.getValue("created_by") as CreatedBy;
+    //   return (
+    //     <div className="flex items-center capitalize">
+    //       <Image
+    //         src={created_by.profile_picture}
+    //         alt={created_by.name}
+    //         className="w-8 h-8 rounded-full mr-2"
+    //       />
+    //       {created_by.name}
+    //     </div>
+    //   );
+    // },
   },
 
   {

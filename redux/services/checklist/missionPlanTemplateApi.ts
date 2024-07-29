@@ -21,13 +21,14 @@ export const missionPlanTemplateApi = baseApi.injectEndpoints({
 
     getMissionPlanTemplates: builder.query<DepartmentData[], QueryParams>({
       query: (params) => ({
-        url: `/admin/mission-plan/template${generateQueryString({
+        url: `/mission-plan/template${generateQueryString({
           ...params,
         })}`,
         method: "GET",
       }),
-      transformResponse: (response: { data: { data: DepartmentData[] } }) =>
-        response.data.data,
+      transformResponse: (response: {
+        data: { templates: { data: MissionPlanTemplateData[] } };
+      }) => response.data.templates.data,
     }),
   }),
 });

@@ -92,6 +92,8 @@ type DepartmentData = {
   };
 };
 
+type MissionPlanTemplateData = {};
+
 type EmployeeRolesData = {
   id: string;
   first_name: string;
@@ -117,8 +119,6 @@ type EmployeeRolesData = {
   created_at: string;
   updated_at: string;
 };
-
-type MissionPlanTemplateData = {};
 
 type QueryParams = {
   currentPage: number;

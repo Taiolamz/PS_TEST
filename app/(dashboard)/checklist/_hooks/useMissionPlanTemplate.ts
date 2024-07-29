@@ -97,6 +97,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
+      name: formik.values.strategic_intent,
       organization_id: organization?.id,
     };
     await createMissionPlanTemplate(payload)
@@ -119,6 +120,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
         title: "",
         start_period: new Date(),
         end_period: new Date(),
+        // end_period: new Date(),
       },
       mission_statement: "",
       measure_of_success: {
