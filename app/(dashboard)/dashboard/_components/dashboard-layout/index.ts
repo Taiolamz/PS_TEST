@@ -1,1 +1,1 @@
-export { default as DashboardLayout } from "./dashBoard-layout";
+export { default as DashboardLayout } from "./dashboard-layout";
