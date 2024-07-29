@@ -143,13 +143,15 @@ const Branch = () => {
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
-
-    const payload = {
-      organization_id: organization?.id,
-      file: bulkFile,
-    };
-    console.log(payload, "form data");
-    await createBulkBranches(payload)
+    const formData = new FormData();
+    formData.append("organization_id", organization?.id as string);
+    formData.append("file", bulkFile);
+    // const payload = {
+    //   organization_id: organization?.id,
+    //   file: bulkFile,
+    // };
+    // console.log(payload, "form data");
+    await createBulkBranches(formData)
       .unwrap()
       .then(() => {
         toast.success("Branches Uploaded Successfully");
@@ -178,13 +180,13 @@ const Branch = () => {
           loading={isLoadingBranches}
           textTitle="Branches"
           btnTitle="branch"
-          href={Routes.ChecklistRoute.AddSubsidiary()}
+          href={Routes.ChecklistRoute.AddBranches()}
           onBulkUpload={handleBulkUploadDialog}
         />
       ) : (
         <DashboardTable
           isLoading={isFetchingBranches}
-          header="Subsidiary"
+          header="Branch"
           data={branches}
           columns={branchesColumnData}
           onBulkUploadBtn={handleBulkUploadDialog}
@@ -198,7 +200,7 @@ const Branch = () => {
         open={openCancelModal}
         onOpenChange={handleCancelDialog}
       >
-        <CancelModal onProceed={handleProceedCancel} modalTitle="Subsidiary" />
+        <CancelModal onProceed={handleProceedCancel} modalTitle="Branch" />
       </DashboardModal>
 
       <DashboardModal
