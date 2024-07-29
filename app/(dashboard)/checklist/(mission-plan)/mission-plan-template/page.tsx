@@ -122,7 +122,7 @@ const MissionPlanTemplate = () => {
       ) : (
         <DashboardTable
           isLoading={isFetchingmissionPlanTemplates}
-          header="Department"
+          header="Mission Plan Template"
           data={missionPlanTemplates}
           columns={missionPlanTemplatesColumnData}
           onOpenBtnChange={handleBtnDrop}
@@ -130,7 +130,7 @@ const MissionPlanTemplate = () => {
           dntShowExportDrop
           dntShowNewBtn
           isMissionBtn
-          onManualBtn={handleAddMissionPlanTemplate}
+          onCreateNewBtn={handleAddMissionPlanTemplate}
           onSelectTemplateBtn={handleCreateTemplate}
         />
       )}
