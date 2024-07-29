@@ -87,7 +87,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       prev_page_url: "",
     });
 
-  const subsidiaries = subsidiariesData ?? [];
+  const subsidiaries = subsidiariesData ?? []; 
   const branches = branchesData ?? [];
 
   const handleFormatDropdown = (items: SubsidiaryData[] | BranchData[]) => {
