@@ -2,11 +2,10 @@
 
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
-// import { useUserStore } from "@/providers/user-store-provider";
 import { DoubleGrayLeftArrow } from "@/public/assets/icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { ModalButtonOpen } from "../modal-button";
 
 const ChecklistNavbar = ({
@@ -19,17 +18,6 @@ const ChecklistNavbar = ({
   onCancel,
   loading,
 }: DashboardSettingsNavType) => {
-  //   const setUser = useUserStore((state) => state.setUser);
-
-  //   const handleGetUserDetails = useCallback(() => {
-  //     const user = JSON.parse(localStorage.getItem("user-details") as string);
-  //     setUser(user);
-  //   }, [setUser]);
-
-  //   useEffect(() => {
-  //     handleGetUserDetails();
-  //   }, [handleGetUserDetails]);
-
   const router = useRouter();
   const goBack = () => router.back();
   const btnClass =
@@ -44,19 +32,17 @@ const ChecklistNavbar = ({
         >
           Cancel
         </Button>
-      </ModalButtonOpen>
+      </ModalButtonOpen> 
       <div className={`${btnDisabled || loading ? "cursor-not-allowed" : ""}`}>
         <ModalButtonOpen>
           <Button
             onClick={onProceedBtn}
             className={`${btnClass}  font-light ${
-              (btnDisabled && !shouldProceed) || loading
+              btnDisabled || loading
                 ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
                 : ""
             } `}
-            disabled={
-              (btnDisabled && !shouldProceed) || loading ? btnDisabled : false
-            }
+            disabled={btnDisabled || loading ? btnDisabled : false}
           >
             {loading ? <ManceLoader /> : shouldProceed ? "Proceed" : "Save"}
           </Button>

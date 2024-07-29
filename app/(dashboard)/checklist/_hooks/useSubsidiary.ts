@@ -1,21 +1,21 @@
 import * as yup from "yup";
-// import { useForm } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
 import { HomeIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import useDisclosure from "./useDisclosure";
 import { useFormik } from "formik";
-// import { useSubsidiaryService } from "./api";
-// import { useUserStore } from "@/providers/user-store-provider";
+import { useCreateSubsidiaryMutation } from "@/redux/services/checklist/subsidiaryApi";
+import { toast } from "sonner";
+import Routes from "@/lib/routes/routes";
+import { useAppSelector } from "@/redux/store";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 type Prop = {
-  path: string;
   cancelPath: string;
 };
 
 // DUMMY DATA
 const countries = [
-  { label: "Nigeria", value: "Nigera", icon: HomeIcon },
+  { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
   { label: "Germany", value: "Germany", icon: HomeIcon },
   { label: "South Africa", value: "South Africa", icon: HomeIcon },
 ];
@@ -27,6 +27,17 @@ const states = [
   {
     label: "Ogun",
     value: "Ogun",
+  },
+];
+
+const headOfSubsidiaries = [
+  {
+    label: "Hassan",
+    value: "Hassan",
+  },
+  {
+    label: "Lamidi",
+    value: "Lamidi",
   },
 ];
 
@@ -59,14 +70,33 @@ const formSchema = yup.object().shape({
     .required("Work Email is required"),
 });
 
-export const useSubsidiary = ({ path, cancelPath }: Prop) => {
-  //   const { createSubsidiary, loading } = useSubsidiaryService();
-  //   const user = useUserStore((state) => state.user);
-  //   const { organization } = user?.user;
+export const useSubsidiary = ({ cancelPath }: Prop) => {
   const router = useRouter();
+  const user = useAppSelector(selectUser);
+  const { organization } = user;
+  const SubsidiaryRoute = Routes.ChecklistRoute.SubsidiaryRoute();
+  const [createSubsidiary, { isLoading: isCreatingSubsidiary }] =
+    useCreateSubsidiaryMutation();
+
+  const handleSubmit = async () => {
+    const payload = {
+      ...formik.values,
+      organization_id: organization?.id,
+      city: formik.values.state,
+    };
+    await createSubsidiary(payload)
+      .unwrap()
+      .then(() => {
+        toast.success("Subsidiary Created Successfully");
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+            router.push(SubsidiaryRoute);
+          }, 2000);
+        });
+      });
+  };
   const formik = useFormik({
-    // Uncomment and configure resolver if using form validation
-    // resolver: zodResolver(formSchema),
     initialValues: {
       name: "",
       address: "",
@@ -75,24 +105,9 @@ export const useSubsidiary = ({ path, cancelPath }: Prop) => {
       head_of_subsidiary: "",
       work_email: "",
     },
-    // Optionally, you can add onSubmit and other handlers here
-    onSubmit: (values) => {
-      console.log("Form values:", values);
-      // Perform form submission logic here
-    },
+    validationSchema: formSchema,
+    onSubmit: handleSubmit,
   });
-
-  //   const formik = useFormik({
-  //     // resolver: zodResolver(formSchema),
-  //     initialValues: {
-  //       name: "",
-  //       address: "",
-  //       country: "",
-  //       state: "",
-  //       head_of_subsidiary: "",
-  //       work_email: "",
-  //     },
-  //   });
 
   const {
     isOpen: openCancelModal,
@@ -107,20 +122,13 @@ export const useSubsidiary = ({ path, cancelPath }: Prop) => {
     }
   };
 
-  //   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-  //     const obj = { ...values, organization_id: organization?.id, city: "lagos" };
-  //     createSubsidiary(obj);
-  //     // router.push(path);
-  //   };
-
   const handleProceedCancel = () => {
     router.push(cancelPath);
   };
 
   return {
     formik,
-    // loading,
-    // handleSubmit,
+    isCreatingSubsidiary,
     countries,
     handleProceedCancel,
     states,
@@ -128,5 +136,6 @@ export const useSubsidiary = ({ path, cancelPath }: Prop) => {
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
+    headOfSubsidiaries,
   };
 };

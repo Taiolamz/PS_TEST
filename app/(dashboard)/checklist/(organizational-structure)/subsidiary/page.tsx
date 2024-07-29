@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useDisclosure from "../../_hooks/useDisclosure";
 import Routes from "@/lib/routes/routes";
 import { ChecklistLayout } from "../../_components/checklist-layout";
@@ -12,26 +12,14 @@ import CancelModal from "../../_components/cancel-modal";
 import ProceedModal from "../../_components/proceed-modal";
 import BulkUploadModal from "../../_components/bulk-upload-modal";
 import BulkRequirementModal from "../../_components/bulk-requrement-modal";
-// import { ChecklistLayout } from "@/components/checklist/layout";
-// import {
-//   BulkUploadModal,
-//   CancelModal,
-//   DashboardModal,
-//   EmptyState,
-//   ProceedModal,
-// } from "@/components/dashboard/pages";
-// import BulkRequirementModal from "@/components/dashboard/pages/BulkRequirementModal";
-// import DashboardTable from "@/components/dashboard/pages/DashboardTable";
-// import { useSubsidiaryService } from "@/hooks/api";
-
-// import useDisclosure from "@/hooks/useDisclosure";
-// import { useUserStore } from "@/providers/user-store-provider";
-// import { Routes } from "@/utilities";
-// import {
-//   subsidiaryColumns,
-//   subsidiaryData,
-// } from "@/utilities/dummy-data/subsidiary";
-// import { useRouter } from "next/navigation";
+import {
+  useCreateBulkSubsidiariesMutation,
+  useGetSubsidiariesQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
+import { subsidiaryColumns } from "./subsidiary-column";
+import { useAppSelector } from "@/redux/store";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 
 const Subsidiary = () => {
   const emptyStateClass = "flex justify-center items-center";
@@ -108,21 +96,6 @@ const Subsidiary = () => {
     }
   };
 
-  // const user = useUserStore((state) => state.user);
-  // const { organization } = user?.user;
-  // const { subsidiariesBulkUpload, subsidiariesData, loading, isLoading } =
-  //   useSubsidiaryService();
-  // const tableData = subsidiariesData?.data;
-  // console.log(tableData, "table data");
-  // const hanleSubmitBulkUpload = () => {
-  //   if (!bulkFile) return;
-  //   const formData = new FormData();
-  //   formData.append("upload_file", bulkFile);
-  //   formData.append("organization_id", organization?.id);
-  //   console.log(formData, "obj");
-  //   subsidiariesBulkUpload(formData as any);
-  // };
-
   const handleBulkModal = () => {
     if (openBulkUploadModal) {
       onOpenNewBtnDrop();
@@ -142,40 +115,84 @@ const Subsidiary = () => {
     router.push(path);
   };
 
+  const {
+    data: subsidiariesData,
+    isLoading: isLoadingSubsidiaries,
+    isFetching: isFetchingSubsidiaries,
+  } = useGetSubsidiariesQuery({
+    to: 0,
+    total: 0,
+    per_page: 50,
+    currentPage: 0,
+    next_page_url: "",
+    prev_page_url: "",
+  });
+
+  const subsidiaries = subsidiariesData ?? [];
+
+  const subsidiariesColumnData = useMemo(
+    () => subsidiaryColumns(isFetchingSubsidiaries),
+    [isFetchingSubsidiaries]
+  );
+
+  const user = useAppSelector(selectUser);
+  const { organization } = user;
+
+  const [createBulkSubsidiaries, { isLoading: isCreatingBulkSubsidiaries }] =
+    useCreateBulkSubsidiariesMutation();
+
+  const handleSubmitBulkUpload = async () => {
+    if (!bulkFile) return;
+
+    const payload = {
+      organization_id: organization?.id,
+      file: bulkFile,
+    };
+    console.log(payload, "form data");
+    await createBulkSubsidiaries(payload)
+      .unwrap()
+      .then(() => {
+        toast.success("Subsidiaries Uploaded Successfully");
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+            handleBulkUploadDialog();
+          }, 2000);
+        });
+      });
+  };
+
   return (
     <ChecklistLayout
       onCancel={handleCancelDialog}
       title="Subsidiaries"
       step={`Step 1 of 4`}
-      // className={tableData?.length > 0 ? emptyStateClass : ""}
-      btnDisabled
+      className={subsidiaries?.length < 1 ? emptyStateClass : ""}
+      btnDisabled={subsidiaries?.length < 1}
       showBtn
-      // shouldProceed={tableData?.data?.length > 0}
+      shouldProceed
       onProceedBtn={handleProceedDialog}
     >
-      {/* {tableData?.data?.length < 1 ? ( */}
-      <EmptyState
-        textTitle="subsidiaries"
-        btnTitle="subsidiary"
-        href={Routes.ChecklistRoute.AddSubsidiary()}
-        onBulkUpload={handleBulkUploadDialog}
-      />
-      {/* ) : ( */}
-      {/* <DashboardTable
-        isLoading={false}
-        header="Subsidiary"
-        data={[]}
-        columns={"subsidiaryColumns"}
-        // isLoading={isLoading}
-        // header="Subsidiary"
-        // data={tableData?.data?.length > 0 ? tableData?.data : []}
-        // columns={subsidiaryColumns}
-        onBulkUploadBtn={handleBulkUploadDialog}
-        onOpenBtnChange={handleBtnDrop}
-        newBtnOpen={openNewBtn}
-        onManualBtn={handleAddSubsidiary}
-      /> */}
-      {/* )} */}
+      {subsidiaries?.length < 1 ? (
+        <EmptyState
+          loading={isLoadingSubsidiaries}
+          textTitle="subsidiaries"
+          btnTitle="subsidiary"
+          href={Routes.ChecklistRoute.AddSubsidiary()}
+          onBulkUpload={handleBulkUploadDialog}
+        />
+      ) : (
+        <DashboardTable
+          isLoading={isFetchingSubsidiaries}
+          header="Subsidiary"
+          data={subsidiaries}
+          columns={subsidiariesColumnData}
+          onBulkUploadBtn={handleBulkUploadDialog}
+          onOpenBtnChange={handleBtnDrop}
+          newBtnOpen={openNewBtn}
+          onManualBtn={handleAddSubsidiary}
+        />
+      )}
       <DashboardModal
         className={"w-[420px]"}
         open={openCancelModal}
@@ -197,12 +214,11 @@ const Subsidiary = () => {
         onOpenChange={handleBulkUploadDialog}
       >
         <BulkUploadModal
-          loading={false}
+          loading={isCreatingBulkSubsidiaries}
           onCancel={handleBulkUploadDialog}
           onSampleCsvDownload={handleBulkRequirementDialog}
           onSampleExcelDownload={handleBulkRequirementDialog}
-          onBulkUpload={() => {}}
-          // onBulkUpload={hanleSubmitBulkUpload}
+          onBulkUpload={handleSubmitBulkUpload}
           setFile={setBulkFile}
         />
       </DashboardModal>

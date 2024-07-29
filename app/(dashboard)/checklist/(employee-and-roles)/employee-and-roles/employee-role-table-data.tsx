@@ -32,32 +32,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
-export type EmployeeRolesData = {
-  id: string;
-  first_name: string;
-  last_name: string;
-  middle_name: string;
-  maiden_name: string;
-  gender: string;
-  date_of_birth: string;
-  resumption_date: string;
-  phone_number: string;
-  staff_number: string;
-  level: string;
-  designation: string;
-  email: string;
-  line_manager_email: string;
-  organization_id: string;
-  department_id: string;
-  branch_id: string;
-  unit_id: string;
-  status: string;
-  role_id: string;
-  reason: string;
-  created_at: string;
-  updated_at: string;
-};
-
 export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
   {
     id: "select",
@@ -183,9 +157,7 @@ const TableActionMenu = ({ id }: { id: string }) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-custom-red font-normal text-sm"
-          onClick={() => {
-            
-          }}
+          onClick={() => {}}
         >
           Delete
         </DropdownMenuItem>

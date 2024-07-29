@@ -1,4 +1,9 @@
 import Routes from "@/lib/routes/routes";
+import {
+  GraySkeleton,
+  SuccessSkeleton,
+  WarningSkeleton,
+} from "@/public/assets/icons";
 
 export const checklistDetails = [
   {
@@ -57,46 +62,50 @@ export const missionPlanDetails = [
     label: "C-Level Mission Plan",
     content: "",
     path: "",
+    icon: GraySkeleton,
   },
   {
     label: "Entry Level Mission Plan",
     content: "",
     path: "",
+    icon: SuccessSkeleton,
   },
   {
     label: "C-Level Mission Plan",
     content: "",
     path: "",
+    icon: WarningSkeleton,
   },
   {
     label: "Entry Level Mission Plan",
     content: "",
     path: "",
+    icon: SuccessSkeleton,
   },
   {
     label: "C-Level Mission Plan",
     content: "",
     path: "",
+    icon: WarningSkeleton,
   },
   {
     label: "Entry Level Mission Plan",
     content: "",
     path: "",
+    icon: SuccessSkeleton,
   },
   {
     label: "C-Level Mission Plan",
     content: "",
     path: "",
+    icon: WarningSkeleton,
   },
-  {
-    label: "Entry Level Mission Plan",
-    content: "",
-    path: "",
-  },
+
   {
     label: "C-Level Mission Plan",
     content: "",
     path: "",
+    icon: GraySkeleton,
   },
 ];
 
@@ -155,7 +164,7 @@ export const checklistSidebar = [
   {
     title: "Organizational structure",
     items: ["Add subsidiary", "Add Branches", "Add Department", "Add unit"],
-    path: Routes.ChecklistRoute.OrganizationStructureRoute(),
+    path: Routes.ChecklistRoute.SubsidiaryRoute(),
   },
   {
     title: "Setup Employees and Roles",

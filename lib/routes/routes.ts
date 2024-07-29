@@ -83,13 +83,13 @@ const ChecklistRoute = {
   AddUnit: () => `${ChecklistRoute.UnitRoute()}/add-unit`, //change route on development
 
   // SETUP EMPLOYEES AND ROLES
-  SetupEmployeesAndRolesRoute: () =>
-    `${ChecklistPath}/employee-and-roles`,
+  SetupEmployeesAndRolesRoute: () => `${ChecklistPath}/employee-and-roles`,
   AddEmployeesAndRolesRoute: () =>
     `${ChecklistRoute.SetupEmployeesAndRolesRoute()}/add-employees`,
 
   // MISSION PLAN
-  MissionPlanTemplateRoute: () => `${MissionPlanRoute}/mission-plan-template`,
+  MissionPlanTemplateRoute: () => `${ChecklistPath}/mission-plan-template`,
+  // MissionPlanTemplateRoute: () => `${MissionPlanRoute}/mission-plan-template`,
   MissionPlanTemplateLevelRoute: () =>
     `${ChecklistRoute.MissionPlanTemplateRoute()}/level`,
   AddMissionPlanTemplateRoute: () =>

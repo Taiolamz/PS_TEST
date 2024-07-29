@@ -9,7 +9,7 @@ type DashboardTableType = {
   data: any;
   columns: any;
   searchVal?: string;
-  onSearchChange?: (any) => void;
+  onSearchChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   href?: string | href;
   header?: string;
   isFilterDrop?: boolean;

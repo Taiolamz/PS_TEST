@@ -7,37 +7,38 @@ import { Input } from "@/components/ui/input";
 import DashboardModal from "../../../_components/checklist-dashboard-modal";
 import CancelModal from "../../../_components/cancel-modal";
 import CustomSelect from "@/components/custom-select";
-import { useDepartment } from "../../../_hooks/useDepartment";
+import { useUnit } from "../../../_hooks/useUnit";
 
-const AddDepartment = () => {
+const AddUnit = () => {
   const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
     formik,
     states,
     subsidiaries,
+    branches,
+    departments,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
-    isCreatingDepartment,
+    isCreatingUnit,
     isLoadingSubsidiaries,
-    branches,
-    headOfDepartment,
-  } = useDepartment({ cancelPath: cancelRoute });
+    headOfUnit,
+  } = useUnit({ cancelPath: cancelRoute });
 
   return (
     <ChecklistLayout
       onCancel={handleCancelDialog}
-      title="Department"
+      title="Unit"
       onProceedBtn={formik.handleSubmit}
       showBtn
-      step={`Step 3 of 4`}
+      step={`Step 4 of 4`}
       btnDisabled={!formik.isValid || !formik.dirty}
-      loading={isCreatingDepartment}
+      loading={isCreatingUnit}
     >
       <FormLayout
-        addText="Add departments to your organization account, by setting them up here."
-        module="Department"
+        addText="Add units to departments within your organization account, by setting them up here."
+        module="Unit"
         form={
           <form
             className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 "
@@ -45,9 +46,9 @@ const AddDepartment = () => {
             autoComplete="off"
           >
             <Input
-              label="Name of Department"
+              label="Name of Unit"
               type="text"
-              placeholder="Name of Department"
+              placeholder="Unit Name"
               id="name"
               name="name"
               onChange={formik.handleChange}
@@ -65,13 +66,13 @@ const AddDepartment = () => {
             />
 
             <CustomSelect
-              label="Head of Department"
+              label="Head of Unit"
               isRequired
-              placeholder="Head of Department"
-              options={headOfDepartment}
-              selected={formik.values.head_of_department}
+              placeholder="Head of Unit"
+              options={headOfUnit}
+              selected={formik.values.head_of_unit}
               setSelected={(value) =>
-                formik.setFieldValue("head_of_department", value)
+                formik.setFieldValue("head_of_unit", value)
               }
               labelClass={labelClassName}
             />
@@ -105,6 +106,16 @@ const AddDepartment = () => {
               setSelected={(value) => formik.setFieldValue("branch", value)}
               labelClass={labelClassName}
             />
+
+            <CustomSelect
+              label="Department"
+              isRequired
+              placeholder="Select Department"
+              options={departments}
+              selected={formik.values.department}
+              setSelected={(value) => formik.setFieldValue("department", value)}
+              labelClass={labelClassName}
+            />
           </form>
         }
       />
@@ -120,4 +131,4 @@ const AddDepartment = () => {
   );
 };
 
-export default AddDepartment;
+export default AddUnit;

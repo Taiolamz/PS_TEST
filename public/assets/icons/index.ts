@@ -34,3 +34,6 @@ export { default as GrayPlusIcon } from "./GrayPlusIcon.svg";
 export { default as LogoMini } from "./LogoMini.svg";
 export { default as StatsIcon } from "./StatsIcon.svg";
 export { default as SortIcon } from "./SortIcon.svg";
+export { default as GraySkeleton } from "./GraySkeleton.svg";
+export { default as SuccessSkeleton } from "./SuccessSkeleton.svg";
+export { default as WarningSkeleton } from "./WarningSkeleton.svg";

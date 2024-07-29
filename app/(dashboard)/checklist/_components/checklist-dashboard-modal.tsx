@@ -1,4 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
 import React from "react";
 
 const DashboardModal = ({

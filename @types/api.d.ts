@@ -34,8 +34,7 @@ type ApiError = {
 type LoginError = {
   response: {
     data: {
-      errors: {
-      };
+      errors: {};
     };
   };
 };
@@ -60,7 +59,7 @@ type RejectError = {
   };
 };
 
-// SUBSIDIARY SERVICES
+// subsidiary services
 type SubsidiaryData = {
   id?: string;
   parent_id?: string;
@@ -77,8 +76,61 @@ type SubsidiaryData = {
   state?: string;
   updated_at?: string;
   vision?: string;
-  file?:File
+  file?: File;
+};
+type BranchData = {
+  id?: string;
+  name: string;
 };
 
-// UNIT SERVICES
-type UnitData = {};
+type DepartmentData = {
+  id?: string;
+  name?: string;
+  branch?: {
+    id: string;
+    name: string;
+  };
+};
+
+type EmployeeRolesData = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  maiden_name: string;
+  gender: string;
+  date_of_birth: string;
+  resumption_date: string;
+  phone_number: string;
+  staff_number: string;
+  level: string;
+  designation: string;
+  email: string;
+  line_manager_email: string;
+  organization_id: string;
+  department_id: string;
+  branch_id: string;
+  unit_id: string;
+  status: string;
+  role_id: string;
+  reason: string;
+  created_at: string;
+  updated_at: string;
+};
+
+type MissionPlanTemplateData = {};
+
+type QueryParams = {
+  currentPage: number;
+  next_page_url: string;
+  prev_page_url: string;
+  per_page: number;
+  total: number;
+  to: number;
+};
+
+// unit services
+type UnitData = {
+  id?: string;
+  name: string;
+};

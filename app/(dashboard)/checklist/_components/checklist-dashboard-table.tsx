@@ -267,9 +267,13 @@ const DashboardTable = ({
         <div className="flex items-center py-4 ">
           <div className="grid place-items-center relative">
             <Input
+              type="text"
+              name="search"
+              id="search"
               placeholder="Search"
               value={searchVal}
-              onChange={onSearchChange}
+              // onChange={onSearchChange}
+              onChange={() => {}}
               className="border-custom-divider bg-white w-[250px] placeholder:text-custom-gray-scale-300 font-normal text-xs border  rounded-[6px] text-custom-dark-blue"
             />
             <Image
