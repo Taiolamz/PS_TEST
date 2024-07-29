@@ -28,7 +28,7 @@ export default function Login() {
     .then(() => {
       router.push(DASHBOARD)
     })
-    .catch((error) => {
+    .catch(() => {
       // console.log(apiError)
     })
   }
