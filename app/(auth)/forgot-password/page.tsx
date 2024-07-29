@@ -80,13 +80,8 @@ const ResetPassword = () => {
     const payload = {
       code: OTP,
       email: formik.values.email,
-<<<<<<< HEAD
       otpType: "password_reset"
     }
-=======
-      otpType: "email-verification",
-    };
->>>>>>> f649649 (checklist-revamp)
     verifyOTP(payload)
       .unwrap()
       .then((payload) => {
@@ -209,18 +204,8 @@ const ResetPassword = () => {
         show={showVerifyOTP}
         handleClose={() => setShowVerifyOTP(false)}
         hasCloseButton={false}
-<<<<<<< HEAD
         title="Recover Password"
         message={<span>A Six digit recovery OTP code has been sent to your email <span className="font-semibold">{formik.values.email}</span></span>}
-=======
-        title="Verify your email address"
-        message={
-          <span>
-            A Six digit recovery OTP code has been sent to your email{" "}
-            <span className="font-semibold">{formik.values.email}</span>
-          </span>
-        }
->>>>>>> f649649 (checklist-revamp)
         handleClick={() => handleVerifyOTP(OTP)}
         actionBtnTitle="Verify OTP"
         actionBtnLoading={false}
