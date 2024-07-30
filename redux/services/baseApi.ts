@@ -70,6 +70,11 @@ export const baseQueryInterceptor: BaseQueryFn<
       }
     }
 
+    if (res.status === 409) {
+      let message = res.data.message;
+      toast.error(message);
+    }
+
     if (res.status === 503) {
       let message = res.data.message;
       toast.error(message);
