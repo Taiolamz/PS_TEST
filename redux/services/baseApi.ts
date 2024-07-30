@@ -98,4 +98,12 @@ export const baseApi = createApi({
   baseQuery: baseQueryInterceptor,
   endpoints: () => ({}),
   reducerPath: "baseApi",
+  tagTypes: [
+    "Subsidiaries",
+    "Branches",
+    "Departments",
+    "Units",
+    "Employees",
+    "MissionPlanTemplates",
+  ],
 });

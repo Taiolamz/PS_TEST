@@ -10,6 +10,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Subsidiaries"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -39,6 +40,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         url: `/admin/subsidiary${generateQueryString({ ...params })}`,
         method: "GET",
       }),
+      providesTags: ["Subsidiaries"],
       transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
         response.data.data,
     }),

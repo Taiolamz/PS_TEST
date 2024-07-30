@@ -118,6 +118,7 @@ export default function AddEmployee() {
               }
               error={""}
               className="relative"
+              iconClass="top-[2.7rem]"
               isRequired
             />
 
@@ -131,6 +132,7 @@ export default function AddEmployee() {
                   formatRMDatePicker(date)
                 )
               }
+              iconClass="top-[2.7rem]"
               error={""}
               className="relative"
               isRequired

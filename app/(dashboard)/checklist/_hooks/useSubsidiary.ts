@@ -3,7 +3,10 @@ import { HomeIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import useDisclosure from "./useDisclosure";
 import { useFormik } from "formik";
-import { useCreateSubsidiaryMutation } from "@/redux/services/checklist/subsidiaryApi";
+import {
+  useCreateSubsidiaryMutation,
+  useGetSubsidiariesQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
 import { toast } from "sonner";
 import Routes from "@/lib/routes/routes";
 import { useAppSelector } from "@/redux/store";
@@ -73,11 +76,11 @@ const formSchema = yup.object().shape({
 export const useSubsidiary = ({ cancelPath }: Prop) => {
   const router = useRouter();
   const user = useAppSelector(selectUser);
+
   const { organization } = user;
   const SubsidiaryRoute = Routes.ChecklistRoute.SubsidiaryRoute();
   const [createSubsidiary, { isLoading: isCreatingSubsidiary }] =
     useCreateSubsidiaryMutation();
-
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
