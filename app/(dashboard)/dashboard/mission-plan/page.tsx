@@ -5,6 +5,7 @@ import React from "react";
 import Link from "next/link";
 import { DashboardLayout } from "../_components/dashboard-layout";
 import YearMissionPlanCard from "./_components/year-mission-plan-card";
+import DashboardNavContent from "../_components/dashboard-layout/dashboard-nav-content";
 
 export default function page() {
   const kickstartcard = (
@@ -27,7 +28,9 @@ export default function page() {
   );
 
   return (
-    <DashboardLayout>
+    <DashboardLayout
+      dynamiccontent={<DashboardNavContent title="Mission Plan" />}
+    >
       <div className="flex flex-col p-5 w-full">
         <p className="text-lg font-medium">All Mission Plan</p>
         <div className=" mt-5 w-full grid grid-cols-4 gap-4">

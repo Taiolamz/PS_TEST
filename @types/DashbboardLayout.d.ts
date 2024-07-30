@@ -3,5 +3,5 @@ type DashboardLayoutType = {
   className?: string;
   childrenclassName?: string;
   collaspe?: boolean;
-  dynamiccontent?: any;
+  dynamiccontent?: React.ReactNode;
 };
