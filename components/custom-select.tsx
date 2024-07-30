@@ -73,12 +73,12 @@ export default function CustomSelect({
                 ? options?.filter(
                     (option) => option?.value?.toString().toLowerCase() === selected?.toString().toLowerCase()
                   )[0]?.label
-                : "Select..."
+                : placeholder ? placeholder : "Select..."
               : selected
               ? options?.filter(
                   (option) => option?.label?.toString().toLowerCase() === selected?.toString().toLowerCase()
                 )[0]?.label
-              : "Select..."}
+              : placeholder ? placeholder : "Select..."}
             {/* {
                             selected ? options?.filter((option) => (option?.value?.toString().toLowerCase() || option?.label?.toString().toLowerCase()) === selected?.toString().toLowerCase())[0]?.label : "Select..."
                         } */}
