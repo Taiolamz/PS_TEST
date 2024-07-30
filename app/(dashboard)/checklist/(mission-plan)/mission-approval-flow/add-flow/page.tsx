@@ -25,6 +25,7 @@ const AddApprovalFlow = () => {
       step="step 2 of 2"
       title="Mission Plan Flow"
       showBtn
+      shouldProceed
     >
       <form
         className="mt-5 max-w-full"

@@ -47,10 +47,6 @@ const reviewers = [
     value: "Admin",
   },
   {
-    label: "Super Admin",
-    value: "Super Admin",
-  },
-  {
     label: "Line Manager",
     value: "Line Manager",
   },
