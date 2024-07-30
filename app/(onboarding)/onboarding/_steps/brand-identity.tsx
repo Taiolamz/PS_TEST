@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import LogoUpload from "@/components/logoUpload/LogoUpload";
@@ -10,7 +10,9 @@ interface BrandIdentityProps {
 const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   const [color, setColor] = useState("");
   const [logo, setLogo] = useState<File | null>(null);
-  const [logoName, setLogoName] = useState("");
+  const [logoName, setLogoName] = useState<string | null>("");
+
+  const fileInputRef = useRef<HTMLInputElement | null>();
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -18,9 +20,13 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
     if (file) {
       setLogo(file);
       setLogoName(file?.name);
-
       formik.setFieldValue("logo", file);
     }
+  };
+
+  const handleRemoveLogo = () => {
+    setLogo(null);
+    setLogoName(null);
   };
 
   return (
@@ -34,6 +40,8 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           handleLogoChange={handleLogoChange}
           logoName={logoName}
           setLogo={setLogo}
+          handleRemoveLogo={handleRemoveLogo}
+          fileInputRef={fileInputRef}
         />
       </div>
       <div className="mb-4">

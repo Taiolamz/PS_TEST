@@ -28,7 +28,7 @@ export default function Login() {
     .then(() => {
       router.push(DASHBOARD)
     })
-    .catch((error) => {
+    .catch(() => {
       // console.log(apiError)
     })
   }
@@ -110,7 +110,7 @@ export default function Login() {
           >
             Log In
           </Button>
-          <span className="text-sm text-center block mt-4"> Don't have an account? <Link href={REGISTER}className="text-primary hover:underline">Register</Link></span>
+          <span className="text-sm text-center block mt-4"> Don&apos;t have an account? <Link href={REGISTER}className="text-primary hover:underline">Register</Link></span>
         </div>
       </form>
     </div>

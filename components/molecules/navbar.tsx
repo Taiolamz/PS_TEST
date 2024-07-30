@@ -7,6 +7,9 @@ import { Link as ScrollLink } from "react-scroll";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import PrimaryButton from "../atoms/primary-btn";
 import { useRouter } from "next/navigation";
+import routesPath from "@/utils/routes";
+
+const { LOGIN, REGISTER } = routesPath
 
 export default function Navbar() {
   const [top, setTop] = useState(true);
@@ -87,8 +90,11 @@ export default function Navbar() {
           </ul>
         </div>
 
-        <div className="place-content-center hidden md:block">
-          <Link href="/login" className="px-4 py-1.5 transition-all ease-linear bg-[var(--btn-color)] hover:bg-[var(--btn-hover-backgroundColor)] text-white text-sm font-medium rounded-md">
+        <div className="place-content-center hidden md:block md:flex md:gap-3">
+          <Link href={REGISTER} className="h-fit px-4 py-1.5 transition-all ease-linear bg-[var(--btn-color)] hover:bg-[var(--btn-hover-backgroundColor)] text-white text-sm font-medium rounded-md">
+            Get Started
+          </Link>
+          <Link href={LOGIN} className="h-fit px-4 py-1.5 transition-all ease-linear bg-[var(--btn-color)] hover:bg-[var(--btn-hover-backgroundColor)] text-white text-sm font-medium rounded-md">
             Log in
           </Link>
         </div>

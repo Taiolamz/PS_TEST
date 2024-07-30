@@ -19,6 +19,6 @@ export const PageLoader = () => (
       </span>
     </div>
 
-    <p className="text-xs font-medium">Fetching data...</p>
+    {/* <p className="text-xs font-medium">Fetching data...</p> */}
   </div>
 );

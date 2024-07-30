@@ -55,7 +55,7 @@ const MissionPlanTemplate = () => {
   };
 
   const handleProceed = () => {
-    const proceedPath = Routes.ChecklistRoute.UnitRoute();
+    const proceedPath = Routes.ChecklistRoute.ApprovalFlowRoute();
     router.push(proceedPath);
   };
 
