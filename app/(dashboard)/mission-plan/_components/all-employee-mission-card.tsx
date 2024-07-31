@@ -15,7 +15,7 @@ export default function AllEmployeeMissionCard() {
     "placeholder:text-custom-gray-scale-300 border border-custom-light-border rounded min-w-[100px] bg-transparent text-custom-dark-blue font-light text-xs focus:border-0 placeholder:font-light outline-none border-custom-gray focus:border-[#008080] focus:outline-none";
 
   return (
-    <div className="mt-10">
+    <div className="">
       <div className="flex justify-between">
         <p className="text-xl font-medium text-primary">Mission Plan 2023</p>
         <div className="flex gap-x-[14px] w-1/2">

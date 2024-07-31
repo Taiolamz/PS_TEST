@@ -2,10 +2,10 @@
 
 import { PageSidebar } from "@/components/atoms";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { DashboardLayout } from "../../_components/dashboard-layout";
-import DashboardNavContent from "../../_components/dashboard-layout/dashboard-nav-content";
 import { CREATE_FY_LINKS } from "./_data";
 import { FinancialYear, MissionVision, StrategicPillar } from "./_steps";
+import { DashboardLayout } from "../../dashboard/_components/dashboard-layout";
+import DashboardNavContent from "../../dashboard/_components/dashboard-layout/dashboard-nav-content";
 
 export default function Create() {
   const queryParams = useSearchParams()

@@ -4,13 +4,22 @@ import { StatsIcon } from "@/public/assets/icons";
 import { GrayPlusIcon } from "@/public/assets/icons";
 import React, { useState } from "react";
 import Link from "next/link";
-import { DashboardLayout } from "../_components/dashboard-layout";
-import YearMissionPlanCard from "./_components/year-mission-plan-card";
-import DashboardNavContent from "../_components/dashboard-layout/dashboard-nav-content";
 import EmptyKickstart from "./kickstart/_component/empty-kickstart";
+import CustomTab from "@/components/custom-tab";
+import { PAGE_TABS } from "./_data";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useAppSelector } from "@/redux/store";
+import { DashboardLayout } from "../dashboard/_components/dashboard-layout";
+import DashboardNavContent from "../dashboard/_components/dashboard-layout/dashboard-nav-content";
+import YearMissionPlanCard from "./_components/year-mission-plan-card";
+import { AllEmployees } from "./_tabs";
+import { allemployeeColumns, allemployeeData } from "./_data/all-employee-table-data";
 
 export default function Page() {
+  // Remove mission plan one from this state to simulate empty state
   const [allMissionPlan, setAllMissionPlan] = useState(['Mission Plan 1'])
+
+
   const kickstartcard = (
     <Link
       href="mission-plan/kickstart?ui=financial-year"
@@ -30,25 +39,36 @@ export default function Page() {
     </Link>
   );
 
+  const location = usePathname()
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const data = useAppSelector((state) => state?.auth?.user);
+  const ui = searchParams.get("ui");
+
   return (
     <DashboardLayout
       dynamiccontent={<DashboardNavContent title="Mission Plan" />}
     >
+      <div className="p-5 w-full">
+        <CustomTab options={PAGE_TABS.ADMIN} slug="ui" />
+      </div>
+
       <div className="flex flex-col p-5 w-full">
-        <p className="text-lg font-medium">All Mission Plan</p>
-         {/* This is to mock empty state of mission plan */}
         {
-          allMissionPlan.length === 0 ? 
+          ui == "mission-plan" &&
+         ( allMissionPlan.length === 0 ? 
           <EmptyKickstart href="mission-plan/kickstart?ui=financial-year" /> :
-            <div className=" mt-5 w-full grid grid-cols-4 gap-4">
+            <div className="w-full grid grid-cols-4 gap-4">
               {kickstartcard}
-              <YearMissionPlanCard state="completed" href="mission-plan/2023" />
-              <YearMissionPlanCard state="completed" href="mission-plan/2023" />
-              <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
+              <YearMissionPlanCard state="completed" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
               <YearMissionPlanCard state="completed" href="mission-plan/2023" />
               <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
-            </div>
+              <YearMissionPlanCard state="completed" href="mission-plan/2023" />
+              <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
+            </div>)
         }
+        { ui == "all-employees" &&  <AllEmployees data={allemployeeData} columns={allemployeeColumns}/> }
+        {/* AllEmployeeTab */}
       </div>
     </DashboardLayout>
   );

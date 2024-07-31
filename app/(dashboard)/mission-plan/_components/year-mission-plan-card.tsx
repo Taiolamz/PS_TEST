@@ -5,12 +5,12 @@ import { StatsIcon } from "@/public/assets/icons";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
-type CardPropType = { state: string; href: string };
-export default function YearMissionPlanCard({ state, href }: CardPropType) {
+type CardPropType = { state: string; href?: string, handleClick?: () => void };
+export default function YearMissionPlanCard({ state, href, handleClick }: CardPropType) {
   return (
-    <Link
-      href={href}
+    <div
       className="capitalize h-[140px] w-full border rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 bg-transparent cursor-pointer"
+      onClick={handleClick}
     >
       <div className="flex justify-between">
         <Image className="" src={StatsIcon} alt="plus" />
@@ -36,6 +36,6 @@ export default function YearMissionPlanCard({ state, href }: CardPropType) {
           20/04/2024
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

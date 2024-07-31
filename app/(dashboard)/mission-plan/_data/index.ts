@@ -15,7 +15,7 @@ export const PAGE_TABS = {
     {
       id: 1,
       title: "My Mission Plan",
-      accessor: "my-mission-plan",
+      accessor: "mission-plan",
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ export const PAGE_TABS = {
     {
       id: 1,
       title: "My Mission Plan",
-      accessor: "my-mission-plan",
+      accessor: "mission-plan",
     },
     {
       id: 2,
@@ -44,7 +44,7 @@ export const PAGE_TABS = {
     {
       id: 1,
       title: "My Mission Plan",
-      accessor: "my-mission-plan",
+      accessor: "mission-plan",
     },
     {
       id: 2,

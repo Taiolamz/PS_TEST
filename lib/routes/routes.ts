@@ -2,7 +2,7 @@
 const MainDashboardPath = "/dashboard";
 const Home = () => `${MainDashboardPath}`;
 const Performance = () => `${MainDashboardPath}/performance`;
-const Mission_Plan = () => `${MainDashboardPath}/mission-plan`;
+const Mission_Plan = () => `/mission-plan?ui=mission-plan`;
 const Engagements = () => `${MainDashboardPath}/engagements`;
 const Calender = () => `${MainDashboardPath}/calender`;
 const Reports = () => `${MainDashboardPath}/reports`;
