@@ -24,9 +24,6 @@ export default function MissionPlanId() {
         />
       }
     >
-    <div className="p-5 w-full">
-        {/* <CustomTab options={PAGE_TABS.ADMIN} slug="ui" /> */}
-      </div>
       
       <div className="flex flex-col p-5 w-full">
         Mission Plan Details
