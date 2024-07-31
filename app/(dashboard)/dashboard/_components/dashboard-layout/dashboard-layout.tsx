@@ -14,7 +14,7 @@ const DashboardLayout = ({
   return (
     <div className="flex h-screen bg-white">
       <DashboardSidebar />
-      <div className={`w-full flex flex-col overflow-y-auto ${className}`}>
+      <div className={`w-full flex flex-col overflow-hidden ${className}`}>
         <DashboardNav dynamiccontent={dynamiccontent} />
         <div className={`relative ${childrenclassName}`}>{children}</div>
       </div>

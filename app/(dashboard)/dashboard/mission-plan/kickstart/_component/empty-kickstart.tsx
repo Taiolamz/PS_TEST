@@ -6,7 +6,7 @@ import React from "react";
 
 export default function EmptyKickstart({ href }: { href: string }) {
   return (
-    <div className="flex flex-col gap-4 items-center justify-center">
+    <div className="h-[75vh] flex flex-col gap-4 items-center justify-center">
       <Image src={FileIcon} alt="file icon" />
       <p className="text-custom-gray-scale-400 font-medium text-sm">
         Create your Mission plan by using the button below

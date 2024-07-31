@@ -1,20 +1,32 @@
-import React from "react";
-import { DashboardLayout } from "../../_components/dashboard-layout";
-import EmptyKickstart from "./_component/empty-kickstart";
-import DashboardNavContent from "../../_components/dashboard-layout/dashboard-nav-content";
+"use client"
 
-export default function KickStart() {
-    return (
-      <DashboardLayout
-        dynamiccontent={
-          <DashboardNavContent
-            title="Mission Plan"
-            showBack
-          />
-        }
-        childrenclassName="h-full grid place-content-center"
-      >
-        <EmptyKickstart href="kickstart/create" />
-      </DashboardLayout>
-    );
+import { PageSidebar } from "@/components/atoms";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { DashboardLayout } from "../../_components/dashboard-layout";
+import DashboardNavContent from "../../_components/dashboard-layout/dashboard-nav-content";
+import { CREATE_FY_LINKS } from "./_data";
+import { FinancialYear, MissionVision, StrategicPillar } from "./_steps";
+
+export default function Create() {
+  const queryParams = useSearchParams()
+  const ui = queryParams.get('ui')
+
+  return (
+    <DashboardLayout
+      dynamiccontent={<DashboardNavContent title="Mission Plan" showBack />}
+    >
+      <section className="flex">
+        <PageSidebar
+          title="Create Mission Plan"
+          menu_items={CREATE_FY_LINKS}
+          slug="ui"
+        />
+        <aside className="p-5 w-[100vw_-_201px]">
+          {ui === "financial-year" && <FinancialYear />}
+          {ui === "mission-vision" && <MissionVision />}
+          {ui === "strategic-pillar" && <StrategicPillar />}
+        </aside>
+      </section>
+    </DashboardLayout>
+  );
 }
