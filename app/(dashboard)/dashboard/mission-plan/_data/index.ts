@@ -7,8 +7,20 @@ export const PAGE_TABS = {
     },
     {
       id: 2,
-      title: "All Employee",
-      accessor: "all-employee",
+      title: "All Employees",
+      accessor: "all-employees",
+    },
+  ],
+  MANAGIN_DIRECTOR: [
+    {
+      id: 1,
+      title: "My Mission Plan",
+      accessor: "my-mission-plan",
+    },
+    {
+      id: 2,
+      title: "All Employees",
+      accessor: "all-employees",
     },
   ],
   LINE_MANAGER: [
@@ -26,6 +38,18 @@ export const PAGE_TABS = {
       id: 3,
       title: "Approvals",
       accessor: "approvals",
+    },
+  ],
+  EMPLOYEE: [
+    {
+      id: 1,
+      title: "My Mission Plan",
+      accessor: "my-mission-plan",
+    },
+    {
+      id: 2,
+      title: "Direct Downlines",
+      accessor: "downlines",
     },
   ],
 };
