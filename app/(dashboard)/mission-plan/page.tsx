@@ -50,7 +50,7 @@ export default function Page() {
       dynamiccontent={<DashboardNavContent title="Mission Plan" />}
     >
       <div className="p-5 w-full">
-        <CustomTab options={PAGE_TABS.ADMIN} slug="ui" />
+        <CustomTab options={PAGE_TABS.MANAGIN_DIRECTOR} slug="ui" />
       </div>
 
       <div className="flex flex-col p-5 w-full">
@@ -61,10 +61,10 @@ export default function Page() {
             <div className="w-full grid grid-cols-4 gap-4">
               {kickstartcard}
               <YearMissionPlanCard state="completed" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
-              <YearMissionPlanCard state="completed" href="mission-plan/2023" />
-              <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
-              <YearMissionPlanCard state="completed" href="mission-plan/2023" />
-              <YearMissionPlanCard state="in-progress" href="mission-plan/2023" />
+              <YearMissionPlanCard state="completed" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
+              <YearMissionPlanCard state="in-progress" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
+              <YearMissionPlanCard state="completed" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
+              <YearMissionPlanCard state="in-progress" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
             </div>)
         }
         { ui == "all-employees" &&  <AllEmployees data={allemployeeData} columns={allemployeeColumns}/> }
