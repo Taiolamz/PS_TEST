@@ -69,7 +69,6 @@ const SignupPage = () => {
         .then((payload) => {
           toast.success("Account Registered Successfully");
         });
-      // router.push(`${location}?ui=employee-information`)
     }
   };
 
@@ -88,7 +87,7 @@ const SignupPage = () => {
     adminVerifyOTP({ code: OTP })
       .unwrap()
       .then(() => {
-        toast.success("OTP Verified Successfully");
+        // toast.success("OTP Verified Successfully");
         setShowVerifyOTP(false);
       });
   };
