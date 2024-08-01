@@ -77,6 +77,7 @@ const OperationsParameter = ({
                 touched={formik.touched.start_fy}
                 error={formik.errors.start_fy}
                 labelClass="mb-1"
+
                 placeholder="MM/YYYY"
                 className="relative"
                 // iconClass="top-4"
