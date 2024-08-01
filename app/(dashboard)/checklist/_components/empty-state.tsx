@@ -15,6 +15,7 @@ const EmptyState = ({
   isNotBulkUpload,
   loading,
   viewText,
+  onBtnClick,
 }: EmptyStateType) => {
   return (
     <>
@@ -31,7 +32,10 @@ const EmptyState = ({
             !create ? "Create your" : "Add"
           } ${textTitle} by using the button below`}</p>
 
-          <Button className="text-custom-gray-scale-white px-8">
+          <Button
+            className="text-custom-gray-scale-white px-8"
+            onClick={onBtnClick}
+          >
             <Link href={href}>{`${
               !create ? viewText || "Create" : "Add"
             } ${btnTitle}`}</Link>

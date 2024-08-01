@@ -8,6 +8,7 @@ import DashboardModal from "../../../_components/checklist-dashboard-modal";
 import CancelModal from "../../../_components/cancel-modal";
 import CustomSelect from "@/components/custom-select";
 import { useUnit } from "../../../_hooks/useUnit";
+import { useState } from "react";
 
 const AddUnit = () => {
   const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
@@ -24,7 +25,16 @@ const AddUnit = () => {
     isCreatingUnit,
     isLoadingSubsidiaries,
     headOfUnit,
+    stateDrop,
+    subsidiaryDrop,
+    branchDrop,
+    departmentDrop,
   } = useUnit({ cancelPath: cancelRoute });
+
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
 
   return (
     <ChecklistLayout
@@ -60,8 +70,14 @@ const AddUnit = () => {
               isRequired
               placeholder="Branch state"
               options={states}
-              selected={formik.values.state}
-              setSelected={(value) => formik.setFieldValue("state", value)}
+              selected={selectedState}
+              setSelected={(value) => {
+                setSelectedState(value);
+                const selectedStateId = stateDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("state_id", selectedStateId);
+              }}
               labelClass={labelClassName}
             />
 
@@ -69,7 +85,7 @@ const AddUnit = () => {
               label="Head of Unit"
               isRequired
               placeholder="Head of Unit"
-              options={headOfUnit}
+              options={[]}
               selected={formik.values.head_of_unit}
               setSelected={(value) =>
                 formik.setFieldValue("head_of_unit", value)
@@ -90,10 +106,16 @@ const AddUnit = () => {
             <CustomSelect
               label="Subsidiary"
               isRequired
-              placeholder="Select subsidiary"
+              placeholder="Select Subsidiary"
               options={subsidiaries}
-              selected={formik.values.subsidiary}
-              setSelected={(value) => formik.setFieldValue("subsidiary", value)}
+              selected={selectedSubsidiary}
+              setSelected={(value) => {
+                setSelectedSubsidiary(value);
+                const selectedSubsidiaryId = subsidiaryDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("subsidiary_id", selectedSubsidiaryId);
+              }}
               labelClass={labelClassName}
             />
 
@@ -102,8 +124,14 @@ const AddUnit = () => {
               isRequired
               placeholder="Select Branch"
               options={branches}
-              selected={formik.values.branch}
-              setSelected={(value) => formik.setFieldValue("branch", value)}
+              selected={selectedBranch}
+              setSelected={(value) => {
+                setSelectedBranch(value);
+                const selectedBranchId = branchDrop.filter(
+                  (chi) => chi.name === value
+                )[0].branch_id;
+                formik.setFieldValue("branch_id", selectedBranchId);
+              }}
               labelClass={labelClassName}
             />
 
@@ -112,8 +140,14 @@ const AddUnit = () => {
               isRequired
               placeholder="Select Department"
               options={departments}
-              selected={formik.values.department}
-              setSelected={(value) => formik.setFieldValue("department", value)}
+              selected={selectedDepartment}
+              setSelected={(value) => {
+                setSelectedDepartment(value);
+                const selectedDepartmentId = departmentDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("department_id", selectedDepartmentId);
+              }}
               labelClass={labelClassName}
             />
           </form>

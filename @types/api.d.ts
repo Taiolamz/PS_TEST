@@ -79,8 +79,13 @@ type SubsidiaryData = {
   file?: File;
 };
 type BranchData = {
-  id?: string;
   name: string;
+  branch_id: string;
+};
+
+type StateData = {
+  name: string;
+  id: string;
 };
 
 type DepartmentData = {
@@ -120,13 +125,15 @@ type EmployeeRolesData = {
   updated_at: string;
 };
 
+type RolesData = {};
+
 type QueryParams = {
-  currentPage: number;
-  next_page_url: string;
-  prev_page_url: string;
-  per_page: number;
-  total: number;
-  to: number;
+  currentPage?: number;
+  next_page_url?: string;
+  prev_page_url?: string;
+  per_page?: number;
+  total?: number;
+  to?: number;
 };
 
 // unit services

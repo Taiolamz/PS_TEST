@@ -9,6 +9,7 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
 import { useCreateDepartmentMutation } from "@/redux/services/checklist/departmentApi";
+import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 
 type Prop = {
   cancelPath: string;
@@ -87,15 +88,39 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       prev_page_url: "",
     });
 
-  const subsidiaries = subsidiariesData ?? []; 
-  const branches = branchesData ?? [];
+  const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
+    {}
+  );
 
-  const handleFormatDropdown = (items: SubsidiaryData[] | BranchData[]) => {
+  const handleFormatDropdown = (
+    items: SubsidiaryData[] | BranchData[] | StateData[]
+  ) => {
     const data = items.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
-        value: chi?.name, //has to change to id
+        value: chi?.name,
+      };
+    });
+    return data;
+  };
+  const handleDropdown = (items: StateData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return data;
+  };
+
+  const handleBranchDropdown = (items: BranchData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.branch_id,
       };
     });
     return data;
@@ -106,29 +131,27 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     return array;
   };
 
+  const subsidiaries = subsidiariesData ?? [];
+  const branches = branchesData ?? [];
+  const states = statesData ?? [];
+
+  const stateDrop = handleDropdown(states);
+  const branchDrop = handleBranchDropdown(branches);
+
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
-
-    state: yup
-      .string()
-      .oneOf(handleFormatArray(states), "State is required")
-      .required("State is required"),
     head_of_department: yup
       .string()
       .min(1, "Head of Department is required")
-      .required("Head of Department is required"),
+      .optional(),
     work_email: yup
       .string()
       .min(1, "Work Email is required")
       .required("Work Email is required"),
-    // subsidiary: yup
-    //   .string()
-    //   .oneOf(
-    //     handleFormatArray(handleFormatDropdown(subsidiries)),
-    //     "Subsidiary is required"
-    //   )
-    //   .required("Subsidiaryi s required"),
+    subsidiary: yup.string().required(),
+    branch_id: yup.string().required(),
   });
+
   const router = useRouter();
   const user = useAppSelector(selectUser);
   const { organization } = user;
@@ -140,7 +163,6 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     const payload = {
       ...formik.values,
       address: "lagos island",
-      state_id:"sdfsdfu",
       organization_id: organization?.id,
     };
     await createDepartment(payload)
@@ -158,11 +180,11 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      state: "",
+      state_id: "",
       head_of_department: "",
       work_email: "",
       subsidiary: "",
-      branch: "",
+      branch_id: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
@@ -189,7 +211,6 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     formik,
     isCreatingDepartment,
     handleProceedCancel,
-    states,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
@@ -198,7 +219,11 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     headOfDepartment,
     subsidiaries: handleFormatDropdown(subsidiaries),
     branches: handleFormatDropdown(branches),
+    states: handleFormatDropdown(states),
+    stateDrop,
+    branchDrop,
     isLoadingSubsidiaries,
     isLoadingBranches,
+    isLoadingStates,
   };
 };

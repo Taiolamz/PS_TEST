@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useEmployee } from "../../../_hooks/useEmployee";
@@ -38,7 +38,18 @@ export default function AddEmployee() {
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
+    // stateDrop,
+    subsidiaryDrop,
+    branchDrop,
+    departmentDrop,
+    unitsDrop,
   } = useEmployee({ path: route, cancelPath: cancelRoute });
+
+  // const [selectedState, setSelectedState] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedUnit, setSelectedUnit] = useState("");
 
   return (
     <ChecklistLayout
@@ -118,6 +129,7 @@ export default function AddEmployee() {
               }
               error={""}
               className="relative"
+              iconClass="top-[2.7rem]"
               isRequired
             />
 
@@ -131,6 +143,7 @@ export default function AddEmployee() {
                   formatRMDatePicker(date)
                 )
               }
+              iconClass="top-[2.7rem]"
               error={""}
               className="relative"
               isRequired
@@ -140,8 +153,8 @@ export default function AddEmployee() {
               label="Work Email"
               type="text"
               placeholder="Work Email"
-              id="work_email"
-              name="work_email"
+              id="email"
+              name="email"
               onChange={formik.handleChange}
               isRequired
             />
@@ -167,41 +180,65 @@ export default function AddEmployee() {
 
             <CustomSelect
               label="Subsidiary"
+              isRequired
               placeholder="Select Subsidiary"
               options={subsidiaries}
-              selected={formik.values.subsidiary}
-              setSelected={(value) => formik.setFieldValue("subsidiary", value)}
-              isRequired
+              selected={selectedSubsidiary}
+              setSelected={(value) => {
+                setSelectedSubsidiary(value);
+                const selectedSubsidiaryId = subsidiaryDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("subsidiary_id", selectedSubsidiaryId);
+              }}
               labelClass={labelClassName}
             />
 
             <CustomSelect
               label="Branch"
-              placeholder="Select Branches"
-              options={branches}
-              selected={formik.values.branch}
-              setSelected={(value) => formik.setFieldValue("branch", value)}
               isRequired
+              placeholder="Select Branch"
+              options={branches}
+              selected={selectedBranch}
+              setSelected={(value) => {
+                setSelectedBranch(value);
+                const selectedBranchId = branchDrop.filter(
+                  (chi) => chi.name === value
+                )[0].branch_id;
+                formik.setFieldValue("branch_id", selectedBranchId);
+              }}
               labelClass={labelClassName}
             />
 
             <CustomSelect
               label="Department"
+              isRequired
               placeholder="Select Department"
               options={departments}
-              selected={formik.values.department}
-              setSelected={(value) => formik.setFieldValue("department", value)}
-              isRequired
+              selected={selectedDepartment}
+              setSelected={(value) => {
+                setSelectedDepartment(value);
+                const selectedDepartmentId = departmentDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("department_id", selectedDepartmentId);
+              }}
               labelClass={labelClassName}
             />
 
             <CustomSelect
               label="Unit"
-              placeholder="Select Unit"
-              options={roles} //change to unit
-              selected={formik.values.unit}
-              setSelected={(value) => formik.setFieldValue("unit", value)}
               isRequired
+              placeholder="Select Unit"
+              options={units}
+              selected={selectedUnit}
+              setSelected={(value) => {
+                setSelectedUnit(value);
+                const selectedUnitId = unitsDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("unit_id", selectedUnitId);
+              }}
               labelClass={labelClassName}
             />
 
@@ -241,8 +278,8 @@ export default function AddEmployee() {
               label="Role"
               placeholder="Select Role"
               options={roles}
-              selected={formik.values.role}
-              setSelected={(value) => formik.setFieldValue("role", value)}
+              selected={formik.values.role_id}
+              setSelected={(value) => formik.setFieldValue("role_id", value)}
               isRequired
               labelClass={labelClassName}
             />

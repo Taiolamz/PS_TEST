@@ -11,6 +11,7 @@ import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryAp
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
 import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
 import { useCreateUnitMutation } from "@/redux/services/checklist/unitApi";
+import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 
 type Prop = {
   cancelPath: string;
@@ -20,17 +21,6 @@ type Select = {
   label: string | number;
   value: string | number;
 };
-
-const states = [
-  {
-    label: "Lagos",
-    value: "Lagos",
-  },
-  {
-    label: "Ogun",
-    value: "Ogun",
-  },
-];
 
 const headOfBranches = [
   {
@@ -100,10 +90,22 @@ export const useUnit = ({ cancelPath }: Prop) => {
       next_page_url: "",
       prev_page_url: "",
     });
+  const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
+    {}
+  );
 
-  const subsidiaries = subsidiariesData ?? [];
-  const branches = branchesData ?? [];
-  const departments = departmentsData ?? [];
+  const handleDropdown = (
+    items: StateData[] | SubsidiaryData[] | DepartmentData[]
+  ) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return data;
+  };
 
   const handleFormatDropdown = (
     items: SubsidiaryData[] | BranchData[] | DepartmentData[]
@@ -118,33 +120,44 @@ export const useUnit = ({ cancelPath }: Prop) => {
     return data;
   };
 
+  const handleBranchDropdown = (items: BranchData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.branch_id,
+      };
+    });
+    return data;
+  };
+
   const handleFormatArray = (items: SelectFormType) => {
     const array = items.map((item) => item.label);
     return array;
   };
 
+  const subsidiaries = subsidiariesData ?? [];
+  const branches = branchesData ?? [];
+  const departments = departmentsData ?? [];
+  const states = statesData ?? [];
+
+  const stateDrop = handleDropdown(states);
+  const subsidiaryDrop = handleDropdown(subsidiaries);
+  const branchDrop = handleBranchDropdown(branches);
+  const departmentDrop = handleDropdown(departments);
+
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
 
-    state: yup
-      .string()
-      .oneOf(handleFormatArray(states), "State is required")
-      .required("State is required"),
-    head_of_unit: yup
-      .string()
-      .min(1, "Head of Unit is required")
-      .required("Head of Unit is required"),
+    // state: yup
+    //   .string()
+    //   .oneOf(handleFormatArray(states), "State is required")
+    //   .required("State is required"),
+    head_of_unit: yup.string().min(1, "Head of Unit is required").optional(),
     work_email: yup
       .string()
       .min(1, "Work Email is required")
       .required("Work Email is required"),
-    // subsidiary: yup
-    //   .string()
-    //   .oneOf(
-    //     handleFormatArray(handleFormatDropdown(subsidiries)),
-    //     "Subsidiary is required"
-    //   )
-    //   .required("Subsidiaryi s required"),
   });
   const router = useRouter();
   const user = useAppSelector(selectUser);
@@ -173,12 +186,12 @@ export const useUnit = ({ cancelPath }: Prop) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      state: "",
+      state_id: "",
       head_of_unit: "",
       work_email: "",
       subsidiary: "",
-      branch: "",
-      department: "",
+      branch_id: "",
+      department_id: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
@@ -205,16 +218,21 @@ export const useUnit = ({ cancelPath }: Prop) => {
     formik,
     isCreatingUnit,
     handleProceedCancel,
-    states,
+
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
     headOfBranches,
     headOfUnit,
+    states: handleFormatDropdown(states),
     subsidiaries: handleFormatDropdown(subsidiaries),
     branches: handleFormatDropdown(branches),
     departments: handleFormatDropdown(departments),
+    stateDrop,
+    subsidiaryDrop,
+    branchDrop,
+    departmentDrop,
     isLoadingSubsidiaries,
     isLoadingBranches,
   };

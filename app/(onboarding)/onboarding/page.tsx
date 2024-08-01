@@ -1,8 +1,9 @@
 "use client";
 
+import Icon from "@/components/icon/Icon";
 import { ArrowLeftCircle } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -18,20 +19,12 @@ import { FormikProvider, useFormik } from "formik";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
-import { formatMonthYear } from "@/utils/helpers/date-formatter";
-import routesPath from "@/utils/routes";
-const { REGISTER, FORGOT_PASSWORD, DASHBOARD } = routesPath;
 
 const Onboarding = () => {
   const router = useRouter();
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
-
-  const [fyDate, setFyDate] = useState({
-    start_fy: "",
-    end_fy: "",
-  });
 
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
@@ -72,10 +65,6 @@ const Onboarding = () => {
         formDataToSend.append(mappedKey, logo);
       } else if (Array.isArray(value) || typeof value === "object") {
         formDataToSend.append(mappedKey, JSON.stringify(value));
-      } else if (key === "end_fy") {
-        formDataToSend.append(mappedKey, formatMonthYear(fyDate.end_fy));
-      } else if (key === "start_fy") {
-        formDataToSend.append(mappedKey, formatMonthYear(fyDate.start_fy));
       } else {
         formDataToSend.append(mappedKey, value as string);
       }
@@ -91,8 +80,7 @@ const Onboarding = () => {
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
-          toast.success("Organization Added Successfully");
-          router.push(DASHBOARD);
+          toast.success("Account Registered Successfully");
         });
     } catch (error) {}
   };
@@ -110,7 +98,7 @@ const Onboarding = () => {
       fy_title: "",
       closing_time: "",
       hierarchy: "",
-      staff_levels: [{ name: "", level: "" }],
+      staff_levels: [{ name: "", position: "" }],
     },
     validationSchema: OnbaordingSchema,
     onSubmit: onSubmit,
@@ -141,11 +129,7 @@ const Onboarding = () => {
           {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
           {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
           {getCurrentStep() === 3 && (
-            <OperationsParameter
-              formik={formik}
-              setFyDate={setFyDate}
-              fyDate={fyDate}
-            />
+            <OperationsParameter formik={formik} setFyDate={() => {}} fyDate={''}/>
           )}
           {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
           {getCurrentStep() === 5 && <GradeLevel formik={formik} />}

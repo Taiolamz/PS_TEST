@@ -13,35 +13,43 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const { REGISTER, FORGOT_PASSWORD, DASHBOARD } = routesPath
+const { REGISTER, FORGOT_PASSWORD, DASHBOARD } = routesPath;
 
 export default function Login() {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [login, {isLoading, error: apiError}]: any = useLoginMutation()
-  
-  const router = useRouter()
-  
+  const [login, { isLoading, error: apiError }]: any = useLoginMutation();
+
+  const router = useRouter();
+
   const handleFormSubmit = async () => {
-    login({...values})
-    .unwrap()
-    .then(() => {
-      router.push(DASHBOARD)
-    })
-    .catch(() => {
-      // console.log(apiError)
-    })
-  }
+    login({ ...values })
+      .unwrap()
+      .then(() => {
+        router.push(DASHBOARD);
+      })
+      .catch(() => {
+        // console.log(apiError)
+      });
+  };
 
-  const { values, errors, handleChange, handleSubmit, touched, setFieldValue, isValid } = useFormik({
+  const {
+    values,
+    errors,
+    handleChange,
+    handleSubmit,
+    touched,
+    setFieldValue,
+    isValid,
+  } = useFormik({
     initialValues: {
       email: "",
       password: "",
-      remember: false
+      remember: false,
     },
     validationSchema: LoginSchema,
-    onSubmit: handleFormSubmit
-  })
+    onSubmit: handleFormSubmit,
+  });
 
   return (
     <div className="w-4/6 bg-white">
@@ -70,7 +78,7 @@ export default function Login() {
               touched={touched.password}
               error={errors.password}
               placeholder="Input Password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
             />
             <TogglePassword
               showPassword={showPassword}
@@ -78,21 +86,32 @@ export default function Login() {
               className="top-8"
             />
           </div>
+          {apiError?.data?.errors?.email?.[0] && (
+            <span className="text-red-500 text-[13px]">
+              {apiError?.data?.errors?.email?.[0]}
+            </span>
+          )}
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <Checkbox
               checked={values.remember}
-              onCheckedChange={() => setFieldValue('remember', !values.remember)}
+              id="remember_me"
+              onCheckedChange={() =>
+                setFieldValue("remember", !values.remember)
+              }
             />
             <label
               htmlFor="remember_me"
-              className="text-sm font-medium ml-1 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className="text-sm font-medium ml-1 cursor-pointer leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               Remember me
             </label>
           </div>
-          <Link href={FORGOT_PASSWORD} className="text-primary font-normal text-xs">
+          <Link
+            href={FORGOT_PASSWORD}
+            className="text-primary font-normal text-xs"
+          >
             Forgot Password
           </Link>
         </div>
@@ -104,12 +123,20 @@ export default function Login() {
             loadingText="Login"
             className={cn(
               "w-full",
-              !isValid || isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              !isValid || isLoading
+                ? "opacity-50 cursor-not-allowed"
+                : "cursor-pointer"
             )}
           >
             Log In
           </Button>
-          <span className="text-sm text-center block mt-4"> Don&apos;t have an account? <Link href={REGISTER}className="text-primary hover:underline">Register</Link></span>
+          <span className="text-sm text-center block mt-4">
+            {" "}
+            Don&apos;t have an account?{" "}
+            <Link href={REGISTER} className="text-primary hover:underline">
+              Register
+            </Link>
+          </span>
         </div>
       </form>
     </div>

@@ -146,11 +146,6 @@ const Branch = () => {
     const formData = new FormData();
     formData.append("organization_id", organization?.id as string);
     formData.append("file", bulkFile);
-    // const payload = {
-    //   organization_id: organization?.id,
-    //   file: bulkFile,
-    // };
-    // console.log(payload, "form data");
     await createBulkBranches(formData)
       .unwrap()
       .then(() => {

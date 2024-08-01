@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import DashboardModal from "../../../_components/checklist-dashboard-modal";
 import CancelModal from "../../../_components/cancel-modal";
 import CustomSelect from "@/components/custom-select";
+import { useState } from "react";
 
 const AddSubsidary = () => {
   const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
@@ -16,13 +17,15 @@ const AddSubsidary = () => {
     formik,
     countries,
     states,
+    // stateDrop,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
     isCreatingSubsidiary,
-    headOfSubsidiaries,
+
   } = useSubsidiary({ cancelPath: cancelRoute });
 
+  const [selectedState, setSelectedState] = useState("");
   return (
     <ChecklistLayout
       onCancel={handleCancelDialog}
@@ -84,7 +87,7 @@ const AddSubsidary = () => {
               label="Head of Subsidiary"
               isRequired
               placeholder="Head of subsidiary"
-              options={headOfSubsidiaries}
+              options={[]}
               selected={formik.values.head_of_subsidiary}
               setSelected={(value) =>
                 formik.setFieldValue("head_of_subsidiary", value)

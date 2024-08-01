@@ -10,6 +10,7 @@ export const branchApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Branches"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -25,6 +26,7 @@ export const branchApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Branches"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -39,6 +41,7 @@ export const branchApi = baseApi.injectEndpoints({
         url: `/admin/branch${generateQueryString({ ...params })}`,
         method: "GET",
       }),
+      providesTags: ["Branches"],
       transformResponse: (response: { data: { data: BranchData[] } }) =>
         response.data.data,
     }),

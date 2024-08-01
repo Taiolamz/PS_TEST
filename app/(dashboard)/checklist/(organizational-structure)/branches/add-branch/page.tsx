@@ -8,6 +8,7 @@ import DashboardModal from "../../../_components/checklist-dashboard-modal";
 import CancelModal from "../../../_components/cancel-modal";
 import CustomSelect from "@/components/custom-select";
 import { useBranch } from "../../../_hooks/useBranch";
+import { useState } from "react";
 
 const AddBranch = () => {
   const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
@@ -16,14 +17,16 @@ const AddBranch = () => {
     formik,
     countries,
     states,
+    stateDrop,
     subsidiaries,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
     isCreatingBranch,
     isLoadingSubsidiaries,
-    headOfBranches,
   } = useBranch({ cancelPath: cancelRoute });
+
+  const [selectedState, setSelectedState] = useState("");
   return (
     <ChecklistLayout
       onCancel={handleCancelDialog}
@@ -80,12 +83,11 @@ const AddBranch = () => {
               setSelected={(value) => formik.setFieldValue("state", value)}
               labelClass={labelClassName}
             />
-
             <CustomSelect
               label="Head of Branch"
               isRequired
               placeholder="Head of Branch"
-              options={headOfBranches}
+              options={[]}
               selected={formik.values.head}
               setSelected={(value) => formik.setFieldValue("head", value)}
               labelClass={labelClassName}

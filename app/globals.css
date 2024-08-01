@@ -150,15 +150,6 @@ input:-webkit-autofill:hover {
   }
 }
 
-/* @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-} */
-
 :root {
   --text-color: #6e7c87;
   --text-color2: #9aa6ac;
@@ -212,6 +203,7 @@ input:-webkit-autofill:hover {
   background-color: var(--footer-link-color);
 }
 
+<<<<<<< HEAD
 /* additional setup start ------------------------ */
 
 *,
@@ -234,3 +226,32 @@ body {
 }
 
 /* additional setup end ------------------------ */
+=======
+input[type="radio"] {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  appearance: none;
+  border: 1px solid #6E7C87;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  transition: border 0.3s ease;
+
+  &:checked {
+    border: 1px solid #008080;
+  }
+
+  &:checked::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1rem;
+    height: 1rem;
+    background-color: #008080;
+    border-radius: 50%;
+  }
+}
+>>>>>>> b0d8355 (chore: checklist in progress)
