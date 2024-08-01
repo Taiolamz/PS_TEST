@@ -16,6 +16,7 @@ interface CustomDateInputProps {
   selected?: Date;
   error: string;
   touched?: boolean;
+  disabled?: boolean;
   showIcon?: boolean;
   iconClass?: string;
 }
@@ -33,6 +34,7 @@ export default function CustomDateInput({
   selected,
   error,
   touched,
+  disabled,
   showIcon = true,
 }: CustomDateInputProps) {
   return (
@@ -67,6 +69,7 @@ export default function CustomDateInput({
         onChange={handleChange}
         value={selected}
         className={cn("teal", className)}
+        disabled={disabled}
       />
       {showIcon && (
         <Calendar

@@ -9,6 +9,7 @@ interface ConfirmationModalProps {
   handleClose: () => void;
   icon?: string;
   iconClass?: string;
+  modalClass?: string;
   title: string;
   actionBtnLoading?: boolean;
   disableActionBtn?: boolean;
@@ -32,13 +33,17 @@ export default function ConfirmationModal({
   actionBtnTitle,
   handleClick,
   content,
-  footerContent
+  footerContent,
+  modalClass
 }: ConfirmationModalProps) {
   return (
     <ModalContainer
       show={show}
       handleClose={handleClose}
-      modalClass="rounded-none py-10 px-6 bg-white md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[37.5rem] lg:max-w-[37.5rem]"
+      modalClass={cn(
+        "rounded-none py-10 px-6 bg-white md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[37.5rem] lg:max-w-[37.5rem]",
+        modalClass
+      )}
       hasCloseButton={hasCloseButton}
     >
       <section>
