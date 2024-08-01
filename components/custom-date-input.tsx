@@ -18,7 +18,9 @@ interface CustomDateInputProps {
   touched?: boolean;
   disabled?: boolean;
   showIcon?: boolean;
+  showOnlyMonth?: boolean;
   iconClass?: string;
+  placeholder?: string;
 }
 
 export default function CustomDateInput({
@@ -35,7 +37,9 @@ export default function CustomDateInput({
   error,
   touched,
   disabled,
+  showOnlyMonth = false,
   showIcon = true,
+  placeholder,
 }: CustomDateInputProps) {
   return (
     <div className="relative">
@@ -59,7 +63,7 @@ export default function CustomDateInput({
       <DatePicker
         id={id}
         name={name}
-        placeholder="MM/DD/YY"
+        placeholder={placeholder ? placeholder : "MM/DD/YYYY"}
         inputClass={cn(
           "border rounded-[4px] bg-[#F6F8F9] px-3 py-[7px] text-[.85rem] w-full focus:outline-none",
           error && touched && "border-red-500"
@@ -70,6 +74,9 @@ export default function CustomDateInput({
         value={selected}
         className={cn("teal", className)}
         disabled={disabled}
+        onlyMonthPicker={showOnlyMonth}
+        highlightToday={false}
+        // format="DD-MM-YYYY"
       />
       {showIcon && (
         <Calendar
