@@ -12,6 +12,8 @@ import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useFormik } from "formik";
 import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
+import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
+import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
 
 // dummy data
 type Prop = {
@@ -78,10 +80,10 @@ const formSchema = yup.object().shape({
   gender: yup.string().required("Gender is required"),
   resumption_date: yup.date().required("Resumption date is required."),
   level: yup.string().optional(),
-  subsidiary: yup.string().required("Subsidiary is required"),
-  department: yup.string().required("Department is required"),
-  branch: yup.string().required("Branch is required"),
-  unit: yup.string().required("Unit is required"),
+  subsidiary_id: yup.string().required("Subsidiary is required"),
+  department_id: yup.string().required("Department is required"),
+  branch_id: yup.string().required("Branch is required"),
+  unit_id: yup.string().required("Unit is required"),
   designation: yup.string().required("Job title is required"),
   staff_number: yup.string().optional(),
   new_employee: yup.string().required("New employee status is required"),
@@ -91,7 +93,7 @@ const formSchema = yup.object().shape({
     .email("Invalid email address")
     .required("Line manager email is required"),
   phone_number: yup.string().optional(),
-  role: yup.string().optional(),
+  role_id: yup.string().optional(),
 });
 
 export const useEmployee = ({ path }: Prop) => {
@@ -118,7 +120,7 @@ export const useEmployee = ({ path }: Prop) => {
     });
 
   const { data: departmentData, isLoading: isLoadingDepartments } =
-    useGetBranchesQuery({
+    useGetDepartmentsQuery({
       to: 0,
       total: 0,
       per_page: 50,
@@ -135,11 +137,22 @@ export const useEmployee = ({ path }: Prop) => {
     next_page_url: "",
     prev_page_url: "",
   });
+  const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
+    {}
+  );
 
-  const subsidiaries = subsidiariesData ?? [];
-  const branches = branchesData ?? [];
-  const departments = departmentData ?? [];
-  const units = unitData ?? [];
+  const handleDropdown = (
+    items: StateData[] | SubsidiaryData[] | DepartmentData[]
+  ) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return data;
+  };
 
   const handleFormatDropdown = (
     items: SubsidiaryData[] | BranchData[] | DepartmentData[] | UnitData[]
@@ -148,11 +161,34 @@ export const useEmployee = ({ path }: Prop) => {
       return {
         ...chi,
         label: chi?.name,
-        value: chi?.name, //has to change to id
+        value: chi?.name,
       };
     });
     return data;
   };
+
+  const handleBranchDropdown = (items: BranchData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.branch_id,
+      };
+    });
+    return data;
+  };
+
+  const subsidiaries = subsidiariesData ?? [];
+  const branches = branchesData ?? [];
+  const departments = departmentData ?? [];
+  const units = unitData ?? [];
+  const states = statesData ?? [];
+
+  const stateDrop = handleDropdown(states);
+  const subsidiaryDrop = handleDropdown(subsidiaries);
+  const branchDrop = handleBranchDropdown(branches);
+  const departmentDrop = handleDropdown(departments);
+  const unitsDrop = handleDropdown(units);
 
   const EmployeeRoute = Routes.ChecklistRoute.SetupEmployeesAndRolesRoute();
   const user = useAppSelector(selectUser);
@@ -188,17 +224,17 @@ export const useEmployee = ({ path }: Prop) => {
       gender: "",
       resumption_date: new Date(),
       level: "",
-      subsidiary: "",
-      department: "",
-      branch: "",
-      unit: "",
+      subsidiary_id: "",
+      department_id: "",
+      branch_id: "",
+      unit_id: "",
       designation: "",
       staff_number: "",
       new_employee: "",
       email: "",
       line_manager_email: "",
       phone_number: "",
-      role: "",
+      role_id: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
@@ -237,6 +273,12 @@ export const useEmployee = ({ path }: Prop) => {
     gradeLevels: handleFormatDropdown(gradeLevels),
     roles: handleFormatDropdown(roles),
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
+    states: handleFormatDropdown(states),
+    stateDrop,
+    subsidiaryDrop,
+    branchDrop,
+    departmentDrop,
+    unitsDrop,
     openCancelModal,
     handleProceedCancel,
     onOpenCancelModal,

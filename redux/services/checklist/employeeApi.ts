@@ -10,6 +10,7 @@ export const employeeApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Employees"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -25,6 +26,7 @@ export const employeeApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Employees"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -39,6 +41,7 @@ export const employeeApi = baseApi.injectEndpoints({
         url: `/admin/invitation${generateQueryString({ ...params })}`,
         method: "GET",
       }),
+      providesTags: ["Employees"],
       transformResponse: (response: { data: EmployeeRolesData[] }) =>
         response.data,
     }),

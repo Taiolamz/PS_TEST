@@ -10,6 +10,7 @@ export const departmentApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Departments"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -25,6 +26,7 @@ export const departmentApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Departments"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -39,6 +41,7 @@ export const departmentApi = baseApi.injectEndpoints({
         url: `/admin/department${generateQueryString({ ...params })}`,
         method: "GET",
       }),
+      providesTags: ["Departments"],
       transformResponse: (response: { data: { data: DepartmentData[] } }) =>
         response.data.data,
     }),

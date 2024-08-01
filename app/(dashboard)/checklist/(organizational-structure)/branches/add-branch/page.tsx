@@ -17,12 +17,13 @@ const AddBranch = () => {
     countries,
     states,
     subsidiaries,
+    // branches,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
     isCreatingBranch,
     isLoadingSubsidiaries,
-    headOfBranches,
+    // headOfBranches,
   } = useBranch({ cancelPath: cancelRoute });
   return (
     <ChecklistLayout
@@ -85,7 +86,7 @@ const AddBranch = () => {
               label="Head of Branch"
               isRequired
               placeholder="Head of Branch"
-              options={headOfBranches}
+              options={[]}
               selected={formik.values.head}
               setSelected={(value) => formik.setFieldValue("head", value)}
               labelClass={labelClassName}

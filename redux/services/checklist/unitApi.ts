@@ -10,6 +10,7 @@ export const unitApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Units"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -25,6 +26,7 @@ export const unitApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Units"],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -39,6 +41,7 @@ export const unitApi = baseApi.injectEndpoints({
         url: `/admin/unit${generateQueryString({ ...params })}`,
         method: "GET",
       }),
+      providesTags: ["Units"],
       transformResponse: (response: { data: { data: BranchData[] } }) =>
         response.data.data,
     }),

@@ -36,24 +36,24 @@ const states = [
   },
 ];
 
-const headOfBranches = [
-  {
-    label: "Hassan",
-    value: "Hassan",
-  },
-  {
-    label: "Lamidi",
-    value: "Lamidi",
-  },
-  {
-    label: "Friday",
-    value: "Friday",
-  },
-  {
-    label: "Emeka",
-    value: "Emeka",
-  },
-];
+// const headOfBranches = [
+//   {
+//     label: "Hassan",
+//     value: "Hassan",
+//   },
+//   {
+//     label: "Lamidi",
+//     value: "Lamidi",
+//   },
+//   {
+//     label: "Friday",
+//     value: "Friday",
+//   },
+//   {
+//     label: "Emeka",
+//     value: "Emeka",
+//   },
+// ];
 
 export const useBranch = ({ cancelPath }: Prop) => {
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
@@ -68,7 +68,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
 
   const subsidiaries = subsidiariesData ?? [];
 
-  const handleFormatDropdown = (items: SubsidiaryData[]) => {
+  const handleFormatDropdown = (items: SubsidiaryData[] | BranchData[]) => {
     const data = items.map((chi) => {
       return {
         ...chi,
@@ -98,10 +98,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
       .string()
       .oneOf(handleFormatArray(states), "State is required")
       .required("State is required"),
-    head: yup
-      .string()
-      .min(1, "Head of Subsidiary is required")
-      .required("Head of Subsidiary is required"),
+    head: yup.string().min(1, "Head of Subsidiary is required").optional(),
     work_email: yup
       .string()
       .min(1, "Work Email is required")
@@ -179,7 +176,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    headOfBranches,
+    // headOfBranches,
     subsidiaries: handleFormatDropdown(subsidiaries),
     isLoadingSubsidiaries,
   };

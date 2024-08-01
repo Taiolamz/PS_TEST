@@ -79,8 +79,13 @@ type SubsidiaryData = {
   file?: File;
 };
 type BranchData = {
-  id?: string;
   name: string;
+  branch_id: string;
+};
+
+type StateData = {
+  name: string;
+  id: string;
 };
 
 type DepartmentData = {

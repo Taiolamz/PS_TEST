@@ -8,6 +8,7 @@ import DashboardModal from "../../../_components/checklist-dashboard-modal";
 import CancelModal from "../../../_components/cancel-modal";
 import CustomSelect from "@/components/custom-select";
 import { useDepartment } from "../../../_hooks/useDepartment";
+import { useState } from "react";
 
 const AddDepartment = () => {
   const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
@@ -15,6 +16,7 @@ const AddDepartment = () => {
   const {
     formik,
     states,
+    stateDrop,
     subsidiaries,
     handleProceedCancel,
     openCancelModal,
@@ -22,8 +24,12 @@ const AddDepartment = () => {
     isCreatingDepartment,
     isLoadingSubsidiaries,
     branches,
+    branchDrop,
     headOfDepartment,
   } = useDepartment({ cancelPath: cancelRoute });
+
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState("");
 
   return (
     <ChecklistLayout
@@ -59,8 +65,14 @@ const AddDepartment = () => {
               isRequired
               placeholder="Branch state"
               options={states}
-              selected={formik.values.state}
-              setSelected={(value) => formik.setFieldValue("state", value)}
+              selected={selectedState}
+              setSelected={(value) => {
+                setSelectedState(value);
+                const selectedStateId = stateDrop.filter(
+                  (chi) => chi.name === value
+                )[0].id;
+                formik.setFieldValue("state_id", selectedStateId);
+              }}
               labelClass={labelClassName}
             />
 
@@ -68,7 +80,7 @@ const AddDepartment = () => {
               label="Head of Department"
               isRequired
               placeholder="Head of Department"
-              options={headOfDepartment}
+              options={[]}
               selected={formik.values.head_of_department}
               setSelected={(value) =>
                 formik.setFieldValue("head_of_department", value)
@@ -101,8 +113,14 @@ const AddDepartment = () => {
               isRequired
               placeholder="Select Branch"
               options={branches}
-              selected={formik.values.branch}
-              setSelected={(value) => formik.setFieldValue("branch", value)}
+              selected={selectedBranch}
+              setSelected={(value) => {
+                setSelectedBranch(value);
+                const selectedBranchId = branchDrop.filter(
+                  (chi) => chi.name === value
+                )[0].branch_id;
+                formik.setFieldValue("branch_id", selectedBranchId);
+              }}
               labelClass={labelClassName}
             />
           </form>
