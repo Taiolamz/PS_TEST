@@ -4,5 +4,13 @@ export const formatRMDatePicker = (date: any) => {
   const month = date?.month?.number?.toString()?.padStart(2, "0");
   const year = date?.year;
 
-  return `${year}-${month}-${day}`;
+  return `${day}-${month}-${year}`;
+};
+
+export const formatMonthYear = (date: any) => {
+  // Format the date as 'YYYY-MM'
+  const month = date?.month?.number?.toString()?.padStart(2, "0");
+  const year = date?.year;
+
+  return `${month}-${year}`;
 };
