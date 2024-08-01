@@ -1,5 +1,6 @@
 "use client";
 
+import Icon from "@/components/icon/Icon";
 import { ArrowLeftCircle } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
@@ -127,7 +128,9 @@ const Onboarding = () => {
           </h1>
           {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
           {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
-          {getCurrentStep() === 3 && <OperationsParameter formik={formik} />}
+          {getCurrentStep() === 3 && (
+            <OperationsParameter formik={formik} setFyDate={() => {}} fyDate={''}/>
+          )}
           {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
           {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
           {getCurrentStep() === 6 && <Preview />}

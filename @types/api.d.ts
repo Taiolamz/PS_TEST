@@ -125,6 +125,8 @@ type EmployeeRolesData = {
   updated_at: string;
 };
 
+type RolesData = {};
+
 type QueryParams = {
   currentPage?: number;
   next_page_url?: string;
