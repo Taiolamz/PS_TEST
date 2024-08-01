@@ -1,5 +1,3 @@
-
-
 export const CREATE_FY_LINKS = [
     {
         id: 1,
@@ -8,15 +6,16 @@ export const CREATE_FY_LINKS = [
         accessor: 'financial-year'
     },
     {
-        id: 1,
+        id: 2,
         title: 'Mission and Vision',
         path: '?ui=mission-vision',
         accessor: 'mission-vision'
     },
     {
-        id: 1,
+        id: 3,
         title: 'Strategic Pillar',
         path: '?ui=strategic-pillar',
         accessor: 'strategic-pillar'
     },
 ]
+
