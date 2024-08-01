@@ -9,6 +9,7 @@ import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useCreateBranchMutation } from "@/redux/services/checklist/branchApi";
+import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 
 type Prop = {
   cancelPath: string;
@@ -25,35 +26,6 @@ const countries = [
   { label: "Germany", value: "Germany", icon: HomeIcon },
   { label: "South Africa", value: "South Africa", icon: HomeIcon },
 ];
-const states = [
-  {
-    label: "Lagos",
-    value: "Lagos",
-  },
-  {
-    label: "Ogun",
-    value: "Ogun",
-  },
-];
-
-// const headOfBranches = [
-//   {
-//     label: "Hassan",
-//     value: "Hassan",
-//   },
-//   {
-//     label: "Lamidi",
-//     value: "Lamidi",
-//   },
-//   {
-//     label: "Friday",
-//     value: "Friday",
-//   },
-//   {
-//     label: "Emeka",
-//     value: "Emeka",
-//   },
-// ];
 
 export const useBranch = ({ cancelPath }: Prop) => {
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
@@ -65,10 +37,28 @@ export const useBranch = ({ cancelPath }: Prop) => {
       next_page_url: "",
       prev_page_url: "",
     });
+  const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
+    {}
+  );
+
+  const handleDropdown = (items: StateData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return data;
+  };
 
   const subsidiaries = subsidiariesData ?? [];
+  const states = statesData ?? [];
+  const stateDrop = handleDropdown(states);
 
-  const handleFormatDropdown = (items: SubsidiaryData[] | BranchData[]) => {
+  const handleFormatDropdown = (
+    items: SubsidiaryData[] | BranchData[] | StateData[]
+  ) => {
     const data = items.map((chi) => {
       return {
         ...chi,
@@ -94,22 +84,13 @@ export const useBranch = ({ cancelPath }: Prop) => {
       .string()
       .oneOf(handleFormatArray(countries), "Country is required")
       .required("Country is required"),
-    state: yup
-      .string()
-      .oneOf(handleFormatArray(states), "State is required")
-      .required("State is required"),
+    state: yup.string().required(),
     head: yup.string().min(1, "Head of Subsidiary is required").optional(),
     work_email: yup
       .string()
       .min(1, "Work Email is required")
       .required("Work Email is required"),
-    // subsidiary: yup
-    //   .string()
-    //   .oneOf(
-    //     handleFormatArray(handleFormatDropdown(subsidiries)),
-    //     "Subsidiary is required"
-    //   )
-    //   .required("Subsidiaryi s required"),
+    subsidiary: yup.string().required(),
   });
   const router = useRouter();
   const user = useAppSelector(selectUser);
@@ -171,12 +152,12 @@ export const useBranch = ({ cancelPath }: Prop) => {
     isCreatingBranch,
     countries,
     handleProceedCancel,
-    states,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    // headOfBranches,
+    stateDrop,
+    states: handleFormatDropdown(states),
     subsidiaries: handleFormatDropdown(subsidiaries),
     isLoadingSubsidiaries,
   };

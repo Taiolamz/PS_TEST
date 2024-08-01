@@ -37,3 +37,4 @@ export { default as SortIcon } from "./SortIcon.svg";
 export { default as GraySkeleton } from "./GraySkeleton.svg";
 export { default as SuccessSkeleton } from "./SuccessSkeleton.svg";
 export { default as WarningSkeleton } from "./WarningSkeleton.svg";
+export { default as ZojatechIcon } from "./ZojatechIcon.svg";

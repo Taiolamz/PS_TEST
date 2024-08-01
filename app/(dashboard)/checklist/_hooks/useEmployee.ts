@@ -238,7 +238,7 @@ export const useEmployee = ({ path }: Prop) => {
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
-  });
+  }); 
 
   const {
     isOpen: openCancelModal,

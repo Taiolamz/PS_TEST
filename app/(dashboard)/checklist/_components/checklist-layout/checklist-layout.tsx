@@ -30,9 +30,9 @@ const ChecklistLayout = ({
         />
         <ChecklistSidebar />
         <div
-          className={`absolute right-0 bottom-0 bg-white w-[calc(100%-235px)] overflow-auto h-[calc(100%-56px)] ${className}`}
+          className={`absolute right-0 bottom-0 bg-white w-[calc(100%-235px)] pb-[40px] overflow-auto h-[calc(100%-56px)] ${className}`}
         >
-          <div className="relative p-3 px-8 pr-16 pb-10 overflow-y-hidden">
+          <div className="relative p-3 px-8 pr-16 ">
             {children}
           </div>
         </div>

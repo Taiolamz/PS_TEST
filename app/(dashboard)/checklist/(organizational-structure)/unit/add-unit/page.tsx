@@ -118,6 +118,7 @@ const AddUnit = () => {
               }}
               labelClass={labelClassName}
             />
+
             <CustomSelect
               label="Branch"
               isRequired

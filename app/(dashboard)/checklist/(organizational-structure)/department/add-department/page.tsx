@@ -63,7 +63,7 @@ const AddDepartment = () => {
             <CustomSelect
               label="State"
               isRequired
-              placeholder="Branch state"
+              placeholder="Department state"
               options={states}
               selected={selectedState}
               setSelected={(value) => {

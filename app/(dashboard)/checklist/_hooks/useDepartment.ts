@@ -148,6 +148,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       .string()
       .min(1, "Work Email is required")
       .required("Work Email is required"),
+    subsidiary: yup.string().required(),
+    branch_id: yup.string().required(),
   });
 
   const router = useRouter();

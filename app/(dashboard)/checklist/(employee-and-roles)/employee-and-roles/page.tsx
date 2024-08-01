@@ -118,8 +118,7 @@ export default function EmployeeAndRoles() {
   };
 
   const handleProceed = () => {
-    //Handles when click on process dialog box
-    const proceedPath = Routes.ChecklistRoute.ChecklistOverview();
+    const proceedPath = Routes.ChecklistRoute.MissionPlanTemplateRoute();
     router.push(proceedPath);
   };
 

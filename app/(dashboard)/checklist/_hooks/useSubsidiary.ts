@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import Routes from "@/lib/routes/routes";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 
 type Prop = {
   cancelPath: string;
@@ -21,27 +22,6 @@ const countries = [
   { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
   { label: "Germany", value: "Germany", icon: HomeIcon },
   { label: "South Africa", value: "South Africa", icon: HomeIcon },
-];
-const states = [
-  {
-    label: "Lagos",
-    value: "Lagos",
-  },
-  {
-    label: "Ogun",
-    value: "Ogun",
-  },
-];
-
-const headOfSubsidiaries = [
-  {
-    label: "Hassan",
-    value: "Hassan",
-  },
-  {
-    label: "Lamidi",
-    value: "Lamidi",
-  },
 ];
 
 const handleFormatArray = (items: SelectFormType) => {
@@ -59,14 +39,8 @@ const formSchema = yup.object().shape({
     .string()
     .oneOf(handleFormatArray(countries), "Country is required")
     .required("Country is required"),
-  state: yup
-    .string()
-    .oneOf(handleFormatArray(states), "State is required")
-    .required("State is required"),
-  head_of_subsidiary: yup
-    .string()
-    .min(1, "Head of subsidiary is required")
-    .required("Head of subsidiary is required"),
+  state: yup.string().required(),
+  head_of_subsidiary: yup.string().optional(),
   work_email: yup
     .string()
     .min(1, "Work Email is required")
@@ -76,6 +50,37 @@ const formSchema = yup.object().shape({
 export const useSubsidiary = ({ cancelPath }: Prop) => {
   const router = useRouter();
   const user = useAppSelector(selectUser);
+
+  const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
+    {}
+  );
+  const states = statesData ?? [];
+
+  const handleDropdown = (items: StateData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return data;
+  };
+
+  const handleFormatDropdown = (
+    items: SubsidiaryData[] | BranchData[] | StateData[]
+  ) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.name,
+      };
+    });
+    return data;
+  };
+
+  const stateDrop = handleDropdown(states);
 
   const { organization } = user;
   const SubsidiaryRoute = Routes.ChecklistRoute.SubsidiaryRoute();
@@ -134,11 +139,12 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
     isCreatingSubsidiary,
     countries,
     handleProceedCancel,
-    states,
+    states: handleFormatDropdown(states),
+    stateDrop,
+    isLoadingStates,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    headOfSubsidiaries,
   };
 };

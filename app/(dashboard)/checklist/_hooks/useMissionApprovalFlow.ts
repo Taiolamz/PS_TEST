@@ -14,29 +14,6 @@ type Select = {
   value: string | number;
 };
 
-const numOptions = [
-  {
-    label: 1,
-    value: 1,
-  },
-  {
-    label: 2,
-    value: 2,
-  },
-  {
-    label: 3,
-    value: 3,
-  },
-  {
-    label: 4,
-    value: 4,
-  },
-  {
-    label: 5,
-    value: 5,
-  },
-];
-
 const reviewers = [
   {
     label: "Super Admin",
@@ -70,7 +47,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
       return {
         ...chi,
         label: chi?.label,
-        value: chi?.label, //has to change to id
+        value: chi?.label,
       };
     });
     return data;
@@ -81,27 +58,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     return array;
   };
 
-  const formSchema = yup.object().shape({
-    // level: yup
-    //   .string()
-    //   .oneOf(handleFormatArray(numOptions), "level is required")
-    //   .required("State is required"),
-    // head_of_department: yup
-    //   .string()
-    //   .min(1, "Head of Department is required")
-    //   .required("Head of Department is required"),
-    // work_email: yup
-    //   .string()
-    //   .min(1, "Work Email is required")
-    //   .required("Work Email is required"),
-    // subsidiary: yup
-    //   .string()
-    //   .oneOf(
-    //     handleFormatArray(handleFormatDropdown(subsidiries)),
-    //     "Subsidiary is required"
-    //   )
-    //   .required("Subsidiaryi s required"),
-  });
+  // const formSchema = yup.object().shape({});
   const router = useRouter();
 
   const handleSubmit = async () => {
@@ -116,9 +73,14 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
       //   subsidiary: "",
       //   branch: "",
     },
-    validationSchema: formSchema,
+    // validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
+
+  const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
+    value: (i + 1).toString(),
+    label: (i + 1).toString(),
+  }));
 
   const {
     isOpen: openCancelModal,
@@ -144,7 +106,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    level: handleFormatDropdown(numOptions),
+    level: handleFormatDropdown(levelOptions),
     reviewers: handleFormatDropdown(reviewers),
   };
 };

@@ -62,10 +62,10 @@ const MissionPlanFlow = () => {
       onProceedBtn={handleProceedDialog}
     >
       <EmptyState
+        href={`${Routes.ChecklistRoute.AddApprovalFlowRoute()}?ui=approval-flow-step-one`}
         viewText="View"
         textTitle="Mission plan Flow"
         btnTitle="Mission Plan Flow"
-        href={Routes.ChecklistRoute.AddApprovalFlowRoute()}
         isNotBulkUpload
       />
       <DashboardModal

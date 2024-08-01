@@ -16,6 +16,7 @@ interface DashboardSettingsLayoutType extends DashboardSettingsNavType {
 }
 
 type EmptyStateType = {
+  onBtnClick?: () => void;
   viewText?: string;
   loading?: boolean;
   href: string;
