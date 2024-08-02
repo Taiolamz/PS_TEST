@@ -86,11 +86,6 @@ export default function Login() {
               className="top-8"
             />
           </div>
-          {apiError?.data?.errors?.email?.[0] && (
-            <span className="text-red-500 text-[13px]">
-              {apiError?.data?.errors?.email?.[0]}
-            </span>
-          )}
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">

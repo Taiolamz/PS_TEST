@@ -21,7 +21,7 @@ export default function Home() {
     >
       <div className="w-[80%] md:w-[40%] relative">
         <div className="bg-white h-8 w-20 absolute bottom-0 right-0" />
-        <Image width={700} height={1400} src='/assets-website/preload.gif' alt="mance logo" className="" />
+        <Image width={700} height={1400} src='/assets-website/preload.gif' alt="mance logo" className="" unoptimized={true} />
       </div>
     </section>
   );

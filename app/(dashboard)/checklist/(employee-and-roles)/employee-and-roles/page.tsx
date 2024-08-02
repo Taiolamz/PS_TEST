@@ -42,6 +42,7 @@ export default function EmployeeAndRoles() {
 
   const employeesColumnData = useMemo(
     () => employeerolesColumns,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isFetchingEmployees]
   );
   // const employeesColumnData = useMemo(

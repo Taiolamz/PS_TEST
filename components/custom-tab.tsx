@@ -44,6 +44,7 @@ export default function CustomTab({ slug, options }: CustomTabProps) {
         pathname + "?" + createQueryString(slug, options?.[0].accessor)
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
