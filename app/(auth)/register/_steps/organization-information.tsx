@@ -1,8 +1,9 @@
+import { Dictionary } from '@/@types/dictionary';
 import CustomSelect from '@/components/custom-select';
 import PasswordChecker from '@/components/password-checker';
 import TogglePassword from '@/components/toggle-password';
 import { Input } from '@/components/ui/input';
-import { COUNTRIES, NUMBER_OF_EMPLOYEES, STATES } from '@/utils/data';
+import { COUNTRIES, COUNTRIES_STATES, NUMBER_OF_EMPLOYEES, STATES } from '@/utils/data';
 import { passwordValidations, passwordValidation as pv } from '@/utils/schema';
 import { useState } from 'react';
 
@@ -12,7 +13,9 @@ interface OrganizationInformationProps {
 
 const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
     const [showPassword, setShowPassword] = useState(false)
+    const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>({})
 
+    // console.log(selectedCountryData)
     return (
         <div>
             <div className="flex flex-col gap-5">
@@ -59,15 +62,30 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
                 />
                 <div className="grid grid-cols-2 gap-4">
                     <CustomSelect
-                        options={COUNTRIES}
+                        options={COUNTRIES_STATES?.map((item : Dictionary) => {
+                            return {
+                                label: item.name,
+                                value: item.name,
+                            }
+                        })}
                         selected={formik.values.country}
-                        setSelected={(selected) => formik.setFieldValue("country", selected)}
+                        setSelected={(selected) => {
+                            formik.setFieldValue("country", selected)
+                            const COUNTRY_DATA = COUNTRIES_STATES?.filter((f) => f.name === selected)?.[0]
+                            formik.setFieldValue('state', '')
+                            setSelectedCountryData(COUNTRY_DATA)
+                        }}
                         touched={formik.touched.country}
                         error={formik.errors.country}
                         placeholder="Select Country"
                     />
                     <CustomSelect
-                        options={STATES}
+                        options={selectedCountryData?.stateProvinces?.map((item : Dictionary) => {
+                            return {
+                                label: item.name,
+                                value: item.name,
+                            }
+                        })}
                         selected={formik.values.state}
                         setSelected={(selected) => formik.setFieldValue("state", selected)}
                         touched={formik.touched.state}

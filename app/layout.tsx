@@ -1,10 +1,9 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata } from "next";
 import { Inter, Lexend } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import AppProvider from "@/redux/provider";
-// import { UserStoreProvider } from "@/providers/user-store-provider";
-// import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const lex = Lexend({
@@ -27,10 +26,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        {/* <link
+        <link
           href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..800&display=swap"
           rel="stylesheet"
-        /> */}
+        />
       </head>
       <body className={` ${lex.variable}`}>
         <AppProvider>

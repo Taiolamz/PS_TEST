@@ -66,9 +66,7 @@ const SignupPage = () => {
     if (ui === "employee-information") {
       register({ ...formik.values })
         .unwrap()
-        .then((payload) => {
-          toast.success("Account Registered Successfully");
-        });
+        .then(() => {});
     }
   };
 
@@ -137,15 +135,17 @@ const SignupPage = () => {
           )}
 
           <div className="mt-10">
-            <Button
-              className="w-full"
-              type="submit"
-              loading={isRegistering}
-              disabled={isRegistering}
-              // loadingText="Create Account"
-            >{`${
-              ui === "employee-information" ? "Create Account" : "Next"
-            }`}</Button>
+            <div>
+              <Button
+                className="w-full"
+                type="submit"
+                loading={isRegistering}
+                disabled={isRegistering}
+                // loadingText="Create Account"
+              >{`${
+                ui === "employee-information" ? "Create Account" : "Next"
+              }`}</Button>
+            </div>
             <div>
               <p className="mt-[18px] mb-6 text-foreground text-[0.8125rem]">
                 By clicking the button above, you agree to our confidential

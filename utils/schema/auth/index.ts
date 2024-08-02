@@ -3,7 +3,7 @@ import * as yup from "yup";
 export const passwordValidations: string[] = [
   "Must have 8 characters",
   "Must include capital letters and small letters",
-  "Must include one number or one special character",
+  "Must include one number and one special character",
 ];
 
 export const passwordValidation = (
@@ -21,8 +21,8 @@ export const passwordValidation = (
         return true;
       }
       return false;
-    case "Must include one number or one special character":
-      return /[0-9]/.test(password) || /[!@#$%^&*]/.test(password);
+    case "Must include one number and one special character":
+      return /[0-9]/.test(password) && /[!@#$%^&*]/.test(password);
     default:
       return false;
   }
@@ -49,8 +49,8 @@ export const RegistrationSchema = [
       .min(8, "Must have 8 characters")
       .test(
         "minNumbersOrSymbols",
-        "Must include one number or one special character",
-        (value) => /[0-9]/.test(value) || /[!@#$%^&*(),.?":{}|<>]/.test(value)
+        "Must include one number and one special character",
+        (value) => /[0-9]/.test(value) && /[!@#$%^&*(),.?":{}|<>]/.test(value)
       )
       .test("minLowercase", "Must include capital letters", (value) =>
         /[a-z]/.test(value)
