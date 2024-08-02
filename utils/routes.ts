@@ -3,7 +3,8 @@ const routesPath = {
     LOGIN: '/login',
     REGISTER: '/register?ui=organization-information',
     FORGOT_PASSWORD: '/forgot-password',
-    DASHBOARD: '/dashboard',
+    ADMIN_DASHBOARD: 'admin/overview',
+    EMPLOYEE_DASHBOARD: 'employee/overview',
     ONBOARDING: '/onboarding',
 }
 
