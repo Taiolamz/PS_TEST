@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { cn } from "../../lib/utils";
+import { MdCheckBoxOutlineBlank } from "react-icons/md";
+import { IoSquareOutline, IoCheckbox } from "react-icons/io5";
 
 import { ErrorMessage } from "formik";
 import {
@@ -45,6 +47,7 @@ export default function CustomMultiSelect({
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
   return (
     <div className="">
       <label htmlFor="label" className={cn(labelClass)}>
@@ -70,6 +73,8 @@ export default function CustomMultiSelect({
                 value={option.value}
                 key={option.value}
                 option={option}
+                checkedIcon={<IoCheckbox color="#008080" size={18} />}
+                notCheckedIcon={<IoSquareOutline color="#e0e4e6" size={17} />}
               >
                 {option.label}
               </MultiSelectorItem>
