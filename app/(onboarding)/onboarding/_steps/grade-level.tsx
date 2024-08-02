@@ -1,23 +1,15 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
-=======
-import React from "react";
->>>>>>> 41ff531 (updates)
 import { FormHeader } from "../_components";
 import Icon from "@/components/icon/Icon";
 import CustomSelect from "@/components/custom-select";
 import { Input } from "@/components/ui/input";
-<<<<<<< HEAD
 import { Field, FieldArray } from "formik";
-=======
->>>>>>> 41ff531 (updates)
 
 interface GradeLevelProps {
   formik: any;
 }
 
 const GradeLevel = ({ formik }: GradeLevelProps) => {
-<<<<<<< HEAD
   const [employeeName, setEmployeeName] = useState("");
   const [employeePosition, setEmployeePosition] = useState("");
 
@@ -33,9 +25,6 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
   const handleStaffLevel = (newValue: string, index: number) => {
     formik.setFieldValue(`staff_levels.${index}.level`, newValue);
   };
-
-=======
->>>>>>> 41ff531 (updates)
   return (
     <section className="max-w-[54.625rem]">
       <FormHeader
@@ -54,7 +43,6 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                   Input Staff Level
                 </label>
               </div>
-<<<<<<< HEAD
 
               <FieldArray name="staff_levels">
                 {({ insert, remove, push }) => (
@@ -139,47 +127,6 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
             </div>
           </div>
         </div>
-=======
-              <div className="grid grid-cols-2 items-center space-x-2 w-[37.9375rem] mb-5 relative">
-                <Input
-                  type="text"
-                  id=""
-                  name=""
-                  value=""
-                  onChange={() => null}
-                  placeholder="Input Staff Level"
-                  className="mt-1 block w-2/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
-                />
-                <CustomSelect
-                  options={Array.from({ length: 10 }, (_, idx) => {
-                    return {
-                      label: `Level ${idx + 1}`,
-                      value: `Level ${idx + 1}`,
-                    };
-                  })}
-                  selected=""
-                  setSelected={() => null}
-                />
-                <button
-                  type="button"
-                  onClick={() => null}
-                  className="text-red-500 hover:text-red-700 absolute -right-6"
-                >
-                  <Icon name="remove" width={14.28} height={18.63} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={() => null}
-          className="flex items-center gap-2 mt-5 text-primary"
-        >
-          <Icon name="add" width={24} height={24} />
-          Add more level
-        </button>
->>>>>>> 41ff531 (updates)
       </div>
     </section>
   );

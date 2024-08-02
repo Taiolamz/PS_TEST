@@ -19,6 +19,9 @@ import { FormikProvider, useFormik } from "formik";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
+import routesPath from "@/utils/routes";
+
+const { DASHBOARD } = routesPath
 
 const Onboarding = () => {
   const router = useRouter();
@@ -80,7 +83,8 @@ const Onboarding = () => {
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
-          toast.success("Account Registered Successfully");
+          toast.success("Organization Created Successfully")
+          router.push(DASHBOARD)
         });
     } catch (error) {}
   };

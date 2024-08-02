@@ -203,7 +203,6 @@ input:-webkit-autofill:hover {
   background-color: var(--footer-link-color);
 }
 
-<<<<<<< HEAD
 /* additional setup start ------------------------ */
 
 *,
@@ -226,7 +225,6 @@ body {
 }
 
 /* additional setup end ------------------------ */
-=======
 input[type="radio"] {
   position: relative;
   width: 1.5rem;
@@ -254,4 +252,3 @@ input[type="radio"] {
     border-radius: 50%;
   }
 }
->>>>>>> b0d8355 (chore: checklist in progress)
