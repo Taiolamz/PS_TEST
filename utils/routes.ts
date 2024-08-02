@@ -14,6 +14,7 @@ const routesPath = {
     ORGANOGRAM: `/${admin_auth}/organogram`,
     TEAM_MANAGEMENT: `/${admin_auth}/team-management`,
     SETTINGS: `/${admin_auth}/settings`,
+    CHECKLIST: `/${admin_auth}/checklist`,
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,
@@ -30,6 +31,7 @@ const routesPath = {
   LOGIN: "/login",
   REGISTER: "/register?ui=organization-information",
   FORGOT_PASSWORD: "/forgot-password",
+  ONBOARDING: "/onboarding",
 };
 
 export default routesPath;
