@@ -1,5 +1,9 @@
 import ManceLogo from "@/components/atoms/manceLogo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import routesPath from "@/utils/routes";
+import Link from "next/link";
+
+const { HOME } = routesPath
 
 export default function AuthLayout({
   children,
@@ -8,9 +12,9 @@ export default function AuthLayout({
 }) {
   return (
     <div className="w-full h-screen overflow-hidden flex flex-col">
-      <div className="flex absolute ml-10 mt-5">
+      <Link href={HOME} className="flex absolute ml-10 mt-5">
         <ManceLogo width={74} height={15} />
-      </div>
+      </Link>
       <div className="h-screen flex justify-between items-start font-lex">
         <div className="bg-primary hidden md:flex items-center md:flex-col h-full w-full md:w-2/5 text-white">
           <p className="text-xs font-normal mt-[30%]">Message from the CPO</p>
