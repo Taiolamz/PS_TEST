@@ -203,36 +203,12 @@ input:-webkit-autofill:hover {
   background-color: var(--footer-link-color);
 }
 
-<<<<<<< HEAD
-/* additional setup start ------------------------ */
-
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
-}
-
-html {
-  /* font-size: 62.5%; */
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-body {
-  overscroll-behavior: none;
-}
-
-/* additional setup end ------------------------ */
-=======
 input[type="radio"] {
   position: relative;
   width: 1.5rem;
   height: 1.5rem;
   appearance: none;
-  border: 1px solid #6E7C87;
+  border: 1px solid #6e7c87;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
@@ -254,4 +230,3 @@ input[type="radio"] {
     border-radius: 50%;
   }
 }
->>>>>>> b0d8355 (chore: checklist in progress)

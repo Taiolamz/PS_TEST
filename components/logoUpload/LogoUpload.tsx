@@ -4,7 +4,6 @@ import Icon from "../icon/Icon";
 
 type Props = {
   handleLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-<<<<<<< HEAD
   logoName: string | null;
   fileInputRef: any;
   setLogo: (item: any) => void;
@@ -18,16 +17,6 @@ const LogoUpload = ({
   handleRemoveLogo,
   fileInputRef,
 }: Props) => {
-=======
-  logoName: string;
-  setLogo: (item: any) => void;
-};
-
-const LogoUpload = ({ handleLogoChange, logoName, setLogo }: Props) => {
-  const handleRemoveLogo = () => {
-    setLogo("");
-  };
->>>>>>> 41ff531 (updates)
   return (
     <div>
       <label className="block mb-1">Logo</label>
@@ -54,10 +43,7 @@ const LogoUpload = ({ handleLogoChange, logoName, setLogo }: Props) => {
               className="hidden"
               id="logo_input"
               name={""}
-<<<<<<< HEAD
               ref={fileInputRef}
-=======
->>>>>>> 41ff531 (updates)
             />
             <label
               htmlFor="logo_input"
