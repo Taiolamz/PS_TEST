@@ -18,6 +18,7 @@ export default function Authenticated(Component: any) {
             if (!accessToken && !token) {
                 return redirect(LOGIN);
             }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         return <Component {...props} />;

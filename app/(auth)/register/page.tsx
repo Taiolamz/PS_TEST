@@ -119,6 +119,7 @@ const SignupPage = () => {
     // router.push(`${REGISTER}`)
     Cookies.remove("token");
     disptach(resetAuth());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

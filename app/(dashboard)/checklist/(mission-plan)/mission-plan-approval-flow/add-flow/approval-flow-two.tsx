@@ -30,6 +30,7 @@ const ApprovalFlowTwo = ({ options }: Prop) => {
     <div className="flex flex-col gap-5">
       {approvalFlowDetails.map((chi, idx) => (
         <CustomAccordion
+          key={idx}
           className="mb-4 p-5 border border-custom-divider rounded  flex flex-col gap-1 "
           title={
             <p className="font-medium text-sm mb-2">

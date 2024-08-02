@@ -88,6 +88,7 @@ const MissionPlanTemplate = () => {
 
   const missionPlanTemplatesColumnData = useMemo(
     () => missionPlanColumn,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isFetchingmissionPlanTemplates]
   );
 
