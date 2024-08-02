@@ -17,6 +17,7 @@ import { useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
+import { usePathname, useRouter } from "next/navigation";
 
 export const EFFORT_DATA = [
   {
@@ -68,6 +69,9 @@ interface Task {
 }
 
 const SpecifiedTask = () => {
+  const location = usePathname();
+  const router = useRouter();
+
   const [mainEffort, setMainEffort] = useState(EFFORT_DATA);
 
   const formik = useFormik<any>({
@@ -104,13 +108,12 @@ const SpecifiedTask = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-x-2 mb-5 px-1">
+      <div className="flex items-center gap-x-2 mb-8">
         <h1 className="text-[#3E4345]">Specified Task</h1>
         <span>
           <BsFillInfoCircleFill color="#84919A" />
         </span>
       </div>
-
       <FormikProvider value={formik}>
         <FieldArray name="tasks">
           {({ insert, remove, push }) => (
@@ -322,6 +325,7 @@ const SpecifiedTask = () => {
             type="submit"
             //   disabled={isLoadingStrategicIntent}
             //   loading={isLoadingStrategicIntent}
+            onClick={() => router.push(`${location}?ui=implied-task`)}
             loadingText="Save & Continue"
             className={cn(
               "w-full",
