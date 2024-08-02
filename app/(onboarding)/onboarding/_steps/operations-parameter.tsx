@@ -3,23 +3,35 @@ import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomTimeInput from "@/components/custom-time-picker";
+import {
+  formatMonthYear,
+  formatRMDatePicker,
+} from "@/utils/helpers/date-formatter";
 
 interface OperationsParameterProps {
   formik: any;
+  fyDate: any;
+  setFyDate: (item: any) => void;
 }
-const OperationsParameter = ({ formik }: OperationsParameterProps) => {
+
+const OperationsParameter = ({
+  formik,
+  setFyDate,
+  fyDate,
+}: OperationsParameterProps) => {
   const handleChange = (
     newDate: { format: (arg0: string) => any },
     name: string
   ) => {
-    formik.setFieldValue(name, newDate.format("YYYY-MM-DD"));
+    formik.setFieldValue(name, formatMonthYear(newDate));
+    setFyDate({ ...fyDate, [name]: newDate });
   };
 
   const handleTimeChange = (
     newDate: { format: (arg0: string) => any },
     name: string
   ) => {
-    formik.setFieldValue(name, newDate.format("HH:mm:ss A"));
+    formik.setFieldValue(name, newDate.format("HH:mm"));
   };
 
   return (
@@ -58,13 +70,17 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
                 id="start_fy"
                 name="start_fy"
                 label="Start Period"
-                selected={formik.value}
-                handleChange={(date) => handleChange(date, "start_fy")}
+                selected={fyDate.start_fy}
+                handleChange={(date) => {
+                  handleChange(date, "start_fy");
+                }}
                 touched={formik.touched.start_fy}
                 error={formik.errors.start_fy}
                 labelClass="mb-1"
+                placeholder="MM/YYYY"
                 className="relative"
                 // iconClass="top-4"
+                showOnlyMonth={true}
               />
             </div>
             <div className="basis-1/4">
@@ -72,12 +88,16 @@ const OperationsParameter = ({ formik }: OperationsParameterProps) => {
                 id="end_fy"
                 name="end_fy"
                 label="End Period"
-                selected={formik.value}
-                handleChange={(date) => handleChange(date, "end_fy")}
+                selected={fyDate.end_fy}
+                handleChange={(date) => {
+                  handleChange(date, "end_fy");
+                }}
                 touched={formik.touched.end_fy}
                 error={formik.errors.end_fy}
                 labelClass="mb-1"
                 className="relative"
+                placeholder="MM/YYYY"
+                showOnlyMonth={true}
                 // iconClass="top-4"
               />
             </div>
