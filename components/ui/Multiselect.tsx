@@ -280,37 +280,50 @@ const MultiSelectorItem = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   {
     option: { label: string; value: string; color: string };
+    notCheckedIcon?: any;
+    checkedIcon?: any;
   } & React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
->(({ className, option, children, ...props }, ref) => {
-  const { value: Options, onValueChange, setInputValue } = useMultiSelect();
+>(
+  (
+    { className, option, notCheckedIcon, checkedIcon, children, ...props },
+    ref
+  ) => {
+    const { value: Options, onValueChange, setInputValue } = useMultiSelect();
 
-  const mousePreventDefault = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  }, []);
+    const mousePreventDefault = useCallback((e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+    }, []);
 
-  const isIncluded = Options.some((item) => item.value === option.value);
-  return (
-    <CommandItem
-      ref={ref}
-      {...props}
-      onSelect={() => {
-        onValueChange(option.value);
-        setInputValue("");
-      }}
-      className={cn(
-        "rounded-md cursor-pointer px-2 py-1 transition-colors flex justify-between ",
-        className,
-        isIncluded && "opacity-50 cursor-default",
-        props.disabled && "opacity-50 cursor-not-allowed"
-      )}
-      onMouseDown={mousePreventDefault}
-    >
-      {children}
-      {isIncluded && <Check className="h-4 w-4" />}
-    </CommandItem>
-  );
-});
+    const isIncluded = Options.some((item) => item.value === option.value);
+    return (
+      <CommandItem
+        ref={ref}
+        {...props}
+        onSelect={() => {
+          onValueChange(option.value);
+          setInputValue("");
+        }}
+        className={cn(
+          "rounded-md cursor-pointer px-2 py-1 transition-colors flex justify-start gap-x-2 ",
+          className,
+          isIncluded && "cursor-default",
+          props.disabled && "opacity-50 cursor-not-allowed"
+        )}
+        onMouseDown={mousePreventDefault}
+      >
+        {}
+
+        {checkedIcon
+          ? isIncluded
+            ? checkedIcon
+            : notCheckedIcon
+          : isIncluded && <Check className="h-4 w-4" />}
+        {children}
+      </CommandItem>
+    );
+  }
+);
 
 MultiSelectorItem.displayName = "MultiSelectorItem";
 
