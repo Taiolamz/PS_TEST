@@ -72,6 +72,8 @@ const MultiSelector = ({
         onValueChange([...value, newValue]);
       }
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [value, options]
   );
 
@@ -125,6 +127,7 @@ const MultiSelector = ({
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [value, inputValue, activeIndex, loop]
   );
 
