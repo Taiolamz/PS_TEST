@@ -180,6 +180,9 @@ input:-webkit-autofill:hover {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
+  --primary-color: rgba(0, 128, 128, 1);
+  --primary-accent-color: rgba(0, 128, 128, 0.1);
 }
 
 * {
@@ -208,3 +211,26 @@ input:-webkit-autofill:hover {
   border-radius: 5px;
   background-color: var(--footer-link-color);
 }
+
+/* additional setup start ------------------------ */
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+html {
+  /* font-size: 62.5%; */
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+/* additional setup end ------------------------ */

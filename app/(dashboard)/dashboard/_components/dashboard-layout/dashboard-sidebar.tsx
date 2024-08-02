@@ -9,7 +9,7 @@ import {
 } from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";  
 import { sidebarContents } from "../../sidebar-paths";
 import { useState } from "react";
 

@@ -1,0 +1,70 @@
+.new_dashboard_layout_index_wrap {
+  width: 100vw;
+  height: 100vh;
+    // background-color: red;
+  // display: flex;
+  position: relative;
+  overflow: hidden;
+
+  .side_menu_index_wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15rem;
+    height: 100%;
+    background-color: #ffffff;
+    z-index: 3;
+    border-right: 0.08rem solid rgba(229, 233, 235, 1);
+    display: flex;
+    flex-direction: column;
+    transition: width .3s ease-in-out;
+  }
+
+  .side_menu_index_wrap_closed{
+    width: 5rem;
+  }
+
+  .main_and_header_index_wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - 15rem);
+    height: 100%;
+    background-color: rgba(244, 244, 244, 1);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    transition: width .3s ease-in-out;
+
+   
+
+    .header_nav_box {
+      flex: 0 0 3rem;
+      background-color: #ffffff;
+      border-bottom: 0.08rem solid rgba(229, 233, 235, 1);
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 3;
+
+      &>*{
+        padding: 0rem 2rem;
+      }
+    }
+
+    .main_content_box {
+      flex: 1;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar{
+        display: none;
+      }
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .main_and_header_index_wrap_closed{
+    width: calc(100% - 5rem);
+  }
+}
