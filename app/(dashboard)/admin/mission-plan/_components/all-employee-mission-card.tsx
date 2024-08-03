@@ -74,7 +74,7 @@ export default function AllEmployeeMissionCard() {
             42%{" "}
             <Progress
               value={42}
-              className="h-[6px] bg-[var(--bg-progress-color)] ml-3 mr-7"
+              className="h-[6px] bg-[var(--primary-accent-color)] ml-3 mr-7"
             />
           </h4>
         </div>

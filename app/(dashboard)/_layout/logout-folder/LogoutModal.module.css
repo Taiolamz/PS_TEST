@@ -1,0 +1,34 @@
+.logout_modal_index_wrap {
+  border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.logout_modal_index_wrap .button_wrap {
+  margin-top: auto;
+  background-color: rgb(244, 244, 244);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0.8rem 1.5rem;
+}
+.logout_modal_index_wrap .button_wrap .btn_one {
+  border: 0.05rem solid var(--primary-color);
+}
+.logout_modal_index_wrap .button_wrap .btn_two {
+  background-color: rgb(236, 20, 16) !important;
+}
+.logout_modal_index_wrap .content_wrap {
+  margin: 1.5rem 0rem 2rem 0rem;
+  padding: 0rem 1rem;
+}
+.logout_modal_index_wrap .content_wrap .title {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 2.5rem;
+}
+.logout_modal_index_wrap .content_wrap .text {
+  font-size: 0.9rem;
+  color: rgb(110, 124, 135);
+}/*# sourceMappingURL=LogoutModal.module.css.map */
