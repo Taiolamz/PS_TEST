@@ -59,6 +59,7 @@ export default function AddEmployee() {
     {}
   );
 
+  console.log("units",units)
   return (
     <ChecklistLayout
       title="Employee"
