@@ -37,21 +37,41 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     ref
   ) => {
     return (
-      <Field
-        className={cn(
-          "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-          className
+      <div>
+        {label && (
+          <label
+            htmlFor={label}
+            className={cn(
+              "block text-xs text-[#6E7C87] font-normal pb-2",
+              labelClass
+            )}
+          >
+            {" "}
+            {label}
+            {isRequired && (
+              <span className="inline-block text-red-400 text-lg pl-1 mt-">
+                *
+              </span>
+            )}{" "}
+          </label>
         )}
-        ref={ref}
-        rows={rows}
-        id={id}
-        name={name}
-        onChange={onChange}
-        value={value}
-        error={error}
-        touched={touched}
-        {...props}
-      />
+        <Field
+          className={cn(
+            "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+            className
+          )}
+          ref={ref}
+          rows={rows}
+          as="textarea"
+          id={id}
+          name={name}
+          onChange={onChange}
+          value={value}
+          error={error}
+          touched={touched}
+          {...props}
+        />
+      </div>
     );
   }
 );

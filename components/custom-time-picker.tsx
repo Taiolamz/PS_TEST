@@ -37,6 +37,7 @@ export default function CustomTimeInput({
   touched,
   showIcon = true,
 }: CustomTimeInputProps) {
+  console.log(selected);
   return (
     <div className="relative">
       {label && (
