@@ -15,7 +15,7 @@ const CreateMissionPlan = () => {
         <DashboardLayout
             onBack={() => router.push('/mission-plan?ui=mission-plan')}
         >
-            <section className="flex">
+            <section className="flex relative">
                 <PageSidebar
                     title="Create Mission Plan"
                     menu_items={CREATE_MISSION_PLAN_LINKS}
