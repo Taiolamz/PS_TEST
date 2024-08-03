@@ -4,6 +4,9 @@ import {
   SuccessSkeleton,
   WarningSkeleton,
 } from "@/public/assets/icons";
+import routesPath from "@/utils/routes";
+
+const { ADMIN } = routesPath
 
 export const checklistDetails = [
   {
@@ -29,14 +32,14 @@ export const checklistDetails = [
       },
     ],
     isAllChecked: false,
-    path: Routes.ChecklistRoute.SubsidiaryRoute(),
+    path: ADMIN.CREATE_SUBSIDIARY,
   },
   {
     title: "Set up employee and roles",
     subTitle:
       "Manage users that will be joining your organization and how they are inducted",
     isAllChecked: false,
-    path: Routes.ChecklistRoute.SetupEmployeesAndRolesRoute(),
+    path: ADMIN.ADD_EMPLOYEE,
   },
   {
     title: "Set up mission plan",
@@ -164,11 +167,11 @@ export const checklistSidebar = [
   {
     title: "Organizational structure",
     items: ["Add subsidiary", "Add Branches", "Add Department", "Add unit"],
-    path: Routes.ChecklistRoute.SubsidiaryRoute(),
+    path: ADMIN.SUBSIDIARY,
   },
   {
     title: "Setup Employees and Roles",
-    path: Routes.ChecklistRoute.SetupEmployeesAndRolesRoute(),
+    path: ADMIN.ADD_EMPLOYEE,
   },
   {
     title: "Mission Plan",

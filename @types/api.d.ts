@@ -88,6 +88,11 @@ type StateData = {
   id: string;
 };
 
+type RolesData = {
+  name: string;
+  id: string;
+};
+
 type DepartmentData = {
   id?: string;
   name?: string;
