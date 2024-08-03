@@ -1,16 +1,12 @@
 import ConfirmationModal from "@/components/atoms/modals/confirm";
-import MeasureOfSuccessTable from "@/components/fragment/measure-of-success-table";
+import MeasureOfSuccessTable from "@/app/(dashboard)/admin/mission-plan/create/_component/measure-of-success-table";
 import {
-  MissionHeader,
-  MissionItems,
-  MissionPlanWrapper,
-  MissionWrapper,
   constraints,
   freedom,
   impliedTask,
   specificTask,
   strategicIntent,
-} from "@/components/fragment/mission-plan-template";
+} from "@/utils/data/mission-plan-template";
 import {
   measureColumns,
   measuresData,
@@ -21,10 +17,11 @@ import React, { useState } from "react";
 import back from "@/public/svgs/back.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { MissionHeader, MissionItems, MissionPlanWrapper, MissionWrapper } from "@/components/fragment";
 
 const MissionDetailPreview = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const location = usePathname()
+  const location = usePathname();
 
   const router = useRouter();
   const goBack = () => router.back();
@@ -35,11 +32,13 @@ const MissionDetailPreview = () => {
 
   return (
     <div className="w-[60vw]">
-      <h1 className="text-primary"> Preview Mission Plan Information</h1>
+      <h1 className=" text-[var(--primary-color)] font-[600] text-base">
+        Preview Mission Plan Information
+      </h1>
       <span className="block mt-1 text-[#6E7C87] text-sm">
         Filled Information
       </span>
-      <div className="flex flex-col gap-[12px] mt-[1rem]">
+      <div className="flex flex-col gap-[12px] mt-[26px]">
         <MissionPlanWrapper>
           <MissionHeader
             title="Mission Statement"
