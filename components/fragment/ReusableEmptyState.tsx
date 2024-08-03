@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const EmptyState = ({
+const ReusableEmptyState = ({
   textTitle,
   btnTitle,
   onBulkUpload,
@@ -61,4 +61,4 @@ const EmptyState = ({
   );
 };
 
-export default EmptyState;
+export default ReusableEmptyState;

@@ -6,6 +6,9 @@ import Image from "next/image";
 import unknownImg from "./assests/Unknown_person.png";
 import { useOnClickOutside } from "./UseOutsideClick";
 import routesPath from "@/utils/routes";
+import { useAppSelector } from "@/redux/store";
+import { trimLongString } from "./Helper";
+import { returnInitial } from "@/utils/helpers";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -37,6 +40,7 @@ const HeaderNavBox = ({
   onBack,
 }: myComponentProps) => {
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
   const [dropProfile, setDropProfile] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -66,7 +70,7 @@ const HeaderNavBox = ({
       className={style.img_box}
     >
       <path
-        stroke="teal"
+        stroke="var(--primary-color)"
         d="M11.996 4.75a6.188 6.188 0 00-6.188 6.188v3.76a2 2 0 01-.576 1.404l-.484.491a1.917 1.917 0 00-.553 1.347v0c0 1.059.859 1.917 1.918 1.917h11.766a1.918 1.918 0 001.917-1.917v0c0-.504-.198-.988-.552-1.347l-.484-.49a2 2 0 01-.577-1.405v-3.76M15.163 19.857v.226a3.167 3.167 0 01-6.333 0v-.226"
       ></path>
       <rect
@@ -165,7 +169,12 @@ const HeaderNavBox = ({
   };
 
   return (
-    <div className={style.header_wrap_index_box}>
+    <div
+      onClick={() => {
+        // console.log(user);
+      }}
+      className={style.header_wrap_index_box}
+    >
       {/* back comp start */}
       {back && (
         <>
@@ -223,9 +232,12 @@ const HeaderNavBox = ({
           }}
           className={style.img_drop_box}
         >
-          <figure className={`${style.profile_img_box}`}>
+          {/* <figure className={`${style.profile_img_box}`}>
             <Image alt="profile-img" src={unknownImg} className={style.img} />
-          </figure>
+          </figure> */}
+          <div className={style.avatar_box}>
+            <span>{returnInitial(user?.name as any)}</span>
+          </div>
           <figure className={style.img_box}>{dropIcon}</figure>
         </div>
         {/* profil drop start */}
@@ -233,16 +245,21 @@ const HeaderNavBox = ({
           <div className={style.drop_profile_box}>
             {/* image name box start */}
             <div className={style.img_name_box}>
-              <figure className={`${style.profile_img_box}`}>
+              {/* <figure className={`${style.profile_img_box}`}>
                 <Image
                   alt="profile-img"
                   src={unknownImg}
                   className={style.img}
                 />
-              </figure>
+              </figure> */}
+              <div className={style.avatar_box}>
+                <span>{returnInitial(user?.name as any)}</span>
+              </div>
               <div className={style.name_role_box}>
-                <p className={style.name}>Ayeni Kehinde</p>
-                <p className={style.role}>Software Engineer</p>
+                <p className={style.name}>
+                  {trimLongString(user?.name, 20) || `Ayeni Kehinde`}
+                </p>
+                <p className={style.role}>{user?.designation || ""}</p>
               </div>
             </div>
             {/* image name box end */}

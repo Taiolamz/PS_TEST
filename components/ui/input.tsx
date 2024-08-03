@@ -69,6 +69,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
           ref={ref}
           {...props}
+          defaultValue={type === "color" ? "var(--primary-color)" : ""}
         />
         <span className={cn("text-xs text-red-500 hidden", error && "block")}>
           {error && touched && error}

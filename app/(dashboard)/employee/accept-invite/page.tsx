@@ -82,7 +82,7 @@ const OrganizationInvite = () => {
             const { label, checked } = chi;
             return (
               <div className="flex gap-2 items-center" key={idx}>
-                <DefaultCheckIcon fill={checked ? "#008080" : ""} />
+                <DefaultCheckIcon fill={checked ? "var(--primary-color)" : ""} />
                 <p
                   className={`font-light text-xs transition duration-300 text-custom-gray-scale-300 ${
                     checked ? "text-primary" : ""

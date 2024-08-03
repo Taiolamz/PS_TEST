@@ -93,7 +93,7 @@ const Onboarding = () => {
     initialValues: {
       vision: "",
       mission: "",
-      brand_colour: "",
+      brand_colour: "#008080",
       logo: null,
       end_fy: "",
       start_fy: "",

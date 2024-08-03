@@ -18,6 +18,7 @@ import { useCreateBulkSubsidiariesMutation, useGetSubsidiariesQuery } from '@/re
 import { subsidiaryColumns } from '../checklist/(organizational-structure)/subsidiary/subsidiary-column'
 import { selectUser } from '@/redux/features/auth/authSlice'
 import { useAppSelector } from '@/redux/store'
+import ReusableEmptyState from '@/components/fragment/ReusableEmptyState'
 
 const { ADMIN } = routesPath
 
@@ -164,10 +165,10 @@ const Subsidiary = () => {
   };
 
   return (
-    // <DashboardLayout
-    //     headerTitle='Subsidiary'
-    // >
-      <ChecklistLayout
+    <DashboardLayout
+        headerTitle='Subsidiary'
+    >
+      {/* <ChecklistLayout
       onCancel={handleCancelDialog}
       title="Subsidiaries"
       step={`Step 1 of 4`}
@@ -176,9 +177,9 @@ const Subsidiary = () => {
       showBtn
       shouldProceed
       onProceedBtn={handleProceedDialog}
-    >
+    > */}
       {subsidiaries?.length < 1 ? (
-        <EmptyState
+        <ReusableEmptyState
           loading={isLoadingSubsidiaries}
           textTitle="subsidiaries"
           btnTitle="subsidiary"
@@ -237,8 +238,8 @@ const Subsidiary = () => {
           onCancel={handleBulkRequirementDialog}
         />
       </DashboardModal>
-    </ChecklistLayout>
-    // </DashboardLayout>
+    {/* </ChecklistLayout> */}
+    </DashboardLayout>
   )
 }
 

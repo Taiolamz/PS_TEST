@@ -1,18 +1,25 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import LogoUpload from "@/components/logoUpload/LogoUpload";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { ColorPicker, useColor } from "react-color-palette";
+import "react-color-palette/lib/css/styles.css";
+import { Dictionary } from "@/@types/dictionary";
+import { useOnClickOutside } from "@/app/(dashboard)/_layout/UseOutsideClick";
 
 interface BrandIdentityProps {
   formik: any;
 }
 
 const BrandIdentity = ({ formik }: BrandIdentityProps) => {
-  const [color, setColor] = useState("");
+  const [color, setColor] = useColor("hex", "#008080");
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [logoName, setLogoName] = useState<string | null>("");
-
+  const actionCtx = useContext(ActionContext);
   const fileInputRef = useRef<HTMLInputElement | null>();
+  // const [color, setColor] = useColor("hex", "#121212");
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -29,6 +36,10 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
     setLogoName(null);
   };
 
+  const pickerref = useOnClickOutside(() => {
+    setShowColorPicker(false);
+  });
+
   return (
     <section className="max-w-[38.8125rem]">
       <FormHeader
@@ -44,22 +55,72 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           fileInputRef={fileInputRef}
         />
       </div>
-      <div className="mb-4">
+      <div ref={pickerref} className="mb-4">
         <label className="block mb-6">Brand Color</label>
         <p className="mb-[0.7813rem] text-xs text-[#5A5B5F]">
           Current color <sup className="text-[#CC0905]">*</sup>
         </p>
-        <div className="border flex max-w-[16.0625rem] items-center">
-          <Input
-            id="brand_colour"
-            name="brand_colour"
-            className="w-[3.3125rem] p-0 m-0 border-0"
-            type="color"
-            onChange={formik.handleChange}
-            touched={formik.touched.brand_colour}
-            error={formik.errors.brand_colour}
-          />
-          <p className="text-center w-full text-[#252C32] uppercase">{color}</p>
+        <div
+          style={{
+            position: "relative",
+            height: "2.4rem",
+            padding: ".2rem",
+            borderRadius: ".2rem",
+            cursor: "pointer",
+          }}
+          className="border flex max-w-[16.0625rem] items-center"
+          // onClick={() => {
+          //   setShowColorPicker(!showColorPicker);
+          // }}
+        >
+          <div
+            style={{
+              width: "30%",
+              height: "100%",
+              backgroundColor: `var(--primary-color)`,
+            }}
+            className="color-box"
+            onClick={() => {
+              // console.log(formik?.values);
+              setShowColorPicker(true);
+            }}
+          ></div>
+          {showColorPicker && (
+            <div className="color-picker-wrapper-index">
+              {" "}
+              <ColorPicker
+                // id="brand_colour"
+                // name="brand_colour"
+                width={300}
+                height={200}
+                color={color}
+                // hideHEX
+
+                hideHSV
+                hideRGB
+                onChange={(e) => {
+                  const color = e.hex;
+                  setColor(e);
+                  actionCtx?.setPrimaryColorVals(color);
+                  formik.setFieldValue("brand_colour", color);
+                  // formik.handleChange(e);
+                  console.log(formik?.values);
+                }}
+                // dark
+              />
+            </div>
+          )}
+
+          {!showColorPicker && (
+            <p
+              onClick={() => {
+                setShowColorPicker(true);
+              }}
+              className="text-center w-full text-[#252C32] uppercase"
+            >
+              {color?.hex}
+            </p>
+          )}
         </div>
       </div>
     </section>
@@ -67,3 +128,5 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
 };
 
 export default BrandIdentity;
+
+// actionCtx?.setPrimaryColorVals(color);

@@ -1,10 +1,12 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import ActionContext from "../context/ActionContext";
 import HeaderNavBox from "./HeaderNvaBox";
 import SideMenuNavBox from "./SideMenuNavBox";
 import style from "./styles/DashboardLayout.module.css";
 import ActionContext from "../context/ActionContext";
+import { useAppSelector } from "@/redux/store";
+import { getPrimaryColorAccent } from "@/utils/helpers";
 
 interface myComponentProps {
   children?: React.ReactNode;
@@ -22,6 +24,18 @@ const DashboardLayout = ({
   onBack,
 }: myComponentProps) => {
   const actionCtx = useContext(ActionContext);
+  const { user } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    // document.documentElement.style.setProperty(
+    //   "--primary-color",
+    //   e.hex
+    // );
+    const color = user?.organization?.brand_colour || "" as any;
+    actionCtx?.setPrimaryColorVals(color);
+    // console.log(user);
+  }, [user]);
+
   return (
     <div className={style?.new_dashboard_layout_index_wrap}>
       {/* side menu bar starrt */}
