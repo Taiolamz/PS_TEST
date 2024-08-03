@@ -3,12 +3,30 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+const missionStatementSchema = Yup.object().shape({
+  missionstatement: Yup.string()
+    .min(5, "This field is required")
+    .required("This field is required"),
+});
 
 const MissionStatement = () => {
   const router = useRouter();
   const location = usePathname();
+  const formik = useFormik({
+    initialValues: { missionstatement: "" },
+    validationSchema: missionStatementSchema,
+    onSubmit: (values, { setSubmitting, setErrors, setValues }) => {
+      console.log("Form data", values);
+      setValues({ missionstatement: "" });
+      setErrors({ missionstatement: "" });
+      router.push(`${location}?ui=measure-success`);
+    },
+  });
   return (
-    <div className="w-full ">
+    <form onSubmit={formik.handleSubmit} className="w-full ">
       {/* Mission and Vision */}
       <div className="mb-8">
         <div className="flex items-center gap-x-2 mb-6">
@@ -29,9 +47,17 @@ const MissionStatement = () => {
             id="missionstatement"
             name="missionstatement"
             placeholder="Input Staff Name"
-            className="mt-1 md:min-w-[500px] block px-3 py-2 border border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
-            value=""
+            className="mt-1 md:min-w-[500px] block px-3 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.missionstatement}
           />
+          {formik.errors.missionstatement &&
+            formik.touched.missionstatement && (
+              <div className="text-red-500 text-xs mt-1">
+                {formik.errors.missionstatement}
+              </div>
+            )}
         </div>
       </div>
 
@@ -47,21 +73,18 @@ const MissionStatement = () => {
           type="submit"
           //   disabled={isLoadingStrategicIntent}
           //   loading={isLoadingStrategicIntent}
-          onClick={() => router.push(`${location}?ui=measure-success`)}
           loadingText="Save & Continue"
           className={cn(
             "w-full",
-            // !formik.isValid || isLoadingStrategicIntent
-            //   ? "opacity-50 cursor-not-allowed w-max"
-            //   :
-            "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+            !formik.isValid || !formik.dirty
+              ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
+              : "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
           )}
-          // className={`text-white py-5 px-2 rounded-sm bg-primary border border-primary min-w-28`}
         >
           Save & Continue
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 
