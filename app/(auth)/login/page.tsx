@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const { REGISTER, FORGOT_PASSWORD, ADMIN_DASHBOARD } = routesPath;
+const { REGISTER, FORGOT_PASSWORD, ADMIN } = routesPath;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +26,7 @@ export default function Login() {
     login({ ...values })
       .unwrap()
       .then(() => {
-        router.push(ADMIN_DASHBOARD);
+        router.push(ADMIN.OVERVIEW);
       })
       .catch(() => {
         // console.log(apiError)

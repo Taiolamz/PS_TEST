@@ -303,7 +303,7 @@ export const sideMenuIcons = {
   ),
 };
 
-export const sideMenuList = [
+export const sideMenuList: any = [
   {
     title: "",
     collapse: false,
@@ -313,6 +313,7 @@ export const sideMenuList = [
         name: "Dashboard",
         link: routesPath?.ADMIN?.OVERVIEW,
         icon: sideMenuIcons?.dashboard,
+        relatedLink: [""],
       },
     ],
   },
@@ -325,13 +326,20 @@ export const sideMenuList = [
         name: "Mission Plan",
         link: routesPath?.ADMIN?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
+        relatedLink: ["/admin/mission-plan/kickstart?ui=financial-year"],
       },
       {
         name: "Performance",
         link: routesPath?.ADMIN?.PERFORMANCE,
         icon: sideMenuIcons?.performance,
+        relatedLink: [""],
       },
-      { name: "KPI", link: routesPath?.ADMIN?.KPI, icon: sideMenuIcons?.kpi },
+      {
+        name: "KPI",
+        link: routesPath?.ADMIN?.KPI,
+        icon: sideMenuIcons?.kpi,
+        relatedLink: [""],
+      },
     ],
   },
   {
@@ -365,6 +373,7 @@ export const sideMenuList = [
         name: "Team Management",
         link: routesPath?.ADMIN?.TEAM_MANAGEMENT,
         icon: sideMenuIcons?.team_management,
+        relatedLink: [""]
       },
     ],
   },
