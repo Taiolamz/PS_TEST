@@ -6,7 +6,9 @@ export const employee_auth = "employee";
 const routesPath = {
   ADMIN: {
     OVERVIEW: `/${admin_auth}/overview`,
-    MISSION_PLAN: `/${admin_auth}/mission-plan`,
+    MISSION_PLAN: `/${admin_auth}/mission-plan?ui=mission-plan`,
+    CREATE_MISSION_PLAN: `/${admin_auth}/mission-plan/create`,
+    SINGLE_MISSION_PLAN: `/${admin_auth}/mission-plan/view`,
     PERFORMANCE: `/${admin_auth}/performance`,
     KPI: `/${admin_auth}/kpi`,
     BRANCHES: `/${admin_auth}/branches`,

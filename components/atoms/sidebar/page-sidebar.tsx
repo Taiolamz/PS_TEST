@@ -23,7 +23,7 @@ const PageSidebar = ({title, menu_items, slug = 'ui', handleClick}: PageSidebarP
     const ui = queryParams.get(slug) 
 
     return (
-        <aside className="h-screen border-r w-[201px] overflow-hidden">
+        <aside className="h-screen bg-white border-r w-[201px] overflow-hidden">
             <h3 className="text-[#6E7C87] p-4">{title}</h3>
             {
                 menu_items?.map(({ id, title, path, accessor }) => (
