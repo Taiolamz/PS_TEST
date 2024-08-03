@@ -20,6 +20,7 @@ interface CustomDateInputProps {
   showIcon?: boolean;
   showOnlyMonth?: boolean;
   iconClass?: string;
+  inputClass?: string;
   placeholder?: string;
 }
 
@@ -35,6 +36,7 @@ export default function CustomDateInput({
   handleChange,
   selected,
   error,
+  inputClass,
   touched,
   disabled,
   showOnlyMonth = false,
@@ -66,6 +68,7 @@ export default function CustomDateInput({
         placeholder={placeholder ? placeholder : "MM/DD/YYYY"}
         inputClass={cn(
           "border rounded-[4px] bg-[#F6F8F9] px-3 py-[7px] text-[.85rem] w-full focus:outline-none",
+          inputClass,
           error && touched && "border-red-500"
         )}
         containerClassName="w-full"

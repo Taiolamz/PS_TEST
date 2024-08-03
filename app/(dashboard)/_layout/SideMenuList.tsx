@@ -326,7 +326,7 @@ export const sideMenuList: any = [
         name: "Mission Plan",
         link: routesPath?.ADMIN?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
-        relatedLink: ["/admin/mission-plan/kickstart?ui=financial-year"],
+        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN],
       },
       {
         name: "Performance",
@@ -351,11 +351,13 @@ export const sideMenuList: any = [
         name: "Subsidiaries",
         link: routesPath?.ADMIN?.SUBSIDIARY,
         icon: sideMenuIcons?.subsidiary,
+        relatedLink: [routesPath?.ADMIN?.CREATE_SUBSIDIARY,]
       },
       {
         name: "Branches",
         link: routesPath?.ADMIN?.BRANCHES,
         icon: sideMenuIcons?.branch,
+        relatedLink: [routesPath?.ADMIN?.CREATE_BRANCH],
       },
       {
         name: "Organogram",
