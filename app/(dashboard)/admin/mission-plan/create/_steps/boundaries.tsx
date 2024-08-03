@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import MissionDetailPreview from "./preview";
 
+
 const Boundaries = () => {
   const router = useRouter();
   const location = usePathname();
@@ -22,7 +23,7 @@ const Boundaries = () => {
           </Button>
         </div>
       )}
-      {step === "preview" && <MissionDetailPreview />}
+      {step === "preview" && <MissionDetailPreview/>}
     </>
   );
 };
