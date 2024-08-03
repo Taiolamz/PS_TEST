@@ -4,8 +4,11 @@ import DashboardLayout from '../../_layout/DashboardLayout'
 const Subsidiary = () => {
   return (
     <DashboardLayout
-        headerTitle='Subsidiary'
+        headerTitle=' Admin Subsidiary'
+        // back={true}
+        
     >
+      
     </DashboardLayout>
   )
 }

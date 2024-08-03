@@ -3,12 +3,28 @@
   align-items: center;
   width: 100%;
 }
+.header_wrap_index_box .avatar_box {
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+.header_wrap_index_box .avatar_box span {
+  font-weight: 600;
+  display: inline-block;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-size: 0.8rem;
+}
 .header_wrap_index_box .back_box {
   display: flex;
   align-items: center;
   gap: 0.1rem;
   margin-right: 1rem;
   cursor: pointer;
+  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
 }
@@ -134,12 +150,28 @@
   background-color: #ffffff;
   border-radius: 0.6rem;
   border: 0.15rem solid rgb(244, 244, 244);
-  animation: moveDownSettingDrop 0.5s ease-in-out backwards;
+  -webkit-animation: moveDownSettingDrop 0.5s ease-in-out backwards;
+          animation: moveDownSettingDrop 0.5s ease-in-out backwards;
   box-shadow: 0.1rem 0.1rem 4rem 0.1rem rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 1rem;
+}
+.header_wrap_index_box .profile_wrap_box .drop_profile_box .avatar_box {
+  width: 2.3rem;
+  height: 2.3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+.header_wrap_index_box .profile_wrap_box .drop_profile_box .avatar_box span {
+  font-weight: 600;
+  display: inline-block;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-size: 0.8rem;
 }
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .middle_options_box {
   display: flex;
@@ -169,6 +201,7 @@
      object-fit: contain;
 }
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .switch_box {
+  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
 }
@@ -207,6 +240,17 @@
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .img_name_box .name_role_box .role {
   font-size: 0.65rem;
   color: rgb(110, 124, 135);
+}
+
+@-webkit-keyframes moveDownSettingDrop {
+  0% {
+    transform: translateY(-5%);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
 }
 
 @keyframes moveDownSettingDrop {

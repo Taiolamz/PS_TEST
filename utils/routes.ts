@@ -15,6 +15,7 @@ const routesPath = {
     TEAM_MANAGEMENT: `/${admin_auth}/team-management`,
     SETTINGS: `/${admin_auth}/settings`,
     CHECKLIST: `/${admin_auth}/checklist`,
+    ADD_SUBSIDIARY: `/${admin_auth}/subsidiary/add-subsidiary`,
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,

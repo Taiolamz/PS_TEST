@@ -19,7 +19,7 @@ const FinancialYearPreview = () => {
                 <div className='mb-4'>
                     <div className='bg-[#00808008] p-1 px-2 flex items-center justify-between gap-5'>
                         <span className='text-sm text-[#6E7C87] font-light'>1. Financial Year</span>
-                        <span className='text-primary w-8 h-8 grid place-content-center rounded-full bg-[#0080801A] cursor-pointer'><Pencil size={15} color='#008080' /></span>
+                        <span className='text-primary w-8 h-8 grid place-content-center rounded-full bg-[#0080801A] cursor-pointer'><Pencil size={15} color='var(--primary-color)' /></span>
                     </div>
                     <div className='mt-4 border rounded-[5px] p-5'>
                         <div className="flex items-center gap-4">
