@@ -19,7 +19,7 @@ const notactive =
   "bg-transparent hover:bg-transparent text-custom-gray-scale-300 shadow-none";
 
 const active =
-  "bg-[var(--bg-primary-05)] hover:bg-[var(--bg-primary-05)] text-primary  shadow-none";
+  "bg-[var(--primary-accent-color)] hover:bg-[var(--primary-accent-color)] text-primary  shadow-none";
 
 export default function CustomTab({ slug, options }: CustomTabProps) {
   const router = useRouter();

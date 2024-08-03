@@ -1,4 +1,5 @@
 "use client";
+import { getPrimaryColorAccent } from "@/utils/helpers";
 import { createContext, useState } from "react";
 
 interface contextProps {
@@ -6,6 +7,7 @@ interface contextProps {
   setCollapseSideNav?: (param?: boolean) => void;
   showNavVal?: string;
   setShowNavVal: (param?: string) => void;
+  setPrimaryColorVals: (param?: string) => void;
 }
 
 const ActionContext = createContext<contextProps>({
@@ -13,6 +15,7 @@ const ActionContext = createContext<contextProps>({
   setCollapseSideNav: (param?: boolean) => {},
   showNavVal: "",
   setShowNavVal: (param?: string) => {},
+  setPrimaryColorVals: (param?: string) => {},
 });
 
 export function ActionContextProvider(props?: any) {
@@ -27,11 +30,27 @@ export function ActionContextProvider(props?: any) {
     setShowNavVal(param);
   }
 
+  function setPrimaryColorsFunc(param: any) {
+    document.documentElement.style.setProperty(
+      "--primary-color",
+      param || ("#008080" as string)
+    );
+    document.documentElement.style.setProperty(
+      "--btn-color",
+      param || ("#008080" as string)
+    );
+    document.documentElement.style.setProperty(
+      "--primary-accent-color",
+      getPrimaryColorAccent(param || "#008080") as string
+    );
+  }
+
   const contextValue = {
     collapseSideNav: collapseSideval,
     setCollapseSideNav: setCollapseSideNavFunc,
     showNavVal: showNavVal,
     setShowNavVal: setShowNavValFunc,
+    setPrimaryColorVals: setPrimaryColorsFunc,
   };
 
   return (

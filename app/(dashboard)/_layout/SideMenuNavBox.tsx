@@ -234,7 +234,7 @@ const SideMenuNavBox = () => {
       {/* logo box end */}
       {/* nav link list box start */}
       <div className={style?.nav_link_list_box}>
-        {getListToUse()?.map((chi, idx) => {
+        {getListToUse()?.map((chi: any, idx: any) => {
           return (
             <div className={style?.nav_list_fragment} key={idx}>
               <div
@@ -283,12 +283,14 @@ const SideMenuNavBox = () => {
                     style.nav_link_box_show
                   }`}
                 >
-                  {chi?.navLinks?.map((child, i) => {
+                  {chi?.navLinks?.map((child: any, i: any) => {
                     return (
                       <div
                         key={i}
                         className={`${style.nav_link} ${
                           pathname === child?.link && style.nav_link_active
+                        } ${
+                        child?.relatedLink?.includes(pathname) && style.nav_link_active
                         }  ${
                           actionCtx.collapseSideNav && style.nav_link_closed
                         }`}

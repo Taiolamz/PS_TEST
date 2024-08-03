@@ -22,7 +22,7 @@ export default function WebLayout({ children }: {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextTopLoader color="#008080" showSpinner={false} />
+        <NextTopLoader color="var(--primary-color)" showSpinner={false} />
         {children}
       </body>
     </html>

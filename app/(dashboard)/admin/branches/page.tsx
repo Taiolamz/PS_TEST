@@ -1,29 +1,36 @@
-"use client"
-import React, { useMemo, useState } from 'react'
-import DashboardLayout from '../../_layout/DashboardLayout'
-import { ChecklistLayout } from './_components/checklist-layout'
-import EmptyState from './_components/empty-state'
-import DashboardTable from './_components/checklist-dashboard-table'
-import DashboardModal from './_components/checklist-dashboard-modal'
-import CancelModal from './_components/cancel-modal'
-import ProceedModal from './_components/proceed-modal'
-import BulkUploadModal from './_components/bulk-upload-modal'
-import BulkRequirementModal from './_components/bulk-requrement-modal'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import useDisclosure from './_hooks/useDisclosure'
-import routesPath from '@/utils/routes'
-import { useCreateBulkSubsidiariesMutation, useGetSubsidiariesQuery } from '@/redux/services/checklist/subsidiaryApi'
-import { subsidiaryColumns } from '../checklist/(organizational-structure)/subsidiary/subsidiary-column'
-import { selectUser } from '@/redux/features/auth/authSlice'
-import { useAppSelector } from '@/redux/store'
-import { useCreateBulkBranchesMutation, useGetBranchesQuery } from '@/redux/services/checklist/branchApi'
-import { branchColumns } from './branch-column'
+"use client";
+import React, { useMemo, useState } from "react";
+import DashboardLayout from "../../_layout/DashboardLayout";
+import { ChecklistLayout } from "./_components/checklist-layout";
+// import EmptyState from "./_components/empty-state";
+import DashboardTable from "./_components/checklist-dashboard-table";
+import DashboardModal from "./_components/checklist-dashboard-modal";
+import CancelModal from "./_components/cancel-modal";
+import ProceedModal from "./_components/proceed-modal";
+import BulkUploadModal from "./_components/bulk-upload-modal";
+import BulkRequirementModal from "./_components/bulk-requrement-modal";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import useDisclosure from "./_hooks/useDisclosure";
+import routesPath from "@/utils/routes";
+import {
+  useCreateBulkSubsidiariesMutation,
+  useGetSubsidiariesQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
+import { subsidiaryColumns } from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/store";
+import {
+  useCreateBulkBranchesMutation,
+  useGetBranchesQuery,
+} from "@/redux/services/checklist/branchApi";
+import { branchColumns } from "./branch-column";
+import EmptyState from "../subsidiary/_components/empty-state";
+import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 const Branches = () => {
-
   const emptyStateClass = "flex justify-center items-center";
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
@@ -161,12 +168,9 @@ const Branches = () => {
       });
   };
 
-
   return (
-    // <DashboardLayout
-    //     headerTitle='Branches'
-    // >
-    <ChecklistLayout
+    <DashboardLayout headerTitle="Branches">
+      {/* <ChecklistLayout
       onCancel={handleCancelDialog}
       title="Branches"
       step={`Step 2 of 4`}
@@ -175,9 +179,9 @@ const Branches = () => {
       showBtn
       shouldProceed
       onProceedBtn={handleProceedDialog}
-    >
+    > */}
       {branches?.length < 1 ? (
-        <EmptyState
+        <ReusableEmptyState
           loading={isLoadingBranches}
           textTitle="Branches"
           btnTitle="branch"
@@ -236,10 +240,9 @@ const Branches = () => {
           onCancel={handleBulkRequirementDialog}
         />
       </DashboardModal>
-    </ChecklistLayout>
+      {/* </ChecklistLayout> */}
+    </DashboardLayout>
+  );
+};
 
-    // </DashboardLayout>
-  )
-}
-
-export default Branches
+export default Branches;

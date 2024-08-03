@@ -6,6 +6,23 @@
   //   padding-top: 0.3rem;
   //   padding-bottom: 0.3rem;
 
+  .avatar_box {
+    width: 2.1rem;
+    height: 2.1rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+
+    span {
+      font-weight: 600;
+      display: inline-block;
+      text-transform: uppercase;
+      color: #ffffff;
+      font-size: 0.8rem;
+    }
+  }
+
   .back_box {
     display: flex;
     align-items: center;
@@ -152,7 +169,7 @@
       top: 110%;
       right: 0;
       width: 17rem;
-    //   min-height: 10rem;
+      //   min-height: 10rem;
       background-color: #ffffff;
       border-radius: 0.6rem;
       border: 0.15rem solid rgba(244, 244, 244, 1);
@@ -162,6 +179,23 @@
       flex-direction: column;
       padding: 1rem;
       gap: 1rem;
+
+      .avatar_box{
+        width: 2.3rem;
+        height: 2.3rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+
+        span{
+          font-weight: 600;
+          display: inline-block;
+          text-transform: uppercase;
+          color: #ffffff;
+          font-size: .8rem;
+        }
+      }
 
       .middle_options_box {
         display: flex;
