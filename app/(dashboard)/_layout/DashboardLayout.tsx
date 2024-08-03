@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useContext, useState } from "react";
 // import ActionContext from "../context/ActionContext";
 import HeaderNavBox from "./HeaderNvaBox";

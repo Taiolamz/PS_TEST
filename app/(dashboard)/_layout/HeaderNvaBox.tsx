@@ -1,10 +1,11 @@
-"use client"
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+"use client";
+import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import style from "./styles/HeaderNavBox.module.css";
 import Image from "next/image";
 import unknownImg from "./assests/Unknown_person.png";
 import { useOnClickOutside } from "./UseOutsideClick";
+import routesPath from "@/utils/routes";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -37,6 +38,7 @@ const HeaderNavBox = ({
 }: myComponentProps) => {
   const router = useRouter();
   const [dropProfile, setDropProfile] = useState<boolean>(false);
+  const pathname = usePathname();
 
   const searchIcon = (
     <svg
@@ -144,6 +146,24 @@ const HeaderNavBox = ({
     { name: "Logout", icon: logouticon, onClick: () => {}, red: true },
   ];
 
+  const [switchRole, setSwitchRole] = useState("");
+
+  useEffect(() => {
+    if (pathname?.includes("/admin")) {
+      setSwitchRole("admin");
+    } else {
+      setSwitchRole("employee");
+    }
+  }, []);
+
+  const switchDashboard = () => {
+    if (switchRole === "admin") {
+      router.push(routesPath?.EMPLOYEE?.OVERVIEW);
+    } else {
+      router.push(routesPath?.ADMIN?.OVERVIEW);
+    }
+  };
+
   return (
     <div className={style.header_wrap_index_box}>
       {/* back comp start */}
@@ -250,8 +270,12 @@ const HeaderNavBox = ({
             </div>
             {/* middle options end */}
             {/* switch start */}
-            <div className={style.switch_box}>
-              <p className={style.switch}>SWITCH TO ADMIN DASHOARD</p>
+            <div onClick={switchDashboard} className={style.switch_box}>
+              <p className={style.switch}>
+                {switchRole === "employee"
+                  ? `SWITCH TO ADMIN DASHOARD`
+                  : `SWITCH TO EMPLOYEE DASHOARD`}
+              </p>
             </div>
             {/* switch end */}
           </div>

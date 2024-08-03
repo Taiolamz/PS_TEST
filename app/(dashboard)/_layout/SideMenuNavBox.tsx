@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import React, { useContext, useState } from "react";
-import { sideMenuList } from "./SideMenuList";
+import { sideMenuList, sideMenuEmployeeList } from "./SideMenuList";
 import style from "./styles/SideMenuNavBox.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ActionContext from "../context/ActionContext";
@@ -191,12 +191,19 @@ const dropIcon = (
 );
 
 const SideMenuNavBox = () => {
-  const [showNav, setShowNav] = useState<string>("two");
+  // const [showNav, setShowNav] = useState<string>("two");
   const pathname = usePathname();
   const router = useRouter();
   const actionCtx = useContext(ActionContext);
 
   // console.log(pathname);
+
+  const getListToUse = () => {
+    const val = pathname?.includes("/admin")
+      ? sideMenuList
+      : sideMenuEmployeeList;
+    return val;
+  };
 
   return (
     <div className={style?.side_menu_nav_box_index_wrap}>
@@ -206,7 +213,11 @@ const SideMenuNavBox = () => {
           actionCtx?.collapseSideNav && style?.logo_collapse_box_closed
         }`}
       >
-        <figure className={`${style.img_box} ${style.logo_box} ${actionCtx?.collapseSideNav && style.logo_box_closed}`}>
+        <figure
+          className={`${style.img_box} ${style.logo_box} ${
+            actionCtx?.collapseSideNav && style.logo_box_closed
+          }`}
+        >
           {actionCtx.collapseSideNav ? logoIconCollapse : logoIcon}
         </figure>
         <figure
@@ -223,14 +234,14 @@ const SideMenuNavBox = () => {
       {/* logo box end */}
       {/* nav link list box start */}
       <div className={style?.nav_link_list_box}>
-        {sideMenuList?.map((chi, idx) => {
+        {getListToUse()?.map((chi, idx) => {
           return (
             <div className={style?.nav_list_fragment} key={idx}>
               <div
                 onClick={() => {
-                  chi?.collapseNum === showNav
-                    ? setShowNav("")
-                    : setShowNav(chi?.collapseNum);
+                  chi?.collapseNum === actionCtx.showNavVal
+                    ? actionCtx?.setShowNavVal("")
+                    : actionCtx?.setShowNavVal(chi?.collapseNum);
                 }}
                 className={`${style.title_collapse_box} ${
                   actionCtx.collapseSideNav && style.title_collapse_box_closed
@@ -251,7 +262,7 @@ const SideMenuNavBox = () => {
                 {chi?.collapse && (
                   <div
                     className={`${style.drop_icon} ${
-                      chi?.collapseNum !== showNav &&
+                      chi?.collapseNum !== actionCtx?.showNavVal &&
                       !actionCtx.collapseSideNav &&
                       style.drop_icon_right
                     }`}
@@ -267,7 +278,7 @@ const SideMenuNavBox = () => {
                   className={`${style.nav_link_box} ${
                     !chi?.collapse && style.nav_link_box_show
                   } ${
-                    showNav === chi?.collapseNum &&
+                    actionCtx?.showNavVal === chi?.collapseNum &&
                     chi?.collapse &&
                     style.nav_link_box_show
                   }`}

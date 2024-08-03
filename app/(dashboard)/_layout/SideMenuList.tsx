@@ -1,4 +1,5 @@
 import Routes from "@/lib/routes/routes";
+import routesPath from "@/utils/routes";
 
 export const sideMenuIcons = {
   dashboard: (
@@ -15,6 +16,77 @@ export const sideMenuIcons = {
         fillRule="evenodd"
         d="M7.596 4.991c-2.327 0-2.327.176-2.327 2.327v.021c0 .937 0 1.614.23 1.9.224.278.89.406 2.097.406 1.208 0 1.874-.13 2.098-.407.23-.285.23-.962.23-1.9 0-2.17 0-2.347-2.328-2.347zm0 5.924c-1.426 0-2.497-.15-3.085-.88C4 9.4 4 8.534 4 7.338l.635-.02H4c0-2.43.153-3.597 3.596-3.597s3.596 1.168 3.596 3.596c0 1.217 0 2.083-.51 2.716-.589.73-1.66.88-3.086.88zM16.904 4.991c-2.327 0-2.327.176-2.327 2.327v.021c0 .937 0 1.614.23 1.9.223.278.89.406 2.097.406 1.207 0 1.873-.13 2.097-.407.23-.285.23-.962.23-1.9 0-2.17 0-2.347-2.327-2.347zm0 5.924c-1.427 0-2.497-.15-3.085-.88-.511-.634-.511-1.5-.511-2.696l.634-.02h-.634c0-2.43.153-3.597 3.596-3.597S20.5 4.89 20.5 7.318c0 1.217 0 2.083-.511 2.716-.588.73-1.659.88-3.085.88zM7.596 14.299c-2.327 0-2.327.176-2.327 2.327v.021c0 .937 0 1.614.23 1.9.224.277.89.406 2.097.406 1.208 0 1.874-.13 2.098-.407.23-.285.23-.962.23-1.9 0-2.171 0-2.347-2.328-2.347zm0 5.923c-1.426 0-2.497-.15-3.085-.88C4 18.708 4 17.844 4 16.647l.635-.021H4c0-2.429.153-3.596 3.596-3.596s3.596 1.168 3.596 3.596c0 1.217 0 2.082-.51 2.716-.589.73-1.66.88-3.086.88zM16.904 14.299c-2.327 0-2.327.176-2.327 2.327v.021c0 .937 0 1.614.23 1.9.223.277.89.406 2.097.406 1.207 0 1.873-.13 2.097-.407.23-.285.23-.962.23-1.9 0-2.171 0-2.347-2.327-2.347zm0 5.923c-1.427 0-2.497-.15-3.085-.88-.511-.634-.511-1.498-.511-2.695l.634-.021h-.634c0-2.429.153-3.596 3.596-3.596s3.596 1.168 3.596 3.596c0 1.217 0 2.082-.511 2.716-.588.73-1.659.88-3.085.88z"
         clipRule="evenodd"
+      ></path>
+    </svg>
+  ),
+  todo: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="25"
+      fill="none"
+      viewBox="0 0 24 25"
+      className="img"
+    >
+      <mask
+        id="mask0_14239_3600"
+        style={{ maskType: "alpha" }}
+        width="24"
+        height="25"
+        x="0"
+        y="0"
+        maskUnits="userSpaceOnUse"
+      >
+        <path fill="#D9D9D9" d="M0 0.722H24V24.722H0z"></path>
+      </mask>
+      <g mask="url(#mask0_14239_3600)">
+        <path
+          fill="#5A5B5F"
+          d="M4.05 19.422a.75.75 0 110-1.5.75.75 0 010 1.5zm4.5 0a.75.75 0 010-1.5h11.4a.75.75 0 010 1.5H8.55zm-4.5-5.95a.75.75 0 110-1.5.75.75 0 010 1.5zm4.5 0a.75.75 0 010-1.5h11.4a.75.75 0 010 1.5H8.55zm-4.5-5.95a.75.75 0 110-1.5.75.75 0 010 1.5zm4.5 0a.75.75 0 110-1.5h11.4a.75.75 0 010 1.5H8.55z"
+        ></path>
+      </g>
+    </svg>
+  ),
+  calendar: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="25"
+      fill="none"
+      viewBox="0 0 24 25"
+      className="img"
+    >
+      <mask
+        id="mask0_14239_3584"
+        style={{ maskType: "alpha" }}
+        width="24"
+        height="25"
+        x="0"
+        y="0"
+        maskUnits="userSpaceOnUse"
+      >
+        <path fill="#D9D9D9" d="M0 0.722H24V24.722H0z"></path>
+      </mask>
+      <g mask="url(#mask0_14239_3584)">
+        <path
+          fill="#5A5B5F"
+          d="M5.308 22.222c-.505 0-.933-.175-1.283-.525a1.745 1.745 0 01-.525-1.282V7.03c0-.505.175-.933.525-1.283.35-.35.778-.525 1.283-.525h1.384V3.107h1.539v2.115h7.577V3.107h1.5v2.115h1.384c.505 0 .933.175 1.283.525.35.35.525.778.525 1.283v13.384c0 .506-.175.933-.525 1.283-.35.35-.778.525-1.283.525H5.308zm0-1.5h13.384a.294.294 0 00.212-.096.294.294 0 00.096-.212V11.03H5v9.385c0 .076.032.147.096.211a.294.294 0 00.212.096zM5 9.53h14v-2.5a.294.294 0 00-.096-.212.294.294 0 00-.212-.096H5.308a.294.294 0 00-.212.096A.294.294 0 005 7.03v2.5zm7 5.27a.853.853 0 01-.626-.26.853.853 0 01-.258-.625c0-.245.086-.454.258-.626A.853.853 0 0112 13.03c.245 0 .454.086.626.259a.853.853 0 01.258.626.853.853 0 01-.258.626.853.853 0 01-.626.258zm-4 0a.853.853 0 01-.626-.26.853.853 0 01-.258-.625c0-.245.086-.454.258-.626A.853.853 0 018 13.03c.245 0 .454.086.626.259a.853.853 0 01.258.626.853.853 0 01-.258.626.853.853 0 01-.626.258zm8 0a.853.853 0 01-.626-.26.853.853 0 01-.258-.625c0-.245.086-.454.258-.626A.853.853 0 0116 13.03c.245 0 .453.086.626.259a.853.853 0 01.258.626.853.853 0 01-.258.626.853.853 0 01-.626.258zm-4 3.922a.853.853 0 01-.626-.259.853.853 0 01-.258-.625c0-.245.086-.454.258-.626a.853.853 0 01.626-.259c.245 0 .454.086.626.259a.853.853 0 01.258.626.853.853 0 01-.258.625.853.853 0 01-.626.26zm-4 0a.853.853 0 01-.626-.259.852.852 0 01-.258-.625c0-.245.086-.454.258-.626A.853.853 0 018 16.953c.245 0 .454.086.626.259a.853.853 0 01.258.626.852.852 0 01-.258.625.853.853 0 01-.626.26zm8 0a.853.853 0 01-.626-.259.853.853 0 01-.258-.625c0-.245.086-.454.258-.626a.853.853 0 01.626-.259c.245 0 .453.086.626.259a.853.853 0 01.258.626.853.853 0 01-.258.625.853.853 0 01-.626.26z"
+        ></path>
+      </g>
+    </svg>
+  ),
+  my_team: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="25"
+      fill="none"
+      viewBox="0 0 24 25"
+      className="img"
+    >
+      <path
+        fill="#5A5B5F"
+        d="M8 17.514c-.451 0-.835-.158-1.151-.474a1.567 1.567 0 01-.474-1.151c0-.451.158-.835.474-1.151.316-.316.7-.474 1.151-.474.451 0 .835.158 1.151.474.316.316.474.7.474 1.15 0 .452-.158.836-.474 1.152-.316.316-.7.474-1.151.474zm8 0c-.451 0-.835-.158-1.151-.474a1.567 1.567 0 01-.474-1.151c0-.451.158-.835.474-1.151.316-.316.7-.474 1.151-.474.451 0 .835.158 1.151.474.316.316.474.7.474 1.15 0 .452-.158.836-.474 1.152-.316.316-.7.474-1.151.474zm-4-6.333c-.451 0-.835-.158-1.151-.474a1.567 1.567 0 01-.474-1.151c0-.452.158-.835.474-1.151.316-.316.7-.474 1.151-.474.451 0 .835.158 1.151.474.316.316.474.7.474 1.15 0 .452-.158.836-.474 1.152-.316.316-.7.474-1.151.474z"
       ></path>
     </svg>
   ),
@@ -239,7 +311,7 @@ export const sideMenuList = [
     navLinks: [
       {
         name: "Dashboard",
-        link: "/dashboard",
+        link: routesPath?.ADMIN?.OVERVIEW,
         icon: sideMenuIcons?.dashboard,
       },
     ],
@@ -249,9 +321,17 @@ export const sideMenuList = [
     collapse: true,
     collapseNum: "two",
     navLinks: [
-      { name: "Mission Plan", link: "/mission-plan?ui=mission-plan", icon: sideMenuIcons?.mission_plan },
-      { name: "Performance", link: "", icon: sideMenuIcons?.performance },
-      { name: "KPI", link: "", icon: sideMenuIcons?.kpi },
+      {
+        name: "Mission Plan",
+        link: routesPath?.ADMIN?.MISSION_PLAN,
+        icon: sideMenuIcons?.mission_plan,
+      },
+      {
+        name: "Performance",
+        link: routesPath?.ADMIN?.PERFORMANCE,
+        icon: sideMenuIcons?.performance,
+      },
+      { name: "KPI", link: routesPath?.ADMIN?.KPI, icon: sideMenuIcons?.kpi },
     ],
   },
   {
@@ -259,9 +339,21 @@ export const sideMenuList = [
     collapse: true,
     collapseNum: "three",
     navLinks: [
-      { name: "Subsidiaries", link: "", icon: sideMenuIcons?.subsidiary },
-      { name: "Branches", link: "", icon: sideMenuIcons?.branch },
-      { name: "Organogram", link: "", icon: sideMenuIcons?.organogram },
+      {
+        name: "Subsidiaries",
+        link: routesPath?.ADMIN?.SUBSIDIARY,
+        icon: sideMenuIcons?.subsidiary,
+      },
+      {
+        name: "Branches",
+        link: routesPath?.ADMIN?.BRANCHES,
+        icon: sideMenuIcons?.branch,
+      },
+      {
+        name: "Organogram",
+        link: routesPath?.ADMIN?.ORGANOGRAM,
+        icon: sideMenuIcons?.organogram,
+      },
     ],
   },
   {
@@ -271,7 +363,7 @@ export const sideMenuList = [
     navLinks: [
       {
         name: "Team Management",
-        link: "",
+        link: routesPath?.ADMIN?.TEAM_MANAGEMENT,
         icon: sideMenuIcons?.team_management,
       },
     ],
@@ -281,7 +373,87 @@ export const sideMenuList = [
     collapse: true,
     collapseNum: "five",
     navLinks: [
-      { name: "Settings", link: "", icon: sideMenuIcons?.settings },
+      {
+        name: "Settings",
+        link: routesPath?.ADMIN?.SETTINGS,
+        icon: sideMenuIcons?.settings,
+      },
+    ],
+  },
+];
+
+export const sideMenuEmployeeList = [
+  {
+    title: "",
+    collapse: false,
+    collapseNum: "one",
+    navLinks: [
+      {
+        name: "Dashboard",
+        link: routesPath?.EMPLOYEE?.OVERVIEW,
+        icon: sideMenuIcons?.dashboard,
+      },
+    ],
+  },
+  {
+    title: "TOOLS",
+    collapse: true,
+    collapseNum: "two",
+    navLinks: [
+      {
+        name: "Mission Plan",
+        link: routesPath?.EMPLOYEE?.MISSION_PLAN,
+        icon: sideMenuIcons?.mission_plan,
+      },
+      {
+        name: "Mission Plan Report",
+        link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+        icon: sideMenuIcons?.performance,
+      },
+      {
+        name: "KPI",
+        link: routesPath?.EMPLOYEE?.KPI,
+        icon: sideMenuIcons?.kpi,
+      },
+    ],
+  },
+  {
+    title: "MY ORGANIZATION",
+    collapse: true,
+    collapseNum: "three",
+    navLinks: [
+      {
+        name: "My Team",
+        link: routesPath?.EMPLOYEE?.MY_TEAM,
+        icon: sideMenuIcons?.my_team,
+      },
+      {
+        name: "Calendar",
+        link: routesPath?.EMPLOYEE?.CALENDAR,
+        icon: sideMenuIcons?.calendar,
+      },
+      {
+        name: "To Do’s",
+        link: routesPath?.EMPLOYEE?.TO_DO,
+        icon: sideMenuIcons?.todo,
+      },
+      {
+        name: "Organogram",
+        link: routesPath?.EMPLOYEE?.ORGANOGRAM,
+        icon: sideMenuIcons?.organogram,
+      },
+    ],
+  },
+  {
+    title: "SETTINGS",
+    collapse: true,
+    collapseNum: "five",
+    navLinks: [
+      {
+        name: "Settings",
+        link: routesPath?.EMPLOYEE?.SETTINGS,
+        icon: sideMenuIcons?.settings,
+      },
     ],
   },
 ];

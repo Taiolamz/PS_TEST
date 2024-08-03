@@ -61,7 +61,7 @@ export default function Page() {
   const ui = searchParams.get("ui");
 
   return (
-    <DashboardLayout>
+    <DashboardLayout headerTitle="Mission Plan">
       <div className="p-5 w-full">
         {/* Change the PAGE_TABS here to simulate the different tabs */}
         <CustomTab options={PAGE_TABS.MANAGIN_DIRECTOR} slug="ui" />
