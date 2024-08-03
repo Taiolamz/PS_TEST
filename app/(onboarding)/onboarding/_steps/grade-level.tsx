@@ -23,8 +23,12 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
   };
 
   const handleStaffLevel = (newValue: string, index: number) => {
-    formik.setFieldValue(`staff_levels.${index}.level`, newValue);
+    formik.setFieldValue(`staff_levels.${index}.position`, newValue);
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2cfdf78 (merge fixes)
   return (
     <section className="max-w-[54.625rem]">
       <FormHeader
@@ -52,7 +56,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                         (staff_levels: any, index: number) => (
                           <div
                             key={index}
-                            className="grid grid-cols-2 items-center space-x-2 w-[37.9375rem] mb-5 relative mt-4"
+                            className="grid grid-cols-2 items-center space-x-2 w-[37.9375rem] mb-5 relative"
                           >
                             <Input
                               type="text"
@@ -71,7 +75,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               )}
 
                             <Field
-                              name={`staff_levels.${index}.level`}
+                              name={`staff_levels.${index}.position`}
                               component={CustomSelect}
                               options={Array.from({ length: 10 }, (_, idx) => {
                                 return {
@@ -79,22 +83,24 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                                   value: `Level ${idx + 1}`,
                                 };
                               })}
-                              placeholder={"Select Level"}
                               selected={
-                                formik.values.staff_levels?.[index]?.level
+                                formik.values.staff_levels?.[index]?.position
                               }
                               setSelected={(value: any) => {
                                 handleStaffLevel(value, index);
                                 setEmployeePosition(value);
                               }}
                               className="mr-2"
-                              value={formik.values.staff_levels?.[index]?.level}
+                              value={
+                                formik.values.staff_levels?.[index]?.position
+                              }
                             />
 
-                            {formik.errors.staff_levels?.[index]?.level &&
-                              formik.touched.staff_levels?.[index]?.level && (
+                            {formik.errors.staff_levels?.[index]?.position &&
+                              formik.touched.staff_levels?.[index]
+                                ?.position && (
                                 <div className="text-red-500">
-                                  {formik.errors.staff_levels[index].level}
+                                  {formik.errors.staff_levels[index].position}
                                 </div>
                               )}
 
@@ -115,7 +121,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
 
                     <button
                       type="button"
-                      onClick={() => push({ name: "", level: "" })}
+                      onClick={() => push({ name: "", position: "" })}
                       className="flex items-center gap-2 mt-5 text-primary"
                     >
                       <Icon name="add" width={24} height={24} />

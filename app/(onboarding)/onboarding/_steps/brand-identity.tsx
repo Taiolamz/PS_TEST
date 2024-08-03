@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2cfdf78 (merge fixes)
 import React, { useRef, useState } from "react";
 import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
