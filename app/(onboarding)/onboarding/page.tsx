@@ -21,7 +21,7 @@ import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 
-const { DASHBOARD } = routesPath
+const { ADMIN } = routesPath
 
 const Onboarding = () => {
   const router = useRouter();
@@ -84,7 +84,7 @@ const Onboarding = () => {
         .unwrap()
         .then((payload) => {
           toast.success("Organization Created Successfully")
-          router.push(DASHBOARD)
+          router.push(ADMIN.OVERVIEW)
         });
     } catch (error) {}
   };

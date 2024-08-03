@@ -1,10 +1,9 @@
 "use client"
 import { PageSidebar } from '@/components/atoms';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DashboardLayout } from '../../dashboard/_components/dashboard-layout';
-import DashboardNavContent from '../../dashboard/_components/dashboard-layout/dashboard-nav-content';
 import { Boundaries, ImpliedTask, MeasureOfSuccess, MissionPlanOverview, MissionStatement, SpecifiedTask, StrategicIntent } from './_steps';
 import { CREATE_MISSION_PLAN_LINKS } from './_data';
+import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
 
 const CreateMissionPlan = () => {
     const queryParams = useSearchParams()
@@ -14,7 +13,7 @@ const CreateMissionPlan = () => {
 
     return (
         <DashboardLayout
-            dynamiccontent={<DashboardNavContent title="Mission Plan" showBack handleGoBack={() => router.push('/mission-plan?ui=mission-plan')} />}
+            onBack={() => router.push('/mission-plan?ui=mission-plan')}
         >
             <section className="flex">
                 <PageSidebar

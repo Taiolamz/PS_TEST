@@ -66,9 +66,7 @@ const SignupPage = () => {
     if (ui === "employee-information") {
       register({ ...formik.values })
         .unwrap()
-        .then((payload) => {
-          toast.success("Account Registered Successfully");
-        });
+        .then(() => {});
     }
   };
 

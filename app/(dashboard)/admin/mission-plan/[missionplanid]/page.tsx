@@ -1,12 +1,11 @@
 "use client";
+import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import React from "react";
 // import { useRouter, useSearchParams } from "next/navigation";
 // import AllEmployeeTab from "./all-employee-tab";
 // // import { PAGE_TABS } from "../_data";
 // import CustomTab from "@/components/custom-tab";
 // import { useAppSelector } from "@/redux/store";
-import { DashboardLayout } from "../../dashboard/_components/dashboard-layout";
-import DashboardNavContent from "../../dashboard/_components/dashboard-layout/dashboard-nav-content";
 
 export default function MissionPlanId() {
   // const searchParams = useSearchParams();
@@ -14,12 +13,7 @@ export default function MissionPlanId() {
   // const data = useAppSelector((state) => state?.auth?.user);
   // const ui = searchParams.get("ui");
   return (
-    <DashboardLayout
-      childrenclassName="overflow-y-auto"
-      dynamiccontent={
-        <DashboardNavContent title="Mission Plan 2023" showBack />
-      }
-    >
+    <DashboardLayout>
       <div className="space-y-5 mt-8 mb-6 p-5 text-[var(--text-color3)]">
         {/* Financial Year */}
         <div className="border rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">

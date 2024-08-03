@@ -4,8 +4,7 @@ import { PageSidebar } from "@/components/atoms";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CREATE_FY_LINKS } from "./_data";
 import { FinancialYear, MissionVision, StrategicPillar } from "./_steps";
-import { DashboardLayout } from "../../dashboard/_components/dashboard-layout";
-import DashboardNavContent from "../../dashboard/_components/dashboard-layout/dashboard-nav-content";
+import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 
 export default function Create() {
   const queryParams = useSearchParams()
@@ -13,7 +12,8 @@ export default function Create() {
 
   return (
     <DashboardLayout
-      dynamiccontent={<DashboardNavContent title="Mission Plan" showBack />}
+      headerTitle="Mission Plan"
+      back
     >
       <section className="flex">
         <PageSidebar
