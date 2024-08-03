@@ -25,10 +25,6 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
   const handleStaffLevel = (newValue: string, index: number) => {
     formik.setFieldValue(`staff_levels.${index}.position`, newValue);
   };
-<<<<<<< HEAD
-=======
-
->>>>>>> 2cfdf78 (merge fixes)
   return (
     <section className="max-w-[54.625rem]">
       <FormHeader
