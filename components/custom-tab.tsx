@@ -48,7 +48,7 @@ export default function CustomTab({ slug, options }: CustomTabProps) {
   }, []);
 
   return (
-    <div className="border rounded-[5px] px-[7px] py-[3px] w-fit space-x-4 text-sm">
+    <div className="border bg-white rounded-[5px] px-[7px] py-[3px] w-fit space-x-4 text-sm">
       {options?.map(({ id, title, accessor }) => (
         <Button
           key={id}
