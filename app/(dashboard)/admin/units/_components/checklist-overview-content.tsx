@@ -5,7 +5,7 @@ import { DefaultCheckIcon, DefaultRightArrowIcon } from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { checklistDetails } from "../checklist-steps";
+import { checklistDetails } from "../../checklist/checklist-steps";
 
 const ChecklistOverviewContent = () => {
   const [progress, setProgress] = React.useState(13);
