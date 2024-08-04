@@ -1,5 +1,5 @@
 "use client";
-import { useAcceptEmployeeInvitationMutation } from "@/redux/services/employee/employeeApi";
+import { useAcceptEmployeeInvitationMutation, useGetInvitedEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useAppSelector } from "@/redux/store";
 import { checkUserRole } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
@@ -67,6 +67,16 @@ export const useEmployeeInvite = () => {
 
   const [acceptEmployeeInvitation, { isLoading: isAcceptingInvitation }] =
     useAcceptEmployeeInvitationMutation();
+
+  const {
+    data: invitedUsersData,
+    isLoading: isLoadingInvitedUsers,
+    isFetching: isFetchingInvitedUsers,
+  } = useGetInvitedEmployeesQuery("01j4en6b771yestq0vc6y7zhqf+");
+
+  const invitedUsers = invitedUsersData ?? [];
+
+  console.log(invitedUsers, "invited users");
 
   const handleSubmit = async () => {
     const payload = {

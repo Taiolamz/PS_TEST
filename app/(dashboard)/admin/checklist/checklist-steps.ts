@@ -6,7 +6,7 @@ import {
 } from "@/public/assets/icons";
 import routesPath from "@/utils/routes";
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const checklistDetails = [
   {
@@ -56,7 +56,8 @@ export const checklistDetails = [
       },
     ],
     isAllChecked: false,
-    path: Routes.ChecklistRoute.MissionPlanTemplateRoute(),
+    // path: Routes.ChecklistRoute.MissionPlanTemplateRoute(),
+    path: ADMIN.MISSION_PLAN,
   },
 ];
 

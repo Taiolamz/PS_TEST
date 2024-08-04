@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 import { generateQueryString } from "@/utils/helpers";
 
@@ -11,13 +10,6 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         body: payload,
       }),
       invalidatesTags: ["Subsidiaries"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     createBulkSubsidiaries: builder.mutation({
@@ -26,14 +18,6 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Subsidiaries"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     getSubsidiaries: builder.query<SubsidiaryData[], QueryParams>({
@@ -45,6 +29,15 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
         response.data.data,
     }),
+
+    downloadSubsidiaryTemplate: builder.query({
+      query: (format: string) => ({
+        url: `/admin/subsidiary/BulkUpload-template?format=${format}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
@@ -52,4 +45,5 @@ export const {
   useCreateSubsidiaryMutation,
   useCreateBulkSubsidiariesMutation,
   useGetSubsidiariesQuery,
+  useLazyDownloadSubsidiaryTemplateQuery,
 } = subsidiaryApi;

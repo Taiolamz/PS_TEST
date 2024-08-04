@@ -9,13 +9,6 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error) {
-          // console.error('Error:', error);
-        }
-      },
     }),
 
     rejectEmployeeInvitation: builder.mutation({
@@ -24,13 +17,15 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error) {
-          // console.error('Error:', error);
-        }
-      },
+    }),
+
+    getInvitedEmployees: builder.query<BranchData[], string>({
+      query: (id) => ({
+        url: `/admin/invitation/${id}`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: { data: BranchData[] } }) =>
+        response.data.data,
     }),
   }),
 });
@@ -38,4 +33,5 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
 export const {
   useAcceptEmployeeInvitationMutation,
   useRejectEmployeeInvitationMutation,
+  useGetInvitedEmployeesQuery,
 } = employeeInvitationApi;

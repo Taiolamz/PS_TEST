@@ -1,8 +1,6 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
-import { ChecklistLayout } from "./_components/checklist-layout";
-// import EmptyState from "./_components/empty-state";
 import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
@@ -13,26 +11,21 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
 import routesPath from "@/utils/routes";
-import {
-  useCreateBulkSubsidiariesMutation,
-  useGetSubsidiariesQuery,
-} from "@/redux/services/checklist/subsidiaryApi";
-import { subsidiaryColumns } from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/store";
 import {
   useCreateBulkBranchesMutation,
   useGetBranchesQuery,
+  useLazyDownloadBranchTemplateQuery,
 } from "@/redux/services/checklist/branchApi";
 import { branchColumns } from "./branch-column";
-import EmptyState from "../subsidiary/_components/empty-state";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
 const Branches = () => {
-  const emptyStateClass = "flex justify-center items-center";
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
 
@@ -129,6 +122,7 @@ const Branches = () => {
     data: branchesData,
     isLoading: isLoadingBranches,
     isFetching: isFetchingBranches,
+    refetch: refetchBranches,
   } = useGetBranchesQuery({
     to: 0,
     total: 0,
@@ -150,6 +144,7 @@ const Branches = () => {
 
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
     useCreateBulkBranchesMutation();
+  const [downloadBranchTemplate] = useLazyDownloadBranchTemplateQuery();
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
@@ -160,39 +155,44 @@ const Branches = () => {
       .unwrap()
       .then(() => {
         toast.success("Branches Uploaded Successfully");
+        handleBulkUploadDialog();
+        refetchBranches();
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            handleBulkUploadDialog();
           }, 2000);
         });
       });
   };
 
+  const handleTemplateDownload = async (file: string) => {
+    toast.loading("downloading...");
+    downloadBranchTemplate(file)
+      .unwrap()
+      .then((payload) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "branch_template",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
+  };
+
   return (
     <DashboardLayout headerTitle="Branches">
-      {/* <ChecklistLayout
-      onCancel={handleCancelDialog}
-      title="Branches"
-      step={`Step 2 of 4`}
-      className={branches?.length < 1 ? emptyStateClass : ""}
-      btnDisabled={branches?.length < 1}
-      showBtn
-      shouldProceed
-      onProceedBtn={handleProceedDialog}
-    > */}
       <ReusableStepListBox
         btnText="Continue"
         activeStep="2"
         totalStep="4"
         title="Branch"
         btnDisabled={branches?.length < 1}
-        // loading={isCreatingSubsidiary}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-        // back
-        // hideStep
-        // fixed
       />
       <section className="p-5">
         {branches?.length < 1 ? (
@@ -251,7 +251,7 @@ const Branches = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => console.log("template download")}
+            onTemplateDownload={() => handleTemplateDownload("csv")}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>

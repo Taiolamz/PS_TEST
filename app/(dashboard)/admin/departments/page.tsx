@@ -6,12 +6,11 @@ import BulkUploadModal from "./_components/bulk-upload-modal";
 import ProceedModal from "./_components/proceed-modal";
 import CancelModal from "./_components/cancel-modal";
 import DashboardTable from "./_components/checklist-dashboard-table";
-import EmptyState from "./_components/empty-state";
-import { ChecklistLayout } from "./_components/checklist-layout";
 import { toast } from "sonner";
 import {
   useCreateBulkDepartmentsMutation,
   useGetDepartmentsQuery,
+  useLazyDownloadDepartmentTemplateQuery,
 } from "@/redux/services/checklist/departmentApi";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
@@ -22,11 +21,11 @@ import useDisclosure from "./_hooks/useDisclosure";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
 const Departments = () => {
-  const emptyStateClass = "flex justify-center items-center";
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
 
@@ -123,6 +122,7 @@ const Departments = () => {
     data: departmentData,
     isLoading: isLoadingDepartments,
     isFetching: isFetchingDepartments,
+    refetch: refetchDepartments,
   } = useGetDepartmentsQuery({
     to: 0,
     total: 0,
@@ -144,54 +144,55 @@ const Departments = () => {
 
   const [createBulkDepartments, { isLoading: isCreatingBulkDepartments }] =
     useCreateBulkDepartmentsMutation();
+  const [downloadDepartmentTemplate] = useLazyDownloadDepartmentTemplateQuery();
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
-
-    const payload = {
-      organization_id: organization?.id,
-      file: bulkFile,
-      state_id: "lagos",
-      branch_id: "kili",
-    };
-    console.log(payload, "form data");
-    await createBulkDepartments(payload)
+    const formData = new FormData();
+    formData.append("organization_id", organization?.id as string);
+    formData.append("file", bulkFile);
+    await createBulkDepartments(formData)
       .unwrap()
       .then(() => {
         toast.success("Departments Uploaded Successfully");
+        handleBulkUploadDialog();
+        refetchDepartments();
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            handleBulkUploadDialog();
           }, 2000);
         });
       });
   };
 
+  const handleTemplateDownload = async (file: string) => {
+    toast.loading("downloading...");
+    downloadDepartmentTemplate({ template: "Department", format: file })
+      .unwrap()
+      .then((payload) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "department_template",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
+  };
+
   return (
     <DashboardLayout headerTitle="Department">
-      {/* <ChecklistLayout
-        onCancel={handleCancelDialog}
-        title="Departments"
-        step={`Step 3 of 4`}
-        className={departments?.length < 1 ? emptyStateClass : ""}
-        btnDisabled={departments?.length < 1}
-        showBtn
-        shouldProceed
-        onProceedBtn={handleProceedDialog}
-      > */}
       <ReusableStepListBox
         btnText="Continue"
-        activeStep="1"
+        activeStep="3"
         totalStep="4"
         title="Department"
         btnDisabled={departments?.length < 1}
-        // loading={isCreatingSubsidiary}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-        // back
-        // hideStep
-        // fixed
       />
       <section className="p-5">
         {departments?.length < 1 ? (
@@ -253,11 +254,10 @@ const Departments = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => console.log("template download")}
+            onTemplateDownload={() => handleTemplateDownload("csv")}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>
-        {/* </ChecklistLayout> */}
       </section>
     </DashboardLayout>
   );
