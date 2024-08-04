@@ -68,7 +68,7 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "rgba(0, 128, 128, 1)",
+          DEFAULT: "var(--primary-color)",
           // DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
@@ -105,7 +105,7 @@ const config = {
         grayDark: "#252C32",
         graySecondary: "#162238",
         danger: "#CC0905",
-        pry: "#008080",
+        pry: "var(--primary-color)",
       },
       borderRadius: {
         lg: "var(--radius)",

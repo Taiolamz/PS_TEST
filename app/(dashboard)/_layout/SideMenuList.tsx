@@ -303,7 +303,9 @@ export const sideMenuIcons = {
   ),
 };
 
-export const sideMenuList = [
+
+// ADMIN ROUTES SIDEBAR LINK
+export const sideMenuList: any = [
   {
     title: "",
     collapse: false,
@@ -313,6 +315,7 @@ export const sideMenuList = [
         name: "Dashboard",
         link: routesPath?.ADMIN?.OVERVIEW,
         icon: sideMenuIcons?.dashboard,
+        relatedLink: [""],
       },
     ],
   },
@@ -325,13 +328,20 @@ export const sideMenuList = [
         name: "Mission Plan",
         link: routesPath?.ADMIN?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
+        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN, routesPath?.ADMIN?.CREATE_MISSION_PLAN, routesPath?.ADMIN?.SINGLE_MISSION_PLAN, routesPath?.ADMIN?.KICK_START_MISSION_PLAN, routesPath?.ADMIN?.MAIN_MISSION_PLAN],
       },
       {
         name: "Performance",
         link: routesPath?.ADMIN?.PERFORMANCE,
         icon: sideMenuIcons?.performance,
+        relatedLink: [""],
       },
-      { name: "KPI", link: routesPath?.ADMIN?.KPI, icon: sideMenuIcons?.kpi },
+      {
+        name: "KPI",
+        link: routesPath?.ADMIN?.KPI,
+        icon: sideMenuIcons?.kpi,
+        relatedLink: [""],
+      },
     ],
   },
   {
@@ -343,11 +353,13 @@ export const sideMenuList = [
         name: "Subsidiaries",
         link: routesPath?.ADMIN?.SUBSIDIARY,
         icon: sideMenuIcons?.subsidiary,
+        relatedLink: [routesPath?.ADMIN?.CREATE_SUBSIDIARY, routesPath?.ADMIN?.SUBSIDIARY]
       },
       {
         name: "Branches",
         link: routesPath?.ADMIN?.BRANCHES,
         icon: sideMenuIcons?.branch,
+        relatedLink: [routesPath?.ADMIN?.CREATE_BRANCH, routesPath?.ADMIN?.BRANCHES],
       },
       {
         name: "Organogram",
@@ -365,6 +377,7 @@ export const sideMenuList = [
         name: "Team Management",
         link: routesPath?.ADMIN?.TEAM_MANAGEMENT,
         icon: sideMenuIcons?.team_management,
+        relatedLink: [""]
       },
     ],
   },
@@ -382,6 +395,8 @@ export const sideMenuList = [
   },
 ];
 
+
+// EMPLOYEE ROUTES SIDEBAR LINKS
 export const sideMenuEmployeeList = [
   {
     title: "",

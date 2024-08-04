@@ -46,7 +46,7 @@ export const subsidiaryColumns = (
     cell: ({ row }) => (
       <div className="capitalize">
         {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[150px]" />
         ) : (
           row.getValue("name")
         )}
@@ -59,7 +59,7 @@ export const subsidiaryColumns = (
     cell: ({ row }) => (
       <div className="capitalize text-right mr-24">
         {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[150px]" />
         ) : (
           row.getValue("country")
         )}
@@ -72,7 +72,7 @@ export const subsidiaryColumns = (
     cell: ({ row }) => (
       <div className="capitalize text-left">
         {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[150px]" />
         ) : (
           row.getValue("address")
         )}

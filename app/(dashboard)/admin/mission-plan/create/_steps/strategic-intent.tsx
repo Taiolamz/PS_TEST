@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ErrorMessage, FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle } from "lucide-react";
 import { LiaTimesSolid } from "react-icons/lia";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 
 interface StrategicIntentProps {
@@ -45,6 +45,8 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   const [addStrategicIntent, { isLoading: isLoadingStrategicIntent }] =
     useAddStrategicIntentMutation();
 
+  const [initialValues, setInitialValues] = useState();
+
   const handleSaveStrategicIntent = async () => {
     const { intents, mission_plan_id, strategic_intent_id } = formik.values;
 
@@ -82,43 +84,41 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     }
   };
 
-  // Parse behaviours string into an array
-  const parsedBehaviours = currentMissionPlan?.strategic_intents.map(
-    (item: any) => {
-      const behaviours = JSON.parse(item.behaviours).map(
-        (behaviour: string) => ({
+  // This sets the intial saved values
+  useEffect(() => {
+    const intents = currentMissionPlan?.strategic_intents.map(
+      (intent: any) => ({
+        intent: intent.intent,
+        behaviours: JSON.parse(intent.behaviours).map((behaviour: string) => ({
           id: uuidv4(),
           value: behaviour,
-        })
-      );
-      return behaviours;
+        })),
+      })
+    );
+
+    setInitialValues(intents);
+  }, [currentMissionPlan]);
+
+  // This prevents an infinite loop by memoizing the values
+  const initialVals = useMemo(() => {
+    if (initialValues) {
+      return initialValues;
     }
-  );
-
-  // Parse behaviours string into an array
-  const intents = currentMissionPlan?.strategic_intents.map((intent: any) => ({
-    intent: intent.intent,
-    behaviours: JSON.parse(intent.behaviours).map((behaviour: string) => ({
-      id: uuidv4(),
-      value: behaviour,
-    })),
-  }));
-
-  console.log(intents, [
-    {
-      intent: "Strategic Intent 1",
-      behaviours: [
+    return {
+      intents: [
         {
-          id: "17b5c217-2d85-44a8-b88a-0564ed67c46c",
-          value: "Behaviour 1",
+          intent: "",
+          behaviours: [{ id: uuidv4(), value: "" }],
         },
-      ] || [{ id: uuidv4(), value: "" }],
-    },
-  ]);
+      ],
+      mission_plan_id: "",
+      strategic_intent_id: "",
+    };
+  }, [initialValues]);
 
   const formik = useFormik<any>({
     initialValues: {
-      intents: intents || [
+      intents: initialVals || [
         {
           intent: "",
           behaviours: [{ id: uuidv4(), value: "" }],
@@ -129,6 +129,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     },
     onSubmit: handleSaveStrategicIntent,
     validationSchema: validationSchema,
+    enableReinitialize: true,
   });
 
   const errorIntents = formik.errors.intents as any;
@@ -217,9 +218,12 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                     <button
                                       type="button"
                                       onClick={() =>
+                                        behaviourIndex !== 0 &&
                                         removeBehaviour(behaviourIndex)
                                       }
-                                      className="text-red-600 absolute left-[180px] md:left-[170px] lg:left-[290px] top-[39px]"
+                                      className={`text-red-600 absolute left-[180px] md:left-[170px] lg:left-[290px] top-[39px] ${
+                                        behaviourIndex === 0 && "cursor-default"
+                                      }`}
                                     >
                                       <LiaTimesSolid />
                                     </button>

@@ -5,7 +5,11 @@ import style from "./styles/HeaderNavBox.module.css";
 import Image from "next/image";
 import unknownImg from "./assests/Unknown_person.png";
 import { useOnClickOutside } from "./UseOutsideClick";
-import routesPath from "@/utils/routes";
+import routesPath, { specialRoleList } from "@/utils/routes";
+import { useAppSelector } from "@/redux/store";
+import { trimLongString } from "./Helper";
+import { checkUserRole, returnInitial } from "@/utils/helpers";
+import LogoutModal from "./logout-folder/LogoutModal";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -37,6 +41,8 @@ const HeaderNavBox = ({
   onBack,
 }: myComponentProps) => {
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
+  const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [dropProfile, setDropProfile] = useState<boolean>(false);
   const pathname = usePathname();
 
@@ -66,7 +72,7 @@ const HeaderNavBox = ({
       className={style.img_box}
     >
       <path
-        stroke="teal"
+        stroke="var(--primary-color)"
         d="M11.996 4.75a6.188 6.188 0 00-6.188 6.188v3.76a2 2 0 01-.576 1.404l-.484.491a1.917 1.917 0 00-.553 1.347v0c0 1.059.859 1.917 1.918 1.917h11.766a1.918 1.918 0 001.917-1.917v0c0-.504-.198-.988-.552-1.347l-.484-.49a2 2 0 01-.577-1.405v-3.76M15.163 19.857v.226a3.167 3.167 0 01-6.333 0v-.226"
       ></path>
       <rect
@@ -143,7 +149,15 @@ const HeaderNavBox = ({
 
   const profileList = [
     { name: "Edit Profile", icon: editIcon, onClick: () => {} },
-    { name: "Logout", icon: logouticon, onClick: () => {}, red: true },
+    {
+      name: "Logout",
+      icon: logouticon,
+      onClick: () => {
+        setLogoutModal(true);
+        setDropProfile(false);
+      },
+      red: true,
+    },
   ];
 
   const [switchRole, setSwitchRole] = useState("");
@@ -165,125 +179,160 @@ const HeaderNavBox = ({
   };
 
   return (
-    <div className={style.header_wrap_index_box}>
-      {/* back comp start */}
-      {back && (
-        <>
-          <div
-            onClick={() => {
-              if (window?.history?.length > 1) {
-                router.back();
-              }
-            }}
-            className={style.back_box}
-          >
-            <figure className={style.img_box}>{backIcon}</figure>
-            <p className={style.text}>Back</p>
-          </div>
-        </>
-      )}
-      {/* back comp end */}
-      {/* title start  */}
-      <div className={style.title_box}>
-        {headerListTitle?.length > 0 ? (
+    <>
+      <div
+        // onClick={() => {
+        //   console.log(user);
+        // }}
+        className={style.header_wrap_index_box}
+      >
+        {/* back comp start */}
+        {back && (
           <>
-            {headerListTitle?.map((chi: any, idx: any) => {
-              return (
-                <p key={idx} className={style.title}>
-                  {chi}
-                </p>
-              );
-            })}
-          </>
-        ) : (
-          <>
-            <p className={style.title}>
-              {headerTitle || "Welcome ITH Holdings"}
-            </p>
+            <div
+              onClick={() => {
+                if (window?.history?.length > 1) {
+                  router.back();
+                }
+              }}
+              className={style.back_box}
+            >
+              <figure className={style.img_box}>{backIcon}</figure>
+              <p className={style.text}>Back</p>
+            </div>
           </>
         )}
-      </div>
-      {/* title  end */}
-      {/* search box start */}
-      <div className={style?.search_box}>
-        <input type="text" className={style?.search_input} />
-        <figure className={style.img_box}>{searchIcon}</figure>
-      </div>
-      {/* search box end */}
-      {/* notification box start */}
-      <div className={style.notification_box}>
-        <figure className={style.img_box}>{notifyIcon}</figure>
-      </div>
-      {/* notification box end */}
-      {/* profile box start */}
-      <div ref={profileRef} className={style.profile_wrap_box}>
-        <div
-          onClick={() => {
-            setDropProfile(!dropProfile);
-          }}
-          className={style.img_drop_box}
-        >
-          <figure className={`${style.profile_img_box}`}>
-            <Image alt="profile-img" src={unknownImg} className={style.img} />
-          </figure>
-          <figure className={style.img_box}>{dropIcon}</figure>
+        {/* back comp end */}
+        {/* title start  */}
+        <div className={style.title_box}>
+          {headerListTitle?.length > 0 ? (
+            <>
+              {headerListTitle?.map((chi: any, idx: any) => {
+                return (
+                  <p key={idx} className={style.title}>
+                    {chi}
+                  </p>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              <p className={style.title}>
+                {headerTitle || "Welcome ITH Holdings"}
+              </p>
+            </>
+          )}
         </div>
-        {/* profil drop start */}
-        {dropProfile && (
-          <div className={style.drop_profile_box}>
-            {/* image name box start */}
-            <div className={style.img_name_box}>
-              <figure className={`${style.profile_img_box}`}>
+        {/* title  end */}
+        {/* search box start */}
+        <div className={style?.search_box}>
+          <input type="text" placeholder="Search Keyword#" className={style?.search_input} />
+          <figure className={style.img_box}>{searchIcon}</figure>
+        </div>
+        {/* search box end */}
+        {/* notification box start */}
+        <div className={style.notification_box}>
+          <figure className={style.img_box}>{notifyIcon}</figure>
+        </div>
+        {/* notification box end */}
+        {/* profile box start */}
+        <div ref={profileRef} className={style.profile_wrap_box}>
+          <div
+            onClick={() => {
+              setDropProfile(!dropProfile);
+            }}
+            className={style.img_drop_box}
+          >
+            {/* <figure className={`${style.profile_img_box}`}>
+            <Image alt="profile-img" src={unknownImg} className={style.img} />
+          </figure> */}
+            <div className={style.avatar_box}>
+              <span>{returnInitial(user?.name as any)}</span>
+            </div>
+            <figure className={style.img_box}>{dropIcon}</figure>
+          </div>
+          {/* profil drop start */}
+          {dropProfile && (
+            <div className={style.drop_profile_box}>
+              {/* image name box start */}
+              <div className={style.img_name_box}>
+                {/* <figure className={`${style.profile_img_box}`}>
                 <Image
                   alt="profile-img"
                   src={unknownImg}
                   className={style.img}
                 />
-              </figure>
-              <div className={style.name_role_box}>
-                <p className={style.name}>Ayeni Kehinde</p>
-                <p className={style.role}>Software Engineer</p>
+              </figure> */}
+                <div className={style.avatar_box}>
+                  <span>{returnInitial(user?.name as any)}</span>
+                </div>
+                <div className={style.name_role_box}>
+                  <p className={style.name}>
+                    {trimLongString(user?.name, 20) || `Ayeni Kehinde`}
+                  </p>
+                  <p className={style.role}>{user?.designation || ""}</p>
+                </div>
               </div>
-            </div>
-            {/* image name box end */}
-            {/* middle options start */}
-            <div className={style.middle_options_box}>
-              {profileList?.map((chi, idx) => {
-                return (
-                  <div
-                    onClick={() => {
-                      chi?.onClick && chi?.onClick();
-                    }}
-                    key={idx}
-                    className={style.item_row}
-                  >
-                    <figure className={style.img_box}>{chi.icon}</figure>
-                    <p
-                      style={{ color: chi?.red ? "rgba(236, 20, 16, 1)" : "" }}
-                      className={style.name}
+              {/* image name box end */}
+              {/* middle options start */}
+              <div
+                style={{
+                  border:
+                    checkUserRole(user?.role as string) !== "ADMIN" &&
+                    ("unset" as any),
+                  paddingBottom:
+                    checkUserRole(user?.role as string) !== "ADMIN" &&
+                    ("unset" as any),
+                }}
+                className={style.middle_options_box}
+              >
+                {profileList?.map((chi, idx) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        chi?.onClick && chi?.onClick();
+                      }}
+                      key={idx}
+                      className={style.item_row}
                     >
-                      {chi?.name}
-                    </p>
-                  </div>
-                );
-              })}
+                      <figure className={style.img_box}>{chi.icon}</figure>
+                      <p
+                        style={{
+                          color: chi?.red ? "rgba(236, 20, 16, 1)" : "",
+                        }}
+                        className={style.name}
+                      >
+                        {chi?.name}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* middle options end */}
+              {/* switch start */}
+              {checkUserRole(user?.role as string) === "ADMIN" && (
+                <div onClick={switchDashboard} className={style.switch_box}>
+                  <p className={style.switch}>
+                    {switchRole === "employee"
+                      ? `SWITCH TO ADMIN DASHOARD`
+                      : `SWITCH TO EMPLOYEE DASHOARD`}
+                  </p>
+                </div>
+              )}
+              {/* switch end */}
             </div>
-            {/* middle options end */}
-            {/* switch start */}
-            <div onClick={switchDashboard} className={style.switch_box}>
-              <p className={style.switch}>
-                {switchRole === "employee"
-                  ? `SWITCH TO ADMIN DASHOARD`
-                  : `SWITCH TO EMPLOYEE DASHOARD`}
-              </p>
-            </div>
-            {/* switch end */}
-          </div>
-        )}
-        {/* profil drop end */}
+          )}
+          {/* profil drop end */}
+        </div>
+        {/* profile box end */}
       </div>
-      {/* profile box end */}
-    </div>
+      <LogoutModal
+        visible={logoutModal}
+        onClose={() => {
+          setLogoutModal(false);
+        }}
+      />
+    </>
   );
 };
 

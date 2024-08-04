@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/redux/services/auth/authApi";
+import { checkUserRole } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import { LoginSchema } from "@/utils/schema";
 import { useFormik } from "formik";
@@ -13,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const { REGISTER, FORGOT_PASSWORD, ADMIN } = routesPath;
+const { REGISTER, FORGOT_PASSWORD, ADMIN, EMPLOYEE } = routesPath;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,8 +26,14 @@ export default function Login() {
   const handleFormSubmit = async () => {
     login({ ...values })
       .unwrap()
-      .then(() => {
-        router.push(ADMIN.OVERVIEW);
+      .then((param: any) => {
+        const role = param?.data?.user?.role;
+
+        if (checkUserRole(role as string) === "ADMIN") {
+          router.push(ADMIN.OVERVIEW);
+        } else {
+          router.push(EMPLOYEE.OVERVIEW);
+        }
       })
       .catch(() => {
         // console.log(apiError)
@@ -52,9 +59,9 @@ export default function Login() {
   });
 
   return (
-    <div className="w-4/6 bg-white">
+    <div className="flex flex-col items-start w-[25rem] w-4/6 bg-white">
       <div className="text-left font-semibold text-2xl mb-4">Welcome Back,</div>
-      <form onSubmit={handleSubmit} className="mt-6 lg:w-2/3">
+      <form  onSubmit={handleSubmit} className="mt-6 w-full">
         <div className="mb-10 space-y-6">
           <div>
             <Input

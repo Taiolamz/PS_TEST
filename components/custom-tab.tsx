@@ -19,7 +19,7 @@ const notactive =
   "bg-transparent hover:bg-transparent text-custom-gray-scale-300 shadow-none";
 
 const active =
-  "bg-[var(--bg-primary-05)] hover:bg-[var(--bg-primary-05)] text-primary  shadow-none";
+  "bg-[var(--primary-accent-color)] hover:bg-[var(--primary-accent-color)] text-primary  shadow-none";
 
 export default function CustomTab({ slug, options }: CustomTabProps) {
   const router = useRouter();
@@ -48,7 +48,7 @@ export default function CustomTab({ slug, options }: CustomTabProps) {
   }, []);
 
   return (
-    <div className="border rounded-[5px] px-[7px] py-[3px] w-fit space-x-4 text-sm">
+    <div className="border bg-white rounded-[5px] px-[7px] py-[3px] w-fit space-x-4 text-sm">
       {options?.map(({ id, title, accessor }) => (
         <Button
           key={id}

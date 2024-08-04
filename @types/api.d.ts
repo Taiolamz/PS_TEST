@@ -23,6 +23,11 @@ type AuthResponseType = {
   setLoading?: (loading: boolean) => void; // Function to set loading state (boolean)
 };
 
+type FileTemplateParam = {
+  template: string;
+  format: string;
+};
+
 type ApiError = {
   response: {
     data: {
@@ -84,6 +89,11 @@ type BranchData = {
 };
 
 type StateData = {
+  name: string;
+  id: string;
+};
+
+type RolesData = {
   name: string;
   id: string;
 };

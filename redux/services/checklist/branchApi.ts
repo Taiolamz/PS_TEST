@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 import { generateQueryString } from "@/utils/helpers";
 
@@ -11,13 +10,6 @@ export const branchApi = baseApi.injectEndpoints({
         body: payload,
       }),
       invalidatesTags: ["Branches"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     createBulkBranches: builder.mutation({
@@ -26,14 +18,6 @@ export const branchApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Branches"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     getBranches: builder.query<BranchData[], QueryParams>({
@@ -45,6 +29,15 @@ export const branchApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: { data: BranchData[] } }) =>
         response.data.data,
     }),
+
+    downloadBranchTemplate: builder.query({
+      query: (format: string) => ({
+        url: `/admin/branch/BulkUpload-template?format=${format}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
@@ -52,4 +45,5 @@ export const {
   useCreateBranchMutation,
   useCreateBulkBranchesMutation,
   useGetBranchesQuery,
+  useLazyDownloadBranchTemplateQuery,
 } = branchApi;

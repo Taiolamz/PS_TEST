@@ -10,7 +10,7 @@ const OverView = () => {
     <DashboardLayout headerTitle="Admin Overview">
       <Link
         href={ADMIN.CHECKLIST}
-        className=" text-primary font-semibold text-sm"
+        className="text-primary font-semibold text-sm"
         >
         <p className="p-4 font-semibold underline bg-[#FFFCC2]">
           Setup Checklist...

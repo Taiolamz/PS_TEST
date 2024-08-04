@@ -1,4 +1,6 @@
 "use client";
+
+import { useGetCurrentMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { PageSidebar } from "@/components/atoms";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -12,28 +14,27 @@ import {
 } from "./_steps";
 import { CREATE_MISSION_PLAN_LINKS } from "./_data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import { useGetCurrentMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import routesPath from "@/utils/routes";
+
+const { ADMIN } = routesPath;
 
 const CreateMissionPlan = () => {
+  const router = useRouter();
   const queryParams = useSearchParams();
   const ui = queryParams.get("ui");
 
   const { data: currentMissionPlan, isLoading: currentMissionPlanLoading } =
     useGetCurrentMissionPlanQuery({});
 
-  const router = useRouter();
-
   return (
-    <DashboardLayout
-      onBack={() => router.push("/mission-plan?ui=mission-plan")}
-    >
-      <section className="flex">
+    <DashboardLayout onBack={() => router.push(ADMIN.MISSION_PLAN)}>
+      <section className="flex h-full overflow-y-scroll">
         <PageSidebar
           title="Create Mission Plan"
           menu_items={CREATE_MISSION_PLAN_LINKS}
           slug="ui"
         />
-        <aside className="p-5 w-[100vw_-_201px]">
+        <aside className="p-5 w-[100vw_-_201px] overflow-y-scroll pb-10 scroll-hidden">
           {ui === "overview" && <MissionPlanOverview />}
           {ui === "mission-statement" && <MissionStatement />}
           {ui === "measure-success" && <MeasureOfSuccess />}
