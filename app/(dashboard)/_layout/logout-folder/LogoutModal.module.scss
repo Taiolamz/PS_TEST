@@ -1,0 +1,43 @@
+.logout_modal_index_wrap {
+  //   min-height: 17rem;
+  border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  //   padding: 2rem 0rem;
+
+  .button_wrap {
+    margin-top: auto;
+    background-color: rgba(244, 244, 244, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 0.8rem 1.5rem;
+
+    .btn_one {
+      border: 0.05rem solid var(--primary-color);
+    }
+
+    .btn_two {
+      background-color: rgba(236, 20, 16, 1) !important;
+    }
+  }
+
+  .content_wrap {
+    // background-color: red;
+    margin: 1.5rem 0rem 2rem 0rem;
+    padding: 0rem 1rem;
+
+    .title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      line-height: 2.5rem;
+    }
+
+    .text {
+      font-size: 0.9rem;
+      color: rgba(110, 124, 135, 1);
+    }
+  }
+}

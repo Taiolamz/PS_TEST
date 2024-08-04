@@ -1,3 +1,4 @@
+import CustomSelect from "@/components/custom-select";
 import { Progress } from "@/components/ui/progress";
 import {
   Select,
@@ -7,6 +8,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React from "react";
+
+const SUBSIDIARY_DATA = [
+  {label: "Zojatech", value: "Zojatech"},
+  {label: "IT Horizon", value: "IT Horizon"},
+  {label: "ITH UK", value: "ITH UK"},
+]
+const PRODUCT_DATA = [
+  {label: "Product", value: "Product"},
+  {label: "P & C", value: "P & C"},
+  {label: "Strategy", value: "Strategy"},
+]
+const UNIT_DATA = [
+  {label: "Unit 1", value: "Unit 1"},
+  {label: "Unit 2", value: "Unit 2"},
+  {label: "Unit 3", value: "Unit 3"},
+]
 
 export default function AllEmployeeMissionCard() {
   const labelClass =
@@ -18,48 +35,29 @@ export default function AllEmployeeMissionCard() {
     <div className="">
       <div className="flex justify-between">
         <p className="text-xl font-medium text-primary">Mission Plan 2023</p>
-        <div className="flex gap-x-[14px] w-1/2">
-          <Select>
-            <SelectTrigger className={inputClass}>
-              <SelectValue
-                placeholder="Select Subsidiary"
-                className={inputClass}
-              />
-            </SelectTrigger>
-            <SelectContent className={labelClass}>
-              <SelectItem value="Zojatech">Zojatech</SelectItem>
-              <SelectItem value="IT Horizon">IT Horizon</SelectItem>
-              <SelectItem value="ITH UK">ITH UK</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select>
-            <SelectTrigger className={inputClass}>
-              <SelectValue
-                placeholder="Select Department"
-                className={inputClass}
-              />
-            </SelectTrigger>
-            <SelectContent className={labelClass}>
-              <SelectItem value="Product">Product</SelectItem>
-              <SelectItem value="P & C">P & C</SelectItem>
-              <SelectItem value="Strategy">Strategy</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select>
-            <SelectTrigger className={inputClass}>
-              <SelectValue placeholder="Select Unit" className={inputClass} />
-            </SelectTrigger>
-            <SelectContent className={labelClass}>
-              <SelectItem value="unit 1">unit 1</SelectItem>
-              <SelectItem value="unit 2">unit 2</SelectItem>
-              <SelectItem value="unit 3">unit 3</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="grid grid-cols-3 gap-x-[14px] w-1/2">
+          <CustomSelect
+              options={SUBSIDIARY_DATA}
+              selected=""
+              setSelected={() => null}
+              className="bg-white"
+              placeholder="Select subsidiary"
+          />
+          <CustomSelect
+              options={PRODUCT_DATA}
+              selected=""
+              setSelected={() => null}
+              className="bg-white"
+          />
+          <CustomSelect
+              options={UNIT_DATA}
+              selected=""
+              setSelected={() => null}
+              className="bg-white"
+          />
         </div>
       </div>
-      <div className="rounded-[5px] border border-custom-divider text-center min-h-24 mt-4 bg-custom-bg px-[23px] py-4 grid grid-cols-9">
+      <div className="rounded-[5px] border border-custom-divider text-center min-h-24 mt-4 bg-white px-[23px] py-4 grid grid-cols-9">
         <div className="text-start pl-4 place-content-center space-y-1 col-span-2">
           <p className=" font-normal text-xs text-custom-dark-blue">
             Total Mission Plan
@@ -76,7 +74,7 @@ export default function AllEmployeeMissionCard() {
             42%{" "}
             <Progress
               value={42}
-              className="h-[6px] bg-[var(--bg-progress-color)] ml-3 mr-7"
+              className="h-[6px] bg-[var(--primary-accent-color)] ml-3 mr-7"
             />
           </h4>
         </div>

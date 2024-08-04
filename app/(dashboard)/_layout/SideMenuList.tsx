@@ -328,7 +328,7 @@ export const sideMenuList: any = [
         name: "Mission Plan",
         link: routesPath?.ADMIN?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
-        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN],
+        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN, routesPath?.ADMIN?.CREATE_MISSION_PLAN, routesPath?.ADMIN?.SINGLE_MISSION_PLAN],
       },
       {
         name: "Performance",

@@ -17,6 +17,7 @@ import { allemployeeColumns, allemployeeData } from "./_data/all-employee-table-
 import { EmptyState } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "../../_layout/DashboardLayout";
+import routesPath from "@/utils/routes";
 
 // Mocking authenticated user role
 // ROLES = 
@@ -28,6 +29,8 @@ const AUTH_USER_ROLE = {
 
 };
 
+const { ADMIN } = routesPath
+
 export default function Page() {
   // Set allMissionPlan state to empty array to simulate empty state
   const [allMissionPlan, setAllMissionPlan] = useState(['Mission Plan 1'])
@@ -38,7 +41,7 @@ export default function Page() {
   const kickstartcard = (
     <Link
       href="mission-plan/kickstart?ui=financial-year"
-      className=" h-[140px] border bg-transparent rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 cursor-pointer"
+      className="bg-white h-[140px] border bg-transparent rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 cursor-pointer"
     >
       <div className="flex justify-between">
         <Image className="" src={StatsIcon} alt="plus" />
@@ -62,10 +65,9 @@ export default function Page() {
 
   return (
     <DashboardLayout headerTitle="Mission Plan">
-      <div className="p-5 w-full">
-        {/* Change the PAGE_TABS here to simulate the different tabs */}
+      {/* <div className="p-5 w-full">
         <CustomTab options={PAGE_TABS.MANAGIN_DIRECTOR} slug="ui" />
-      </div>
+      </div> */}
 
       <div className="flex flex-col p-5 w-full">
         {
@@ -99,7 +101,7 @@ export default function Page() {
               {kickstartcard}
               {
                 Array.from({length: 7}, (i, idx) => (
-                   <YearMissionPlanCard key={idx} state="completed" handleClick={() => router.push(`${location}/2023?ui=${ui}`)} />
+                   <YearMissionPlanCard key={idx} state="completed" handleClick={() => router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=2023`)} />
                 ))
               }
             </div>)

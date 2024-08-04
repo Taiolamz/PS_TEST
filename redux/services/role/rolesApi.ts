@@ -11,7 +11,7 @@ export const rolesApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log(result)
+          // console.log(result)
         } catch (error: any) {
           // console.log(error)
         }
