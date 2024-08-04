@@ -31,7 +31,7 @@ const DashboardLayout = ({
     //   "--primary-color",
     //   e.hex
     // );
-    const color = user?.organization?.brand_colour || "" as any;
+    const color = user?.organization?.brand_colour || "purple" as any;
     actionCtx?.setPrimaryColorVals(color);
     // console.log(user);
   }, [user]);

@@ -24,6 +24,7 @@ const routesPath = {
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
+    // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,
