@@ -10,7 +10,7 @@ export interface InputProps
   name: string;
   value?: string;
   handleBlur?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   touched?: boolean;
   error?: string;
 }

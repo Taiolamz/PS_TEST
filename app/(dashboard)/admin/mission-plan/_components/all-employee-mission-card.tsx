@@ -74,7 +74,7 @@ export default function AllEmployeeMissionCard() {
             42%{" "}
             <Progress
               value={42}
-              className="h-[6px] bg-[var(--bg-progress-color)] ml-3 mr-7"
+              className="h-[6px] bg-[var(--primary-accent-color)] ml-3 mr-7"
             />
           </h4>
         </div>
@@ -91,7 +91,7 @@ export default function AllEmployeeMissionCard() {
           <h4 className=" font-medium text-2xl text-custom-dark-blue">30</h4>
         </div>
         <div className=" place-content-center space-y-1">
-          <p className=" font-normal text-xs text-warning">In Rview</p>
+          <p className=" font-normal text-xs text-warning">In Review</p>
           <h4 className=" font-medium text-2xl text-custom-dark-blue">20</h4>
         </div>
         <div className=" place-content-center space-y-1">

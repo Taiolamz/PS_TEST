@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import { adminRoleList, employeeRoleList, specialRoleList } from "../routes";
 
 export const timeToMinuteSecond = (time: number) =>
   `${Math.floor(time / 60)}:${("0" + (time % 60)).slice(-2)}`;
@@ -49,4 +50,25 @@ export function returnInitial(name: string) {
 	} else {
 		return '';
 	}
+}
+
+
+function normalizeString(str: string) {
+  return str.toLowerCase();
+}
+
+export function checkUserRole(item: string) {
+  const normalizedItem = normalizeString(item);
+
+  // if (specialRoleList?.map(normalizeString).includes(normalizedItem)) {
+  //   return "SUPER ADMIN";
+  // } else
+  
+  if (adminRoleList?.map(normalizeString).includes(normalizedItem)) {
+    return "ADMIN";
+  } else if (employeeRoleList?.map(normalizeString).includes(normalizedItem)) {
+    return "EMPLOYEE";
+  } else {
+    return "EMPLOYEE";
+  }
 }
