@@ -1,7 +1,8 @@
-import { ManceLoader } from "@/components/custom-loader";
 import ModalContainer from "@/components/modal-container";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import { cn } from "@/lib/utils";
+import { useLogoutMutation } from "@/redux/services/auth/authApi";
+import { useRouter } from "next/navigation";
 import style from "./LogoutModal.module.css";
 
 interface myComponentProps {
@@ -10,9 +11,14 @@ interface myComponentProps {
 }
 
 const LogoutModal = ({ visible, onClose }: myComponentProps) => {
-  const loading = false;
 
-  const handleLogoutFunc = () => {};
+  const [logout, {isLoading}] = useLogoutMutation()
+
+  const handleLogoutFunc = async () => {
+    logout({})
+    .unwrap()
+    .then(() => {})
+  };
 
   return (
     <>
@@ -43,14 +49,15 @@ const LogoutModal = ({ visible, onClose }: myComponentProps) => {
           </Button>
           <Button
             onClick={handleLogoutFunc}
-            className={` font-light ${
-              loading
-                ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
-                : ""
-            } ${style.btn_two}`}
-            // disabled={loading ? true : false}
+            loading={isLoading}
+            loadingText="Yes, Logout"
+            disabled={isLoading}
+            className={cn(
+              "font-light",
+              style.btn_two
+            )}
           >
-            {loading ? <ManceLoader /> : "Yes, logout"}
+            Yes, Logout
           </Button>
         </div>
       </ModalContainer>

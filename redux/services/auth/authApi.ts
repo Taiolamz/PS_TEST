@@ -136,7 +136,7 @@ export const authApi = baseApi.injectEndpoints({
         try {
           const result = await queryFulfilled;
           Cookies.remove("token");
-          window.location.href = "/";
+          window.location.href = "/login";
           dispatch(resetAuth());
         } catch (error: any) {
           console.log("Error:", error);
