@@ -48,13 +48,17 @@ export const baseQueryInterceptor: BaseQueryFn<
       api.dispatch(resetAuth());
       Cookies.remove("token");
       clearStorageItem();
-      window.location.href = "/";
+      window.location.href = "/login";
     }
     if (res.status === 401) {
-      let message = Array.isArray(res.data.error.message)
-        ? res.data.error.message[0]
-        : res.data.error.message;
-      toast.error(message);
+      if (res.data.status === "failed") {
+        api.dispatch(resetAuth());
+        Cookies.remove("token");
+        clearStorageItem();
+        window.location.href = "/login";
+        // let message = res.data.message;
+        // toast.error(message);
+      }
     }
     if (res.status === 404) {
       let message = res.data.error.message;

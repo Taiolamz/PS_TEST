@@ -32,14 +32,14 @@ export const checklistDetails = [
       },
     ],
     isAllChecked: false,
-    path: ADMIN.CREATE_SUBSIDIARY,
+    path: ADMIN.SUBSIDIARY,
   },
   {
     title: "Set up employee and roles",
     subTitle:
       "Manage users that will be joining your organization and how they are inducted",
     isAllChecked: false,
-    path: ADMIN.ADD_EMPLOYEE,
+    path: ADMIN.EMPLOYEES,
   },
   {
     title: "Set up mission plan",

@@ -55,6 +55,9 @@
     .main_content_box {
       flex: 1;
       overflow-y: scroll;
+      // background-color: red;
+
+  
 
       &::-webkit-scrollbar{
         display: none;

@@ -27,6 +27,7 @@ import {
 import { branchColumns } from "./branch-column";
 import EmptyState from "../subsidiary/_components/empty-state";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 
 const { ADMIN } = routesPath;
 
@@ -180,67 +181,81 @@ const Branches = () => {
       shouldProceed
       onProceedBtn={handleProceedDialog}
     > */}
-      {branches?.length < 1 ? (
-        <ReusableEmptyState
-          loading={isLoadingBranches}
-          textTitle="Branches"
-          btnTitle="branch"
-          href={ADMIN.CREATE_BRANCH}
-          onBulkUpload={handleBulkUploadDialog}
-        />
-      ) : (
-        <DashboardTable
-          isLoading={isFetchingBranches}
-          header="Branch"
-          data={branches}
-          columns={branchesColumnData}
-          onBulkUploadBtn={handleBulkUploadDialog}
-          onOpenBtnChange={handleBtnDrop}
-          newBtnOpen={openNewBtn}
-          onManualBtn={handleAddBranch}
-        />
-      )}
-      <DashboardModal
-        className={"w-[420px]"}
-        open={openCancelModal}
-        onOpenChange={handleCancelDialog}
-      >
-        <CancelModal onProceed={handleProceedCancel} modalTitle="Branch" />
-      </DashboardModal>
+      <ReusableStepListBox
+        btnText="Continue"
+        activeStep="2"
+        totalStep="4"
+        title="Branch"
+        btnDisabled={branches?.length < 1}
+        // loading={isCreatingSubsidiary}
+        onSave={handleProceed}
+        onCancel={handleCancelDialog}
+        // back
+        // hideStep
+        // fixed
+      />
+      <section className="p-5">
+        {branches?.length < 1 ? (
+          <ReusableEmptyState
+            loading={isLoadingBranches}
+            textTitle="Branches"
+            btnTitle="branch"
+            href={ADMIN.CREATE_BRANCH}
+            onBulkUpload={handleBulkUploadDialog}
+          />
+        ) : (
+          <DashboardTable
+            isLoading={isFetchingBranches}
+            header="Branch"
+            data={branches}
+            columns={branchesColumnData}
+            onBulkUploadBtn={handleBulkUploadDialog}
+            onOpenBtnChange={handleBtnDrop}
+            newBtnOpen={openNewBtn}
+            onManualBtn={handleAddBranch}
+          />
+        )}
+        <DashboardModal
+          className={"w-[420px]"}
+          open={openCancelModal}
+          onOpenChange={handleCancelDialog}
+        >
+          <CancelModal onProceed={handleProceedCancel} modalTitle="Branch" />
+        </DashboardModal>
 
-      <DashboardModal
-        open={openProceedModal}
-        onOpenChange={handleProceedDialog}
-      >
-        <ProceedModal onProceed={handleProceed} />
-      </DashboardModal>
+        <DashboardModal
+          open={openProceedModal}
+          onOpenChange={handleProceedDialog}
+        >
+          <ProceedModal onProceed={handleProceed} />
+        </DashboardModal>
 
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openBulkUploadModal}
-        onOpenChange={handleBulkUploadDialog}
-      >
-        <BulkUploadModal
-          loading={isCreatingBulkBranches}
-          onCancel={handleBulkUploadDialog}
-          onSampleCsvDownload={handleBulkRequirementDialog}
-          onSampleExcelDownload={handleBulkRequirementDialog}
-          onBulkUpload={handleSubmitBulkUpload}
-          setFile={setBulkFile}
-        />
-      </DashboardModal>
+        <DashboardModal
+          className={"w-[600px] max-w-full"}
+          open={openBulkUploadModal}
+          onOpenChange={handleBulkUploadDialog}
+        >
+          <BulkUploadModal
+            loading={isCreatingBulkBranches}
+            onCancel={handleBulkUploadDialog}
+            onSampleCsvDownload={handleBulkRequirementDialog}
+            onSampleExcelDownload={handleBulkRequirementDialog}
+            onBulkUpload={handleSubmitBulkUpload}
+            setFile={setBulkFile}
+          />
+        </DashboardModal>
 
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openBulkRequirementModal}
-        onOpenChange={handleBulkRequirementDialog}
-      >
-        <BulkRequirementModal
-          onTemplateDownload={() => console.log("template download")}
-          onCancel={handleBulkRequirementDialog}
-        />
-      </DashboardModal>
-      {/* </ChecklistLayout> */}
+        <DashboardModal
+          className={"w-[600px] max-w-full"}
+          open={openBulkRequirementModal}
+          onOpenChange={handleBulkRequirementDialog}
+        >
+          <BulkRequirementModal
+            onTemplateDownload={() => console.log("template download")}
+            onCancel={handleBulkRequirementDialog}
+          />
+        </DashboardModal>
+      </section>
     </DashboardLayout>
   );
 };
