@@ -12,7 +12,7 @@ export interface TextareaProps
   name: string;
   value?: string;
   handleBlur?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   touched?: boolean;
   error?: string;
 }

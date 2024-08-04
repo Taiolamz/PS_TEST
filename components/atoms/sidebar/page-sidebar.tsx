@@ -29,7 +29,7 @@ const PageSidebar = ({title, menu_items, slug = 'ui', handleClick}: PageSidebarP
                 menu_items?.map(({ id, title, path, accessor }) => (
                     <span key={id} className={cn(
                         "block p-2 text-xs px-4 text-gray-400 cursor-pointer mb-1",
-                        ui === accessor && "text-primary bg-[#07A28714]"
+                        ui === accessor && "text-[var(--primary-color)] bg-[var(--primary-accent-color)]"
                     )}
                         onClick={() => {
                             handleClick ? handleClick() : router.push(`${location}?${slug}=${accessor}`)
