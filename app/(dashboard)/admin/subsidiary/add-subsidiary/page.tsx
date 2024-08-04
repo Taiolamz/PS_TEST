@@ -46,12 +46,10 @@ const AddSubsidary = () => {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
-          onCancel={() => {
-            // cancel function here-----
-          }}
+          onCancel={handleCancelDialog}
           // back
           // hideStep
-          // fixed 
+          // fixed
         />
         {/* step list button end */}
         <div
@@ -147,7 +145,6 @@ const AddSubsidary = () => {
               </form>
             }
           />
-          
 
           <DashboardModal
             className={"w-[420px]"}

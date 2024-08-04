@@ -32,7 +32,7 @@ export const checklistDetails = [
       },
     ],
     isAllChecked: false,
-    path: ADMIN.CREATE_SUBSIDIARY,
+    path: ADMIN.SUBSIDIARY,
   },
   {
     title: "Set up employee and roles",
