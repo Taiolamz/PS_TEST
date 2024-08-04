@@ -39,7 +39,7 @@ export const checklistDetails = [
     subTitle:
       "Manage users that will be joining your organization and how they are inducted",
     isAllChecked: false,
-    path: ADMIN.ADD_EMPLOYEE,
+    path: ADMIN.EMPLOYEES,
   },
   {
     title: "Set up mission plan",
