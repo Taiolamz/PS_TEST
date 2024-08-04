@@ -18,7 +18,7 @@ const SingleMissionPlan = () => {
             headerTitle="Mission Plan 2023"
             back
         >
-            <div className="p-5 w-full">
+            <div style={{backgroundColor: "rgba(244, 244, 244, 1)"}} className="p-5 w-full global_sticky_class">
                 {/* Change the PAGE_TABS here to simulate the different tabs */}
                 <CustomTab options={PAGE_TABS.MANAGIN_DIRECTOR} slug="ui" />
             </div>

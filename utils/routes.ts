@@ -15,8 +15,10 @@ const routesPath = {
   ADMIN: {
     OVERVIEW: `/${admin_auth}/overview`,
     MISSION_PLAN: `/${admin_auth}/mission-plan?ui=mission-plan`,
+    MAIN_MISSION_PLAN: `/${admin_auth}/mission-plan`,
     CREATE_MISSION_PLAN: `/${admin_auth}/mission-plan/create`,
     SINGLE_MISSION_PLAN: `/${admin_auth}/mission-plan/view`,
+    KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     PERFORMANCE: `/${admin_auth}/performance`,
     KPI: `/${admin_auth}/kpi`,
     BRANCHES: `/${admin_auth}/branches`,

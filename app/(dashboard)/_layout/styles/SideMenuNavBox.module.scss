@@ -361,7 +361,7 @@
 
         .nav_link_active {
           // background-color: red !important;
-          cursor: not-allowed;
+          cursor: default;
           &::before {
             transform: scaleY(1);
             width: 100%;
