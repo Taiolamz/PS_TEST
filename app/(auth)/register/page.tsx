@@ -126,7 +126,7 @@ const SignupPage = () => {
   }, []);
 
   return (
-    <section className="w-4/6  flex flex-col items-start w-[25rem]">
+    <section className="w-4/6  flex flex-col items-start">
       <h1 className=" text-2xl font-semibold mb-4 text-[#162238]">
         Register your account
       </h1>
