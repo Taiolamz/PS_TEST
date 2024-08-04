@@ -116,13 +116,13 @@ const OrganizationInvite = () => {
               {loading ? <ManceLoader /> : "Create an account"}
             </Button>
           </div>
-          <Button
+          {/* <Button
             variant="outline"
             className={`border-primary px-10 text-primary font-light  hover:text-primary ${btnClass}`}
             // onClick={onCancel}
           >
             Back
-          </Button>
+          </Button> */}
         </div>
         <p className="text-custom-gray-scale-400 font-light text-xs">
           By clicking the button above, you agree to our confidential

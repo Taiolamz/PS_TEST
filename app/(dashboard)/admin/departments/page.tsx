@@ -187,7 +187,7 @@ const Departments = () => {
     <DashboardLayout headerTitle="Department">
       <ReusableStepListBox
         btnText="Continue"
-        activeStep="1"
+        activeStep="3"
         totalStep="4"
         title="Department"
         btnDisabled={departments?.length < 1}
