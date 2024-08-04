@@ -1,5 +1,8 @@
 "use client";
-import { useAcceptEmployeeInvitationMutation, useGetInvitedEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import {
+  useAcceptEmployeeInvitationMutation,
+  useGetInvitedEmployeesQuery,
+} from "@/redux/services/employee/employeeApi";
 import { useAppSelector } from "@/redux/store";
 import { checkUserRole } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
@@ -29,7 +32,7 @@ export const useEmployeeInvite = () => {
       .string()
       .required("Password is required")
       .test("password-validation", passwordValidationMessage, (value) => {
-        if (!value) return false; // Ensure value is not undefined or null
+        if (!value) return false;
         const hasMinLength = value.length >= 8;
         const hasLowercase = /[a-z]/.test(value);
         const hasUppercase = /[A-Z]/.test(value);
