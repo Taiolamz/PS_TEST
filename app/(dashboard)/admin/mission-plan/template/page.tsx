@@ -109,7 +109,7 @@ const MissionPlanTemplate = () => {
 
   const missionPlanTemplatesColumnData = useMemo(
     () => missionPlanColumn,
-    [isFetchingmissionPlanTemplates]
+    []
   );
 
   return (
