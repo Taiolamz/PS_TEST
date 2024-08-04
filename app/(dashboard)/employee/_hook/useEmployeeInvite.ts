@@ -1,5 +1,8 @@
 "use client";
 import { useAcceptEmployeeInvitationMutation } from "@/redux/services/employee/employeeApi";
+import { useAppSelector } from "@/redux/store";
+import { checkUserRole } from "@/utils/helpers";
+import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +11,7 @@ import * as yup from "yup";
 
 export const useEmployeeInvite = () => {
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
 
   const passwordValidationMessage = `
   Must have 8 characters.
@@ -75,7 +79,11 @@ export const useEmployeeInvite = () => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push("/dashboard");
+            if (checkUserRole(user?.role as string) === "ADMIN") {
+              router.push(routesPath?.ADMIN.OVERVIEW);
+            } else {
+              router.push(routesPath?.EMPLOYEE.OVERVIEW);
+            }
           }, 2000);
         });
       });

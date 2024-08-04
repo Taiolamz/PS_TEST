@@ -143,7 +143,7 @@ const Onboarding = () => {
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
             <button
               type="button"
-              onClick={() => router.push("/dashboard")}
+              onClick={() => router.push(routesPath?.ADMIN?.OVERVIEW)}
               className="text-pry inline-flex gap-1.5"
             >
               <ArrowLeftCircle width={24} height={24} /> Skip to Dashboard

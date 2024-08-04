@@ -1,10 +1,14 @@
 import { useRejectEmployeeInvitationMutation } from "@/redux/services/employee/employeeApi";
+import { useAppSelector } from "@/redux/store";
+import { checkUserRole } from "@/utils/helpers";
+import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import * as yup from "yup";
 
 export const useRejectEmployeeInvite = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const reasons = [
     {
@@ -31,7 +35,11 @@ export const useRejectEmployeeInvite = () => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push("/dashboard");
+            if (checkUserRole(user?.role as string) === "ADMIN") {
+              router.push(routesPath?.ADMIN.OVERVIEW);
+            } else {
+              router.push(routesPath?.EMPLOYEE.OVERVIEW);
+            }
           }, 2000);
         });
       });
