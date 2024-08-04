@@ -4,11 +4,11 @@ import { Input } from "@/components/ui/input";
 import { DefaultCheckIcon } from "@/public/assets/icons";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useEmployeeInvite } from "../_hook/useEmployeeInvite";
+import { useEmployeeInvite } from "../../../(dashboard)/employee/_hook/useEmployeeInvite";
 import TogglePassword from "@/components/toggle-password";
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
-import EmployeeInviteLayout from "../component/invite-layout";
+import EmployeeInviteLayout from "../_components/invite-layout";
 
 const OrganizationInvite = () => {
   const { formik, passwordValidations, handlePasswordChange, loading } =
@@ -82,7 +82,9 @@ const OrganizationInvite = () => {
             const { label, checked } = chi;
             return (
               <div className="flex gap-2 items-center" key={idx}>
-                <DefaultCheckIcon fill={checked ? "var(--primary-color)" : ""} />
+                <DefaultCheckIcon
+                  fill={checked ? "var(--primary-color)" : ""}
+                />
                 <p
                   className={`font-light text-xs transition duration-300 text-custom-gray-scale-300 ${
                     checked ? "text-primary" : ""

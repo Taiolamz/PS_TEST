@@ -319,19 +319,7 @@ const DashboardTable = ({
               ))}
             </TableHeader>
             <TableBody className="bg-white">
-              {isLoading ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    <div
-                      className="inline-block size-7 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] text-custom-dark-blue motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                      role="status"
-                    />
-                  </TableCell>
-                </TableRow>
-              ) : table.getRowModel().rows?.length ? (
+              {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}

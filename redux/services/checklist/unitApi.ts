@@ -11,13 +11,6 @@ export const unitApi = baseApi.injectEndpoints({
         body: payload,
       }),
       invalidatesTags: ["Units"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     createBulkUnits: builder.mutation({
@@ -26,14 +19,6 @@ export const unitApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Units"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     getUnits: builder.query<UnitData[], QueryParams>({
@@ -45,6 +30,17 @@ export const unitApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: { data: BranchData[] } }) =>
         response.data.data,
     }),
+
+    downloadUnitTemplate: builder.query<any, FileTemplateParam>({
+      query: (params) => ({
+        url: `/admin/downloadFile/${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
@@ -52,4 +48,5 @@ export const {
   useCreateUnitMutation,
   useCreateBulkUnitsMutation,
   useGetUnitsQuery,
+  useLazyDownloadUnitTemplateQuery,
 } = unitApi;
