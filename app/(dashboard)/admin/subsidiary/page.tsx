@@ -1,26 +1,30 @@
-"use client"
+"use client";
 
-import React, { useMemo, useState } from 'react'
-import DashboardLayout from '../../_layout/DashboardLayout'
-import { ChecklistLayout } from './_components/checklist-layout'
-import EmptyState from './_components/empty-state'
-import DashboardTable from './_components/checklist-dashboard-table'
-import DashboardModal from './_components/checklist-dashboard-modal'
-import CancelModal from './_components/cancel-modal'
-import ProceedModal from './_components/proceed-modal'
-import BulkUploadModal from './_components/bulk-upload-modal'
-import BulkRequirementModal from './_components/bulk-requrement-modal'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import useDisclosure from './_hooks/useDisclosure'
-import routesPath from '@/utils/routes'
-import { useCreateBulkSubsidiariesMutation, useGetSubsidiariesQuery } from '@/redux/services/checklist/subsidiaryApi'
-import { subsidiaryColumns } from '../checklist/(organizational-structure)/subsidiary/subsidiary-column'
-import { selectUser } from '@/redux/features/auth/authSlice'
-import { useAppSelector } from '@/redux/store'
-import ReusableEmptyState from '@/components/fragment/ReusableEmptyState'
+import React, { useMemo, useState } from "react";
+import DashboardLayout from "../../_layout/DashboardLayout";
+import { ChecklistLayout } from "./_components/checklist-layout";
+import EmptyState from "./_components/empty-state";
+import DashboardTable from "./_components/checklist-dashboard-table";
+import DashboardModal from "./_components/checklist-dashboard-modal";
+import CancelModal from "./_components/cancel-modal";
+import ProceedModal from "./_components/proceed-modal";
+import BulkUploadModal from "./_components/bulk-upload-modal";
+import BulkRequirementModal from "./_components/bulk-requrement-modal";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import useDisclosure from "./_hooks/useDisclosure";
+import routesPath from "@/utils/routes";
+import {
+  useCreateBulkSubsidiariesMutation,
+  useGetSubsidiariesQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
+import { subsidiaryColumns } from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useAppSelector } from "@/redux/store";
+import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 const Subsidiary = () => {
   const emptyStateClass = "flex justify-center items-center";
@@ -86,8 +90,7 @@ const Subsidiary = () => {
   };
 
   const handleProceed = () => {
-    // Routes.ChecklistRoute.BranchesRoute()
-    const proceedPath = ADMIN.CREATE_BRANCH;
+    const proceedPath = ADMIN.BRANCH;
     router.push(proceedPath);
   };
 
@@ -165,9 +168,7 @@ const Subsidiary = () => {
   };
 
   return (
-    <DashboardLayout
-        headerTitle='Subsidiary'
-    >
+    <DashboardLayout headerTitle="Subsidiary">
       {/* <ChecklistLayout
       onCancel={handleCancelDialog}
       title="Subsidiaries"
@@ -178,69 +179,86 @@ const Subsidiary = () => {
       shouldProceed
       onProceedBtn={handleProceedDialog}
     > */}
-      {subsidiaries?.length < 1 ? (
-        <ReusableEmptyState
-          loading={isLoadingSubsidiaries}
-          textTitle="subsidiaries"
-          btnTitle="subsidiary"
-          href={ADMIN.CREATE_SUBSIDIARY}
-          onBulkUpload={handleBulkUploadDialog}
-        />
-      ) : (
-        <DashboardTable
-          isLoading={isFetchingSubsidiaries}
-          header="Subsidiary"
-          data={subsidiaries}
-          columns={subsidiariesColumnData}
-          onBulkUploadBtn={handleBulkUploadDialog}
-          onOpenBtnChange={handleBtnDrop}
-          newBtnOpen={openNewBtn}
-          onManualBtn={handleAddSubsidiary}
-        />
-      )}
-      <DashboardModal
-        className={"w-[420px]"}
-        open={openCancelModal}
-        onOpenChange={handleCancelDialog}
-      >
-        <CancelModal onProceed={handleProceedCancel} modalTitle="Subsidiary" />
-      </DashboardModal>
+      <ReusableStepListBox
+        btnText="Continue"
+        activeStep="1"
+        totalStep="4"
+        title="Subsidiary"
+        btnDisabled={subsidiaries?.length < 1}
+        // loading={isCreatingSubsidiary}
+        onSave={handleProceed}
+        onCancel={handleCancelDialog}
+        // back
+        // hideStep
+        // fixed
+      />
+      <section className="p-5">
+        {subsidiaries?.length < 1 ? (
+          <ReusableEmptyState
+            loading={isLoadingSubsidiaries}
+            textTitle="subsidiaries"
+            btnTitle="subsidiary"
+            href={ADMIN.CREATE_SUBSIDIARY}
+            onBulkUpload={handleBulkUploadDialog}
+          />
+        ) : (
+          <DashboardTable
+            isLoading={isFetchingSubsidiaries}
+            header="Subsidiary"
+            data={subsidiaries}
+            columns={subsidiariesColumnData}
+            onBulkUploadBtn={handleBulkUploadDialog}
+            onOpenBtnChange={handleBtnDrop}
+            newBtnOpen={openNewBtn}
+            onManualBtn={handleAddSubsidiary}
+          />
+        )}
+        <DashboardModal
+          className={"w-[420px]"}
+          open={openCancelModal}
+          onOpenChange={handleCancelDialog}
+        >
+          <CancelModal
+            onProceed={handleProceedCancel}
+            modalTitle="Subsidiary"
+          />
+        </DashboardModal>
 
-      <DashboardModal
-        open={openProceedModal}
-        onOpenChange={handleProceedDialog}
-      >
-        <ProceedModal onProceed={handleProceed} />
-      </DashboardModal>
+        <DashboardModal
+          open={openProceedModal}
+          onOpenChange={handleProceedDialog}
+        >
+          <ProceedModal onProceed={handleProceed} />
+        </DashboardModal>
 
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openBulkUploadModal}
-        onOpenChange={handleBulkUploadDialog}
-      >
-        <BulkUploadModal
-          loading={isCreatingBulkSubsidiaries}
-          onCancel={handleBulkUploadDialog}
-          onSampleCsvDownload={handleBulkRequirementDialog}
-          onSampleExcelDownload={handleBulkRequirementDialog}
-          onBulkUpload={handleSubmitBulkUpload}
-          setFile={setBulkFile}
-        />
-      </DashboardModal>
+        <DashboardModal
+          className={"w-[600px] max-w-full"}
+          open={openBulkUploadModal}
+          onOpenChange={handleBulkUploadDialog}
+        >
+          <BulkUploadModal
+            loading={isCreatingBulkSubsidiaries}
+            onCancel={handleBulkUploadDialog}
+            onSampleCsvDownload={handleBulkRequirementDialog}
+            onSampleExcelDownload={handleBulkRequirementDialog}
+            onBulkUpload={handleSubmitBulkUpload}
+            setFile={setBulkFile}
+          />
+        </DashboardModal>
 
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openBulkRequirementModal}
-        onOpenChange={handleBulkRequirementDialog}
-      >
-        <BulkRequirementModal
-          onTemplateDownload={() => console.log("template download")}
-          onCancel={handleBulkRequirementDialog}
-        />
-      </DashboardModal>
-    {/* </ChecklistLayout> */}
+        <DashboardModal
+          className={"w-[600px] max-w-full"}
+          open={openBulkRequirementModal}
+          onOpenChange={handleBulkRequirementDialog}
+        >
+          <BulkRequirementModal
+            onTemplateDownload={() => console.log("template download")}
+            onCancel={handleBulkRequirementDialog}
+          />
+        </DashboardModal>
+      </section>
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default Subsidiary
+export default Subsidiary;
