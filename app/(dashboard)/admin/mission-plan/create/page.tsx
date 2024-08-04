@@ -4,6 +4,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Boundaries, ImpliedTask, MeasureOfSuccess, MissionPlanOverview, MissionStatement, SpecifiedTask, StrategicIntent } from './_steps';
 import { CREATE_MISSION_PLAN_LINKS } from './_data';
 import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
+import routesPath from '@/utils/routes';
+
+const { ADMIN } = routesPath
 
 const CreateMissionPlan = () => {
     const queryParams = useSearchParams()
@@ -13,9 +16,9 @@ const CreateMissionPlan = () => {
 
     return (
         <DashboardLayout
-            onBack={() => router.push('/mission-plan?ui=mission-plan')}
+            onBack={() => router.push(ADMIN.MISSION_PLAN)}
         >
-            <section className="flex relative">
+            <section className="flex">
                 <PageSidebar
                     title="Create Mission Plan"
                     menu_items={CREATE_MISSION_PLAN_LINKS}

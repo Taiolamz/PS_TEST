@@ -3,6 +3,9 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
+import routesPath from "@/utils/routes";
+
+const { ADMIN } = routesPath
 
 const MissionPlanOverview = () => {
   const router = useRouter();
@@ -27,7 +30,7 @@ const MissionPlanOverview = () => {
                 name=""
                 label="Title"
                 placeholder="Input Staff Name"
-                className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm disabled:bg-[var(--input-bg)]"
+                className="px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm disabled:bg-[var(--input-bg)]"
                 value="2022 Financial Year"
               />
             </div>
@@ -39,7 +42,7 @@ const MissionPlanOverview = () => {
                 name=""
                 label="Start Period"
                 placeholder="Input Staff Name"
-                className="mt-1 block px-3 py-2 border disabled:border-gray-300 rounded-md shadow-sm sm:text-sm  disabled:bg-[var(--input-bg)]"
+                className="px-3 py-2 border disabled:border-gray-300 rounded-md shadow-sm sm:text-sm  disabled:bg-[var(--input-bg)]"
                 value="March 2022"
               />
             </div>
@@ -51,7 +54,7 @@ const MissionPlanOverview = () => {
                 name=""
                 label="End Period"
                 placeholder="Input Staff Name"
-                className="mt-1 block px-3 py-2 border disabled:border-gray-300 rounded-md shadow-sm sm:text-sm disabled:bg-[var(--input-bg)]"
+                className="px-3 py-2 border disabled:border-gray-300 rounded-md shadow-sm sm:text-sm disabled:bg-[var(--input-bg)]"
                 value="Feb 2023"
               />
             </div>
@@ -79,8 +82,7 @@ const MissionPlanOverview = () => {
                 name=""
                 placeholder="Input Staff Name"
                 className="mt-1.5 w-4/5 block px-3 py-2 border disabled:border-gray-300 disabled:bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
-                value="To be a pacesetter in digital transformation and software solutions in 
-West Africa by 2025."
+                value="To be a pacesetter in digital transformation and software solutions in West Africa by 2025."
               />
             </div>
             <div className="w-full flex-1">
@@ -94,8 +96,7 @@ West Africa by 2025."
                 name=""
                 placeholder="Input Staff Name"
                 className="mt-1.5 w-4/5 block px-3 py-2 border disabled:border-gray-300 disabled:bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
-                value="Providing you with innovative software solutions that exceed your 
-expectations."
+                value="Providing you with innovative software solutions that exceed your expectations."
               />
             </div>
           </div>
@@ -142,7 +143,7 @@ expectations."
       <div className="mt-8 mb-4 flex gap-x-2 items-center">
         <Button
           onClick={() => router.push(`${location}?ui=mission-statement`)}
-          className={`bg-primary py-5 px-2 rounded-sm border text-white min-w-28`}
+          className={`bg-[var(--primary-color)] py-5 px-2 rounded-sm border text-white min-w-28`}
         >
           Continue
         </Button>

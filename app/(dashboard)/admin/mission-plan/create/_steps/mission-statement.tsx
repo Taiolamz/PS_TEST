@@ -4,13 +4,8 @@ import { Button } from "@/components/ui/button";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { missionStatementSchema } from "@/utils/schema/mission-plan";
 
-const missionStatementSchema = Yup.object().shape({
-  missionstatement: Yup.string()
-    .min(5, "This field is required")
-    .required("This field is required"),
-});
 
 const MissionStatement = () => {
   const router = useRouter();
@@ -19,9 +14,9 @@ const MissionStatement = () => {
     initialValues: { missionstatement: "" },
     validationSchema: missionStatementSchema,
     onSubmit: (values, { setSubmitting, setErrors, setValues }) => {
-      console.log("Form data", values);
-      setValues({ missionstatement: "" });
-      setErrors({ missionstatement: "" });
+      // console.log("Form data", values);
+      // setValues({ missionstatement: "" });
+      // setErrors({ missionstatement: "" });
       router.push(`${location}?ui=measure-success`);
     },
   });
@@ -64,8 +59,9 @@ const MissionStatement = () => {
       <div className="mt-8 flex gap-x-2 items-center">
         <Button
           variant="outline"
+          type="button"
           onClick={() => router.push(`${location}?ui=overview`)}
-          className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+          className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
         >
           Back
         </Button>
@@ -78,7 +74,7 @@ const MissionStatement = () => {
             "w-full",
             !formik.isValid || !formik.dirty
               ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
-              : "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+              : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
           )}
         >
           Save & Continue
