@@ -16,18 +16,8 @@ import { Select, SelectContent, SelectTrigger, SelectValue } from "@/components/
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { MEASURE_OF_SUCCESS_UNITS } from "../_data";
+import { measureSuccessSchema } from "@/utils/schema/mission-plan";
 
-const validationSchema = Yup.object().shape({
-    // mission_plan_id: Yup.string().required("Mission Plan ID is required"),
-    // strategic_intent_id: Yup.string().required("Strategic Intent ID is required"),
-    allSuccess: Yup.array().of(
-        Yup.object().shape({
-            success: Yup.string().required("Measure of success is required"),
-            unit: Yup.string().required("Unit is required"),
-            target: Yup.string().required("Target is required"),
-        })
-    ),
-});
 
 const MeasureofSuccess = () => {
     const location = usePathname();
@@ -69,7 +59,7 @@ const MeasureofSuccess = () => {
                 { success: '', unit: '', target: '' },
             ],
         },
-        validationSchema,
+        validationSchema: measureSuccessSchema,
         onSubmit: values => {
             console.log(values);
         },
@@ -120,7 +110,7 @@ const MeasureofSuccess = () => {
                                                         <Label htmlFor={`success-${success.id}`} className="text-[#6E7C87] text-[13px] mb-[6px]">Unit</Label>
                                                         <Select>
                                                             <SelectTrigger className="border p-2 outline-0 bg-[#F6F8F9]"
-                                                            error={errorAllSuccess?.success}
+                                                                error={errorAllSuccess?.success}
                                                             >
                                                                 <SelectValue
                                                                     placeholder={formik.values.allSuccess[index].unit || "Select Unit"}
@@ -199,6 +189,7 @@ const MeasureofSuccess = () => {
                     <div className="mt-8 flex gap-x-2 items-center">
                         <Button
                             variant="outline"
+                            type="button"
                             className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
                         >
                             Back
