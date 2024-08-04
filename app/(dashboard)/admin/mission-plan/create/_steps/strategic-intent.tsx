@@ -8,11 +8,19 @@ import { LiaTimesSolid } from "react-icons/lia";
 import React from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 
+interface StrategicIntentProps {
+  currentMissionPlan: CurrentMissionPlanData[] | undefined;
+}
+
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { cn } from "@/lib/utils";
-import { useAddStrategicIntentMutation } from "@/redux/services/mission-plan/missionPlanApi";
+import {
+  useAddStrategicIntentMutation,
+  useGetCurrentMissionPlanQuery,
+} from "@/redux/services/mission-plan/missionPlanApi";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const validationSchema = Yup.object().shape({
   // mission_plan_id: Yup.string().required("Mission Plan ID is required"),
@@ -30,7 +38,7 @@ const validationSchema = Yup.object().shape({
   ),
 });
 
-const StrategicIntent = () => {
+const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   const location = usePathname();
   const router = useRouter();
 
@@ -52,8 +60,11 @@ const StrategicIntent = () => {
       mission_plan_id,
       strategic_intent_id,
     };
-
-    await addStrategicIntent(transformedIntents);
+    try {
+      await addStrategicIntent(transformedIntents).unwrap();
+      router.push(`${location}?ui=specified-intent`);
+      toast.success("Strategic intent saved successfully");
+    } catch (error) {}
   };
 
   const handleChange = (
@@ -71,18 +82,52 @@ const StrategicIntent = () => {
     }
   };
 
+  // Parse behaviours string into an array
+  const parsedBehaviours = currentMissionPlan?.strategic_intents.map(
+    (item: any) => {
+      const behaviours = JSON.parse(item.behaviours).map(
+        (behaviour: string) => ({
+          id: uuidv4(),
+          value: behaviour,
+        })
+      );
+      return behaviours;
+    }
+  );
+
+  // Parse behaviours string into an array
+  const intents = currentMissionPlan?.strategic_intents.map((intent: any) => ({
+    intent: intent.intent,
+    behaviours: JSON.parse(intent.behaviours).map((behaviour: string) => ({
+      id: uuidv4(),
+      value: behaviour,
+    })),
+  }));
+
+  console.log(intents, [
+    {
+      intent: "Strategic Intent 1",
+      behaviours: [
+        {
+          id: "17b5c217-2d85-44a8-b88a-0564ed67c46c",
+          value: "Behaviour 1",
+        },
+      ] || [{ id: uuidv4(), value: "" }],
+    },
+  ]);
+
   const formik = useFormik<any>({
     initialValues: {
-      intents: [
+      intents: intents || [
         {
           intent: "",
           behaviours: [{ id: uuidv4(), value: "" }],
         },
       ],
-      mission_plan_id: "",
+      mission_plan_id: currentMissionPlan?.mission_statement?.mission_plan_id,
       strategic_intent_id: "",
     },
-    onSubmit: async () => null,
+    onSubmit: handleSaveStrategicIntent,
     validationSchema: validationSchema,
   });
 
@@ -227,17 +272,16 @@ const StrategicIntent = () => {
             </Button>
             <Button
               type="submit"
-              //   disabled={isLoadingStrategicIntent}
-              //   loading={isLoadingStrategicIntent}
-              onClick={() => router.push(`${location}?ui=specified-intent`)}
+              disabled={isLoadingStrategicIntent}
+              loading={isLoadingStrategicIntent}
+              // onClick={() => router.push(`${location}?ui=specified-intent`)}
               loadingText="Save & Continue"
               className={cn(
                 "w-full",
                 !formik.isValid || isLoadingStrategicIntent
-                  ? "opacity-50 cursor-not-allowed w-max"
+                  ? "opacity-50 cursor-not-allowed w-max py-5 px-2"
                   : "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
               )}
-              // className={`text-white py-5 px-2 rounded-sm bg-primary border border-primary min-w-28`}
             >
               Save & Continue
             </Button>

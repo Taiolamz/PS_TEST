@@ -18,7 +18,18 @@ export const missionPlanApi = baseApi.injectEndpoints({
         }
       },
     }),
+
+    getCurrentMissionPlan: builder.query({
+      query: () => ({
+        url: `/mission-plan/user/current`,
+        method: "GET",
+      }),
+      providesTags: ["Branches"],
+      transformResponse: (response: { data: CurrentMissionPlanData[] }) =>
+        response.data,
+    }),
   }),
 });
 
-export const { useAddStrategicIntentMutation } = missionPlanApi;
+export const { useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery } =
+  missionPlanApi;

@@ -330,7 +330,7 @@ const SpecifiedTask = () => {
             className={cn(
               "w-full",
               // !formik.isValid || isLoadingStrategicIntent
-              //   ? "opacity-50 cursor-not-allowed w-max"
+              //   ? "opacity-50 cursor-not-allowed w-max py-5 px-2"
               //   :
               "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
             )}
