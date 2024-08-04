@@ -42,3 +42,5 @@ export const CREATE_MISSION_PLAN_LINKS = [
         accessor: 'boundaries'
     },
 ]
+
+export const MEASURE_OF_SUCCESS_UNITS = ["% Percentage", "(1,2,3) Number", "$ Money"] 
