@@ -8,7 +8,7 @@ import { useEmployeeInvite } from "../../../(dashboard)/employee/_hook/useEmploy
 import TogglePassword from "@/components/toggle-password";
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
-import EmployeeInviteLayout from "../_components/invite-layout";
+import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
 
 const OrganizationInvite = () => {
   const { formik, passwordValidations, handlePasswordChange, loading } =
