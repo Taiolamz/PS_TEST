@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
-import { missionContentModal } from "../../../checklist-steps";
+import { missionContentModal } from "./checklist-steps";
 
 interface Prop {
   onSelect: () => void;

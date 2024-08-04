@@ -92,7 +92,7 @@ const Employee = () => {
   };
 
   const handleProceed = () => {
-    const proceedPath = ADMIN.MISSION_PLAN;
+    const proceedPath = ADMIN.MISSION_PLAN_TEMPLATE;
     router.push(proceedPath);
   };
 
