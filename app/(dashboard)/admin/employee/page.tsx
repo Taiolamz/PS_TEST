@@ -147,7 +147,7 @@ const Employee = () => {
 
   const employeesColumnData = useMemo(
     () => employeerolesColumns,
-    [isFetchingEmployees]
+    []
   );
 
   const user = useAppSelector(selectUser);

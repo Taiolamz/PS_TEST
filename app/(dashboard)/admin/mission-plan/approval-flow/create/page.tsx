@@ -8,11 +8,13 @@ import ApprovalFlowTwo from "./approval-flow-two";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import routesPath from "@/utils/routes";
+import DashboardModal from "../../template/_components/checklist-dashboard-modal";
+import CancelModal from "../../template/_components/cancel-modal";
 
 const { ADMIN } = routesPath;
 
 const AddApprovalFlow = () => {
-  const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
+  const cancelRoute = ADMIN.CHECKLIST;
   const router = useRouter();
   const {
     formik,
@@ -73,6 +75,17 @@ const AddApprovalFlow = () => {
           ) : null}
         </form>
       </div>
+
+      <DashboardModal
+        className={"w-[420px]"}
+        open={openCancelModal}
+        onOpenChange={handleCancelDialog}
+      >
+        <CancelModal
+          onProceed={handleProceedCancel}
+          modalTitle="Mission Plan Flow"
+        />
+      </DashboardModal>
     </DashboardLayout>
   );
 };
