@@ -117,15 +117,15 @@ const SignupPage = () => {
     // router.push(`${REGISTER}`)
     Cookies.remove("token");
     disptach(resetAuth());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <section className="w-4/6">
-      <h1 className="text-2xl font-semibold mb-4 text-[#162238]">
+    <section className="w-4/6  flex flex-col items-start w-[25rem]">
+      <h1 className=" text-2xl font-semibold mb-4 text-[#162238]">
         Register your account
       </h1>
-      <div className="h-[calc(100vh_-_6rem)] pb-10 scroll-hidden overflow-y-auto px-4 lg:mr-32">
+      <div className="h-[calc(100vh_-_6rem)] w-full pb-10 scroll-hidden overflow-y-auto px-1 ">
         <form onSubmit={formik.handleSubmit}>
           {ui === "organization-information" && (
             <OrganizationInformation formik={formik} />

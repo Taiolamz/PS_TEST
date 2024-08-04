@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+// import Head from "next/head";
 
 const Home: React.FC = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="text-base font-medium">
+     
       <></>
     </div>
   );
