@@ -59,9 +59,9 @@ export default function Login() {
   });
 
   return (
-    <div className="w-4/6 bg-white">
+    <div className="flex flex-col items-start w-[25rem] w-4/6 bg-white">
       <div className="text-left font-semibold text-2xl mb-4">Welcome Back,</div>
-      <form onSubmit={handleSubmit} className="mt-6 lg:w-2/3">
+      <form  onSubmit={handleSubmit} className="mt-6 w-full">
         <div className="mb-10 space-y-6">
           <div>
             <Input

@@ -17,7 +17,7 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
 
     // console.log(selectedCountryData)
     return (
-        <div>
+        <div style={{width: "100%", }}>
             <div className="flex flex-col gap-5">
                 <Input
                     label="Organization Name"
@@ -54,11 +54,13 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
                 <Input
                     id="City"
                     name="city"
+                    type={`text`}
                     value={formik.values.city}
                     onChange={formik.handleChange}
                     touched={formik.touched.city}
                     error={formik.errors.city}
                     placeholder="Enter City"
+                    autoComplete={`off`}
                 />
                 <div className="grid grid-cols-2 gap-4">
                     <CustomSelect

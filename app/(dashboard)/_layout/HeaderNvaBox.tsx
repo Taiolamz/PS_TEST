@@ -182,7 +182,7 @@ const HeaderNavBox = ({
     <>
       <div
         onClick={() => {
-          // console.log(user);
+          console.log(user);
         }}
         className={style.header_wrap_index_box}
       >

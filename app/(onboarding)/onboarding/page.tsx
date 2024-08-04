@@ -60,6 +60,8 @@ const Onboarding = () => {
 
   const onSubmit = async () => {
     const formDataToSend = new FormData();
+    // console.log(formik.values);
+    
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
