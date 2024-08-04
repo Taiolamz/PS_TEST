@@ -188,7 +188,7 @@ const MeasureofSuccess = () => {
                                             target: "",
                                         })
                                     }
-                                    className="flex items-center gap-2 mt-8 text-primary text-sm"
+                                    className="flex items-center gap-2 mt-8 text-[var(--primary-color)] text-sm"
                                 >
                                     <LucidePlusCircle color="#04ACAC" size={20} />
                                     Add more level
@@ -199,7 +199,7 @@ const MeasureofSuccess = () => {
                     <div className="mt-8 flex gap-x-2 items-center">
                         <Button
                             variant="outline"
-                            className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+                            className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
                         >
                             Back
                         </Button>
@@ -214,9 +214,9 @@ const MeasureofSuccess = () => {
                                 !formik.isValid
                                     // || isLoadingStrategicIntent
                                     ? "opacity-50 cursor-not-allowed w-max"
-                                    : "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+                                    : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
                             )}
-                        // className={`text-white py-5 px-2 rounded-sm bg-primary border border-primary min-w-28`}
+                        // className={`text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] min-w-28`}
                         >
                             Save & Continue
                         </Button>
