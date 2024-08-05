@@ -16,7 +16,9 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   const [color, setColor] = useColor("hex", "#008080");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
-  const [logoName, setLogoName] = useState<string | null>("");
+  const [logoName, setLogoName] = useState<string | null>(
+    formik.values.logo ? formik.values.logo.name : null
+  );
   const actionCtx = useContext(ActionContext);
   const fileInputRef = useRef<HTMLInputElement | null>();
   // const [color, setColor] = useColor("hex", "#121212");
