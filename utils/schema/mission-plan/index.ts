@@ -23,3 +23,8 @@ export const fiscalYearSchema = yup.object().shape({
   start_date: yup.string().required('start date is required'),
   end_date: yup.string().required('end date is required'),
 })
+
+export const missionVissionSchema = yup.object().shape({
+  mission: yup.string().min(5).required('company mission is required'),
+  vision: yup.string().min(5).required('company vision is required'),
+})
