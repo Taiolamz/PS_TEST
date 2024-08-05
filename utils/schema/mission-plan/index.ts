@@ -23,3 +23,9 @@ export const boundariesSchema = yup.object({
   constraints: yup.array().of(yup.string().required("Constraint is required")),
   freedoms: yup.array().of(yup.string().required("Freedom is required")),
 });
+
+export const fiscalYearSchema = yup.object().shape({
+  title: yup.string().required(),
+  start_date: yup.string().required('start date is required'),
+  end_date: yup.string().required('end date is required'),
+})
