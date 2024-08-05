@@ -17,3 +17,9 @@ export const measureSuccessSchema = yup.object().shape({
       })
   ),
 });
+
+export const fiscalYearSchema = yup.object().shape({
+  title: yup.string().required(),
+  start_date: yup.string().required('start date is required'),
+  end_date: yup.string().required('end date is required'),
+})

@@ -70,6 +70,5 @@ export function checkUserRole(item: string) {
     return "EMPLOYEE";
   }
 }
-
-
 export const iife = <T>(fn: () => T) => fn();
+export  const removeCharFromString = (str: string, char: string) => str.replace(new RegExp(char, 'g'), '')
