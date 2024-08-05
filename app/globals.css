@@ -27,10 +27,9 @@ body {
   font-style: light;
 }
 
-.scroll-hidden::-webkit-scrollbar {
+.scroll-hidden::-webkit-scrollbar-thumb {
   -webkit-box-shadow: inset 0 0 6px transparent;
-  background-color: none;
-  display: none
+  background-color: transparent;
 }
 
 .customScrollbar::-webkit-scrollbar {
