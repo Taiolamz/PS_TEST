@@ -131,7 +131,6 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   });
 
   const errorIntents = formik.errors.intents as any;
-
   return (
     <div>
       <div className="flex items-center gap-x-2 mb-8">
