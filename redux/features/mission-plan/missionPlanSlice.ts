@@ -9,6 +9,10 @@ const initialState: Dictionary = {
       start_date: "",
       end_date: "",
     },
+    mission_vision: {
+      mission: "",
+      vision: ""
+    }
     // mission and vission
 
     // strategic pillar
