@@ -227,7 +227,7 @@ const SpecifiedTask = () => {
                               id={`tasks.${index}.start_date`}
                               name={`tasks.${index}.start_date`}
                               label="Start Period"
-                              inputClass="md:w-32 text-[.75rem]"
+                              inputClass="text-[.75rem]"
                               handleChange={(date) =>
                                 formik.setFieldValue(
                                   `tasks.${index}.start_date`,
@@ -260,7 +260,7 @@ const SpecifiedTask = () => {
                               }
                               labelClass="pb-2"
                               className="relative"
-                              inputClass="md:w-32 text-[.75rem]"
+                              inputClass="w-full text-[.75rem]"
                               //   value={formik.values.tasks[index].end_date}
                               touched={touchedTasks?.[index]?.end_date}
                               error={errorTasks?.[index]?.end_date}
@@ -273,7 +273,7 @@ const SpecifiedTask = () => {
                                 id={`tasks.${index}.main_efforts`}
                                 name={`tasks.${index}.main_efforts`}
                                 label={title}
-                                labelClass="text-[#008080] text-sm w-full"
+                                labelClass="text-pri text-sm w-full text-primary"
                                 isChecked={
                                   formik.values.tasks[index].main_efforts
                                 }
@@ -307,7 +307,10 @@ const SpecifiedTask = () => {
                 }
                 className="flex items-center gap-2 mt-5 text-primary text-sm px-1"
               >
-                <LucidePlusCircle color="#04ACAC" size={20} />
+                <LucidePlusCircle
+                  style={{ color: "var(--primary-color)" }}
+                  size={20}
+                />
                 Add new Specific Task
               </button>
             </div>

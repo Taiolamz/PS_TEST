@@ -7,11 +7,6 @@ import { LucidePlusCircle } from "lucide-react";
 import { LiaTimesSolid } from "react-icons/lia";
 import React, { useEffect, useMemo, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
-
-interface StrategicIntentProps {
-  currentMissionPlan: CurrentMissionPlanData[] | undefined;
-}
-
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { cn } from "@/lib/utils";
@@ -22,6 +17,9 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+interface StrategicIntentProps {
+  currentMissionPlan: CurrentMissionPlanData[] | any;
+}
 const validationSchema = Yup.object().shape({
   // mission_plan_id: Yup.string().required("Mission Plan ID is required"),
   // strategic_intent_id: Yup.string().required("Strategic Intent ID is required"),
@@ -151,12 +149,12 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                   formik.values.intents.map((intent: any, index: number) => (
                     <div
                       key={intent.id}
-                      className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative"
+                      className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative max-w-4xl"
                     >
                       <div className="!ml-0">
                         <Textarea
                           rows={4}
-                          id={`intent-${intent.id}`}
+                          id={`intent-${intent?.id}`}
                           label={`Strategic Intent ${index + 1}`}
                           labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
                           name={`intents.${index}.intent`}
@@ -235,7 +233,10 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                               onClick={() => push({ id: uuidv4(), value: "" })}
                               className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
                             >
-                              <LucidePlusCircle color="#04ACAC" size={20} />
+                              <LucidePlusCircle
+                                style={{ color: "var(--primary-color)" }}
+                                size={20}
+                              />
                               Add Behaviour
                             </button>
                           </div>
@@ -261,7 +262,10 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                   }
                   className="flex items-center gap-2 mt-8 text-primary text-sm"
                 >
-                  <LucidePlusCircle color="#04ACAC" size={20} />
+                  <LucidePlusCircle
+                    style={{ color: "var(--primary-color)" }}
+                    size={20}
+                  />
                   Add more level
                 </button>
               </div>

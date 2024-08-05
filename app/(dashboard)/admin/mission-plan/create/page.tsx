@@ -34,7 +34,7 @@ const CreateMissionPlan = () => {
           menu_items={CREATE_MISSION_PLAN_LINKS}
           slug="ui"
         />
-        <aside className="p-5 w-[100vw_-_201px] overflow-y-scroll pb-10 scroll-hidden">
+        <aside className="p-5 w-full overflow-y-scroll pb-10 scroll-hidden">
           {ui === "overview" && <MissionPlanOverview />}
           {ui === "mission-statement" && <MissionStatement />}
           {ui === "measure-success" && <MeasureOfSuccess />}
