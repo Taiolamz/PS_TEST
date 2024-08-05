@@ -3,6 +3,7 @@ import { FormHeader } from "../_components";
 import { steps } from "../data";
 import Icon from "@/components/icon/Icon";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { MdModeEdit } from "react-icons/md";
 
 const Preview = () => {
   const router = useRouter();
@@ -31,12 +32,18 @@ const Preview = () => {
                 router.push(`${location}?ui=${ui}&step=${index + 1}`)
               }
             >
-              <Icon
+              <MdModeEdit
+                height={28}
+                width={28}
+                color="#008080"
+                className="bg-[#0080801A] rounded-full p-[0.1875rem]"
+              />
+              {/* <Icon
                 name="edit"
                 height={22.69}
                 width={22.69}
                 className="bg-[#0080801A] rounded-full"
-              />
+              /> */}
             </button>
           </div>
         ))}
