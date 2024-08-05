@@ -23,10 +23,10 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
   };
 
   const handleStaffLevel = (newValue: string, index: number) => {
-    formik.setFieldValue(`staff_levels.${index}.position`, newValue);
+    formik.setFieldValue(`staff_levels.${index}.level`, newValue);
   };
   return (
-    <section className="max-w-[54.625rem]">
+    <section className="max-w-[55.875rem]">
       <FormHeader
         title="Setup Default Organization Operating Parameters"
         subTitle="Set organization operating guidelines"
@@ -46,13 +46,13 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
 
               <FieldArray name="staff_levels">
                 {({ insert, remove, push }) => (
-                  <div>
+                  <div className="w-full">
                     {formik.values.staff_levels?.length > 0 &&
                       formik.values.staff_levels.map(
                         (staff_levels: any, index: number) => (
                           <div
                             key={index}
-                            className="grid grid-cols-2 items-center space-x-2 w-[37.9375rem] mb-5 relative"
+                            className="flex items-center space-x-2 mb-5"
                           >
                             <Input
                               type="text"
@@ -61,7 +61,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               value={formik.values.staff_levels.name}
                               onChange={(e) => handleStaffName(e, index)}
                               placeholder="Input Staff Name"
-                              className="mt-1 block w-2/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              className="mt-1 block max-w-[26.5625rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                             />
                             {formik.errors.staff_levels?.[index]?.name &&
                               formik.touched.staff_levels?.[index]?.name && (
@@ -71,7 +71,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               )}
 
                             <Field
-                              name={`staff_levels.${index}.position`}
+                              name={`staff_levels.${index}.level`}
                               component={CustomSelect}
                               options={Array.from({ length: 10 }, (_, idx) => {
                                 return {
@@ -80,30 +80,27 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                                 };
                               })}
                               selected={
-                                formik.values.staff_levels?.[index]?.position
+                                formik.values.staff_levels?.[index]?.level
                               }
                               setSelected={(value: any) => {
                                 handleStaffLevel(value, index);
                                 setEmployeePosition(value);
                               }}
-                              className="mr-2"
-                              value={
-                                formik.values.staff_levels?.[index]?.position
-                              }
+                              className="inline-flex mt-1 w-[7.9375rem] max-w-[7.9375rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              value={formik.values.staff_levels?.[index]?.level}
                             />
 
-                            {formik.errors.staff_levels?.[index]?.position &&
-                              formik.touched.staff_levels?.[index]
-                                ?.position && (
+                            {formik.errors.staff_levels?.[index]?.level &&
+                              formik.touched.staff_levels?.[index]?.level && (
                                 <div className="text-red-500">
-                                  {formik.errors.staff_levels[index].position}
+                                  {formik.errors.staff_levels[index].level}
                                 </div>
                               )}
 
                             <button
                               type="button"
                               onClick={() => remove(index)}
-                              className="text-red-500 hover:text-red-700 absolute -right-6"
+                              className="text-red-500 hover:text-red-700"
                             >
                               <Icon
                                 name="remove"
@@ -117,7 +114,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
 
                     <button
                       type="button"
-                      onClick={() => push({ name: "", position: "" })}
+                      onClick={() => push({ name: "", level: "" })}
                       className="flex items-center gap-2 mt-5 text-primary"
                     >
                       <Icon name="add" width={24} height={24} />

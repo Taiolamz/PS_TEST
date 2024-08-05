@@ -1,7 +1,6 @@
 "use client";
 
-import Icon from "@/components/icon/Icon";
-import { ArrowLeftCircle } from "lucide-react";
+import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
@@ -21,7 +20,7 @@ import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 const Onboarding = () => {
   const router = useRouter();
@@ -61,7 +60,6 @@ const Onboarding = () => {
   const onSubmit = async () => {
     const formDataToSend = new FormData();
     // console.log(formik.values);
-    
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
@@ -85,8 +83,8 @@ const Onboarding = () => {
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
-          toast.success("Organization Created Successfully")
-          router.push(ADMIN.OVERVIEW)
+          toast.success("Organization Created Successfully");
+          router.push(ADMIN.OVERVIEW);
         });
     } catch (error) {}
   };
@@ -104,7 +102,7 @@ const Onboarding = () => {
       fy_title: "",
       closing_time: "",
       hierarchy: "",
-      staff_levels: [{ name: "", position: "" }],
+      staff_levels: [{ name: "", level: "" }],
     },
     validationSchema: OnbaordingSchema,
     onSubmit: onSubmit,
@@ -135,7 +133,11 @@ const Onboarding = () => {
           {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
           {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
           {getCurrentStep() === 3 && (
-            <OperationsParameter formik={formik} setFyDate={() => {}} fyDate={''}/>
+            <OperationsParameter
+              formik={formik}
+              setFyDate={() => {}}
+              fyDate={""}
+            />
           )}
           {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
           {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
@@ -144,9 +146,10 @@ const Onboarding = () => {
             <button
               type="button"
               onClick={() => router.push(routesPath?.ADMIN?.OVERVIEW)}
-              className="text-pry inline-flex gap-1.5"
+              className="text-pry inline-flex gap-1.5 items-center"
             >
-              <ArrowLeftCircle width={24} height={24} /> Skip to Dashboard
+              <FaRegArrowAltCircleLeft width={24} height={24} /> Skip to
+              Dashboard
             </button>
             {getCurrentStep() < steps.length ? (
               <Button

@@ -10,10 +10,7 @@ const Preview = () => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
 
-  const getCurrentStep = () => {
-    const step = Number(searchParams.get("step"));
-    return step;
-  };
+  const filteredSteps = steps.filter((step) => step !== "Preview");
 
   return (
     <section className="max-w-[27.375rem]">
@@ -22,10 +19,10 @@ const Preview = () => {
         subTitle="Filled Information"
       />
       <div className="flex flex-col gap-3">
-        {steps.map((item, index) => (
+        {filteredSteps.map((item, index) => (
           <div
             key={item}
-            className="flex items-center justify-between bg-[#00808008] p-2"
+            className="text-[#5B6871] flex items-center justify-between bg-[#00808008] p-2"
           >
             <p className="text-sm"> {`${index + 1}. ${item}`}</p>
             <button
@@ -34,7 +31,12 @@ const Preview = () => {
                 router.push(`${location}?ui=${ui}&step=${index + 1}`)
               }
             >
-              <Icon name="edit" height={22.69} width={22.69} />
+              <Icon
+                name="edit"
+                height={22.69}
+                width={22.69}
+                className="bg-[#0080801A] rounded-full"
+              />
             </button>
           </div>
         ))}

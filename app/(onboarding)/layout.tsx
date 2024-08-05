@@ -23,35 +23,38 @@ const OnboardingLayout = ({ children }: Props) => {
     return step;
   };
 
+  const filteredSteps = steps.filter((step) => step !== "Preview");
+
   return (
     <ActionContextProvider>
       <section className="flex h-screen overflow-hidden">
-      <aside className="w-1/4 p-4 pr-0 bg-primary text-white xl:w-2/12">
-        <Icon width={74} height={15} name="mance" className="mx-auto" />
-        <h2 className="font-semibold mb-2 mt-[1.125rem]">Steps</h2>
-        <ul className="flex flex-col gap-2">
-          {steps.map((step, index) => (
-            <li
-              key={index}
-              className={`text-xs p-2 cursor-pointer flex items-center gap-2 mr-4 ${
-                getCurrentStep() - 1 >= index ? "bg-white bg-opacity-[8%]" : ""
-              }`}
-              onClick={() =>
-                router.push(`${location}?ui=${ui}&step=${index + 1}`)
-              }
-            >
-              {getCurrentStep() - 1 >= index && <CheckIcon className="w-3" />}
-              {step}
-            </li>
-          ))}
-        </ul>
-      </aside>
-      <main className="w-3/4 bg-white shadow-lg xl:w-5/6 pb-10">
-        {children}
-      </main>
-    </section>  
+        <aside className="w-1/4 p-4 pr-0 bg-primary text-white xl:w-2/12">
+          <Icon width={74} height={15} name="mance" className="mx-auto" />
+          <h2 className="font-semibold mb-2 mt-[1.125rem]">Steps</h2>
+          <ul className="flex flex-col gap-2">
+            {filteredSteps.map((step, index) => (
+              <li
+                key={index}
+                className={`text-xs p-2 cursor-pointer flex items-center gap-2 mr-4 ${
+                  getCurrentStep() - 1 >= index
+                    ? "bg-white bg-opacity-[8%]"
+                    : ""
+                }`}
+                onClick={() =>
+                  router.push(`${location}?ui=${ui}&step=${index + 1}`)
+                }
+              >
+                {getCurrentStep() - 1 >= index && <CheckIcon className="w-3" />}
+                {step}
+              </li>
+            ))}
+          </ul>
+        </aside>
+        <main className="w-3/4 bg-white shadow-lg xl:w-5/6 pb-10">
+          {children}
+        </main>
+      </section>
     </ActionContextProvider>
-  
   );
 };
 
