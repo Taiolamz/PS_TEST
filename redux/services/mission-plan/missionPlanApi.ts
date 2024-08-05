@@ -18,7 +18,6 @@ export const missionPlanApi = baseApi.injectEndpoints({
         }
       },
     }),
-
     getCurrentMissionPlan: builder.query({
       query: () => ({
         url: `/mission-plan/user/current`,
@@ -28,8 +27,22 @@ export const missionPlanApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: CurrentMissionPlanData[] }) =>
         response.data,
     }),
+    createFinancialYear: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/financial-year`,
+        method: "POST",
+        body: payload,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (error: any) {
+          // console.log('Error:', error)
+        }
+      },
+    }),
   }),
 });
 
-export const { useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery } =
+export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery } =
   missionPlanApi;

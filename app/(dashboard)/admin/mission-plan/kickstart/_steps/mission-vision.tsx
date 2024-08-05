@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useRouter } from 'next/navigation';
 
 const MissionVision = () => {
+    const router = useRouter()
+
     return (
         <div className='w-[40vw]'>
             <h1>Mission and Vision</h1>
@@ -45,8 +48,9 @@ const MissionVision = () => {
                 </div>
                 <div className="mt-5 flex gap-4 items-center">
                     <Button
-                        className='border border-primary text-primary px-10 shadow-none bg-white hover:bg-none hover:text-white'
+                        className='border border-primary text-primary px-10 shadow-none bg-white hover:bg-none'
                         type='button'
+                        onClick={() => router.back()}
                     >Back</Button>
                     <Button
                         className='border'
