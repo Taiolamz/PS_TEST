@@ -101,7 +101,7 @@ const Onboarding = () => {
       opening_time: "",
       fy_title: "",
       closing_time: "",
-      hierarchy: "",
+      hierarchy: [],
       staff_levels: [{ name: "", level: "" }],
     },
     validationSchema: OnbaordingSchema,

@@ -57,6 +57,7 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
               isChecked={isChecked}
               itemId={id}
               handleClick={handleCheckboxClick}
+              labelClass="text-[#6E7C87]"
             />
           </div>
         ))}
