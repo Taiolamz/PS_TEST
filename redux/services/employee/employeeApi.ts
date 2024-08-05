@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 
 export const employeeInvitationApi = baseApi.injectEndpoints({
@@ -19,13 +18,12 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getInvitedEmployees: builder.query<BranchData[], string>({
+    getInvitedEmployees: builder.query<InvitedUser, string>({
       query: (id) => ({
-        url: `/admin/invitation/${id}`,
+        url: `/invitation/${id}`,
         method: "GET",
       }),
-      transformResponse: (response: { data: { data: BranchData[] } }) =>
-        response.data.data,
+      transformResponse: (response: { data: InvitedUser }) => response.data,
     }),
   }),
 });
