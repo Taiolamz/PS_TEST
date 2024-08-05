@@ -4,9 +4,11 @@ import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
 import { useRejectEmployeeInvite } from "../../../(dashboard)/employee/_hook/useRejectInvite";
 import { Button } from "@/components/ui/button";
 import { ManceLoader } from "@/components/custom-loader";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
 
 const RejectInvite = () => {
-  const { formik, reasons, loading } = useRejectEmployeeInvite();
+  const { formik, reasons, loading, isRejectSuccess } =
+    useRejectEmployeeInvite();
   const btnClass = "font-normal py-0 h-[32px]  transition-all duration-300 ";
 
   return (
@@ -72,15 +74,27 @@ const RejectInvite = () => {
               {loading ? <ManceLoader /> : "Send"}
             </Button>
           </div>
-          <Button
+          {/* <Button
             variant="outline"
             className={`border-primary px-10 text-primary font-light  hover:text-primary ${btnClass}`}
             // onClick={onCancel}
           >
             Back
-          </Button>
+          </Button> */}
         </div>
       </form>
+      {/* <ConfirmationModal
+        show={isRejectSuccess}
+        // handleClose={() => resetSendPasswordReset()}
+        hasCloseButton={false}
+        icon="/svgs/mail-sent.svg"
+        title="Sent! check your email"
+        message="Mail sent! Check your inbox to get your recovery otp and create your a new password."
+        // handleClick={() => {
+        //   router.push("/login");
+        // }}
+        actionBtnTitle="Continue"
+      /> */}
     </EmployeeInviteLayout>
   );
 };
