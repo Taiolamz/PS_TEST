@@ -4,10 +4,8 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import CustomSelect from "@/components/custom-select";
 import CustomDateInput from "@/components/custom-date-input";
-import { formatDate, formatRMDatePicker } from "@/utils/helpers/date-formatter";
-import Routes from "@/lib/routes/routes";
+import { formatDate } from "@/utils/helpers/date-formatter";
 import { useEmployee } from "../_hooks/useEmployee";
-import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
 import DashboardModal from "../_components/checklist-dashboard-modal";
 import CancelModal from "../_components/cancel-modal";
@@ -60,19 +58,9 @@ export default function AddEmployee() {
     {}
   );
 
-  console.log("units",units)
   return (
     <>
       <DashboardLayout back headerTitle="Employee">
-        {/* <ChecklistLayout
-          title="Employee"
-          showBtn
-          step={`Step 1 - 1`}
-          btnDisabled={!formik.isValid || !formik.dirty}
-          onCancel={handleCancelDialog}
-          onProceedBtn={formik.handleSubmit}
-          loading={isCreatingEmployee}
-        > */}
         <ReusableStepListBox
           btnText="Continue"
           activeStep="1"
@@ -82,9 +70,6 @@ export default function AddEmployee() {
           loading={isCreatingEmployee}
           onSave={formik.handleSubmit}
           onCancel={handleCancelDialog}
-          // back
-          // hideStep
-          // fixed
         />
         <div
           className=""
@@ -176,7 +161,6 @@ export default function AddEmployee() {
                   className="relative"
                   isRequired
                 />
-
                 <Input
                   label="Work Email"
                   type="text"
@@ -270,7 +254,7 @@ export default function AddEmployee() {
                   labelClass={labelClassName}
                 />
 
-                <CustomSelect
+                {/* <CustomSelect
                   label="Job Title"
                   placeholder="Select Job Title"
                   options={jobTitles}
@@ -280,6 +264,16 @@ export default function AddEmployee() {
                   }
                   isRequired
                   labelClass={labelClassName}
+                /> */}
+
+                <Input
+                  label="Job Title"
+                  type="text"
+                  placeholder="Job Title"
+                  id="designation"
+                  name="designation"
+                  onChange={formik.handleChange}
+                  isRequired
                 />
 
                 <Input
@@ -348,7 +342,6 @@ export default function AddEmployee() {
               modalTitle="Employee"
             />
           </DashboardModal>
-          {/* </ChecklistLayout> */}
         </div>
       </DashboardLayout>
     </>
