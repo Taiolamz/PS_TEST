@@ -18,7 +18,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface StrategicIntentProps {
-  currentMissionPlan: CurrentMissionPlanData[] | any;
+  currentMissionPlan?: CurrentMissionPlanData[] | any;
 }
 const validationSchema = Yup.object().shape({
   // mission_plan_id: Yup.string().required("Mission Plan ID is required"),
@@ -116,7 +116,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
 
   const formik = useFormik<any>({
     initialValues: {
-      intents: initialVals || [
+      intents: [
         {
           intent: "",
           behaviours: [{ id: uuidv4(), value: "" }],
@@ -127,7 +127,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     },
     onSubmit: handleSaveStrategicIntent,
     validationSchema: validationSchema,
-    enableReinitialize: true,
+    // enableReinitialize: true,
   });
 
   const errorIntents = formik.errors.intents as any;
@@ -148,7 +148,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                 {formik.values.intents?.length > 0 &&
                   formik.values.intents.map((intent: any, index: number) => (
                     <div
-                      key={intent.id}
+                      key={intent?.id}
                       className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative max-w-4xl"
                     >
                       <div className="!ml-0">
@@ -161,7 +161,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                           error={errorIntents?.intent}
                           onChange={(e) => handleChange(e.target.value, index)}
                           className="border p-2 md:min-w-[27rem] lg:min-w-[37rem] bg-[#F6F8F9]"
-                          value={formik.values.intents[index].intent}
+                          value={formik?.values?.intents[index]?.intent}
                         />
                         <ErrorMessage
                           name={`intents.${index}.intent`}
@@ -173,8 +173,8 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                       <FieldArray name={`intents.${index}.behaviours`}>
                         {({ insert, remove: removeBehaviour, push }) => (
                           <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max">
-                            {intent.behaviours?.length > 0 &&
-                              intent.behaviours.map(
+                            {intent?.behaviours?.length > 0 &&
+                              intent?.behaviours.map(
                                 (behaviour: any, behaviourIndex: number) => (
                                   <div
                                     key={behaviour.id}
@@ -223,7 +223,9 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                         behaviourIndex === 0 && "cursor-default"
                                       }`}
                                     >
-                                      <LiaTimesSolid />
+                                      {behaviourIndex !== 0 && (
+                                        <LiaTimesSolid />
+                                      )}
                                     </button>
                                   </div>
                                 )
@@ -231,7 +233,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                             <button
                               type="button"
                               onClick={() => push({ id: uuidv4(), value: "" })}
-                              className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
+                              className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-[var(--primary-color)] text-sm"
                             >
                               <LucidePlusCircle
                                 style={{ color: "var(--primary-color)" }}
@@ -260,7 +262,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                       behaviours: [""],
                     })
                   }
-                  className="flex items-center gap-2 mt-8 text-primary text-sm"
+                  className="flex items-center gap-2 mt-8 text-[var(--primary-color)] text-sm"
                 >
                   <LucidePlusCircle
                     style={{ color: "var(--primary-color)" }}
@@ -274,7 +276,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
           <div className="mt-8 flex gap-x-2 items-center">
             <Button
               variant="outline"
-              className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+              className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
             >
               Back
             </Button>
@@ -288,7 +290,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                 "w-full",
                 !formik.isValid || isLoadingStrategicIntent
                   ? "opacity-50 cursor-not-allowed w-max py-5 px-2"
-                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
               )}
             >
               Save & Continue

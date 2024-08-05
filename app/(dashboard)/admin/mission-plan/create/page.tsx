@@ -23,8 +23,8 @@ const CreateMissionPlan = () => {
   const queryParams = useSearchParams();
   const ui = queryParams.get("ui");
 
-  const { data: currentMissionPlan, isLoading: currentMissionPlanLoading } =
-    useGetCurrentMissionPlanQuery({});
+  // const { data: currentMissionPlan, isLoading: currentMissionPlanLoading } =
+  //   useGetCurrentMissionPlanQuery({});
 
   return (
     <DashboardLayout onBack={() => router.push(ADMIN.MISSION_PLAN)}>
@@ -39,7 +39,9 @@ const CreateMissionPlan = () => {
           {ui === "mission-statement" && <MissionStatement />}
           {ui === "measure-success" && <MeasureOfSuccess />}
           {ui === "strategic-intent" && (
-            <StrategicIntent currentMissionPlan={currentMissionPlan} />
+            <StrategicIntent
+            // currentMissionPlan={currentMissionPlan}
+            />
           )}
           {ui === "specified-intent" && <SpecifiedTask />}
           {ui === "implied-task" && <ImpliedTask />}

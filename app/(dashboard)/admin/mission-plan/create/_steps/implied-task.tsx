@@ -43,7 +43,7 @@ const ImpliedTask = () => {
   });
 
   return (
-    <div className="w-full">
+    <div className="pr-4">
       <h1>Implied Task</h1>
 
       <form onSubmit={formik.handleSubmit} className="mt-7">
