@@ -12,21 +12,6 @@ interface OrganizationStructureProps {
 const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
   const [currentHierarchy, setCurrentHierarchy] = useState(HIERARCHY_DATA);
 
-  // const handleCheckboxClick = (id: number) => {
-  //   const updatedHierarchy = currentHierarchy.map((item) =>
-  //     item.id === id ? { ...item, isChecked: !item.isChecked } : item
-  //   );
-
-  //   setCurrentHierarchy(updatedHierarchy);
-
-  //   const updatedFormikValues = updatedHierarchy
-  //     .filter((item: { isChecked: any }) => item.isChecked)
-  //     .map((item) => item.title)
-  //     .join(", ");
-
-  //   formik.setFieldValue("hierarchy", updatedFormikValues);
-  // };
-
   const handleCheckboxClick = (id: number) => {
     const updatedHierarchy = currentHierarchy.map((item) =>
       item.id === id ? { ...item, isChecked: !item.isChecked } : item
