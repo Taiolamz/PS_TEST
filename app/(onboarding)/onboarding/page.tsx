@@ -2,7 +2,7 @@
 
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -27,6 +27,7 @@ const Onboarding = () => {
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
+  const { ONBOARDING } = routesPath;
 
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
@@ -109,6 +110,12 @@ const Onboarding = () => {
   });
 
   const logo = formik.values.logo;
+
+  useEffect(() => {
+    if (!ui) {
+      router.replace(`${ONBOARDING}?ui=get-started&step=1`);
+    }
+  }, [ui, location, router]);
 
   return (
     <section className="">
