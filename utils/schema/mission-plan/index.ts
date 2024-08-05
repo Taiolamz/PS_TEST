@@ -17,3 +17,9 @@ export const measureSuccessSchema = yup.object().shape({
       })
   ),
 });
+
+
+export const boundariesSchema = yup.object({
+  constraints: yup.array().of(yup.string().required("Constraint is required")),
+  freedoms: yup.array().of(yup.string().required("Freedom is required")),
+});

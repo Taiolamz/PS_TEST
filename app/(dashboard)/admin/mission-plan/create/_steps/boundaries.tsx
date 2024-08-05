@@ -9,16 +9,13 @@ import * as Yup from "yup";
 import { cn } from "@/lib/utils";
 import { LiaTimesSolid } from "react-icons/lia";
 import Icon from "@/components/icon/Icon";
+import { boundariesSchema } from "@/utils/schema/mission-plan";
 
 const initialValues = {
   constraints: ["", ""],
   freedoms: ["", ""],
 };
 
-const validationSchema = Yup.object({
-  constraints: Yup.array().of(Yup.string().required("Constraint is required")),
-  freedoms: Yup.array().of(Yup.string().required("Freedom is required")),
-});
 
 const Boundaries = () => {
   const router = useRouter();
@@ -26,7 +23,7 @@ const Boundaries = () => {
   const step = useSearchParams().get("step");
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: validationSchema,
+    validationSchema: boundariesSchema,
     onSubmit: (values) => {
       console.log("Form data", values);
       router.push(`${location}?ui=boundaries&step=preview`);
