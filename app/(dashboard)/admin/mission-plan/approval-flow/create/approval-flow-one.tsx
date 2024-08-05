@@ -80,8 +80,6 @@ const ApprovalFlowOne = ({
             placeholder="Select..."
             options={reviewersOption}
             className=" w-[303px]"
-            // selected={formik.values.reviewers}
-            // setSelected={(value) => formik.setFieldValue("reviewers", value)}
             selected={selectedReviewer}
             setSelected={setSelectedReviewer}
           />
