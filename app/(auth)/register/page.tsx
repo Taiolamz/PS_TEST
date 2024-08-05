@@ -47,7 +47,6 @@ const SignupPage = () => {
     resendOTP,
     { isLoading: isResendingOTP, isSuccess: OTPResent, reset: resetResendOTP },
   ] = useAdminResendOTPMutation();
-  const [showVerifyOTP, setShowVerifyOTP] = useState(false);
   const [OTP, setOTP] = useState<any>("");
 
   const location = usePathname();
@@ -56,6 +55,12 @@ const SignupPage = () => {
   const router = useRouter();
 
   const disptach = useAppDispatch();
+
+  useEffect(() => {
+    if (!ui) {
+      router.replace(`${REGISTER}`);
+    }
+  }, [ui, location, router]);
 
   const handleFormSubmit = async () => {
     if (ui === "organization-information") {
@@ -66,7 +71,9 @@ const SignupPage = () => {
     if (ui === "employee-information") {
       register({ ...formik.values })
         .unwrap()
-        .then(() => {});
+        .then(() => {
+          startTimer();
+        });
     }
   };
 
@@ -85,8 +92,7 @@ const SignupPage = () => {
     adminVerifyOTP({ code: OTP })
       .unwrap()
       .then(() => {
-        // toast.success("OTP Verified Successfully");
-        setShowVerifyOTP(false);
+        resetRegistration();
       });
   };
 
@@ -110,22 +116,21 @@ const SignupPage = () => {
   });
 
   const { timeLeft, startTimer, isTimerElapsed } = useTimeout({
-    initialTime: 30,
+    initialTime: 600,
   });
 
   useEffect(() => {
-    // router.push(`${REGISTER}`)
     Cookies.remove("token");
     disptach(resetAuth());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <section className="w-4/6">
-      <h1 className="text-2xl font-semibold mb-4 text-[#162238]">
+    <section className="w-4/6  flex flex-col items-start">
+      <h1 className=" text-2xl font-semibold mb-4 text-[#162238]">
         Register your account
       </h1>
-      <div className="h-[calc(100vh_-_6rem)] pb-10 scroll-hidden overflow-y-auto px-4 lg:mr-32">
+      <div className="h-[calc(100vh_-_6rem)] w-full pb-10 scroll-hidden overflow-y-auto px-1 ">
         <form onSubmit={formik.handleSubmit}>
           {ui === "organization-information" && (
             <OrganizationInformation formik={formik} />
@@ -163,53 +168,10 @@ const SignupPage = () => {
           </div>
         </form>
       </div>
-      {/* Email Sent */}
+      {/* Verify Email */}
       <ConfirmationModal
         show={isRegistered}
         handleClose={() => resetRegistration()}
-        hasCloseButton
-        icon="/svgs/mail-sent.svg"
-        title="Check your mailbox !"
-        message={
-          <span>
-            We’ve sent an email to{" "}
-            <span className="font-semibold">{formik.values.email}</span> with an
-            OTP to confirm your account. Check your inbox to activate your
-            account.
-          </span>
-        }
-        handleClick={() => {
-          resetRegistration();
-          setShowVerifyOTP(true);
-        }}
-        actionBtnTitle="Verify Email"
-        footerContent={
-          <>
-            {!isTimerElapsed ? (
-              <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
-                {" "}
-                {timeToMinuteSecond(timeLeft)} mins remaining
-              </div>
-            ) : (
-              <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
-                Didn’t get the code?{" "}
-                <Button
-                  disabled={isResendingOTP}
-                  variant="link"
-                  className="px-0 text-primary font-normal"
-                  onClick={() => handleResendOTP()}
-                >
-                  Resend
-                </Button>{" "}
-              </span>
-            )}
-          </>
-        }
-      />
-      {/* Verify Email */}
-      <ConfirmationModal
-        show={showVerifyOTP}
-        handleClose={() => setShowVerifyOTP(false)}
         hasCloseButton={false}
         title="Verify your email address"
         message={
@@ -218,35 +180,33 @@ const SignupPage = () => {
             <span className="font-semibold">{formik.values.email}</span>
           </span>
         }
-        handleClick={() => handleVerifyOTP(OTP)}
+        handleClick={() => {
+          handleVerifyOTP(OTP);
+        }}
         actionBtnTitle="Verify OTP"
         actionBtnLoading={isVerifyingOTP}
         disableActionBtn={OTP.length < 6 || isVerifyingOTP}
         content={
           <div className="my-8 flex justify-center flex-col items-center">
             <InputOTPGenerator length={6} onChange={(code) => setOTP(code)} />
+            <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
+              {timeToMinuteSecond(timeLeft)} mins remaining
+            </div>
           </div>
         }
         footerContent={
           <>
-            {!isTimerElapsed ? (
-              <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
-                {" "}
-                {timeToMinuteSecond(timeLeft)} mins remaining
-              </div>
-            ) : (
-              <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
-                Didn’t get the code?{" "}
-                <Button
-                  disabled={isResendingOTP}
-                  variant="link"
-                  className="px-0 text-primary font-normal"
-                  onClick={() => handleResendOTP()}
-                >
-                  Resend
-                </Button>{" "}
-              </span>
-            )}
+            <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
+              Didn’t get the code?{" "}
+              <Button
+                disabled={isResendingOTP}
+                variant="link"
+                className="px-0 text-primary font-normal"
+                onClick={() => handleResendOTP()}
+              >
+                Resend
+              </Button>{" "}
+            </span>
           </>
         }
       />

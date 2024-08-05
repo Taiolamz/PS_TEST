@@ -198,7 +198,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departmentDrop = handleDropdown(departments);
   const unitsDrop = handleDropdown(units);
 
-  const EmployeeRoute = ADMIN.ADD_EMPLOYEE
+  const EmployeeRoute = ADMIN.EMPLOYEES
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const [createEmployee, { isLoading: isCreatingEmployee }] =

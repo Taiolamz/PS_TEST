@@ -23,6 +23,11 @@ type AuthResponseType = {
   setLoading?: (loading: boolean) => void; // Function to set loading state (boolean)
 };
 
+type FileTemplateParam = {
+  template: string;
+  format: string;
+};
+
 type ApiError = {
   response: {
     data: {
@@ -128,6 +133,32 @@ type EmployeeRolesData = {
   reason: string;
   created_at: string;
   updated_at: string;
+};
+
+type CurrentMissionPlanData = {
+  approval_steps: any[];
+  approvals: any[];
+  boundaries: any[];
+  created_at: string;
+  fiscal_year_id: string;
+  id: string;
+  implied_task: any;
+  measure_of_success: any[];
+  mission_statement: {
+    id: string;
+    mission_plan_id: string;
+    created_at: string;
+    deleted_at: string;
+    mission: string;
+    staff_member_id: string;
+    status: string;
+    updated_at: string;
+  };
+  organization_id: string;
+  specified_task: any[];
+  staff_member_id: string;
+  status: string;
+  strategic_intents: any[];
 };
 
 type RolesData = {};

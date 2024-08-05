@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 import { generateQueryString } from "@/utils/helpers";
 
@@ -11,13 +10,6 @@ export const departmentApi = baseApi.injectEndpoints({
         body: payload,
       }),
       invalidatesTags: ["Departments"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     createBulkDepartments: builder.mutation({
@@ -26,14 +18,6 @@ export const departmentApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Departments"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     getDepartments: builder.query<DepartmentData[], QueryParams>({
@@ -45,6 +29,17 @@ export const departmentApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: { data: DepartmentData[] } }) =>
         response.data.data,
     }),
+
+    downloadDepartmentTemplate: builder.query<any, FileTemplateParam>({
+      query: (params) => ({
+        url: `/admin/downloadFile/${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
@@ -52,4 +47,5 @@ export const {
   useCreateDepartmentMutation,
   useCreateBulkDepartmentsMutation,
   useGetDepartmentsQuery,
+  useLazyDownloadDepartmentTemplateQuery,
 } = departmentApi;

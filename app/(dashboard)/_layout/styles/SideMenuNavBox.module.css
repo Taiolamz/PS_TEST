@@ -305,7 +305,7 @@
   transition: all 0.3s ease-in-out 0.2s;
 }
 .side_menu_nav_box_index_wrap .nav_list_fragment .nav_link_box_wrap .nav_link_box .nav_link_active {
-  cursor: not-allowed;
+  cursor: default;
 }
 .side_menu_nav_box_index_wrap .nav_list_fragment .nav_link_box_wrap .nav_link_box .nav_link_active::before {
   transform: scaleY(1);

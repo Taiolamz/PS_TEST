@@ -2,7 +2,7 @@
 
 import { SmallManceLogo, ZojatechIcon } from "@/public/assets/icons";
 import Image from "next/image";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 
 interface Prop {
   children: ReactNode;

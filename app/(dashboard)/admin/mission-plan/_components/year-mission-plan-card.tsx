@@ -9,7 +9,7 @@ type CardPropType = { state: string; href?: string, handleClick?: () => void };
 export default function YearMissionPlanCard({ state, href, handleClick }: CardPropType) {
   return (
     <div
-      className="capitalize h-[140px] w-full border rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 bg-transparent cursor-pointer"
+      className="capitalize bg-white h-[140px] w-full border rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 bg-transparent cursor-pointer"
       onClick={handleClick}
     >
       <div className="flex justify-between">

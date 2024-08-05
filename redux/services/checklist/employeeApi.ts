@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 import { generateQueryString } from "@/utils/helpers";
 
@@ -11,13 +10,6 @@ export const employeeApi = baseApi.injectEndpoints({
         body: payload,
       }),
       invalidatesTags: ["Employees"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     createBulkEmployees: builder.mutation({
@@ -26,14 +18,6 @@ export const employeeApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Employees"],
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
     }),
 
     getEmployees: builder.query<EmployeeRolesData[], QueryParams>({
@@ -45,6 +29,15 @@ export const employeeApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: EmployeeRolesData[] }) =>
         response.data,
     }),
+
+    downloadEmployeeTemplate: builder.query({
+      query: (format: string) => ({
+        url: `/admin/employee/template?format=${format}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
@@ -52,4 +45,5 @@ export const {
   useCreateEmployeeMutation,
   useCreateBulkEmployeesMutation,
   useGetEmployeesQuery,
+  useLazyDownloadEmployeeTemplateQuery,
 } = employeeApi;

@@ -303,6 +303,8 @@ export const sideMenuIcons = {
   ),
 };
 
+
+// ADMIN ROUTES SIDEBAR LINK
 export const sideMenuList: any = [
   {
     title: "",
@@ -326,7 +328,7 @@ export const sideMenuList: any = [
         name: "Mission Plan",
         link: routesPath?.ADMIN?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
-        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN],
+        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN, routesPath?.ADMIN?.CREATE_MISSION_PLAN, routesPath?.ADMIN?.SINGLE_MISSION_PLAN, routesPath?.ADMIN?.KICK_START_MISSION_PLAN, routesPath?.ADMIN?.MAIN_MISSION_PLAN],
       },
       {
         name: "Performance",
@@ -351,13 +353,13 @@ export const sideMenuList: any = [
         name: "Subsidiaries",
         link: routesPath?.ADMIN?.SUBSIDIARY,
         icon: sideMenuIcons?.subsidiary,
-        relatedLink: [routesPath?.ADMIN?.CREATE_SUBSIDIARY,]
+        relatedLink: [routesPath?.ADMIN?.CREATE_SUBSIDIARY, routesPath?.ADMIN?.SUBSIDIARY]
       },
       {
         name: "Branches",
         link: routesPath?.ADMIN?.BRANCHES,
         icon: sideMenuIcons?.branch,
-        relatedLink: [routesPath?.ADMIN?.CREATE_BRANCH],
+        relatedLink: [routesPath?.ADMIN?.CREATE_BRANCH, routesPath?.ADMIN?.BRANCHES],
       },
       {
         name: "Organogram",
@@ -393,6 +395,8 @@ export const sideMenuList: any = [
   },
 ];
 
+
+// EMPLOYEE ROUTES SIDEBAR LINKS
 export const sideMenuEmployeeList = [
   {
     title: "",

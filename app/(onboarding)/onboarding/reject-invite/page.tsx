@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import EmployeeInviteLayout from "../component/invite-layout";
-import { useRejectEmployeeInvite } from "../_hook/useRejectInvite";
+import EmployeeInviteLayout from "../_components/invite-layout";
+import { useRejectEmployeeInvite } from "../../../(dashboard)/employee/_hook/useRejectInvite";
 import { Button } from "@/components/ui/button";
 import { ManceLoader } from "@/components/custom-loader";
 
