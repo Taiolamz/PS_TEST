@@ -23,19 +23,10 @@ const AddApprovalFlow = () => {
     handleCancelDialog,
     reviewers,
     level,
+    handleProceed,
+    ui,
+    isCreatingMissionFlow,
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
-
-  const location = usePathname();
-  const searchParams = useSearchParams();
-  const ui = searchParams.get("ui");
-
-  const handleProceed = () => {
-    if (ui === "approval-flow-step-two") {
-      router.push(ADMIN.CHECKLIST);
-    } else {
-      router.push(`${location}?ui=approval-flow-step-two`);
-    }
-  };
 
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
@@ -46,6 +37,7 @@ const AddApprovalFlow = () => {
         title="Mission Plan Template"
         onSave={handleProceed}
         onCancel={handleCancelDialog}
+        loading={isCreatingMissionFlow}
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
         <form
@@ -71,7 +63,12 @@ const AddApprovalFlow = () => {
             />
           ) : null}
           {ui === "approval-flow-step-two" ? (
-            <ApprovalFlowTwo options={level} />
+            <ApprovalFlowTwo
+              options={level}
+              reviewersOption={reviewers}
+              approvalsArray={formik.values.order_of_approvals}
+              setOrderValue={formik.setFieldValue}
+            />
           ) : null}
         </form>
       </div>
