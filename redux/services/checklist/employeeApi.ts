@@ -38,6 +38,15 @@ export const employeeApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+
+    downloadEmployeeData: builder.query({
+      query: (format: string) => ({
+        url: `/admin/invitation/export/${format}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
@@ -46,4 +55,5 @@ export const {
   useCreateBulkEmployeesMutation,
   useGetEmployeesQuery,
   useLazyDownloadEmployeeTemplateQuery,
+  useLazyDownloadEmployeeDataQuery,
 } = employeeApi;

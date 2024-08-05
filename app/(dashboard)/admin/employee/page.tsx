@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   useCreateBulkEmployeesMutation,
   useGetEmployeesQuery,
+  useLazyDownloadEmployeeDataQuery,
   useLazyDownloadEmployeeTemplateQuery,
 } from "@/redux/services/checklist/employeeApi";
 import { employeerolesColumns } from "./employee-role-column";
@@ -32,6 +33,7 @@ const Employee = () => {
   const router = useRouter();
   const [status, setStatus] = useState<string>("");
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  console.log(status);
 
   const {
     isOpen: openProceedModal,
@@ -116,12 +118,22 @@ const Employee = () => {
     handleBulkModal();
   };
 
-  const handlePdfChange = () => {
-    console.log("handle pdf");
-  };
-
-  const handleCsvChange = () => {
-    console.log("handle csv");
+  const handleImportChange = async (format: "excel" | "pdf") => {
+    toast.loading("downloading...");
+    downloadEmployeeData(format)
+      .unwrap()
+      .then((payload) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "all_employee",
+            fileExtension: format === "pdf" ? "pdf" : "xlsx",
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
   };
 
   const handleAddEmployee = () => {
@@ -137,6 +149,7 @@ const Employee = () => {
   } = useGetEmployeesQuery({
     to: 0,
     total: 0,
+    // status: status,  When ticket is ready
     per_page: 50,
     currentPage: 0,
     next_page_url: "",
@@ -156,6 +169,7 @@ const Employee = () => {
     useCreateBulkEmployeesMutation();
 
   const [downloadEmployeeTemplate] = useLazyDownloadEmployeeTemplateQuery();
+  const [downloadEmployeeData] = useLazyDownloadEmployeeDataQuery();
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
@@ -238,8 +252,8 @@ const Employee = () => {
             newBtnOpen={openNewBtn}
             isLoading={isFetchingEmployees}
             onManualBtn={handleAddEmployee}
-            onPdfChange={handlePdfChange}
-            onCsvChange={handleCsvChange}
+            onPdfChange={() => handleImportChange("pdf")}
+            onCsvChange={() => handleImportChange("excel")}
           />
         )}
 
