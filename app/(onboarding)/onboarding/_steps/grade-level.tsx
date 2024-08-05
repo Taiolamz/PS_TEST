@@ -5,6 +5,8 @@ import CustomSelect from "@/components/custom-select";
 import { Input } from "@/components/ui/input";
 import { Field, FieldArray } from "formik";
 
+import { FaCirclePlus } from "react-icons/fa6";
+
 interface GradeLevelProps {
   formik: any;
 }
@@ -117,7 +119,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                       onClick={() => push({ name: "", level: "" })}
                       className="flex items-center gap-2 mt-5 text-primary"
                     >
-                      <Icon name="add" width={24} height={24} />
+                      <FaCirclePlus width={24} height={24} />
                       Add more level
                     </button>
                   </div>
