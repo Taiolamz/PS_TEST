@@ -7,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { checklistDetails } from "../level/_component/checklist-steps"; 
 =======
 import { checklistDetails } from "../checklist-steps";
@@ -14,6 +15,9 @@ import { checklistDetails } from "../checklist-steps";
 =======
 import { checklistDetails } from "../level/_component/checklist-steps"; 
 >>>>>>> d23902e (modify mission plan checklist)
+=======
+import { checklistDetails } from "../checklist-steps";
+>>>>>>> ea5f208 (checklist completion")
 
 const ChecklistOverviewContent = () => {
   const [progress, setProgress] = React.useState(13);

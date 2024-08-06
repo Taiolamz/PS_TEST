@@ -107,10 +107,7 @@ const MissionPlanTemplate = () => {
 
   const missionPlanTemplates = missionPlanTemplateData ?? [];
 
-  const missionPlanTemplatesColumnData = useMemo(
-    () => missionPlanColumn,
-    []
-  );
+  const missionPlanTemplatesColumnData = useMemo(() => missionPlanColumn, []);
 
   return (
     <DashboardLayout headerTitle="Mission Plan Template">
