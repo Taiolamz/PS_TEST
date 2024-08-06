@@ -10,9 +10,13 @@ import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useRouter } from "next/navigation";
 =======
 >>>>>>> ea5f208 (checklist completion")
+=======
+import { useRouter } from "next/navigation";
+>>>>>>> cbca8cd (invitation employee)
 
 const OrganizationInvite = () => {
   const router = useRouter();
