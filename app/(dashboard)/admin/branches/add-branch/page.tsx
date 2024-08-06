@@ -120,7 +120,7 @@ const AddBranch = () => {
 
               <CustomSelect
                 label="Head of Branch"
-                isRequired
+                // isRequired
                 placeholder="Head of Branch"
                 options={[]}
                 selected={formik.values.head}

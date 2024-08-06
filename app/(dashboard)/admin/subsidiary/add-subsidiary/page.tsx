@@ -120,7 +120,7 @@ const AddSubsidary = () => {
 
                 <CustomSelect
                   label="Head of Subsidiary"
-                  isRequired
+                  // isRequired
                   placeholder="Head of subsidiary"
                   options={[]}
                   selected={formik.values.head_of_subsidiary}

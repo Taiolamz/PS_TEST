@@ -33,7 +33,7 @@ const AddUnit = () => {
     departmentDrop,
   } = useUnit({ cancelPath: cancelRoute });
 
-  const [selectedState, setSelectedState] = useState("");
+  // const [selectedState, setSelectedState] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -41,15 +41,6 @@ const AddUnit = () => {
   return (
     <>
       <DashboardLayout back headerTitle="Unit">
-        {/* <ChecklistLayout
-          onCancel={handleCancelDialog}
-          title="Unit"
-          onProceedBtn={formik.handleSubmit}
-          showBtn
-          step={`Step 4 of 4`}
-          btnDisabled={!formik.isValid || !formik.dirty}
-          loading={isCreatingUnit}
-        > */}
         <ReusableStepListBox
           btnText="Continue"
           activeStep="4"
@@ -59,9 +50,6 @@ const AddUnit = () => {
           loading={isCreatingUnit}
           onSave={formik.handleSubmit}
           onCancel={handleCancelDialog}
-          // back
-          // hideStep
-          // fixed
         />
         <div
           className=""
@@ -104,7 +92,7 @@ const AddUnit = () => {
 
                 <CustomSelect
                   label="Head of Unit"
-                  isRequired
+                  // isRequired
                   placeholder="Head of Unit"
                   options={[]}
                   selected={formik.values.head_of_unit}
@@ -186,7 +174,6 @@ const AddUnit = () => {
             />
           </DashboardModal>
         </div>
-        {/* </ChecklistLayout> */}
       </DashboardLayout>
     </>
   );
