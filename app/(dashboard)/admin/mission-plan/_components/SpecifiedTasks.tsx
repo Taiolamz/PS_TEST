@@ -37,7 +37,11 @@ const SpecifiedTasks = ({ title }: Props) => {
               <label className="text-[0.8125rem] text-[#6E7C87]">
                 Input Weight
               </label>
-              <Input placeholder="Input weight" />
+              <Input
+                placeholder="Input weight"
+                name="input_weight"
+                id="input_weight"
+              />
             </div>
             <Button
               variant="outline"

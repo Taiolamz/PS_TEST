@@ -51,7 +51,11 @@ const ImpliedTask = ({ title }: Props) => {
               <label className="text-[0.8125rem] text-[#6E7C87]">
                 Input Weight
               </label>
-              <Input />
+              <Input
+                placeholder="Input weight"
+                id="input_weight"
+                name="input_weight"
+              />
             </div>
             <Button
               variant="outline"

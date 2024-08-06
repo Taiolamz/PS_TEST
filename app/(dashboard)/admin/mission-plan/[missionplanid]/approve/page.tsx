@@ -8,6 +8,11 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import SpecifiedTasks from "../../_components/SpecifiedTasks";
 import ImpliedTask from "../../_components/ImpliedTask";
+import MeasureOfSuccessTable from "../../_components/measureOfSuccessTable";
+import {
+  measureColumns,
+  measuresData,
+} from "@/utils/data/dashboard/missionplan/dummy";
 
 const ApproveMissionPlan = () => {
   return (
@@ -20,7 +25,7 @@ const ApproveMissionPlan = () => {
             </h1>
             <Button
               variant="outline"
-              className="border-primary text-[#008080] hover:text-primary hover:bg-transparent"
+              className="border-primary text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-transparent"
             >
               <Link
                 href={`/dashboard/mission-plan/2023/allemployee/presentation`}
@@ -34,7 +39,7 @@ const ApproveMissionPlan = () => {
         <div className="flex flex-col gap-10 text-[#162238]">
           {/* Mission Statement */}
           <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
-            <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
+            <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
               Mission Statement
             </h2>
             <div className="flex justify-between items-end w-full">
@@ -57,16 +62,16 @@ const ApproveMissionPlan = () => {
 
           {/* Measure of Success */}
           <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
-            <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
+            <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
               Measure of Success
             </h2>
             <div className="flex justify-between items-end">
-              {/* <div className="basis-3/4">
+              <div className="basis-3/4">
                 <MeasureOfSuccessTable
                   data={measuresData}
                   columns={measureColumns}
                 />
-              </div> */}
+              </div>
               <div className="flex gap-2.5 mr-4">
                 <Button
                   variant="outline"
@@ -83,8 +88,10 @@ const ApproveMissionPlan = () => {
           <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] bg-[#F6F8F9]">
             <div className="flex justify-between items-center mb-2.5">
               <div className="flex gap-3 items-center">
-                <h2 className="text-primary text-sm">Comments</h2>
-                <p className="inline-flex py-0.5 px-2 text-xs rounded-full text-primary bg-[#0080801A]">
+                <h2 className="text-[var(--primary-color)] text-sm">
+                  Comments
+                </h2>
+                <p className="inline-flex py-0.5 px-2 text-xs rounded-full text-[var(--primary-color)] bg-[#0080801A]">
                   2
                 </p>
               </div>
@@ -120,10 +127,10 @@ const ApproveMissionPlan = () => {
                   <HiDotsHorizontal />
                 </div>
                 <p>
-                  Lorem Ipsum is simply dummy text of the printing and
+                  {`Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
                   standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled.
+                  printer took a galley of type and scrambled.`}
                 </p>
                 <div className="flex gap-[0.4375rem] justify-end">
                   <p className="font-light text-[0.625rem] text-[#6E7C87] tracking-tighter">
@@ -149,10 +156,10 @@ const ApproveMissionPlan = () => {
                   <HiDotsHorizontal />
                 </div>
                 <p>
-                  Lorem Ipsum is simply dummy text of the printing and
+                  {`Lorem Ipsum is simply dummy text of the printing and
                   typesetting industry. Lorem Ipsum has been the industry's
                   standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled.
+                  printer took a galley of type and scrambled.`}
                 </p>
                 <div className="flex gap-[0.4375rem] justify-end">
                   <p className="font-light text-[0.625rem] text-[#6E7C87] tracking-tighter">
@@ -168,7 +175,7 @@ const ApproveMissionPlan = () => {
 
           {/* Strategic Intent */}
           <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
-            <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
+            <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
               Strategic Intent
             </h2>
             <div className="mt-2">
@@ -215,7 +222,7 @@ const ApproveMissionPlan = () => {
             <div className=" flex justify-between items-end">
               <div className="flex flex-col gap-4">
                 <div>
-                  <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
+                  <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
                     Freedom{" "}
                   </h2>
                   <div className="mt-2">
@@ -228,7 +235,7 @@ const ApproveMissionPlan = () => {
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
+                  <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
                     Constraints
                   </h2>
                   <div className="mt-2">
