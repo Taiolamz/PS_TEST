@@ -19,8 +19,8 @@ const OrganizationInvite = () => {
     handlePasswordChange,
     loading,
     invitedUser,
-    isLoadingInvitedUsers,
-    isInvitationSuccess,
+    // isLoadingInvitedUsers,
+    // isInvitationSuccess,
   } = useEmployeeInvite();
   const [showPassword, setShowPassword] = useState(false);
   const btnClass = "font-normal py-0 h-[32px]  transition-all duration-300 ";

@@ -80,7 +80,7 @@ export const baseQueryInterceptor: BaseQueryFn<
     }
 
     if (res.status === 503) {
-      let message = res.data.message;
+      let message = res.data.message || res.data.error.message;
       toast.error(message);
     }
 
