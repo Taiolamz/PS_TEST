@@ -48,8 +48,15 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    createStrategicPillars: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/strategic-pillar`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
-export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery, useCreateMissionAndVisionMutation } =
+export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation } =
   missionPlanApi;
