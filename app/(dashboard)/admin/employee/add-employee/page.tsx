@@ -27,14 +27,14 @@ export default function AddEmployee() {
     subsidiaries,
     departments,
     branches,
-    isLoadingSubsidiaries,
-    isLoadingBranches,
-    isLoadingDepartments,
-    isLoadingUnits,
+    // isLoadingSubsidiaries,
+    // isLoadingBranches,
+    // isLoadingDepartments,
+    // isLoadingUnits,
+    // isLoadingGradeLevel,
     units,
     isCreatingEmployee,
     genderOptions,
-    jobTitles,
     gradeLevels,
     newEmployeeStatuses,
     newEmployeeDrop,
@@ -255,18 +255,6 @@ export default function AddEmployee() {
                   }}
                   labelClass={labelClassName}
                 />
-
-                {/* <CustomSelect
-                  label="Job Title"
-                  placeholder="Select Job Title"
-                  options={jobTitles}
-                  selected={formik.values.designation}
-                  setSelected={(value) =>
-                    formik.setFieldValue("designation", value)
-                  }
-                  isRequired
-                  labelClass={labelClassName}
-                /> */}
 
                 <Input
                   label="Job Title"

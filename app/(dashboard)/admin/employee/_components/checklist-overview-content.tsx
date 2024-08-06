@@ -23,7 +23,7 @@ const ChecklistOverviewContent = () => {
             Complete your checklist
           </p>
           <p className="text-custom-gray-scale-white font-light text-[11px]">
-            Get your acccount running, by completing the following steps
+            Get your account running, by completing the following steps
           </p>
         </div>
         <div className="flex gap-2 items-center">

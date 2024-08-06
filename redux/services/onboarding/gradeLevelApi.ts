@@ -2,12 +2,12 @@ import { baseApi } from "../baseApi";
 
 export const gradeLevelApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getGradeLevels: builder.query<GradeLevelData[], {}>({
+    getGradeLevels: builder.query<string, {}>({
       query: () => ({
         url: `/admin/organization/staff-levels`,
         method: "GET",
       }),
-      transformResponse: (response: { data: GradeLevelData[] }) =>
+      transformResponse: (response: { data: string }) =>
         response.data,
     }),
   }),

@@ -5,6 +5,8 @@ import { useRejectEmployeeInvite } from "../../../(dashboard)/employee/_hook/use
 import { Button } from "@/components/ui/button";
 import { ManceLoader } from "@/components/custom-loader";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { ZojatechIcon } from "@/public/assets/icons";
+import Image from "next/image";
 
 const RejectInvite = () => {
   const { formik, reasons, loading, isRejectSuccess } =
@@ -83,18 +85,24 @@ const RejectInvite = () => {
           </Button> */}
         </div>
       </form>
-      {/* <ConfirmationModal
+
+      <ConfirmationModal
+        content={
+          <div className="flex justify-center gap-3 items-center absolute left-0 right-0 m-auto top-0 mt-3">
+            <Image src={ZojatechIcon} alt="Zojatech" />
+            <p className="font-medium text-lg text-custom-blue-color">
+              Zojatech Limited
+            </p>
+          </div>
+        }
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title="Feedback Sent"
+        message="Your reason for rejection has been sent to the Admin, Thank you for your time."
         show={isRejectSuccess}
-        // handleClose={() => resetSendPasswordReset()}
-        hasCloseButton={false}
-        icon="/svgs/mail-sent.svg"
-        title="Sent! check your email"
-        message="Mail sent! Check your inbox to get your recovery otp and create your a new password."
-        // handleClick={() => {
-        //   router.push("/login");
-        // }}
-        actionBtnTitle="Continue"
-      /> */}
+        handleClose={() => null}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
+      />
     </EmployeeInviteLayout>
   );
 };

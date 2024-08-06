@@ -1,7 +1,6 @@
 "use client";
 import * as yup from "yup";
 import useDisclosure from "./useDisclosure";
-import Routes from "@/lib/routes/routes";
 import { useCreateEmployeeMutation } from "@/redux/services/checklist/employeeApi";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
@@ -25,49 +24,11 @@ type Prop = {
   cancelPath: string;
 };
 
-// Define the type for the subsidiary item
-interface propType {
-  id: string;
-  name: string;
-}
-interface BranchItem {
-  name: string;
-  branch_id: string | null;
-}
-
 interface EmployeeData {
   name: string;
   id: string;
   value: string;
 }
-
-// Dummy data
-const countries = [
-  { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
-  { label: "Germany", value: "Germany", icon: HomeIcon },
-  { label: "South Africa", value: "South Africa", icon: HomeIcon },
-  // ...other countries
-];
-
-const jobTitles = [
-  { name: "UX Designer", value: "UX Designer" },
-  { name: "Product Manager", value: "Product Manager" },
-  { name: "Quality Assurance Tester", value: "Quality Assurance Tester" },
-  { name: "Backend Engineer", value: "Backend Engineer" },
-];
-const roles = [
-  { name: "UX Designer", value: "UX Designer" },
-  { name: "Product Manager", value: "Product Manager" },
-  { name: "Quality Assurance Tester", value: "Quality Assurance Tester" },
-  { name: "Backend Engineer", value: "Backend Engineer" },
-];
-const gradeLevels = [
-  { name: "Managing Director", value: "managing_director" },
-  { name: "Admin (Strategy)", value: "admin_strategy" },
-  { name: "Admin (Finance)", value: "admin_finance" },
-  { name: "Supervisor 1", value: "supervisor_1" },
-  { name: "Supervisor 2", value: "supervisor_2" },
-];
 
 const newEmployeeStatuses = [
   {
@@ -146,8 +107,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
     useGetGradeLevelsQuery({});
 
-  console.log(gradeLevelData, "level data");
-
   const { data: unitData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
     total: 0,
@@ -177,8 +136,8 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     const data = items.map((chi) => {
       return {
         ...chi,
-        label: chi?.name,
-        value: chi?.level,
+        label: chi.name,
+        value: chi.position,
       };
     });
     return data;
@@ -191,9 +150,9 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       | DepartmentData[]
       | UnitData[]
       | EmployeeData[]
-      | GradeLevelData[]
+    // | GradeLevelData[]
   ) => {
-    const data = items.map((chi) => {
+    const data = items?.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
@@ -202,6 +161,8 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     });
     return data;
   };
+
+  // const handleFormat
 
   const handleBranchDropdown = (items: BranchData[]) => {
     const data = items.map((chi) => {
@@ -219,7 +180,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departments = departmentData ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
-  const gradeLevels = gradeLevelData ?? [];
+  const gradeLevels = gradeLevelData ? JSON.parse(gradeLevelData) : [];
 
   const stateDrop = handleDropdown(states);
   const subsidiaryDrop = handleDropdown(subsidiaries);
@@ -239,7 +200,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
-      // level: "entry-level",
     };
     await createEmployee(payload)
       .unwrap()
@@ -309,7 +269,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     isLoadingDepartments,
     isLoadingUnits,
     genderOptions: handleFormatDropdown(genderOptions),
-    jobTitles: handleFormatDropdown(jobTitles),
     gradeLevels: handleFormatDropdown(gradeLevels),
     gradeLevelDrop,
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
@@ -319,6 +278,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     subsidiaryDrop,
     branchDrop,
     departmentDrop,
+    isLoadingGradeLevel,
     unitsDrop,
     openCancelModal,
     handleProceedCancel,
