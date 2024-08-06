@@ -1,80 +1,131 @@
+import { Dictionary } from '@/@types/dictionary';
+import Icon from '@/components/icon/Icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import FinancialYearPreview from './preview';
+import { updateFinancialYearDetails } from '@/redux/features/mission-plan/missionPlanSlice';
+import { useCreateStrategicPillarsMutation } from '@/redux/services/mission-plan/missionPlanApi';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
 import routesPath from '@/utils/routes';
+import { FieldArray, Form, Formik } from 'formik';
+import { LucidePlusCircle } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import FinancialYearPreview from './preview';
 
 const { ADMIN } = routesPath
 
 const StrategicPillar = () => {
-    const location = usePathname()
+    const { fy_info: { strategic_pillars } } = useAppSelector((state) => state.mission_plan)
+    const [initialValues, setInitialValues] = useState(strategic_pillars)
+    const [createStrategicPillars, {isLoading}] = useCreateStrategicPillarsMutation()
+    
     const router = useRouter()
+    const dispatch = useAppDispatch()
     const ui = useSearchParams().get('ui')
     const step = useSearchParams().get('step')
 
+    const handleFormSubmit = (values: Dictionary) => {
+        dispatch(updateFinancialYearDetails({ slug: "strategic_pillars", data: values }))
+        const pillars = values.strategic_pillars.map((d: Dictionary) => {
+            return d.pillar
+        })
+        createStrategicPillars({
+            strategic_pillars: pillars
+        })
+        .unwrap()
+        .then(() => {
+            toast.success("Strategic Pillars Created Successfully")
+            router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=strategic-pillar&step=preview`)
+        })
+
+    }
+    
+
     return (
         <>
-            { step !== 'preview' &&
+            {step !== 'preview' &&
                 <div className='w-[30vw]'>
                     <h1>Strategic Pillar</h1>
-                    <form className="mt-4">
-                        <div className='gap-5'>
-                            <div className=''>
-                                <Input
-                                    label='Pillar 1'
-                                    id='aj'
-                                    name=''
-                                    value=''
-                                    onChange={() => null}
-                                    touched={false}
-                                    error={''}
-                                    placeholder='Input Strategic Pillar'
-                                />
-                            </div>
+                    <Formik
+                        initialValues={initialValues}
+                        onSubmit={handleFormSubmit}
+                        // validationSchema={strategicPillarSchema}
+                        enableReinitialize={true}
+                    >
+                        {
+                            (formik: any) => {
+                                return (
+                                    <Form>
+                                        <FieldArray name="strategic_pillars">
+                                            {({ insert, remove, push }) => (
+                                                <div className='flex flex-col gap-5'>
+                                                    {formik.values.strategic_pillars?.length > 0 &&
+                                                        formik.values.strategic_pillars.map((pillar: any, idx: number) => (
+                                                            <div key={idx}>
+                                                                <div className='relative'>
+                                                                    <Input
+                                                                        label={`Pillar ${idx + 1}`}
+                                                                        id='aj'
+                                                                        name={`strategic_pillars.${idx}.pillar`}
+                                                                        value={formik.values.strategic_pillars[idx].pillar}
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue(`strategic_pillars.${idx}.pillar`, e.target.value)
+                                                                        }}
+                                                                        error={formik?.errors?.strategic_pillars?.[idx]?.pillar}
+                                                                        touched={formik?.touched?.strategic_pillars?.[idx]?.pillar}
+                                                                        placeholder='Input Strategic Pillar'
+                                                                        className='bg-white'
+                                                                    />
 
-                            <div className='mt-5'>
-                                <Input
-                                    label='Pillar 2'
-                                    id='aj'
-                                    name=''
-                                    value=''
-                                    onChange={() => null}
-                                    touched={false}
-                                    error={''}
-                                    placeholder='Input Strategic Pillar'
-                                />
-                            </div>
+                                                                  {formik.values.strategic_pillars.length > 1 &&  <button
+                                                                        type="button"
+                                                                        onClick={() => remove(idx)}
+                                                                        className="text-red-500 hover:text-red-700 absolute -right-5 top-8 xl:right- xl:top-8"
+                                                                    >
+                                                                        <Icon name="remove" width={14.28} height={18.63} />
+                                                                    </button>
+                                                                    }
+                                                                </div>
 
-                            <div className='mt-5'>
-                                <Input
-                                    label='Pillar 3'
-                                    id='aj'
-                                    name=''
-                                    value=''
-                                    onChange={() => null}
-                                    touched={false}
-                                    error={''}
-                                    placeholder='Input Strategic Pillar'
-                                />
-                            </div>
+                                                                {Number(formik?.values?.strategic_pillars?.length) === idx + 1 && <button
+                                                                    type="button"
+                                                                    onClick={() =>
+                                                                        push({ pillar: "" })
+                                                                    }
+                                                                    className="text-left flex items-center gap-x-2 relative mt-4 text-primary text-sm"
+                                                                >
+                                                                    <LucidePlusCircle
+                                                                        size={20}
+                                                                        style={{ color: "var(--primary-color)" }}
+                                                                    />
+                                                                    Add Expected Outcome
+                                                                </button>}
+                                                            </div>
+                                                        ))}
+                                                </div>
+                                            )}
+                                        </FieldArray>
+                                        <div className="mt-7 flex gap-4 items-center">
+                                            <Button
+                                                className='border border-[var(--primary-color)] text-[var(--primary-color)] px-10 shadow-none bg-white hover:bg-none'
+                                                type='button'
+                                                onClick={() => router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`)}
+                                            >Back</Button>
+                                            <Button
+                                                className='border'
+                                                type='submit'
+                                                disabled={isLoading || formik?.values?.strategic_pillars.some((d: Dictionary) => d.pillar === "")}
+                                                loading={isLoading}
+                                                loadingText='Save & Continue'
+                                            >Save & Continue</Button>
+                                        </div>
+                                    </Form>
+                                )
+                            }
+                        }
 
-                            <span className='my-7 text-[var(--primary-color)] flex gap-1.5 items-center text-xs'> <span className='w-6 h-6 rounded-full border border-[var(--primary-color)] grid place-content-center'><Plus size={15} /></span> Add New Pillar </span>
-                        </div>
-                        <div className="mt-5 flex gap-4 items-center">
-                            <Button
-                                className='border border-[var(--primary-color)] text-[var(--primary-color)] px-10 shadow-none bg-white hover:bg-none'
-                                type='button'
-                                onClick={() => router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`)}
-                            >Back</Button>
-                            <Button
-                                className='border'
-                                type='button'
-                                onClick={() => router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=strategic-pillar&step=preview`)}
-                            >Save & Continue</Button>
-                        </div>
-                    </form>
+                    </Formik>
                 </div>
             }
             {step === 'preview' && <FinancialYearPreview />}

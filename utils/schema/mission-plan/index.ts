@@ -34,3 +34,11 @@ export const missionVissionSchema = yup.object().shape({
   mission: yup.string().min(5).required('company mission is required'),
   vision: yup.string().min(5).required('company vision is required'),
 })
+
+export const strategicPillarSchema = yup.object().shape({
+  strategic_pillars: yup.array().of(
+      yup.object().shape({
+          pillar: yup.string().required('field is required'),
+      }),
+  )
+})
