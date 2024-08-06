@@ -35,6 +35,12 @@ interface BranchItem {
   branch_id: string | null;
 }
 
+interface EmployeeData {
+  name: string;
+  id: string;
+  value: string;
+}
+
 // Dummy data
 const countries = [
   { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
@@ -62,12 +68,14 @@ const gradeLevels = [
   { name: "Supervisor 1", value: "supervisor_1" },
   { name: "Supervisor 2", value: "supervisor_2" },
 ];
+
 const newEmployeeStatuses = [
   {
     name: "Yes",
-    value: "Yes",
+    id: "1",
+    value: "1",
   },
-  { name: "No", value: "No" },
+  { name: "No", id: "0", value: "0" },
 ];
 const genderOptions = [
   { name: "Male", value: "Male" },
@@ -153,7 +161,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   );
 
   const handleDropdown = (
-    items: StateData[] | SubsidiaryData[] | DepartmentData[]
+    items: StateData[] | SubsidiaryData[] | DepartmentData[] | EmployeeData[]
   ) => {
     const data = items.map((chi) => {
       return {
@@ -166,7 +174,12 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   };
 
   const handleFormatDropdown = (
-    items: SubsidiaryData[] | BranchData[] | DepartmentData[] | UnitData[]
+    items:
+      | SubsidiaryData[]
+      | BranchData[]
+      | DepartmentData[]
+      | UnitData[]
+      | EmployeeData[]
   ) => {
     const data = items.map((chi) => {
       return {
@@ -201,6 +214,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const branchDrop = handleBranchDropdown(branches);
   const departmentDrop = handleDropdown(departments);
   const unitsDrop = handleDropdown(units);
+  const newEmployeeDrop = handleDropdown(newEmployeeStatuses);
 
   const EmployeeRoute = ADMIN.EMPLOYEES;
   const user = useAppSelector(selectUser);
@@ -270,8 +284,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     router.push(cancelPath);
   };
 
-  console.log(formik.errors);
-
   return {
     formik,
     isCreatingEmployee,
@@ -287,6 +299,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     jobTitles: handleFormatDropdown(jobTitles),
     gradeLevels: handleFormatDropdown(gradeLevels),
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
+    newEmployeeDrop,
     states: handleFormatDropdown(states),
     stateDrop,
     subsidiaryDrop,

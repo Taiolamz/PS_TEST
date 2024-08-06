@@ -9,9 +9,7 @@ import TogglePassword from "@/components/toggle-password";
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
-
 import { useRouter } from "next/navigation";
-
 
 const OrganizationInvite = () => {
   const router = useRouter();

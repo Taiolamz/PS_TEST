@@ -70,7 +70,9 @@ const ChecklistOverviewContent = () => {
                   const { isChecked, label } = chi;
                   return (
                     <div key={idx} className="flex gap-2 items-center">
-                      <DefaultCheckIcon fill={isChecked ? "var(--primary-color)" : ""} />
+                      <DefaultCheckIcon
+                        fill={isChecked ? "var(--primary-color)" : ""}
+                      />
                       <p className="font-light text-xs">{label}</p>
                     </div>
                   );
