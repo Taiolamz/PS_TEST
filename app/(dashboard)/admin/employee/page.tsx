@@ -202,7 +202,7 @@ const Employee = () => {
         onCancel={handleCancelDialog}
       />
       <section className="p-5">
-        {employees?.length < 0 ? (
+        {employees?.length < 1 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
             textTitle="New Staff"

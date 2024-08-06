@@ -80,7 +80,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
       return {
         ...chi,
         label: chi?.name,
-        value: chi?.name, 
+        value: chi?.name,
       };
     });
     return data;
@@ -97,7 +97,8 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
-      name: formik.values.strategic_intent,
+      // name: formik.values.strategic_intent,
+      name: formik.values.template_title,
       organization_id: organization?.id,
     };
     await createMissionPlanTemplate(payload)

@@ -17,6 +17,7 @@ import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi
 import { Dictionary } from "@/@types/dictionary";
 import routesPath from "@/utils/routes";
 import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
+import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
 
 // dummy data
 type Prop = {
@@ -99,7 +100,7 @@ const formSchema = yup.object().shape({
   role_id: yup.string().optional(),
 });
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const useEmployee = ({ path, cancelPath }: Prop) => {
   const router = useRouter();
@@ -134,6 +135,11 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       prev_page_url: "",
     });
 
+  const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
+    useGetGradeLevelsQuery({});
+
+  console.log(gradeLevelData, "grade level data");
+
   const { data: unitData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
     total: 0,
@@ -145,9 +151,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
-  
-
-  // console.log(rolesData)
 
   const handleDropdown = (
     items: StateData[] | SubsidiaryData[] | DepartmentData[]
@@ -191,6 +194,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departments = departmentData ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
+  const gradeLevels = gradeLevelData ?? [];
 
   const stateDrop = handleDropdown(states);
   const subsidiaryDrop = handleDropdown(subsidiaries);
@@ -198,19 +202,17 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departmentDrop = handleDropdown(departments);
   const unitsDrop = handleDropdown(units);
 
-  const EmployeeRoute = ADMIN.EMPLOYEES
+  const EmployeeRoute = ADMIN.EMPLOYEES;
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const [createEmployee, { isLoading: isCreatingEmployee }] =
     useCreateEmployeeMutation();
 
-    
-    
-    const handleSubmit = async () => {
+  const handleSubmit = async () => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
-      level:"entry-level"
+      level: "entry-level",
     };
     await createEmployee(payload)
       .unwrap()
@@ -249,7 +251,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
-  }); 
+  });
 
   const {
     isOpen: openCancelModal,
@@ -268,7 +270,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     router.push(cancelPath);
   };
 
-  console.log(formik.errors)
+  console.log(formik.errors);
 
   return {
     formik,
