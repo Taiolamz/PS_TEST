@@ -22,18 +22,24 @@ import routesPath from "@/utils/routes";
 
 const { ADMIN } = routesPath;
 
+type HierarchyTypes = {
+  branches?: boolean | null;
+  departments?: boolean | null;
+  units?: boolean | null;
+  subsidiary?: boolean;
+};
 interface FormValues {
   vision: string;
   mission: string;
   brand_colour: string;
-  logo: File | null;
+  logo: File | string;
   end_fy: string;
   start_fy: string;
   probation_duration: string;
   opening_time: string;
   fy_title: string;
   closing_time: string;
-  hierarchy: any[];
+  hierarchy: HierarchyTypes[];
   staff_levels: { name: string; level: string }[];
 }
 
@@ -118,7 +124,7 @@ const Onboarding = () => {
       vision: "",
       mission: "",
       brand_colour: "#008080",
-      logo: null,
+      logo: "",
       end_fy: "",
       start_fy: "",
       probation_duration: "",
