@@ -4,12 +4,12 @@ import { useMissionApprovalFlow } from "../../../checklist/_hooks/useMissionAppr
 import Routes from "@/lib/routes/routes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ApprovalFlowOne from "./approval-flow-one";
-import ApprovalFlowTwo from "./approval-flow-two";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import routesPath from "@/utils/routes";
 import DashboardModal from "../../template/_components/checklist-dashboard-modal";
 import CancelModal from "../../template/_components/cancel-modal";
+import ApprovalFlowTwo from "./approval-flow-two";
 
 const { ADMIN } = routesPath;
 
@@ -21,11 +21,11 @@ const AddApprovalFlow = () => {
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
+    isCreatingMissionFlow,
     reviewers,
     level,
     handleProceed,
     ui,
-    isCreatingMissionFlow,
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
   return (

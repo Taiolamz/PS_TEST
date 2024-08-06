@@ -148,4 +148,5 @@ const ApprovalFlowTwo = ({
   );
 };
 
-export default ApprovalFlowTwo;
+
+export default ApprovalFlowTwo

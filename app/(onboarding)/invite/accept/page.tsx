@@ -11,12 +11,18 @@ import { Button } from "@/components/ui/button";
 import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useRouter } from "next/navigation";
 =======
 >>>>>>> ea5f208 (checklist completion")
 =======
 import { useRouter } from "next/navigation";
 >>>>>>> cbca8cd (invitation employee)
+=======
+
+import { useRouter } from "next/navigation";
+
+>>>>>>> 653e043 (resolved commit)
 
 const OrganizationInvite = () => {
   const router = useRouter();
