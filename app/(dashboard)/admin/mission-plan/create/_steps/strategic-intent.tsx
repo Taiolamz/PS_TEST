@@ -16,25 +16,11 @@ import {
 } from "@/redux/services/mission-plan/missionPlanApi";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { setStrategicIntentsSchema } from "@/utils/schema/mission-plan";
 
 interface StrategicIntentProps {
   currentMissionPlan?: CurrentMissionPlanData[] | any;
 }
-const validationSchema = Yup.object().shape({
-  // mission_plan_id: Yup.string().required("Mission Plan ID is required"),
-  // strategic_intent_id: Yup.string().required("Strategic Intent ID is required"),
-  intents: Yup.array().of(
-    Yup.object().shape({
-      intent: Yup.string().required("Intent is required"),
-      behaviours: Yup.array().of(
-        Yup.object().shape({
-          id: Yup.string(),
-          value: Yup.string().required("Behaviour is required"),
-        })
-      ),
-    })
-  ),
-});
 
 const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   const location = usePathname();
@@ -126,15 +112,17 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
       strategic_intent_id: "",
     },
     onSubmit: handleSaveStrategicIntent,
-    validationSchema: validationSchema,
+    validationSchema: setStrategicIntentsSchema,
     // enableReinitialize: true,
   });
 
   const errorIntents = formik.errors.intents as any;
+  const touchedIntents = formik.touched.intents as any;
+
   return (
     <div>
       <div className="flex items-center gap-x-2 mb-8">
-        <h1 className="text-[#3E4345]">Strategic Intent</h1>
+        <h1 className="text-[#3E4345]">Set Strategic Intent</h1>
         <span>
           <BsFillInfoCircleFill color="#84919A" />
         </span>
@@ -153,19 +141,17 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                       <div className="!ml-0">
                         <Textarea
                           rows={4}
+                          placeholder="Input Statement"
                           id={`intent-${intent?.id}`}
+                          onBlur={formik.handleBlur}
                           label={`Strategic Intent ${index + 1}`}
                           labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
                           name={`intents.${index}.intent`}
-                          error={errorIntents?.intent}
+                          error={errorIntents?.[index].intent}
+                          touched={touchedIntents?.[index].intent}
                           onChange={(e) => handleChange(e.target.value, index)}
                           className="border p-2 md:min-w-[27rem] lg:min-w-[37rem] bg-[#F6F8F9]"
                           value={formik?.values?.intents[index]?.intent}
-                        />
-                        <ErrorMessage
-                          name={`intents.${index}.intent`}
-                          className="text-red-500 text-xs"
-                          component={"div"}
                         />
                       </div>
 
@@ -185,6 +171,11 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                       label="Behaviour"
                                       labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
                                       onBlur={formik.handleBlur}
+                                      touched={
+                                        touchedIntents?.[index]?.behaviours?.[
+                                          behaviourIndex
+                                        ]?.value
+                                      }
                                       error={
                                         errorIntents?.[index]?.behaviours?.[
                                           behaviourIndex
@@ -198,18 +189,13 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                         )
                                       }
                                       name={`intents.${index}.behaviours.${behaviourIndex}.value`}
-                                      placeholder="Behaviour Value"
+                                      placeholder="Input Behaviour"
                                       className="mr-2 w-full md:w-[12rem] lg:w-[20rem] "
                                       value={
                                         formik.values.intents[index].behaviours[
                                           behaviourIndex
                                         ].value
                                       }
-                                    />
-                                    <ErrorMessage
-                                      name={`intents.${index}.behaviours.${behaviourIndex}.value`}
-                                      className="text-red-500 text-xs mt-1"
-                                      component={"div"}
                                     />
 
                                     <button
@@ -238,7 +224,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                 style={{ color: "var(--primary-color)" }}
                                 size={20}
                               />
-                              Add Behaviour
+                              Add new Behaviour
                             </button>
                           </div>
                         )}
@@ -267,7 +253,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                     style={{ color: "var(--primary-color)" }}
                     size={20}
                   />
-                  Add more level
+                  Add new Strategic intent
                 </button>
               </div>
             )}
