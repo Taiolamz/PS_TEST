@@ -1,10 +1,8 @@
-import { taskData } from "@/utilities/dummy-data/mission-plan";
+import { taskData } from "@/utils/data/dashboard/missionplan/dummy";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import React from "react";
 
-// deprecated
-
-const TasksView = () => {
+const Tasks = () => {
   return (
     <div className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
       <section className="">
@@ -94,4 +92,4 @@ const TasksView = () => {
   );
 };
 
-export default TasksView;
+export default Tasks;

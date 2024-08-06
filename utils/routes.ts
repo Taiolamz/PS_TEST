@@ -5,10 +5,15 @@ export const employee_auth = "employee";
 export const employeeRoleList = ["staff"];
 
 export const adminRoleList = [
-  "hr-admin", "strategy-admin", "it-admin", "compliance","super-admin", "user"
+  "hr-admin",
+  "strategy-admin",
+  "it-admin",
+  "compliance",
+  "super-admin",
+  "user",
 ];
 
-export const specialRoleList = ["super-admin",];
+export const specialRoleList = ["super-admin"];
 // const
 
 const routesPath = {
@@ -37,6 +42,7 @@ const routesPath = {
     EMPLOYEES: `/${admin_auth}/employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
     // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
+    PRESENTATION: `/${admin_auth}/mission-plan/2023/approve`,
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,

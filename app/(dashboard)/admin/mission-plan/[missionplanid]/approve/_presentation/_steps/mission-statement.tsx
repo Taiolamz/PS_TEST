@@ -1,15 +1,13 @@
-//  deprecated
-
 import React from "react";
-import { MeasureOfSuccessTable } from "../table";
+import MeasureOfSuccessTable from "../../../../_components/measureOfSuccessTable";
 import {
   measureColumns,
   measuresData,
-} from "@/utilities/dummy-data/dashboard/missionlan/dummy";
+} from "@/utils/data/dashboard/missionplan/dummy";
 
 type Props = {};
 
-const MissionStatementView = (props: Props) => {
+const MissionStatement = (props: Props) => {
   return (
     <div>
       <section className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
@@ -50,4 +48,4 @@ const MissionStatementView = (props: Props) => {
   );
 };
 
-export default MissionStatementView;
+export default MissionStatement;

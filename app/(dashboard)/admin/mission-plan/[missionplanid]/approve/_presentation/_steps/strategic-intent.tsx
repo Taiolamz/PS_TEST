@@ -1,9 +1,8 @@
 import React from "react";
-//deprecated
 
 type Props = {};
 
-const StrategicIntentView = (props: Props) => {
+const StrategicIntent = (props: Props) => {
   return (
     <div className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-center mb-10 pb-[4.25rem] pt-[2.625rem]">
       <section className="">
@@ -43,4 +42,4 @@ const StrategicIntentView = (props: Props) => {
   );
 };
 
-export default StrategicIntentView;
+export default StrategicIntent;
