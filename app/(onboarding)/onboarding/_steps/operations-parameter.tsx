@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
@@ -7,6 +7,7 @@ import {
   formatMonthYear,
   formatRMDatePicker,
 } from "@/utils/helpers/date-formatter";
+import { FormikErrors } from "formik";
 
 interface OperationsParameterProps {
   formik: any;
@@ -59,6 +60,7 @@ const OperationsParameter = ({
                 onChange={formik.handleChange}
                 value={formik.values.fy_title}
                 touched={formik.touched.fy_title}
+                onBlur={formik.handleBlur}
                 error={formik.errors.fy_title}
                 placeholder="2022 Financial Year"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300  sm:text-sm"
@@ -82,6 +84,11 @@ const OperationsParameter = ({
                 // iconClass="top-4"
                 showOnlyMonth={true}
               />
+              {formik.touched.start_fy && formik.errors.start_fy ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.start_fy}
+                </div>
+              ) : null}
             </div>
             <div className="basis-1/4">
               <CustomDateInput
@@ -100,6 +107,11 @@ const OperationsParameter = ({
                 showOnlyMonth={true}
                 // iconClass="top-4"
               />
+              {formik.touched.end_fy && formik.errors.end_fy ? (
+                <div className="text-red-500 text-xs">
+                  {formik.errors.end_fy}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

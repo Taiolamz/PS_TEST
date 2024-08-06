@@ -12,21 +12,18 @@ interface GradeLevelProps {
 }
 
 const GradeLevel = ({ formik }: GradeLevelProps) => {
-  const [employeeName, setEmployeeName] = useState("");
-  const [employeePosition, setEmployeePosition] = useState("");
-
   const handleStaffName = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
     const newName = e.target.value;
-    setEmployeeName(newName);
     formik.setFieldValue(`staff_levels.${index}.name`, newName);
   };
 
   const handleStaffLevel = (newValue: string, index: number) => {
     formik.setFieldValue(`staff_levels.${index}.level`, newValue);
   };
+
   return (
     <section className="max-w-[55.875rem]">
       <FormHeader
@@ -42,7 +39,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
             <div className="">
               <div>
                 <label className="text-[#6E7C87] text-[0.8125rem]">
-                  Input Staff Level
+                  Input Level Name
                 </label>
               </div>
 
@@ -60,9 +57,9 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               type="text"
                               id=""
                               name={`staff_levels.${index}.name`}
-                              value={formik.values.staff_levels.name}
+                              value={formik.values.staff_levels[index].name}
                               onChange={(e) => handleStaffName(e, index)}
-                              placeholder="Input Staff Name"
+                              placeholder="Input Level Name"
                               className="mt-1 block max-w-[26.5625rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                             />
                             {formik.errors.staff_levels?.[index]?.name &&
@@ -86,7 +83,6 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               }
                               setSelected={(value: any) => {
                                 handleStaffLevel(value, index);
-                                setEmployeePosition(value);
                               }}
                               className="inline-flex mt-1 w-[7.9375rem] max-w-[7.9375rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                               value={formik.values.staff_levels?.[index]?.level}

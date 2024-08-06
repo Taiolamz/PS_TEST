@@ -59,6 +59,12 @@ const Onboarding = () => {
   };
 
   const onSubmit = async () => {
+    if (!formik.isValid) {
+      toast.error(
+        "Please fill in the required fiscal year title field before submitting."
+      );
+      return;
+    }
     const formDataToSend = new FormData();
     // console.log(formik.values);
 
@@ -148,7 +154,7 @@ const Onboarding = () => {
           )}
           {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
           {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-          {getCurrentStep() === 6 && <Preview />}
+          {getCurrentStep() === 6 && <Preview formik={formik} />}
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
             <button
               type="button"
@@ -162,6 +168,10 @@ const Onboarding = () => {
               <Button
                 type="button"
                 className=""
+                disabled={
+                  (!formik.isValid && getCurrentStep() === 3) ||
+                  isOnboardingLoading
+                }
                 onClick={() => {
                   getCurrentStep() < steps.length &&
                     router.push(

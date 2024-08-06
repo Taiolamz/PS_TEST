@@ -19,6 +19,8 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   const [logoName, setLogoName] = useState<string | null>(
     formik.values.logo ? formik.values.logo.name : null
   );
+  const [logoError, setLogoError] = useState<string | null>(null);
+
   const actionCtx = useContext(ActionContext);
   const fileInputRef = useRef<HTMLInputElement | null>();
   // const [color, setColor] = useColor("hex", "#121212");
@@ -27,6 +29,11 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
     e.preventDefault();
     const file = e.target.files?.[0];
     if (file) {
+      if (file.size > 1024 * 1024) {
+        // 1MB in bytes
+        formik.setFieldError("logo", "Logo size should be at most 1MB");
+        return;
+      }
       setLogo(file);
       setLogoName(file?.name);
       formik.setFieldValue("logo", file);
@@ -56,6 +63,9 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           handleRemoveLogo={handleRemoveLogo}
           fileInputRef={fileInputRef}
         />
+        {formik.errors.logo && (
+          <p className="text-red-500 text-xs">{formik.errors.logo}</p>
+        )}
       </div>
       <div ref={pickerref} className="mb-4">
         <label className="block mb-6">Brand Color</label>
