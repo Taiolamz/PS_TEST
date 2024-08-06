@@ -212,7 +212,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
-      level: "entry-level",
+      // level: "entry-level",
     };
     await createEmployee(payload)
       .unwrap()
