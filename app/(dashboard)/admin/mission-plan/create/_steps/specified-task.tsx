@@ -18,7 +18,7 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { usePathname, useRouter } from "next/navigation";
-import { format, parse, isValid } from "date-fns";
+import { specifiedTaskSchema } from "@/utils/schema/mission-plan";
 
 export const EFFORT_DATA = [
   {
@@ -27,56 +27,6 @@ export const EFFORT_DATA = [
     isChecked: false,
   },
 ];
-
-// Custom date validation function
-const isValidDate = (dateString: string | any) => {
-  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
-  return isValid(parsedDate) && dateString.length === 10;
-};
-
-const validationSchemaTask = Yup.object().shape({
-  tasks: Yup.array().of(
-    Yup.object().shape({
-      id: Yup.string().required(),
-      title: Yup.string().required("Title is required"),
-      pillars: Yup.array()
-        .of(
-          Yup.object().shape({
-            label: Yup.string().required(),
-            value: Yup.string().required(),
-            color: Yup.string().required(),
-          })
-        )
-        .min(1, "At least one pillar is required"),
-      measures: Yup.array()
-        .of(
-          Yup.object().shape({
-            label: Yup.string().required(),
-            value: Yup.string().required(),
-            color: Yup.string().required(),
-          })
-        )
-        .min(1, "At least one measure is required"),
-
-      start_date: Yup.string()
-        .required("Start date is required")
-        .typeError("Start date must be a valid date")
-        .test(
-          "is-valid-date",
-          "Start date must be a valid date in DD/MM/YYYY format",
-          (value) => isValidDate(value)
-        ),
-      end_date: Yup.string()
-        .required("End date is required")
-        .typeError("End date must be a valid date")
-        .test(
-          "is-valid-date",
-          "End date must be a valid date in DD/MM/YYYY format",
-          (value) => isValidDate(value)
-        ),
-    })
-  ),
-});
 
 const options = [
   { label: "React", value: "react", color: "#61dafb" },
@@ -87,6 +37,9 @@ const options = [
 interface Task {
   start_date: string;
   end_date: string;
+  title?: string;
+  pillars?: string;
+  measures?: string;
 }
 
 const SpecifiedTask = () => {
@@ -112,7 +65,7 @@ const SpecifiedTask = () => {
       strategic_intent_id: "",
     },
     onSubmit: () => console.log("Submit"),
-    validationSchema: validationSchemaTask,
+    validationSchema: specifiedTaskSchema,
   });
 
   const handleChange = (value: string, index: number) => {
@@ -127,7 +80,6 @@ const SpecifiedTask = () => {
 
   const errorTasks = formik.errors.tasks as any;
 
-  console.log(formik.values);
   return (
     <div>
       <div className="flex items-center gap-x-2 mb-8">
@@ -157,6 +109,8 @@ const SpecifiedTask = () => {
                             id="title"
                             name={`tasks.${index}.title`}
                             label="Title"
+                            error={errorTasks?.[index].title}
+                            touched={touchedTasks?.[index].title}
                             onBlur={formik.handleBlur}
                             placeholder="Input Task"
                             className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
@@ -164,12 +118,6 @@ const SpecifiedTask = () => {
                               handleChange(e.target.value, index)
                             }
                             value={formik.values.tasks[index].title}
-                          />
-
-                          <ErrorMessage
-                            name={`tasks.${index}.title`}
-                            className="text-red-500 text-xs mt-1"
-                            component={"div"}
                           />
                         </div>
 
@@ -191,12 +139,14 @@ const SpecifiedTask = () => {
                                 true
                               )
                             }
-                            triggerClass="rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px]"
+                            triggerClass={`rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px]`}
                             placeholder="Select Pillars"
                             inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                            errorClass="text-red-500 text-xs mt-1"
+                            errorClass="text-red-500 text-xs mt-1 relative bottom-3"
                             itemValue=""
                             name={`tasks.${index}.pillars`}
+                            error={errorTasks?.[index].pillars}
+                            touched={touchedTasks?.[index].pillars}
                           />
                         </div>
                         <button
@@ -229,8 +179,10 @@ const SpecifiedTask = () => {
                             triggerClass="rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px] min-w-[20rem]"
                             placeholder="Select Multiple"
                             inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                            errorClass="text-red-500 text-xs mt-1"
+                            errorClass="text-red-500 text-xs mt-1 relative bottom-3"
                             name={`tasks.${index}.measures`}
+                            error={errorTasks?.[index].measures}
+                            touched={touchedTasks?.[index].measures}
                           />
                         </div>
                         <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-x-4 justify-between">
