@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "../../lib/utils";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { IoSquareOutline, IoCheckbox } from "react-icons/io5";
@@ -20,6 +20,8 @@ type CustomSelectType = {
   options: any[];
   label: string;
   labelClass: string;
+  error?: boolean;
+  touched?: boolean;
   onBlur: (event: any) => void;
   triggerClass: string;
   placeholder: string;
@@ -44,9 +46,35 @@ export default function CustomMultiSelect({
   inputClass,
   errorClass,
   name,
+  error,
+  touched,
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const divRef = useRef<HTMLDivElement | null>(null);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleClickOutside = (event: { target: any }) => {
+    if (divRef.current && !divRef.current?.contains(event.target as Node)) {
+      handleBlur();
+    }
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="">
@@ -60,7 +88,18 @@ export default function CustomMultiSelect({
         options={options}
         onBlur={onBlur}
       >
-        <MultiSelectorTrigger className={cn(triggerClass)}>
+        <MultiSelectorTrigger
+          ref={divRef}
+          onFocus={handleFocus}
+          tabIndex={0}
+          className={cn(
+            triggerClass,
+            isFocused && "border-[var(--primary-color)]",
+            error &&
+              touched &&
+              "border-red-500 focus-visible:ring-transparent focus-visible:ring-0"
+          )}
+        >
           <MultiSelectorInput
             placeholder={placeholder}
             className={cn(inputClass)}
@@ -89,7 +128,7 @@ export default function CustomMultiSelect({
         </MultiSelectorContent>
       </MultiSelector>
 
-      {/* <ErrorMessage name={name} className={cn(errorClass)} component={"div"} /> */}
+      <ErrorMessage name={name} className={cn(errorClass)} component={"div"} />
     </div>
   );
 }
