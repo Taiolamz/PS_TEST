@@ -37,6 +37,7 @@ export default function AddEmployee() {
     jobTitles,
     gradeLevels,
     newEmployeeStatuses,
+    newEmployeeDrop,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
@@ -53,6 +54,7 @@ export default function AddEmployee() {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
+  const [isNewEmployee, setIsNewEmployee] = useState("");
 
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
@@ -321,10 +323,14 @@ export default function AddEmployee() {
                   label="New Employee"
                   placeholder="Select Status"
                   options={newEmployeeStatuses}
-                  selected={formik.values.new_employee}
-                  setSelected={(value) =>
-                    formik.setFieldValue("new_employee", value)
-                  }
+                  selected={isNewEmployee}
+                  setSelected={(value) => {
+                    setIsNewEmployee(value);
+                    const employeeId = newEmployeeDrop.filter(
+                      (chi) => chi.name === value
+                    )[0].id;
+                    formik.setFieldValue("new_employee", employeeId);
+                  }}
                   isRequired
                   labelClass={labelClassName}
                 />
