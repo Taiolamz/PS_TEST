@@ -3,13 +3,11 @@ import { useAppSelector } from "@/redux/store";
 import { checkUserRole } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import * as yup from "yup";
 
 export const useRejectEmployeeInvite = () => {
-  const { user } = useAppSelector((state) => state.auth);
-  const router = useRouter();
   const reasons = [
     {
       label: "I do not work at this company",
@@ -21,29 +19,32 @@ export const useRejectEmployeeInvite = () => {
     },
   ];
 
-  const [rejectEmployeeInvitation, { isLoading: isRejectingInvitation }] =
-    useRejectEmployeeInvitationMutation();
+  const [
+    rejectEmployeeInvitation,
+    { isLoading: isRejectingInvitation, isSuccess: isRejectSuccess },
+  ] = useRejectEmployeeInvitationMutation();
+
+  const searchParams = useSearchParams();
+  const invitedID = searchParams.get("id");
 
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
     };
-    await rejectEmployeeInvitation(payload)
-      .unwrap()
-      .then(() => {
-        // toast.success("Logged in Successfully");
-        new Promise(() => {
-          setTimeout(() => {
-            toast.dismiss();
-            if (checkUserRole(user?.role as string) === "ADMIN") {
-              router.push(routesPath?.ADMIN.OVERVIEW);
-            } else {
-              router.push(routesPath?.EMPLOYEE.OVERVIEW);
-            }
-          }, 2000);
-        });
-      });
+    const id = invitedID;
+
+    try {
+      await rejectEmployeeInvitation({ id, payload }).unwrap();
+      toast.success("Invitation Rejected Successfully");
+      setTimeout(() => {
+        toast.dismiss();
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to reject invitation:", error);
+      toast.error("Failed to reject invitation");
+    }
   };
+
   const validationSchema = yup.object().shape({
     reason: yup.string().required(),
     others: yup.string().required(),
@@ -62,5 +63,6 @@ export const useRejectEmployeeInvite = () => {
     formik,
     reasons,
     loading: isRejectingInvitation,
+    isRejectSuccess,
   };
 };
