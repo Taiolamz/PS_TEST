@@ -11,10 +11,21 @@ const initialState: Dictionary = {
     },
     mission_vision: {
       mission: "",
-      vision: ""
-    }
-    // mission and vission
-
+      vision: "",
+    },
+    strategic_pillars: {
+      strategic_pillars: [
+        {
+          pillar: "",
+        },
+        {
+          pillar: "",
+        },
+        {
+          pillar: "",
+        },
+      ],
+    },
     // strategic pillar
   },
   mission_plan: {},
@@ -27,7 +38,9 @@ const missionPlanSlice = createSlice({
     reset: (state) => {
       Object.assign(state, initialState);
     },
-    updateFinancialYearDetails: ( state,action: PayloadAction<{ slug: string; data: any }>
+    updateFinancialYearDetails: (
+      state,
+      action: PayloadAction<{ slug: string; data: any }>
     ) => {
       const { slug, data } = action.payload;
       state.fy_info[slug] = data;

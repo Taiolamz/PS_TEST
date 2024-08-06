@@ -15,7 +15,7 @@ const { ADMIN } = routesPath
 
 const MissionVision = () => {
 
-    const [createFinancialYear, { isLoading }] = useCreateMissionAndVisionMutation()
+    const [createMissionAndVision, { isLoading }] = useCreateMissionAndVisionMutation()
     const { fy_info: { mission_vision } } = useAppSelector((state) => state.mission_plan)
 
     const router = useRouter()
@@ -23,7 +23,7 @@ const MissionVision = () => {
 
     const handleFormSubmit = async (values: Dictionary
     ) => {
-        createFinancialYear(values)
+        createMissionAndVision(values)
             .unwrap()
             .then(() => {
                 toast.success("Mission and Vision Created Successfully")
