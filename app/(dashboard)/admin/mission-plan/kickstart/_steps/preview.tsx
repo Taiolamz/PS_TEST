@@ -44,7 +44,7 @@ const FinancialYearPreview = () => {
             <span className='block mt-1 text-[#6E7C87] text-sm'>Filled Information</span>
             {
                 isLoading || isFetching ? (
-                    <div className='h-[70vh] grid place-content-center'>
+                    <div className='h-full grid place-content-center'>
                         <PageLoader />
                     </div>
                 ) :

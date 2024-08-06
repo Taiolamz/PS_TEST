@@ -80,3 +80,6 @@ export const isValidDate = (dateString: string | any) => {
   const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
   return isValid(parsedDate) && dateString.length === 10;
 };
+
+// ROLES ALLOWED TO CREATE FINANCIAL YEAR
+export const CAN_CREATE_FINANCIAL_YEAR = ['super-admin'] 

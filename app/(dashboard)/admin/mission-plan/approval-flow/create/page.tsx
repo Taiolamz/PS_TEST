@@ -83,7 +83,6 @@ const AddApprovalFlow = () => {
               approvalsArray={formik.values.order_of_approvals}
               setOrderValue={formik.setFieldValue}
             />
-
           ) : null}
         </form>
       </div>

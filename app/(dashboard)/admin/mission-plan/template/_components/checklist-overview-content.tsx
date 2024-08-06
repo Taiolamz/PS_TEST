@@ -5,7 +5,27 @@ import { DefaultCheckIcon, DefaultRightArrowIcon } from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+<<<<<<< HEAD
 import { checklistDetails } from "../level/_component/checklist-steps"; 
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+import { checklistDetails } from "../level/_component/checklist-steps"; 
+=======
+import { checklistDetails } from "../checklist-steps";
+>>>>>>> 7851023 (checklist completion")
+=======
+import { checklistDetails } from "../level/_component/checklist-steps"; 
+>>>>>>> d23902e (modify mission plan checklist)
+=======
+import { checklistDetails } from "../checklist-steps";
+>>>>>>> ea5f208 (checklist completion")
+=======
+import { checklistDetails } from "../level/_component/checklist-steps"; 
+>>>>>>> 3de3b54 (modify mission plan checklist)
+>>>>>>> 613890a93394b0140df9ef5c32b5e26883faddbb
 
 const ChecklistOverviewContent = () => {
   const [progress, setProgress] = React.useState(13);

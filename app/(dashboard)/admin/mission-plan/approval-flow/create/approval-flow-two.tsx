@@ -8,17 +8,6 @@ interface Option {
   value: string | number;
 }
 
-
-
-interface SelectedLevels {
-  [key: number]: string;
-}
-
-
-
-
-
-
 interface SelectedLevels {
   [key: string]: string;
 }
@@ -80,13 +69,11 @@ const ApprovalFlowTwo = ({
     return array;
   };
 
-
   return (
     <div className="flex flex-col gap-5">
       {approvalFlowDetails.map((chi, idx) => (
         <CustomAccordion
           key={idx}
-
           className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
           title={
             <p className="font-medium text-sm mb-2">
@@ -96,9 +83,6 @@ const ApprovalFlowTwo = ({
             </p>
           }
           content={
-
-
-
             <>
               <CustomSelect
                 placeholder="Select..."
@@ -157,7 +141,6 @@ const ApprovalFlowTwo = ({
                 ))} */}
               </div>
             </>
-
           }
         />
       ))}
