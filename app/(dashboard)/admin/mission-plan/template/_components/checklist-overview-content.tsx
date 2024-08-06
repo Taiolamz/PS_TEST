@@ -5,7 +5,11 @@ import { DefaultCheckIcon, DefaultRightArrowIcon } from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+<<<<<<< HEAD
 import { checklistDetails } from "../level/_component/checklist-steps"; 
+=======
+import { checklistDetails } from "../checklist-steps";
+>>>>>>> 7851023 (checklist completion")
 
 const ChecklistOverviewContent = () => {
   const [progress, setProgress] = React.useState(13);

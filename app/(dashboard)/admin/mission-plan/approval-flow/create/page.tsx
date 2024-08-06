@@ -31,7 +31,7 @@ const AddApprovalFlow = () => {
 
   const handleProceed = () => {
     if (ui === "approval-flow-step-two") {
-      router.push(ADMIN.CHECKLIST);
+      router.push(ADMIN.OVERVIEW);
     } else {
       router.push(`${location}?ui=approval-flow-step-two`);
     }
