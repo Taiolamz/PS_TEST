@@ -163,7 +163,7 @@ const MultiSelector = ({
 
 const MultiSelectorTrigger = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  { onFocus: any } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
   const { value, onValueChange, activeIndex } = useMultiSelect();
 
@@ -176,7 +176,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background relative",
+        "flex flex-wrap gap-1 p-1 py-2 border border-red-500 rounded-lg bg-background relative",
         className
       )}
       {...props}
