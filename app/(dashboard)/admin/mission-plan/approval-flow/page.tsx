@@ -78,15 +78,7 @@ const MissionPlanFlow = () => {
         onCancel={handleCancelDialog}
       />
       <ReusableEmptyState
-<<<<<<< HEAD
-<<<<<<< HEAD
-        href={`${ADMIN.CREATE_MISSION_PLAN_APPROVAL_FLOW}?ui=approval-flow-step-one`}
-=======
         href={`${ADMIN.CREATE_MISSION_PLAN_APPROVAL_FLOW}?ui=approval-flow-step-two`}
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
-        href={`${ADMIN.CREATE_MISSION_PLAN_APPROVAL_FLOW}?ui=approval-flow-step-two`}
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
         viewText="View"
         textTitle="Mission plan Flow"
         btnTitle="Mission Plan Flow"

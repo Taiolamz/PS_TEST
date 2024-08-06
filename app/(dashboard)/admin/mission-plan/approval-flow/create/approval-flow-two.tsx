@@ -8,29 +8,17 @@ interface Option {
   value: string | number;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-interface Prop {
-  options: Option[];
-}
+
 
 interface SelectedLevels {
   [key: number]: string;
 }
 
-const ApprovalFlowTwo = ({ options }: Prop) => {
-  const [selectedLevels, setSelectedLevels] = useState<SelectedLevels>({});
 
-  const handleSelectChangeForLevel = (level: number, value: string) => {
-    setSelectedLevels((prevSelectedLevels) => ({
-      ...prevSelectedLevels,
-      [level]: value,
-    }));
-  };
 
-=======
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
+
+
+
 interface SelectedLevels {
   [key: string]: string;
 }
@@ -92,24 +80,14 @@ const ApprovalFlowTwo = ({
     return array;
   };
 
-<<<<<<< HEAD
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
+
   return (
     <div className="flex flex-col gap-5">
       {approvalFlowDetails.map((chi, idx) => (
         <CustomAccordion
           key={idx}
-<<<<<<< HEAD
-<<<<<<< HEAD
-          className="mb-4 p-5 border border-custom-divider rounded  flex flex-col gap-1 "
-=======
+
           className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
-          className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
           title={
             <p className="font-medium text-sm mb-2">
               {idx + 1}. How many levels of approval should be for{" "}
@@ -118,18 +96,9 @@ const ApprovalFlowTwo = ({
             </p>
           }
           content={
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <CustomSelect
-              placeholder="Select..."
-              options={options}
-              selected={selectedLevels[idx] || ""}
-              setSelected={(value) => handleSelectChangeForLevel(idx, value)}
-              className="w-[150px]"
-            />
-=======
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
+
+
+
             <>
               <CustomSelect
                 placeholder="Select..."
@@ -188,10 +157,7 @@ const ApprovalFlowTwo = ({
                 ))} */}
               </div>
             </>
-<<<<<<< HEAD
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
+
           }
         />
       ))}
@@ -199,4 +165,5 @@ const ApprovalFlowTwo = ({
   );
 };
 
-export default ApprovalFlowTwo;
+
+export default ApprovalFlowTwo

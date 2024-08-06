@@ -4,12 +4,12 @@ import { useMissionApprovalFlow } from "../../../checklist/_hooks/useMissionAppr
 import Routes from "@/lib/routes/routes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ApprovalFlowOne from "./approval-flow-one";
-import ApprovalFlowTwo from "./approval-flow-two";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import routesPath from "@/utils/routes";
 import DashboardModal from "../../template/_components/checklist-dashboard-modal";
 import CancelModal from "../../template/_components/cancel-modal";
+import ApprovalFlowTwo from "./approval-flow-two";
 
 const { ADMIN } = routesPath;
 
@@ -21,10 +21,10 @@ const AddApprovalFlow = () => {
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
+    isCreatingMissionFlow,
     reviewers,
     level,
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
   const location = usePathname();
@@ -39,18 +39,7 @@ const AddApprovalFlow = () => {
     }
   };
 
-=======
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
-    handleProceed,
-    ui,
-    isCreatingMissionFlow,
-  } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
-<<<<<<< HEAD
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
       <ReusableStepListBox
@@ -60,14 +49,7 @@ const AddApprovalFlow = () => {
         title="Mission Plan Template"
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         loading={isCreatingMissionFlow}
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
-        loading={isCreatingMissionFlow}
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
         <form
@@ -93,22 +75,15 @@ const AddApprovalFlow = () => {
             />
           ) : null}
           {ui === "approval-flow-step-two" ? (
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <ApprovalFlowTwo options={level} />
-=======
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
+
+
             <ApprovalFlowTwo
               options={level}
               reviewersOption={reviewers}
               approvalsArray={formik.values.order_of_approvals}
               setOrderValue={formik.setFieldValue}
             />
-<<<<<<< HEAD
->>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
-=======
->>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
+
           ) : null}
         </form>
       </div>
