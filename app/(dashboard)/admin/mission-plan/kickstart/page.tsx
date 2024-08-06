@@ -17,6 +17,7 @@ export default function Create() {
           title="Create Mission Plan"
           menu_items={CREATE_FY_LINKS}
           slug="ui"
+          disableClick={true}
         />
 
         <aside className="p-5 w-[100vw_-_201px]">

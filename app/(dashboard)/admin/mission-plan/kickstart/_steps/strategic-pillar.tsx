@@ -99,7 +99,7 @@ const StrategicPillar = () => {
                                                                         size={20}
                                                                         style={{ color: "var(--primary-color)" }}
                                                                     />
-                                                                    Add Expected Outcome
+                                                                    Add New Pillar
                                                                 </button>}
                                                             </div>
                                                         ))}
