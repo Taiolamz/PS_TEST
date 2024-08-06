@@ -84,6 +84,8 @@ const Onboarding = () => {
     const appraisalCycle = "annual";
     formDataToSend.append("appraisal_cycle", appraisalCycle);
 
+    console.log({ formDataToSend });
+
     try {
       // const response = await setupOrganization(formDataToSend);
 
