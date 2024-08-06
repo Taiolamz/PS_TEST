@@ -3,11 +3,7 @@ import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomTimeInput from "@/components/custom-time-picker";
-import {
-  formatMonthYear,
-  formatRMDatePicker,
-} from "@/utils/helpers/date-formatter";
-import { FormikErrors } from "formik";
+import { formatMonthYear } from "@/utils/helpers/date-formatter";
 
 interface OperationsParameterProps {
   formik: any;
@@ -105,7 +101,6 @@ const OperationsParameter = ({
             </div>
           </div>
         </div>
-
         <div className=" pb-6 border-b mb-6 gap-6 ">
           <h3 className="block mb-2 text-sm font-medium text-[#162238]">
             2. New Staff Probationary Period
