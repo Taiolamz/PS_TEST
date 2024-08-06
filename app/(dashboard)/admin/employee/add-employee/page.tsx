@@ -60,6 +60,7 @@ export default function AddEmployee() {
     {}
   );
 
+  console.log("units",units)
   return (
     <>
       <DashboardLayout back headerTitle="Employee">

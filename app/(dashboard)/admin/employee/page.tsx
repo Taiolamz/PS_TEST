@@ -3,7 +3,11 @@ import React, { useMemo, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
-import { useGetEmployeesQuery } from "@/redux/services/checklist/employeeApi";
+import {
+  useCreateBulkEmployeesMutation,
+  useGetEmployeesQuery,
+  useLazyDownloadEmployeeTemplateQuery,
+} from "@/redux/services/checklist/employeeApi";
 import { employeerolesColumns } from "./employee-role-column";
 import useDisclosure from "./_hooks/useDisclosure";
 import { ChecklistLayout } from "./_components/checklist-layout";
@@ -17,45 +21,17 @@ import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
-import TableWrapper from "@/components/tables/TableWrapper";
-import BadgeComponent from "@/components/badge/BadgeComponents";
+import { toast } from "sonner";
+import { useAppSelector } from "@/redux/store";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
 const Employee = () => {
-  const emptyStateClass = "flex justify-center items-center";
   const router = useRouter();
-  // const [search, setSearch] = useState<string>(""); //Search input controller
-  // const [searchQuery, setSearchQuery] = useState<string>(""); //Search query for endpoint
-  const [status, setStatus] = useState<string>(""); //pending/rejected state
-  // const [template, setTemplate] = useState<string>(""); //Template format csv/xlsv
-  // const [pageSize, setPageSize] = useState<number>(10); //Pagination
-  const [file, setFile] = useState<File | null>(null); //upload file (csv)
-
-  const {
-    data: employeeData,
-    isLoading: isLoadingEmployees,
-    isFetching: isFetchingEmployees,
-  } = useGetEmployeesQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
-  });
-
-  const employees = employeeData ?? [];
-
-  const employeesColumnData = useMemo(
-    () => employeerolesColumns,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isFetchingEmployees]
-  );
-  // const employeesColumnData = useMemo(
-  //   () => employeerolesColumns(isFetchingEmployees),
-  //   [isFetchingEmployees]
-  // );
+  const [status, setStatus] = useState<string>("");
+  const [bulkFile, setBulkFile] = useState<File | null>(null);
 
   const {
     isOpen: openProceedModal,
@@ -106,16 +82,6 @@ const Employee = () => {
     }
   };
 
-  // const handleBulkRequirementDialog = (val?: string) => {
-  //   val && setTemplate(val);
-  //   onOpenBulkRequirementModal();
-  //   closeBulkUploadModal();
-  //   if (openBulkRequirementModal) {
-  //     onOpenBulkUploadModal();
-  //     closeBulkRequirementModal();
-  //   }
-  // };
-
   const handleBulkRequirementDialog = () => {
     onOpenBulkRequirementModal();
     closeBulkUploadModal();
@@ -126,27 +92,16 @@ const Employee = () => {
   };
 
   const handleProceed = () => {
-    // const proceedPath = Routes.ChecklistRoute.MissionPlanTemplateRoute();
-    // router.push(proceedPath);
     const proceedPath = ADMIN.MISSION_PLAN;
     router.push(proceedPath);
   };
 
-  const handleBulkUploadDialog = async () => {
+  const handleBulkUploadDialog = () => {
     onOpenBulkUploadModal();
-    const handleUpload = async () => {
-      if (!file) return;
-
-      const formData = new FormData();
-      formData.append("upload_file", file);
-      console.log("handle upload file");
-    };
     if (openBulkUploadModal) {
-      await handleUpload();
       closeBulkUploadModal();
     }
   };
-
   const handleBulkModal = () => {
     if (openBulkUploadModal) {
       onOpenNewBtnDrop();
@@ -174,71 +129,81 @@ const Employee = () => {
     router.push(path);
   };
 
-  const userData = [
-    {
-      name: "Alice",
-      age: "Female",
-      email: "alice@example.com",
-      date: "2023 - 02 - 18",
-      line_manager: "Paul",
-      job: "Boss",
-      Status: <BadgeComponent text="Pending" color="yellow" />,
-      action: "",
-    },
-  ];
+  const {
+    data: employeeData,
+    isLoading: isLoadingEmployees,
+    isFetching: isFetchingEmployees,
+    refetch: refetchEmployees,
+  } = useGetEmployeesQuery({
+    to: 0,
+    total: 0,
+    per_page: 50,
+    currentPage: 0,
+    next_page_url: "",
+    prev_page_url: "",
+  });
 
-  const listTwo = [
-    {
-      name: "Alice",
-      age: 25,
-      email: "alice@example.com",
-      Status: "pending",
-    },
-    {
-      name: "Bob",
-      age: 30,
-      email: "bob@example.com",
-      Status: "success",
-    },
-    {
-      name: "Charlie",
-      age: 35,
-      email: "charlie@example.com",
-      Status: "failed",
-    },
-  ];
+  const employees = employeeData ?? [];
 
-  //   const formatListfromBackend = (list) => {
-  //     const newList = list?.map((chi,idx) => {
-  //         return {...chi, status: <></>}
-  //     })
-  //   }
+  const employeesColumnData = useMemo(
+    () => employeerolesColumns,
+    [isFetchingEmployees]
+  );
+
+  const user = useAppSelector(selectUser);
+  const { organization } = user;
+  const [createBulkEmployees, { isLoading: isCreatingBulkEmployees }] =
+    useCreateBulkEmployeesMutation();
+
+  const [downloadEmployeeTemplate] = useLazyDownloadEmployeeTemplateQuery();
+
+  const handleSubmitBulkUpload = async () => {
+    if (!bulkFile) return;
+    const formData = new FormData();
+    formData.append("organization_id", organization?.id as string);
+    formData.append("upload_file", bulkFile);
+    await createBulkEmployees(formData)
+      .unwrap()
+      .then(() => {
+        handleBulkUploadDialog();
+        refetchEmployees();
+        toast.success("Employees Uploaded Successfully");
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+          }, 2000);
+        });
+      });
+  };
+
+  const handleTemplateDownload = async (file: string) => {
+    toast.loading("downloading...");
+    downloadEmployeeTemplate(file)
+      .unwrap()
+      .then((payload) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "employee_template",
+            fileExtension: "xlsx",
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
+  };
 
   return (
-    // <DashboardLayout>
     <DashboardLayout headerTitle="Employee">
-      {/* <ChecklistLayout
-        onCancel={handleCancelDialog}
-        title="Employee"
-        step={`Step 1 of 1`}
-        btnDisabled={employees?.length < 1}
-        showBtn
-        className={employees?.length < 1 ? emptyStateClass : ""}
-        shouldProceed
-        onProceedBtn={handleProceedDialog}
-      > */}
       <ReusableStepListBox
         btnText="Continue"
         activeStep="1"
         totalStep="1"
         title="Employee"
         btnDisabled={employees?.length < 1}
-        // loading={isCreatingSubsidiary}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-        // back
-        // hideStep
-        // fixed
       />
       <section className="p-5">
         {employees?.length < 0 ? (
@@ -252,67 +217,30 @@ const Employee = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <>
-            <TableWrapper
-              TableTitle="Employee"
-              //   hideExport={true}
-              //   hideFilter={true}
-              // newBtnBulk={true}
-              //   hideNewBtnOne
-              onAdd={() => {
-                console.log("add new");
-              }}
-              onBulkUploadBtn={() => {
-                console.log("bulk");
-              }}
-              //   hideSearchFilterBox
-              onManualBtn={() => {
-                console.log("manual");
-              }}
-              onSearch={(param) => {
-                console.log(param);
-              }}
-              filterList={[
-                { label: "Pending", value: "pending" },
-                { label: "Verified", value: "verified" },
-                { label: "Rejected", value: "rejected" },
-              ]}
-              sortList={[
-                { label: "today", value: "1" },
-                { label: "yesterday", value: "2" },
-              ]}
-              //   filterVal={}
-              onFilterClick={(param) => {
-                console.log(param);
-              }}
-              handleSearchClick={(param) => {
-                console.log(param);
-              }}
-              onRowClick={(param) => {
-                // console.log(param);
-              }}
-              //   addText="konn"
-
-              tableheaderList={[
-                "Staff Name",
-                "Gender",
-                "Work email",
-                "Resumption Date",
-                "Line Manager",
-                "Job Title",
-                "Status",
-                "Action",
-              ]}
-              tableBodyList={userData}
-              perPage="10"
-              totalPage="1"
-              currentPage="1"
-              onPageChange={(p) => {
-                console.log(p);
-              }}
-              defaultBodyList={listTwo}
-            />
-          </>
+          <DashboardTable
+            header="Employee"
+            isFilterDrop
+            filterOptions={["pending", "rejected"]}
+            filterCheck={(val: string) => {
+              return val === status;
+            }}
+            filterOnCheck={(value: string) => {
+              if (value === status) {
+                setStatus("");
+              } else {
+                setStatus(value);
+              }
+            }}
+            data={employees}
+            columns={employeesColumnData}
+            onBulkUploadBtn={handleBulkUploadDialog}
+            onOpenBtnChange={handleBtnDrop}
+            newBtnOpen={openNewBtn}
+            isLoading={isFetchingEmployees}
+            onManualBtn={handleAddEmployee}
+            onPdfChange={handlePdfChange}
+            onCsvChange={handleCsvChange}
+          />
         )}
 
         <DashboardModal
@@ -336,13 +264,12 @@ const Employee = () => {
           onOpenChange={handleBulkUploadDialog}
         >
           <BulkUploadModal
+            loading={isCreatingBulkEmployees}
             onCancel={handleBulkUploadDialog}
             onSampleCsvDownload={handleBulkRequirementDialog}
             onSampleExcelDownload={handleBulkRequirementDialog}
-            // onSampleCsvDownload={() => handleBulkRequirementDialog("csv")}
-            // onSampleExcelDownload={() => handleBulkRequirementDialog("xlsv")}
-            onBulkUpload={handleBulkUploadDialog}
-            setFile={setFile}
+            onBulkUpload={handleSubmitBulkUpload}
+            setFile={setBulkFile}
           />
         </DashboardModal>
 
@@ -352,15 +279,11 @@ const Employee = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => {
-              console.log("fetch employee template");
-              // console.log(template, "fetch employee template");
-            }}
+            onTemplateDownload={() => handleTemplateDownload("xlsx")}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>
       </section>
-      {/* </ChecklistLayout> */}
     </DashboardLayout>
   );
 };

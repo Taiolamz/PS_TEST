@@ -227,7 +227,7 @@ const SpecifiedTask = () => {
                               id={`tasks.${index}.start_date`}
                               name={`tasks.${index}.start_date`}
                               label="Start Period"
-                              inputClass="md:w-32 text-[.75rem]"
+                              inputClass="text-[.75rem]"
                               handleChange={(date) =>
                                 formik.setFieldValue(
                                   `tasks.${index}.start_date`,
@@ -260,7 +260,7 @@ const SpecifiedTask = () => {
                               }
                               labelClass="pb-2"
                               className="relative"
-                              inputClass="md:w-32 text-[.75rem]"
+                              inputClass="w-full text-[.75rem]"
                               //   value={formik.values.tasks[index].end_date}
                               touched={touchedTasks?.[index]?.end_date}
                               error={errorTasks?.[index]?.end_date}
@@ -273,7 +273,7 @@ const SpecifiedTask = () => {
                                 id={`tasks.${index}.main_efforts`}
                                 name={`tasks.${index}.main_efforts`}
                                 label={title}
-                                labelClass="text-[#008080] text-sm w-full"
+                                labelClass="text-sm w-full text-[var(--primary-color)]"
                                 isChecked={
                                   formik.values.tasks[index].main_efforts
                                 }
@@ -305,9 +305,12 @@ const SpecifiedTask = () => {
                     main_efforts: false,
                   })
                 }
-                className="flex items-center gap-2 mt-5 text-primary text-sm px-1"
+                className="flex items-center gap-2 mt-5 text-[var(--primary-color)] text-sm px-1"
               >
-                <LucidePlusCircle color="#04ACAC" size={20} />
+                <LucidePlusCircle
+                  style={{ color: "var(--primary-color)" }}
+                  size={20}
+                />
                 Add new Specific Task
               </button>
             </div>
@@ -316,7 +319,7 @@ const SpecifiedTask = () => {
         <div className="mt-8 flex gap-x-2 items-center">
           <Button
             variant="outline"
-            className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+            className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
           >
             Back
           </Button>
@@ -330,9 +333,9 @@ const SpecifiedTask = () => {
             className={cn(
               "w-full",
               // !formik.isValid || isLoadingStrategicIntent
-              //   ? "opacity-50 cursor-not-allowed w-max"
+              //   ? "opacity-50 cursor-not-allowed w-max py-5 px-2"
               //   :
-              "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+              "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
             )}
             // className={`text-white py-5 px-2 rounded-sm bg-primary border border-primary min-w-28`}
           >

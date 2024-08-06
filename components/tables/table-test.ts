@@ -1,5 +1,5 @@
 // <TableWrapper
-// TableTitle="Testing now"
+// TableTitle="Employee"
 // //   hideExport={true}
 // //   hideFilter={true}
 // // newBtnBulk={true}
@@ -18,8 +18,9 @@
 //   console.log(param);
 // }}
 // filterList={[
-//   { label: "success", value: "1" },
-//   { label: "failed", value: "2" },
+//   { label: "Pending", value: "pending" },
+//   { label: "Verified", value: "verified" },
+//   { label: "Rejected", value: "rejected" },
 // ]}
 // sortList={[
 //   { label: "today", value: "1" },
@@ -37,11 +38,20 @@
 // }}
 // //   addText="konn"
 
-// tableheaderList={["Name", "Age", "email", "phone"]}
+// tableheaderList={[
+//   "Staff Name",
+//   "Gender",
+//   "Work email",
+//   "Resumption Date",
+//   "Line Manager",
+//   "Job Title",
+//   "Status",
+//   "Action",
+// ]}
 // tableBodyList={userData}
 // perPage="10"
-// totalPage="100"
-// currentPage="10"
+// totalPage="1"
+// currentPage="1"
 // onPageChange={(p) => {
 //   console.log(p);
 // }}

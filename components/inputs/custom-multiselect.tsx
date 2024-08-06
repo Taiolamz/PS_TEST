@@ -70,10 +70,16 @@ export default function CustomMultiSelect({
           <MultiSelectorList>
             {options.map((option) => (
               <MultiSelectorItem
-                value={option.value}
+                value={option?.value}
                 key={option.value}
                 option={option}
-                checkedIcon={<IoCheckbox color="#008080" size={18} />}
+                checkedIcon={
+                  <IoCheckbox
+                    color="#008080"
+                    size={18}
+                    style={{ color: "var(--primary-color)" }}
+                  />
+                }
                 notCheckedIcon={<IoSquareOutline color="#e0e4e6" size={17} />}
               >
                 {option.label}
@@ -83,7 +89,7 @@ export default function CustomMultiSelect({
         </MultiSelectorContent>
       </MultiSelector>
 
-      <ErrorMessage name={name} className={cn(errorClass)} component={"div"} />
+      {/* <ErrorMessage name={name} className={cn(errorClass)} component={"div"} /> */}
     </div>
   );
 }

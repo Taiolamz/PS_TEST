@@ -179,7 +179,7 @@ const MultiSelectorTrigger = forwardRef<
       )}
       {...props}
     >
-      {value.map((item, index) => (
+      {value?.map((item, index) => (
         <Badge
           key={item.value}
           className={cn(
@@ -225,7 +225,7 @@ const MultiSelectorInput = forwardRef<
   return (
     <CommandPrimitive.Input
       {...props}
-      placeholder={value.length < 1 ? props.placeholder : ""}
+      placeholder={value?.length < 1 ? props.placeholder : ""}
       ref={ref}
       value={inputValue}
       onValueChange={activeIndex === -1 ? setInputValue : undefined}
@@ -298,7 +298,7 @@ const MultiSelectorItem = forwardRef<
       e.stopPropagation();
     }, []);
 
-    const isIncluded = Options.some((item) => item.value === option.value);
+    const isIncluded = Options?.some((item) => item.value === option.value);
     return (
       <CommandItem
         ref={ref}

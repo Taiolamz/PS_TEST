@@ -7,13 +7,12 @@ import routesPath from "@/utils/routes";
 import {
   useCreateBulkUnitsMutation,
   useGetUnitsQuery,
+  useLazyDownloadUnitTemplateQuery,
 } from "@/redux/services/checklist/unitApi";
 import { unitColumns } from "./unit-column";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
-import { ChecklistLayout } from "./_components/checklist-layout";
-import EmptyState from "./_components/empty-state";
 import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
@@ -22,11 +21,11 @@ import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
 const Units = () => {
-  const emptyStateClass = "flex justify-center items-center";
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
 
@@ -123,6 +122,7 @@ const Units = () => {
     data: unitsData,
     isLoading: isLoadingUnits,
     isFetching: isFetchingUnits,
+    refetch: refetchUnits,
   } = useGetUnitsQuery({
     to: 0,
     total: 0,
@@ -133,7 +133,6 @@ const Units = () => {
   });
 
   const units = unitsData ?? [];
-  console.log(units, "units");
 
   const unitsColumnData = useMemo(
     () => unitColumns(isFetchingUnits),
@@ -145,54 +144,55 @@ const Units = () => {
 
   const [createBulkUnits, { isLoading: isCreatingBulkUnits }] =
     useCreateBulkUnitsMutation();
+  const [downloadUnitTemplate] = useLazyDownloadUnitTemplateQuery();
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
 
-    const payload = {
-      organization_id: organization?.id,
-      file: bulkFile,
-      branch_id: "jsdfsd",
-      department_id: "sdfsdf",
-    };
-    console.log(payload, "form data");
-    await createBulkUnits(payload)
+    const formData = new FormData();
+    formData.append("organization_id", organization?.id as string);
+    formData.append("file", bulkFile);
+    await createBulkUnits(formData)
       .unwrap()
       .then(() => {
         toast.success("Units Uploaded Successfully");
+        handleBulkUploadDialog();
+        refetchUnits();
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            handleBulkUploadDialog();
           }, 2000);
         });
       });
   };
+
+  const handleTemplateDownload = async (file: string) => {
+    toast.loading("downloading...");
+    downloadUnitTemplate({ template: "Unit", format: file })
+      .unwrap()
+      .then((payload) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "unit_template",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
+  };
   return (
-    // <DashboardLayout>
     <DashboardLayout headerTitle="Unit">
-      {/* <ChecklistLayout
-        onCancel={handleCancelDialog}
-        title="Units"
-        step={`Step 4 of 4`}
-        className={units?.length < 1 ? emptyStateClass : ""}
-        btnDisabled={units?.length < 1}
-        showBtn
-        shouldProceed
-        onProceedBtn={handleProceedDialog}
-      > */}
       <ReusableStepListBox
         btnText="Continue"
         activeStep="4"
         totalStep="4"
         title="Unit"
         btnDisabled={units?.length < 1}
-        // loading={isCreatingSubsidiary}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-        // back
-        // hideStep
-        // fixed
       />
       <section className="p-5">
         {units?.length < 1 ? (
@@ -251,12 +251,11 @@ const Units = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => console.log("template download")}
+            onTemplateDownload={() => handleTemplateDownload("csv")}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>
       </section>
-      {/* </ChecklistLayout> */}
     </DashboardLayout>
   );
 };
