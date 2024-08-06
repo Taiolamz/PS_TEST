@@ -3,20 +3,25 @@ import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
 import CustomTab from '@/components/custom-tab';
 import React from 'react';
 import { PAGE_TABS } from '../_data';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { AllEmployees } from '../_tabs';
 import { allemployeeColumns, allemployeeData } from '../_data/all-employee-table-data';
+import routesPath from '@/utils/routes';
+
+const { ADMIN } = routesPath
 
 const SingleMissionPlan = () => {
 
     const searchParams = useSearchParams();
     // const data = useAppSelector((state) => state?.auth?.user);
     const ui = searchParams.get("ui");
+    const router = useRouter()
 
     return (
         <DashboardLayout
             headerTitle="Mission Plan 2023"
             back
+            onBack={() => router.push(`${ADMIN.MAIN_MISSION_PLAN}?ui=mission-plan`)}
         >
             <div style={{backgroundColor: "rgba(244, 244, 244, 1)"}} className="p-5 w-full global_sticky_class">
                 {/* Change the PAGE_TABS here to simulate the different tabs */}

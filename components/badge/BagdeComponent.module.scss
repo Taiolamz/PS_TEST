@@ -1,0 +1,54 @@
+.badge_reusable_wrap_index {
+  .badge_wrap_index {
+    padding: 0.35rem 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+    background-color: rgba(254, 252, 232, 1);
+    cursor: pointer;
+    border-radius: 0.6rem;
+    width: max-content;
+    gap: 0.4rem;
+
+    span {
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: rgba(161, 98, 7, 1);
+      text-transform: capitalize;
+      text-align: center !important;
+      width: unset !important;
+    }
+  }
+
+  .pending {
+    background-color: rgba(253, 218, 25, 0.1);
+
+    span {
+      color: rgba(255, 192, 67, 1);
+    }
+  }
+
+  .info {
+    background-color: rgba(126, 16, 229, 0.1);
+
+    span {
+      color: rgba(126, 16, 229, 1);
+    }
+  }
+
+  .failed {
+    background-color: rgba(214, 19, 15, 0.1);
+
+    span {
+      color: rgba(236, 20, 16, 1);
+    }
+  }
+
+  .success {
+    background-color: rgba(7, 162, 135, 0.1);
+
+    span {
+      color: rgba(7, 162, 135, 1);
+    }
+  }
+}

@@ -11,8 +11,8 @@ export interface TextareaProps
   id: string;
   name: string;
   value?: string;
-  handleBlur?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleBlur?: (event: any) => void;
+  onChange?: (event: any) => void;
   touched?: boolean;
   error?: string;
 }
@@ -36,6 +36,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref
   ) => {
+    console.log(error);
     return (
       <div>
         {label && (
@@ -55,22 +56,26 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             )}{" "}
           </label>
         )}
-        <Field
+        <textarea
           className={cn(
-            "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
-            className
+            "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm  transition-colors bg-[#F6F8F9] focus-visible:ring-primary placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-[#E5E9EB] placeholder:text-#6E7C87",
+            className,
+            error &&
+              touched &&
+              "border-red-500 focus-visible:ring-transparent focus-visible:ring-0"
           )}
           ref={ref}
           rows={rows}
-          as="textarea"
           id={id}
           name={name}
           onChange={onChange}
           value={value}
-          error={error}
-          touched={touched}
+          onBlur={handleBlur}
           {...props}
         />
+        <span className={cn("text-xs text-red-500 hidden", error && "block")}>
+          {error && touched && error}
+        </span>
       </div>
     );
   }

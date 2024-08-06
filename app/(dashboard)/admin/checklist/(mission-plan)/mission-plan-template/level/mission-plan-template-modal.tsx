@@ -34,7 +34,7 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <p className="text-primary font-medium text-sm">
-          What Should be in your C-Level Mission plan
+          What Should be in your Mission plan
         </p>
         <div
           className={`${!handleIsAnySelected() ? "cursor-not-allowed" : ""}`}
@@ -61,7 +61,7 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
               onClick={() => handleActiveMissionPlan(label)}
               className={`${
                 isSelected ? "bg-primary" : "bg-white"
-              }  flex flex-col gap-2 cursor-pointer group hover:bg-primary shadow-custom-box-shadow-100 transition-all duration-100 p-5 border-0 rounded-lg`}
+              }  flex flex-col gap-2 cursor-pointer group hover:bg-primary shadow-custom-box-shadow-100 transition-all duration-300 p-5 border-0 rounded-lg`}
             >
               <p
                 className={`${
