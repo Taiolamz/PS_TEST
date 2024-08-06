@@ -14,10 +14,10 @@ import { useFormik } from "formik";
 import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
-import { Dictionary } from "@/@types/dictionary";
+// import { Dictionary } from "@/@types/dictionary";
 import routesPath from "@/utils/routes";
-import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
-import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
+// import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
+// import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
 
 // dummy data
 type Prop = {
@@ -135,10 +135,10 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       prev_page_url: "",
     });
 
-  const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
-    useGetGradeLevelsQuery({});
+  // const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
+  //   useGetGradeLevelsQuery({});
 
-  console.log(gradeLevelData, "grade level data");
+  // console.log(gradeLevelData, "grade level data");
 
   const { data: unitData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
@@ -194,7 +194,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departments = departmentData ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
-  const gradeLevels = gradeLevelData ?? [];
+  // const gradeLevels = gradeLevelData ?? [];
 
   const stateDrop = handleDropdown(states);
   const subsidiaryDrop = handleDropdown(subsidiaries);
