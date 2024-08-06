@@ -8,6 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { CaretDownIcon } from "@radix-ui/react-icons";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
 import React, {
@@ -18,6 +19,7 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { RxCaretDown } from "react-icons/rx";
 
 type MultiSelectorProps = {
   values: any[];
@@ -174,7 +176,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background",
+        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background relative",
         className
       )}
       {...props}
@@ -202,6 +204,10 @@ const MultiSelectorTrigger = forwardRef<
         </Badge>
       ))}
       {children}
+
+      <div className="absolute right-2">
+        <RxCaretDown color="var(--text-color2)" size={20} />
+      </div>
     </div>
   );
 });

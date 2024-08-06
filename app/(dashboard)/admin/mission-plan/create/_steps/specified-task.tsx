@@ -18,6 +18,7 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { usePathname, useRouter } from "next/navigation";
+import { format, parse, isValid } from "date-fns";
 
 export const EFFORT_DATA = [
   {
@@ -26,6 +27,12 @@ export const EFFORT_DATA = [
     isChecked: false,
   },
 ];
+
+// Custom date validation function
+const isValidDate = (dateString: string | any) => {
+  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+  return isValid(parsedDate) && dateString.length === 10;
+};
 
 const validationSchemaTask = Yup.object().shape({
   tasks: Yup.array().of(
@@ -51,8 +58,22 @@ const validationSchemaTask = Yup.object().shape({
         )
         .min(1, "At least one measure is required"),
 
-      start_date: Yup.date().required("Start date is required"),
-      end_date: Yup.date().required("End date is required"),
+      start_date: Yup.string()
+        .required("Start date is required")
+        .typeError("Start date must be a valid date")
+        .test(
+          "is-valid-date",
+          "Start date must be a valid date in DD/MM/YYYY format",
+          (value) => isValidDate(value)
+        ),
+      end_date: Yup.string()
+        .required("End date is required")
+        .typeError("End date must be a valid date")
+        .test(
+          "is-valid-date",
+          "End date must be a valid date in DD/MM/YYYY format",
+          (value) => isValidDate(value)
+        ),
     })
   ),
 });
@@ -106,6 +127,7 @@ const SpecifiedTask = () => {
 
   const errorTasks = formik.errors.tasks as any;
 
+  console.log(formik.values);
   return (
     <div>
       <div className="flex items-center gap-x-2 mb-8">
@@ -136,7 +158,7 @@ const SpecifiedTask = () => {
                             name={`tasks.${index}.title`}
                             label="Title"
                             onBlur={formik.handleBlur}
-                            placeholder="Input Staff Name"
+                            placeholder="Input Task"
                             className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                             onChange={(e) =>
                               handleChange(e.target.value, index)
@@ -196,7 +218,7 @@ const SpecifiedTask = () => {
                               )
                             }
                             options={options}
-                            label="Select Measures"
+                            label="Select Measure of Success"
                             labelClass="block text-xs text-[#6E7C87] font-normal m-0 p-0"
                             onBlur={() =>
                               formik.setFieldTouched(
@@ -205,7 +227,7 @@ const SpecifiedTask = () => {
                               )
                             }
                             triggerClass="rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px] min-w-[20rem]"
-                            placeholder="Select Measures"
+                            placeholder="Select Multiple"
                             inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
                             errorClass="text-red-500 text-xs mt-1"
                             name={`tasks.${index}.measures`}
@@ -224,14 +246,16 @@ const SpecifiedTask = () => {
                             <CustomDateInput
                               labelClass="pb-2"
                               className="relative"
+                              placeholder="DD/MM/YYYY"
+                              format="DD/MM/YYYY"
                               id={`tasks.${index}.start_date`}
                               name={`tasks.${index}.start_date`}
-                              label="Start Period"
+                              label="Start Date"
                               inputClass="text-[.75rem]"
                               handleChange={(date) =>
                                 formik.setFieldValue(
                                   `tasks.${index}.start_date`,
-                                  date.format("YYYY-MM-DD")
+                                  date?.format("DD/MM/YYYY")
                                 )
                               }
                               //   value={formik.values.tasks[index].start_date}
@@ -251,11 +275,13 @@ const SpecifiedTask = () => {
                             <CustomDateInput
                               id={`tasks.${index}.end_date`}
                               name={`tasks.${index}.end_date`}
-                              label="End Period"
+                              label="End Date"
+                              format="DD/MM/YYYY"
+                              placeholder="DD/MM/YYYY"
                               handleChange={(date) =>
                                 formik.setFieldValue(
                                   `tasks.${index}.end_date`,
-                                  date.format("YYYY-MM-DD")
+                                  date?.format("DD/MM/YYYY")
                                 )
                               }
                               labelClass="pb-2"
