@@ -81,10 +81,13 @@ const ApprovalFlowOne = ({
             options={reviewersOption}
             className=" w-[303px]"
 <<<<<<< HEAD
+<<<<<<< HEAD
             // selected={formik.values.reviewers}
             // setSelected={(value) => formik.setFieldValue("reviewers", value)}
 =======
 >>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
+=======
+>>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
             selected={selectedReviewer}
             setSelected={setSelectedReviewer}
           />

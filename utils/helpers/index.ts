@@ -1,5 +1,6 @@
 import chroma from "chroma-js";
 import { adminRoleList, employeeRoleList, specialRoleList } from "../routes";
+import { format, parse, isValid } from "date-fns";
 
 export const timeToMinuteSecond = (time: number) =>
   `${Math.floor(time / 60)}:${("0" + (time % 60)).slice(-2)}`;
@@ -71,4 +72,11 @@ export function checkUserRole(item: string) {
   }
 }
 export const iife = <T>(fn: () => T) => fn();
-export  const removeCharFromString = (str: string, char: string) => str.replace(new RegExp(char, 'g'), '')
+export const removeCharFromString = (str: string, char: string) =>
+  str.replace(new RegExp(char, "g"), "");
+
+// Custom date validation function
+export const isValidDate = (dateString: string | any) => {
+  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+  return isValid(parsedDate) && dateString.length === 10;
+};

@@ -37,7 +37,6 @@ const AddSubsidary = () => {
   return (
     <>
       <DashboardLayout back headerTitle="Subsidiary">
-        {/* step list button start */}
         <ReusableStepListBox
           btnText="Continue"
           activeStep="1"
@@ -47,11 +46,8 @@ const AddSubsidary = () => {
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
           onCancel={handleCancelDialog}
-          // back
-          // hideStep
-          // fixed
         />
-        {/* step list button end */}
+
         <div
           className=""
           style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}
@@ -159,17 +155,6 @@ const AddSubsidary = () => {
         </div>
       </DashboardLayout>
     </>
-    // <ChecklistLayout
-    //   onCancel={handleCancelDialog}
-    //   title="Subsidiaries"
-    //   onProceedBtn={formik.handleSubmit}
-    //   showBtn
-    //   step={`Step 1 of 4`}
-    //   btnDisabled={!formik.isValid || !formik.dirty}
-    //   loading={isCreatingSubsidiary}
-    // >
-
-    // </ChecklistLayout>
   );
 };
 

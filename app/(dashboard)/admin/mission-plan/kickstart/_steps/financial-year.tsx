@@ -87,6 +87,7 @@ const FinancialYear = () => {
                             }}
                             touched={formik.touched.start_date}
                             error={formik.errors.start_date as string}
+                            placeholder='YYYY-MM-DD'
                         />
                         <CustomDateInput
                             label='End Period'
@@ -97,6 +98,7 @@ const FinancialYear = () => {
                             }}
                             touched={formik.touched.end_date}
                             error={formik.errors.end_date as string}
+                            placeholder='YYYY-MM-DD'
                         />
                     </div>
                 </div>

@@ -55,8 +55,21 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    getFinancialYearPreview: builder.query({
+      query: () => ({
+        url: `/mission-plan/preview`,
+        method: "GET"
+      }),
+    }),
+    saveFinancialYear: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/save`,
+        method: "POST",
+        body: payload
+      }),
+    }),
   }),
 });
 
-export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation } =
+export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation } =
   missionPlanApi;

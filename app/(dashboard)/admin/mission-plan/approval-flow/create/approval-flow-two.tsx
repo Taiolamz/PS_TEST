@@ -9,6 +9,7 @@ interface Option {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 interface Prop {
   options: Option[];
 }
@@ -28,6 +29,8 @@ const ApprovalFlowTwo = ({ options }: Prop) => {
   };
 
 =======
+=======
+>>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
 interface SelectedLevels {
   [key: string]: string;
 }
@@ -89,17 +92,24 @@ const ApprovalFlowTwo = ({
     return array;
   };
 
+<<<<<<< HEAD
 >>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
+=======
+>>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
   return (
     <div className="flex flex-col gap-5">
       {approvalFlowDetails.map((chi, idx) => (
         <CustomAccordion
           key={idx}
 <<<<<<< HEAD
+<<<<<<< HEAD
           className="mb-4 p-5 border border-custom-divider rounded  flex flex-col gap-1 "
 =======
           className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
 >>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
+=======
+          className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
+>>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
           title={
             <p className="font-medium text-sm mb-2">
               {idx + 1}. How many levels of approval should be for{" "}
@@ -109,6 +119,7 @@ const ApprovalFlowTwo = ({
           }
           content={
 <<<<<<< HEAD
+<<<<<<< HEAD
             <CustomSelect
               placeholder="Select..."
               options={options}
@@ -117,6 +128,8 @@ const ApprovalFlowTwo = ({
               className="w-[150px]"
             />
 =======
+=======
+>>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
             <>
               <CustomSelect
                 placeholder="Select..."
@@ -175,7 +188,10 @@ const ApprovalFlowTwo = ({
                 ))} */}
               </div>
             </>
+<<<<<<< HEAD
 >>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
+=======
+>>>>>>> 284ef1818be78e6881fc8315ed7a040bf91c7eaf
           }
         />
       ))}

@@ -13,6 +13,7 @@ interface PageSidebarProps {
   menu_items: MENU_ITEM_TYPE[];
   handleClick?: () => any;
   slug: string;
+  disableClick?: boolean
 }
 
 const PageSidebar = ({
@@ -20,6 +21,7 @@ const PageSidebar = ({
   menu_items,
   slug = "ui",
   handleClick,
+  disableClick = false
 }: PageSidebarProps) => {
   const location = usePathname();
   const router = useRouter();
@@ -41,7 +43,7 @@ const PageSidebar = ({
           onClick={() => {
             handleClick
               ? handleClick()
-              : router.push(`${location}?${slug}=${accessor}`);
+              : !disableClick && router.push(`${location}?${slug}=${accessor}`);
           }}
         >
           {title}

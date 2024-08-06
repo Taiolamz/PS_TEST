@@ -82,6 +82,7 @@ const AddMissionPlanTemplate = () => {
                     name="financial_year.title"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
 
                   <div className="flex gap-5  items-center ">
@@ -97,6 +98,7 @@ const AddMissionPlanTemplate = () => {
                       }
                       error={""}
                       className="relative"
+                      disabled
                     />
                     <CustomDateInput
                       id="financial_year.end_period"
@@ -110,6 +112,7 @@ const AddMissionPlanTemplate = () => {
                       }
                       error={""}
                       className="relative"
+                      disabled
                     />
                   </div>
                 </div>
@@ -132,6 +135,7 @@ const AddMissionPlanTemplate = () => {
                       name="financial_year.title"
                       onChange={formik.handleChange}
                       className={`w-[874px] h-[105px] focus:outline-none rounded border focus:ring-1 focus:ring-primary p-3 pt-2 px-3 py-4 text-sm  transition-colors bg-[#F6F8F9] resize-none`}
+                      disabled
                     />
                   </div>
                 </div>
@@ -149,6 +153,7 @@ const AddMissionPlanTemplate = () => {
                     name="measure_of_success.measure_of_success"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
                   <div className="flex gap-5 items-center">
                     <CustomSelect
@@ -161,6 +166,7 @@ const AddMissionPlanTemplate = () => {
                       }
                       className="w-full pr-10"
                       labelClass={labelClassName}
+                      disabled
                     />
                     <Input
                       label="Target"
@@ -170,6 +176,7 @@ const AddMissionPlanTemplate = () => {
                       name="measure_of_success.target"
                       onChange={formik.handleChange}
                       className="w-full"
+                      disabled
                     />
                   </div>
                 </div>
@@ -187,6 +194,7 @@ const AddMissionPlanTemplate = () => {
                     name="implied_task"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
                 </div>
               </div>
@@ -203,6 +211,7 @@ const AddMissionPlanTemplate = () => {
                     name="specified_task"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
                 </div>
               </div>
@@ -219,6 +228,7 @@ const AddMissionPlanTemplate = () => {
                     name="freedom_and_constraints.constraint"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
 
                   <Input
@@ -229,6 +239,7 @@ const AddMissionPlanTemplate = () => {
                     name="freedom_and_constraints.freedom"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
                 </div>
               </div>
@@ -245,6 +256,7 @@ const AddMissionPlanTemplate = () => {
                     name="strategic_intent"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
                 </div>
               </div>
@@ -261,6 +273,7 @@ const AddMissionPlanTemplate = () => {
                     name="strategic_pillar"
                     onChange={formik.handleChange}
                     className={`w-[425px]`}
+                    disabled
                   />
                 </div>
               </div>
