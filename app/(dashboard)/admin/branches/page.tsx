@@ -28,6 +28,7 @@ const { ADMIN } = routesPath;
 const Branches = () => {
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [fileType, setFileType] = useState("");
 
   const {
     isOpen: openProceedModal,
@@ -176,7 +177,7 @@ const Branches = () => {
           downloadFile({
             file: payload,
             filename: "branch_template",
-            fileExtension: "csv",
+            fileExtension: fileType,
           });
         }
       })
@@ -238,8 +239,14 @@ const Branches = () => {
           <BulkUploadModal
             loading={isCreatingBulkBranches}
             onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={handleBulkRequirementDialog}
-            onSampleExcelDownload={handleBulkRequirementDialog}
+            onSampleCsvDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("csv");
+            }}
+            onSampleExcelDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("xlsx");
+            }}
             onBulkUpload={handleSubmitBulkUpload}
             setFile={setBulkFile}
           />
@@ -251,7 +258,7 @@ const Branches = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload("csv")}
+            onTemplateDownload={() => handleTemplateDownload(fileType)}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>

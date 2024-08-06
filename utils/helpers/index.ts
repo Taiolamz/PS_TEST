@@ -38,23 +38,21 @@ export function getPrimaryColorAccent(color: string, opacity = 0.1) {
   }
 }
 
-
 export function returnInitial(name: string) {
-	if (name) {
-		const i = name?.split(' ');
-		if (i.length > 1) {
-			return i[0]?.slice(0, 1).toUpperCase() + i[1]?.slice(0, 1).toUpperCase();
-		} else {
-			return i[0]?.slice(0, 1).toUpperCase() + i[0]?.slice(1, 2).toUpperCase();
-		}
-	} else {
-		return '';
-	}
+  if (name) {
+    const i = name?.split(" ");
+    if (i.length > 1) {
+      return i[0]?.slice(0, 1).toUpperCase() + i[1]?.slice(0, 1).toUpperCase();
+    } else {
+      return i[0]?.slice(0, 1).toUpperCase() + i[0]?.slice(1, 2).toUpperCase();
+    }
+  } else {
+    return "";
+  }
 }
 
-
 function normalizeString(str: string) {
-  return str.toLowerCase();
+  return str?.toLowerCase();
 }
 
 export function checkUserRole(item: string) {
@@ -63,7 +61,7 @@ export function checkUserRole(item: string) {
   // if (specialRoleList?.map(normalizeString).includes(normalizedItem)) {
   //   return "SUPER ADMIN";
   // } else
-  
+
   if (adminRoleList?.map(normalizeString).includes(normalizedItem)) {
     return "ADMIN";
   } else if (employeeRoleList?.map(normalizeString).includes(normalizedItem)) {
@@ -72,3 +70,5 @@ export function checkUserRole(item: string) {
     return "EMPLOYEE";
   }
 }
+export const iife = <T>(fn: () => T) => fn();
+export  const removeCharFromString = (str: string, char: string) => str.replace(new RegExp(char, 'g'), '')

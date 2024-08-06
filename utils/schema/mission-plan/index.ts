@@ -17,3 +17,28 @@ export const measureSuccessSchema = yup.object().shape({
       })
   ),
 });
+
+
+export const boundariesSchema = yup.object({
+  constraints: yup.array().of(yup.string().required("Constraint is required")),
+  freedoms: yup.array().of(yup.string().required("Freedom is required")),
+});
+
+export const fiscalYearSchema = yup.object().shape({
+  title: yup.string().required(),
+  start_date: yup.string().required('start date is required'),
+  end_date: yup.string().required('end date is required'),
+})
+
+export const missionVissionSchema = yup.object().shape({
+  mission: yup.string().min(5).required('company mission is required'),
+  vision: yup.string().min(5).required('company vision is required'),
+})
+
+export const strategicPillarSchema = yup.object().shape({
+  strategic_pillars: yup.array().of(
+      yup.object().shape({
+          pillar: yup.string().required('field is required'),
+      }),
+  )
+})

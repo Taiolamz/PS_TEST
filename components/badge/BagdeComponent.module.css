@@ -1,0 +1,45 @@
+.badge_reusable_wrap_index .badge_wrap_index {
+  padding: 0.35rem 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center !important;
+  background-color: rgb(254, 252, 232);
+  cursor: pointer;
+  border-radius: 0.6rem;
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  gap: 0.4rem;
+}
+.badge_reusable_wrap_index .badge_wrap_index span {
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: rgb(161, 98, 7);
+  text-transform: capitalize;
+  text-align: center !important;
+  width: unset !important;
+}
+.badge_reusable_wrap_index .pending {
+  background-color: rgba(253, 218, 25, 0.1);
+}
+.badge_reusable_wrap_index .pending span {
+  color: rgb(255, 192, 67);
+}
+.badge_reusable_wrap_index .info {
+  background-color: rgba(126, 16, 229, 0.1);
+}
+.badge_reusable_wrap_index .info span {
+  color: rgb(126, 16, 229);
+}
+.badge_reusable_wrap_index .failed {
+  background-color: rgba(214, 19, 15, 0.1);
+}
+.badge_reusable_wrap_index .failed span {
+  color: rgb(236, 20, 16);
+}
+.badge_reusable_wrap_index .success {
+  background-color: rgba(7, 162, 135, 0.1);
+}
+.badge_reusable_wrap_index .success span {
+  color: rgb(7, 162, 135);
+}/*# sourceMappingURL=BagdeComponent.module.css.map */

@@ -23,6 +23,7 @@ const AddApprovalFlow = () => {
     handleCancelDialog,
     reviewers,
     level,
+<<<<<<< HEAD
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
   const location = usePathname();
@@ -37,6 +38,13 @@ const AddApprovalFlow = () => {
     }
   };
 
+=======
+    handleProceed,
+    ui,
+    isCreatingMissionFlow,
+  } = useMissionApprovalFlow({ cancelPath: cancelRoute });
+
+>>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
       <ReusableStepListBox
@@ -46,6 +54,10 @@ const AddApprovalFlow = () => {
         title="Mission Plan Template"
         onSave={handleProceed}
         onCancel={handleCancelDialog}
+<<<<<<< HEAD
+=======
+        loading={isCreatingMissionFlow}
+>>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
         <form
@@ -71,7 +83,16 @@ const AddApprovalFlow = () => {
             />
           ) : null}
           {ui === "approval-flow-step-two" ? (
+<<<<<<< HEAD
             <ApprovalFlowTwo options={level} />
+=======
+            <ApprovalFlowTwo
+              options={level}
+              reviewersOption={reviewers}
+              approvalsArray={formik.values.order_of_approvals}
+              setOrderValue={formik.setFieldValue}
+            />
+>>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
           ) : null}
         </form>
       </div>

@@ -88,6 +88,33 @@ type BranchData = {
   branch_id: string;
 };
 
+type InvitedUser = {
+  branch_id: string;
+  created_at: string;
+  date_of_birth: string;
+  department_id: string;
+  designation: string;
+  email: string;
+  first_name: string;
+  gender: string;
+  id: string;
+  last_name: string;
+  level: string;
+  line_manager_email: string | null;
+  maiden_name: string;
+  manager_id: string;
+  middle_name: string;
+  organization_id: string;
+  phone_number: string;
+  reason: string | null;
+  resumption_date: string;
+  role_id: string;
+  staff_number: string;
+  status: string;
+  unit_id: string;
+  updated_at: string;
+};
+
 type StateData = {
   name: string;
   id: string;
@@ -133,6 +160,32 @@ type EmployeeRolesData = {
   reason: string;
   created_at: string;
   updated_at: string;
+};
+
+type CurrentMissionPlanData = {
+  approval_steps: any[];
+  approvals: any[];
+  boundaries: any[];
+  created_at: string;
+  fiscal_year_id: string;
+  id: string;
+  implied_task: any;
+  measure_of_success: any[];
+  mission_statement: {
+    id: string;
+    mission_plan_id: string;
+    created_at: string;
+    deleted_at: string;
+    mission: string;
+    staff_member_id: string;
+    status: string;
+    updated_at: string;
+  };
+  organization_id: string;
+  specified_task: any[];
+  staff_member_id: string;
+  status: string;
+  strategic_intents: any[];
 };
 
 type RolesData = {};

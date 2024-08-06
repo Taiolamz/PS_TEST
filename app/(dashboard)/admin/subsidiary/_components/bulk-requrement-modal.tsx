@@ -14,7 +14,8 @@ export const bulkRequirements = [
   "Upload document by clicking on the Bulk upload button",
 ];
 
-const BulkRequirementModal = ({ onTemplateDownload, onCancel }: Prop) => {
+const 
+BulkRequirementModal = ({ onTemplateDownload, onCancel }: Prop) => {
   const btn = (
     <div className="mt-5">
       <Button className="px-5" onClick={onTemplateDownload}>

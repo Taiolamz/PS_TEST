@@ -9,10 +9,22 @@ import TogglePassword from "@/components/toggle-password";
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
+<<<<<<< HEAD
+=======
+import { useRouter } from "next/navigation";
+>>>>>>> 8704a0d605738538a2ba3ccc2f8f00d76ec9dd37
 
 const OrganizationInvite = () => {
-  const { formik, passwordValidations, handlePasswordChange, loading } =
-    useEmployeeInvite();
+  const router = useRouter();
+  const {
+    formik,
+    passwordValidations,
+    handlePasswordChange,
+    loading,
+    invitedUser,
+    isLoadingInvitedUsers,
+    isInvitationSuccess,
+  } = useEmployeeInvite();
   const [showPassword, setShowPassword] = useState(false);
   const btnClass = "font-normal py-0 h-[32px]  transition-all duration-300 ";
   return (
@@ -29,6 +41,8 @@ const OrganizationInvite = () => {
           placeholder="First Name"
           id="first_name"
           name="first_name"
+          value={(invitedUser as InvitedUser)?.first_name}
+          disabled
           onChange={formik.handleChange}
           isRequired
         />
@@ -39,6 +53,8 @@ const OrganizationInvite = () => {
           placeholder="Last Name"
           id="last_name"
           name="last_name"
+          value={(invitedUser as InvitedUser)?.last_name}
+          disabled
           onChange={formik.handleChange}
           isRequired
         />
@@ -50,6 +66,8 @@ const OrganizationInvite = () => {
           placeholder="Email"
           id="email"
           name="email"
+          value={(invitedUser as InvitedUser)?.email}
+          disabled
           onChange={formik.handleChange}
           isRequired
         />
