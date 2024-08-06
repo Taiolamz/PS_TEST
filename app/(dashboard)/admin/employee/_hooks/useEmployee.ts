@@ -17,7 +17,7 @@ import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi
 // import { Dictionary } from "@/@types/dictionary";
 import routesPath from "@/utils/routes";
 // import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
-// import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
+import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
 
 // dummy data
 type Prop = {
@@ -143,10 +143,10 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       prev_page_url: "",
     });
 
-  // const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
-  //   useGetGradeLevelsQuery({});
+  const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
+    useGetGradeLevelsQuery({});
 
-  // console.log(gradeLevelData, "grade level data");
+  console.log(gradeLevelData, "level data");
 
   const { data: unitData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
@@ -173,6 +173,17 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     return data;
   };
 
+  const handleGradeDrop = (items: GradeLevelData[]) => {
+    const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.level,
+      };
+    });
+    return data;
+  };
+
   const handleFormatDropdown = (
     items:
       | SubsidiaryData[]
@@ -180,6 +191,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       | DepartmentData[]
       | UnitData[]
       | EmployeeData[]
+      | GradeLevelData[]
   ) => {
     const data = items.map((chi) => {
       return {
@@ -207,7 +219,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departments = departmentData ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
-  // const gradeLevels = gradeLevelData ?? [];
+  const gradeLevels = gradeLevelData ?? [];
 
   const stateDrop = handleDropdown(states);
   const subsidiaryDrop = handleDropdown(subsidiaries);
@@ -215,6 +227,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departmentDrop = handleDropdown(departments);
   const unitsDrop = handleDropdown(units);
   const newEmployeeDrop = handleDropdown(newEmployeeStatuses);
+  const gradeLevelDrop = handleGradeDrop(gradeLevels);
 
   const EmployeeRoute = ADMIN.EMPLOYEES;
   const user = useAppSelector(selectUser);
@@ -298,6 +311,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     genderOptions: handleFormatDropdown(genderOptions),
     jobTitles: handleFormatDropdown(jobTitles),
     gradeLevels: handleFormatDropdown(gradeLevels),
+    gradeLevelDrop,
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
     newEmployeeDrop,
     states: handleFormatDropdown(states),
