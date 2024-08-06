@@ -53,7 +53,7 @@ const AddApprovalFlow = () => {
             Arrange how you want your mission plan approval flow should process
           </p>
         </div>
-        {ui === "approval-flow-step-one" ? (
+        {/* {ui === "approval-flow-step-one" ? (
           <ApprovalFlowOne
             levelOption={level}
             reviewersOption={reviewers}
@@ -62,7 +62,7 @@ const AddApprovalFlow = () => {
               formik.setFieldValue("reviewers", value)
             }
           />
-        ) : null}
+        ) : null} */}
         {ui === "approval-flow-step-two" ? (
           <ApprovalFlowTwo options={level} />
         ) : null}

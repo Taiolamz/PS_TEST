@@ -5,10 +5,15 @@ export const employee_auth = "employee";
 export const employeeRoleList = ["staff"];
 
 export const adminRoleList = [
-  "hr-admin", "strategy-admin", "it-admin", "compliance","super-admin", "user"
+  "hr-admin",
+  "strategy-admin",
+  "it-admin",
+  "compliance",
+  "super-admin",
+  "user",
 ];
 
-export const specialRoleList = ["super-admin",];
+export const specialRoleList = ["super-admin"];
 // const
 
 const routesPath = {
@@ -18,6 +23,11 @@ const routesPath = {
     MAIN_MISSION_PLAN: `/${admin_auth}/mission-plan`,
     CREATE_MISSION_PLAN: `/${admin_auth}/mission-plan/create`,
     SINGLE_MISSION_PLAN: `/${admin_auth}/mission-plan/view`,
+    MISSION_PLAN_TEMPLATE: `/${admin_auth}/mission-plan/template`,
+    CREATE_MISSION_PLAN_TEMPLATE: `/${admin_auth}/mission-plan/template/create`,
+    MISSION_PLAN_TEMPLATE_LEVEL: `/${admin_auth}/mission-plan/template/level`,
+    MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
+    CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     PERFORMANCE: `/${admin_auth}/performance`,
     KPI: `/${admin_auth}/kpi`,

@@ -1,10 +1,13 @@
 "use client";
-import { useAcceptEmployeeInvitationMutation, useGetInvitedEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import {
+  useAcceptEmployeeInvitationMutation,
+  useGetInvitedEmployeesQuery,
+} from "@/redux/services/employee/employeeApi";
 import { useAppSelector } from "@/redux/store";
 import { checkUserRole } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import * as yup from "yup";
@@ -19,17 +22,17 @@ export const useEmployeeInvite = () => {
   Must include one number/special character.
 `;
   const validationSchema = yup.object().shape({
-    first_name: yup.string().required("First name is required"),
-    last_name: yup.string().required("Last name is required"),
-    email: yup
-      .string()
-      .email("Invalid email address")
-      .required("Email is required"),
+    // first_name: yup.string().required("First name is required"),
+    // last_name: yup.string().required("Last name is required"),
+    // email: yup
+    //   .string()
+    //   .email("Invalid email address")
+    //   .required("Email is required"),
     password: yup
       .string()
       .required("Password is required")
       .test("password-validation", passwordValidationMessage, (value) => {
-        if (!value) return false; // Ensure value is not undefined or null
+        if (!value) return false;
         const hasMinLength = value.length >= 8;
         const hasLowercase = /[a-z]/.test(value);
         const hasUppercase = /[A-Z]/.test(value);
@@ -65,38 +68,39 @@ export const useEmployeeInvite = () => {
     setPasswordValidations(updatedValidations);
   };
 
-  const [acceptEmployeeInvitation, { isLoading: isAcceptingInvitation }] =
-    useAcceptEmployeeInvitationMutation();
+  const [
+    acceptEmployeeInvitation,
+    { isLoading: isAcceptingInvitation, isSuccess: isInvitationSuccess },
+  ] = useAcceptEmployeeInvitationMutation();
 
-  const {
-    data: invitedUsersData,
-    isLoading: isLoadingInvitedUsers,
-    isFetching: isFetchingInvitedUsers,
-  } = useGetInvitedEmployeesQuery("01j4en6b771yestq0vc6y7zhqf+");
+  const searchParams = useSearchParams();
+  const invitedID = searchParams.get("id");
 
-  const invitedUsers = invitedUsersData ?? [];
+  const { data: invitedUsersData, isLoading: isLoadingInvitedUsers } =
+    useGetInvitedEmployeesQuery(String(invitedID));
 
-  console.log(invitedUsers, "invited users");
+  const invitedUser = invitedUsersData ?? [];
 
   const handleSubmit = async () => {
     const payload = {
-      ...formik.values,
+      email: (invitedUser as InvitedUser).email,
+      first_name: (invitedUser as InvitedUser).first_name,
+      last_name: (invitedUser as InvitedUser).last_name,
+      password: formik.values.password,
     };
-    await acceptEmployeeInvitation(payload)
-      .unwrap()
-      .then(() => {
-        toast.success("Logged in Successfully");
-        new Promise(() => {
-          setTimeout(() => {
-            toast.dismiss();
-            if (checkUserRole(user?.role as string) === "ADMIN") {
-              router.push(routesPath?.ADMIN.OVERVIEW);
-            } else {
-              router.push(routesPath?.EMPLOYEE.OVERVIEW);
-            }
-          }, 2000);
-        });
-      });
+    const id = invitedID;
+
+    try {
+      await acceptEmployeeInvitation({ id, payload }).unwrap();
+      toast.success("Account Created Successfully");
+      setTimeout(() => {
+        toast.dismiss();
+        router.push("/login");
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to accept invitation:", error);
+      toast.error("Failed to create account");
+    }
   };
 
   const formik = useFormik({
@@ -115,5 +119,8 @@ export const useEmployeeInvite = () => {
     passwordValidations,
     handlePasswordChange,
     loading: isAcceptingInvitation,
+    invitedUser,
+    isLoadingInvitedUsers,
+    isInvitationSuccess,
   };
 };
