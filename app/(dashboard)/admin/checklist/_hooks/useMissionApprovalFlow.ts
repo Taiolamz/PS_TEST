@@ -1,9 +1,13 @@
 import * as yup from "yup";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "./useDisclosure";
 import { useFormik } from "formik";
 import { toast } from "sonner";
 import Routes from "@/lib/routes/routes";
+import { useAppSelector } from "@/redux/store";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import routesPath from "@/utils/routes";
+import { useCreateMissionFlowMutation } from "@/redux/services/checklist/missionFlowApi";
 
 type Prop = {
   cancelPath: string;
@@ -40,7 +44,7 @@ const reviewers = [
     value: "None",
   },
 ];
-
+const { ADMIN } = routesPath;
 export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const handleFormatDropdown = (items: Select[]) => {
     const data = items.map((chi) => {
@@ -60,18 +64,48 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
 
   // const formSchema = yup.object().shape({});
   const router = useRouter();
+  const user = useAppSelector(selectUser);
+  const { organization } = user;
+  // const BranchRoute = ADMIN.BRANCHES;
+  const [createMissionFlow, { isLoading: isCreatingMissionFlow }] =
+    useCreateMissionFlowMutation();
 
   const handleSubmit = async () => {
-    console.log({ ...formik.values });
+    console.log(formik.values.order_of_approvals, "values");
+    const payload = {
+      order_of_approvals: formik.values.order_of_approvals,
+      organization_id: organization?.id,
+    };
+    await createMissionFlow(payload)
+      .unwrap()
+      .then(() => {
+        toast.success("Branch Created Successfully");
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+            // router.push(BranchRoute);
+          }, 2000);
+        });
+      });
+  };
+
+  const location = usePathname();
+  const searchParams = useSearchParams();
+  const ui = searchParams.get("ui");
+
+  const handleProceed = () => {
+    if (ui === "approval-flow-step-two") {
+      handleSubmit();
+      // router.push(ADMIN.CHECKLIST);
+    } else {
+      router.push(`${location}?ui=approval-flow-step-two`);
+    }
   };
   const formik = useFormik({
     initialValues: {
       level: "",
       reviewers: "",
-      //   head_of_department: "",
-      //   work_email: "",
-      //   subsidiary: "",
-      //   branch: "",
+      order_of_approvals: [{ title: "", approvals: [""] }],
     },
     // validationSchema: formSchema,
     onSubmit: handleSubmit,
@@ -108,5 +142,8 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     handleCancelDialog,
     level: handleFormatDropdown(levelOptions),
     reviewers: handleFormatDropdown(reviewers),
+    handleProceed,
+    isCreatingMissionFlow,
+    ui,
   };
 };

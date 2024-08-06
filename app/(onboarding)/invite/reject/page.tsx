@@ -1,12 +1,16 @@
 "use client";
 import React from "react";
-import EmployeeInviteLayout from "../_components/invite-layout";
+import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
 import { useRejectEmployeeInvite } from "../../../(dashboard)/employee/_hook/useRejectInvite";
 import { Button } from "@/components/ui/button";
 import { ManceLoader } from "@/components/custom-loader";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { ZojatechIcon } from "@/public/assets/icons";
+import Image from "next/image";
 
 const RejectInvite = () => {
-  const { formik, reasons, loading } = useRejectEmployeeInvite();
+  const { formik, reasons, loading, isRejectSuccess } =
+    useRejectEmployeeInvite();
   const btnClass = "font-normal py-0 h-[32px]  transition-all duration-300 ";
 
   return (
@@ -72,15 +76,33 @@ const RejectInvite = () => {
               {loading ? <ManceLoader /> : "Send"}
             </Button>
           </div>
-          <Button
+          {/* <Button
             variant="outline"
             className={`border-primary px-10 text-primary font-light  hover:text-primary ${btnClass}`}
             // onClick={onCancel}
           >
             Back
-          </Button>
+          </Button> */}
         </div>
       </form>
+
+      <ConfirmationModal
+        content={
+          <div className="flex justify-center gap-3 items-center absolute left-0 right-0 m-auto top-0 mt-3">
+            <Image src={ZojatechIcon} alt="Zojatech" />
+            <p className="font-medium text-lg text-custom-blue-color">
+              Zojatech Limited
+            </p>
+          </div>
+        }
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title="Feedback Sent"
+        message="Your reason for rejection has been sent to the Admin, Thank you for your time."
+        show={isRejectSuccess}
+        handleClose={() => null}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
+      />
     </EmployeeInviteLayout>
   );
 };
