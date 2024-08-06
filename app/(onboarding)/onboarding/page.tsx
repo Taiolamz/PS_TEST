@@ -87,7 +87,6 @@ const Onboarding = () => {
       return;
     }
     const formDataToSend = new FormData();
-    // console.log(formik.values);
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
@@ -108,8 +107,6 @@ const Onboarding = () => {
     console.log({ formDataToSend });
 
     try {
-      // const response = await setupOrganization(formDataToSend);
-
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
