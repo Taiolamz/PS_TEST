@@ -22,6 +22,7 @@ interface CustomDateInputProps {
   iconClass?: string;
   inputClass?: string;
   placeholder?: string;
+  format?: string;
 }
 
 export default function CustomDateInput({
@@ -29,6 +30,7 @@ export default function CustomDateInput({
   id,
   name,
   className,
+  format,
   labelClass,
   iconClass,
   onOpenPickNewDate = false,
@@ -65,9 +67,10 @@ export default function CustomDateInput({
       <DatePicker
         id={id}
         name={name}
+        format={format ? format : ""}
         placeholder={placeholder ? placeholder : "MM/DD/YYYY"}
         inputClass={cn(
-          "border rounded-[4px] bg-[#F6F8F9] px-3 py-[7px] text-[.85rem] w-full focus:outline-none",
+          "border rounded-[4px] bg-[#F6F8F9] px-3 py-[7px] text-[.85rem] w-full focus:outline-none focus:border-[var(--primary-color)]",
           inputClass,
           error && touched && "border-red-500"
         )}
