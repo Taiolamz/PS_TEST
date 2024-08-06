@@ -72,3 +72,6 @@ export function checkUserRole(item: string) {
     return "EMPLOYEE";
   }
 }
+
+
+export const iife = <T>(fn: () => T) => fn();

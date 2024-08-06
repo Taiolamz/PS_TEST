@@ -17,6 +17,8 @@ import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import TableWrapper from "@/components/tables/TableWrapper";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const { ADMIN } = routesPath;
 
@@ -172,6 +174,46 @@ const Employee = () => {
     router.push(path);
   };
 
+  const userData = [
+    {
+      name: "Alice",
+      age: "Female",
+      email: "alice@example.com",
+      date: "2023 - 02 - 18",
+      line_manager: "Paul",
+      job: "Boss",
+      Status: <BadgeComponent text="Pending" color="yellow" />,
+      action: "",
+    },
+  ];
+
+  const listTwo = [
+    {
+      name: "Alice",
+      age: 25,
+      email: "alice@example.com",
+      Status: "pending",
+    },
+    {
+      name: "Bob",
+      age: 30,
+      email: "bob@example.com",
+      Status: "success",
+    },
+    {
+      name: "Charlie",
+      age: 35,
+      email: "charlie@example.com",
+      Status: "failed",
+    },
+  ];
+
+  //   const formatListfromBackend = (list) => {
+  //     const newList = list?.map((chi,idx) => {
+  //         return {...chi, status: <></>}
+  //     })
+  //   }
+
   return (
     // <DashboardLayout>
     <DashboardLayout headerTitle="Employee">
@@ -199,7 +241,7 @@ const Employee = () => {
         // fixed
       />
       <section className="p-5">
-        {employees?.length < 1 ? (
+        {employees?.length < 0 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
             textTitle="New Staff"
@@ -210,40 +252,67 @@ const Employee = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            header="Employee"
-            isFilterDrop // show display filter or not
-            filterOptions={["pending", "rejected"]} // filter options of your choice
-            // searchVal={search} //Search input value
-            filterCheck={(val: string) => {
-              // If filter checkbook is clicked
-              return val === status;
-            }}
-            filterOnCheck={(value: string) => {
-              //handle checkbook clicked
-              if (value === status) {
-                setStatus("");
-              } else {
-                setStatus(value);
-              }
-            }}
-            // onSearchChange={(e) => {
-            //   //handle change in Search input value
-            //   setSearch(e.target.value);
-            // }}
-            // handleSearchClick={() => setSearchQuery(search)} //handle click on search input
-            data={employees}
-            columns={employeesColumnData}
-            // href={Routes.ChecklistRoute.AddEmployeesAndRolesRoute()}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            isLoading={isFetchingEmployees}
-            // isLoading={searchloading} // handle loading state while searching for result
-            onManualBtn={handleAddEmployee}
-            onPdfChange={handlePdfChange} //handle download pdf
-            onCsvChange={handleCsvChange} //handle download csv
-          />
+          <>
+            <TableWrapper
+              TableTitle="Employee"
+              //   hideExport={true}
+              //   hideFilter={true}
+              // newBtnBulk={true}
+              //   hideNewBtnOne
+              onAdd={() => {
+                console.log("add new");
+              }}
+              onBulkUploadBtn={() => {
+                console.log("bulk");
+              }}
+              //   hideSearchFilterBox
+              onManualBtn={() => {
+                console.log("manual");
+              }}
+              onSearch={(param) => {
+                console.log(param);
+              }}
+              filterList={[
+                { label: "Pending", value: "pending" },
+                { label: "Verified", value: "verified" },
+                { label: "Rejected", value: "rejected" },
+              ]}
+              sortList={[
+                { label: "today", value: "1" },
+                { label: "yesterday", value: "2" },
+              ]}
+              //   filterVal={}
+              onFilterClick={(param) => {
+                console.log(param);
+              }}
+              handleSearchClick={(param) => {
+                console.log(param);
+              }}
+              onRowClick={(param) => {
+                // console.log(param);
+              }}
+              //   addText="konn"
+
+              tableheaderList={[
+                "Staff Name",
+                "Gender",
+                "Work email",
+                "Resumption Date",
+                "Line Manager",
+                "Job Title",
+                "Status",
+                "Action",
+              ]}
+              tableBodyList={userData}
+              perPage="10"
+              totalPage="1"
+              currentPage="1"
+              onPageChange={(p) => {
+                console.log(p);
+              }}
+              defaultBodyList={listTwo}
+            />
+          </>
         )}
 
         <DashboardModal

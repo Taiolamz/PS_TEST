@@ -297,7 +297,7 @@ const DashboardTable = ({
         </div>
         <div>
           <Table>
-            <TableHeader>
+            <TableHeader >
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
