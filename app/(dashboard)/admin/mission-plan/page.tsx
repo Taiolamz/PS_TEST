@@ -18,6 +18,7 @@ import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-pl
 import { PageLoader } from "@/components/custom-loader";
 import { Dictionary } from "@/@types/dictionary";
 import { formatDate } from "@/utils/helpers/date-formatter";
+import { CAN_CREATE_FINANCIAL_YEAR } from "@/utils/helpers";
 
 // Mocking authenticated user role
 // ROLES = 
@@ -28,8 +29,6 @@ const AUTH_USER_ROLE = {
   EMPLOYEE: "employee",
 
 };
-// ROLES ALLOWED TO CREATE FINANCIAL YEAR
-const CAN_CREATE_FINANCIAL_YEAR = ['super-admin'] 
 
 const { ADMIN } = routesPath
 
@@ -43,7 +42,7 @@ export default function Page() {
   const { data: all_mission_plans, isLoading: isLoadingMissionPlans, isFetching: isFetchingMissionPlans } = useGetOrganizationMissionPlansQuery({})
   const user_info = useAppSelector((state) => state?.auth?.user);
 
-  console.log(all_mission_plans?.data?.fiscal_years)
+  // console.log(all_mission_plans?.data?.fiscal_years)
 
   const kickstartcard = (
     <Link
@@ -69,8 +68,6 @@ export default function Page() {
   const router = useRouter();
   
   const ui = searchParams.get("ui");
-
-  // console.log(user_info)
 
   return (
     <DashboardLayout headerTitle="Mission Plan">
