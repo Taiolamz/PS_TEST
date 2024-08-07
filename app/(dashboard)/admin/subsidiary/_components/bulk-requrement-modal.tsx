@@ -14,7 +14,8 @@ export const bulkRequirements = [
   "Upload document by clicking on the Bulk upload button",
 ];
 
-const BulkRequirementModal = ({ onTemplateDownload, onCancel }: Prop) => {
+const 
+BulkRequirementModal = ({ onTemplateDownload, onCancel }: Prop) => {
   const btn = (
     <div className="mt-5">
       <Button className="px-5" onClick={onTemplateDownload}>
@@ -31,12 +32,12 @@ const BulkRequirementModal = ({ onTemplateDownload, onCancel }: Prop) => {
         <p className="text-custom-dark-gray font-medium text-sm">
           Bulk Upload Requirement
         </p>
-        <Image
+        {/* <Image
           src={CircleTimes}
           alt="cancel"
           className="cursor-pointer"
           onClick={onCancel}
-        />
+        /> */}
       </div>
       <div className="mt-5 flex flex-col ">
         {bulkRequirements.map((chi, idx) => (

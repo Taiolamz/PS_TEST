@@ -54,6 +54,10 @@ const LogoUpload = ({
           </div>
         )}
       </div>
+      <p className="text-[#84919A] text-xs mt-[0.6875rem]">
+        Only standard format are allowed Jpg, png. File must not be more than
+        1mb
+      </p>
     </div>
   );
 };

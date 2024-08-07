@@ -39,15 +39,6 @@ const AddDepartment = () => {
   return (
     <>
       <DashboardLayout back headerTitle="Department">
-        {/* <ChecklistLayout
-        onCancel={handleCancelDialog}
-        title="Department"
-        onProceedBtn={formik.handleSubmit}
-        showBtn
-        step={`Step 3 of 4`}
-        btnDisabled={!formik.isValid || !formik.dirty}
-        loading={isCreatingDepartment}
-      > */}
         <ReusableStepListBox
           btnText="Continue"
           activeStep="3"
@@ -57,9 +48,6 @@ const AddDepartment = () => {
           loading={isCreatingDepartment}
           onSave={formik.handleSubmit}
           onCancel={handleCancelDialog}
-          // back
-          // hideStep
-          // fixed
         />
         <div
           className=""
@@ -83,7 +71,7 @@ const AddDepartment = () => {
                   onChange={formik.handleChange}
                   isRequired
                 />
-{/* 
+                {/* 
                 <CustomSelect
                   label="State"
                   isRequired
@@ -102,7 +90,7 @@ const AddDepartment = () => {
 
                 <CustomSelect
                   label="Head of Department"
-                  isRequired
+                  // isRequired
                   placeholder="Head of Department"
                   options={[]}
                   selected={formik.values.head_of_department}

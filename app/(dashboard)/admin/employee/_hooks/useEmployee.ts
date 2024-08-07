@@ -1,7 +1,6 @@
 "use client";
 import * as yup from "yup";
 import useDisclosure from "./useDisclosure";
-import Routes from "@/lib/routes/routes";
 import { useCreateEmployeeMutation } from "@/redux/services/checklist/employeeApi";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
@@ -14,9 +13,10 @@ import { useFormik } from "formik";
 import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
-import { Dictionary } from "@/@types/dictionary";
+// import { Dictionary } from "@/@types/dictionary";
 import routesPath from "@/utils/routes";
-import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
+// import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
+import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
 
 // dummy data
 type Prop = {
@@ -24,49 +24,19 @@ type Prop = {
   cancelPath: string;
 };
 
-// Define the type for the subsidiary item
-interface propType {
+interface EmployeeData {
+  name: string;
   id: string;
-  name: string;
-}
-interface BranchItem {
-  name: string;
-  branch_id: string | null;
+  value: string;
 }
 
-// Dummy data
-const countries = [
-  { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
-  { label: "Germany", value: "Germany", icon: HomeIcon },
-  { label: "South Africa", value: "South Africa", icon: HomeIcon },
-  // ...other countries
-];
-
-const jobTitles = [
-  { name: "UX Designer", value: "UX Designer" },
-  { name: "Product Manager", value: "Product Manager" },
-  { name: "Quality Assurance Tester", value: "Quality Assurance Tester" },
-  { name: "Backend Engineer", value: "Backend Engineer" },
-];
-const roles = [
-  { name: "UX Designer", value: "UX Designer" },
-  { name: "Product Manager", value: "Product Manager" },
-  { name: "Quality Assurance Tester", value: "Quality Assurance Tester" },
-  { name: "Backend Engineer", value: "Backend Engineer" },
-];
-const gradeLevels = [
-  { name: "Managing Director", value: "managing_director" },
-  { name: "Admin (Strategy)", value: "admin_strategy" },
-  { name: "Admin (Finance)", value: "admin_finance" },
-  { name: "Supervisor 1", value: "supervisor_1" },
-  { name: "Supervisor 2", value: "supervisor_2" },
-];
 const newEmployeeStatuses = [
   {
     name: "Yes",
-    value: "Yes",
+    id: "1",
+    value: "1",
   },
-  { name: "No", value: "No" },
+  { name: "No", id: "0", value: "0" },
 ];
 const genderOptions = [
   { name: "Male", value: "Male" },
@@ -99,7 +69,7 @@ const formSchema = yup.object().shape({
   role_id: yup.string().optional(),
 });
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const useEmployee = ({ path, cancelPath }: Prop) => {
   const router = useRouter();
@@ -134,6 +104,9 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       prev_page_url: "",
     });
 
+  const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
+    useGetGradeLevelsQuery({});
+
   const { data: unitData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
     total: 0,
@@ -145,12 +118,9 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
-  
-
-  // console.log(rolesData)
 
   const handleDropdown = (
-    items: StateData[] | SubsidiaryData[] | DepartmentData[]
+    items: StateData[] | SubsidiaryData[] | DepartmentData[] | EmployeeData[]
   ) => {
     const data = items.map((chi) => {
       return {
@@ -162,10 +132,27 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     return data;
   };
 
-  const handleFormatDropdown = (
-    items: SubsidiaryData[] | BranchData[] | DepartmentData[] | UnitData[]
-  ) => {
+  const handleGradeDrop = (items: GradeLevelData[]) => {
     const data = items.map((chi) => {
+      return {
+        ...chi,
+        label: chi.name,
+        value: chi.position,
+      };
+    });
+    return data;
+  };
+
+  const handleFormatDropdown = (
+    items:
+      | SubsidiaryData[]
+      | BranchData[]
+      | DepartmentData[]
+      | UnitData[]
+      | EmployeeData[]
+    // | GradeLevelData[]
+  ) => {
+    const data = items?.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
@@ -174,6 +161,8 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     });
     return data;
   };
+
+  // const handleFormat
 
   const handleBranchDropdown = (items: BranchData[]) => {
     const data = items.map((chi) => {
@@ -191,26 +180,26 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departments = departmentData ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
+  const gradeLevels = gradeLevelData ? JSON.parse(gradeLevelData) : [];
 
   const stateDrop = handleDropdown(states);
   const subsidiaryDrop = handleDropdown(subsidiaries);
   const branchDrop = handleBranchDropdown(branches);
   const departmentDrop = handleDropdown(departments);
   const unitsDrop = handleDropdown(units);
+  const newEmployeeDrop = handleDropdown(newEmployeeStatuses);
+  const gradeLevelDrop = handleGradeDrop(gradeLevels);
 
-  const EmployeeRoute = ADMIN.EMPLOYEES
+  const EmployeeRoute = ADMIN.EMPLOYEES;
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const [createEmployee, { isLoading: isCreatingEmployee }] =
     useCreateEmployeeMutation();
 
-    
-    
-    const handleSubmit = async () => {
+  const handleSubmit = async () => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
-      level:"entry-level"
     };
     await createEmployee(payload)
       .unwrap()
@@ -249,7 +238,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
-  }); 
+  });
 
   const {
     isOpen: openCancelModal,
@@ -268,8 +257,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     router.push(cancelPath);
   };
 
-  console.log(formik.errors)
-
   return {
     formik,
     isCreatingEmployee,
@@ -282,14 +269,16 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     isLoadingDepartments,
     isLoadingUnits,
     genderOptions: handleFormatDropdown(genderOptions),
-    jobTitles: handleFormatDropdown(jobTitles),
     gradeLevels: handleFormatDropdown(gradeLevels),
+    gradeLevelDrop,
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
+    newEmployeeDrop,
     states: handleFormatDropdown(states),
     stateDrop,
     subsidiaryDrop,
     branchDrop,
     departmentDrop,
+    isLoadingGradeLevel,
     unitsDrop,
     openCancelModal,
     handleProceedCancel,

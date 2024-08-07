@@ -3,7 +3,7 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import CustomTab from "@/components/custom-tab";
 import React, { useEffect, useState } from "react";
 import { PAGE_TABS } from "../_data";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { AllEmployees } from "../_tabs";
 import {
   allemployeeColumns,
@@ -23,6 +23,9 @@ import {
 import BadgeComponent from "@/components/badge/BadgeComponents";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import routesPath from "@/utils/routes";
+
+const { ADMIN } = routesPath;
 
 type MissionType = {
   [key: string]: any; // This allows any key with any value type
@@ -30,6 +33,7 @@ type MissionType = {
 
 const SingleMissionPlan = () => {
   const searchParams = useSearchParams();
+  const router = useRouter();
   // const data = useAppSelector((state) => state?.auth?.user);
   const ui = searchParams.get("ui");
   const id = searchParams.get("id"); //The fiscial year ID
@@ -73,7 +77,7 @@ const SingleMissionPlan = () => {
     data: dropdownData,
     isLoading: isLoadingdropdown,
     error: dropdownError,
-  }: any = useGetAllOrganizationMissionPlanDropdownQuery();
+  }: any = useGetAllOrganizationMissionPlanDropdownQuery({});
 
   const [downloadEmployeeData] =
     useLazyGetAllOrganizationEmployeeMissionPlanExportQuery();
@@ -113,7 +117,7 @@ const SingleMissionPlan = () => {
     isLoading: isLoadingMission,
     isFetching: isFetchingMission,
     error: missionError,
-  }: any = useGetOrganizationMissionPlanQuery();
+  }: any = useGetOrganizationMissionPlanQuery({});
 
   useEffect(() => {
     if (missionData) {
@@ -159,6 +163,7 @@ const SingleMissionPlan = () => {
     <DashboardLayout
       headerTitle={missionPlanData?.title ? missionPlanData?.title : ""}
       back
+      onBack={() => router.push(`${ADMIN.MAIN_MISSION_PLAN}?ui=mission-plan`)}
     >
       <div
         style={{ backgroundColor: "rgba(244, 244, 244, 1)" }}

@@ -37,17 +37,7 @@ const AddBranch = () => {
     {}
   );
   return (
-    // <ChecklistLayout
-    //   onCancel={handleCancelDialog}
-    //   title="Branches"
-    //   onProceedBtn={formik.handleSubmit}
-    //   showBtn
-    //   step={`Step 2 of 4`}
-    //   btnDisabled={!formik.isValid || !formik.dirty}
-    //   loading={isCreatingBranch}
-    // >
     <DashboardLayout back headerTitle="Branch">
-      {/* step list button start */}
       <ReusableStepListBox
         btnText="Continue"
         activeStep="2"
@@ -56,14 +46,10 @@ const AddBranch = () => {
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingBranch}
         onSave={formik.handleSubmit}
-        onCancel={() => {
-          // cancel function here-----
-        }}
-        // back
+        onCancel={handleCancelDialog}
         hideStep
-        // fixed
       />
-      {/* step list button end */}
+
       <div className="" style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}>
         {" "}
         <FormLayout
@@ -134,7 +120,7 @@ const AddBranch = () => {
 
               <CustomSelect
                 label="Head of Branch"
-                isRequired
+                // isRequired
                 placeholder="Head of Branch"
                 options={[]}
                 selected={formik.values.head}
@@ -174,8 +160,6 @@ const AddBranch = () => {
         <CancelModal onProceed={handleProceedCancel} modalTitle="Branch" />
       </DashboardModal>
     </DashboardLayout>
-
-    // </ChecklistLayout>
   );
 };
 

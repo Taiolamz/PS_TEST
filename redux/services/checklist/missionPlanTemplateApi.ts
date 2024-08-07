@@ -10,13 +10,7 @@ export const missionPlanTemplateApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
-      },
+      invalidatesTags: ["MissionPlanTemplates"],
     }),
 
     getMissionPlanTemplates: builder.query<DepartmentData[], QueryParams>({
@@ -26,6 +20,7 @@ export const missionPlanTemplateApi = baseApi.injectEndpoints({
         })}`,
         method: "GET",
       }),
+      providesTags: ["MissionPlanTemplates"],
       transformResponse: (response: {
         data: { templates: { data: MissionPlanTemplateData[] } };
       }) => response.data.templates.data,

@@ -2,7 +2,7 @@
 
 import { FormHeader } from "../_components";
 import CustomCheckbox from "@/components/custom-checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HIERARCHY_DATA } from "../data";
 
 interface OrganizationStructureProps {
@@ -19,13 +19,24 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
 
     setCurrentHierarchy(updatedHierarchy);
 
-    const updatedFormikValues = updatedHierarchy
-      .filter((item: { isChecked: any }) => item.isChecked)
-      .map((item) => item.title)
-      .join(", ");
+    const updatedFormikValues = updatedHierarchy.reduce((acc, item) => {
+      acc[item.title] = item.isChecked;
+      return acc;
+    }, {} as Record<string, boolean>);
 
     formik.setFieldValue("hierarchy", updatedFormikValues);
   };
+
+  useEffect(() => {
+    const formikHierarchy = formik.values.hierarchy;
+    if (formikHierarchy) {
+      const initialHierarchy = currentHierarchy.map((item) => ({
+        ...item,
+        isChecked: formikHierarchy[item.title] || false,
+      }));
+      setCurrentHierarchy(initialHierarchy);
+    }
+  }, [formik.values.hierarchy]);
 
   return (
     <section className="max-w-[55.875rem]">
@@ -51,6 +62,7 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
               isChecked={isChecked}
               itemId={id}
               handleClick={handleCheckboxClick}
+              labelClass="text-[#6E7C87]"
             />
           </div>
         ))}
