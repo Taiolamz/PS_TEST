@@ -21,13 +21,6 @@ import routesPath from "@/utils/routes";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
 
 const { ADMIN } = routesPath;
-
-type HierarchyTypes = {
-  branch?: boolean | null;
-  department?: boolean | null;
-  unit?: boolean | null;
-  subsidiary?: boolean;
-};
 interface FormValues {
   vision: string;
   mission: string;
@@ -134,7 +127,6 @@ const Onboarding = () => {
             getCurrentStep() - 1 >= 1 &&
               router.push(`${location}?ui=${ui}&step=${getCurrentStep() - 1}`);
           }}
-          // disabled={currentStep === 0}
           className="text-black flex gap-1 items-center text-xs"
         >
           <HiChevronDoubleLeft width={10} height={10} /> Back
