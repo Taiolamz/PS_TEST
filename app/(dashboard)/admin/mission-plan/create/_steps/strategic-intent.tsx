@@ -12,7 +12,6 @@ import * as Yup from "yup";
 import { cn } from "@/lib/utils";
 import {
   useAddStrategicIntentMutation,
-  useGetCurrentMissionPlanQuery,
 } from "@/redux/services/mission-plan/missionPlanApi";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
