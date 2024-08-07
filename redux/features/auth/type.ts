@@ -32,4 +32,5 @@ type User = {
 export type Auth = {
   user: User;
   token?: string;
+  checklist?: string;
 };

@@ -1,12 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomTimeInput from "@/components/custom-time-picker";
-import {
-  formatMonthYear,
-  formatRMDatePicker,
-} from "@/utils/helpers/date-formatter";
+import { formatMonthYear } from "@/utils/helpers/date-formatter";
 
 interface OperationsParameterProps {
   formik: any;
@@ -59,10 +56,14 @@ const OperationsParameter = ({
                 onChange={formik.handleChange}
                 value={formik.values.fy_title}
                 touched={formik.touched.fy_title}
+                onBlur={formik.handleBlur}
                 error={formik.errors.fy_title}
                 placeholder="2022 Financial Year"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300  sm:text-sm"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 sm:text-sm"
               />
+              {formik.touched.fy_title && formik.errors.fy_title ? (
+                <div className="text-red-500">{formik.errors.fy_title}</div>
+              ) : null}
             </div>
 
             <div className="basis-1/4">
@@ -103,7 +104,6 @@ const OperationsParameter = ({
             </div>
           </div>
         </div>
-
         <div className=" pb-6 border-b mb-6 gap-6 ">
           <h3 className="block mb-2 text-sm font-medium text-[#162238]">
             2. New Staff Probationary Period

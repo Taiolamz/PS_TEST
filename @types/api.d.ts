@@ -88,6 +88,38 @@ type BranchData = {
   branch_id: string;
 };
 
+type GradeLevelData = {
+  name: string;
+  level: string;
+};
+
+type InvitedUser = {
+  branch_id: string;
+  created_at: string;
+  date_of_birth: string;
+  department_id: string;
+  designation: string;
+  email: string;
+  first_name: string;
+  gender: string;
+  id: string;
+  last_name: string;
+  level: string;
+  line_manager_email: string | null;
+  maiden_name: string;
+  manager_id: string;
+  middle_name: string;
+  organization_id: string;
+  phone_number: string;
+  reason: string | null;
+  resumption_date: string;
+  role_id: string;
+  staff_number: string;
+  status: string;
+  unit_id: string;
+  updated_at: string;
+};
+
 type StateData = {
   name: string;
   id: string;

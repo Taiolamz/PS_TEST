@@ -99,16 +99,6 @@ export default function EmployeeAndRoles() {
     }
   };
 
-  // const handleBulkRequirementDialog = (val?: string) => {
-  //   val && setTemplate(val);
-  //   onOpenBulkRequirementModal();
-  //   closeBulkUploadModal();
-  //   if (openBulkRequirementModal) {
-  //     onOpenBulkUploadModal();
-  //     closeBulkRequirementModal();
-  //   }
-  // };
-
   const handleBulkRequirementDialog = () => {
     onOpenBulkRequirementModal();
     closeBulkUploadModal();

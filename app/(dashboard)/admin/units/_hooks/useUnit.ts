@@ -155,6 +155,8 @@ export const useUnit = ({ cancelPath }: Prop) => {
     work_email: yup
       .string()
       .min(1, "Work Email is required")
+      .email("Invalid email address")
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
     subsidiary_id: yup.string().required("Subsidiary is required"),
     branch_id: yup.string().required("Branch is required"),

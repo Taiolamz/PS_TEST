@@ -1,8 +1,10 @@
 "use client";
-
-import { useGetCurrentMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { PageSidebar } from "@/components/atoms";
+import { useAppSelector } from "@/redux/store";
+import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
+import { CREATE_MISSION_PLAN_LINKS } from "./_data";
 import {
   Boundaries,
   ImpliedTask,
@@ -12,9 +14,6 @@ import {
   SpecifiedTask,
   StrategicIntent,
 } from "./_steps";
-import { CREATE_MISSION_PLAN_LINKS } from "./_data";
-import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import routesPath from "@/utils/routes";
 
 const { ADMIN } = routesPath;
 
@@ -23,11 +22,14 @@ const CreateMissionPlan = () => {
   const queryParams = useSearchParams();
   const ui = queryParams.get("ui");
 
-  // const { data: currentMissionPlan, isLoading: currentMissionPlanLoading } =
-  //   useGetCurrentMissionPlanQuery({});
+  const { active_fy_info } = useAppSelector((state) => state?.mission_plan?.mission_plan)
 
   return (
-    <DashboardLayout onBack={() => router.push(ADMIN.MISSION_PLAN)}>
+    <DashboardLayout 
+      headerTitle={active_fy_info?.title}
+      back
+      // onBack={() => router.push(ADMIN.MISSION_PLAN)}
+    >
       <section className="flex h-full overflow-y-scroll">
         <PageSidebar
           title="Create Mission Plan"

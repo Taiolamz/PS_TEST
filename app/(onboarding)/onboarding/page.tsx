@@ -1,9 +1,8 @@
 "use client";
 
-import Icon from "@/components/icon/Icon";
-import { ArrowLeftCircle } from "lucide-react";
+import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -21,13 +20,29 @@ import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
+
+interface FormValues {
+  vision: string;
+  mission: string;
+  brand_colour: string;
+  logo: File | null;
+  end_fy: string;
+  start_fy: string;
+  probation_duration: string;
+  opening_time: string;
+  fy_title: string;
+  closing_time: string;
+  hierarchy: any[];
+  staff_levels: { name: string; level: string }[];
+}
 
 const Onboarding = () => {
   const router = useRouter();
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
+  const { ONBOARDING } = routesPath;
 
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
@@ -59,14 +74,19 @@ const Onboarding = () => {
   };
 
   const onSubmit = async () => {
+    if (!formik.isValid) {
+      toast.error(
+        "Please fill in the required fiscal year title field before submitting."
+      );
+      return;
+    }
     const formDataToSend = new FormData();
     // console.log(formik.values);
-    
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
 
-      if (key === "logo" && logo) {
+      if (key === "logo" && logo instanceof File) {
         formDataToSend.append(mappedKey, logo);
       } else if (Array.isArray(value) || typeof value === "object") {
         formDataToSend.append(mappedKey, JSON.stringify(value));
@@ -79,19 +99,21 @@ const Onboarding = () => {
     const appraisalCycle = "annual";
     formDataToSend.append("appraisal_cycle", appraisalCycle);
 
+    console.log({ formDataToSend });
+
     try {
       // const response = await setupOrganization(formDataToSend);
 
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
-          toast.success("Organization Created Successfully")
-          router.push(ADMIN.OVERVIEW)
+          toast.success("Organization Created Successfully");
+          router.push(ADMIN.OVERVIEW);
         });
     } catch (error) {}
   };
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       vision: "",
       mission: "",
@@ -103,14 +125,20 @@ const Onboarding = () => {
       opening_time: "",
       fy_title: "",
       closing_time: "",
-      hierarchy: "",
-      staff_levels: [{ name: "", position: "" }],
+      hierarchy: [],
+      staff_levels: [{ name: "", level: "" }],
     },
     validationSchema: OnbaordingSchema,
     onSubmit: onSubmit,
   });
 
   const logo = formik.values.logo;
+
+  useEffect(() => {
+    if (!ui) {
+      router.replace(`${ONBOARDING}?ui=get-started&step=1`);
+    }
+  }, [ui, location, router]);
 
   return (
     <section className="">
@@ -135,23 +163,32 @@ const Onboarding = () => {
           {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
           {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
           {getCurrentStep() === 3 && (
-            <OperationsParameter formik={formik} setFyDate={() => {}} fyDate={''}/>
+            <OperationsParameter
+              formik={formik}
+              setFyDate={() => {}}
+              fyDate={""}
+            />
           )}
           {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
           {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-          {getCurrentStep() === 6 && <Preview />}
+          {getCurrentStep() === 6 && <Preview formik={formik} />}
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
             <button
               type="button"
               onClick={() => router.push(routesPath?.ADMIN?.OVERVIEW)}
-              className="text-pry inline-flex gap-1.5"
+              className="text-pry inline-flex gap-1.5 items-center"
             >
-              <ArrowLeftCircle width={24} height={24} /> Skip to Dashboard
+              <FaRegArrowAltCircleLeft width={24} height={24} /> Skip to
+              Dashboard
             </button>
             {getCurrentStep() < steps.length ? (
               <Button
                 type="button"
                 className=""
+                disabled={
+                  (!formik.isValid && getCurrentStep() === 3) ||
+                  isOnboardingLoading
+                }
                 onClick={() => {
                   getCurrentStep() < steps.length &&
                     router.push(
