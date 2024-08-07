@@ -23,9 +23,9 @@ import { OnbaordingSchema } from "@/utils/schema/onboarding";
 const { ADMIN } = routesPath;
 
 type HierarchyTypes = {
-  branches?: boolean | null;
-  departments?: boolean | null;
-  units?: boolean | null;
+  branch?: boolean | null;
+  department?: boolean | null;
+  unit?: boolean | null;
   subsidiary?: boolean;
 };
 interface FormValues {
@@ -33,13 +33,13 @@ interface FormValues {
   mission: string;
   brand_colour: string;
   logo: File | string;
-  end_fy: string | null;
-  start_fy: string | null;
+  end_fy: string;
+  start_fy: string;
   probation_duration: string;
   opening_time: string;
   fy_title: string;
   closing_time: string;
-  hierarchy: HierarchyTypes[];
+  hierarchy: string;
   staff_levels: { name: string; level: string }[];
 }
 
@@ -110,12 +110,7 @@ const Onboarding = () => {
       opening_time: "",
       fy_title: "",
       closing_time: "",
-      hierarchy: [
-        { branches: false },
-        { departments: false },
-        { subsidiary: false },
-        { units: false },
-      ],
+      hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
     },
     validationSchema: OnbaordingSchema,
@@ -147,7 +142,7 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px-10 xl:pl-[9.375rem] max-h-[40rem] overflow-scroll scroll-hidden pb-20"
+          className="px-10 xl:pl-[9.375rem] max-h-full overflow-scroll scroll-hidden pb-20"
           onSubmit={formik.handleSubmit}
         >
           <div className="">

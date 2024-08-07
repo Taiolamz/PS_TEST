@@ -30,7 +30,6 @@ const OperationsParameter = ({
   ) => {
     formik.setFieldValue(name, newDate.format("HH:mm"));
   };
-  console.log({ formij: formik.values });
   return (
     <section className="max-w-[54.625rem] px-4 scroll-hidden">
       <FormHeader
@@ -44,7 +43,7 @@ const OperationsParameter = ({
           <h3 className="block mb-4 text-sm font-medium text-[#162238]">
             1. Fiscal Year
           </h3>
-          <div className="flex gap-6 items-center">
+          <div className="flex gap-6">
             <div className="basis-1/2">
               <label className="block text-[#5A5B5F] text-[0.8125rem]">
                 Title
