@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import { missionStatementSchema } from "@/utils/schema/mission-plan";
 
-
 const MissionStatement = () => {
   const router = useRouter();
   const location = usePathname();
@@ -41,7 +40,7 @@ const MissionStatement = () => {
             rows={3}
             id="missionstatement"
             name="missionstatement"
-            placeholder="Input Staff Name"
+            placeholder="Input Mission Statement"
             className="mt-1 md:min-w-[500px] block px-3 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
