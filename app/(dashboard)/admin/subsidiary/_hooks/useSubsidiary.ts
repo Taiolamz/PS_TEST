@@ -29,9 +29,10 @@ const countries = [
 const COUNTRIES = COUNTRIES_STATES?.map((d) => {
   return {
     label: d.name,
-     value: d.name, icon: HomeIcon
-  }
-})
+    value: d.name,
+    icon: HomeIcon,
+  };
+});
 
 const handleFormatArray = (items: SelectFormType) => {
   const array = items.map((item) => item.label);
@@ -53,10 +54,12 @@ const formSchema = yup.object().shape({
   work_email: yup
     .string()
     .min(1, "Work Email is required")
+    .email("Invalid email address")
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     .required("Work Email is required"),
 });
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const useSubsidiary = ({ cancelPath }: Prop) => {
   const router = useRouter();

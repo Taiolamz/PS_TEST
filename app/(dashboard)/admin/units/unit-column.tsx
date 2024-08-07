@@ -90,19 +90,19 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
       );
     },
   },
-  {
-    accessorKey: "address",
-    header: () => <div className="text-left">Address</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("address")
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "address",
+  //   header: () => <div className="text-left">Address</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize text-left">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("address")
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     id: "actions",
     header: "Actions",
