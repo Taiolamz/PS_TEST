@@ -59,7 +59,7 @@ const AddBranch = () => {
         onCancel={() => {
           // cancel function here-----
         }}
-        // back
+        back
         hideStep
         // fixed
       />

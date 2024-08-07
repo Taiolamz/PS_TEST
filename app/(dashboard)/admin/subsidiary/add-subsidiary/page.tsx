@@ -47,7 +47,7 @@ const AddSubsidary = () => {
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
           onCancel={handleCancelDialog}
-          // back
+          back
           // hideStep
           // fixed
         />
