@@ -11,6 +11,7 @@ export const adminRoleList = [
   "compliance",
   "super-admin",
   "user",
+  "ceo"
 ];
 
 export const specialRoleList = ["super-admin"];
