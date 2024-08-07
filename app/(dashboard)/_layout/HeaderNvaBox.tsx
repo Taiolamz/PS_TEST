@@ -8,8 +8,13 @@ import { useOnClickOutside } from "./UseOutsideClick";
 import routesPath, { specialRoleList } from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
 import { trimLongString } from "./Helper";
-import { checkUserRole, returnInitial } from "@/utils/helpers";
+import {
+  checkUserRole,
+  getLinksAndCollapseNumByTitle,
+  returnInitial,
+} from "@/utils/helpers";
 import LogoutModal from "./logout-folder/LogoutModal";
+import { sideMenuList } from "./SideMenuList";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -181,9 +186,10 @@ const HeaderNavBox = ({
   return (
     <>
       <div
-        // onClick={() => {
-        //   console.log(user);
-        // }}
+        onClick={() => {
+          // console.log(user?.organization?.hierarchy);
+          // console.log(user);
+        }}
         className={style.header_wrap_index_box}
       >
         {/* back comp start */}
@@ -193,8 +199,8 @@ const HeaderNavBox = ({
               onClick={() => {
                 if (window?.history?.length > 1 && !onBack) {
                   router.back();
-                }else{
-                  onBack && onBack()
+                } else {
+                  onBack && onBack();
                 }
               }}
               className={style.back_box}
@@ -228,7 +234,11 @@ const HeaderNavBox = ({
         {/* title  end */}
         {/* search box start */}
         <div className={style?.search_box}>
-          <input type="text" placeholder="Search Keyword#" className={style?.search_input} />
+          <input
+            type="text"
+            placeholder="Search Keyword#"
+            className={style?.search_input}
+          />
           <figure className={style.img_box}>{searchIcon}</figure>
         </div>
         {/* search box end */}

@@ -23,6 +23,10 @@ import { toast } from "sonner";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import TableWrapper from "@/components/tables/TableWrapper";
+import { allemployeeData } from "@/utils/data/dashboard/missionplan";
+import BadgeComponent from "@/components/badge/BadgeComponents";
+import { trimLongString } from "../../_layout/Helper";
 
 const { ADMIN } = routesPath;
 
@@ -190,6 +194,7 @@ const Employee = () => {
       .catch(() => toast.dismiss());
   };
 
+
   return (
     <DashboardLayout headerTitle="Employee">
       <ReusableStepListBox
@@ -213,30 +218,31 @@ const Employee = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            header="Employee"
-            isFilterDrop
-            filterOptions={["pending", "rejected"]}
-            filterCheck={(val: string) => {
-              return val === status;
-            }}
-            filterOnCheck={(value: string) => {
-              if (value === status) {
-                setStatus("");
-              } else {
-                setStatus(value);
-              }
-            }}
-            data={employees}
-            columns={employeesColumnData}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            isLoading={isFetchingEmployees}
-            onManualBtn={handleAddEmployee}
-            onPdfChange={handlePdfChange}
-            onCsvChange={handleCsvChange}
-          />
+        
+            <DashboardTable
+              header="Employee"
+              isFilterDrop
+              filterOptions={["pending", "rejected"]}
+              filterCheck={(val: string) => {
+                return val === status;
+              }}
+              filterOnCheck={(value: string) => {
+                if (value === status) {
+                  setStatus("");
+                } else {
+                  setStatus(value);
+                }
+              }}
+              data={employees}
+              columns={employeesColumnData}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              isLoading={isFetchingEmployees}
+              onManualBtn={handleAddEmployee}
+              onPdfChange={handlePdfChange}
+              onCsvChange={handleCsvChange}
+            />
         )}
 
         <DashboardModal

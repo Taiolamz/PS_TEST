@@ -46,7 +46,7 @@ export default function CustomSelect({
       {label && (
         <label
           htmlFor={label}
-          className={cn("block font-normal text-[.8rem] pb-1 text-[#616161] md:text-[14px]", labelClass)}
+          className={cn("block font-normal text-[.8rem] pb-1 text-[#616161] md:text-[14px] ", labelClass)}
         >
           {label}
           {isRequired && <span className="inline-block text-red-400 text-lg pl-1 mt-">*</span>}{" "}
@@ -59,9 +59,9 @@ export default function CustomSelect({
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "w-full justify-between bg-[#F6F8F9] relative",
+              "w-full justify-between bg-white relative",
               className,
-              selected ? "text-[#162238]" : "!text-[#9AA6AC] !font-light",
+              selected ? "text-[#162238]" : "!text-[#9AA6AC] !font-light ",
               error && touched && "border-red-500",
             )}
             ref={buttonRef}

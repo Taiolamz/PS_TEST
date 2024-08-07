@@ -23,7 +23,8 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
       acc[item.title] = item.isChecked;
       return acc;
     }, {} as Record<string, boolean>);
-
+  //  console.log(updatedFormikValues);
+   
     formik.setFieldValue("hierarchy", updatedFormikValues);
   };
 
@@ -34,6 +35,8 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
         ...item,
         isChecked: formikHierarchy[item.title] || false,
       }));
+      // console.log(initialHierarchy);
+      
       setCurrentHierarchy(initialHierarchy);
     }
   }, [formik.values.hierarchy]);
