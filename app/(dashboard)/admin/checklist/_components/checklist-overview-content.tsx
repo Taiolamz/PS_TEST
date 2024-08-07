@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { DefaultCheckIcon, DefaultRightArrowIcon } from "@/public/assets/icons";
 import { useAppSelector } from "@/redux/store";
+import { processInputAsArray } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +34,7 @@ const ChecklistOverviewContent = () => {
     actionCtx?.setPrimaryColorVals(color);
     // console.log(user);
   }, [user]);
+  // console.log(user?.organization?.hierarchy);
 
   const checklistDetails = [
     {
@@ -43,25 +45,41 @@ const ChecklistOverviewContent = () => {
         {
           isChecked: true,
           label: "Add Subsidiary",
-          hide: false,
+          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+            "subsidairy"
+          )
+            ? true
+            : false,
           link: ADMIN?.CREATE_SUBSIDIARY,
         },
         {
           isChecked: true,
           label: "Add Branches",
-          hide: false,
+          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+            "branch"
+          )
+            ? true
+            : false,
           link: ADMIN?.CREATE_BRANCH,
         },
         {
           isChecked: false,
           label: "Add Department",
-          hide: false,
           link: ADMIN?.CREATE_DEPARTMENT,
+          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+            "department"
+          )
+            ? true
+            : false,
         },
         {
           isChecked: false,
           label: "Add Unit",
-          hide: false,
+          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+            "unit"
+          )
+            ? true
+            : false,
           link: ADMIN?.CREATE_UNIT,
         },
       ],
@@ -141,11 +159,11 @@ const ChecklistOverviewContent = () => {
             <div
               key={idx}
               onClick={() => {
-                // console.log(getListToUse(items));
+                console.log(user?.organization?.hierarchy);
                 // console.log(user);
-                if (!isAllChecked) {
-                  router?.push(getNextLink(getListToUse(items))[0]?.link);
-                }
+                // if (!isAllChecked) {
+                //   router?.push(getNextLink(getListToUse(items))[0]?.link);
+                // }
               }}
               className="bg-custom-gray-scale-white p-10 pl-8 hover:scale-[1.02] transition-all duration-300"
               style={{ cursor: isAllChecked ? "pointer" : "pointer" }}

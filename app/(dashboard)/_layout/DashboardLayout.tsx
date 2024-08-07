@@ -92,9 +92,10 @@ const DashboardLayout = ({
 
   return (
     <div
-      // onClick={() => {
-      //   console.log(rolesData);
-      // }}
+      onClick={() => {
+        // console.log(rolesData);
+        // console.log(user?.organization?.hierarchy);
+      }}
       className={style?.new_dashboard_layout_index_wrap}
     >
       {/* side menu bar starrt */}

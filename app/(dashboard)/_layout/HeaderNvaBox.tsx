@@ -181,10 +181,10 @@ const HeaderNavBox = ({
   return (
     <>
       <div
-        onClick={() => {
-          console.log(user?.organization?.hierarchy);
-          console.log(user);
-        }}
+        // onClick={() => {
+        //   console.log(user?.organization?.hierarchy);
+        //   console.log(user);
+        // }}
         className={style.header_wrap_index_box}
       >
         {/* back comp start */}

@@ -70,7 +70,7 @@ export function checkUserRole(item: string | string[]) {
     // if (isInList(specialRoleList, normalizedItem)) {
     //   return "SUPER ADMIN";
     // } else
-    
+
     if (isInList(adminRoleList, normalizedItem)) {
       return "ADMIN";
     } else if (isInList(employeeRoleList, normalizedItem)) {
@@ -91,7 +91,6 @@ export const isValidDate = (dateString: string | any) => {
   const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
   return isValid(parsedDate) && dateString.length === 10;
 };
-
 
 export const PAGE_TABS = {
   SUPER_ADMIN: [
@@ -149,27 +148,46 @@ export const PAGE_TABS = {
   ],
 };
 
-
-
 // ROLES ALLOWED TO CREATE FINANCIAL YEAR
-export const CAN_CREATE_FINANCIAL_YEAR = ['super-admin'] 
-export const SUPER_ADMIN = 'super-admin'
-export const MANAGING_DIRECTOR = 'ceo'
+export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin"];
+export const SUPER_ADMIN = "super-admin";
+export const MANAGING_DIRECTOR = "ceo";
 
 // GET TABS
 type ARG_TYPES = {
-  role: string,
-  isLineManager: boolean
-}
+  role: string;
+  isLineManager: boolean;
+};
 export const getAvailableTabs = (arg: ARG_TYPES) => {
-  if(arg.role === SUPER_ADMIN){
-    return PAGE_TABS.SUPER_ADMIN
+  if (arg.role === SUPER_ADMIN) {
+    return PAGE_TABS.SUPER_ADMIN;
   }
-  if(arg.role === MANAGING_DIRECTOR){
-    return PAGE_TABS.MANAGIN_DIRECTOR
+  if (arg.role === MANAGING_DIRECTOR) {
+    return PAGE_TABS.MANAGIN_DIRECTOR;
   }
-  if(arg.role !== SUPER_ADMIN && arg.role !== MANAGING_DIRECTOR && arg.isLineManager){
-    return PAGE_TABS.LINE_MANAGER
+  if (
+    arg.role !== SUPER_ADMIN &&
+    arg.role !== MANAGING_DIRECTOR &&
+    arg.isLineManager
+  ) {
+    return PAGE_TABS.LINE_MANAGER;
   }
-  return PAGE_TABS.EMPLOYEE
+  return PAGE_TABS.EMPLOYEE;
+};
+
+export function processInputAsArray(value: any) {
+  if (value) {
+    if (typeof value === "string") {
+      // Split the string by commas and trim any extra spaces around the items
+      return value?.split(",").map((item) => item.trim());
+    } else if (Array?.isArray(value)) {
+      // Return the array as is if it's already an array
+      // console.log('here');
+
+      return value;
+    } else {
+      // Handle other types if necessary
+      throw new Error("Input must be a string or an array of strings");
+    }
+  }
 }

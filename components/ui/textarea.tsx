@@ -36,7 +36,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref
   ) => {
-    console.log(error);
+    // console.log(error);
     return (
       <div>
         {label && (
