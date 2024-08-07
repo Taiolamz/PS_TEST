@@ -19,7 +19,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   const [logoName, setLogoName] = useState<string | null>(
     formik.values.logo ? formik.values.logo.name : null
   );
-  const [logoError, setLogoError] = useState<string | null>(null);
 
   const actionCtx = useContext(ActionContext);
   const fileInputRef = useRef<HTMLInputElement | string>();
@@ -93,7 +92,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
             }}
             className="color-box"
             onClick={() => {
-              // console.log(formik?.values);
               setShowColorPicker(true);
             }}
           ></div>
@@ -116,7 +114,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
                   actionCtx?.setPrimaryColorVals(color);
                   formik.setFieldValue("brand_colour", color);
                   // formik.handleChange(e);
-                  console.log(formik?.values);
                 }}
                 // dark
               />

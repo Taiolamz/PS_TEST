@@ -19,24 +19,19 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
 
     setCurrentHierarchy(updatedHierarchy);
 
-    const updatedFormikValues = updatedHierarchy.reduce((acc, item) => {
-      acc[item.title] = item.isChecked;
-      return acc;
-    }, {} as Record<string, boolean>);
+    const updatedFormikValues = updatedHierarchy.map((item) => ({
+      [item.title]: item.isChecked,
+    }));
 
     formik.setFieldValue("hierarchy", updatedFormikValues);
   };
 
   useEffect(() => {
-    const formikHierarchy = formik.values.hierarchy;
-    if (formikHierarchy) {
-      const initialHierarchy = currentHierarchy.map((item) => ({
-        ...item,
-        isChecked: formikHierarchy[item.title] || false,
-      }));
-      setCurrentHierarchy(initialHierarchy);
-    }
-  }, [formik.values.hierarchy]);
+    const initialFormikValues = currentHierarchy.map((item) => ({
+      [item.title]: item.isChecked,
+    }));
+    formik.setFieldValue("hierarchy", initialFormikValues);
+  }, []);
 
   return (
     <section className="max-w-[55.875rem]">

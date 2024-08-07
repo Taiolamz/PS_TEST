@@ -50,7 +50,7 @@ const OnboardingLayout = ({ children }: Props) => {
             ))}
           </ul>
         </aside>
-        <main className="w-3/4 bg-white shadow-lg xl:w-5/6 pb-10">
+        <main className="w-3/4 bg-white shadow-lg xl:w-5/6 pb-10 xl:pb-40">
           {children}
         </main>
       </section>
