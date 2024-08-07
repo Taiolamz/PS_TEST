@@ -88,6 +88,11 @@ type BranchData = {
   branch_id: string;
 };
 
+type GradeLevelData = {
+  name: string;
+  position: string 
+};
+
 type InvitedUser = {
   branch_id: string;
   created_at: string;

@@ -41,7 +41,7 @@ export const useRejectEmployeeInvite = () => {
       }, 2000);
     } catch (error) {
       console.error("Failed to reject invitation:", error);
-      toast.error("Failed to reject invitation");
+      // toast.error("Failed to reject invitation");
     }
   };
 

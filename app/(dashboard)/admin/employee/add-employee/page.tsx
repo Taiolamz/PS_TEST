@@ -27,16 +27,17 @@ export default function AddEmployee() {
     subsidiaries,
     departments,
     branches,
-    isLoadingSubsidiaries,
-    isLoadingBranches,
-    isLoadingDepartments,
-    isLoadingUnits,
+    // isLoadingSubsidiaries,
+    // isLoadingBranches,
+    // isLoadingDepartments,
+    // isLoadingUnits,
+    // isLoadingGradeLevel,
     units,
     isCreatingEmployee,
     genderOptions,
-    jobTitles,
     gradeLevels,
     newEmployeeStatuses,
+    newEmployeeDrop,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
@@ -53,6 +54,7 @@ export default function AddEmployee() {
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
+  const [isNewEmployee, setIsNewEmployee] = useState("");
 
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
@@ -254,18 +256,6 @@ export default function AddEmployee() {
                   labelClass={labelClassName}
                 />
 
-                {/* <CustomSelect
-                  label="Job Title"
-                  placeholder="Select Job Title"
-                  options={jobTitles}
-                  selected={formik.values.designation}
-                  setSelected={(value) =>
-                    formik.setFieldValue("designation", value)
-                  }
-                  isRequired
-                  labelClass={labelClassName}
-                /> */}
-
                 <Input
                   label="Job Title"
                   type="text"
@@ -321,10 +311,14 @@ export default function AddEmployee() {
                   label="New Employee"
                   placeholder="Select Status"
                   options={newEmployeeStatuses}
-                  selected={formik.values.new_employee}
-                  setSelected={(value) =>
-                    formik.setFieldValue("new_employee", value)
-                  }
+                  selected={isNewEmployee}
+                  setSelected={(value) => {
+                    setIsNewEmployee(value);
+                    const employeeId = newEmployeeDrop.filter(
+                      (chi) => chi.name === value
+                    )[0].id;
+                    formik.setFieldValue("new_employee", employeeId);
+                  }}
                   isRequired
                   labelClass={labelClassName}
                 />

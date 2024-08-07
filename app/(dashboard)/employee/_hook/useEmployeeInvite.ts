@@ -99,7 +99,7 @@ export const useEmployeeInvite = () => {
       }, 2000);
     } catch (error) {
       console.error("Failed to accept invitation:", error);
-      toast.error("Failed to create account");
+      // toast.error("Failed to create account");
     }
   };
 
