@@ -80,6 +80,7 @@ const SpecifiedTask = () => {
 
   const errorTasks = formik.errors.tasks as any;
 
+  console.log(formik.values);
   return (
     <div>
       <div className="flex items-center gap-x-2 mb-8">
