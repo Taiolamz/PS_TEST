@@ -50,7 +50,7 @@ export default function AllEmployeeMissionCard({
         </div>
       </div> */}
       <div className="rounded-[5px] border border-custom-divider text-center min-h-24 mt-4 bg-white px-[23px] py-4 grid grid-cols-9">
-        <div className="text-start pl-4 place-content-center space-y-1 col-span-2">
+        <div className="text-start pl-4 place-content-center space-y-1 col-span-2 border-r border-[var(--input-border)]">
           <p className=" font-normal text-xs text-custom-dark-blue">
             Total Mission Plan
           </p>
@@ -58,7 +58,7 @@ export default function AllEmployeeMissionCard({
             {mission_plans_count} Plans
           </h4>
         </div>
-        <div className=" place-content-center space-y-1 col-span-3 pl-3">
+        <div className=" place-content-center space-y-1 col-span-3 pl-5 border-r border-[var(--input-border)]">
           <p className="text-start font-normal text-xs text-custom-dark-blue">
             Overall progress
           </p>
@@ -70,7 +70,7 @@ export default function AllEmployeeMissionCard({
             />
           </h4>
         </div>
-        <div className=" place-content-center space-y-1">
+        <div className=" place-content-center space-y-1 border-r border-[var(--input-border)]">
           <p className=" font-normal text-xs text-custom-dark-blue">
             Submitted
           </p>
@@ -78,13 +78,13 @@ export default function AllEmployeeMissionCard({
             {submitted}
           </h4>
         </div>
-        <div className=" place-content-center space-y-1">
+        <div className=" place-content-center space-y-1 border-r border-[var(--input-border)]">
           <p className=" font-normal text-xs text-[#119C2B]">Approved</p>
           <h4 className=" font-medium text-2xl text-custom-dark-blue">
             {approved}
           </h4>
         </div>
-        <div className=" place-content-center space-y-1">
+        <div className=" place-content-center space-y-1 border-r border-[var(--input-border)]">
           <p className=" font-normal text-xs text-warning">In Review</p>
           <h4 className=" font-medium text-2xl text-custom-dark-blue">
             {in_review}
