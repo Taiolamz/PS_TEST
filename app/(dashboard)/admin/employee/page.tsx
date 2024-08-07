@@ -10,8 +10,6 @@ import {
 } from "@/redux/services/checklist/employeeApi";
 import { employeerolesColumns } from "./employee-role-column";
 import useDisclosure from "./_hooks/useDisclosure";
-import { ChecklistLayout } from "./_components/checklist-layout";
-import EmptyState from "./_components/empty-state";
 import { UsersIcon } from "@/public/assets/icons";
 import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
@@ -36,6 +34,7 @@ const Employee = () => {
   const router = useRouter();
   const [status, setStatus] = useState<string>("");
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [fileType, setFileType] = useState("");
 
   const {
     isOpen: openProceedModal,
@@ -96,7 +95,7 @@ const Employee = () => {
   };
 
   const handleProceed = () => {
-    const proceedPath = ADMIN.MISSION_PLAN;
+    const proceedPath = ADMIN.MISSION_PLAN_TEMPLATE;
     router.push(proceedPath);
   };
 
@@ -149,10 +148,7 @@ const Employee = () => {
 
   const employees = employeeData ?? [];
 
-  const employeesColumnData = useMemo(
-    () => employeerolesColumns,
-    [isFetchingEmployees]
-  );
+  const employeesColumnData = useMemo(() => employeerolesColumns, []);
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
@@ -191,7 +187,7 @@ const Employee = () => {
           downloadFile({
             file: payload,
             filename: "employee_template",
-            fileExtension: "xlsx",
+            fileExtension: fileType,
           });
         }
       })
@@ -211,7 +207,7 @@ const Employee = () => {
         onCancel={handleCancelDialog}
       />
       <section className="p-5">
-        {employees?.length < 0 ? (
+        {employees?.length < 1 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
             textTitle="New Staff"
@@ -272,8 +268,14 @@ const Employee = () => {
           <BulkUploadModal
             loading={isCreatingBulkEmployees}
             onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={handleBulkRequirementDialog}
-            onSampleExcelDownload={handleBulkRequirementDialog}
+            onSampleCsvDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("csv");
+            }}
+            onSampleExcelDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("xlsx");
+            }}
             onBulkUpload={handleSubmitBulkUpload}
             setFile={setBulkFile}
           />
@@ -285,7 +287,7 @@ const Employee = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload("xlsx")}
+            onTemplateDownload={() => handleTemplateDownload(fileType)}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>
