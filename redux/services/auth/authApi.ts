@@ -1,6 +1,7 @@
 import { resetAuth, setAuthUser } from "@/redux/features/auth/authSlice";
 import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
+import { resetMissionPlan } from "@/redux/features/mission-plan/missionPlanSlice";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -138,6 +139,7 @@ export const authApi = baseApi.injectEndpoints({
           Cookies.remove("token");
           window.location.href = "/login";
           dispatch(resetAuth());
+          dispatch(resetMissionPlan());
         } catch (error: any) {
           console.log("Error:", error);
         }

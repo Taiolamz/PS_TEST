@@ -1,3 +1,4 @@
+import { Dictionary } from '@/@types/dictionary';
 import { PageLoader } from '@/components/custom-loader';
 import { EmptyState } from '@/components/fragment';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ const { ADMIN } = routesPath
 
 const MyMissionPlan = () => {
     const { data: my_mission_plan, isLoading, } = useGetMyMissionPlanQuery({})
-    const user_info = useAppSelector((state) => state?.auth?.user);
+    const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
 
     const router = useRouter()
 
@@ -35,7 +36,7 @@ const MyMissionPlan = () => {
                                     <Button
                                         onClick={() => router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`)}
                                     >Create Mission Plan </Button>
-                                    {user_info?.role !== SUPER_ADMIN && <Button variant="outline"> Assign Task </Button>}
+                                    {user_info?.role !== SUPER_ADMIN && (user_info?.is_line_manager as boolean) && <Button variant="outline"> Assign Task </Button>}
                                 </div>
                             </EmptyState>
                         ) :

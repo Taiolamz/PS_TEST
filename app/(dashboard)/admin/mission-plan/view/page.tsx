@@ -8,13 +8,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { allemployeeColumns, allemployeeData } from '../_data/all-employee-table-data';
 import { AllEmployees } from '../_tabs';
 import { FiscalYearInfo, MyMissionPlan } from './_partials';
+import { Dictionary } from '@/@types/dictionary';
 
 const { ADMIN } = routesPath
 
 const SingleMissionPlan = () => {
 
     const { active_fy_info } = useAppSelector((state) => state?.mission_plan?.mission_plan)
-    const user_info = useAppSelector((state) => state?.auth?.user);
+    const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
 
     const searchParams = useSearchParams();
     // const data = useAppSelector((state) => state?.auth?.user);
@@ -29,9 +30,8 @@ const SingleMissionPlan = () => {
             onBack={() => router.push(`${ADMIN.MAIN_MISSION_PLAN}?ui=mission-plan`)}
         >
             <div style={{ backgroundColor: "rgba(244, 244, 244, 1)" }} className="p-5 w-full global_sticky_class">
-                {/* Change the PAGE_TABS here to simulate the different tabs */}
                 {/* user_info?.role */}
-                <CustomTab options={getAvailableTabs({ role: user_info?.role as string, isLineManager: false })} slug="ui" />
+                <CustomTab options={getAvailableTabs({ role: user_info?.role as string, isLineManager: user_info?.is_line_manager as boolean })} slug="ui" />
             </div>
 
             {
