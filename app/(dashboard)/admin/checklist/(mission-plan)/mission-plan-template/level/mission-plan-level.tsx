@@ -19,11 +19,9 @@ const MissionPlanLevel = ({ handleClick }: Props) => {
           Create New <br />
           Template
         </p>
-        <Image
-          className="group-hover:scale-[1.02] transition-all duration-300"
-          src={PlusIcon}
-          alt="plus"
-        />
+        <div className="group-hover:scale-[1.02] ">
+          <PlusIcon className="stroke-primary transition-all duration-300" />
+        </div>
       </div>
     </div>
   );

@@ -1,11 +1,14 @@
 import React from "react";
 import { FormHeader } from "../_components";
 import { steps } from "../data";
-import Icon from "@/components/icon/Icon";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MdModeEdit } from "react-icons/md";
 
-const Preview = () => {
+type PreviewProps = {
+  formik: any;
+};
+
+const Preview = ({ formik }: PreviewProps) => {
   const router = useRouter();
   const location = usePathname();
   const searchParams = useSearchParams();

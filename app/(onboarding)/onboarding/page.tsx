@@ -22,6 +22,21 @@ import routesPath from "@/utils/routes";
 
 const { ADMIN } = routesPath;
 
+interface FormValues {
+  vision: string;
+  mission: string;
+  brand_colour: string;
+  logo: File | null;
+  end_fy: string;
+  start_fy: string;
+  probation_duration: string;
+  opening_time: string;
+  fy_title: string;
+  closing_time: string;
+  hierarchy: any[];
+  staff_levels: { name: string; level: string }[];
+}
+
 const Onboarding = () => {
   const router = useRouter();
   const location = usePathname();
@@ -59,13 +74,19 @@ const Onboarding = () => {
   };
 
   const onSubmit = async () => {
+    if (!formik.isValid) {
+      toast.error(
+        "Please fill in the required fiscal year title field before submitting."
+      );
+      return;
+    }
     const formDataToSend = new FormData();
     // console.log(formik.values);
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
 
-      if (key === "logo" && logo) {
+      if (key === "logo" && logo instanceof File) {
         formDataToSend.append(mappedKey, logo);
       } else if (Array.isArray(value) || typeof value === "object") {
         formDataToSend.append(mappedKey, JSON.stringify(value));
@@ -77,6 +98,8 @@ const Onboarding = () => {
     // Might be added later from the backend
     const appraisalCycle = "annual";
     formDataToSend.append("appraisal_cycle", appraisalCycle);
+
+    console.log({ formDataToSend });
 
     try {
       // const response = await setupOrganization(formDataToSend);
@@ -90,7 +113,7 @@ const Onboarding = () => {
     } catch (error) {}
   };
 
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       vision: "",
       mission: "",
@@ -148,7 +171,7 @@ const Onboarding = () => {
           )}
           {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
           {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-          {getCurrentStep() === 6 && <Preview />}
+          {getCurrentStep() === 6 && <Preview formik={formik} />}
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
             <button
               type="button"
@@ -162,6 +185,10 @@ const Onboarding = () => {
               <Button
                 type="button"
                 className=""
+                disabled={
+                  (!formik.isValid && getCurrentStep() === 3) ||
+                  isOnboardingLoading
+                }
                 onClick={() => {
                   getCurrentStep() < steps.length &&
                     router.push(

@@ -191,8 +191,10 @@ const HeaderNavBox = ({
           <>
             <div
               onClick={() => {
-                if (window?.history?.length > 1) {
+                if (window?.history?.length > 1 && !onBack) {
                   router.back();
+                }else{
+                  onBack && onBack()
                 }
               }}
               className={style.back_box}
