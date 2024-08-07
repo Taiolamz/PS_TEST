@@ -4,7 +4,6 @@ import CustomTab from "@/components/custom-tab";
 import React, { useEffect, useState } from "react";
 import { PAGE_TABS } from "../_data";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { AllEmployees } from "../_tabs";
 import {
   allemployeeColumns,
   allemployeeData,
@@ -24,6 +23,10 @@ import BadgeComponent from "@/components/badge/BadgeComponents";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import routesPath from "@/utils/routes";
+import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
+import { FiscalYearInfo, MyMissionPlan } from "./_partials";
+import { Dictionary } from "@/@types/dictionary";
+import { useAppSelector } from "@/redux/store";
 
 const { ADMIN } = routesPath;
 
@@ -34,6 +37,10 @@ type MissionType = {
 const SingleMissionPlan = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
+  const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
   // const data = useAppSelector((state) => state?.auth?.user);
   const ui = searchParams.get("ui");
   const id = searchParams.get("id"); //The fiscial year ID
@@ -130,13 +137,6 @@ const SingleMissionPlan = () => {
 
   // -------- END: API Service for Tab == Mission Plan ------- //
 
-  if (missionError) {
-    toast.error(
-      missionError?.data?.message
-        ? missionError?.data?.message
-        : "Unable to fetch data"
-    );
-  }
   if (summaryError) {
     toast.error(
       summaryError?.data?.message
@@ -161,7 +161,7 @@ const SingleMissionPlan = () => {
 
   return (
     <DashboardLayout
-      headerTitle={missionPlanData?.title ? missionPlanData?.title : ""}
+      headerTitle={active_fy_info?.title}
       back
       onBack={() => router.push(`${ADMIN.MAIN_MISSION_PLAN}?ui=mission-plan`)}
     >
@@ -169,102 +169,23 @@ const SingleMissionPlan = () => {
         style={{ backgroundColor: "rgba(244, 244, 244, 1)" }}
         className="p-5 w-full global_sticky_class"
       >
-        {/* Change the PAGE_TABS here to simulate the different tabs */}
-        <CustomTab options={PAGE_TABS.ADMIN} slug="ui" />
+        {/* user_info?.role */}
+        <CustomTab
+          options={getAvailableTabs({
+            role: user_info?.role as string,
+            isLineManager: user_info?.is_line_manager as boolean,
+          })}
+          slug="ui"
+        />
       </div>
 
-      {ui === "mission-plan" &&
-        (missionError ? (
-          <></>
-        ) : !isLoadingMission ? (
-          <div className="space-y-5 mb-6 px-5 text-[var(--text-color3)]">
-            {/* Financial Year */}
-            <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
-              <h3 className="text-sm font-normal ">1. Financial Year</h3>
-              <div className="grid grid-cols-10 gap-5 mt-4 max-w-4xl">
-                {/* Title */}
-                <div className="col-span-4 space-y-2">
-                  <h4 className="text-[var(--text-color4)] font-light text-sm">
-                    Title
-                  </h4>
-                  <p className="min-h-[38px] border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                    {missionPlanData?.title}
-                  </p>
-                </div>
-                {/* Start Period */}
-                <div className="col-span-3 space-y-2">
-                  <h4 className="text-[var(--text-color4)] font-light text-sm">
-                    Start Period
-                  </h4>
-                  <p className="min-h-[38px] border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                    {missionPlanData?.start_date}
-                  </p>
-                </div>
-                {/* End Period */}
-                <div className="col-span-3 space-y-2">
-                  <h4 className="text-[var(--text-color4)] font-light text-sm">
-                    End Period
-                  </h4>
-                  <p className="min-h-[38px] border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                    {missionPlanData?.end_date}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
-              <h3 className="text-sm font-normal ">2. Mission and Vision</h3>
-              <div className="space-y-7 mt-4 max-w-4xl">
-                {/* Mission */}
-                <div className="space-y-2">
-                  <h4 className="text-[var(--text-color4)] font-light text-sm">
-                    Mission
-                  </h4>
-                  <p className="min-h-[38px] border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                    {missionPlanData?.mission}
-                  </p>
-                </div>
-                {/* Vision */}
-                <div className="space-y-2">
-                  <h4 className="text-[var(--text-color4)] font-light text-sm">
-                    Vision
-                  </h4>
-                  <p className="min-h-[38px] border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                    {missionPlanData?.vision}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
-              <h3 className="text-sm font-normal ">3. Strategic Pillars</h3>
-              <div className="space-y-7 mt-4 max-w-lg">
-                {/* Pillar */}
-                {missionPlanData?.strategic_pillars?.map(
-                  (
-                    item: {
-                      fiscal_year_id: string;
-                      id: string;
-                      title: string;
-                    },
-                    index: number
-                  ) => (
-                    <div key={item?.id} className="space-y-2">
-                      <h4 className="text-[var(--text-color4)] font-light text-sm">
-                        Pillar {index + 1}
-                      </h4>
-                      <p className="min-h-[38px] capitalize border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                        {item?.title}
-                      </p>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="h-[75vh] place-content-center">
-            <PageLoader />
-          </div>
-        ))}
+      {ui === "mission-plan" && (
+        <>
+          {user_info?.role === SUPER_ADMIN && <FiscalYearInfo />}
+          {user_info?.role !== SUPER_ADMIN && <MyMissionPlan />}
+        </>
+      )}
+
       {ui === "all-employees" &&
         (summaryError && employeeError ? (
           <></>
@@ -272,7 +193,7 @@ const SingleMissionPlan = () => {
           <div className="p-5 space-y-5">
             <div className="flex justify-between">
               <p className="text-xl font-medium text-primary">
-                {missionPlanData?.title}
+                {active_fy_info?.title}
               </p>
               <div className="flex gap-x-[14px]">
                 <CustomSelect

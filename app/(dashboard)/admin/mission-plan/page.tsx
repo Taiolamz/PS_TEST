@@ -3,22 +3,20 @@ import { GrayPlusIcon, StatsIcon } from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
+import { Dictionary } from "@/@types/dictionary";
+import { PageLoader } from "@/components/custom-loader";
 import { EmptyState } from "@/components/fragment";
-import { Button } from "@/components/ui/button";
-import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { CAN_CREATE_FINANCIAL_YEAR, SUPER_ADMIN } from "@/utils/helpers";
+import { formatDate } from "@/utils/helpers/date-formatter";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import YearMissionPlanCard from "./_components/year-mission-plan-card";
 import { allemployeeColumns, allemployeeData } from "./_data/all-employee-table-data";
 import { AllEmployees } from "./_tabs";
-import { useAppSelector } from "@/redux/store";
-import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { PageLoader } from "@/components/custom-loader";
-import { Dictionary } from "@/@types/dictionary";
-import { formatDate } from "@/utils/helpers/date-formatter";
-import { CAN_CREATE_FINANCIAL_YEAR } from "@/utils/helpers";
 
 // Mocking authenticated user role
 // ROLES = 
@@ -33,12 +31,8 @@ const AUTH_USER_ROLE = {
 const { ADMIN } = routesPath
 
 export default function Page() {
-  // Set allMissionPlan state to empty array to simulate empty state
-  const [allMissionPlan, setAllMissionPlan] = useState(['Mission Plan 1'])
-  {/* Change AUTH_USER_ROLE here to simulate the different empty state */ }
-  const [authUserRole, setAuthUserRole] = useState(AUTH_USER_ROLE.ADMIN)
 
-  const { data: allRoles, isLoading: isLoadingRoles } = useGetAllRolesQuery({})
+  // const { data: allRoles, isLoading: isLoadingRoles } = useGetAllRolesQuery({})
   const { data: all_mission_plans, isLoading: isLoadingMissionPlans, isFetching: isFetchingMissionPlans } = useGetOrganizationMissionPlansQuery({})
   const user_info = useAppSelector((state) => state?.auth?.user);
 
@@ -66,6 +60,7 @@ export default function Page() {
   const location = usePathname()
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   
   const ui = searchParams.get("ui");
 
@@ -92,16 +87,16 @@ export default function Page() {
                     btnText="Kickstart Financial Year"
                   />
                 )}
-                {authUserRole !== AUTH_USER_ROLE.ADMIN && (
+                {user_info?.role !== SUPER_ADMIN && (
                   <EmptyState
-                    text="Create your Mission plan by using the button below"
+                    text="Fiscal Year not available"
                   >
-                    <div className="flex flex-col gap-3">
+                    {/* <div className="flex flex-col gap-3">
                       <Button
                         onClick={() => router.push("mission-plan/create?ui=overview")}
                       >Create Mission Plan </Button>
                       {authUserRole === AUTH_USER_ROLE.MANAGIN_DIRECTOR && <Button variant="outline"> Assign Task </Button>}
-                    </div>
+                    </div> */}
                   </EmptyState>
                 )}
 
@@ -118,7 +113,10 @@ export default function Page() {
                       title={item?.title}
                       created_by={item?.created_by}
                       date={formatDate(item?.created_at)}
-                      handleClick={() => router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${item?.id}`)} 
+                      handleClick={() => {
+                        dispatch(updateMissionPlanDetails({slug: 'active_fy_info', data: item}))
+                        router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${item?.id}`)
+                      }} 
                     />
                   ))
                 }

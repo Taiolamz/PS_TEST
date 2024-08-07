@@ -11,6 +11,7 @@ export const adminRoleList = [
   "compliance",
   "super-admin",
   "user",
+  "ceo"
 ];
 
 export const specialRoleList = ["super-admin"];
@@ -47,6 +48,7 @@ const routesPath = {
     EMPLOYEES: `/${admin_auth}/employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
     // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
+    PRESENTATION: `/${admin_auth}/mission-plan/2023/approve`,
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,

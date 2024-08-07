@@ -71,7 +71,7 @@ const MeasureofSuccess = () => {
   return (
     <div className="pr-4">
       <div className="flex items-center gap-x-2 mb-8">
-        <h1 className="text-[#3E4345]">Measure of SUccess</h1>
+        <h1 className="text-[#3E4345]">Measure of Success</h1>
         <span>
           <BsFillInfoCircleFill color="#84919A" />
         </span>
