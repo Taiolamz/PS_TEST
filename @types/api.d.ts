@@ -90,7 +90,7 @@ type BranchData = {
 
 type GradeLevelData = {
   name: string;
-  position: string 
+  level: string;
 };
 
 type InvitedUser = {

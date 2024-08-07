@@ -271,3 +271,66 @@ export const measureColumns: ColumnDef<MeasureData>[] = [
     ),
   },
 ];
+
+export const taskData = [
+  {
+    id: "Task 1",
+    goal: "Achieve $1 Billion in Company Revenue, Design Mance System",
+    items: [
+      {
+        sn: 1,
+        pillar: "Brand",
+        task: "Commercialize 4 products",
+        resources: "Ayomipe, Segun",
+        startDate: "03/07/2024",
+        endDate: "04/08/2024",
+      },
+      {
+        sn: 2,
+        pillar: "People",
+        task: "Revenue from ...",
+        resources: "Ayomipe, Segun",
+        startDate: "03/07/2024",
+        endDate: "04/08/2024",
+      },
+      {
+        sn: 3,
+        pillar: "Product",
+        task: "Revenue from ...",
+        resources: "Ayomipe, Segun",
+        startDate: "03/07/2024",
+        endDate: "04/08/2024",
+      },
+    ],
+  },
+  {
+    id: "Task 2",
+    goal: "Achieve $1 Billion in Company Revenue, Design Mance System",
+    items: [
+      {
+        sn: 1,
+        pillar: "Brand",
+        task: "Commercialize 4 products",
+        resources: "Ayomipe, Segun",
+        startDate: "03/07/2024",
+        endDate: "04/08/2024",
+      },
+      {
+        sn: 2,
+        pillar: "People",
+        task: "Revenue from ...",
+        resources: "Ayomipe, Segun",
+        startDate: "03/07/2024",
+        endDate: "04/08/2024",
+      },
+      {
+        sn: 3,
+        pillar: "Product",
+        task: "Revenue from ...",
+        resources: "Ayomipe, Segun",
+        startDate: "03/07/2024",
+        endDate: "04/08/2024",
+      },
+    ],
+  },
+];

@@ -566,8 +566,10 @@ const ImpliedTask = () => {
           </FieldArray>
           <div className="mt-8 flex gap-x-2 items-center">
             <Button
+              type="button"
               variant="outline"
               className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+              onClick={router.back}
             >
               Back
             </Button>

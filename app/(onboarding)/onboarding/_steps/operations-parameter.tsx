@@ -60,6 +60,9 @@ const OperationsParameter = ({
                 placeholder="2022 Financial Year"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 sm:text-sm"
               />
+              {formik.touched.fy_title && formik.errors.fy_title ? (
+                <div className="text-red-500">{formik.errors.fy_title}</div>
+              ) : null}
             </div>
 
             <div className="basis-1/4">

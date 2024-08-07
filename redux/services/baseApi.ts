@@ -9,6 +9,7 @@ import {
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { resetAuth } from "../features/auth/authSlice";
+import { resetMissionPlan } from "../features/mission-plan/missionPlanSlice";
 
 const toastError = (errors: any) => {
   const errorKeys = Object.keys(errors);
@@ -53,6 +54,7 @@ export const baseQueryInterceptor: BaseQueryFn<
     if (res.status === 401) {
       if (res.data.status === "failed") {
         api.dispatch(resetAuth());
+        api.dispatch(resetMissionPlan());
         Cookies.remove("token");
         clearStorageItem();
         window.location.href = "/login";

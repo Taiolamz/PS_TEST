@@ -18,14 +18,12 @@ export const missionPlanApi = baseApi.injectEndpoints({
         }
       },
     }),
-    getCurrentMissionPlan: builder.query({
+    getMyMissionPlan: builder.query({
       query: () => ({
         url: `/mission-plan/user/current`,
         method: "GET",
       }),
-      providesTags: ["Branches"],
-      transformResponse: (response: { data: CurrentMissionPlanData[] }) =>
-        response.data,
+      // providesTags: ["Branches"],
     }),
     createFinancialYear: builder.mutation({
       query: (payload) => ({
@@ -77,5 +75,5 @@ export const missionPlanApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetCurrentMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation, useGetOrganizationMissionPlansQuery } =
+export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetMyMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation, useGetOrganizationMissionPlansQuery } =
   missionPlanApi;
