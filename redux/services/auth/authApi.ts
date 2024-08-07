@@ -145,6 +145,22 @@ export const authApi = baseApi.injectEndpoints({
         }
       },
     }),
+    getAuthUserDetails: builder.query({
+      query: () => ({
+        url: `/user`,
+        method: "GET",
+        // credentials: "include" as const
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          const {data: { data } } = result;
+          dispatch(setAuthUser(data));
+        } catch (error: any) {
+          // console.log(error)
+        }
+      },
+    }),
   }),
 });
 
@@ -158,4 +174,5 @@ export const {
   useResetPasswordMutation,
   useVerifyOTPMutation,
   useResendOTPMutation,
+  useLazyGetAuthUserDetailsQuery
 } = authApi;
