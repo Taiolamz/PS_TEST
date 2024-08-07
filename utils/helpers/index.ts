@@ -53,17 +53,17 @@ export function returnInitial(name: string) {
 }
 
 function normalizeString(str: string) {
-  return str.trim().toLowerCase();
+  return str?.trim()?.toLowerCase();
 }
 
 export function checkUserRole(item: string | string[]) {
   // Function to check if a normalized item is in a list
   const isInList = (list: string[], value: string) =>
-    list.map(normalizeString).includes(value);
+    list.map(normalizeString)?.includes(value);
 
   // Normalize item(s)
   const normalizedItems = Array.isArray(item)
-    ? item.map(normalizeString)
+    ? item?.map(normalizeString)
     : [normalizeString(item)];
   // Check against each list
   for (const normalizedItem of normalizedItems) {
@@ -92,5 +92,84 @@ export const isValidDate = (dateString: string | any) => {
   return isValid(parsedDate) && dateString.length === 10;
 };
 
+
+export const PAGE_TABS = {
+  SUPER_ADMIN: [
+    {
+      id: 1,
+      title: "Mission Plan",
+      accessor: "mission-plan",
+    },
+    {
+      id: 2,
+      title: "All Employees",
+      accessor: "all-employees",
+    },
+  ],
+  MANAGIN_DIRECTOR: [
+    {
+      id: 1,
+      title: "My Mission Plan",
+      accessor: "mission-plan",
+    },
+    {
+      id: 2,
+      title: "All Employees",
+      accessor: "all-employees",
+    },
+  ],
+  LINE_MANAGER: [
+    {
+      id: 1,
+      title: "My Mission Plan",
+      accessor: "mission-plan",
+    },
+    {
+      id: 2,
+      title: "Direct Downlines",
+      accessor: "downlines",
+    },
+    {
+      id: 3,
+      title: "Approvals",
+      accessor: "approvals",
+    },
+  ],
+  EMPLOYEE: [
+    {
+      id: 1,
+      title: "My Mission Plan",
+      accessor: "mission-plan",
+    },
+    {
+      id: 2,
+      title: "Direct Downlines",
+      accessor: "downlines",
+    },
+  ],
+};
+
+
+
 // ROLES ALLOWED TO CREATE FINANCIAL YEAR
-export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin"];
+export const CAN_CREATE_FINANCIAL_YEAR = ['super-admin'] 
+export const SUPER_ADMIN = 'super-admin'
+export const MANAGING_DIRECTOR = 'ceo'
+
+// GET TABS
+type ARG_TYPES = {
+  role: string,
+  isLineManager: boolean
+}
+export const getAvailableTabs = (arg: ARG_TYPES) => {
+  if(arg.role === SUPER_ADMIN){
+    return PAGE_TABS.SUPER_ADMIN
+  }
+  if(arg.role === MANAGING_DIRECTOR){
+    return PAGE_TABS.MANAGIN_DIRECTOR
+  }
+  if(arg.role !== SUPER_ADMIN && arg.role !== MANAGING_DIRECTOR && arg.isLineManager){
+    return PAGE_TABS.LINE_MANAGER
+  }
+  return PAGE_TABS.EMPLOYEE
+}
