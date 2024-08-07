@@ -11,10 +11,12 @@ import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import routesPath, {
   adminRoleList,
   admin_auth,
+  checkListRoutes,
   employee_auth,
   specialRoleList,
 } from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface myComponentProps {
   children?: React.ReactNode;
@@ -86,6 +88,8 @@ const DashboardLayout = ({
     // }
   };
 
+  
+
   return (
     <div
       // onClick={() => {
@@ -119,7 +123,21 @@ const DashboardLayout = ({
         </div>
         {/* header nav box end */}
         {/* main content box start */}
-        <div className={style?.main_content_box}> {children}</div>
+        <div className={style?.main_content_box}>
+          {checkListRoutes?.includes(pathname) && (
+            <>
+              <Link
+                href={routesPath?.ADMIN.CHECKLIST}
+                className="text-primary font-semibold text-sm"
+              >
+                <p className="p-4 font-semibold underline bg-[#FFFCC2]">
+                  Setup Checklist...
+                </p>
+              </Link>
+            </>
+          )}
+          {children}
+        </div>
         {/* main content box end */}
       </div>
       {/* header nav and content bar end */}

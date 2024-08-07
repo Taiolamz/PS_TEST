@@ -8,14 +8,14 @@ const { ADMIN } = routesPath
 const OverView = () => {
   return (
     <DashboardLayout headerTitle="Admin Overview">
-      <Link
+      {/* <Link
         href={ADMIN.CHECKLIST}
         className="text-primary font-semibold text-sm"
         >
         <p className="p-4 font-semibold underline bg-[#FFFCC2]">
           Setup Checklist...
         </p>
-      </Link>
+      </Link> */}
       </DashboardLayout>
   );
 };

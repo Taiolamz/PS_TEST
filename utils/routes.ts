@@ -11,6 +11,7 @@ export const adminRoleList = [
 export const specialRoleList = ["super-admin",];
 // const
 
+
 const routesPath = {
   ADMIN: {
     OVERVIEW: `/${admin_auth}/overview`,
@@ -55,5 +56,18 @@ const routesPath = {
   FORGOT_PASSWORD: "/forgot-password",
   ONBOARDING: "/onboarding",
 };
+
+
+export const checkListRoutes = [
+  routesPath?.ADMIN?.SUBSIDIARY,
+  routesPath?.ADMIN?.BRANCH,
+  routesPath?.ADMIN?.DEPARTMENT,
+  routesPath?.ADMIN?.EMPLOYEES,
+  routesPath?.ADMIN?.OVERVIEW,
+  routesPath?.ADMIN?.MAIN_MISSION_PLAN,
+  routesPath?.ADMIN?.UNIT,
+  routesPath?.ADMIN?.KICK_START_MISSION_PLAN,
+  // routesPath?.ADMIN?. 
+];
 
 export default routesPath;

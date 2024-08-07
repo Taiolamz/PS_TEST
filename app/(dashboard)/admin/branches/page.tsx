@@ -186,14 +186,14 @@ const Branches = () => {
 
   return (
     <DashboardLayout headerTitle="Branches">
-      <Link
+      {/* <Link
         href={ADMIN.CHECKLIST}
         className="text-primary font-semibold text-sm"
         >
         <p className="p-4 font-semibold underline bg-[#FFFCC2]">
           Setup Checklist...
         </p>
-      </Link>
+      </Link> */}
       <section className="p-5">
         {branches?.length < 1 ? (
           <ReusableEmptyState

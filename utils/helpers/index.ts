@@ -53,24 +53,35 @@ export function returnInitial(name: string) {
 }
 
 function normalizeString(str: string) {
-  return str?.toLowerCase();
+  return str.trim().toLowerCase();
 }
 
-export function checkUserRole(item: string) {
-  const normalizedItem = normalizeString(item);
+export function checkUserRole(item: string | string[]) {
+  // Function to check if a normalized item is in a list
+  const isInList = (list: string[], value: string) =>
+    list.map(normalizeString).includes(value);
 
-  // if (specialRoleList?.map(normalizeString).includes(normalizedItem)) {
-  //   return "SUPER ADMIN";
-  // } else
-
-  if (adminRoleList?.map(normalizeString).includes(normalizedItem)) {
-    return "ADMIN";
-  } else if (employeeRoleList?.map(normalizeString).includes(normalizedItem)) {
-    return "EMPLOYEE";
-  } else {
-    return "EMPLOYEE";
+  // Normalize item(s)
+  const normalizedItems = Array.isArray(item)
+    ? item.map(normalizeString)
+    : [normalizeString(item)];
+  // Check against each list
+  for (const normalizedItem of normalizedItems) {
+    // if (isInList(specialRoleList, normalizedItem)) {
+    //   return "SUPER ADMIN";
+    // } else
+    
+    if (isInList(adminRoleList, normalizedItem)) {
+      return "ADMIN";
+    } else if (isInList(employeeRoleList, normalizedItem)) {
+      return "EMPLOYEE";
+    }
   }
+
+  // Default role if no match found
+  return "EMPLOYEE";
 }
+
 export const iife = <T>(fn: () => T) => fn();
 export const removeCharFromString = (str: string, char: string) =>
   str.replace(new RegExp(char, "g"), "");
@@ -82,4 +93,4 @@ export const isValidDate = (dateString: string | any) => {
 };
 
 // ROLES ALLOWED TO CREATE FINANCIAL YEAR
-export const CAN_CREATE_FINANCIAL_YEAR = ['super-admin'] 
+export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin"];

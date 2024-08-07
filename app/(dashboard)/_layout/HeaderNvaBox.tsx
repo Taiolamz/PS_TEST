@@ -181,9 +181,10 @@ const HeaderNavBox = ({
   return (
     <>
       <div
-        // onClick={() => {
-        //   console.log(user);
-        // }}
+        onClick={() => {
+          console.log(user?.organization?.hierarchy);
+          console.log(user);
+        }}
         className={style.header_wrap_index_box}
       >
         {/* back comp start */}
@@ -193,8 +194,8 @@ const HeaderNavBox = ({
               onClick={() => {
                 if (window?.history?.length > 1 && !onBack) {
                   router.back();
-                }else{
-                  onBack && onBack()
+                } else {
+                  onBack && onBack();
                 }
               }}
               className={style.back_box}
@@ -228,7 +229,11 @@ const HeaderNavBox = ({
         {/* title  end */}
         {/* search box start */}
         <div className={style?.search_box}>
-          <input type="text" placeholder="Search Keyword#" className={style?.search_input} />
+          <input
+            type="text"
+            placeholder="Search Keyword#"
+            className={style?.search_input}
+          />
           <figure className={style.img_box}>{searchIcon}</figure>
         </div>
         {/* search box end */}
