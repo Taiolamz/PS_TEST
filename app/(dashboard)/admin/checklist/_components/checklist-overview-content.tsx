@@ -56,12 +56,13 @@ const ChecklistOverviewContent = () => {
           isChecked: false,
           label: "Add Department",
           hide: false,
+          link: ADMIN?.CREATE_DEPARTMENT,
         },
         {
           isChecked: false,
           label: "Add Unit",
           hide: false,
-          link: ADMIN?.CREATE_DEPARTMENT,
+          link: ADMIN?.CREATE_UNIT,
         },
       ],
       isAllChecked: false,
@@ -73,7 +74,7 @@ const ChecklistOverviewContent = () => {
       subTitle:
         "Manage users that will be joining your organization and how they are inducted",
       isAllChecked: false,
-      path: ADMIN.EMPLOYEES,
+      path: ADMIN.ADD_EMPLOYEE,
       hide: false,
     },
     {
@@ -85,16 +86,16 @@ const ChecklistOverviewContent = () => {
           isChecked: false,
           label: "Create Mission Plan Template",
           hide: false,
+          link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_TEMPLATE,
         },
         {
           isChecked: true,
           label: "Approval Flow",
           hide: false,
+          link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_APPROVAL_FLOW,
         },
       ],
       isAllChecked: false,
-      // path: Routes.ChecklistRoute.MissionPlanTemplateRoute(),
-      path: ADMIN.MISSION_PLAN,
     },
   ];
 

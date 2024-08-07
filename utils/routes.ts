@@ -76,7 +76,7 @@ export const checkListRoutes = [
   routesPath?.ADMIN?.OVERVIEW,
   routesPath?.ADMIN?.MAIN_MISSION_PLAN,
   routesPath?.ADMIN?.UNIT,
-  routesPath?.ADMIN?.KICK_START_MISSION_PLAN,
+  routesPath?.ADMIN?.MISSION_PLAN_TEMPLATE,
   // routesPath?.ADMIN?. 
 ];
 
