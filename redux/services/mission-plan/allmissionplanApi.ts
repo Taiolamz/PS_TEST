@@ -1,10 +1,15 @@
-import { resetAuth, setAuthUser } from "@/redux/features/auth/authSlice";
-import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 import { generateQueryString } from "@/utils/helpers";
 
 export const allmissionPlanApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    getOrganizationMissionPlan: builder.query({
+      query: () => ({
+        url: `/mission-plan/fiscal-years/organization`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: any[] }) => response.data,
+    }),
     getAllOrganizationEmployeeMissionPlan: builder.query({
       query: (params) => ({
         url: `/mission-plan/organization/${
@@ -47,5 +52,6 @@ export const {
   useGetAllOrganizationMissionPlanSummaryQuery,
   useGetAllOrganizationEmployeeMissionPlanQuery,
   useGetAllOrganizationMissionPlanDropdownQuery,
+  useGetOrganizationMissionPlanQuery,
   useLazyGetAllOrganizationEmployeeMissionPlanExportQuery,
 } = allmissionPlanApi;
