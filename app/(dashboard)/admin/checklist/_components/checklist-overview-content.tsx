@@ -43,11 +43,11 @@ const ChecklistOverviewContent = () => {
         {
           isChecked: true,
           label: "Add Subsidiary",
-          hide: true,
+          hide: false,
           link: ADMIN?.CREATE_SUBSIDIARY,
         },
         {
-          isChecked: false,
+          isChecked: true,
           label: "Add Branches",
           hide: false,
           link: ADMIN?.CREATE_BRANCH,
@@ -107,6 +107,14 @@ const ChecklistOverviewContent = () => {
     }
   };
 
+  const getNextLink = (list: any) => {
+    if (list?.length > 0) {
+      const newList = list?.filter((chi: any) => !chi?.isChecked);
+      // console.log(newList);
+      return newList;
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3 w-[768px]">
       <div className="flex gap-2 items-center justify-between bg-primary p-3 px-5 pl-8">
@@ -136,7 +144,7 @@ const ChecklistOverviewContent = () => {
                 // console.log(getListToUse(items));
                 // console.log(user);
                 if (!isAllChecked) {
-                  router?.push(getListToUse(items)[0]?.link);
+                  router?.push(getNextLink(getListToUse(items))[0]?.link);
                 }
               }}
               className="bg-custom-gray-scale-white p-10 pl-8 hover:scale-[1.02] transition-all duration-300"
