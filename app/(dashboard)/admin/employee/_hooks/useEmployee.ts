@@ -137,7 +137,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       return {
         ...chi,
         label: chi.name,
-        value: chi.position,
+        value: chi.level,
       };
     });
     return data;
@@ -181,10 +181,11 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const units = unitData ?? [];
   const states = statesData ?? [];
   console.log(gradeLevelData, "grade level data");
-  const gradeLevels =
-    gradeLevelData && gradeLevelData?.length > 1
-      ? JSON.parse(gradeLevelData)
-      : [];
+  const gradeLevels = gradeLevelData ?? [];
+  // const gradeLevels =
+  //   gradeLevelData && gradeLevelData?.length > 1
+  //     ? JSON.parse(gradeLevelData)
+  //     : [];
 
   const stateDrop = handleDropdown(states);
   const subsidiaryDrop = handleDropdown(subsidiaries);
