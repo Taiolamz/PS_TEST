@@ -21,6 +21,8 @@ import routesPath from "@/utils/routes";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { useAppSelector } from "@/redux/store";
+import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 
 const { ADMIN } = routesPath;
 interface FormValues {
@@ -40,6 +42,7 @@ interface FormValues {
 
 const Onboarding = () => {
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
@@ -151,12 +154,17 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px-10 xl:pl-[9.375rem] max-h-full overflow-scroll scroll-hidden pb-20"
+          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20"
           onSubmit={formik.handleSubmit}
         >
-          <div className="">
-            <h1 className="text-2xl font-bold text-[#162238] mb-16">
-              {`Welcome ITH Holdings! Let's setup your organization`}
+          <div
+            // onClick={() => {
+            //   console.log(user);
+            // }}
+            className=""
+          >
+            <h1 className="text-2xl font-bold text-[--primary-color] mb-16">
+              {`Welcome ${trimLongString(user?.organization?.name, 25) || ""}! Let's setup your organization`}
             </h1>
             {getCurrentStep() === 1 && (
               <OrganizationStatement formik={formik} />
