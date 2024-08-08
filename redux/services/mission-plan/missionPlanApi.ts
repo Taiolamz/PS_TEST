@@ -72,8 +72,22 @@ export const missionPlanApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    createMissionStatement: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/mission-statement`,
+        method: "POST",
+        body: payload,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (error: any) {
+          // console.log('Error:', error)
+        }
+      },
+    }),
   }),
 });
 
-export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetMyMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation, useGetOrganizationMissionPlansQuery } =
+export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetMyMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation, useGetOrganizationMissionPlansQuery, useCreateMissionStatementMutation } =
   missionPlanApi;
