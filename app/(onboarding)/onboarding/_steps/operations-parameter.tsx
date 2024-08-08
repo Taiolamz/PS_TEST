@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FormHeader } from "../_components";
 import { Input } from "@/components/ui/input";
 import CustomDateInput from "@/components/custom-date-input";
@@ -30,9 +30,8 @@ const OperationsParameter = ({
   ) => {
     formik.setFieldValue(name, newDate.format("HH:mm"));
   };
-
   return (
-    <section className="max-w-[54.625rem] h-[calc(100vh_-_22rem)] overflow-y-scroll px-4 scroll-hidden">
+    <section className="max-w-[54.625rem] px-4 scroll-hidden">
       <FormHeader
         title="Give details of your organizational information and hierarchical
         structure."
@@ -44,7 +43,7 @@ const OperationsParameter = ({
           <h3 className="block mb-4 text-sm font-medium text-[#162238]">
             1. Fiscal Year
           </h3>
-          <div className="flex gap-6 items-center">
+          <div className="flex gap-6">
             <div className="basis-1/2">
               <label className="block text-[#5A5B5F] text-[0.8125rem]">
                 Title
@@ -138,8 +137,8 @@ const OperationsParameter = ({
               <CustomTimeInput
                 id="opening_time"
                 label="Opening Time"
-                name="openingTime"
-                selected={formik.values.closing_time}
+                name="opening_time"
+                selected={formik.values.opening_time}
                 handleChange={(date) => handleTimeChange(date, "opening_time")}
                 touched={formik.touched.opening_time}
                 error={formik.errors.opening_time}
@@ -149,7 +148,7 @@ const OperationsParameter = ({
               <CustomTimeInput
                 id="closing_time"
                 label="Closing Time"
-                name="closingTime"
+                name="closing_time"
                 selected={formik.values.closing_time}
                 handleChange={(date) => handleTimeChange(date, "closing_time")}
                 touched={formik.touched.closing_time}

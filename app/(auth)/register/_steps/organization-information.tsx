@@ -1,126 +1,147 @@
-import { Dictionary } from '@/@types/dictionary';
-import CustomSelect from '@/components/custom-select';
-import PasswordChecker from '@/components/password-checker';
-import TogglePassword from '@/components/toggle-password';
-import { Input } from '@/components/ui/input';
-import { COUNTRIES, COUNTRIES_STATES, NUMBER_OF_EMPLOYEES, STATES } from '@/utils/data';
-import { passwordValidations, passwordValidation as pv } from '@/utils/schema';
-import { useState } from 'react';
+import { Dictionary } from "@/@types/dictionary";
+import CustomSelect from "@/components/custom-select";
+import PasswordChecker from "@/components/password-checker";
+import TogglePassword from "@/components/toggle-password";
+import { Input } from "@/components/ui/input";
+import {
+  COUNTRIES,
+  COUNTRIES_STATES,
+  NUMBER_OF_EMPLOYEES,
+  STATES,
+} from "@/utils/data";
+import { passwordValidations, passwordValidation as pv } from "@/utils/schema";
+import { useState } from "react";
 
 interface OrganizationInformationProps {
-    formik: any
+  formik: any;
 }
 
 const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
-    const [showPassword, setShowPassword] = useState(false)
-    const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>({})
+  const [showPassword, setShowPassword] = useState(false);
+  const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
+    {}
+  );
 
-    // console.log(selectedCountryData)
-    return (
-        <div style={{width: "100%", }}>
-            <div className="flex flex-col gap-5">
-                <Input
-                    label="Organization Name"
-                    id="organization_name"
-                    name="organization_name"
-                    value={formik.values.organization_name}
-                    onChange={formik.handleChange}
-                    touched={formik.touched.organization_name}
-                    error={formik.errors.organization_name}
-                    placeholder="Enter Full Name"
-                />
-                <CustomSelect
-                    label="Number of Employees"
-                    options={NUMBER_OF_EMPLOYEES}
-                    selected={formik.values.employees_range}
-                    setSelected={(selected) => {
-                        formik.setFieldValue("employees_range", selected)
-                    }}
-                    touched={formik.touched.employees_range}
-                    error={formik.errors.employees_range}
-                />
-            </div>
-            <div className="mt-6 flex flex-col gap-3">
-                <Input
-                    label="Location"
-                    id="Address"
-                    name="address"
-                    value={formik.values.address}
-                    onChange={formik.handleChange}
-                    touched={formik.touched.address}
-                    error={formik.errors.address}
-                    placeholder="Enter Address"
-                />
-                <Input
-                    id="City"
-                    name="city"
-                    type={`text`}
-                    value={formik.values.city}
-                    onChange={formik.handleChange}
-                    touched={formik.touched.city}
-                    error={formik.errors.city}
-                    placeholder="Enter City"
-                    autoComplete={`off`}
-                />
-                <div className="grid grid-cols-2 gap-4">
-                    <CustomSelect
-                        options={COUNTRIES_STATES?.map((item : Dictionary) => {
-                            return {
-                                label: item.name,
-                                value: item.name,
-                            }
-                        })}
-                        selected={formik.values.country}
-                        setSelected={(selected) => {
-                            formik.setFieldValue("country", selected)
-                            const COUNTRY_DATA = COUNTRIES_STATES?.filter((f) => f.name === selected)?.[0]
-                            formik.setFieldValue('state', '')
-                            setSelectedCountryData(COUNTRY_DATA)
-                        }}
-                        touched={formik.touched.country}
-                        error={formik.errors.country}
-                        placeholder="Select Country"
-                    />
-                    <CustomSelect
-                        options={selectedCountryData?.stateProvinces?.map((item : Dictionary) => {
-                            return {
-                                label: item.name,
-                                value: item.name,
-                            }
-                        })}
-                        selected={formik.values.state}
-                        setSelected={(selected) => formik.setFieldValue("state", selected)}
-                        touched={formik.touched.state}
-                        error={formik.errors.state}
-                        placeholder="Select State"
-                    />
-                </div>
-            </div>
-            <div className="mt-9 relative">
-                <Input
-                    label="Password"
-                    id="password"
-                    name="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    touched={formik.touched.password}
-                    error={formik.errors.password}
-                    placeholder="Input Password"
-                    type={showPassword ? 'text' : 'password'}
-                />
-                <TogglePassword
-                    showPassword={showPassword}
-                    setShowPassword={() => setShowPassword(!showPassword)}
-                    className="top-8"
-                />
-                <div className="mt-3 flex flex-col gap-2">
-                    {passwordValidations.map((validation, idx) => (
-                        <PasswordChecker key={idx} isValid={pv(formik.values.password, validation)} title={validation} />
-                    ))}
-                </div>
-            </div>
+  console.log({ form: formik.touched.employees_range });
+
+  return (
+    <div style={{ width: "100%" }}>
+      <div className="flex flex-col gap-5">
+        <Input
+          label="Organization Name"
+          id="organization_name"
+          name="organization_name"
+          value={formik.values.organization_name}
+          onChange={formik.handleChange}
+          touched={formik.touched.organization_name}
+          error={formik.errors.organization_name}
+          onBlur={formik.handleBlur}
+          placeholder="Enter Organization Name"
+        />
+        <CustomSelect
+          label="Number of Employees"
+          options={NUMBER_OF_EMPLOYEES}
+          selected={formik.values.employees_range}
+          setSelected={(selected) => {
+            formik.setFieldValue("employees_range", selected);
+          }}
+          touched={formik.touched.employees_range}
+          error={formik.errors.employees_range}
+          onBlur={formik.handleBlur}
+        />
+      </div>
+      <div className="mt-6 flex flex-col gap-3">
+        <Input
+          label="Location"
+          id="Address"
+          name="address"
+          value={formik.values.address}
+          onChange={formik.handleChange}
+          touched={formik.touched.address}
+          error={formik.errors.address}
+          onBlur={formik.handleBlur}
+          placeholder="Enter Address"
+        />
+        <Input
+          id="City"
+          name="city"
+          type={`text`}
+          value={formik.values.city}
+          onChange={formik.handleChange}
+          touched={formik.touched.city}
+          error={formik.errors.city}
+          onBlur={formik.handleBlur}
+          placeholder="Enter City"
+          autoComplete={`off`}
+        />
+        <div className="grid grid-cols-2 gap-4">
+          <CustomSelect
+            options={COUNTRIES_STATES?.map((item: Dictionary) => {
+              return {
+                label: item.name,
+                value: item.name,
+              };
+            })}
+            selected={formik.values.country}
+            setSelected={(selected) => {
+              formik.setFieldValue("country", selected);
+              const COUNTRY_DATA = COUNTRIES_STATES?.filter(
+                (f) => f.name === selected
+              )?.[0];
+              formik.setFieldValue("state", "");
+              setSelectedCountryData(COUNTRY_DATA);
+            }}
+            touched={formik.touched.country}
+            error={formik.errors.country}
+            placeholder="Select Country"
+          />
+          <CustomSelect
+            options={selectedCountryData?.stateProvinces?.map(
+              (item: Dictionary) => {
+                return {
+                  label: item.name,
+                  value: item.name,
+                };
+              }
+            )}
+            selected={formik.values.state}
+            setSelected={(selected) => formik.setFieldValue("state", selected)}
+            touched={formik.touched.state}
+            error={formik.errors.state}
+            placeholder="Select State"
+          />
         </div>
-    );
-}
+      </div>
+      <div className="mt-9 relative">
+        <Input
+          label="Password"
+          id="password"
+          name="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          touched={formik.touched.password}
+          error={formik.errors.password}
+          placeholder="Input Password"
+          type={showPassword ? "text" : "password"}
+        />
+        <TogglePassword
+          showPassword={showPassword}
+          setShowPassword={() => setShowPassword(!showPassword)}
+          className="top-8"
+        />
+        <div className="mt-3 flex flex-col gap-2">
+          {passwordValidations.map((validation, idx) => (
+            <PasswordChecker
+              key={idx}
+              isValid={pv(formik.values.password, validation)}
+              title={validation}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default OrganizationInformation;
