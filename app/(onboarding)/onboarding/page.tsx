@@ -2,7 +2,7 @@
 
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -19,6 +19,8 @@ import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 interface FormValues {
@@ -43,7 +45,11 @@ const Onboarding = () => {
   const ui = searchParams.get("ui");
   const { ONBOARDING } = routesPath;
   const [fyDate, setFyDate] = useState("");
+  const actionCtx = useContext(ActionContext);
 
+  const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
     return step;
@@ -65,6 +71,9 @@ const Onboarding = () => {
       );
       return;
     }
+
+    // console.log(formik?.values);
+
     const formDataToSend = new FormData();
 
     Object.entries(formik.values).forEach(([key, value]) => {
@@ -85,10 +94,18 @@ const Onboarding = () => {
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
+          // handleGetAuthUser()
+          actionCtx.triggerUpdateUser();
           toast.success("Organization Created Successfully");
           router.push(ADMIN.OVERVIEW);
         });
     } catch (error) {}
+  };
+
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
   };
 
   const formik = useFormik<FormValues>({

@@ -30,6 +30,16 @@ export const departmentApi = baseApi.injectEndpoints({
         response.data.data,
     }),
 
+    getSingleDepartment: builder.query<string[], void>({
+      query: (id) => ({
+        url: `/admin/department/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Departments"],
+      transformResponse: (response: { data: { data: string[] } }) =>
+        response.data.data,
+    }),
+
     downloadDepartmentTemplate: builder.query<any, FileTemplateParam>({
       query: (params) => ({
         url: `/admin/downloadFile/${generateQueryString({
@@ -48,4 +58,5 @@ export const {
   useCreateBulkDepartmentsMutation,
   useGetDepartmentsQuery,
   useLazyDownloadDepartmentTemplateQuery,
+  useGetSingleDepartmentQuery,
 } = departmentApi;

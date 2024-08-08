@@ -46,8 +46,11 @@ const AddBranch = () => {
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingBranch}
         onSave={formik.handleSubmit}
-        onCancel={handleCancelDialog}
-        hideStep
+        onCancel={() => {
+          // cancel function here-----
+        }}
+        // back
+        // hideStep
       />
 
       <div className="" style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}>

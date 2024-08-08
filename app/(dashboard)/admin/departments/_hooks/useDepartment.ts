@@ -11,6 +11,8 @@ import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
 import { useCreateDepartmentMutation } from "@/redux/services/checklist/departmentApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
@@ -69,7 +71,7 @@ const headOfDepartment = [
   },
 ];
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const useDepartment = ({ cancelPath }: Prop) => {
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
@@ -150,12 +152,15 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     work_email: yup
       .string()
       .min(1, "Work Email is required")
+      .email("Invalid email address")
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
     subsidiary: yup.string().required(),
     branch_id: yup.string().required(),
   });
 
   const router = useRouter();
+  const actionCtx = useContext(ActionContext)
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const DepartmentRoute = ADMIN.DEPARTMENT;
@@ -172,7 +177,9 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     await createDepartment(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
         toast.success("Department Created Successfully");
+        router.push(DepartmentRoute);
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
