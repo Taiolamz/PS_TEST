@@ -11,9 +11,9 @@ export const missionStatementSchema = yup.object().shape({
 export const measureSuccessSchema = yup.object().shape({
   // mission_plan_id: yup.string().required("Mission Plan ID is required"),
   // strategic_intent_id: yup.string().required("Strategic Intent ID is required"),
-  allSuccess: yup.array().of(
+  measures: yup.array().of(
     yup.object().shape({
-      success: yup.string().required("Measure of success is required"),
+      measure: yup.string().required("Measure of success is required"),
       unit: yup.string().required("Unit is required"),
       target: yup.string().required("Target is required"),
     })

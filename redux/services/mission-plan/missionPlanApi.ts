@@ -60,6 +60,13 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    createMeasureOfSuccess: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/measure-of-success`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
     getFinancialYearPreview: builder.query({
       query: () => ({
         url: `/mission-plan/preview`,
@@ -92,4 +99,5 @@ export const {
   useSaveFinancialYearMutation,
   useGetOrganizationMissionPlansQuery,
   useCreateSpecifiedTaskMutation,
+  useCreateMeasureOfSuccessMutation,
 } = missionPlanApi;
