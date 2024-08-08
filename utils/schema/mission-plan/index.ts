@@ -62,8 +62,8 @@ export const specifiedTaskSchema = yup.object().shape({
   tasks: yup.array().of(
     yup.object().shape({
       id: yup.string().required(),
-      title: yup.string().required("Title is required"),
-      pillars: yup
+      task: yup.string().required("Title is required"),
+      strategic_pillars: yup
         .array()
         .of(
           yup.object().shape({
@@ -73,7 +73,7 @@ export const specifiedTaskSchema = yup.object().shape({
           })
         )
         .min(1, "At least one pillar is required"),
-      measures: yup
+      success_measures: yup
         .array()
         .of(
           yup.object().shape({
