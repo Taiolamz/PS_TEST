@@ -9,7 +9,7 @@ interface CustomCheckboxProps {
   name?: string;
   isChecked: boolean;
   handleClick: any;
-  itemId: number;
+  itemId?: number;
 }
 
 const CustomCheckbox = ({
