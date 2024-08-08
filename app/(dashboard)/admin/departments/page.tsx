@@ -28,6 +28,7 @@ const { ADMIN } = routesPath;
 const Departments = () => {
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [fileType, setFileType] = useState("");
 
   const {
     isOpen: openProceedModal,
@@ -176,7 +177,7 @@ const Departments = () => {
           downloadFile({
             file: payload,
             filename: "department_template",
-            fileExtension: "csv",
+            fileExtension: fileType,
           });
         }
       })
@@ -185,7 +186,7 @@ const Departments = () => {
 
   return (
     <DashboardLayout headerTitle="Department">
-      <ReusableStepListBox
+      {/* <ReusableStepListBox
         btnText="Continue"
         activeStep="3"
         totalStep="4"
@@ -193,7 +194,7 @@ const Departments = () => {
         btnDisabled={departments?.length < 1}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-      />
+      /> */}
       <section className="p-5">
         {departments?.length < 1 ? (
           <ReusableEmptyState
@@ -241,8 +242,14 @@ const Departments = () => {
           <BulkUploadModal
             loading={isCreatingBulkDepartments}
             onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={handleBulkRequirementDialog}
-            onSampleExcelDownload={handleBulkRequirementDialog}
+            onSampleCsvDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("csv");
+            }}
+            onSampleExcelDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("xlsx");
+            }}
             onBulkUpload={handleSubmitBulkUpload}
             setFile={setBulkFile}
           />
@@ -254,7 +261,7 @@ const Departments = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload("csv")}
+            onTemplateDownload={() => handleTemplateDownload(fileType)}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>

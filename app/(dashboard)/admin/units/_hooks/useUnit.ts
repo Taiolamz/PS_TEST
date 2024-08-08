@@ -13,6 +13,8 @@ import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi
 import { useCreateUnitMutation } from "@/redux/services/checklist/unitApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
@@ -64,6 +66,7 @@ const headOfUnit = [
 const { ADMIN } = routesPath;
 
 export const useUnit = ({ cancelPath }: Prop) => {
+  const actionCtx = useContext(ActionContext)
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
     useGetSubsidiariesQuery({
       to: 0,
@@ -155,9 +158,11 @@ export const useUnit = ({ cancelPath }: Prop) => {
     work_email: yup
       .string()
       .min(1, "Work Email is required")
+      .email("Invalid email address")
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
-    subsidiary_id: yup.string().required("Subsidiary is required"),
-    branch_id: yup.string().required("Branch is required"),
+    // subsidiary_id: yup.string().required("Subsidiary is required"),
+    // branch_id: yup.string().required("Branch is required"),
   });
   const router = useRouter();
   const user = useAppSelector(selectUser);
@@ -175,6 +180,8 @@ export const useUnit = ({ cancelPath }: Prop) => {
     await createUnit(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
+        router.push(UnitRoute);
         toast.success("Unit Created Successfully");
         new Promise(() => {
           setTimeout(() => {

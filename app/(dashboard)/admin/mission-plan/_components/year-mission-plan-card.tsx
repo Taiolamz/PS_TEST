@@ -4,36 +4,46 @@ import { StatsIcon } from "@/public/assets/icons";
 
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import BadgeComponent from "@/components/badge/BadgeComponents";
+import { truncateString } from "@/utils/helpers";
 
-type CardPropType = { state: string; href?: string, handleClick?: () => void };
-export default function YearMissionPlanCard({ state, href, handleClick }: CardPropType) {
+type CardPropType = { 
+  title?: string, 
+  created_by?: string, 
+  date?: string, 
+  status: string, 
+  href?: string, 
+  handleClick?: () => void 
+};
+export default function YearMissionPlanCard({ title, created_by, date, status,href, handleClick }: CardPropType) {
   return (
     <div
       className="capitalize bg-white h-[140px] w-full border rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 bg-transparent cursor-pointer"
       onClick={handleClick}
     >
       <div className="flex justify-between">
-        <Image className="" src={StatsIcon} alt="plus" />
+        <Image className="" src={StatsIcon} alt="plus"/>
+        {/* <BadgeComponent text="pending" color="green" className="text-[10px] focus:ring-2 focus:ring-ring focus:ring-offset-2"/> */}
         <Badge
           className="text-[10px]"
           variant={
-            state?.toLowerCase() === "in-progress"
+            status?.toLowerCase() === "pending"
               ? "pendingborder"
-              : state?.toLowerCase() === "completed"
+              : status?.toLowerCase() === "completed"
               ? "successborder"
-              : "danger"
+              : "successborder"
           }
         >
-          {state}
+          {status}
         </Badge>
       </div>
       <div className="">
-        <div className=" mt-5 font-normal text-base ">Mission Plan 2023</div>
+        <div className=" mt-5 font-normal text-base ">{truncateString(title as string, 25)}</div>
         <div className="text-custom-ash mt-1 font-normal text-[10px]">
-          Created by Admin
+         {created_by}
         </div>
         <div className="text-custom-gray-scale-300 mt-1 font-normal text-[10px]">
-          20/04/2024
+          {date}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { resetAuth, setAuthUser } from "@/redux/features/auth/authSlice";
 import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
+import { resetMissionPlan } from "@/redux/features/mission-plan/missionPlanSlice";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -138,8 +139,31 @@ export const authApi = baseApi.injectEndpoints({
           Cookies.remove("token");
           window.location.href = "/login";
           dispatch(resetAuth());
+          dispatch(resetMissionPlan());
         } catch (error: any) {
           console.log("Error:", error);
+        }
+      },
+    }),
+    getAuthUserDetails: builder.query({
+      query: () => ({
+        url: `/user`,
+        method: "GET",
+        // credentials: "include" as const
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          const {
+            data: { data },
+          } = result;
+          const key = {
+            user: data
+          }
+
+          dispatch(setAuthUser(key));
+        } catch (error: any) {
+          // console.log(error)
         }
       },
     }),
@@ -156,4 +180,5 @@ export const {
   useResetPasswordMutation,
   useVerifyOTPMutation,
   useResendOTPMutation,
+  useLazyGetAuthUserDetailsQuery,
 } = authApi;

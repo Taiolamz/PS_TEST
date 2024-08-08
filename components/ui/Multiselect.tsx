@@ -8,6 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { CaretDownIcon } from "@radix-ui/react-icons";
 import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
 import React, {
@@ -18,6 +19,7 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { RxCaretDown } from "react-icons/rx";
 
 type MultiSelectorProps = {
   values: any[];
@@ -161,7 +163,7 @@ const MultiSelector = ({
 
 const MultiSelectorTrigger = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  { onFocus: any } & React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
   const { value, onValueChange, activeIndex } = useMultiSelect();
 
@@ -174,12 +176,12 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap gap-1 p-1 py-2 border border-muted rounded-lg bg-background",
+        "flex flex-wrap gap-1 p-1 py-2 border border-red-500 rounded-lg bg-background relative",
         className
       )}
       {...props}
     >
-      {value.map((item, index) => (
+      {value?.map((item, index) => (
         <Badge
           key={item.value}
           className={cn(
@@ -202,6 +204,10 @@ const MultiSelectorTrigger = forwardRef<
         </Badge>
       ))}
       {children}
+
+      <div className="absolute right-2">
+        <RxCaretDown color="var(--text-color2)" size={20} />
+      </div>
     </div>
   );
 });
@@ -225,7 +231,7 @@ const MultiSelectorInput = forwardRef<
   return (
     <CommandPrimitive.Input
       {...props}
-      placeholder={value.length < 1 ? props.placeholder : ""}
+      placeholder={value?.length < 1 ? props.placeholder : ""}
       ref={ref}
       value={inputValue}
       onValueChange={activeIndex === -1 ? setInputValue : undefined}
@@ -298,7 +304,7 @@ const MultiSelectorItem = forwardRef<
       e.stopPropagation();
     }, []);
 
-    const isIncluded = Options.some((item) => item.value === option.value);
+    const isIncluded = Options?.some((item) => item.value === option.value);
     return (
       <CommandItem
         ref={ref}

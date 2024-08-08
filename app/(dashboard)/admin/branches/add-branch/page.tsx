@@ -14,10 +14,13 @@ import { Dictionary } from "@/@types/dictionary";
 import { COUNTRIES_STATES } from "@/utils/data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 const { ADMIN } = routesPath;
 
 const AddBranch = () => {
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
@@ -37,17 +40,7 @@ const AddBranch = () => {
     {}
   );
   return (
-    // <ChecklistLayout
-    //   onCancel={handleCancelDialog}
-    //   title="Branches"
-    //   onProceedBtn={formik.handleSubmit}
-    //   showBtn
-    //   step={`Step 2 of 4`}
-    //   btnDisabled={!formik.isValid || !formik.dirty}
-    //   loading={isCreatingBranch}
-    // >
     <DashboardLayout back headerTitle="Branch">
-      {/* step list button start */}
       <ReusableStepListBox
         btnText="Continue"
         activeStep="2"
@@ -56,14 +49,13 @@ const AddBranch = () => {
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingBranch}
         onSave={formik.handleSubmit}
-        onCancel={() => {
-          // cancel function here-----
-        }}
+        // onCancel={() => {
+        //   // cancel function here-----
+        // }}
         // back
-        hideStep
-        // fixed
+        // hideStep
       />
-      {/* step list button end */}
+
       <div className="" style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}>
         {" "}
         <FormLayout
@@ -134,7 +126,7 @@ const AddBranch = () => {
 
               <CustomSelect
                 label="Head of Branch"
-                isRequired
+                // isRequired
                 placeholder="Head of Branch"
                 options={[]}
                 selected={formik.values.head}
@@ -150,17 +142,23 @@ const AddBranch = () => {
                 onChange={formik.handleChange}
                 isRequired
               />
-              <CustomSelect
-                label="Subsidiary"
-                isRequired
-                placeholder="Select subsidiary"
-                options={subsidiaries}
-                selected={formik.values.subsidiary}
-                setSelected={(value) =>
-                  formik.setFieldValue("subsidiary", value)
-                }
-                labelClass={labelClassName}
-              />
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "subsidiary"
+              ) && (
+                <CustomSelect
+                  label="Subsidiary"
+                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
+                    "subsidiary"
+                  )}
+                  placeholder="Select subsidiary"
+                  options={subsidiaries}
+                  selected={formik.values.subsidiary}
+                  setSelected={(value) =>
+                    formik.setFieldValue("subsidiary", value)
+                  }
+                  labelClass={labelClassName}
+                />
+              )}
             </form>
           }
         />
@@ -174,8 +172,6 @@ const AddBranch = () => {
         <CancelModal onProceed={handleProceedCancel} modalTitle="Branch" />
       </DashboardModal>
     </DashboardLayout>
-
-    // </ChecklistLayout>
   );
 };
 

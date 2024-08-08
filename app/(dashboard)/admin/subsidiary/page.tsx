@@ -23,12 +23,14 @@ import { useAppSelector } from "@/redux/store";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import Link from "next/link";
 
 const { ADMIN } = routesPath;
 
 const Subsidiary = () => {
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [fileType, setFileType] = useState("");
 
   const {
     isOpen: openProceedModal,
@@ -177,7 +179,7 @@ const Subsidiary = () => {
           downloadFile({
             file: payload,
             filename: "subsidiary_template",
-            fileExtension: "csv",
+            fileExtension: fileType,
           });
         }
       })
@@ -186,15 +188,14 @@ const Subsidiary = () => {
 
   return (
     <DashboardLayout headerTitle="Subsidiary">
-      <ReusableStepListBox
-        btnText="Continue"
-        activeStep="1"
-        totalStep="4"
-        title="Subsidiary"
-        btnDisabled={subsidiaries?.length < 1}
-        onSave={handleProceed}
-        onCancel={handleCancelDialog}
-      />
+      {/* <Link
+        href={ADMIN.CHECKLIST}
+        className="text-primary font-semibold text-sm"
+        >
+        <p className="p-4 font-semibold underline bg-[#FFFCC2]">
+          Setup Checklist...
+        </p>
+      </Link> */}
       <section className="p-5">
         {subsidiaries?.length < 1 ? (
           <ReusableEmptyState
@@ -242,8 +243,14 @@ const Subsidiary = () => {
           <BulkUploadModal
             loading={isCreatingBulkSubsidiaries}
             onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={handleBulkRequirementDialog}
-            onSampleExcelDownload={handleBulkRequirementDialog}
+            onSampleCsvDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("csv");
+            }}
+            onSampleExcelDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("xlsx");
+            }}
             onBulkUpload={handleSubmitBulkUpload}
             setFile={setBulkFile}
           />
@@ -255,7 +262,7 @@ const Subsidiary = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload("csv")}
+            onTemplateDownload={() => handleTemplateDownload(fileType)}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>

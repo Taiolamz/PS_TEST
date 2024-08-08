@@ -14,12 +14,14 @@ import { COUNTRIES_STATES } from "@/utils/data";
 import { Dictionary } from "@/@types/dictionary";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { useRouter } from "next/navigation";
 
 const { ADMIN } = routesPath;
 
 const AddSubsidary = () => {
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
+  const router = useRouter();
   const {
     formik,
     countries,
@@ -36,8 +38,7 @@ const AddSubsidary = () => {
   );
   return (
     <>
-      <DashboardLayout back headerTitle="Subsidiary">
-        {/* step list button start */}
+      <DashboardLayout back headerTitle="Create Subsidiary">
         <ReusableStepListBox
           btnText="Continue"
           activeStep="1"
@@ -46,12 +47,11 @@ const AddSubsidary = () => {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
-          onCancel={handleCancelDialog}
-          // back
-          // hideStep
-          // fixed
+          // onCancel={() => {
+          //   router
+          // }}
         />
-        {/* step list button end */}
+
         <div
           className=""
           style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}
@@ -124,7 +124,7 @@ const AddSubsidary = () => {
 
                 <CustomSelect
                   label="Head of Subsidiary"
-                  isRequired
+                  // isRequired
                   placeholder="Head of subsidiary"
                   options={[]}
                   selected={formik.values.head_of_subsidiary}
@@ -159,17 +159,6 @@ const AddSubsidary = () => {
         </div>
       </DashboardLayout>
     </>
-    // <ChecklistLayout
-    //   onCancel={handleCancelDialog}
-    //   title="Subsidiaries"
-    //   onProceedBtn={formik.handleSubmit}
-    //   showBtn
-    //   step={`Step 1 of 4`}
-    //   btnDisabled={!formik.isValid || !formik.dirty}
-    //   loading={isCreatingSubsidiary}
-    // >
-
-    // </ChecklistLayout>
   );
 };
 

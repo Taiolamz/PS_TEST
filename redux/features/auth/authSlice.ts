@@ -9,6 +9,7 @@ const initialState: Auth = {
       id: "",
     },
   },
+  checklist: {},
 };
 
 const authSlice = createSlice({
@@ -18,12 +19,17 @@ const authSlice = createSlice({
     reset: (state) => (state = initialState),
     setAuthUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
+      if (action.payload.token) {
+        state.token = action.payload.token;
+      }
+    },
+    setChecklist: (state, action: PayloadAction<any>) => {
+      state.checklist = action.payload;
     },
   },
 });
 
-export const { setAuthUser } = authSlice.actions;
+export const { setAuthUser, setChecklist } = authSlice.actions;
 export const resetAuth = authSlice.actions.reset;
 
 export const authSliceReducer = authSlice.reducer;

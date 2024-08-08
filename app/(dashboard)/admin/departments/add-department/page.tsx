@@ -12,10 +12,13 @@ import { useDepartment } from "../_hooks/useDepartment";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 const { ADMIN } = routesPath;
 
 const AddDepartment = () => {
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
@@ -39,15 +42,6 @@ const AddDepartment = () => {
   return (
     <>
       <DashboardLayout back headerTitle="Department">
-        {/* <ChecklistLayout
-        onCancel={handleCancelDialog}
-        title="Department"
-        onProceedBtn={formik.handleSubmit}
-        showBtn
-        step={`Step 3 of 4`}
-        btnDisabled={!formik.isValid || !formik.dirty}
-        loading={isCreatingDepartment}
-      > */}
         <ReusableStepListBox
           btnText="Continue"
           activeStep="3"
@@ -56,10 +50,7 @@ const AddDepartment = () => {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingDepartment}
           onSave={formik.handleSubmit}
-          onCancel={handleCancelDialog}
-          // back
-          // hideStep
-          // fixed
+          // onCancel={handleCancelDialog}
         />
         <div
           className=""
@@ -83,7 +74,7 @@ const AddDepartment = () => {
                   onChange={formik.handleChange}
                   isRequired
                 />
-{/* 
+                {/* 
                 <CustomSelect
                   label="State"
                   isRequired
@@ -102,7 +93,7 @@ const AddDepartment = () => {
 
                 <CustomSelect
                   label="Head of Department"
-                  isRequired
+                  // isRequired
                   placeholder="Head of Department"
                   options={[]}
                   selected={formik.values.head_of_department}
@@ -122,9 +113,13 @@ const AddDepartment = () => {
                   isRequired
                 />
 
-                <CustomSelect
+            {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "subsidiary"
+              ) &&    <CustomSelect
                   label="Subsidiary"
-                  isRequired
+                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
+                    "subsidiary"
+                  ) }
                   placeholder="Select subsidiary"
                   options={subsidiaries}
                   selected={formik.values.subsidiary}
@@ -132,11 +127,15 @@ const AddDepartment = () => {
                     formik.setFieldValue("subsidiary", value)
                   }
                   labelClass={labelClassName}
-                />
+                />}
 
-                <CustomSelect
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "branch"
+              ) &&    <CustomSelect
                   label="Branch"
-                  isRequired
+                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
+                    "branch"
+                  ) }
                   placeholder="Select Branch"
                   options={branches}
                   selected={selectedBranch}
@@ -148,7 +147,7 @@ const AddDepartment = () => {
                     formik.setFieldValue("branch_id", selectedBranchId);
                   }}
                   labelClass={labelClassName}
-                />
+                />}
               </form>
             }
           />

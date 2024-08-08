@@ -18,6 +18,7 @@ import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { usePathname, useRouter } from "next/navigation";
+import { specifiedTaskSchema } from "@/utils/schema/mission-plan";
 
 export const EFFORT_DATA = [
   {
@@ -26,36 +27,6 @@ export const EFFORT_DATA = [
     isChecked: false,
   },
 ];
-
-const validationSchemaTask = Yup.object().shape({
-  tasks: Yup.array().of(
-    Yup.object().shape({
-      id: Yup.string().required(),
-      title: Yup.string().required("Title is required"),
-      pillars: Yup.array()
-        .of(
-          Yup.object().shape({
-            label: Yup.string().required(),
-            value: Yup.string().required(),
-            color: Yup.string().required(),
-          })
-        )
-        .min(1, "At least one pillar is required"),
-      measures: Yup.array()
-        .of(
-          Yup.object().shape({
-            label: Yup.string().required(),
-            value: Yup.string().required(),
-            color: Yup.string().required(),
-          })
-        )
-        .min(1, "At least one measure is required"),
-
-      start_date: Yup.date().required("Start date is required"),
-      end_date: Yup.date().required("End date is required"),
-    })
-  ),
-});
 
 const options = [
   { label: "React", value: "react", color: "#61dafb" },
@@ -66,6 +37,9 @@ const options = [
 interface Task {
   start_date: string;
   end_date: string;
+  title?: string;
+  pillars?: string;
+  measures?: string;
 }
 
 const SpecifiedTask = () => {
@@ -91,7 +65,7 @@ const SpecifiedTask = () => {
       strategic_intent_id: "",
     },
     onSubmit: () => console.log("Submit"),
-    validationSchema: validationSchemaTask,
+    validationSchema: specifiedTaskSchema,
   });
 
   const handleChange = (value: string, index: number) => {
@@ -135,19 +109,15 @@ const SpecifiedTask = () => {
                             id="title"
                             name={`tasks.${index}.title`}
                             label="Title"
+                            error={errorTasks?.[index].title}
+                            touched={touchedTasks?.[index].title}
                             onBlur={formik.handleBlur}
-                            placeholder="Input Staff Name"
+                            placeholder="Input Task"
                             className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                             onChange={(e) =>
                               handleChange(e.target.value, index)
                             }
                             value={formik.values.tasks[index].title}
-                          />
-
-                          <ErrorMessage
-                            name={`tasks.${index}.title`}
-                            className="text-red-500 text-xs mt-1"
-                            component={"div"}
                           />
                         </div>
 
@@ -169,12 +139,14 @@ const SpecifiedTask = () => {
                                 true
                               )
                             }
-                            triggerClass="rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px]"
+                            triggerClass={`rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px]`}
                             placeholder="Select Pillars"
                             inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                            errorClass="text-red-500 text-xs mt-1"
+                            errorClass="text-red-500 text-xs mt-1 relative bottom-3"
                             itemValue=""
                             name={`tasks.${index}.pillars`}
+                            error={errorTasks?.[index].pillars}
+                            touched={touchedTasks?.[index].pillars}
                           />
                         </div>
                         <button
@@ -196,7 +168,7 @@ const SpecifiedTask = () => {
                               )
                             }
                             options={options}
-                            label="Select Measures"
+                            label="Select Measure of Success"
                             labelClass="block text-xs text-[#6E7C87] font-normal m-0 p-0"
                             onBlur={() =>
                               formik.setFieldTouched(
@@ -205,10 +177,12 @@ const SpecifiedTask = () => {
                               )
                             }
                             triggerClass="rounded-md border bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px] min-w-[20rem]"
-                            placeholder="Select Measures"
+                            placeholder="Select Multiple"
                             inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                            errorClass="text-red-500 text-xs mt-1"
+                            errorClass="text-red-500 text-xs mt-1 relative bottom-3"
                             name={`tasks.${index}.measures`}
+                            error={errorTasks?.[index].measures}
+                            touched={touchedTasks?.[index].measures}
                           />
                         </div>
                         <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-x-4 justify-between">
@@ -224,14 +198,16 @@ const SpecifiedTask = () => {
                             <CustomDateInput
                               labelClass="pb-2"
                               className="relative"
+                              placeholder="DD/MM/YYYY"
+                              format="DD/MM/YYYY"
                               id={`tasks.${index}.start_date`}
                               name={`tasks.${index}.start_date`}
-                              label="Start Period"
-                              inputClass="md:w-32 text-[.75rem]"
+                              label="Start Date"
+                              inputClass="text-[.75rem]"
                               handleChange={(date) =>
                                 formik.setFieldValue(
                                   `tasks.${index}.start_date`,
-                                  date.format("YYYY-MM-DD")
+                                  date?.format("DD/MM/YYYY")
                                 )
                               }
                               //   value={formik.values.tasks[index].start_date}
@@ -251,16 +227,18 @@ const SpecifiedTask = () => {
                             <CustomDateInput
                               id={`tasks.${index}.end_date`}
                               name={`tasks.${index}.end_date`}
-                              label="End Period"
+                              label="End Date"
+                              format="DD/MM/YYYY"
+                              placeholder="DD/MM/YYYY"
                               handleChange={(date) =>
                                 formik.setFieldValue(
                                   `tasks.${index}.end_date`,
-                                  date.format("YYYY-MM-DD")
+                                  date?.format("DD/MM/YYYY")
                                 )
                               }
                               labelClass="pb-2"
                               className="relative"
-                              inputClass="md:w-32 text-[.75rem]"
+                              inputClass="w-full text-[.75rem]"
                               //   value={formik.values.tasks[index].end_date}
                               touched={touchedTasks?.[index]?.end_date}
                               error={errorTasks?.[index]?.end_date}
@@ -273,7 +251,7 @@ const SpecifiedTask = () => {
                                 id={`tasks.${index}.main_efforts`}
                                 name={`tasks.${index}.main_efforts`}
                                 label={title}
-                                labelClass="text-[#008080] text-sm w-full"
+                                labelClass="text-sm w-full text-[var(--primary-color)]"
                                 isChecked={
                                   formik.values.tasks[index].main_efforts
                                 }
@@ -305,9 +283,12 @@ const SpecifiedTask = () => {
                     main_efforts: false,
                   })
                 }
-                className="flex items-center gap-2 mt-5 text-primary text-sm px-1"
+                className="flex items-center gap-2 mt-5 text-[var(--primary-color)] text-sm px-1"
               >
-                <LucidePlusCircle color="#04ACAC" size={20} />
+                <LucidePlusCircle
+                  style={{ color: "var(--primary-color)" }}
+                  size={20}
+                />
                 Add new Specific Task
               </button>
             </div>
@@ -316,7 +297,7 @@ const SpecifiedTask = () => {
         <div className="mt-8 flex gap-x-2 items-center">
           <Button
             variant="outline"
-            className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+            className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
           >
             Back
           </Button>
@@ -330,9 +311,9 @@ const SpecifiedTask = () => {
             className={cn(
               "w-full",
               // !formik.isValid || isLoadingStrategicIntent
-              //   ? "opacity-50 cursor-not-allowed w-max"
+              //   ? "opacity-50 cursor-not-allowed w-max py-5 px-2"
               //   :
-              "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+              "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
             )}
             // className={`text-white py-5 px-2 rounded-sm bg-primary border border-primary min-w-28`}
           >

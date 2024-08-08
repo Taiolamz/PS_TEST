@@ -28,6 +28,7 @@ const { ADMIN } = routesPath;
 const Units = () => {
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [fileType, setFileType] = useState("");
 
   const {
     isOpen: openProceedModal,
@@ -177,7 +178,7 @@ const Units = () => {
           downloadFile({
             file: payload,
             filename: "unit_template",
-            fileExtension: "csv",
+            fileExtension: fileType,
           });
         }
       })
@@ -185,7 +186,7 @@ const Units = () => {
   };
   return (
     <DashboardLayout headerTitle="Unit">
-      <ReusableStepListBox
+      {/* <ReusableStepListBox
         btnText="Continue"
         activeStep="4"
         totalStep="4"
@@ -193,7 +194,7 @@ const Units = () => {
         btnDisabled={units?.length < 1}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-      />
+      /> */}
       <section className="p-5">
         {units?.length < 1 ? (
           <ReusableEmptyState
@@ -238,8 +239,14 @@ const Units = () => {
           <BulkUploadModal
             loading={isCreatingBulkUnits}
             onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={handleBulkRequirementDialog}
-            onSampleExcelDownload={handleBulkRequirementDialog}
+            onSampleCsvDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("csv");
+            }}
+            onSampleExcelDownload={() => {
+              handleBulkRequirementDialog();
+              setFileType("xlsx");
+            }}
             onBulkUpload={handleSubmitBulkUpload}
             setFile={setBulkFile}
           />
@@ -251,7 +258,7 @@ const Units = () => {
           onOpenChange={handleBulkRequirementDialog}
         >
           <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload("csv")}
+            onTemplateDownload={() => handleTemplateDownload(fileType)}
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>

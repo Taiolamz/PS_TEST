@@ -20,6 +20,7 @@ interface CustomTimeInputProps {
   touched?: boolean;
   showIcon?: boolean;
   iconClass?: string;
+  format?: string;
 }
 
 export default function CustomTimeInput({
@@ -36,8 +37,9 @@ export default function CustomTimeInput({
   error,
   touched,
   showIcon = true,
+  format,
 }: CustomTimeInputProps) {
-  console.log(selected);
+  // console.log(selected);
   return (
     <div className="relative">
       {label && (
@@ -60,17 +62,18 @@ export default function CustomTimeInput({
       <DatePicker
         id={id}
         name={name}
-        placeholder="MM/DD/YY"
+        placeholder="00:00"
         inputClass={cn(
           "border rounded-[4px] bg-[#F6F8F9] px-3 py-[7px] text-[.85rem] w-full focus:outline-none",
           error && touched && "border-red-500"
         )}
         containerClassName="w-full"
         onChange={handleChange}
-        className={cn("teal", className)}
+        className={cn( "date-picker", className)}
         disableDayPicker
-        format="hh:mm:ss A"
+        format={format || "hh:mm:ss A"}
         plugins={[<TimePicker key={id} />]}
+        value={selected}
       />
       {showIcon && (
         <Timer

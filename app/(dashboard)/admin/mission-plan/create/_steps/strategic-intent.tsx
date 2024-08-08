@@ -5,37 +5,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { ErrorMessage, FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle } from "lucide-react";
 import { LiaTimesSolid } from "react-icons/lia";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
-
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import { cn } from "@/lib/utils";
-import { useAddStrategicIntentMutation } from "@/redux/services/mission-plan/missionPlanApi";
+import {
+  useAddStrategicIntentMutation,
+} from "@/redux/services/mission-plan/missionPlanApi";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { setStrategicIntentsSchema } from "@/utils/schema/mission-plan";
 
-const validationSchema = Yup.object().shape({
-  // mission_plan_id: Yup.string().required("Mission Plan ID is required"),
-  // strategic_intent_id: Yup.string().required("Strategic Intent ID is required"),
-  intents: Yup.array().of(
-    Yup.object().shape({
-      intent: Yup.string().required("Intent is required"),
-      behaviours: Yup.array().of(
-        Yup.object().shape({
-          id: Yup.string(),
-          value: Yup.string().required("Behaviour is required"),
-        })
-      ),
-    })
-  ),
-});
+interface StrategicIntentProps {
+  currentMissionPlan?: CurrentMissionPlanData[] | any;
+}
 
-const StrategicIntent = () => {
+const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   const location = usePathname();
   const router = useRouter();
 
   const [addStrategicIntent, { isLoading: isLoadingStrategicIntent }] =
     useAddStrategicIntentMutation();
+
+  const [initialValues, setInitialValues] = useState();
 
   const handleSaveStrategicIntent = async () => {
     const { intents, mission_plan_id, strategic_intent_id } = formik.values;
@@ -52,8 +45,11 @@ const StrategicIntent = () => {
       mission_plan_id,
       strategic_intent_id,
     };
-
-    await addStrategicIntent(transformedIntents);
+    try {
+      await addStrategicIntent(transformedIntents).unwrap();
+      router.push(`${location}?ui=specified-intent`);
+      toast.success("Strategic intent saved successfully");
+    } catch (error) {}
   };
 
   const handleChange = (
@@ -71,8 +67,27 @@ const StrategicIntent = () => {
     }
   };
 
-  const formik = useFormik<any>({
-    initialValues: {
+  // This sets the intial saved values
+  useEffect(() => {
+    const intents = currentMissionPlan?.strategic_intents.map(
+      (intent: any) => ({
+        intent: intent.intent,
+        behaviours: JSON.parse(intent.behaviours).map((behaviour: string) => ({
+          id: uuidv4(),
+          value: behaviour,
+        })),
+      })
+    );
+
+    setInitialValues(intents);
+  }, [currentMissionPlan]);
+
+  // This prevents an infinite loop by memoizing the values
+  const initialVals = useMemo(() => {
+    if (initialValues) {
+      return initialValues;
+    }
+    return {
       intents: [
         {
           intent: "",
@@ -81,17 +96,32 @@ const StrategicIntent = () => {
       ],
       mission_plan_id: "",
       strategic_intent_id: "",
+    };
+  }, [initialValues]);
+
+  const formik = useFormik<any>({
+    initialValues: {
+      intents: [
+        {
+          intent: "",
+          behaviours: [{ id: uuidv4(), value: "" }],
+        },
+      ],
+      mission_plan_id: currentMissionPlan?.mission_statement?.mission_plan_id,
+      strategic_intent_id: "",
     },
-    onSubmit: async () => null,
-    validationSchema: validationSchema,
+    onSubmit: handleSaveStrategicIntent,
+    validationSchema: setStrategicIntentsSchema,
+    // enableReinitialize: true,
   });
 
   const errorIntents = formik.errors.intents as any;
+  const touchedIntents = formik.touched.intents as any;
 
   return (
     <div>
       <div className="flex items-center gap-x-2 mb-8">
-        <h1 className="text-[#3E4345]">Strategic Intent</h1>
+        <h1 className="text-[#3E4345]">Set Strategic Intent</h1>
         <span>
           <BsFillInfoCircleFill color="#84919A" />
         </span>
@@ -104,33 +134,31 @@ const StrategicIntent = () => {
                 {formik.values.intents?.length > 0 &&
                   formik.values.intents.map((intent: any, index: number) => (
                     <div
-                      key={intent.id}
-                      className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative"
+                      key={intent?.id}
+                      className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative max-w-4xl"
                     >
                       <div className="!ml-0">
                         <Textarea
                           rows={4}
-                          id={`intent-${intent.id}`}
+                          placeholder="Input Statement"
+                          id={`intent-${intent?.id}`}
+                          onBlur={formik.handleBlur}
                           label={`Strategic Intent ${index + 1}`}
                           labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
                           name={`intents.${index}.intent`}
-                          error={errorIntents?.intent}
+                          error={errorIntents?.[index].intent}
+                          touched={touchedIntents?.[index].intent}
                           onChange={(e) => handleChange(e.target.value, index)}
                           className="border p-2 md:min-w-[27rem] lg:min-w-[37rem] bg-[#F6F8F9]"
-                          value={formik.values.intents[index].intent}
-                        />
-                        <ErrorMessage
-                          name={`intents.${index}.intent`}
-                          className="text-red-500 text-xs"
-                          component={"div"}
+                          value={formik?.values?.intents[index]?.intent}
                         />
                       </div>
 
                       <FieldArray name={`intents.${index}.behaviours`}>
                         {({ insert, remove: removeBehaviour, push }) => (
                           <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max">
-                            {intent.behaviours?.length > 0 &&
-                              intent.behaviours.map(
+                            {intent?.behaviours?.length > 0 &&
+                              intent?.behaviours.map(
                                 (behaviour: any, behaviourIndex: number) => (
                                   <div
                                     key={behaviour.id}
@@ -142,6 +170,11 @@ const StrategicIntent = () => {
                                       label="Behaviour"
                                       labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
                                       onBlur={formik.handleBlur}
+                                      touched={
+                                        touchedIntents?.[index]?.behaviours?.[
+                                          behaviourIndex
+                                        ]?.value
+                                      }
                                       error={
                                         errorIntents?.[index]?.behaviours?.[
                                           behaviourIndex
@@ -155,7 +188,7 @@ const StrategicIntent = () => {
                                         )
                                       }
                                       name={`intents.${index}.behaviours.${behaviourIndex}.value`}
-                                      placeholder="Behaviour Value"
+                                      placeholder="Input Behaviour"
                                       className="mr-2 w-full md:w-[12rem] lg:w-[20rem] "
                                       value={
                                         formik.values.intents[index].behaviours[
@@ -163,20 +196,20 @@ const StrategicIntent = () => {
                                         ].value
                                       }
                                     />
-                                    <ErrorMessage
-                                      name={`intents.${index}.behaviours.${behaviourIndex}.value`}
-                                      className="text-red-500 text-xs mt-1"
-                                      component={"div"}
-                                    />
 
                                     <button
                                       type="button"
                                       onClick={() =>
+                                        behaviourIndex !== 0 &&
                                         removeBehaviour(behaviourIndex)
                                       }
-                                      className="text-red-600 absolute left-[180px] md:left-[170px] lg:left-[290px] top-[39px]"
+                                      className={`text-red-600 absolute left-[180px] md:left-[170px] lg:left-[290px] top-[39px] ${
+                                        behaviourIndex === 0 && "cursor-default"
+                                      }`}
                                     >
-                                      <LiaTimesSolid />
+                                      {behaviourIndex !== 0 && (
+                                        <LiaTimesSolid />
+                                      )}
                                     </button>
                                   </div>
                                 )
@@ -184,10 +217,13 @@ const StrategicIntent = () => {
                             <button
                               type="button"
                               onClick={() => push({ id: uuidv4(), value: "" })}
-                              className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
+                              className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-[var(--primary-color)] text-sm"
                             >
-                              <LucidePlusCircle color="#04ACAC" size={20} />
-                              Add Behaviour
+                              <LucidePlusCircle
+                                style={{ color: "var(--primary-color)" }}
+                                size={20}
+                              />
+                              Add new Behaviour
                             </button>
                           </div>
                         )}
@@ -210,10 +246,13 @@ const StrategicIntent = () => {
                       behaviours: [""],
                     })
                   }
-                  className="flex items-center gap-2 mt-8 text-primary text-sm"
+                  className="flex items-center gap-2 mt-8 text-[var(--primary-color)] text-sm"
                 >
-                  <LucidePlusCircle color="#04ACAC" size={20} />
-                  Add more level
+                  <LucidePlusCircle
+                    style={{ color: "var(--primary-color)" }}
+                    size={20}
+                  />
+                  Add new Strategic intent
                 </button>
               </div>
             )}
@@ -221,23 +260,22 @@ const StrategicIntent = () => {
           <div className="mt-8 flex gap-x-2 items-center">
             <Button
               variant="outline"
-              className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+              className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
             >
               Back
             </Button>
             <Button
               type="submit"
-              //   disabled={isLoadingStrategicIntent}
-              //   loading={isLoadingStrategicIntent}
-              onClick={() => router.push(`${location}?ui=specified-intent`)}
+              disabled={isLoadingStrategicIntent}
+              loading={isLoadingStrategicIntent}
+              // onClick={() => router.push(`${location}?ui=specified-intent`)}
               loadingText="Save & Continue"
               className={cn(
                 "w-full",
                 !formik.isValid || isLoadingStrategicIntent
-                  ? "opacity-50 cursor-not-allowed w-max"
-                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+                  ? "opacity-50 cursor-not-allowed w-max py-5 px-2"
+                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
               )}
-              // className={`text-white py-5 px-2 rounded-sm bg-primary border border-primary min-w-28`}
             >
               Save & Continue
             </Button>

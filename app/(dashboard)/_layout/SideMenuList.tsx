@@ -312,7 +312,7 @@ export const sideMenuList: any = [
     collapseNum: "one",
     navLinks: [
       {
-        name: "Dashboard",
+        name: "Overview",
         link: routesPath?.ADMIN?.OVERVIEW,
         icon: sideMenuIcons?.dashboard,
         relatedLink: [""],
@@ -362,6 +362,18 @@ export const sideMenuList: any = [
         relatedLink: [routesPath?.ADMIN?.CREATE_BRANCH, routesPath?.ADMIN?.BRANCHES],
       },
       {
+        name: "Departments",
+        link: routesPath?.ADMIN?.DEPARTMENT,
+        icon: sideMenuIcons?.branch,
+        relatedLink: [routesPath?.ADMIN?.CREATE_DEPARTMENT,],
+      },
+      {
+        name: "Units",
+        link: routesPath?.ADMIN?.UNIT,
+        icon: sideMenuIcons?.branch,
+        relatedLink: [routesPath?.ADMIN?.CREATE_UNIT,],
+      },
+      {
         name: "Organogram",
         link: routesPath?.ADMIN?.ORGANOGRAM,
         icon: sideMenuIcons?.organogram,
@@ -404,7 +416,7 @@ export const sideMenuEmployeeList = [
     collapseNum: "one",
     navLinks: [
       {
-        name: "Dashboard",
+        name: "Overview",
         link: routesPath?.EMPLOYEE?.OVERVIEW,
         icon: sideMenuIcons?.dashboard,
       },

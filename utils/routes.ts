@@ -5,11 +5,18 @@ export const employee_auth = "employee";
 export const employeeRoleList = ["staff"];
 
 export const adminRoleList = [
-  "hr-admin", "strategy-admin", "it-admin", "compliance","super-admin", "user"
+  "hr-admin",
+  "strategy-admin",
+  "it-admin",
+  "compliance",
+  "super-admin",
+  "user",
+  "ceo"
 ];
 
-export const specialRoleList = ["super-admin",];
+export const specialRoleList = ["super-admin"];
 // const
+
 
 const routesPath = {
   ADMIN: {
@@ -18,6 +25,11 @@ const routesPath = {
     MAIN_MISSION_PLAN: `/${admin_auth}/mission-plan`,
     CREATE_MISSION_PLAN: `/${admin_auth}/mission-plan/create`,
     SINGLE_MISSION_PLAN: `/${admin_auth}/mission-plan/view`,
+    MISSION_PLAN_TEMPLATE: `/${admin_auth}/mission-plan/template`,
+    CREATE_MISSION_PLAN_TEMPLATE: `/${admin_auth}/mission-plan/template/create`,
+    MISSION_PLAN_TEMPLATE_LEVEL: `/${admin_auth}/mission-plan/template/level`,
+    MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
+    CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     PERFORMANCE: `/${admin_auth}/performance`,
     KPI: `/${admin_auth}/kpi`,
@@ -37,6 +49,7 @@ const routesPath = {
     EMPLOYEES: `/${admin_auth}/employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
     // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
+    PRESENTATION: `/${admin_auth}/mission-plan/2023/approve`,
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,
@@ -55,5 +68,18 @@ const routesPath = {
   FORGOT_PASSWORD: "/forgot-password",
   ONBOARDING: "/onboarding",
 };
+
+
+export const checkListRoutes = [
+  routesPath?.ADMIN?.SUBSIDIARY,
+  routesPath?.ADMIN?.BRANCH,
+  routesPath?.ADMIN?.DEPARTMENT,
+  routesPath?.ADMIN?.EMPLOYEES,
+  routesPath?.ADMIN?.OVERVIEW,
+  routesPath?.ADMIN?.MAIN_MISSION_PLAN,
+  routesPath?.ADMIN?.UNIT,
+  routesPath?.ADMIN?.MISSION_PLAN_TEMPLATE,
+  // routesPath?.ADMIN?. 
+];
 
 export default routesPath;
