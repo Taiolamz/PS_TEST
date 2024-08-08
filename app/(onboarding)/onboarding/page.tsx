@@ -48,6 +48,7 @@ const Onboarding = () => {
   const ui = searchParams.get("ui");
   const { ONBOARDING } = routesPath;
   const [fyDate, setFyDate] = useState("");
+  const [time, setTime] = useState("");
   const actionCtx = useContext(ActionContext);
 
   const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
@@ -74,8 +75,6 @@ const Onboarding = () => {
       );
       return;
     }
-
-    // console.log(formik?.values);
 
     const formDataToSend = new FormData();
 
@@ -175,6 +174,8 @@ const Onboarding = () => {
                 formik={formik}
                 setFyDate={setFyDate}
                 fyDate={fyDate}
+                time={time}
+                setTime={setTime}
               />
             )}
             {getCurrentStep() === 4 && (
