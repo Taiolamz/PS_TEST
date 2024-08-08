@@ -48,9 +48,9 @@ const genderOptions = [
 
 const formSchema = yup.object().shape({
   first_name: yup.string().required("First name is required"),
-  middle_name: yup.string().required("Middle name is required"),
+  middle_name: yup.string().optional(),
   last_name: yup.string().required("Last name is required"),
-  maiden_name: yup.string().required("Maiden name is required"),
+  maiden_name: yup.string().optional(),
   date_of_birth: yup.date().required("A date of birth is required."),
   gender: yup.string().required("Gender is required"),
   resumption_date: yup.date().required("Resumption date is required."),
@@ -74,7 +74,11 @@ const formSchema = yup.object().shape({
     .email("Invalid email address")
     .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     .required("Line Manager Email is required"),
-  phone_number: yup.string().optional(),
+  phone_number: yup
+    .string()
+    .required("Phone number is required")
+    .matches(/^\d+$/, "Phone number must be digits only")
+    .max(14, "Phone number cannot exceed 14 digits"),
   role_id: yup.string().optional(),
 });
 
