@@ -67,10 +67,12 @@ const DashboardLayout = ({
   };
 
   useEffect(() => {
-    if (checkUserRole(user?.role as string) === "ADMIN" && "") {
-      handleGetChecklist();
-    }
-
+    // if (checkUserRole(user?.role as string) === "ADMIN") {
+    //   handleGetChecklist();
+    // }
+    handleGetChecklist();
+  //  console.log(user);
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -110,9 +112,7 @@ const DashboardLayout = ({
     }
     // no branches check
     if (
-      !processInputAsArray(user?.organization?.hierarchy)?.includes(
-        "branch"
-      ) &&
+      !processInputAsArray(user?.organization?.hierarchy)?.includes("branch") &&
       pathname?.includes("branches")
     ) {
       router?.back();
