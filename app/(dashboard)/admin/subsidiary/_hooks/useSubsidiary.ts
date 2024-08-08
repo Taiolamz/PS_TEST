@@ -62,6 +62,8 @@ const formSchema = yup.object().shape({
   work_email: yup
     .string()
     .min(1, "Work Email is required")
+    .email("Invalid email address")
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     .required("Work Email is required"),
 });
 

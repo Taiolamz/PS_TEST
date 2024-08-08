@@ -11,9 +11,12 @@ import DashboardModal from "../_components/checklist-dashboard-modal";
 import CancelModal from "../_components/cancel-modal";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import routesPath from "@/utils/routes";
+
+const { ADMIN } = routesPath;
 
 const AddUnit = () => {
-  const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
+  const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
     formik,

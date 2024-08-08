@@ -34,11 +34,12 @@ const countries = [
 const COUNTRIES = COUNTRIES_STATES?.map((d) => {
   return {
     label: d.name,
-     value: d.name, icon: HomeIcon
-  }
-})
+    value: d.name,
+    icon: HomeIcon,
+  };
+});
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const useBranch = ({ cancelPath }: Prop) => {
   const actionCtx = useContext(ActionContext)
@@ -103,6 +104,8 @@ export const useBranch = ({ cancelPath }: Prop) => {
     work_email: yup
       .string()
       .min(1, "Work Email is required")
+      .email("Invalid email address")
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
     subsidiary: yup.string().required(),
   });

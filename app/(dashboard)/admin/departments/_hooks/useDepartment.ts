@@ -71,7 +71,7 @@ const headOfDepartment = [
   },
 ];
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export const useDepartment = ({ cancelPath }: Prop) => {
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
@@ -152,6 +152,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     work_email: yup
       .string()
       .min(1, "Work Email is required")
+      .email("Invalid email address")
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
     subsidiary: yup.string().required(),
     branch_id: yup.string().required(),
