@@ -1,3 +1,5 @@
+import { Dictionary } from "@/@types/dictionary";
+
 type Organization = {
   appraisal_cycle?: string | null;
   brand_colour?: string | null;
@@ -32,5 +34,5 @@ type User = {
 export type Auth = {
   user: User;
   token?: string;
-  checklist?: string;
+  checklist?: Dictionary;
 };

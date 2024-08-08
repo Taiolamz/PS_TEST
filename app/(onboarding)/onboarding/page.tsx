@@ -2,7 +2,7 @@
 
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -19,6 +19,8 @@ import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
@@ -43,7 +45,11 @@ const Onboarding = () => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
   const { ONBOARDING } = routesPath;
+  const actionCtx = useContext(ActionContext)
 
+  const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
     return step;
@@ -80,14 +86,37 @@ const Onboarding = () => {
       );
       return;
     }
+
+    // console.log(formik?.values);
+
     const formDataToSend = new FormData();
-    // console.log(formik.values);
+
+    function getTrueKeysText(obj: any) {
+      return Object?.keys(obj)
+        .filter(key => obj[key])
+        .map(key => {
+          switch (key.toLowerCase()) {
+            case 'branches':
+              return 'branch';
+            case 'departments':
+              return 'department';
+            case 'subsidiary':
+              return 'subsidiary';
+            case 'units':
+              return 'unit';
+            default:
+              return key.toLowerCase();
+          }
+        });
+    }
 
     Object.entries(formik.values).forEach(([key, value]) => {
       const mappedKey = keyMapping[key] || key;
 
       if (key === "logo" && logo instanceof File) {
         formDataToSend.append(mappedKey, logo);
+      } else if (key === "hierarchy") {
+        formDataToSend.append(mappedKey, getTrueKeysText(value) as any);
       } else if (Array.isArray(value) || typeof value === "object") {
         formDataToSend.append(mappedKey, JSON.stringify(value));
       } else {
@@ -99,7 +128,7 @@ const Onboarding = () => {
     const appraisalCycle = "annual";
     formDataToSend.append("appraisal_cycle", appraisalCycle);
 
-    console.log({ formDataToSend });
+    // console.log({ formDataToSend });
 
     try {
       // const response = await setupOrganization(formDataToSend);
@@ -107,10 +136,18 @@ const Onboarding = () => {
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
+          // handleGetAuthUser()
+          actionCtx.triggerUpdateUser();
           toast.success("Organization Created Successfully");
           router.push(ADMIN.OVERVIEW);
         });
     } catch (error) {}
+  };
+
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
   };
 
   const formik = useFormik<FormValues>({

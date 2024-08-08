@@ -14,6 +14,8 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { COUNTRIES_STATES } from "@/utils/data";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
@@ -33,6 +35,12 @@ const COUNTRIES = COUNTRIES_STATES?.map((d) => {
     icon: HomeIcon,
   };
 });
+
+// const handleGetAuthUser = async () => {
+//   getAuthUserDetails({})
+//     .unwrap()
+//     .then(() => {});
+// };
 
 const handleFormatArray = (items: SelectFormType) => {
   const array = items.map((item) => item.label);
@@ -63,6 +71,7 @@ const { ADMIN } = routesPath;
 
 export const useSubsidiary = ({ cancelPath }: Prop) => {
   const router = useRouter();
+  const actionCtx = useContext(ActionContext);
   const user = useAppSelector(selectUser);
 
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
@@ -109,11 +118,13 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
     await createSubsidiary(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
         toast.success("Subsidiary Created Successfully");
+        router.push(SubsidiaryRoute);
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push(SubsidiaryRoute);
+            // router.push(SubsidiaryRoute);
           }, 2000);
         });
       });

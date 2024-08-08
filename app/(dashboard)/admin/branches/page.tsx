@@ -22,6 +22,7 @@ import { branchColumns } from "./branch-column";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import Link from "next/link";
 
 const { ADMIN } = routesPath;
 
@@ -186,15 +187,14 @@ const Branches = () => {
 
   return (
     <DashboardLayout headerTitle="Branches">
-      <ReusableStepListBox
-        btnText="Continue"
-        activeStep="2"
-        totalStep="4"
-        title="Branch"
-        btnDisabled={branches?.length < 1}
-        onSave={handleProceed}
-        onCancel={handleCancelDialog}
-      />
+      {/* <Link
+        href={ADMIN.CHECKLIST}
+        className="text-primary font-semibold text-sm"
+        >
+        <p className="p-4 font-semibold underline bg-[#FFFCC2]">
+          Setup Checklist...
+        </p>
+      </Link> */}
       <section className="p-5">
         {branches?.length < 1 ? (
           <ReusableEmptyState
