@@ -3,10 +3,10 @@
 import Icon from "@/components/icon/Icon";
 import { CheckIcon } from "@radix-ui/react-icons";
 import React from "react";
-import { steps } from "./onboarding/data";
+import { steps } from "./data";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { ActionContextProvider } from "../(dashboard)/context/ActionContext";
+import { ActionContextProvider } from "../../(dashboard)/context/ActionContext";
 
 type Props = {
   children: React.ReactNode;
