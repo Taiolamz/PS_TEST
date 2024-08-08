@@ -9,12 +9,16 @@ interface OperationsParameterProps {
   formik: any;
   fyDate: any;
   setFyDate: (item: any) => void;
+  time: any;
+  setTime: (item: any) => void;
 }
 
 const OperationsParameter = ({
   formik,
   setFyDate,
   fyDate,
+  time,
+  setTime,
 }: OperationsParameterProps) => {
   const handleChange = (
     newDate: { format: (arg0: string) => any },
@@ -28,8 +32,11 @@ const OperationsParameter = ({
     newDate: { format: (arg0: string) => any },
     name: string
   ) => {
+    setTime({ ...time, [name]: newDate });
     formik.setFieldValue(name, newDate.format("HH:mm"));
   };
+
+  console.log({ Formikkk: formik.values.opening_time, fyDate, time });
   return (
     <section className="max-w-[54.625rem] px-4 scroll-hidden">
       <FormHeader
@@ -60,9 +67,6 @@ const OperationsParameter = ({
                 placeholder="2022 Financial Year"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 sm:text-sm"
               />
-              {formik.touched.fy_title && formik.errors.fy_title ? (
-                <div className="text-red-500">{formik.errors.fy_title}</div>
-              ) : null}
             </div>
 
             <div className="basis-1/4">
@@ -81,6 +85,7 @@ const OperationsParameter = ({
                 className="relative"
                 // iconClass="top-4"
                 showOnlyMonth={true}
+                format="MMM YYYY"
               />
             </div>
             <div className="basis-1/4">
@@ -98,6 +103,7 @@ const OperationsParameter = ({
                 className="relative"
                 placeholder="MM/YYYY"
                 showOnlyMonth={true}
+                format="MMM YYYY"
                 // iconClass="top-4"
               />
             </div>
@@ -138,10 +144,11 @@ const OperationsParameter = ({
                 id="opening_time"
                 label="Opening Time"
                 name="opening_time"
-                selected={formik.values.opening_time}
+                selected={time.opening_time}
                 handleChange={(date) => handleTimeChange(date, "opening_time")}
                 touched={formik.touched.opening_time}
                 error={formik.errors.opening_time}
+                format="HH:mm"
               />
             </div>
             <div className="w-1/2">
@@ -149,10 +156,11 @@ const OperationsParameter = ({
                 id="closing_time"
                 label="Closing Time"
                 name="closing_time"
-                selected={formik.values.closing_time}
+                selected={time.closing_time}
                 handleChange={(date) => handleTimeChange(date, "closing_time")}
                 touched={formik.touched.closing_time}
                 error={formik.errors.closing_time}
+                format="HH:mm"
               />
             </div>
           </div>

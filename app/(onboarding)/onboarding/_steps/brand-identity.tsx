@@ -113,9 +113,7 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
                   setColor(e);
                   actionCtx?.setPrimaryColorVals(color);
                   formik.setFieldValue("brand_colour", color);
-                  // formik.handleChange(e);
                 }}
-                // dark
               />
             </div>
           )}
