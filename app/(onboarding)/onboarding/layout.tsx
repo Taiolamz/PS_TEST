@@ -2,17 +2,21 @@
 
 import Icon from "@/components/icon/Icon";
 import { CheckIcon } from "@radix-ui/react-icons";
-import React from "react";
-import { steps } from "./data";
+import React, { useContext, useEffect } from "react";
+import { steps } from "./onboarding/data";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { ActionContextProvider } from "../../(dashboard)/context/ActionContext";
+import ActionContext, { ActionContextProvider } from "../(dashboard)/context/ActionContext";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
+import { useAppSelector } from "@/redux/store";
 
 type Props = {
   children: React.ReactNode;
 };
 
 const OnboardingLayout = ({ children }: Props) => {
+  const actionCtx = useContext(ActionContext);
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const location = usePathname();
   const searchParams = useSearchParams();
@@ -25,10 +29,37 @@ const OnboardingLayout = ({ children }: Props) => {
 
   const filteredSteps = steps.filter((step) => step !== "Preview");
 
+  const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
+
+  // This fuction update user records
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
+  };
+
+  useEffect(() => {
+    // document.documentElement.style.setProperty(
+    //   "--primary-color",
+    //   e.hex
+    // );
+    const color = user?.organization?.brand_colour || ("" as any);
+    actionCtx?.setPrimaryColorVals(color);
+    // console.log(user);
+
+    if (user && Object?.keys(user)?.length < 1) {
+      // checkRoutePermission();
+      handleGetAuthUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   return (
     <ActionContextProvider>
       <section className="flex h-screen overflow-hidden">
-        <aside className="w-1/4 p-4 pr-0 bg-primary text-white xl:w-2/12">
+        <aside className="w-1/4 p-4 pr-0 bg-[--primary-color] text-white xl:w-2/12">
           <Icon width={74} height={15} name="mance" className="mx-auto" />
           <h2 className="font-semibold mb-2 mt-[1.125rem]">Steps</h2>
           <ul className="flex flex-col gap-2">
