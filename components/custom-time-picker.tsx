@@ -67,7 +67,7 @@ export default function CustomTimeInput({
         )}
         containerClassName="w-full"
         onChange={handleChange}
-        className={cn("teal", className)}
+        className={cn( "date-picker", className)}
         disableDayPicker
         format="hh:mm:ss A"
         plugins={[<TimePicker key={id} />]}

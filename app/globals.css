@@ -9,6 +9,7 @@
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
+      -ms-user-select: none;
           user-select: none;
   border-radius: 4px;
 }
@@ -213,7 +214,8 @@ html {
 }
 
 body {
-  overscroll-behavior: none;
+  -ms-scroll-chaining: none;
+      overscroll-behavior: none;
 }
 
 /* additional setup end ------------------------ */
@@ -272,8 +274,37 @@ input[type=radio]:checked::before {
 }
 
 .global_sticky_class {
+  position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
   left: 0 !important;
   z-index: 10 !important;
+}
+
+.date-picker .rmdp-week-day {
+  color: var(--primary-color) !important;
+}
+
+.rmdp-arrow-container:hover {
+  background-color: var(--primary-color) !important;
+}
+
+.date-picker .rmdp-arrow {
+  border-color: var(--primary-color) !important;
+}
+
+.rmdp-arrow-container:hover .rmdp-arrow {
+  border: solid #ffffff !important;
+  border-width: 0 2px 2px 0;
+}
+
+.date-picker .rmdp-day:not(.rmdp-day-hidden) span:hover,
+.rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: var(--primary-color) !important;
+}
+@media only screen and (min-width: 48em) {
+  .date-picker .rmdp-day:not(.rmdp-day-hidden) span:hover,
+.rmdp-day.rmdp-selected span:not(.highlight) {
+    background-color: var(--primary-color) !important;
+  }
 }/*# sourceMappingURL=globals.css.map */
