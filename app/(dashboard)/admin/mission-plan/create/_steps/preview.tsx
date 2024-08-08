@@ -17,7 +17,13 @@ import React, { useState } from "react";
 import back from "@/public/svgs/back.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { MissionHeader, MissionItems, MissionPlanWrapper, MissionWrapper } from "@/components/fragment";
+import {
+  MissionHeader,
+  MissionItems,
+  MissionPlanWrapper,
+  MissionWrapper,
+} from "@/components/fragment";
+import BackIcon from "@/public/assets/icons/BackIcon";
 
 const MissionDetailPreview = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -50,7 +56,7 @@ const MissionDetailPreview = () => {
             status="approved"
             comment="2"
           >
-            <p className="leading-relaxed  text-xs">
+            <p className="leading-relaxed  text-sm">
               My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
               elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
               pulvinar arcu, mi.
@@ -130,7 +136,7 @@ const MissionDetailPreview = () => {
           onClick={goBack}
         >
           <span>
-            <Image src={back} alt="back" />
+            <BackIcon className="bg-transparent text-back" />
           </span>
           <span>Go Back to Edit</span>
         </div>
@@ -138,7 +144,7 @@ const MissionDetailPreview = () => {
         <Button
           type="button"
           onClick={() => setShowSuccessModal(true)}
-          className="bg-primary text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--btn-hover-backgroundColor)] rounded-sm shadow-md"
+          className="bg-[var(--primary-color)] text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--primary-accent-color)] rounded-sm shadow-md"
         >
           <p>Upload</p>
         </Button>

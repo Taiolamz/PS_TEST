@@ -10,7 +10,7 @@ interface missionProp {
 
 const MissionWrapper = ({ title, status, comment, children }: missionProp) => {
   return (
-    <div className="border rounded-[5px] p-[22px] w-full text-sm  bg-[var(--bg-white)] border-[var(--gray-scale-divider)]">
+    <div className="border rounded-[5px] p-[22px] w-full text-sm  bg-white">
       <div className=" text-[var(--primary-color)] text-sm font-[500]">
         <h4>{title}</h4>
       </div>
@@ -22,7 +22,7 @@ const MissionWrapper = ({ title, status, comment, children }: missionProp) => {
               <EditableLabel status={status} />
 
               {status === "rejected" && comment && status !== undefined && (
-                <div className="text-sm">
+                <div className="text-xs">
                   <p className="flex gap-2 items-center">
                     <span className="text-[var(--gray-scale)] text-xs font-normal">
                       View Comments
