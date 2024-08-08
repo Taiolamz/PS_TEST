@@ -83,7 +83,7 @@ const DashboardLayout = ({
     actionCtx?.setPrimaryColorVals(color);
     // console.log(user);
 
-    if (user && Object?.keys(user)?.length > 0) {
+    if (user && Object?.keys(user)?.length < 1) {
       checkRoutePermission();
       handleGetAuthUser();
     }
