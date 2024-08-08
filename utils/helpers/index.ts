@@ -218,3 +218,7 @@ export function getLinksAndCollapseNumByTitle(data: any, title: any) {
   return { links, collapseNum: section.collapseNum };
 }
 
+
+export const truncateString = (str: string, maxLength: number = 50) => {
+  return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+};

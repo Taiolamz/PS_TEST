@@ -4,10 +4,12 @@ import CustomDateInput from "@/components/custom-date-input";
 import { PageLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { resetFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import {
   useGetFinancialYearPreviewQuery,
   useSaveFinancialYearMutation,
 } from "@/redux/services/mission-plan/missionPlanApi";
+import { useAppDispatch } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -19,10 +21,13 @@ const FinancialYearPreview = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [financialYearData, setFinancialYearData] = useState<Dictionary>({});
 
+  const dispatch = useAppDispatch()
+
   const {
     data: financial_year_info,
     isLoading,
     isFetching,
+    refetch
   } = useGetFinancialYearPreviewQuery({});
   const [
     saveFinancialYear,
@@ -36,12 +41,13 @@ const FinancialYearPreview = () => {
     saveFinancialYear({ id: financialYearData.id })
       .unwrap()
       .then(() => {
+        dispatch(resetFinancialYearDetails())
         setShowSuccessModal(true);
       });
   };
 
   useEffect(() => {
-    // refetch()
+    refetch()
     if (financial_year_info) {
       setFinancialYearData({
         ...financial_year_info?.data?.organization_mission_plan,
@@ -114,7 +120,7 @@ const FinancialYearPreview = () => {
             <div className="mb-4">
               <div className="bg-[var(--primary-accent-color)] p-1 px-2 flex items-center justify-between gap-5">
                 <span className="text-sm text-[#6E7C87] font-light">
-                  1. Mission and Vision
+                  2. Mission and Vision
                 </span>
                 <span
                   className="text-[var(--primary-color)] w-8 h-8 grid place-content-center rounded-full bg-[#0080801A] cursor-pointer"
@@ -146,7 +152,7 @@ const FinancialYearPreview = () => {
             <div className="mb-4">
               <div className="bg-[var(--primary-accent-color)] p-1 px-2 flex items-center justify-between gap-5">
                 <span className="text-sm text-[#6E7C87] font-light">
-                  1. Strategic Pillars
+                  3. Strategic Pillars
                 </span>
                 <span
                   className="text-[var(--primary-color)] w-8 h-8 grid place-content-center rounded-full bg-[var(--primary-accent-color)] cursor-pointer"
