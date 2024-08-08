@@ -156,14 +156,11 @@ const Onboarding = () => {
           className="px-10 xl:pl-[9.375rem] max-h-full  pb-20"
           onSubmit={formik.handleSubmit}
         >
-          <div
-            // onClick={() => {
-            //   console.log(user);
-            // }}
-            className=""
-          >
+          <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden">
             <h1 className="text-2xl font-bold text-[--primary-color] mb-16">
-              {`Welcome ${trimLongString(user?.organization?.name, 25) || ""}! Let's setup your organization`}
+              {`Welcome ${
+                trimLongString(user?.organization?.name, 25) || ""
+              }! Let's setup your organization`}
             </h1>
             {getCurrentStep() === 1 && (
               <OrganizationStatement formik={formik} />
