@@ -14,10 +14,13 @@ import { Dictionary } from "@/@types/dictionary";
 import { COUNTRIES_STATES } from "@/utils/data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 const { ADMIN } = routesPath;
 
 const AddBranch = () => {
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
@@ -46,9 +49,9 @@ const AddBranch = () => {
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingBranch}
         onSave={formik.handleSubmit}
-        onCancel={() => {
-          // cancel function here-----
-        }}
+        // onCancel={() => {
+        //   // cancel function here-----
+        // }}
         // back
         // hideStep
       />
@@ -139,17 +142,23 @@ const AddBranch = () => {
                 onChange={formik.handleChange}
                 isRequired
               />
-              <CustomSelect
-                label="Subsidiary"
-                isRequired
-                placeholder="Select subsidiary"
-                options={subsidiaries}
-                selected={formik.values.subsidiary}
-                setSelected={(value) =>
-                  formik.setFieldValue("subsidiary", value)
-                }
-                labelClass={labelClassName}
-              />
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "subsidiary"
+              ) && (
+                <CustomSelect
+                  label="Subsidiary"
+                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
+                    "subsidiary"
+                  )}
+                  placeholder="Select subsidiary"
+                  options={subsidiaries}
+                  selected={formik.values.subsidiary}
+                  setSelected={(value) =>
+                    formik.setFieldValue("subsidiary", value)
+                  }
+                  labelClass={labelClassName}
+                />
+              )}
             </form>
           }
         />

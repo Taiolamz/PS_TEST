@@ -15,14 +15,13 @@ interface BrandIdentityProps {
 const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   const [color, setColor] = useColor("hex", "#008080");
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [logo, setLogo] = useState<File | null>(null);
+  const [logo, setLogo] = useState<File | string>();
   const [logoName, setLogoName] = useState<string | null>(
     formik.values.logo ? formik.values.logo.name : null
   );
-  const [logoError, setLogoError] = useState<string | null>(null);
 
   const actionCtx = useContext(ActionContext);
-  const fileInputRef = useRef<HTMLInputElement | null>();
+  const fileInputRef = useRef<HTMLInputElement | string>();
   // const [color, setColor] = useColor("hex", "#121212");
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +40,7 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
   };
 
   const handleRemoveLogo = () => {
-    setLogo(null);
+    setLogo("");
     setLogoName(null);
   };
 
@@ -93,7 +92,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
             }}
             className="color-box"
             onClick={() => {
-              // console.log(formik?.values);
               setShowColorPicker(true);
             }}
           ></div>
@@ -115,10 +113,7 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
                   setColor(e);
                   actionCtx?.setPrimaryColorVals(color);
                   formik.setFieldValue("brand_colour", color);
-                  // formik.handleChange(e);
-                  // console.log(formik?.values);
                 }}
-                // dark
               />
             </div>
           )}

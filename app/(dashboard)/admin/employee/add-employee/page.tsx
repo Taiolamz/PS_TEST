@@ -103,7 +103,7 @@ export default function AddEmployee() {
                   id="middle_name"
                   name="middle_name"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                 />
 
                 <Input
@@ -123,7 +123,7 @@ export default function AddEmployee() {
                   id="maiden_name"
                   name="maiden_name"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                 />
 
                 <CustomSelect
@@ -180,6 +180,7 @@ export default function AddEmployee() {
                   selected={formik.values.level}
                   setSelected={(value) => formik.setFieldValue("level", value)}
                   labelClass={labelClassName}
+                  isRequired
                 />
 
                 <Input
@@ -272,6 +273,7 @@ export default function AddEmployee() {
                   placeholder="Phone Number"
                   id="phone_number"
                   name="phone_number"
+                  maxLength={14}
                   onChange={formik.handleChange}
                   isRequired
                 />

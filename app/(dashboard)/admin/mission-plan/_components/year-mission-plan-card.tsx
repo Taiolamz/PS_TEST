@@ -5,6 +5,7 @@ import { StatsIcon } from "@/public/assets/icons";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import BadgeComponent from "@/components/badge/BadgeComponents";
+import { truncateString } from "@/utils/helpers";
 
 type CardPropType = { 
   title?: string, 
@@ -37,7 +38,7 @@ export default function YearMissionPlanCard({ title, created_by, date, status,hr
         </Badge>
       </div>
       <div className="">
-        <div className=" mt-5 font-normal text-base ">{title}</div>
+        <div className=" mt-5 font-normal text-base ">{truncateString(title as string, 25)}</div>
         <div className="text-custom-ash mt-1 font-normal text-[10px]">
          {created_by}
         </div>

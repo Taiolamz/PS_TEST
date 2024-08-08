@@ -14,6 +14,7 @@ import routesPath from "@/utils/routes";
 import { COUNTRIES_STATES } from "@/utils/data";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { processInputAsArray } from "@/utils/helpers";
 
 type Prop = {
   cancelPath: string;
@@ -42,7 +43,8 @@ const COUNTRIES = COUNTRIES_STATES?.map((d) => {
 const { ADMIN } = routesPath;
 
 export const useBranch = ({ cancelPath }: Prop) => {
-  const actionCtx = useContext(ActionContext)
+  // const { user, checklist } = useAppSelector((state) => state.auth);
+  const actionCtx = useContext(ActionContext);
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
     useGetSubsidiariesQuery({
       to: 0,
@@ -89,6 +91,13 @@ export const useBranch = ({ cancelPath }: Prop) => {
     return array;
   };
 
+  const router = useRouter();
+  const user = useAppSelector(selectUser);
+  const { organization } = user;
+  const BranchRoute = ADMIN.BRANCHES;
+  const [createBranch, { isLoading: isCreatingBranch }] =
+    useCreateBranchMutation();
+
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
     address: yup
@@ -107,14 +116,11 @@ export const useBranch = ({ cancelPath }: Prop) => {
       .email("Invalid email address")
       .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
-    subsidiary: yup.string().required(),
+    // subsidiary:
+    //   processInputAsArray(user?.organization?.hierarchy)?.includes(
+    //     "subsidiary"
+    //   ) && yup.string().required() ? true : false as any,
   });
-  const router = useRouter();
-  const user = useAppSelector(selectUser);
-  const { organization } = user;
-  const BranchRoute = ADMIN.BRANCHES;
-  const [createBranch, { isLoading: isCreatingBranch }] =
-    useCreateBranchMutation();
 
   const handleSubmit = async () => {
     const payload = {
