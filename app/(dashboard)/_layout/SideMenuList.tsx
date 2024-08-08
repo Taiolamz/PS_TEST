@@ -374,6 +374,12 @@ export const sideMenuList: any = [
         relatedLink: [routesPath?.ADMIN?.CREATE_UNIT,],
       },
       {
+        name: "Employees",
+        link: routesPath?.ADMIN?.EMPLOYEES,
+        icon: sideMenuIcons?.team_management,
+        relatedLink: [routesPath?.ADMIN?.ADD_EMPLOYEE,],
+      },
+      {
         name: "Organogram",
         link: routesPath?.ADMIN?.ORGANOGRAM,
         icon: sideMenuIcons?.organogram,
