@@ -113,6 +113,8 @@ const SignupPage = () => {
     validationSchema:
       RegistrationSchema[ui === "organization-information" ? 0 : 1],
     onSubmit: handleFormSubmit,
+    // validateOnChange: true,
+    // validateOnBlur: true,
   });
 
   const { timeLeft, startTimer, isTimerElapsed } = useTimeout({

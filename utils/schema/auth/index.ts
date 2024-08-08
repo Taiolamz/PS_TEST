@@ -35,9 +35,16 @@ export const LoginSchema = yup.object().shape({
     .required("Email is required"),
   password: yup.string().required("Password is required"),
 });
+
 export const RegistrationSchema = [
   yup.object().shape({
-    organization_name: yup.string().required("Organization name is required"),
+    organization_name: yup
+      .string()
+      .required("Organization name is required")
+      .matches(
+        /^[A-Za-z\s]+$/,
+        "Organization name can only contain letters and spaces"
+      ),
     employees_range: yup.string().required("Select number of employees"),
     address: yup.string().required("Address name is required"),
     city: yup.string().required("City name is required"),
@@ -86,5 +93,7 @@ export const ResetPasswordSchema = yup.object().shape({
     .test("minUppercase", "Must include small letters", (value) =>
       /[A-Z]/.test(value)
     ),
-    password_confirmation: yup.string().oneOf([yup.ref('password')], 'Password must match')
+  password_confirmation: yup
+    .string()
+    .oneOf([yup.ref("password")], "Password must match"),
 });
