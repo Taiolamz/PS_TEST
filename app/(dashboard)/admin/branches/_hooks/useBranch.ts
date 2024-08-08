@@ -12,6 +12,8 @@ import { useCreateBranchMutation } from "@/redux/services/checklist/branchApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { COUNTRIES_STATES } from "@/utils/data";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
@@ -39,6 +41,7 @@ const COUNTRIES = COUNTRIES_STATES?.map((d) => {
 const { ADMIN } = routesPath
 
 export const useBranch = ({ cancelPath }: Prop) => {
+  const actionCtx = useContext(ActionContext)
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
     useGetSubsidiariesQuery({
       to: 0,
@@ -118,11 +121,13 @@ export const useBranch = ({ cancelPath }: Prop) => {
     await createBranch(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
+        router.push(BranchRoute);
         toast.success("Branch Created Successfully");
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push(BranchRoute);
+            // router.push(BranchRoute);
           }, 2000);
         });
       });

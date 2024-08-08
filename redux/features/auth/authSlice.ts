@@ -9,7 +9,7 @@ const initialState: Auth = {
       id: "",
     },
   },
-  checklist: "",
+  checklist: {},
 };
 
 const authSlice = createSlice({

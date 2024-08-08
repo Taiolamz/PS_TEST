@@ -191,3 +191,30 @@ export function processInputAsArray(value: any) {
     }
   }
 }
+
+export function formatChecklistPercent(param: any) {
+  if (param) {
+    const val = Number(param?.replace("%", ""));
+    // console.log(val);
+    return val;
+  }
+}
+
+export function getLinksAndCollapseNumByTitle(data: any, title: any) {
+  const section = data.find((item: any) => item.title === title);
+  
+  if (!section) {
+    return { links: [], collapseNum: null };
+  }
+  
+  const links = section.navLinks.reduce((acc: any, navLink: any) => {
+    acc.push(navLink.link);
+    if (navLink.relatedLink) {
+      acc = acc.concat(navLink.relatedLink);
+    }
+    return acc;
+  }, []).filter((link: any) => link !== ""); // Filter out empty strings
+  
+  return { links, collapseNum: section.collapseNum };
+}
+

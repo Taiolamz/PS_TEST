@@ -4,20 +4,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { DefaultCheckIcon, DefaultRightArrowIcon } from "@/public/assets/icons";
 import { useAppSelector } from "@/redux/store";
-import { processInputAsArray } from "@/utils/helpers";
+import { formatChecklistPercent, processInputAsArray } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import { checklistDetails } from "../checklist-steps";
 
 const ChecklistOverviewContent = () => {
   const [progress, setProgress] = React.useState(13);
   const actionCtx = useContext(ActionContext);
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const router = useRouter();
-
+  const [isCardOneChecked, setIsCardOneChecked] = useState<boolean>(false);
   const { ADMIN } = routesPath;
 
   React.useEffect(() => {
@@ -43,19 +43,19 @@ const ChecklistOverviewContent = () => {
         "Manage users that will be joining your organization and how they are inducted",
       items: [
         {
-          isChecked: true,
+          isChecked: checklist?.subsidiary_count < 1 ? false : true,
           label: "Add Subsidiary",
-          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
-            "subsidairy"
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "subsidiary"
           )
             ? true
             : false,
           link: ADMIN?.CREATE_SUBSIDIARY,
         },
         {
-          isChecked: true,
+          isChecked: checklist?.branch_count < 1 ? false : true,
           label: "Add Branches",
-          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "branch"
           )
             ? true
@@ -63,19 +63,19 @@ const ChecklistOverviewContent = () => {
           link: ADMIN?.CREATE_BRANCH,
         },
         {
-          isChecked: false,
+          isChecked: checklist?.department_count < 1 ? false : true,
           label: "Add Department",
           link: ADMIN?.CREATE_DEPARTMENT,
-          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "department"
           )
             ? true
             : false,
         },
         {
-          isChecked: false,
+          isChecked: checklist?.unit_count < 1 ? false : true,
           label: "Add Unit",
-          hide: processInputAsArray(!user?.organization?.hierarchy)?.includes(
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "unit"
           )
             ? true
@@ -83,7 +83,7 @@ const ChecklistOverviewContent = () => {
           link: ADMIN?.CREATE_UNIT,
         },
       ],
-      isAllChecked: false,
+      isAllChecked: isCardOneChecked,
       // path: ADMIN.SUBSIDIARY,
       // link: ADMIN?.CREATE_S,
     },
@@ -91,9 +91,10 @@ const ChecklistOverviewContent = () => {
       title: "Set up employee and roles",
       subTitle:
         "Manage users that will be joining your organization and how they are inducted",
-      isAllChecked: false,
+      // isChecked: checklist?.employee_count < 1 ? false : true,
       path: ADMIN.ADD_EMPLOYEE,
       hide: false,
+      isAllChecked: checklist?.employee_count < 2 ? false : true,
     },
     {
       title: "Set up mission plan",
@@ -101,19 +102,22 @@ const ChecklistOverviewContent = () => {
         "Manage users that will be joining your organization and how they are inducted",
       items: [
         {
-          isChecked: false,
+          isChecked: checklist?.mission_flow_exist,
           label: "Create Mission Plan Template",
           hide: false,
           link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_TEMPLATE,
         },
         {
-          isChecked: true,
+          isChecked: checklist?.approval_flow_exist,
           label: "Approval Flow",
           hide: false,
           link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_APPROVAL_FLOW,
         },
       ],
-      isAllChecked: false,
+      isAllChecked:
+        checklist?.mission_flow_exist && checklist?.approval_flow_exist
+          ? true
+          : false,
     },
   ];
 
@@ -133,8 +137,23 @@ const ChecklistOverviewContent = () => {
     }
   };
 
+  useEffect(() => {
+    if (Object?.keys(user)?.length) {
+      if (getNextLink(getListToUse(checklistDetails[0]?.items))?.length < 1) {
+        setIsCardOneChecked(true);
+      }
+    }
+  }, [user]);
+
   return (
-    <div className="flex flex-col gap-3 w-[768px]">
+    <div
+      onClick={() => {
+        console.log(checklist);
+        console.log(user?.organization?.hierarchy);
+        
+      }}
+      className="flex flex-col gap-3 w-[768px]"
+    >
       <div className="flex gap-2 items-center justify-between bg-primary p-3 px-5 pl-8">
         <div className="flex flex-col gap-1">
           <p className="text-custom-gray-scale-white font-semibold text-lg">
@@ -145,9 +164,11 @@ const ChecklistOverviewContent = () => {
           </p>
         </div>
         <div className="flex gap-2 items-center">
-          <p className="text-warning text-sm">0% completed</p>
+          <p className="text-warning text-sm">{`${
+            checklist?.completion_percent || 0
+          } completed`}</p>
           <Progress
-            value={0}
+            value={formatChecklistPercent(checklist?.completion_percent)}
             className="w-[150px] h-2 bg-custom-bg *:bg-warning"
           />
         </div>
@@ -159,11 +180,13 @@ const ChecklistOverviewContent = () => {
             <div
               key={idx}
               onClick={() => {
-                console.log(user?.organization?.hierarchy);
-                // console.log(user);
-                // if (!isAllChecked) {
-                //   router?.push(getNextLink(getListToUse(items))[0]?.link);
-                // }
+                if (!isAllChecked && Number(items?.length) > 0) {
+                  router?.push(getNextLink(getListToUse(items))[0]?.link);
+                  return;
+                }
+                if (!items && path && !isAllChecked) {
+                  router?.push(path);
+                }
               }}
               className="bg-custom-gray-scale-white p-10 pl-8 hover:scale-[1.02] transition-all duration-300"
               style={{ cursor: isAllChecked ? "pointer" : "pointer" }}

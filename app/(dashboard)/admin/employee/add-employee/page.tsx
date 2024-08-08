@@ -71,7 +71,7 @@ export default function AddEmployee() {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingEmployee}
           onSave={formik.handleSubmit}
-          onCancel={handleCancelDialog}
+          // onCancel={handleCancelDialog}
         />
         <div
           className=""

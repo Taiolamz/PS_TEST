@@ -49,8 +49,8 @@ const AddBranch = () => {
         onCancel={() => {
           // cancel function here-----
         }}
-        back
-        hideStep
+        // back
+        // hideStep
       />
 
       <div className="" style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}>

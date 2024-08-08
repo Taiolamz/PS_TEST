@@ -2,7 +2,7 @@
 
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -19,6 +19,8 @@ import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
@@ -43,7 +45,11 @@ const Onboarding = () => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
   const { ONBOARDING } = routesPath;
+  const actionCtx = useContext(ActionContext)
 
+  const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
     return step;
@@ -130,10 +136,18 @@ const Onboarding = () => {
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
+          // handleGetAuthUser()
+          actionCtx.triggerUpdateUser();
           toast.success("Organization Created Successfully");
           router.push(ADMIN.OVERVIEW);
         });
     } catch (error) {}
+  };
+
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
   };
 
   const formik = useFormik<FormValues>({

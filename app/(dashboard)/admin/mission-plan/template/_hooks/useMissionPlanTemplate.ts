@@ -9,6 +9,8 @@ import Routes from "@/lib/routes/routes";
 import { toast } from "sonner";
 import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import routesPath from "@/utils/routes";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
@@ -74,6 +76,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
 
   const units = unitsData ?? [];
   const user = useAppSelector(selectUser);
+  const actionCtx = useContext(ActionContext);
 
   const handleFormatDropdown = (items: UnitData[]) => {
     const data = items.map((chi) => {
@@ -104,6 +107,8 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     await createMissionPlanTemplate(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
+        router.push(MissionPlanTemplateRoute);
         toast.success("Mission Plan Template Created Successfully");
         new Promise(() => {
           setTimeout(() => {

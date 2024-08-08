@@ -17,6 +17,8 @@ import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi
 import routesPath from "@/utils/routes";
 // import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 // dummy data
 type Prop = {
@@ -180,7 +182,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const departments = departmentData ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
-  console.log(gradeLevelData, "grade level data");
+  // console.log(gradeLevelData, "grade level data");
   const gradeLevels = gradeLevelData ?? [];
   // const gradeLevels =
   //   gradeLevelData && gradeLevelData?.length > 1
@@ -194,7 +196,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const unitsDrop = handleDropdown(units);
   const newEmployeeDrop = handleDropdown(newEmployeeStatuses);
   const gradeLevelDrop = handleGradeDrop(gradeLevels);
-
+  const actionCtx = useContext(ActionContext);
   const EmployeeRoute = ADMIN.EMPLOYEES;
   const user = useAppSelector(selectUser);
   const { organization } = user;
@@ -209,6 +211,8 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     await createEmployee(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
+        router.push(EmployeeRoute);
         toast.success("Employee Created Successfully");
         new Promise(() => {
           setTimeout(() => {

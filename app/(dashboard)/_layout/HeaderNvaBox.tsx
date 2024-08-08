@@ -8,8 +8,13 @@ import { useOnClickOutside } from "./UseOutsideClick";
 import routesPath, { specialRoleList } from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
 import { trimLongString } from "./Helper";
-import { checkUserRole, returnInitial } from "@/utils/helpers";
+import {
+  checkUserRole,
+  getLinksAndCollapseNumByTitle,
+  returnInitial,
+} from "@/utils/helpers";
 import LogoutModal from "./logout-folder/LogoutModal";
+import { sideMenuList } from "./SideMenuList";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -181,10 +186,10 @@ const HeaderNavBox = ({
   return (
     <>
       <div
-        // onClick={() => {
-        //   console.log(user?.organization?.hierarchy);
-        //   console.log(user);
-        // }}
+        onClick={() => {
+          // console.log(user?.organization?.hierarchy);
+          // console.log(user);
+        }}
         className={style.header_wrap_index_box}
       >
         {/* back comp start */}
