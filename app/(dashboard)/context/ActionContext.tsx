@@ -45,17 +45,17 @@ export function ActionContextProvider(props?: any) {
   );
 
   useEffect(() => {
-    getCurrentAdminDrop();
-    getCurrentEmpDrop()
-    // if (Object?.keys(user)?.length > 0) {
-    //   if (checkUserRole(user?.role as string) === "ADMIN") {
-    //     // getCurrentAdminDrop();
-    //   }
-    //   // else{
-    //   //   getCurrentEmpDrop()
-    //   // }
-    // }
-  }, []);
+    // getCurrentAdminDrop();
+    // getCurrentEmpDrop()
+    if (Object?.keys(user)?.length > 0) {
+      if (checkUserRole(user?.role as string) === "ADMIN") {
+        getCurrentAdminDrop();
+      }
+      else{
+        getCurrentEmpDrop()
+      }
+    }
+  }, [user]);
   
 
   function getCurrentAdminDrop() {
