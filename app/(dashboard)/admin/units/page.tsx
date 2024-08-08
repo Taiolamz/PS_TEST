@@ -186,7 +186,7 @@ const Units = () => {
   };
   return (
     <DashboardLayout headerTitle="Unit">
-      <ReusableStepListBox
+      {/* <ReusableStepListBox
         btnText="Continue"
         activeStep="4"
         totalStep="4"
@@ -194,7 +194,7 @@ const Units = () => {
         btnDisabled={units?.length < 1}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-      />
+      /> */}
       <section className="p-5">
         {units?.length < 1 ? (
           <ReusableEmptyState

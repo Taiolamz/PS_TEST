@@ -47,7 +47,7 @@ const AddDepartment = () => {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingDepartment}
           onSave={formik.handleSubmit}
-          onCancel={handleCancelDialog}
+          // onCancel={handleCancelDialog}
         />
         <div
           className=""

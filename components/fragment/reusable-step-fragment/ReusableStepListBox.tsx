@@ -2,6 +2,8 @@
 
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/redux/store";
+import { formatChecklistPercent } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import React from "react";
 // import { Button } from "react-scroll";
@@ -22,7 +24,6 @@ interface myComponentProps {
   btnClass?: string;
   fixed?: boolean;
 }
-
 
 const backIcon = (
   <svg
@@ -55,7 +56,8 @@ const ReusableStepListBox = ({
   btnDisabled,
   fixed,
 }: myComponentProps) => {
-  const router = useRouter()
+  const router = useRouter();
+  const { checklist } = useAppSelector((state) => state.auth);
   return (
     <div
       className={`${style.reusable_step_list_box_index_wrap} ${
@@ -70,7 +72,7 @@ const ReusableStepListBox = ({
                 router.back();
               }
             }}
-            className={style.back_box}
+            className={`${style.back_box}`}
           >
             <figure className={style.img_box}>{backIcon}</figure>
             <p className={style.text}>Back</p>
@@ -81,7 +83,7 @@ const ReusableStepListBox = ({
       {title && <p className={style.title}>{title}</p>}
       {/* title here  */}
       {/* step info here  */}
-      {!hideStep && (
+      {!hideStep  && formatChecklistPercent(checklist?.completion_percent) !== 100 && (
         <>
           <div className={style?.step_box}>
             <p className={style?.step}>{`Step ${activeStep || ""}  of ${
@@ -98,7 +100,11 @@ const ReusableStepListBox = ({
           variant={"outline"}
           className={`border-primary text-primary font-light  hover:text-primary ${btnClass}`}
           onClick={() => {
-            onCancel && onCancel();
+            if (!onCancel) {
+              router?.back();
+            } else {
+              onCancel && onCancel();
+            }
           }}
         >
           Cancel

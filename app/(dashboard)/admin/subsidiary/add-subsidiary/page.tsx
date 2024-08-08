@@ -14,12 +14,14 @@ import { COUNTRIES_STATES } from "@/utils/data";
 import { Dictionary } from "@/@types/dictionary";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { useRouter } from "next/navigation";
 
 const { ADMIN } = routesPath;
 
 const AddSubsidary = () => {
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
+  const router = useRouter();
   const {
     formik,
     countries,
@@ -36,7 +38,7 @@ const AddSubsidary = () => {
   );
   return (
     <>
-      <DashboardLayout back headerTitle="Subsidiary">
+      <DashboardLayout back headerTitle="Create Subsidiary">
         <ReusableStepListBox
           btnText="Continue"
           activeStep="1"
@@ -45,7 +47,9 @@ const AddSubsidary = () => {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
-          onCancel={handleCancelDialog}
+          // onCancel={() => {
+          //   router
+          // }}
         />
 
         <div

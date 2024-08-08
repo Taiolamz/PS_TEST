@@ -11,6 +11,8 @@ import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
 import { useCreateDepartmentMutation } from "@/redux/services/checklist/departmentApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
+import { useContext } from "react";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
@@ -158,6 +160,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   });
 
   const router = useRouter();
+  const actionCtx = useContext(ActionContext)
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const DepartmentRoute = ADMIN.DEPARTMENT;
@@ -174,7 +177,9 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     await createDepartment(payload)
       .unwrap()
       .then(() => {
+        actionCtx?.triggerUpdateChecklist();
         toast.success("Department Created Successfully");
+        router.push(DepartmentRoute);
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();

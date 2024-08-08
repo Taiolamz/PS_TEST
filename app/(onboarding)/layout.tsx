@@ -3,10 +3,10 @@
 import Icon from "@/components/icon/Icon";
 import { CheckIcon } from "@radix-ui/react-icons";
 import React from "react";
-import { steps } from "./data";
+import { steps } from "./onboarding/data";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { ActionContextProvider } from "@/app/(dashboard)/context/ActionContext";
+import { ActionContextProvider } from "../(dashboard)/context/ActionContext";
 
 type Props = {
   children: React.ReactNode;
@@ -23,6 +23,8 @@ const OnboardingLayout = ({ children }: Props) => {
     return step;
   };
 
+  const filteredSteps = steps.filter((step) => step !== "Preview");
+
   return (
     <ActionContextProvider>
       <section className="flex h-screen overflow-hidden">
@@ -30,7 +32,7 @@ const OnboardingLayout = ({ children }: Props) => {
           <Icon width={74} height={15} name="mance" className="mx-auto" />
           <h2 className="font-semibold mb-2 mt-[1.125rem]">Steps</h2>
           <ul className="flex flex-col gap-2">
-            {steps.map((step, index) => (
+            {filteredSteps.map((step, index) => (
               <li
                 key={index}
                 className={`text-xs p-2 cursor-pointer flex items-center gap-2 mr-4 ${
@@ -48,7 +50,7 @@ const OnboardingLayout = ({ children }: Props) => {
             ))}
           </ul>
         </aside>
-        <main className="w-3/4 bg-white shadow-lg xl:w-5/6 pb-10">
+        <main className="w-3/4 bg-white shadow-lg xl:w-5/6 pb-10 xl:pb-40">
           {children}
         </main>
       </section>

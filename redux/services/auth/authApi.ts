@@ -154,8 +154,14 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          const {data: { data } } = result;
-          dispatch(setAuthUser(data));
+          const {
+            data: { data },
+          } = result;
+          const key = {
+            user: data
+          }
+
+          dispatch(setAuthUser(key));
         } catch (error: any) {
           // console.log(error)
         }
@@ -174,5 +180,5 @@ export const {
   useResetPasswordMutation,
   useVerifyOTPMutation,
   useResendOTPMutation,
-  useLazyGetAuthUserDetailsQuery
+  useLazyGetAuthUserDetailsQuery,
 } = authApi;

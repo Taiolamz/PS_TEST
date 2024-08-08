@@ -6,6 +6,8 @@ import style from "./styles/SideMenuNavBox.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ActionContext from "../context/ActionContext";
 import { trimLongString } from "./Helper";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 const logoIcon = (
   <svg
@@ -191,7 +193,7 @@ const dropIcon = (
 );
 
 const SideMenuNavBox = () => {
-  // const [showNav, setShowNav] = useState<string>("two");
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const router = useRouter();
   const actionCtx = useContext(ActionContext);
@@ -284,13 +286,46 @@ const SideMenuNavBox = () => {
                   }`}
                 >
                   {chi?.navLinks?.map((child: any, i: any) => {
+                    if (
+                      !processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("subsidiary") &&
+                      child?.name === "Subsidiaries"
+                    ) {
+                      return <React.Fragment key={i}></React.Fragment>;
+                    }
+                    if (
+                      !processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("branch") &&
+                      child?.name === "Branches"
+                    ) {
+                      return <React.Fragment key={i}></React.Fragment>;
+                    }
+                    if (
+                      !processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("department") &&
+                      child?.name === "Departments"
+                    ) {
+                      return <React.Fragment key={i}></React.Fragment>;
+                    }
+                    if (
+                      !processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("unit") &&
+                      child?.name === "Units"
+                    ) {
+                      return <React.Fragment key={i}></React.Fragment>;
+                    }
                     return (
                       <div
                         key={i}
                         className={`${style.nav_link} ${
                           pathname === child?.link && style.nav_link_active
                         } ${
-                        child?.relatedLink?.includes(pathname) && style.nav_link_active
+                          child?.relatedLink?.includes(pathname) &&
+                          style.nav_link_active
                         }  ${
                           actionCtx.collapseSideNav && style.nav_link_closed
                         }`}

@@ -2,7 +2,7 @@
 
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { HiChevronDoubleLeft } from "react-icons/hi";
 import {
   BrandIdentity,
@@ -15,25 +15,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { steps } from "./data";
 import { FormikProvider, useFormik } from "formik";
-import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
+import { OnbaordingSchema } from "@/utils/schema/onboarding";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
-
 interface FormValues {
   vision: string;
   mission: string;
   brand_colour: string;
-  logo: File | null;
+  logo: File | string;
   end_fy: string;
   start_fy: string;
   probation_duration: string;
   opening_time: string;
   fy_title: string;
   closing_time: string;
-  hierarchy: any[];
+  hierarchy: string;
   staff_levels: { name: string; level: string }[];
 }
 
@@ -43,7 +44,12 @@ const Onboarding = () => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
   const { ONBOARDING } = routesPath;
+  const [fyDate, setFyDate] = useState("");
+  const actionCtx = useContext(ActionContext);
 
+  const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
   const getCurrentStep = () => {
     const step = Number(searchParams.get("step"));
     return step;
@@ -58,21 +64,6 @@ const Onboarding = () => {
     },
   ] = useOnboardingMutation();
 
-  const keyMapping: Record<string, string> = {
-    vision: "vision",
-    mission: "mission",
-    brand_colour: "brand_colour",
-    logo: "logo",
-    end_fy: "end_fy",
-    start_fy: "start_fy",
-    probation_duration: "probation_duration",
-    opening_time: "opening_time",
-    fy_title: "fy_title",
-    closing_time: "closing_time",
-    hierarchy: "hierarchy",
-    staff_levels: "staff_levels",
-  };
-
   const onSubmit = async () => {
     if (!formik.isValid) {
       toast.error(
@@ -80,18 +71,18 @@ const Onboarding = () => {
       );
       return;
     }
+
+    // console.log(formik?.values);
+
     const formDataToSend = new FormData();
-    // console.log(formik.values);
 
     Object.entries(formik.values).forEach(([key, value]) => {
-      const mappedKey = keyMapping[key] || key;
-
       if (key === "logo" && logo instanceof File) {
-        formDataToSend.append(mappedKey, logo);
+        formDataToSend.append(key, logo);
       } else if (Array.isArray(value) || typeof value === "object") {
-        formDataToSend.append(mappedKey, JSON.stringify(value));
+        formDataToSend.append(key, JSON.stringify(value));
       } else {
-        formDataToSend.append(mappedKey, value as string);
+        formDataToSend.append(key, value as string);
       }
     });
 
@@ -99,18 +90,22 @@ const Onboarding = () => {
     const appraisalCycle = "annual";
     formDataToSend.append("appraisal_cycle", appraisalCycle);
 
-    console.log({ formDataToSend });
-
     try {
-      // const response = await setupOrganization(formDataToSend);
-
       onboarding(formDataToSend)
         .unwrap()
         .then((payload) => {
+          // handleGetAuthUser()
+          actionCtx.triggerUpdateUser();
           toast.success("Organization Created Successfully");
           router.push(ADMIN.OVERVIEW);
         });
     } catch (error) {}
+  };
+
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
   };
 
   const formik = useFormik<FormValues>({
@@ -118,14 +113,14 @@ const Onboarding = () => {
       vision: "",
       mission: "",
       brand_colour: "#008080",
-      logo: null,
+      logo: "",
       end_fy: "",
       start_fy: "",
       probation_duration: "",
       opening_time: "",
       fy_title: "",
       closing_time: "",
-      hierarchy: [],
+      hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
     },
     validationSchema: OnbaordingSchema,
@@ -149,29 +144,37 @@ const Onboarding = () => {
             getCurrentStep() - 1 >= 1 &&
               router.push(`${location}?ui=${ui}&step=${getCurrentStep() - 1}`);
           }}
-          // disabled={currentStep === 0}
           className="text-black flex gap-1 items-center text-xs"
         >
           <HiChevronDoubleLeft width={10} height={10} /> Back
         </button>
       </div>
       <FormikProvider value={formik}>
-        <form className="px-10 xl:pl-[9.375rem]" onSubmit={formik.handleSubmit}>
-          <h1 className="text-2xl font-bold text-[#162238] mb-16">
-            {`Welcome ITH Holdings! Let's setup your organization`}
-          </h1>
-          {getCurrentStep() === 1 && <OrganizationStatement formik={formik} />}
-          {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
-          {getCurrentStep() === 3 && (
-            <OperationsParameter
-              formik={formik}
-              setFyDate={() => {}}
-              fyDate={""}
-            />
-          )}
-          {getCurrentStep() === 4 && <OrganizationStructure formik={formik} />}
-          {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-          {getCurrentStep() === 6 && <Preview formik={formik} />}
+        <form
+          className="px-10 xl:pl-[9.375rem] max-h-full overflow-scroll scroll-hidden pb-20"
+          onSubmit={formik.handleSubmit}
+        >
+          <div className="">
+            <h1 className="text-2xl font-bold text-[#162238] mb-16">
+              {`Welcome ITH Holdings! Let's setup your organization`}
+            </h1>
+            {getCurrentStep() === 1 && (
+              <OrganizationStatement formik={formik} />
+            )}
+            {getCurrentStep() === 2 && <BrandIdentity formik={formik} />}
+            {getCurrentStep() === 3 && (
+              <OperationsParameter
+                formik={formik}
+                setFyDate={setFyDate}
+                fyDate={fyDate}
+              />
+            )}
+            {getCurrentStep() === 4 && (
+              <OrganizationStructure formik={formik} />
+            )}
+            {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
+            {getCurrentStep() === 6 && <Preview formik={formik} />}
+          </div>
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
             <button
               type="button"

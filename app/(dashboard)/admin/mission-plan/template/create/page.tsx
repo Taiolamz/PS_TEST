@@ -30,7 +30,7 @@ const AddMissionPlanTemplate = () => {
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
 
   return (
-    <DashboardLayout back headerTitle="Branch">
+    <DashboardLayout back headerTitle="Create Mission Plan Template">
       <ReusableStepListBox
         btnText="Continue"
         activeStep="1"
@@ -39,8 +39,9 @@ const AddMissionPlanTemplate = () => {
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingMissionPlanTemplate}
         onSave={formik.handleSubmit}
-        onCancel={handleCancelDialog}
+        // onCancel={handleCancelDialog}
         hideStep
+        fixed={true}
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
         <form
@@ -69,9 +70,9 @@ const AddMissionPlanTemplate = () => {
               </Button>
             </div>
 
-            <div className="flex flex-col gap-5 mex-w-[">
+            <div className="flex flex-col gap-5 mex-w-[ ">
               {/* FINANCIAL YEAR */}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>1. Financial Year</p>
                 <div className="mt-2 flex w-[874px] gap-5 justify-between items-center">
                   <Input
@@ -119,7 +120,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/* MISSION STATEMENT */}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>2. Mission Statement</p>
                 <div className="mt-2">
                   <div>
@@ -142,7 +143,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/* MEASURE OF SUCCESS*/}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>3. Measure of Success</p>
                 <div className="mt-2 flex items-center gap-5">
                   <Input
@@ -183,7 +184,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/* IMPLIED TASK*/}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>4. Implied Task</p>
                 <div className="mt-2 flex items-center gap-5">
                   <Input
@@ -200,7 +201,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/* SPECIFIED TASK*/}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>5. Specified Task</p>
                 <div className="mt-2 flex items-center gap-5">
                   <Input
@@ -217,7 +218,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/* FREEDOM & CONSTRAINTS*/}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>6. Freedom & Constraints</p>
                 <div className="mt-2 flex items-center gap-5">
                   <Input
@@ -245,7 +246,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/* STRATEGIC INTENT */}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>7. Set Strategic Intent</p>
                 <div className="mt-2">
                   <Input
@@ -262,7 +263,7 @@ const AddMissionPlanTemplate = () => {
               </div>
 
               {/*STRATEGIC PILLARS */}
-              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10">
+              <div className="mt-5 border rounded-lg p-8 pb-10 pt-10 bg-white">
                 <p className={headerClass}>8. Set Strategic Pillars</p>
                 <div className="mt-2">
                   <Input

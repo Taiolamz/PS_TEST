@@ -1,42 +1,38 @@
 "use client";
 
 import { FormHeader } from "../_components";
-import CustomCheckbox from "@/components/custom-checkbox";
-import { useEffect, useState } from "react";
-import { HIERARCHY_DATA } from "../data";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface OrganizationStructureProps {
   formik: any;
 }
 
+export type CheckboxOption = {
+  name: string;
+  label: string;
+  id: number;
+};
+
+const currentHierarchy: CheckboxOption[] = [
+  { name: "subsidiary", label: "Subsidiary", id: 1 },
+  { name: "branch", label: "Branches", id: 2 },
+  { name: "department", label: "Departments", id: 3 },
+  { name: "unit", label: "Units", id: 4 },
+];
+
 const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
-  const [currentHierarchy, setCurrentHierarchy] = useState(HIERARCHY_DATA);
+  const handleCheckboxChange = (name: string) => {
+    const currentSelections = formik.values.hierarchy
+      ? formik.values.hierarchy.split(",")
+      : [];
+    const isChecked = currentSelections.includes(name);
 
-  const handleCheckboxClick = (id: number) => {
-    const updatedHierarchy = currentHierarchy.map((item) =>
-      item.id === id ? { ...item, isChecked: !item.isChecked } : item
-    );
+    const updatedSelections = isChecked
+      ? currentSelections.filter((item: string) => item !== name)
+      : [...currentSelections, name];
 
-    setCurrentHierarchy(updatedHierarchy);
-
-    const updatedFormikValues = updatedHierarchy.reduce((acc, item) => {
-      acc[item.title] = item.isChecked;
-      return acc;
-    }, {} as Record<string, boolean>);
-
-    formik.setFieldValue("hierarchy", updatedFormikValues);
+    formik.setFieldValue("hierarchy", updatedSelections.join(","));
   };
-
-  useEffect(() => {
-    const formikHierarchy = formik.values.hierarchy;
-    if (formikHierarchy) {
-      const initialHierarchy = currentHierarchy.map((item) => ({
-        ...item,
-        isChecked: formikHierarchy[item.title] || false,
-      }));
-      setCurrentHierarchy(initialHierarchy);
-    }
-  }, [formik.values.hierarchy]);
 
   return (
     <section className="max-w-[55.875rem]">
@@ -52,18 +48,17 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
         of the fields below as it applies to your organization.
       </p>
       <div className="mt-4">
-        {currentHierarchy.map(({ id, title, isChecked }) => (
-          <div key={id} className="flex items-center mb-2">
-            <CustomCheckbox
-              key={id}
+        {currentHierarchy.map(({ id, name, label }) => (
+          <div className="flex items-center mt-2" key={name}>
+            <Checkbox
               id="hierarchy"
-              name={`hierarchy.${title.toLowerCase()}`}
-              label={title}
-              isChecked={isChecked}
-              itemId={id}
-              handleClick={handleCheckboxClick}
-              labelClass="text-[#6E7C87]"
+              key={id}
+              name={name}
+              className=""
+              onCheckedChange={() => handleCheckboxChange(name)}
+              checked={formik.values.hierarchy.includes(name)}
             />
+            <label className="ml-2 block text-[#6E7C87]">{label}</label>
           </div>
         ))}
       </div>

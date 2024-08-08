@@ -186,7 +186,7 @@ const Departments = () => {
 
   return (
     <DashboardLayout headerTitle="Department">
-      <ReusableStepListBox
+      {/* <ReusableStepListBox
         btnText="Continue"
         activeStep="3"
         totalStep="4"
@@ -194,7 +194,7 @@ const Departments = () => {
         btnDisabled={departments?.length < 1}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-      />
+      /> */}
       <section className="p-5">
         {departments?.length < 1 ? (
           <ReusableEmptyState
