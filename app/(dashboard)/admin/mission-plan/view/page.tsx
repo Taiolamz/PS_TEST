@@ -43,8 +43,7 @@ const SingleMissionPlan = () => {
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
   // const data = useAppSelector((state) => state?.auth?.user);
   const ui = searchParams.get("ui");
-  const id = searchParams.get("id"); //The fiscial year ID
-  const [missionPlanData, setMissionPlanData] = useState<MissionType>({});
+  const id = searchParams.get("id"); //The fiscial year ID 
   const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
   const [sort, setSort] = useState<string>("");
@@ -117,25 +116,7 @@ const SingleMissionPlan = () => {
     }));
   };
   // -------- END: API Service for Tab == All Employee ------- //
-
-  // -------- START: API Service for Tab == Mission Plan ------- //
-  const {
-    data: missionData,
-    isLoading: isLoadingMission,
-    isFetching: isFetchingMission,
-    error: missionError,
-  }: any = useGetOrganizationMissionPlanQuery({});
-
-  useEffect(() => {
-    if (missionData) {
-      const obj = missionData?.fiscal_years?.filter(
-        (item: any) => item?.id === id
-      );
-      setMissionPlanData(obj[0]);
-    }
-  }, [missionData]);
-
-  // -------- END: API Service for Tab == Mission Plan ------- //
+const user_ = useAppSelector((state) => state?.auth?.user);
 
   if (summaryError) {
     toast.error(
