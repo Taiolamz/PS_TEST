@@ -14,10 +14,14 @@ import {
 import routesPath from "@/utils/routes";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
-import back from "@/public/svgs/back.svg";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { MissionHeader, MissionItems, MissionPlanWrapper, MissionWrapper } from "@/components/fragment";
+import {
+  MissionHeader,
+  MissionItems,
+  MissionPlanWrapper,
+  MissionWrapper,
+} from "@/components/fragment";
+import BackIcon from "@/public/assets/icons/BackIcon";
 
 const MissionDetailPreview = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -27,8 +31,6 @@ const MissionDetailPreview = () => {
   const goBack = () => router.back();
 
   const { ADMIN } = routesPath;
-
-  const prevPath = "";
 
   return (
     <div className="w-[60vw]">
@@ -50,7 +52,7 @@ const MissionDetailPreview = () => {
             status="approved"
             comment="2"
           >
-            <p className="leading-relaxed  text-xs">
+            <p className="leading-relaxed  text-sm">
               My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
               elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
               pulvinar arcu, mi.
@@ -115,7 +117,7 @@ const MissionDetailPreview = () => {
             <div className="flex flex-col gap-[1rem]">
               <MissionItems data={freedom} />
               <div>
-                <div className="text-primary font-500 leading-relaxed pb-[11px]">
+                <div className="text-[var(--primary-color)] font-[500] leading-relaxed pb-[11px]">
                   <h4>Constraints</h4>
                 </div>
                 <MissionItems data={constraints} />
@@ -130,7 +132,7 @@ const MissionDetailPreview = () => {
           onClick={goBack}
         >
           <span>
-            <Image src={back} alt="back" />
+            <BackIcon className="bg-transparent text-back" />
           </span>
           <span>Go Back to Edit</span>
         </div>
@@ -138,7 +140,7 @@ const MissionDetailPreview = () => {
         <Button
           type="button"
           onClick={() => setShowSuccessModal(true)}
-          className="bg-primary text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--btn-hover-backgroundColor)] rounded-sm shadow-md"
+          className="bg-[var(--primary-color)] text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--primary-accent-color)] rounded-sm shadow-md"
         >
           <p>Upload</p>
         </Button>

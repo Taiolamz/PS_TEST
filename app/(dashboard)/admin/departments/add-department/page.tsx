@@ -12,10 +12,13 @@ import { useDepartment } from "../_hooks/useDepartment";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 const { ADMIN } = routesPath;
 
 const AddDepartment = () => {
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
@@ -110,9 +113,13 @@ const AddDepartment = () => {
                   isRequired
                 />
 
-                <CustomSelect
+            {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "subsidiary"
+              ) &&    <CustomSelect
                   label="Subsidiary"
-                  isRequired
+                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
+                    "subsidiary"
+                  ) }
                   placeholder="Select subsidiary"
                   options={subsidiaries}
                   selected={formik.values.subsidiary}
@@ -120,11 +127,15 @@ const AddDepartment = () => {
                     formik.setFieldValue("subsidiary", value)
                   }
                   labelClass={labelClassName}
-                />
+                />}
 
-                <CustomSelect
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "branch"
+              ) &&    <CustomSelect
                   label="Branch"
-                  isRequired
+                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
+                    "branch"
+                  ) }
                   placeholder="Select Branch"
                   options={branches}
                   selected={selectedBranch}
@@ -136,7 +147,7 @@ const AddDepartment = () => {
                     formik.setFieldValue("branch_id", selectedBranchId);
                   }}
                   labelClass={labelClassName}
-                />
+                />}
               </form>
             }
           />
