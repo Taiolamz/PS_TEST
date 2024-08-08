@@ -180,6 +180,7 @@ export default function AddEmployee() {
                   selected={formik.values.level}
                   setSelected={(value) => formik.setFieldValue("level", value)}
                   labelClass={labelClassName}
+                  isRequired
                 />
 
                 <Input
