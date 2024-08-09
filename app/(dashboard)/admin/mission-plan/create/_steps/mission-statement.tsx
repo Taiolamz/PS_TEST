@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
-import { BsFillInfoCircleFill } from "react-icons/bs";
-import { Button } from "@/components/ui/button";
-import { usePathname, useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useFormik } from "formik";
-import { missionStatementSchema } from "@/utils/schema/mission-plan";
-import { useCreateMissionStatementMutation, useGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
-import { PageLoader } from "@/components/custom-loader";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
 import { Dictionary } from "@/@types/dictionary";
+import { PageLoader } from "@/components/custom-loader";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { useCreateMissionStatementMutation, useLazyGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
+import { missionStatementSchema } from "@/utils/schema/mission-plan";
+import { useFormik } from "formik";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { BsFillInfoCircleFill } from "react-icons/bs";
+import { toast } from "sonner";
 
 const { ADMIN } = routesPath
 
@@ -21,16 +21,28 @@ const MissionStatement = () => {
   const location = usePathname();
   const dispatch = useAppDispatch();
 
-  const { data: mission_plan, isLoading: isLoadingMissionPlan, isFetching: isFetchingMissionPlan, isSuccess: fetchedMissionPlan, refetch: refetchMissionPlan } = useGetMyMissionPlanQuery({})
+  const { mission_plan: mission_plan_info } = useAppSelector((state) => state.mission_plan)
+
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || ""
+
+  const [getMyMissionPlan, { data: mission_plan, isLoading: isLoadingMissionPlan, isFetching: isFetchingMissionPlan, isSuccess: fetchedMissionPlan }] = useLazyGetMyMissionPlanQuery({})
+
+
   const [createMissionStatement, { isLoading }] = useCreateMissionStatementMutation()
 
-  const { mission_plan: mission_plan_info } = useAppSelector((state) => state.mission_plan)
-  console.log(mission_plan)
+  const handleGetMyMissionPlan = async () => {
+    const payload = {id: FISCAL_YEAR_ID}
+    getMyMissionPlan(payload)
+    .unwrap()
+    .then((payload) => {
+      // console.log(payload)
+    })
+  }
+
   const handleFormSubmit = async (values: Dictionary) => {
     createMissionStatement(values)
     .unwrap()
     .then((data) => {
-      console.log(data)
       toast.success("Mission Statement Created Successfully")
       router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=measure-success`);
     })
@@ -50,13 +62,15 @@ const MissionStatement = () => {
 
 
   useEffect(() => {
-    refetchMissionPlan()
-  },[])
+    handleGetMyMissionPlan()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[FISCAL_YEAR_ID])
 
   useEffect(() => {
     if (fetchedMissionPlan) {
-      dispatch(updateMissionPlanDetails({ slug: 'mission_plan', data: mission_plan?.data }))
+      dispatch(updateMissionPlanDetails({ slug: 'mission_plan', data: mission_plan?.data?.mission_plan }))
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan])
 
   return (

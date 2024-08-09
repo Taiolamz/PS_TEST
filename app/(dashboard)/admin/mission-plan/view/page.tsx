@@ -56,7 +56,7 @@ const SingleMissionPlan = () => {
             <Link href="#">View Presentation Mode</Link>
           </div>
           <div className={`${btn}`}>
-            <Link href="#">Edit Mission Plan</Link>
+            <Link href={`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`}>Edit Mission Plan</Link>
           </div>
         </div>
       )}
