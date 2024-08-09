@@ -2,7 +2,7 @@
 
 import Routes from "@/lib/routes/routes";
 import CustomSelect from "@/components/custom-select";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import routesPath from "@/utils/routes";
 import { useSubsidiary } from "../_hooks/useSubsidiary";
 import { ChecklistLayout } from "../_components/checklist-layout";
@@ -15,10 +15,12 @@ import { Dictionary } from "@/@types/dictionary";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import { useRouter } from "next/navigation";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
 const AddSubsidary = () => {
+  const actionCtx = useContext(ActionContext)
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const router = useRouter();
@@ -42,7 +44,7 @@ const AddSubsidary = () => {
         <ReusableStepListBox
           btnText="Continue"
           activeStep="1"
-          totalStep="4"
+          totalStep={actionCtx?.checkListLength || '4'}
           title="Create Subsidiary"
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingSubsidiary}

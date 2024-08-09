@@ -1,7 +1,7 @@
 "use client";
 
 import Routes from "@/lib/routes/routes";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
 import { Input } from "@/components/ui/input";
@@ -12,12 +12,14 @@ import { useDepartment } from "../_hooks/useDepartment";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
-import { processInputAsArray } from "@/utils/helpers";
+import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
 const AddDepartment = () => {
+  const actionCtx = useContext(ActionContext)
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -44,8 +46,8 @@ const AddDepartment = () => {
       <DashboardLayout back headerTitle="Department">
         <ReusableStepListBox
           btnText="Continue"
-          activeStep="3"
-          totalStep="4"
+          activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Department") || '3'}
+          totalStep={actionCtx?.checkListLength || '4'}
           title="Create Department"
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingDepartment}
@@ -113,41 +115,45 @@ const AddDepartment = () => {
                   isRequired
                 />
 
-            {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "subsidiary"
-              ) &&    <CustomSelect
-                  label="Subsidiary"
-                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
-                    "subsidiary"
-                  ) }
-                  placeholder="Select subsidiary"
-                  options={subsidiaries}
-                  selected={formik.values.subsidiary}
-                  setSelected={(value) =>
-                    formik.setFieldValue("subsidiary", value)
-                  }
-                  labelClass={labelClassName}
-                />}
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "subsidiary"
+                ) && (
+                  <CustomSelect
+                    label="Subsidiary"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary")}
+                    placeholder="Select subsidiary"
+                    options={subsidiaries}
+                    selected={formik.values.subsidiary}
+                    setSelected={(value) =>
+                      formik.setFieldValue("subsidiary", value)
+                    }
+                    labelClass={labelClassName}
+                  />
+                )}
 
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "branch"
-              ) &&    <CustomSelect
-                  label="Branch"
-                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
-                    "branch"
-                  ) }
-                  placeholder="Select Branch"
-                  options={branches}
-                  selected={selectedBranch}
-                  setSelected={(value) => {
-                    setSelectedBranch(value);
-                    const selectedBranchId = branchDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].branch_id;
-                    formik.setFieldValue("branch_id", selectedBranchId);
-                  }}
-                  labelClass={labelClassName}
-                />}
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "branch"
+                ) && (
+                  <CustomSelect
+                    label="Branch"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("branch")}
+                    placeholder="Select Branch"
+                    options={branches}
+                    selected={selectedBranch}
+                    setSelected={(value) => {
+                      setSelectedBranch(value);
+                      const selectedBranchId = branchDrop.filter(
+                        (chi) => chi.name === value
+                      )[0].branch_id;
+                      formik.setFieldValue("branch_id", selectedBranchId);
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
               </form>
             }
           />

@@ -1,7 +1,7 @@
 "use client";
 
 import Routes from "@/lib/routes/routes";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useUnit } from "../_hooks/useUnit";
 import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
@@ -13,11 +13,13 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import routesPath from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
-import { processInputAsArray } from "@/utils/helpers";
+import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
 const AddUnit = () => {
+  const actionCtx = useContext(ActionContext)
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -49,8 +51,8 @@ const AddUnit = () => {
       <DashboardLayout back headerTitle="Unit">
         <ReusableStepListBox
           btnText="Continue"
-          activeStep="4"
-          totalStep="4"
+          activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Unit") || '4'}
+          totalStep={actionCtx?.checkListLength || '4'}
           title="Create Unit"
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingUnit}
