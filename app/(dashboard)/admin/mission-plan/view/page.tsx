@@ -171,11 +171,12 @@ const SingleMissionPlan = () => {
             <div className={`${btn}`}>
               <Link href="#">View Presentation Mode</Link>
             </div>
-            <div className={`${btn}`}>
-              <Link href="#">Edit Mission Plan</Link>
-            </div>
+           
+          <div className={`${btn}`}>
+            <Link href={`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`}>Edit Mission Plan</Link>
           </div>
-        )}
+        </div>
+      )}
       </div>
 
       {ui === "mission-plan" && (
