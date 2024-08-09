@@ -155,8 +155,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       .email("Invalid email address")
       .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
       .required("Work Email is required"),
-    subsidiary: yup.string().required(),
-    branch_id: yup.string().required(),
+    // subsidiary: yup.string().required(),
+    // branch_id: yup.string().required(),
   });
 
   const router = useRouter();

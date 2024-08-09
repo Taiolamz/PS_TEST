@@ -23,6 +23,8 @@ import Link from "next/link";
 import ActionContext from "../context/ActionContext";
 import SideMenuNavBox from "./SideMenuNavBox";
 import HeaderNavBox from "./HeaderNvaBox";
+import { Button } from "@/components/ui/button";
+// import { checklistDetails } from "../admin/checklist/checklist-steps";
 
 interface myComponentProps {
   children?: React.ReactNode;
@@ -43,6 +45,7 @@ const DashboardLayout = ({
   const { user, checklist } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const router = useRouter();
+  const { ADMIN } = routesPath;
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
   );
@@ -71,8 +74,8 @@ const DashboardLayout = ({
     //   handleGetChecklist();
     // }
     handleGetChecklist();
-  //  console.log(user);
-   
+    //  console.log(user);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -157,6 +160,128 @@ const DashboardLayout = ({
     // }
   };
 
+  const checklistDetails = [
+    {
+      title: "Set up organization structure",
+      subTitle:
+        "Manage users that will be joining your organization and how they are inducted",
+      items: [
+        {
+          isChecked: checklist?.subsidiary_count < 1 ? false : true,
+          label: "Add Subsidiary",
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "subsidiary"
+          )
+            ? true
+            : false,
+          link: ADMIN?.CREATE_SUBSIDIARY,
+        },
+        {
+          isChecked: checklist?.branch_count < 1 ? false : true,
+          label: "Add Branches",
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "branch"
+          )
+            ? true
+            : false,
+          link: ADMIN?.CREATE_BRANCH,
+        },
+        {
+          isChecked: checklist?.department_count < 1 ? false : true,
+          label: "Add Department",
+          link: ADMIN?.CREATE_DEPARTMENT,
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "department"
+          )
+            ? true
+            : false,
+        },
+        {
+          isChecked: checklist?.unit_count < 1 ? false : true,
+          label: "Add Unit",
+          hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "unit"
+          )
+            ? true
+            : false,
+          link: ADMIN?.CREATE_UNIT,
+        },
+      ],
+      // isAllChecked: isCardOneChecked,
+      // path: ADMIN.SUBSIDIARY,
+      // link: ADMIN?.CREATE_S,
+    },
+    {
+      title: "Set up employee and roles",
+      subTitle:
+        "Manage users that will be joining your organization and how they are inducted",
+      // isChecked: checklist?.employee_count < 1 ? false : true,
+      path: ADMIN.ADD_EMPLOYEE,
+      hide: false,
+      isAllChecked: checklist?.employee_count < 2 ? false : true,
+    },
+    {
+      title: "Set up mission plan",
+      subTitle:
+        "Manage users that will be joining your organization and how they are inducted",
+      items: [
+        {
+          isChecked: checklist?.mission_flow_exist,
+          label: "Create Mission Plan Template",
+          hide: false,
+          link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_TEMPLATE,
+        },
+        {
+          isChecked: checklist?.approval_flow_exist,
+          label: "Approval Flow",
+          hide: false,
+          link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_APPROVAL_FLOW,
+        },
+      ],
+      isAllChecked:
+        checklist?.mission_flow_exist && checklist?.approval_flow_exist
+          ? true
+          : false,
+    },
+  ];
+
+  const handleProceedChecklist = () => {
+    if (getNextLink(getListToUse(checklistDetails[0]?.items))?.length > 0) {
+      if (Number(checklistDetails[0]?.items?.length) > 0) {
+        router?.push(
+          getNextLink(getListToUse(checklistDetails[0]?.items))[0]?.link
+        );
+        return;
+      }
+    }
+    if (checklist?.employee_count < 2) {
+      router.push(ADMIN.ADD_EMPLOYEE);
+      return;
+    }
+    if (Number(checklistDetails[2]?.items?.length) > 0) {
+      router?.push(
+        getNextLink(getListToUse(checklistDetails[2]?.items))[0]?.link
+      );
+      return;
+    }
+  };
+
+  const getListToUse = (list: any) => {
+    if (list?.length > 0) {
+      const newList = list?.filter((chi: any) => !chi?.hide);
+      // console.log(newList);
+      return newList;
+    }
+  };
+
+  const getNextLink = (list: any) => {
+    if (list?.length > 0) {
+      const newList = list?.filter((chi: any) => !chi?.isChecked);
+      // console.log(newList);
+      return newList;
+    }
+  };
+
   return (
     <div
       onClick={() => {
@@ -194,14 +319,37 @@ const DashboardLayout = ({
           {checkListRoutes?.includes(pathname) &&
             formatChecklistPercent(checklist?.completion_percent) !== 100 && (
               <>
-                <Link
-                  href={routesPath?.ADMIN.CHECKLIST}
+                <div
+                  // href={routesPath?.ADMIN.CHECKLIST}
                   className="text-primary font-semibold text-sm"
                 >
-                  <p className="p-4 font-semibold underline bg-[#FFFCC2]">
-                    Setup Checklist...
-                  </p>
-                </Link>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    }}
+                    className="bg-[#FFFCC2] underline py-2 px-8"
+                  >
+                    {" "}
+                    <p
+                      onClick={() => {
+                        router.push(routesPath?.ADMIN.CHECKLIST);
+                      }}
+                      className=" font-semibold  "
+                      style={{ cursor: "pointer" }}
+                    >
+                      Setup Checklist...
+                    </p>
+                    <Button
+                      onClick={handleProceedChecklist}
+                      className={`font-light`}
+                    >
+                      Proceed
+                    </Button>
+                  </div>
+                </div>
               </>
             )}
           {children}

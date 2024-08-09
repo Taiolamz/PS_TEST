@@ -1,13 +1,12 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import CustomTab from "@/components/custom-tab";
-import React, { useEffect, useState } from "react";
-import { PAGE_TABS } from "../_data";
+import React, { useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import {
-  allemployeeColumns,
-  allemployeeData,
-} from "../_data/all-employee-table-data";
+import { useAppSelector } from "@/redux/store";
+import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
+import routesPath from "@/utils/routes";
+import { allemployeeData } from "../_data/all-employee-table-data";
 import TableWrapper from "@/components/tables/TableWrapper";
 import AllEmployeeMissionCard from "../_components/all-employee-mission-card";
 import CustomSelect from "@/components/custom-select";
@@ -16,34 +15,32 @@ import {
   useGetAllOrganizationEmployeeMissionPlanQuery,
   useGetAllOrganizationMissionPlanDropdownQuery,
   useGetAllOrganizationMissionPlanSummaryQuery,
-  useGetOrganizationMissionPlanQuery,
   useLazyGetAllOrganizationEmployeeMissionPlanExportQuery,
 } from "@/redux/services/mission-plan/allmissionplanApi";
 import BadgeComponent from "@/components/badge/BadgeComponents";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
-import routesPath from "@/utils/routes";
-import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
 import { FiscalYearInfo, MyMissionPlan } from "./_partials";
 import { Dictionary } from "@/@types/dictionary";
-import { useAppSelector } from "@/redux/store";
+import Link from "next/link";
 
 const { ADMIN } = routesPath;
-
-type MissionType = {
-  [key: string]: any; // This allows any key with any value type
-};
 
 const SingleMissionPlan = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const ui = searchParams.get("ui");
+  const id = searchParams.get("id"); //The fiscial year ID
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
+  const { isPreview } = useAppSelector((state) => state?.mission_plan_preview);
+  //   console.log(isPreview, "isPreview");
+  const btn =
+    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+
   // const data = useAppSelector((state) => state?.auth?.user);
-  const ui = searchParams.get("ui");
-  const id = searchParams.get("id"); //The fiscial year ID 
   const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
   const [sort, setSort] = useState<string>("");
@@ -116,7 +113,7 @@ const SingleMissionPlan = () => {
     }));
   };
   // -------- END: API Service for Tab == All Employee ------- //
-const user_ = useAppSelector((state) => state?.auth?.user);
+  // const user_ = useAppSelector((state) => state?.auth?.user);
 
   if (summaryError) {
     toast.error(
@@ -148,7 +145,7 @@ const user_ = useAppSelector((state) => state?.auth?.user);
     >
       <div
         style={{ backgroundColor: "rgba(244, 244, 244, 1)" }}
-        className="p-5 w-full global_sticky_class"
+        className="p-5 w-full global_sticky_class flex justify-between items-center"
       >
         {/* user_info?.role */}
         <CustomTab
@@ -158,6 +155,16 @@ const user_ = useAppSelector((state) => state?.auth?.user);
           })}
           slug="ui"
         />
+        {isPreview && (
+          <div className="flex gap-[10px]">
+            <div className={`${btn}`}>
+              <Link href="#">View Presentation Mode</Link>
+            </div>
+            <div className={`${btn}`}>
+              <Link href="#">Edit Mission Plan</Link>
+            </div>
+          </div>
+        )}
       </div>
 
       {ui === "mission-plan" && (

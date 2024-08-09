@@ -27,7 +27,7 @@ const ApproveMissionPlan = () => {
   const ui = searchParams.get("ui");
 
   return (
-    <DashboardLayout headerTitle="Approve Mission Plan">
+    <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
         <div className="py-14 px-[1.625rem] bg-white">
           <div className="flex justify-between mb-7">
