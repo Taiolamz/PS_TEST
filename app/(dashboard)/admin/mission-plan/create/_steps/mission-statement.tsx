@@ -35,7 +35,7 @@ const MissionStatement = () => {
     getMyMissionPlan(payload)
     .unwrap()
     .then((payload) => {
-      // console.log(payload)
+      
     })
   }
 
