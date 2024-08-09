@@ -48,7 +48,6 @@ export default function CustomSelect({
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
   return (
     <div className="mt-1">
       {label && (
@@ -64,7 +63,7 @@ export default function CustomSelect({
             <span className="inline-block text-red-400 text-lg pl-1 mt-">
               *
             </span>
-          )}{" "}
+          )}
         </label>
       )}
       <Popover open={open} onOpenChange={setOpen}>
@@ -96,7 +95,7 @@ export default function CustomSelect({
               : selected
               ? options?.filter(
                   (option) =>
-                    option?.label?.toString().toLowerCase() ===
+                    option?.value?.toString().toLowerCase() ===
                     selected?.toString().toLowerCase()
                 )[0]?.label
               : placeholder

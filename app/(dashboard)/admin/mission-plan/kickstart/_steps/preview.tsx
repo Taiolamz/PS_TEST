@@ -200,7 +200,7 @@ const FinancialYearPreview = () => {
             icon="/assets/images/success.gif"
             iconClass="w-40"
             title="Financial Year Begins!!!"
-            message="Congratulations ! you have successfully kickstarted your financial year. Click on the button below to continue"
+            message="Congratulations! You have successfully kickstarted your financial year. Click on the button below to continue"
             show={showSuccessModal}
             handleClose={() => {
               resetSaveFinancialYear();
