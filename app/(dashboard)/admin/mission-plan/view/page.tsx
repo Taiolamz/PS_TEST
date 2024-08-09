@@ -105,15 +105,26 @@ const SingleMissionPlan = () => {
       .catch(() => toast.dismiss());
   };
 
-  const UNIT_DATA = (obj: any, deptId: string) => {
-    const filtered = obj?.filter((item: any) => item?.department_id === deptId);
-    return filtered?.map((org: { id: string; name: string }) => ({
-      value: org.id,
-      label: org.name,
-    }));
+  const UNIT_DATA = (obj: any, deptId?: string) => {
+    if (user_hierarchy?.includes("department")) {
+      const filtered = obj?.filter(
+        (item: any) => item?.department_id === deptId
+      );
+      return filtered?.map((org: { id: string; name: string }) => ({
+        value: org.id,
+        label: org.name,
+      }));
+    } else {
+      return obj?.map((org: { id: string; name: string }) => ({
+        value: org.id,
+        label: org.name,
+      }));
+    }
   };
-  // -------- END: API Service for Tab == All Employee ------- //
-  // const user_ = useAppSelector((state) => state?.auth?.user);
+  //-------- END: API Service for Tab == All Employee ------- //
+  const user_hierarchy = useAppSelector(
+    (state) => state?.auth?.user?.organization?.hierarchy
+  );
 
   if (summaryError) {
     toast.error(
@@ -184,38 +195,47 @@ const SingleMissionPlan = () => {
                 {active_fy_info?.title}
               </p>
               <div className="flex gap-x-[14px]">
-                <CustomSelect
-                  options={MAP_DATA(
-                    dropdownData?.organization_info?.subsidiary
-                  )}
-                  selected={subsidiary}
-                  setSelected={(e) => setSubsidiary(e)}
-                  className="min-w-40 bg-white"
-                  placeholder="Select subsidiary"
-                />
-                <CustomSelect
-                  options={MAP_DATA(
-                    dropdownData?.organization_info?.departments
-                  )}
-                  className="min-w-44 bg-white"
-                  selected={departments}
-                  setSelected={(e) => {
-                    setDepartments(e);
-                    setUnits("");
-                  }}
-                  placeholder="Select Department"
-                />
-                <CustomSelect
-                  options={UNIT_DATA(
-                    dropdownData?.organization_info?.units,
-                    departments
-                  )}
-                  selected={units}
-                  setSelected={(e) => setUnits(e)}
-                  disabled={departments?.length === 0}
-                  className="min-w-40 bg-white"
-                  placeholder="Select Unit"
-                />
+                {user_hierarchy?.includes("subsidiary") && (
+                  <CustomSelect
+                    options={MAP_DATA(
+                      dropdownData?.organization_info?.subsidiary
+                    )}
+                    selected={subsidiary}
+                    setSelected={(e) => setSubsidiary(e)}
+                    className="min-w-40 bg-white"
+                    placeholder="Select subsidiary"
+                  />
+                )}
+                {user_hierarchy?.includes("department") && (
+                  <CustomSelect
+                    options={MAP_DATA(
+                      dropdownData?.organization_info?.departments
+                    )}
+                    className="min-w-44 bg-white"
+                    selected={departments}
+                    setSelected={(e) => {
+                      setDepartments(e);
+                      setUnits("");
+                    }}
+                    placeholder="Select Department"
+                  />
+                )}
+                {user_hierarchy?.includes("unit") && (
+                  <CustomSelect
+                    options={UNIT_DATA(
+                      dropdownData?.organization_info?.units,
+                      departments
+                    )}
+                    selected={units}
+                    setSelected={(e) => setUnits(e)}
+                    disabled={
+                      departments?.length === 0 &&
+                      user_hierarchy?.includes("department")
+                    }
+                    className="min-w-40 bg-white"
+                    placeholder="Select Unit"
+                  />
+                )}
               </div>
             </div>
             <AllEmployeeMissionCard {...summaryData?.summary} />
