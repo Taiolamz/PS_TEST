@@ -202,6 +202,7 @@ type QueryParams = {
   per_page?: number;
   total?: number;
   to?: number;
+  status?: string;
 };
 
 // unit services

@@ -1,6 +1,5 @@
 import Link from "next/link";
-import update from "@/public/svgs/update.svg";
-import Image from "next/image";
+import { Pencil } from "lucide-react";
 
 interface missionHeaderProp {
   title: string;
@@ -10,7 +9,7 @@ interface missionHeaderProp {
 
 const MissionHeader = ({ title, link, index }: missionHeaderProp) => {
   return (
-    <div className="w-full flex justify-between text-sm text-[var(--text-gray)] bg-[var(--primary-light-bg)] p-[10px]">
+    <div className="w-full flex justify-between text-sm text-[var(--primary-color)] bg-[var(--primary-accent-color)] p-[10px]">
       <div>
         <h4 className="text-sm font-normal">
           <span>{index}. </span>
@@ -18,7 +17,7 @@ const MissionHeader = ({ title, link, index }: missionHeaderProp) => {
         </h4>
       </div>
       <Link className="pr-[1rem]" href={link}>
-        <Image src={update} alt="edit-icon" />
+        <Pencil size={15} color="var(--primary-color)" />
       </Link>
     </div>
   );

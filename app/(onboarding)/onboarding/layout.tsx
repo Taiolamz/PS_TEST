@@ -3,12 +3,14 @@
 import Icon from "@/components/icon/Icon";
 import { CheckIcon } from "@radix-ui/react-icons";
 import React, { useContext, useEffect } from "react";
-import { steps } from "./onboarding/data";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import ActionContext, { ActionContextProvider } from "../(dashboard)/context/ActionContext";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import { useAppSelector } from "@/redux/store";
+import { steps } from "./data";
+import ActionContext, {
+  ActionContextProvider,
+} from "@/app/(dashboard)/context/ActionContext";
 
 type Props = {
   children: React.ReactNode;

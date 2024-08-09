@@ -77,7 +77,7 @@ const formSchema = yup.object().shape({
   phone_number: yup
     .string()
     .required("Phone number is required")
-    .matches(/^\d+$/, "Phone number must be digits only")
+    // .matches(/^\d+$/, "Phone number must be digits only")
     .max(14, "Phone number cannot exceed 14 digits"),
   role_id: yup.string().required("Role is required"),
 });
