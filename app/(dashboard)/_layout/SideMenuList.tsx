@@ -19,6 +19,52 @@ export const sideMenuIcons = {
       ></path>
     </svg>
   ),
+  staff:     <svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="25"
+  height="25"
+  fill="none"
+  viewBox="0 0 25 25"
+  className="img"
+>
+  <path
+    stroke="#5A5B5F"
+    strokeWidth="1.117"
+    d="M14.102 13.67c0-.297-.054-.583-.152-.847h1.469c.468 0 .847.38.847.847 0 0 0 0 0 0v.525c.034.602-.168.988-.542 1.251-.382.268-1 .449-1.895.475.185-.408.278-.869.277-1.373v-.015l-.005-.194.001-.667v-.001zm-2.434-.847c.468 0 .848.38.848.847 0 0 0 0 0 0v.734c.038.686-.195 1.135-.644 1.444-.492.336-1.304.546-2.487.546-1.177 0-2.001-.206-2.515-.545-.477-.314-.733-.771-.733-1.452v-.726c0-.468.38-.848.848-.848h4.683zm-2.34-5.625a1.785 1.785 0 110 3.571 1.785 1.785 0 010-3.57zm4.688.938a1.316 1.316 0 110 2.632 1.316 1.316 0 010-2.632z"
+  ></path>
+</svg>,
+  unit: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="25"
+      fill="none"
+      viewBox="0 0 24 25"
+      className="img"
+    >
+      <path
+        fill="#5A5B5F"
+        stroke="#5A5B5F"
+        strokeWidth="0.236"
+        d="M13.182 7.166v1.149a.207.207 0 00.413 0V7.166a.936.936 0 10-1.142-.912c0 .445.312.818.729.912zm.206-1.434a.523.523 0 010 1.044s0 0 0 0 0 0 0 0a.523.523 0 010-1.044zm2.989 4.675c.035 0 .07-.009.103-.028l1.133-.654a.938.938 0 001.155.175.936.936 0 00.342-1.278s0 0 0 0a.936.936 0 00-1.703.745l-1.134.655a.206.206 0 00.104.385zm1.662-1.77a.52.52 0 01.713.192h0a.523.523 0 11-.713-.192zm1.164 5.882a.929.929 0 00-.435-.568.93.93 0 00-1.155.175l-1.133-.654a.206.206 0 10-.207.358l1.134.654a.937.937 0 00.891 1.213.936.936 0 00.812-.468s0 0 0 0a.929.929 0 00.093-.71zm-.45.504a.523.523 0 11-.906-.525.523.523 0 01.905.525zm-5.158 1.662v-1.149a.206.206 0 00-.413 0v1.15a.936.936 0 101.142.912.937.937 0 00-.73-.913zm-.207 1.435a.523.523 0 11.001-1.046.523.523 0 010 1.046zm-3.091-4.648l-1.134.655a.93.93 0 00-1.154-.175.936.936 0 00-.343 1.277s0 0 0 0a.936.936 0 001.703-.745l1.134-.654a.207.207 0 10-.206-.358zm-1.56 1.742a.523.523 0 01-.713-.191h0a.523.523 0 11.714.19zM8.01 9.9a.938.938 0 001.154-.175l1.134.654a.205.205 0 00.282-.075.206.206 0 00-.076-.282L9.37 9.367a.936.936 0 00-1.703-.745s0 0 0 0A.936.936 0 008.01 9.9zm.015-1.071a.523.523 0 11.905.524.523.523 0 01-.905-.524zm8.148 3.56a.207.207 0 00.133-.193v-.541a.207.207 0 00-.133-.193l-.35-.135a2.476 2.476 0 00-.29-.699l.153-.343a.206.206 0 00-.043-.23l-.383-.383a.207.207 0 00-.23-.043l-.343.153a2.476 2.476 0 00-.7-.29l-.134-.35a.207.207 0 00-.193-.133h-.542a.207.207 0 00-.192.133l-.135.35c-.247.06-.481.157-.7.29l-.343-.153a.206.206 0 00-.23.043l-.383.383a.206.206 0 00-.042.23l.152.343c-.132.218-.23.452-.29.7l-.35.134a.207.207 0 00-.132.193v.541c0 .086.052.162.132.193l.35.135c.06.247.158.481.29.7l-.152.342a.206.206 0 00.042.23l.383.383c.06.06.152.078.23.043l.344-.153c.218.133.452.23.699.29l.135.35c.03.08.107.133.192.133h.542a.206.206 0 00.193-.132l.134-.35c.248-.061.482-.158.7-.29l.343.152c.078.035.17.018.23-.043l.383-.383a.206.206 0 00.043-.23l-.153-.343c.132-.218.23-.452.29-.699l.35-.135zm-.73-.058c-.054.273-.16.528-.315.76a.206.206 0 00-.017.198l.14.316-.183.182-.315-.14a.207.207 0 00-.199.017 2.07 2.07 0 01-.759.315.207.207 0 00-.153.129l-.124.321h-.258l-.124-.322a.206.206 0 00-.153-.128 2.071 2.071 0 01-.758-.315.206.206 0 00-.2-.017l-.315.14-.182-.183.14-.315a.206.206 0 00-.018-.199 2.071 2.071 0 01-.314-.759.207.207 0 00-.129-.153l-.321-.123v-.258l.321-.124a.206.206 0 00.129-.153 2.07 2.07 0 01.314-.76.207.207 0 00.018-.198l-.14-.315.182-.183.316.14c.064.029.14.022.198-.017.232-.155.487-.261.76-.315a.206.206 0 00.152-.128l.124-.322h.258l.124.322a.206.206 0 00.153.128c.272.054.527.16.759.315.059.04.134.046.199.017l.315-.14.183.183-.14.315a.207.207 0 00.017.199c.155.231.261.486.315.759.013.07.062.127.128.153l.322.124v.258l-.322.123a.206.206 0 00-.128.153zm-2.054-1.837c-.79 0-1.432.642-1.432 1.432 0 .79.643 1.431 1.432 1.431.79 0 1.432-.642 1.432-1.431 0-.79-.642-1.432-1.432-1.432zm0 2.45a1.02 1.02 0 010-2.037 1.02 1.02 0 010 2.037z"
+      ></path>
+    </svg>
+  ),
+  deparment: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="25"
+      fill="none"
+      viewBox="0 0 24 25"
+      className="img"
+    >
+      <path
+        fill="#5A5B5F"
+        d="M18.898 18.29H17.47V8.117c-.01.003-.018.003-.028.003H8.205c-.01 0-.018 0-.028-.003V18.29H6.75a.258.258 0 100 .516h12.148a.258.258 0 100-.516zm-3.748-6.224h.926v1.613h-.926v-1.613zm.926-2.82v1.614h-.926V9.247h.926zm-2.367 0h.924v1.614h-.924V9.247zm0 2.82h.924v1.613h-.924v-1.613zm-1.77-2.82v1.614h-.925V9.247h.924zm-.925 5.638h.924v1.614h-.924v-1.613zm0-1.205v-1.613h.924v1.613h-.924zm-1.44-4.432h.924v1.613h-.924V9.247zm0 2.819h.924v1.613h-.924v-1.613zm0 2.818h.924v1.614h-.924v-1.614zm3.55 0h2.952v3.405h-2.953v-3.405zm-4.919-7.28h9.237a.85.85 0 00.85-.849.85.85 0 00-.85-.846H8.205a.847.847 0 000 1.696z"
+      ></path>
+    </svg>
+  ),
   todo: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -303,7 +349,6 @@ export const sideMenuIcons = {
   ),
 };
 
-
 // ADMIN ROUTES SIDEBAR LINK
 export const sideMenuList: any = [
   {
@@ -328,7 +373,13 @@ export const sideMenuList: any = [
         name: "Mission Plan",
         link: routesPath?.ADMIN?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
-        relatedLink: [routesPath?.ADMIN?.MISSION_PLAN, routesPath?.ADMIN?.CREATE_MISSION_PLAN, routesPath?.ADMIN?.SINGLE_MISSION_PLAN, routesPath?.ADMIN?.KICK_START_MISSION_PLAN, routesPath?.ADMIN?.MAIN_MISSION_PLAN],
+        relatedLink: [
+          routesPath?.ADMIN?.MISSION_PLAN,
+          routesPath?.ADMIN?.CREATE_MISSION_PLAN,
+          routesPath?.ADMIN?.SINGLE_MISSION_PLAN,
+          routesPath?.ADMIN?.KICK_START_MISSION_PLAN,
+          routesPath?.ADMIN?.MAIN_MISSION_PLAN,
+        ],
       },
       {
         name: "Performance",
@@ -353,31 +404,37 @@ export const sideMenuList: any = [
         name: "Subsidiaries",
         link: routesPath?.ADMIN?.SUBSIDIARY,
         icon: sideMenuIcons?.subsidiary,
-        relatedLink: [routesPath?.ADMIN?.CREATE_SUBSIDIARY, routesPath?.ADMIN?.SUBSIDIARY]
+        relatedLink: [
+          routesPath?.ADMIN?.CREATE_SUBSIDIARY,
+          routesPath?.ADMIN?.SUBSIDIARY,
+        ],
       },
       {
         name: "Branches",
         link: routesPath?.ADMIN?.BRANCHES,
         icon: sideMenuIcons?.branch,
-        relatedLink: [routesPath?.ADMIN?.CREATE_BRANCH, routesPath?.ADMIN?.BRANCHES],
+        relatedLink: [
+          routesPath?.ADMIN?.CREATE_BRANCH,
+          routesPath?.ADMIN?.BRANCHES,
+        ],
       },
       {
         name: "Departments",
         link: routesPath?.ADMIN?.DEPARTMENT,
-        icon: sideMenuIcons?.branch,
-        relatedLink: [routesPath?.ADMIN?.CREATE_DEPARTMENT,],
+        icon: sideMenuIcons?.deparment,
+        relatedLink: [routesPath?.ADMIN?.CREATE_DEPARTMENT],
       },
       {
         name: "Units",
         link: routesPath?.ADMIN?.UNIT,
-        icon: sideMenuIcons?.branch,
-        relatedLink: [routesPath?.ADMIN?.CREATE_UNIT,],
+        icon: sideMenuIcons?.unit,
+        relatedLink: [routesPath?.ADMIN?.CREATE_UNIT],
       },
       {
-        name: "Employees",
+        name: "Staffs",
         link: routesPath?.ADMIN?.EMPLOYEES,
-        icon: sideMenuIcons?.team_management,
-        relatedLink: [routesPath?.ADMIN?.ADD_EMPLOYEE,],
+        icon: sideMenuIcons?.staff,
+        relatedLink: [routesPath?.ADMIN?.ADD_EMPLOYEE],
       },
       {
         name: "Organogram",
@@ -395,7 +452,7 @@ export const sideMenuList: any = [
         name: "Team Management",
         link: routesPath?.ADMIN?.TEAM_MANAGEMENT,
         icon: sideMenuIcons?.team_management,
-        relatedLink: [""]
+        relatedLink: [""],
       },
     ],
   },
@@ -412,7 +469,6 @@ export const sideMenuList: any = [
     ],
   },
 ];
-
 
 // EMPLOYEE ROUTES SIDEBAR LINKS
 export const sideMenuEmployeeList = [
