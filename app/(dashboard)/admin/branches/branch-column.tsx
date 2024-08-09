@@ -59,7 +59,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("subsidiary.name")
+          row.getValue("subsidiary?.name")
         )}
       </div>
     ),
