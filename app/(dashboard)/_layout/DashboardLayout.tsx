@@ -87,6 +87,15 @@ const DashboardLayout = ({
     const color = user?.organization?.brand_colour || ("" as any);
     actionCtx?.setPrimaryColorVals(color);
     // console.log(user);
+    if (getNextLink(getListToUse(checklistDetails[0]?.items))?.length > 0) {
+      // console.log(getNextLink(getListToUse(checklistDetails[0]?.items)));
+      // console.log(getListToUse(checklistDetails[0]?.items));
+
+      actionCtx?.setCheckListLength(
+        getListToUse(checklistDetails[0]?.items)?.length,
+        getListToUse(checklistDetails[0]?.items)
+      );
+    }
 
     if (user && Object?.keys(user)?.length < 1) {
       checkRoutePermission();
@@ -245,7 +254,10 @@ const DashboardLayout = ({
     },
   ];
 
+  // const newListAfterHide =
+
   const handleProceedChecklist = () => {
+    // console.log(getNextLink(getListToUse(checklistDetails[0]?.items)));
     if (getNextLink(getListToUse(checklistDetails[0]?.items))?.length > 0) {
       if (Number(checklistDetails[0]?.items?.length) > 0) {
         router?.push(
@@ -286,6 +298,7 @@ const DashboardLayout = ({
     <div
       onClick={() => {
         // console.log(rolesData);
+        // console.log(getNextLink(getListToUse(checklistDetails[0]?.items)));
       }}
       className={style?.new_dashboard_layout_index_wrap}
     >

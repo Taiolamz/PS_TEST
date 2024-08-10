@@ -1,7 +1,7 @@
 "use client";
 
 import Routes from "@/lib/routes/routes";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useBranch } from "../_hooks/useBranch";
 import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
@@ -14,12 +14,14 @@ import { Dictionary } from "@/@types/dictionary";
 import { COUNTRIES_STATES } from "@/utils/data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
-import { processInputAsArray } from "@/utils/helpers";
+import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
 const AddBranch = () => {
+  const actionCtx = useContext(ActionContext)
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -43,8 +45,8 @@ const AddBranch = () => {
     <DashboardLayout back headerTitle="Branch">
       <ReusableStepListBox
         btnText="Continue"
-        activeStep="2"
-        totalStep="4"
+        activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Branches") || '2'}
+        totalStep={actionCtx?.checkListLength || '4'}
         title="Create Branch"
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingBranch}
