@@ -2,26 +2,43 @@ import { Dictionary } from "@/@types/dictionary";
 import { PageLoader } from "@/components/custom-loader";
 import { EmptyState } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
-import { useGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { updateMissionPlanPreview } from "@/redux/features/mission-plan/missionPlanPreviewSlice";
+import { useLazyGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppSelector } from "@/redux/store";
-import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
+import { SUPER_ADMIN } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import Preview from "./preview";
-import { updateMissionPlanPreview } from "@/redux/features/mission-plan/missionPlanPreviewSlice";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Preview from "./preview";
 
 const { ADMIN } = routesPath;
 
 const MyMissionPlan = () => {
-  const { data: my_mission_plan, isLoading } = useGetMyMissionPlanQuery({});
-  const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
-  const dispatch = useDispatch();
+  const [getMyMissionPlan, { data: my_mission_plan, isLoading }] = useLazyGetMyMissionPlanQuery({});
 
+  const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
+
+  const { mission_plan: mission_plan_info } = useAppSelector((state) => state.mission_plan)
+
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || ""
+
+
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  // console.log(my_mission_plan)
+  const handleGetMyMissionPlan = async () => {
+    const payload = {id: FISCAL_YEAR_ID}
+    getMyMissionPlan(payload)
+    .unwrap()
+    .then(() => {})
+  }
+
+
+  useEffect(() => {
+    handleGetMyMissionPlan()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[FISCAL_YEAR_ID])
 
   useEffect(() => {
     if (!isLoading && my_mission_plan?.data?.mission_plan) {
@@ -37,6 +54,7 @@ const MyMissionPlan = () => {
         })
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   return (
