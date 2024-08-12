@@ -56,6 +56,16 @@ const AddBranch = () => {
     }
   };
 
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    }
+  };
+
   return (
     <DashboardLayout back headerTitle="Branch">
       <ReusableStepListBox
@@ -204,10 +214,11 @@ const AddBranch = () => {
                   )?.includes("subsidiary")}
                   placeholder="Select subsidiary"
                   options={subsidiaries}
-                  selected={formik.values.subsidiary}
-                  setSelected={(value) =>
-                    formik.setFieldValue("subsidiary", value)
-                  }
+                  selected={formik.values.subsidiary_id.name}
+                  setSelected={handleSubsidiaryChange}
+                  // setSelected={(value) =>
+                  //   formik.setFieldValue("subsidiary.", value)
+                  // }
                   // labelClass={labelClassName}
                 />
               )}

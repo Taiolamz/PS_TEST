@@ -19,7 +19,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 const { ADMIN } = routesPath;
 
 const AddDepartment = () => {
-  const actionCtx = useContext(ActionContext)
+  const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -55,20 +55,33 @@ const AddDepartment = () => {
     }
   };
 
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    }
+  };
+
   return (
     <>
       <DashboardLayout back headerTitle="Department">
         <ReusableStepListBox
           btnText="Continue"
-          activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Department") || '3'}
-          totalStep={actionCtx?.checkListLength || '4'}
+          activeStep={
+            findObjectIndexByLabel(actionCtx?.listToUse, "Add Department") ||
+            "3"
+          }
+          totalStep={actionCtx?.checkListLength || "4"}
           title="Create Department"
           // btnDisabled={
           //   formik.values.head_of_department.name && formik.values.name
           //     ? false
           //     : true
           // }
-          btnDisabled={!formik.isValid || !formik.dirty }
+          btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingDepartment}
           onSave={formik.handleSubmit}
           // onCancel={handleCancelDialog}
@@ -164,11 +177,12 @@ const AddDepartment = () => {
                     )?.includes("subsidiary")}
                     placeholder="Select subsidiary"
                     options={subsidiaries}
-                    selected={formik.values.subsidiary}
-                    setSelected={(value) =>
-                      formik.setFieldValue("subsidiary", value)
-                    }
-                    labelClass={labelClassName}
+                    selected={formik.values.subsidiary_id.name}
+                    setSelected={handleSubsidiaryChange}
+                    // setSelected={(value) =>
+                    //   formik.setFieldValue("subsidiary.", value)
+                    // }
+                    // labelClass={labelClassName}
                   />
                 )}
 

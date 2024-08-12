@@ -137,6 +137,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
       ...formik.values,
       organization_id: organization?.id,
       head: formik.values.head.id,
+      subsidiary_id: formik.values.subsidiary_id.id,
     };
     await createBranch(payload)
       .unwrap()
@@ -165,7 +166,10 @@ export const useBranch = ({ cancelPath }: Prop) => {
         id: "",
       },
       work_email: "",
-      subsidiary: "",
+      subsidiary_id: {
+        name: "",
+        id: "",
+      },
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
