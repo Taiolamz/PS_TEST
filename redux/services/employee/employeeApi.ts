@@ -25,6 +25,14 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: { data: InvitedUser }) => response.data,
     }),
+    getAllEmployees: builder.query<AllStaff[], void>({
+      query: () => ({
+        url: `/staff/dropdown`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: { staff_members: AllStaff[] } }) =>
+        response.data.staff_members,
+    }),
   }),
 });
 
@@ -32,4 +40,5 @@ export const {
   useAcceptEmployeeInvitationMutation,
   useRejectEmployeeInvitationMutation,
   useGetInvitedEmployeesQuery,
+  useGetAllEmployeesQuery,
 } = employeeInvitationApi;

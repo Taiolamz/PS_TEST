@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
-import { missionContentModal } from "./checklist-steps";
+import React, { useEffect, useState } from "react";
+import { MissionContentDetails, missionContentModal } from "./checklist-steps";
+import { usePathname } from "next/navigation";
+import routesPath from "@/utils/routes";
 
 interface Prop {
   onSelect: () => void;
 }
+const { ADMIN } = routesPath;
 
 const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
   const [missionContent, setMissionContent] = useState(missionContentModal);
@@ -23,12 +26,33 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
   };
 
   const handleAddSelected = () => {
-    const selectedLabels = missionContent
-      .filter((item) => item.isSelected)
-      .map((item) => item.label);
-    console.log("Selected labels:", selectedLabels);
+    const selectedLabels = missionContent.map((item) => {
+      return {
+        ...item,
+      };
+    });
+    localStorage.setItem(
+      "selected-mission-plan-template",
+      JSON.stringify(selectedLabels)
+    );
     onSelect();
   };
+
+  const location = usePathname();
+
+  const handleGetMissionPlanTemplates = () => {
+    const selectedMissionPlanTemplates = localStorage.getItem(
+      "selected-mission-plan-template"
+    );
+    if (selectedMissionPlanTemplates) {
+      setMissionContent(JSON.parse(selectedMissionPlanTemplates));
+    }
+  };
+  useEffect(() => {
+    if (location === ADMIN.CREATE_MISSION_PLAN_TEMPLATE) {
+      handleGetMissionPlanTemplates();
+    }
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
@@ -54,7 +78,7 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
       </div>
       <div className="grid grid-cols-3 gap-5">
         {missionContent.map((chi, idx) => {
-          const { content, label, isSelected } = chi;
+          const { content, label, isSelected, id } = chi;
           return (
             <div
               key={idx}

@@ -100,7 +100,7 @@ const AddUnit = () => {
               id="work_email"
               name="work_email"
               onChange={formik.handleChange}
-              isRequired
+              // isRequired
             />
 
             <CustomSelect

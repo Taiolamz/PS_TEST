@@ -13,6 +13,7 @@ import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 
 type Prop = {
   cancelPath: string;
@@ -96,9 +97,11 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetAllEmployeesQuery();
 
   const handleFormatDropdown = (
-    items: SubsidiaryData[] | BranchData[] | StateData[]
+    items: SubsidiaryData[] | BranchData[] | StateData[] | AllStaff[]
   ) => {
     const data = items.map((chi) => {
       return {
@@ -109,7 +112,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     });
     return data;
   };
-  const handleDropdown = (items: StateData[]) => {
+  const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
       return {
         ...chi,
@@ -139,16 +142,23 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   const subsidiaries = subsidiariesData ?? [];
   const branches = branchesData ?? [];
   const states = statesData ?? [];
+  const employees = employeesData ?? [];
 
+  const employeeDrop = handleDropdown(employees);
   const stateDrop = handleDropdown(states);
   const branchDrop = handleBranchDropdown(branches);
 
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
-    head_of_department: yup
-      .string()
-      .min(1, "Head of Department is required")
-      .optional(),
+    // head_of_department: yup
+    //   .string()
+    //   .min(1, "Head of Department is required")
+    //   .required(),
+    // head_of_department: yup.object().shape({
+    //   name: yup.string().required("Head of Department is required"),
+    //   // email: yup.string().email("Invalid email").required("Work Email is required"),
+    // }),
+
     work_email: yup
       .string()
       .min(1, "Work Email is required")
@@ -160,7 +170,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   });
 
   const router = useRouter();
-  const actionCtx = useContext(ActionContext)
+  const actionCtx = useContext(ActionContext);
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const DepartmentRoute = ADMIN.DEPARTMENT;
@@ -170,9 +180,10 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
-      address: "lagos island",
+      // address:formik.values.state_id,
       organization_id: organization?.id,
       state_id: formik.values.state_id.toString(),
+      head_of_department: formik.values.head_of_department.name,
     };
     await createDepartment(payload)
       .unwrap()
@@ -192,7 +203,10 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     initialValues: {
       name: "",
       state_id: "",
-      head_of_department: "",
+      head_of_department: {
+        name: "",
+        email: "",
+      },
       work_email: "",
       subsidiary: "",
       branch_id: "",
@@ -231,6 +245,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     subsidiaries: handleFormatDropdown(subsidiaries),
     branches: handleFormatDropdown(branches),
     states: handleFormatDropdown(states),
+    employeeDrop,
+    employees: handleFormatDropdown(employees),
     stateDrop,
     branchDrop,
     isLoadingSubsidiaries,
