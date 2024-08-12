@@ -28,8 +28,8 @@ const MissionItems = ({ data }: dataProp) => {
                       className="pl-[1rem] leading-relaxed "
                       key={index}
                     >
-                      <p className="flex gap-[5px] leading-relaxed">
-                        <span className="text-sm font-[400]">
+                      <p className="flex gap-[5px] leading-relaxed text-sm">
+                        <span className="font-[400]">
                           {key}
                           {index + 1 !== description.length ? (
                             <span> : </span>

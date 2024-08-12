@@ -12,6 +12,7 @@ import {
 import { AllEmployees } from "../_tabs";
 import { FiscalYearInfo, MyMissionPlan } from "./_partials";
 import { Dictionary } from "@/@types/dictionary";
+import Link from "next/link";
 
 const { ADMIN } = routesPath;
 
@@ -19,12 +20,17 @@ const SingleMissionPlan = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+  const { isPreview } = useAppSelector((state) => state?.mission_plan_preview);
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
 
   const searchParams = useSearchParams();
   // const data = useAppSelector((state) => state?.auth?.user);
   const ui = searchParams.get("ui");
   const router = useRouter();
+
+  //   console.log(isPreview, "isPreview");
+  const btn =
+    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
   return (
     <DashboardLayout
@@ -34,7 +40,7 @@ const SingleMissionPlan = () => {
     >
       <div
         style={{ backgroundColor: "rgba(244, 244, 244, 1)" }}
-        className="p-5 w-full global_sticky_class"
+        className="p-5 w-full global_sticky_class flex justify-between items-center"
       >
         {/* user_info?.role */}
         <CustomTab
@@ -44,6 +50,16 @@ const SingleMissionPlan = () => {
           })}
           slug="ui"
         />
+        {isPreview && (
+          <div className="flex gap-[10px]">
+            <div className={`${btn}`}>
+              <Link href="#">View Presentation Mode</Link>
+            </div>
+            <div className={`${btn}`}>
+              <Link href="#">Edit Mission Plan</Link>
+            </div>
+          </div>
+        )}
       </div>
 
       {ui === "mission-plan" && (

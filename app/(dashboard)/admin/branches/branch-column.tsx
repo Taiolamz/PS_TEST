@@ -13,9 +13,7 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const branchColumns = (
-  loading?: boolean
-): ColumnDef<BranchData>[] => [
+export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -61,7 +59,7 @@ export const branchColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("subsidiary")
+          row.getValue("subsidiary.name")
         )}
       </div>
     ),

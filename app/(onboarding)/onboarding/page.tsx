@@ -21,6 +21,8 @@ import routesPath from "@/utils/routes";
 import { OnbaordingSchema } from "@/utils/schema/onboarding";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { useAppSelector } from "@/redux/store";
+import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 
 const { ADMIN } = routesPath;
 interface FormValues {
@@ -40,11 +42,13 @@ interface FormValues {
 
 const Onboarding = () => {
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
   const { ONBOARDING } = routesPath;
   const [fyDate, setFyDate] = useState("");
+  const [time, setTime] = useState("");
   const actionCtx = useContext(ActionContext);
 
   const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
@@ -71,8 +75,6 @@ const Onboarding = () => {
       );
       return;
     }
-
-    // console.log(formik?.values);
 
     const formDataToSend = new FormData();
 
@@ -151,12 +153,14 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px-10 xl:pl-[9.375rem] max-h-full overflow-scroll scroll-hidden pb-20"
+          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20"
           onSubmit={formik.handleSubmit}
         >
-          <div className="">
-            <h1 className="text-2xl font-bold text-[#162238] mb-16">
-              {`Welcome ITH Holdings! Let's setup your organization`}
+          <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden">
+            <h1 className="text-2xl font-bold text-[--primary-color] mb-16">
+              {`Welcome ${
+                trimLongString(user?.organization?.name, 25) || ""
+              }! Let's setup your organization`}
             </h1>
             {getCurrentStep() === 1 && (
               <OrganizationStatement formik={formik} />
@@ -167,6 +171,8 @@ const Onboarding = () => {
                 formik={formik}
                 setFyDate={setFyDate}
                 fyDate={fyDate}
+                time={time}
+                setTime={setTime}
               />
             )}
             {getCurrentStep() === 4 && (

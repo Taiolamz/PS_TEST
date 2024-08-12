@@ -180,6 +180,7 @@ export default function AddEmployee() {
                   selected={formik.values.level}
                   setSelected={(value) => formik.setFieldValue("level", value)}
                   labelClass={labelClassName}
+                  isRequired
                 />
 
                 <Input
@@ -268,12 +269,17 @@ export default function AddEmployee() {
 
                 <Input
                   label="Phone Number"
-                  type="phone"
+                  type="tel"
                   placeholder="Phone Number"
                   id="phone_number"
                   name="phone_number"
                   maxLength={14}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const filteredValue = value.replace(/[^0-9+]/g, "");
+                    formik.setFieldValue("phone_number", filteredValue);
+                  }}
+                  value={formik.values.phone_number}
                   isRequired
                 />
 

@@ -13,7 +13,7 @@ const EditableLabel = ({ status }: prop) => {
           ? "success"
           : "pending"
       }
-      className={`select-none w-fit ${
+      className={`select-none w-fit text-xs ${
         status.toLowerCase() === "rejected"
           ? "border border-[var(--text-danger)]"
           : ""
