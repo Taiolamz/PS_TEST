@@ -48,7 +48,7 @@ export const departmentColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name")
+          row.getValue("name") || "not assigned"
         )}
       </div>
     ),
@@ -58,49 +58,59 @@ export const departmentColumns = (
     header: "HOD",
     cell: ({ row }) => (
       <div className="capitalize">
-        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hod")}
+        {loading ? (
+          <Skeleton className="h-4 w-[250px]" />
+        ) : (
+          row.getValue("hod") || "not assigned"
+        )}
       </div>
     ),
   },
   {
     accessorKey: "subsidiary",
     header: () => <div className="text-right mr-24">Subsidiary</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-right mr-24">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("subsidiary")
-        )}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const subsidiary = row.getValue("subsidiary") as ObjType;
+      return (
+        <div className="capitalize text-right mr-24">
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            subsidiary?.name || "not assigned"
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "branch",
     header: () => <div className="text-right mr-24">Branch</div>,
     cell: ({ row }) => {
       const branch = row.getValue("branch") as { name: string };
-      console.log(branch.name, "branch name");
       return (
         <div className="capitalize text-right mr-24">
-          {loading ? <Skeleton className="h-4 w-[250px]" /> : branch.name}
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            branch?.name || "not assigned"
+          )}
         </div>
       );
     },
   },
-  {
-    accessorKey: "address",
-    header: () => <div className="text-left">Address</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("address")
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "address",
+  //   header: () => <div className="text-left">Address</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize text-left">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("address") || "not assigned"
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     id: "actions",
     header: "Actions",

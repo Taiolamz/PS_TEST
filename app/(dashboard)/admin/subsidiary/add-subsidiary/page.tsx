@@ -33,11 +33,24 @@ const AddSubsidary = () => {
     openCancelModal,
     handleCancelDialog,
     isCreatingSubsidiary,
+    employeeDrop,
+    employees,
   } = useSubsidiary({ cancelPath: cancelRoute });
 
   const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
     {}
   );
+
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("head_of_subsidiary.name", selectedEmployee.name);
+      formik.setFieldValue("work_email", selectedEmployee.email);
+    }
+  };
   return (
     <>
       <DashboardLayout back headerTitle="Create Subsidiary">
@@ -49,9 +62,6 @@ const AddSubsidary = () => {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
-          // onCancel={() => {
-          //   router
-          // }}
         />
 
         <div
@@ -126,6 +136,27 @@ const AddSubsidary = () => {
 
                 <CustomSelect
                   label="Head of Subsidiary"
+                  placeholder="Head of Subsidiary"
+                  options={employees}
+                  selected={formik.values.head_of_subsidiary.name}
+                  setSelected={handleHeadSelectChange}
+                  // labelClass={labelClassName}
+                  // isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
+                />
+
+                {/* <CustomSelect
+                  label="Head of Subsidiary"
                   // isRequired
                   placeholder="Head of subsidiary"
                   options={[]}
@@ -143,7 +174,7 @@ const AddSubsidary = () => {
                   name="work_email"
                   onChange={formik.handleChange}
                   isRequired
-                />
+                /> */}
               </form>
             }
           />

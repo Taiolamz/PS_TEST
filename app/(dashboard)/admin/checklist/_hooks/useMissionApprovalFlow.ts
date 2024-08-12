@@ -93,14 +93,14 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
 
-  const handleProceed = () => {
-    if (ui === "approval-flow-step-two") {
-      handleSubmit();
-      // router.push(ADMIN.CHECKLIST);
-    } else {
-      router.push(`${location}?ui=approval-flow-step-two`);
-    }
-  };
+  // const handleProceed = () => {
+  //   if (ui === "approval-flow-step-two") {
+  //     handleSubmit();
+  //     // router.push(ADMIN.CHECKLIST);
+  //   } else {
+  //     router.push(`${location}?ui=approval-flow-step-two`);
+  //   }
+  // };
   const formik = useFormik({
     initialValues: {
       level: "",
@@ -142,7 +142,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     handleCancelDialog,
     level: handleFormatDropdown(levelOptions),
     reviewers: handleFormatDropdown(reviewers),
-    handleProceed,
+    // handleProceed,
     isCreatingMissionFlow,
     ui,
   };

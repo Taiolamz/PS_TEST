@@ -15,6 +15,9 @@ import { COUNTRIES_STATES } from "@/utils/data";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { processInputAsArray } from "@/utils/helpers";
+import { useGetEmployeesQuery } from "@/redux/services/checklist/employeeApi";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
 
 type Prop = {
   cancelPath: string;
@@ -57,8 +60,13 @@ export const useBranch = ({ cancelPath }: Prop) => {
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetAllEmployeesQuery();
 
-  const handleDropdown = (items: StateData[]) => {
+  // const { data: organizationData, isLoading: isLoadingOrganizationsDetails } =
+  //   useGetOrgDetailsQuery();
+
+  const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
       return {
         ...chi,
@@ -71,16 +79,18 @@ export const useBranch = ({ cancelPath }: Prop) => {
 
   const subsidiaries = subsidiariesData ?? [];
   const states = statesData ?? [];
+  const employees = employeesData ?? [];
+  const employeeDrop = handleDropdown(employees);
   const stateDrop = handleDropdown(states);
 
   const handleFormatDropdown = (
-    items: SubsidiaryData[] | BranchData[] | StateData[]
+    items: SubsidiaryData[] | BranchData[] | StateData[] | AllStaff[]
   ) => {
     const data = items.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
-        value: chi?.name, //has to change to id
+        value: chi?.name,
       };
     });
     return data;
@@ -109,13 +119,13 @@ export const useBranch = ({ cancelPath }: Prop) => {
       .oneOf(handleFormatArray(COUNTRIES), "Country is required")
       .required("Country is required"),
     state: yup.string().required(),
-    head: yup.string().min(1, "Head of Subsidiary is required").optional(),
-    work_email: yup
-      .string()
-      .min(1, "Work Email is required")
-      .email("Invalid email address")
-      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
-      .required("Work Email is required"),
+    // head: yup.string().min(1, "Head of Subsidiary is required").optional(),
+    // work_email: yup
+    //   .string()
+    //   .min(1, "Work Email is required")
+    //   .email("Invalid email address")
+    //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
+    //   .required("Work Email is required"),
     // subsidiary:
     //   processInputAsArray(user?.organization?.hierarchy)?.includes(
     //     "subsidiary"
@@ -126,6 +136,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
+      head: formik.values.head.name,
     };
     await createBranch(payload)
       .unwrap()
@@ -147,7 +158,11 @@ export const useBranch = ({ cancelPath }: Prop) => {
       address: "",
       country: "",
       state: "",
-      head: "",
+      // head: "",
+      head: {
+        name: "",
+        email: "",
+      },
       work_email: "",
       subsidiary: "",
     },
@@ -184,6 +199,8 @@ export const useBranch = ({ cancelPath }: Prop) => {
     stateDrop,
     states: handleFormatDropdown(states),
     subsidiaries: handleFormatDropdown(subsidiaries),
+    employeeDrop,
+    employees: handleFormatDropdown(employees),
     isLoadingSubsidiaries,
   };
 };
