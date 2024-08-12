@@ -20,6 +20,9 @@ interface contextProps {
   setPrimaryColorVals: (param?: string) => void;
   triggerUpdateUser: () => void;
   triggerUpdateChecklist: () => void;
+  checkListLength: any;
+  listToUse: any;
+  setCheckListLength: (param: any, list?: any) => void;
   // setTriggerUpdateUser: () => void;
 }
 
@@ -31,6 +34,9 @@ const ActionContext = createContext<contextProps>({
   setPrimaryColorVals: (param?: string) => {},
   triggerUpdateUser: () => {},
   triggerUpdateChecklist: () => {},
+  checkListLength: 0,
+  listToUse:[],
+  setCheckListLength: (param, list) => {},
 });
 
 export function ActionContextProvider(props?: any) {
@@ -196,6 +202,13 @@ export function ActionContextProvider(props?: any) {
         .then(() => {});
   };
 
+  const [checkListVal, setCheckListVal] = useState(0);
+  const [listToUse, setListToUse] = useState([])
+  const checkListFunc = (param:any, list: any) => {
+    setCheckListVal(param);
+    setListToUse(list)
+    }
+
   const contextValue = {
     collapseSideNav: collapseSideval,
     setCollapseSideNav: setCollapseSideNavFunc,
@@ -204,6 +217,9 @@ export function ActionContextProvider(props?: any) {
     setPrimaryColorVals: setPrimaryColorsFunc,
     triggerUpdateUser: handleGetAuthUser,
     triggerUpdateChecklist: handleGetChecklist,
+    checkListLength: checkListVal,
+    setCheckListLength: checkListFunc,
+    listToUse: listToUse,
   };
 
   return (

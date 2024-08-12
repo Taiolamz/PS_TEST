@@ -1,7 +1,7 @@
 "use client";
 
 import Routes from "@/lib/routes/routes";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
 import { Input } from "@/components/ui/input";
@@ -12,12 +12,14 @@ import { useDepartment } from "../_hooks/useDepartment";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
-import { processInputAsArray } from "@/utils/helpers";
+import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 const { ADMIN } = routesPath;
 
 const AddDepartment = () => {
+  const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -34,19 +36,51 @@ const AddDepartment = () => {
     branches,
     branchDrop,
     headOfDepartment,
+    employeeDrop,
+    employees,
   } = useDepartment({ cancelPath: cancelRoute });
 
-  const [selectedState, setSelectedState] = useState("");
+  // const [selectedState, setSelectedState] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
+
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("head_of_department.name", selectedEmployee.name);
+      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_department.id", selectedEmployee.id);
+    }
+  };
+
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    }
+  };
 
   return (
     <>
       <DashboardLayout back headerTitle="Department">
         <ReusableStepListBox
           btnText="Continue"
-          activeStep="3"
-          totalStep="4"
+          activeStep={
+            findObjectIndexByLabel(actionCtx?.listToUse, "Add Department") ||
+            "3"
+          }
+          totalStep={actionCtx?.checkListLength || "4"}
           title="Create Department"
+          // btnDisabled={
+          //   formik.values.head_of_department.name && formik.values.name
+          //     ? false
+          //     : true
+          // }
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingDepartment}
           onSave={formik.handleSubmit}
@@ -91,7 +125,7 @@ const AddDepartment = () => {
                   labelClass={labelClassName}
                 /> */}
 
-                <CustomSelect
+                {/* <CustomSelect
                   label="Head of Department"
                   // isRequired
                   placeholder="Head of Department"
@@ -111,43 +145,68 @@ const AddDepartment = () => {
                   name="work_email"
                   onChange={formik.handleChange}
                   isRequired
+                /> */}
+                <CustomSelect
+                  label="Head of Department"
+                  placeholder="Head of Department"
+                  options={employees}
+                  selected={formik.values.head_of_department.name}
+                  setSelected={handleHeadSelectChange}
+                  // labelClass={labelClassName}
+                  // isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
                 />
 
-            {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "subsidiary"
-              ) &&    <CustomSelect
-                  label="Subsidiary"
-                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
-                    "subsidiary"
-                  ) }
-                  placeholder="Select subsidiary"
-                  options={subsidiaries}
-                  selected={formik.values.subsidiary}
-                  setSelected={(value) =>
-                    formik.setFieldValue("subsidiary", value)
-                  }
-                  labelClass={labelClassName}
-                />}
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "subsidiary"
+                ) && (
+                  <CustomSelect
+                    label="Subsidiary"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary")}
+                    placeholder="Select subsidiary"
+                    options={subsidiaries}
+                    selected={formik.values.subsidiary_id.name}
+                    setSelected={handleSubsidiaryChange}
+                    // setSelected={(value) =>
+                    //   formik.setFieldValue("subsidiary.", value)
+                    // }
+                    // labelClass={labelClassName}
+                  />
+                )}
 
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "branch"
-              ) &&    <CustomSelect
-                  label="Branch"
-                  isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
-                    "branch"
-                  ) }
-                  placeholder="Select Branch"
-                  options={branches}
-                  selected={selectedBranch}
-                  setSelected={(value) => {
-                    setSelectedBranch(value);
-                    const selectedBranchId = branchDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].branch_id;
-                    formik.setFieldValue("branch_id", selectedBranchId);
-                  }}
-                  labelClass={labelClassName}
-                />}
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "branch"
+                ) && (
+                  <CustomSelect
+                    label="Branch"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("branch")}
+                    placeholder="Select Branch"
+                    options={branches}
+                    selected={selectedBranch}
+                    setSelected={(value) => {
+                      setSelectedBranch(value);
+                      const selectedBranchId = branchDrop.filter(
+                        (chi) => chi.name === value
+                      )[0].branch_id;
+                      formik.setFieldValue("branch_id", selectedBranchId);
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
               </form>
             }
           />

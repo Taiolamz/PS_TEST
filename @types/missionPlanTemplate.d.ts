@@ -1,0 +1,3 @@
+type MissionPlanTemplate = {
+  missionPlanTemplates: MissionContentDetails[]
+};

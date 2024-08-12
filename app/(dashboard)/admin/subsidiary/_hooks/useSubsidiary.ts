@@ -17,6 +17,7 @@ import { COUNTRIES_STATES } from "@/utils/data";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 
 type Prop = {
   cancelPath: string;
@@ -51,21 +52,21 @@ const handleFormatArray = (items: SelectFormType) => {
 const formSchema = yup.object().shape({
   name: yup.string().min(1, "Name is required").required("Name is required"),
   address: yup
-  .string()
-  .min(1, "Address is required")
-  .required("Address is required"),
+    .string()
+    .min(1, "Address is required")
+    .required("Address is required"),
   country: yup
-  .string()
-  .oneOf(handleFormatArray(COUNTRIES), "Country is required")
-  .required("Country is required"),
+    .string()
+    .oneOf(handleFormatArray(COUNTRIES), "Country is required")
+    .required("Country is required"),
   state: yup.string().required(),
-  head_of_subsidiary: yup.string().optional(),
-  work_email: yup
-  .string()
-  .min(1, "Work Email is required")
-  .email("Invalid email address")
-  .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
-  .required("Work Email is required"),
+  // head_of_subsidiary: yup.string().optional(),
+  // work_email: yup
+  //   .string()
+  //   .min(1, "Work Email is required")
+  //   .email("Invalid email address")
+  //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
+  //   .required("Work Email is required"),
 });
 
 const { ADMIN } = routesPath;
@@ -74,16 +75,12 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
   const router = useRouter();
   const actionCtx = useContext(ActionContext);
   const user = useAppSelector(selectUser);
-  
+
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
-  const states = statesData ?? [];
 
-  const { data: orgData } = useGetOrgDetailsQuery();
-  console.log(orgData, "org-data");
-  
-  const handleDropdown = (items: StateData[]) => {
+  const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
       return {
         ...chi,
@@ -93,9 +90,17 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
     });
     return data;
   };
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetAllEmployeesQuery();
+  const states = statesData ?? [];
+  const employees = employeesData ?? [];
+  const employeeDrop = handleDropdown(employees);
+
+  // const { data: orgData } = useGetOrgDetailsQuery();
+  // console.log(orgData, "org-data");
 
   const handleFormatDropdown = (
-    items: SubsidiaryData[] | BranchData[] | StateData[]
+    items: SubsidiaryData[] | BranchData[] | StateData[] | AllStaff[]
   ) => {
     const data = items.map((chi) => {
       return {
@@ -118,6 +123,7 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
       ...formik.values,
       organization_id: organization?.id,
       city: formik.values.state,
+      head: formik.values.head.id,
     };
     await createSubsidiary(payload)
       .unwrap()
@@ -139,7 +145,11 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
       address: "",
       country: "",
       state: "",
-      head_of_subsidiary: "",
+      head: {
+        name: "",
+        email: "",
+        id: "",
+      },
       work_email: "",
     },
     validationSchema: formSchema,
@@ -170,6 +180,8 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
     handleProceedCancel,
     states: handleFormatDropdown(states),
     stateDrop,
+    employees: handleFormatDropdown(employees),
+    employeeDrop,
     isLoadingStates,
     openCancelModal,
     onOpenCancelModal,

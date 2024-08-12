@@ -48,7 +48,7 @@ export const subsidiaryColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[150px]" />
         ) : (
-          row.getValue("name")
+          row.getValue("name") || "not assigned"
         )}
       </div>
     ),
@@ -61,7 +61,7 @@ export const subsidiaryColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[150px]" />
         ) : (
-          row.getValue("country")
+          row.getValue("country") || "not assigned"
         )}
       </div>
     ),
@@ -74,7 +74,7 @@ export const subsidiaryColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[150px]" />
         ) : (
-          row.getValue("address")
+          row.getValue("address") || "not assigned"
         )}
       </div>
     ),

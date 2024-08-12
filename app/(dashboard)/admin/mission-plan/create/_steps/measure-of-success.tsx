@@ -261,6 +261,7 @@ const MeasureofSuccess = () => {
               variant="outline"
               type="button"
               className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
+              onClick={() => router.back()}
             >
               Back
             </Button>

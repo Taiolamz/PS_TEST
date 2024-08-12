@@ -6,6 +6,7 @@
   background-color: rgb(254, 252, 232);
   cursor: pointer;
   border-radius: 0.6rem;
+  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   gap: 0.4rem;

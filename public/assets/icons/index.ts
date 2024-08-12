@@ -38,3 +38,6 @@ export { default as GraySkeleton } from "./GraySkeleton.svg";
 export { default as SuccessSkeleton } from "./SuccessSkeleton.svg";
 export { default as WarningSkeleton } from "./WarningSkeleton.svg";
 export { default as ZojatechIcon } from "./ZojatechIcon.svg";
+export { default as DraggableIcon } from "./DraggableIcon";
+export { default as TrashIcon } from "./TrashIcon.svg";
+export { default as CirclePlusIcon } from "./CirclePlusIcon";

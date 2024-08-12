@@ -10,6 +10,7 @@ import routesPath from "@/utils/routes";
 import DashboardModal from "../../template/_components/checklist-dashboard-modal";
 import CancelModal from "../../template/_components/cancel-modal";
 import ApprovalFlowTwo from "./approval-flow-two";
+import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 
 const { ADMIN } = routesPath;
 
@@ -24,21 +25,24 @@ const AddApprovalFlow = () => {
     isCreatingMissionFlow,
     reviewers,
     level,
-
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
-  const location = usePathname();
-  const searchParams = useSearchParams();
-  const ui = searchParams.get("ui");
+  // const location = usePathname();
+  // const searchParams = useSearchParams();
+  // const ui = searchParams.get("ui");
 
-  const handleProceed = () => {
-    if (ui === "approval-flow-step-two") {
-      router.push(ADMIN.CHECKLIST);
-    } else {
-      router.push(`${location}?ui=approval-flow-step-two`);
-    }
-  };
+  // const handleProceed = () => {
+  //   // if (ui === "approval-flow-step-two") {
+  //   router.push(ADMIN.CHECKLIST);
+  //   // } else {
+  //   // router.push(`${location}?ui=approval-flow-step-two`);
+  //   // }
+  // };
 
+  const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
+    {}
+  );
+  const roles = rolesData?.data ?? [];
 
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
@@ -46,15 +50,16 @@ const AddApprovalFlow = () => {
         btnText="Continue"
         activeStep="2"
         totalStep="2"
-        title="Mission Plan Template"
-        onSave={handleProceed}
+        title="Mission Plan Flow"
+        // onSave={handleProceed}
+        onSave={formik.handleSubmit}
         onCancel={handleCancelDialog}
         loading={isCreatingMissionFlow}
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
         <form
           className="mt-5 w-full"
-          onSubmit={formik.handleSubmit}
+          // onSubmit={formik.handleSubmit}
           autoComplete="off"
         >
           <div className="flex flex-col gap-4 mb-10">
@@ -64,26 +69,25 @@ const AddApprovalFlow = () => {
               process
             </p>
           </div>
-          {ui === "approval-flow-step-one" ? (
+          {/* {ui === "approval-flow-step-one" ? (
             <ApprovalFlowOne
               levelOption={level}
-              reviewersOption={reviewers}
+              approvals={reviewers}
               selectedReviewer={formik.values.reviewers}
               setSelectedReviewer={(value) =>
                 formik.setFieldValue("reviewers", value)
               }
             />
-          ) : null}
-          {ui === "approval-flow-step-two" ? (
-
-
-            <ApprovalFlowTwo
-              options={level}
-              reviewersOption={reviewers}
-              approvalsArray={formik.values.order_of_approvals}
-              setOrderValue={formik.setFieldValue}
-            />
-          ) : null}
+          ) : null} */}
+          {/* {ui === "approval-flow-step-two" ? ( */}
+          <ApprovalFlowTwo
+            options={level}
+            approvals={roles}
+            // approvals={reviewers}
+            approvalsArray={formik.values.order_of_approvals}
+            setOrderValue={formik.setFieldValue}
+          />
+          {/* ) : null} */}
         </form>
       </div>
 

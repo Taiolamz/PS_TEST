@@ -2,9 +2,9 @@ import { isValidDate } from "@/utils/helpers";
 import * as yup from "yup";
 
 export const missionStatementSchema = yup.object().shape({
-  missionstatement: yup
+  mission: yup
     .string()
-    .min(5, "This field is required")
+    .min(5, 'mission statement must be at least 5 characters')
     .required("This field is required"),
 });
 
