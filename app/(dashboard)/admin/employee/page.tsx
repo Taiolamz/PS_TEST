@@ -208,10 +208,55 @@ const Employee = () => {
       .catch(() => toast.dismiss());
   };
 
+  const thlist = [
+    "Staff Name",
+    "Gender",
+    "Work email",
+    "Resumption Date",
+    "Line Manager",
+    "Job Title",
+    "Status",
+    "Action",
+  ];
+
+  const userData = [
+    {
+      name: "tolu",
+      gebder: "female",
+      email: "gmani@2.com",
+      date: "Jun, 20 2023",
+      line: "Peter",
+      title: "QA",
+      stat: "active",
+    },
+    {
+      name: "kenny",
+      gebder: "female",
+      email: "gmani@2.com",
+      date: "Jun, 20 2023",
+      line: "Peter",
+      title: "QA",
+      stat: "active",
+    },
+  ];
+
+  const dropDowList = [
+    {
+      label: "Mission Plan",
+      color: "",
+      onActionClick: (param: any, dataTwo: any) => {
+        console.log(param);
+        console.log(dataTwo);
+        
+      },
+    },
+    { label: "Implied Task", color: "red", onActionClick: () => {} },
+  ];
+  // tableBodyList={userData}
 
   return (
     <DashboardLayout headerTitle="Employee">
-      <ReusableStepListBox
+      {/* <ReusableStepListBox
         btnText="Continue"
         activeStep="1"
         totalStep="1"
@@ -219,9 +264,9 @@ const Employee = () => {
         btnDisabled={employees?.length < 1}
         onSave={handleProceed}
         onCancel={handleCancelDialog}
-      />
+      /> */}
       <section className="p-5">
-        {employees?.length < 1 ? (
+        {employees?.length < 0 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
             textTitle="New Staff"
@@ -232,30 +277,40 @@ const Employee = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            header="Employee"
-            isFilterDrop
-            filterOptions={["pending", "rejected"]}
-            filterCheck={(val: string) => {
-              return val === status;
-            }}
-            filterOnCheck={(value: string) => {
-              if (value === status) {
-                setStatus("");
-              } else {
-                setStatus(value);
-              }
-            }}
-            data={employees}
-            columns={employeesColumnData}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            isLoading={isFetchingEmployees}
-            onManualBtn={handleAddEmployee}
-            onPdfChange={() => handleImportChange("pdf")}
-            onCsvChange={() => handleImportChange("excel")}
-          />
+          //   <DashboardTable
+          //     header="Employee"
+          //     isFilterDrop
+          //     filterOptions={["pending", "rejected"]}
+          //     filterCheck={(val: string) => {
+          //       return val === status;
+          //     }}
+          //     filterOnCheck={(value: string) => {
+          //       if (value === status) {
+          //         setStatus("");
+          //       } else {
+          //         setStatus(value);
+          //       }
+          //     }}
+          //     data={employees}
+          //     columns={employeesColumnData}
+          //     onBulkUploadBtn={handleBulkUploadDialog}
+          //     onOpenBtnChange={handleBtnDrop}
+          //     newBtnOpen={openNewBtn}
+          //     isLoading={isFetchingEmployees}
+          //     onManualBtn={handleAddEmployee}
+          //     onPdfChange={() => handleImportChange("pdf")}
+          //     onCsvChange={() => handleImportChange("excel")}
+          //   />
+
+          <>
+            <TableWrapper
+              dropDown={true}
+              tableBodyList={userData}
+              tableheaderList={thlist}
+              defaultBodyList={allemployeeData}
+              dropDownList={dropDowList}
+            />
+          </>
         )}
 
         <DashboardModal
