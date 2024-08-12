@@ -83,7 +83,7 @@ const AddUnit = () => {
 
             <CustomSelect
               label="Head of Unit"
-              isRequired
+              // isRequired
               placeholder="Head of Unit"
               options={[]}
               selected={formik.values.head_of_unit}
