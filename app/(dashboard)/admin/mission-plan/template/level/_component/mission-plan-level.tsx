@@ -9,6 +9,7 @@ interface Props {
 }
 
 const MissionPlanLevel = ({ handleClick }: Props) => {
+  // CREATE TEMPLATE
   const createTemplate = (
     <div
       onClick={handleClick}
@@ -25,6 +26,7 @@ const MissionPlanLevel = ({ handleClick }: Props) => {
       </div>
     </div>
   );
+
   return (
     <div className="flex flex-col p-5 w-full">
       <p className="text-lg font-medium">Templates</p>

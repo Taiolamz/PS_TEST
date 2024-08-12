@@ -39,12 +39,26 @@ const AddUnit = () => {
     subsidiaryDrop,
     branchDrop,
     departmentDrop,
+    employeeDrop,
+    employees,
   } = useUnit({ cancelPath: cancelRoute });
 
   // const [selectedState, setSelectedState] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
+
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("head_of_unit.name", selectedEmployee.name);
+      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_unit.id", selectedEmployee.id);
+    }
+  };
 
   return (
     <>
@@ -98,7 +112,7 @@ const AddUnit = () => {
                   labelClass={labelClassName}
                 /> */}
 
-                <CustomSelect
+                {/* <CustomSelect
                   label="Head of Unit"
                   // isRequired
                   placeholder="Head of Unit"
@@ -118,6 +132,26 @@ const AddUnit = () => {
                   name="work_email"
                   onChange={formik.handleChange}
                   isRequired
+                /> */}
+                <CustomSelect
+                  label="Head of Unit"
+                  placeholder="Head of Unit"
+                  options={employees}
+                  selected={formik.values.head_of_unit.name}
+                  setSelected={handleHeadSelectChange}
+                  // labelClass={labelClassName}
+                  // isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
                 />
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
@@ -125,9 +159,9 @@ const AddUnit = () => {
                 ) && (
                   <CustomSelect
                     label="Subsidiary"
-                    isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
-                      "subsidiary"
-                    ) }
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary")}
                     placeholder="Select Subsidiary"
                     options={subsidiaries}
                     selected={selectedSubsidiary}

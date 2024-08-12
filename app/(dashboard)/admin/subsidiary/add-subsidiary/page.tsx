@@ -20,7 +20,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 const { ADMIN } = routesPath;
 
 const AddSubsidary = () => {
-  const actionCtx = useContext(ActionContext)
+  const actionCtx = useContext(ActionContext);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const router = useRouter();
@@ -33,25 +33,36 @@ const AddSubsidary = () => {
     openCancelModal,
     handleCancelDialog,
     isCreatingSubsidiary,
+    employeeDrop,
+    employees,
   } = useSubsidiary({ cancelPath: cancelRoute });
 
   const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
     {}
   );
+
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("head.name", selectedEmployee.name);
+      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head.id", selectedEmployee.id);
+    }
+  };
   return (
     <>
       <DashboardLayout back headerTitle="Create Subsidiary">
         <ReusableStepListBox
           btnText="Continue"
           activeStep="1"
-          totalStep={actionCtx?.checkListLength || '4'}
+          totalStep={actionCtx?.checkListLength || "4"}
           title="Create Subsidiary"
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
-          // onCancel={() => {
-          //   router
-          // }}
         />
 
         <div
@@ -126,12 +137,33 @@ const AddSubsidary = () => {
 
                 <CustomSelect
                   label="Head of Subsidiary"
+                  placeholder="Head of Subsidiary"
+                  options={employees}
+                  selected={formik.values.head.name}
+                  setSelected={handleHeadSelectChange}
+                  // labelClass={labelClassName}
+                  // isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
+                />
+
+                {/* <CustomSelect
+                  label="Head of Subsidiary"
                   // isRequired
                   placeholder="Head of subsidiary"
                   options={[]}
-                  selected={formik.values.head_of_subsidiary}
+                  selected={formik.values.head}
                   setSelected={(value) =>
-                    formik.setFieldValue("head_of_subsidiary", value)
+                    formik.setFieldValue("head", value)
                   }
                   labelClass={labelClassName}
                 />
@@ -143,7 +175,7 @@ const AddSubsidary = () => {
                   name="work_email"
                   onChange={formik.handleChange}
                   isRequired
-                />
+                /> */}
               </form>
             }
           />
