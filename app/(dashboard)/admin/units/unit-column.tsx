@@ -52,11 +52,11 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
     ),
   },
   {
-    accessorKey: "hod",
-    header: "HOD",
+    accessorKey: "hou",
+    header: "HOU",
     cell: ({ row }) => (
       <div className="capitalize">
-        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hod")}
+        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hou")}
       </div>
     ),
   },

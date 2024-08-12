@@ -7,7 +7,7 @@ const Tasks = () => {
     <div className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
       <section className="">
         {" "}
-        <h2 className="text-primary font-medium text-2xl">Strategic Intent</h2>
+        <h2 className="text-primary font-medium text-2xl">Specified/Implied Task</h2>
         <div className="w-[77%] mx-auto overflow-x-auto">
           <div>
             {/* Table */}
