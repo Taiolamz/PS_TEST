@@ -171,12 +171,14 @@ const SingleMissionPlan = () => {
             <div className={`${btn}`}>
               <Link href="#">View Presentation Mode</Link>
             </div>
-           
-          <div className={`${btn}`}>
-            <Link href={`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`}>Edit Mission Plan</Link>
+
+            <div className={`${btn}`}>
+              <Link href={`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`}>
+                Edit Mission Plan
+              </Link>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       {ui === "mission-plan" && (
@@ -247,6 +249,7 @@ const SingleMissionPlan = () => {
                 "Email",
                 "Date Submtted",
                 "Status",
+                "Action",
               ]}
               perPage="10"
               totalPage="100"
@@ -277,12 +280,34 @@ const SingleMissionPlan = () => {
               }}
               hideNewBtnOne={true}
               tableBodyList={FORMAT_TABLE_DATA(
-                employeeData?.mission_plans?.data
+                // employeeData?.mission_plans?.data
+                allemployeeData
               )}
               loading={isFetchingEmployee}
               handleSearchClick={(param) => {
                 setSearch(param);
               }}
+              dropDown
+              dropDownList={[
+                {
+                  label: "View Mission Plan",
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    console.log(param);
+                    console.log(dataTwo);
+                  },
+                },
+                {
+                  label: "Approval Status",
+                  color: "  ",
+                  onActionClick: () => {},
+                },
+                {
+                  label: "View Comments",
+                  color: "",
+                  onActionClick: () => {},
+                },
+              ]}
               onPdfChange={handleExport}
               onCsvChange={handleExport}
             />
