@@ -159,12 +159,12 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     //   // email: yup.string().email("Invalid email").required("Work Email is required"),
     // }),
 
-    work_email: yup
-      .string()
-      .min(1, "Work Email is required")
-      .email("Invalid email address")
-      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
-      .required("Work Email is required"),
+    // work_email: yup
+    //   .string()
+    //   .min(1, "Work Email is required")
+    //   .email("Invalid email address")
+    //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
+    //   .required("Work Email is required"),
     // subsidiary: yup.string().required(),
     // branch_id: yup.string().required(),
   });
@@ -183,7 +183,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       // address:formik.values.state_id,
       organization_id: organization?.id,
       state_id: formik.values.state_id.toString(),
-      head_of_department: formik.values.head_of_department.name,
+      head_of_department: formik.values.head_of_department.id,
     };
     await createDepartment(payload)
       .unwrap()
@@ -206,6 +206,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       head_of_department: {
         name: "",
         email: "",
+        id: "",
       },
       work_email: "",
       subsidiary: "",
