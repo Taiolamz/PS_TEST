@@ -36,10 +36,23 @@ const AddDepartment = () => {
     branches,
     branchDrop,
     headOfDepartment,
+    employeeDrop,
+    employees,
   } = useDepartment({ cancelPath: cancelRoute });
 
-  const [selectedState, setSelectedState] = useState("");
+  // const [selectedState, setSelectedState] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
+
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("head_of_department.name", selectedEmployee.name);
+      formik.setFieldValue("work_email", selectedEmployee.email);
+    }
+  };
 
   return (
     <>
@@ -49,7 +62,12 @@ const AddDepartment = () => {
           activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Department") || '3'}
           totalStep={actionCtx?.checkListLength || '4'}
           title="Create Department"
-          btnDisabled={!formik.isValid || !formik.dirty}
+          // btnDisabled={
+          //   formik.values.head_of_department.name && formik.values.name
+          //     ? false
+          //     : true
+          // }
+          btnDisabled={!formik.isValid || !formik.dirty }
           loading={isCreatingDepartment}
           onSave={formik.handleSubmit}
           // onCancel={handleCancelDialog}
@@ -93,7 +111,7 @@ const AddDepartment = () => {
                   labelClass={labelClassName}
                 /> */}
 
-                <CustomSelect
+                {/* <CustomSelect
                   label="Head of Department"
                   // isRequired
                   placeholder="Head of Department"
@@ -113,6 +131,26 @@ const AddDepartment = () => {
                   name="work_email"
                   onChange={formik.handleChange}
                   isRequired
+                /> */}
+                <CustomSelect
+                  label="Head of Department"
+                  placeholder="Head of Department"
+                  options={employees}
+                  selected={formik.values.head_of_department.name}
+                  setSelected={handleHeadSelectChange}
+                  // labelClass={labelClassName}
+                  isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  isRequired
+                  disabled
                 />
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(

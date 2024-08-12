@@ -19,7 +19,6 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
-import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 
@@ -186,15 +185,6 @@ const Departments = () => {
 
   return (
     <DashboardLayout headerTitle="Department">
-      {/* <ReusableStepListBox
-        btnText="Continue"
-        activeStep="3"
-        totalStep="4"
-        title="Department"
-        btnDisabled={departments?.length < 1}
-        onSave={handleProceed}
-        onCancel={handleCancelDialog}
-      /> */}
       <section className="p-5">
         {departments?.length < 1 ? (
           <ReusableEmptyState

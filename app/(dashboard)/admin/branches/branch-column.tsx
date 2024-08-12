@@ -46,23 +46,39 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name")
+          row.getValue("name") || "not assigned"
         )}
       </div>
     ),
   },
+  // {
+  //   accessorKey: "subsidiary",
+  //   header: "Subsidiary",
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("subsidiary?.name") || "not assigned"
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "subsidiary",
-    header: "Subsidiary",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("subsidiary.name")
-        )}
-      </div>
-    ),
+    header: () => <div className="text-right mr-24">Subsidiary</div>,
+    cell: ({ row }) => {
+      const subsidiary = row.getValue("subsidiary") as ObjType;
+      return (
+        <div className="capitalize text-right mr-24">
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            subsidiary?.name || "not assigned"
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "country",
@@ -72,7 +88,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("country")
+          row.getValue("country") || "not assigned"
         )}
       </div>
     ),
@@ -85,7 +101,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("state")
+          row.getValue("state") || "not assigned"
         )}
       </div>
     ),
@@ -98,7 +114,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("address")
+          row.getValue("address") || "not assigned"
         )}
       </div>
     ),

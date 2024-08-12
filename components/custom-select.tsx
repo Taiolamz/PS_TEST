@@ -54,13 +54,14 @@ export default function CustomSelect({
         <label
           htmlFor={label}
           className={cn(
-            "block font-normal text-[.8rem] pb-1 text-[#616161] md:text-[14px] ",
+            // "block font-normal text-xs pb-1 relative text-[#616161] md:text-[14px] ",
+            "block relative text-xs text-[#6E7C87] font-normal pb-2",
             labelClass
           )}
         >
           {label}
           {isRequired && (
-            <span className="inline-block text-red-400 text-lg pl-1 mt-">
+            <span className="inline-block text-red-400 text-lg pl-1 absolute bottom-1">
               *
             </span>
           )}
