@@ -19,7 +19,6 @@ import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";
 import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
-import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 
@@ -186,15 +185,6 @@ const Units = () => {
   };
   return (
     <DashboardLayout headerTitle="Unit">
-      {/* <ReusableStepListBox
-        btnText="Continue"
-        activeStep="4"
-        totalStep="4"
-        title="Unit"
-        btnDisabled={units?.length < 1}
-        onSave={handleProceed}
-        onCancel={handleCancelDialog}
-      /> */}
       <section className="p-5">
         {units?.length < 1 ? (
           <ReusableEmptyState

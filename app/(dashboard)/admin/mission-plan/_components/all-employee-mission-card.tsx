@@ -2,12 +2,12 @@ import { Progress } from "@/components/ui/progress";
 import React from "react";
 
 type missionSummaryType = {
-  mission_plans_count: number;
-  submitted: number;
-  approved: number;
-  in_review: number;
-  rejected: number;
-  overall_progress: number;
+  mission_plans_count?: number;
+  submitted?: number;
+  approved?: number;
+  in_review?: number;
+  rejected?: number;
+  overall_progress?: number;
 };
 
 export default function AllEmployeeMissionCard({

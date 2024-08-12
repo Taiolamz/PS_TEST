@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   ArrowLeftIcon,
   ArrowRightIcon,
   BtnPlusIcon,
@@ -7,7 +8,7 @@ import {
   SearchIcon,
   SortIcon,
 } from "@/public/assets/icons";
-import { Link } from "lucide-react";
+import { Captions, Link } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
@@ -71,6 +72,8 @@ interface myComponentProps {
   hideSort?: boolean;
   onRowClick?: (param?: any) => void;
   defaultBodyList?: any;
+  dropDown?: boolean;
+  dropDownList?: any;
 }
 
 const TableWrapper = ({
@@ -109,6 +112,8 @@ const TableWrapper = ({
   onSort,
   onRowClick,
   defaultBodyList,
+  dropDown,
+  dropDownList,
 }: myComponentProps) => {
   const [showFilter, setShowFilter] = useState<any>(false);
   const [defaultFilterVal, setDefaultFilterVal] = useState<any>({});
@@ -346,10 +351,9 @@ const TableWrapper = ({
           {typeof cell === "object" && cell !== null && "props" in cell
             ? cell
             : cell}
-          {/* {flexRender(cell.column.columnDef.cell, cell.getContext())} */}
-          {/* {children} */}
         </TableCell>
       ))}
+      {children}
     </TableRow>
   );
 
@@ -463,7 +467,57 @@ const TableWrapper = ({
                             : onRowClick(item);
                         }
                       }}
-                    ></TableRowComponet>
+                    >
+                      {dropDown && (
+                        <td className="border-b-2 border-t-2">
+                          <div
+                            style={{
+                              width: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: "100%",
+                            }}
+                            className=""
+                          >
+                            <DropdownMenu>
+                              <DropdownMenuTrigger
+                                asChild
+                                className="cursor-pointer"
+                              >
+                                <Image src={ActionIcon} alt="Action icon" />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent
+                                className="border rounded-sm"
+                                align="end"
+                                style={{ width: "170px" }}
+                              >
+                                {dropDownList?.length > 0 &&
+                                  dropDownList?.map((child: any, idx: any) => {
+                                    return (
+                                      <DropdownMenuItem
+                                        key={idx}
+                                        onClick={() => {
+                                          child?.onActionClick &&
+                                            child?.onActionClick(
+                                              handlePickObjFromDefaultList(
+                                                rowIndex
+                                              ),
+                                              item
+                                            );
+                                        }}
+                                        className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
+                                      >
+                                        {child?.label}
+                                      </DropdownMenuItem>
+                                    );
+                                  })}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </td>
+                      )}
+                    </TableRowComponet>
                   ))}
                 </>
               ) : (

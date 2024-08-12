@@ -51,16 +51,22 @@ const MissionPlanTemplateLevel = () => {
     }
   };
 
+  const handleProceed = () => {
+    const proceedPath = ADMIN.MISSION_PLAN_APPROVAL_FLOW;
+    router.push(proceedPath);
+  };
+
   return (
     <DashboardLayout headerTitle="Mission Plan Template">
       <ReusableStepListBox
         btnText="Continue"
         activeStep="1"
         totalStep="2"
-        title="Branch"
-        btnDisabled
-        // onSave={handleProceed}
-        onCancel={handleCancelDialog}
+        title="Mission Plan Template"
+        // btnDisabled
+        onSave={handleProceed}
+        onCancel={() => router.back()}
+        // onCancel={handleCancelDialog}
       />
       <MissionPlanLevel handleClick={handleMissionDialog} />
 

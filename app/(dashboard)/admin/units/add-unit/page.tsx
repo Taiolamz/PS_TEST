@@ -19,7 +19,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 const { ADMIN } = routesPath;
 
 const AddUnit = () => {
-  const actionCtx = useContext(ActionContext)
+  const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -39,6 +39,8 @@ const AddUnit = () => {
     subsidiaryDrop,
     branchDrop,
     departmentDrop,
+    employeeDrop,
+    employees,
   } = useUnit({ cancelPath: cancelRoute });
 
   // const [selectedState, setSelectedState] = useState("");
@@ -46,13 +48,37 @@ const AddUnit = () => {
   const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("head_of_unit.name", selectedEmployee.name);
+      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_unit.id", selectedEmployee.id);
+    }
+  };
+
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    }
+  };
+
   return (
     <>
       <DashboardLayout back headerTitle="Unit">
         <ReusableStepListBox
           btnText="Continue"
-          activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Unit") || '4'}
-          totalStep={actionCtx?.checkListLength || '4'}
+          activeStep={
+            findObjectIndexByLabel(actionCtx?.listToUse, "Add Unit") || "4"
+          }
+          totalStep={actionCtx?.checkListLength || "4"}
           title="Create Unit"
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingUnit}
@@ -98,7 +124,7 @@ const AddUnit = () => {
                   labelClass={labelClassName}
                 /> */}
 
-                <CustomSelect
+                {/* <CustomSelect
                   label="Head of Unit"
                   // isRequired
                   placeholder="Head of Unit"
@@ -118,30 +144,58 @@ const AddUnit = () => {
                   name="work_email"
                   onChange={formik.handleChange}
                   isRequired
+                /> */}
+                <CustomSelect
+                  label="Head of Unit"
+                  placeholder="Head of Unit"
+                  options={employees}
+                  selected={formik.values.head_of_unit.name}
+                  setSelected={handleHeadSelectChange}
+                  // labelClass={labelClassName}
+                  // isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
                 />
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "subsidiary"
                 ) && (
                   <CustomSelect
+                    // label="Subsidiary"
+                    // isRequired={processInputAsArray(
+                    //   user?.organization?.hierarchy
+                    // )?.includes("subsidiary")}
+                    // placeholder="Select Subsidiary"
+                    // options={subsidiaries}
+                    // selected={selectedSubsidiary}
+                    // setSelected={(value) => {
+                    //   setSelectedSubsidiary(value);
+                    //   const selectedSubsidiaryId = subsidiaryDrop.filter(
+                    //     (chi) => chi.name === value
+                    //   )[0].id;
+                    //   formik.setFieldValue(
+                    //     "subsidiary_id",
+                    //     selectedSubsidiaryId
+                    //   );
+                    // }}
+                    // labelClass={labelClassName}
                     label="Subsidiary"
-                    isRequired={processInputAsArray(user?.organization?.hierarchy)?.includes(
-                      "subsidiary"
-                    ) }
-                    placeholder="Select Subsidiary"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary")}
+                    placeholder="Select subsidiary"
                     options={subsidiaries}
-                    selected={selectedSubsidiary}
-                    setSelected={(value) => {
-                      setSelectedSubsidiary(value);
-                      const selectedSubsidiaryId = subsidiaryDrop.filter(
-                        (chi) => chi.name === value
-                      )[0].id;
-                      formik.setFieldValue(
-                        "subsidiary_id",
-                        selectedSubsidiaryId
-                      );
-                    }}
-                    labelClass={labelClassName}
+                    selected={formik.values.subsidiary_id.name}
+                    setSelected={handleSubsidiaryChange}
                   />
                 )}
 
