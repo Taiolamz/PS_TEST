@@ -496,9 +496,15 @@ const TableWrapper = ({
                                   dropDownList?.map((child: any, idx: any) => {
                                     return (
                                       <DropdownMenuItem
+                                        key={idx}
                                         onClick={() => {
                                           child?.onActionClick &&
-                                            child?.onActionClick(handlePickObjFromDefaultList(rowIndex), item);
+                                            child?.onActionClick(
+                                              handlePickObjFromDefaultList(
+                                                rowIndex
+                                              ),
+                                              item
+                                            );
                                         }}
                                         className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
                                       >
