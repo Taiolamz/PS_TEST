@@ -150,7 +150,7 @@ const AddDepartment = () => {
                   value={formik.values.work_email}
                   name="work_email"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                   disabled
                 />
 
