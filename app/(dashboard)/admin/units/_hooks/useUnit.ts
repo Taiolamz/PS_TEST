@@ -204,6 +204,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
       head_of_unit: {
         name: "",
         email: "",
+        id: "",
       },
       work_email: "",
       subsidiary: "",
