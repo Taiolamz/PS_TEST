@@ -160,13 +160,13 @@ export const useUnit = ({ cancelPath }: Prop) => {
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
     // head_of_unit: yup.string().min(1, "Head of Unit is required").optional(),
-    work_email: yup
-      .string()
-      .min(1, "Work Email is required")
-      .email("Invalid email address")
-      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
-      .required("Work Email is required"),
-    // subsidiary_id: yup.string().required("Subsidiary is required"),
+    // work_email: yup
+    //   .string()
+    //   .min(1, "Work Email is required")
+    //   .email("Invalid email address")
+    //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
+    //   .required("Work Email is required"),
+    // // subsidiary_id: yup.string().required("Subsidiary is required"),
     // branch_id: yup.string().required("Branch is required"),
   });
   const router = useRouter();
@@ -180,7 +180,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
       ...formik.values,
       // address: "lagos island",
       organization_id: organization?.id,
-      head_of_unit: formik.values.head_of_unit.name,
+      head_of_unit: formik.values.head_of_unit.id,
       // state_id: formik.values?.state_id.toString(),
     };
     await createUnit(payload)

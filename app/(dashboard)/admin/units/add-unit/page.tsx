@@ -56,6 +56,7 @@ const AddUnit = () => {
     if (selectedEmployee) {
       formik.setFieldValue("head_of_unit.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_unit.id", selectedEmployee.id);
     }
   };
 
@@ -139,7 +140,7 @@ const AddUnit = () => {
                   selected={formik.values.head_of_unit.name}
                   setSelected={handleHeadSelectChange}
                   // labelClass={labelClassName}
-                  isRequired
+                  // isRequired
                 />
                 <Input
                   label="Work Email"
@@ -149,7 +150,7 @@ const AddUnit = () => {
                   value={formik.values.work_email}
                   name="work_email"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                   disabled
                 />
 
