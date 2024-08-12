@@ -2,6 +2,8 @@
 import { ManceLoader } from "@/components/custom-loader";
  import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
+// import { getDataFromFileUpload } from "@/utils/helpers/TextExtract";
 import React, { useState } from "react";
 
 interface FileUploadType {
@@ -59,6 +61,24 @@ const BulkUploadModal = ({
       </div>
     </div>
   );
+
+  const expectedFormat = {
+    0: { name: "Last Name", required: true, key: "last_name" },
+    1: { name: "First Name", required: true, key: "first_name" },
+    2: { name: "Account Number", required: true, key: "account_number" },
+    3: { name: "Bank", required: true, key: "bank" },
+    4: { name: "Bank Code", required: false, key: "bank_code" },
+    5: { name: "Salary", required: true, key: "salary" },
+    6: { name: "Raven  Username", required: false, key: "raven_username" },
+    7: { name: "Employee  Email", required: false, key: "employee_name" },
+    8: { name: "Employee Phone", required: false, key: "employee_phone" },
+  };
+
+  const handleUploadTest = async (e: any) => {
+    const data = await getDataFromFileUpload(e, expectedFormat, 200);
+    console.log(data);
+  };
+
   return (
     <div>
       <p className="font-medium text-sm">Upload File</p>
@@ -81,6 +101,11 @@ const BulkUploadModal = ({
               accept=".csv, .xlsx"
               className="hidden"
               onChange={handleFileChange}
+              // onChange={(e) => {
+              //   // @ts-ignore
+              //   const file = e.target?.files[0] 
+              //  handleUploadTest(file)
+              // }}
             />
             <label
               htmlFor={"file-upload"}
