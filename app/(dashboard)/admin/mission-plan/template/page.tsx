@@ -126,7 +126,7 @@ const MissionPlanTemplate = () => {
             loading={isLoadingmissionPlanTemplates}
             textTitle="Mission plan template"
             btnTitle="Mission Plan Template"
-            href={ADMIN.CREATE_MISSION_PLAN_TEMPLATE}
+            href={ADMIN.MISSION_PLAN_TEMPLATE_LEVEL}
             isNotBulkUpload
           />
         ) : (
