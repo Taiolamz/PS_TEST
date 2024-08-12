@@ -136,7 +136,8 @@ export const useBranch = ({ cancelPath }: Prop) => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
-      head: formik.values.head.name,
+      head: formik.values.head.id,
+      subsidiary_id: formik.values.subsidiary_id.id,
     };
     await createBranch(payload)
       .unwrap()
@@ -147,7 +148,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            // router.push(BranchRoute);
+            router.push(BranchRoute);
           }, 2000);
         });
       });
@@ -162,9 +163,13 @@ export const useBranch = ({ cancelPath }: Prop) => {
       head: {
         name: "",
         email: "",
+        id: "",
       },
       work_email: "",
-      subsidiary: "",
+      subsidiary_id: {
+        name: "",
+        id: "",
+      },
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,

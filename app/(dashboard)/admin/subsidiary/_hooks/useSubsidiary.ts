@@ -123,7 +123,7 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
       ...formik.values,
       organization_id: organization?.id,
       city: formik.values.state,
-      head: formik.values.head_of_subsidiary.name,
+      head: formik.values.head.id,
     };
     await createSubsidiary(payload)
       .unwrap()
@@ -145,9 +145,10 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
       address: "",
       country: "",
       state: "",
-      head_of_subsidiary: {
+      head: {
         name: "",
         email: "",
+        id: "",
       },
       work_email: "",
     },

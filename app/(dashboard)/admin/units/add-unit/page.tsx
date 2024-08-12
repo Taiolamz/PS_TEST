@@ -19,7 +19,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 const { ADMIN } = routesPath;
 
 const AddUnit = () => {
-  const actionCtx = useContext(ActionContext)
+  const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -56,6 +56,17 @@ const AddUnit = () => {
     if (selectedEmployee) {
       formik.setFieldValue("head_of_unit.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_unit.id", selectedEmployee.id);
+    }
+  };
+
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
     }
   };
 
@@ -64,8 +75,10 @@ const AddUnit = () => {
       <DashboardLayout back headerTitle="Unit">
         <ReusableStepListBox
           btnText="Continue"
-          activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Unit") || '4'}
-          totalStep={actionCtx?.checkListLength || '4'}
+          activeStep={
+            findObjectIndexByLabel(actionCtx?.listToUse, "Add Unit") || "4"
+          }
+          totalStep={actionCtx?.checkListLength || "4"}
           title="Create Unit"
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingUnit}
@@ -139,7 +152,7 @@ const AddUnit = () => {
                   selected={formik.values.head_of_unit.name}
                   setSelected={handleHeadSelectChange}
                   // labelClass={labelClassName}
-                  isRequired
+                  // isRequired
                 />
                 <Input
                   label="Work Email"
@@ -149,7 +162,7 @@ const AddUnit = () => {
                   value={formik.values.work_email}
                   name="work_email"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                   disabled
                 />
 
@@ -157,24 +170,32 @@ const AddUnit = () => {
                   "subsidiary"
                 ) && (
                   <CustomSelect
+                    // label="Subsidiary"
+                    // isRequired={processInputAsArray(
+                    //   user?.organization?.hierarchy
+                    // )?.includes("subsidiary")}
+                    // placeholder="Select Subsidiary"
+                    // options={subsidiaries}
+                    // selected={selectedSubsidiary}
+                    // setSelected={(value) => {
+                    //   setSelectedSubsidiary(value);
+                    //   const selectedSubsidiaryId = subsidiaryDrop.filter(
+                    //     (chi) => chi.name === value
+                    //   )[0].id;
+                    //   formik.setFieldValue(
+                    //     "subsidiary_id",
+                    //     selectedSubsidiaryId
+                    //   );
+                    // }}
+                    // labelClass={labelClassName}
                     label="Subsidiary"
                     isRequired={processInputAsArray(
                       user?.organization?.hierarchy
                     )?.includes("subsidiary")}
-                    placeholder="Select Subsidiary"
+                    placeholder="Select subsidiary"
                     options={subsidiaries}
-                    selected={selectedSubsidiary}
-                    setSelected={(value) => {
-                      setSelectedSubsidiary(value);
-                      const selectedSubsidiaryId = subsidiaryDrop.filter(
-                        (chi) => chi.name === value
-                      )[0].id;
-                      formik.setFieldValue(
-                        "subsidiary_id",
-                        selectedSubsidiaryId
-                      );
-                    }}
-                    labelClass={labelClassName}
+                    selected={formik.values.subsidiary_id.name}
+                    setSelected={handleSubsidiaryChange}
                   />
                 )}
 

@@ -21,7 +21,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 const { ADMIN } = routesPath;
 
 const AddBranch = () => {
-  const actionCtx = useContext(ActionContext)
+  const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
@@ -52,6 +52,17 @@ const AddBranch = () => {
     if (selectedEmployee) {
       formik.setFieldValue("head.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head.id", selectedEmployee.id);
+    }
+  };
+
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
     }
   };
 
@@ -59,8 +70,10 @@ const AddBranch = () => {
     <DashboardLayout back headerTitle="Branch">
       <ReusableStepListBox
         btnText="Continue"
-        activeStep={findObjectIndexByLabel(actionCtx?.listToUse, "Add Branches") || '2'}
-        totalStep={actionCtx?.checkListLength || '4'}
+        activeStep={
+          findObjectIndexByLabel(actionCtx?.listToUse, "Add Branches") || "2"
+        }
+        totalStep={actionCtx?.checkListLength || "4"}
         title="Create Branch"
         btnDisabled={!formik.isValid || !formik.dirty}
         loading={isCreatingBranch}
@@ -201,10 +214,11 @@ const AddBranch = () => {
                   )?.includes("subsidiary")}
                   placeholder="Select subsidiary"
                   options={subsidiaries}
-                  selected={formik.values.subsidiary}
-                  setSelected={(value) =>
-                    formik.setFieldValue("subsidiary", value)
-                  }
+                  selected={formik.values.subsidiary_id.name}
+                  setSelected={handleSubsidiaryChange}
+                  // setSelected={(value) =>
+                  //   formik.setFieldValue("subsidiary.", value)
+                  // }
                   // labelClass={labelClassName}
                 />
               )}
