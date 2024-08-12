@@ -242,12 +242,11 @@ const Employee = () => {
 
   const dropDowList = [
     {
-      label: "Mission Plan",
+      // label: getStatus(param) === "active" ? "Deactivate" :  "Active",
       color: "",
       onActionClick: (param: any, dataTwo: any) => {
         console.log(param);
         console.log(dataTwo);
-        
       },
     },
     { label: "Implied Task", color: "red", onActionClick: () => {} },
@@ -277,39 +276,39 @@ const Employee = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          //   <DashboardTable
-          //     header="Employee"
-          //     isFilterDrop
-          //     filterOptions={["pending", "rejected"]}
-          //     filterCheck={(val: string) => {
-          //       return val === status;
-          //     }}
-          //     filterOnCheck={(value: string) => {
-          //       if (value === status) {
-          //         setStatus("");
-          //       } else {
-          //         setStatus(value);
-          //       }
-          //     }}
-          //     data={employees}
-          //     columns={employeesColumnData}
-          //     onBulkUploadBtn={handleBulkUploadDialog}
-          //     onOpenBtnChange={handleBtnDrop}
-          //     newBtnOpen={openNewBtn}
-          //     isLoading={isFetchingEmployees}
-          //     onManualBtn={handleAddEmployee}
-          //     onPdfChange={() => handleImportChange("pdf")}
-          //     onCsvChange={() => handleImportChange("excel")}
-          //   />
-
           <>
-            <TableWrapper
+            <DashboardTable
+              header="Employee"
+              isFilterDrop
+              filterOptions={["pending", "rejected"]}
+              filterCheck={(val: string) => {
+                return val === status;
+              }}
+              filterOnCheck={(value: string) => {
+                if (value === status) {
+                  setStatus("");
+                } else {
+                  setStatus(value);
+                }
+              }}
+              data={employees}
+              columns={employeesColumnData}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              isLoading={isFetchingEmployees}
+              onManualBtn={handleAddEmployee}
+              onPdfChange={() => handleImportChange("pdf")}
+              onCsvChange={() => handleImportChange("excel")}
+            />
+
+            {/* <TableWrapper
               dropDown={true}
               tableBodyList={userData}
               tableheaderList={thlist}
               defaultBodyList={allemployeeData}
               dropDownList={dropDowList}
-            />
+            /> */}
           </>
         )}
 
