@@ -61,8 +61,8 @@ const AddBranch = () => {
       (emp) => emp.name === selectedName
     );
     if (selectedSub) {
-      formik.setFieldValue("subsidiary.name", selectedSub.name);
-      formik.setFieldValue("subsidiary.id", selectedSub.id);
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
     }
   };
 
@@ -214,7 +214,7 @@ const AddBranch = () => {
                   )?.includes("subsidiary")}
                   placeholder="Select subsidiary"
                   options={subsidiaries}
-                  selected={formik.values.subsidiary.name}
+                  selected={formik.values.subsidiary_id.name}
                   setSelected={handleSubsidiaryChange}
                   // setSelected={(value) =>
                   //   formik.setFieldValue("subsidiary.", value)

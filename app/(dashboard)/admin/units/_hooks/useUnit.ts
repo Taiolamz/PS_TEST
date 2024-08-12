@@ -181,7 +181,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
       // address: "lagos island",
       organization_id: organization?.id,
       head_of_unit: formik.values.head_of_unit.id,
-      subsidiary: formik.values.subsidiary.id,
+      subsidiary_id: formik.values.subsidiary_id.id,
       // state_id: formik.values?.state_id.toString(),
     };
     await createUnit(payload)
@@ -208,7 +208,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
         id: "",
       },
       work_email: "",
-      subsidiary: {
+      subsidiary_id: {
         name: "",
         id: "",
       },

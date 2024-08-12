@@ -184,7 +184,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       organization_id: organization?.id,
       state_id: formik.values.state_id.toString(),
       head_of_department: formik.values.head_of_department.id,
-      subsidiary: formik.values.subsidiary.id,
+      subsidiary_id: formik.values.subsidiary_id.id,
     };
     await createDepartment(payload)
       .unwrap()
@@ -210,7 +210,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
         id: "",
       },
       work_email: "",
-      subsidiary: {
+      subsidiary_id: {
         name: "",
         id: "",
       },
