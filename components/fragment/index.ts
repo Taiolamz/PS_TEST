@@ -6,6 +6,7 @@ import MissionHeader from "./mission-header";
 import MissionItems from "./mission-items";
 import MissionPlanWrapper from "./mission-plan-wrapper";
 import MissionWrapper from "./mission-wrapper";
+import ReusableDrawer from './drawer';
 
 export {
   EmptyState,
@@ -14,4 +15,5 @@ export {
   MissionPlanWrapper,
   MissionWrapper,
   EditableLabel,
+  ReusableDrawer
 };
