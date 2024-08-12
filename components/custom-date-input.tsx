@@ -78,7 +78,7 @@ export default function CustomDateInput({
         onOpenPickNewDate={onOpenPickNewDate}
         onChange={handleChange}
         value={selected}
-        className={cn( "date-picker", className)}
+        className={cn("date-picker", className)}
         disabled={disabled}
         onlyMonthPicker={showOnlyMonth}
         highlightToday={false}

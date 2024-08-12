@@ -113,4 +113,6 @@ export const {
   useSaveFinancialYearMutation,
   useGetOrganizationMissionPlansQuery,
   useCreateMissionStatementMutation,
+  useCreateMeasureOfSuccessMutation,
+  useCreateSpecifiedTaskMutation,
 } = missionPlanApi;
