@@ -23,6 +23,8 @@ import { downloadFile } from "@/utils/helpers/file-formatter";
 import { FiscalYearInfo, MyMissionPlan } from "./_partials";
 import { Dictionary } from "@/@types/dictionary";
 import Link from "next/link";
+import DrawerComment from "./_side-modal/drawer-comment";
+import DrawerApprovalStatus from "./_side-modal/drawer-approval-status";
 
 const { ADMIN } = routesPath;
 
@@ -47,6 +49,11 @@ const SingleMissionPlan = () => {
   const [subsidiary, setSubsidiary] = useState<string>("");
   const [units, setUnits] = useState<string>("");
   const [departments, setDepartments] = useState<string>("");
+
+  // State to handle drawer state and id
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [openApprovalStatus, setOpenApprovalStatus] = useState<boolean>(false);
+  const [drawerUserId, setDrawerUserId] = useState<string>("");
 
   // -------- API Service for Tab == All Employee ------- //
   const {
@@ -293,19 +300,41 @@ const SingleMissionPlan = () => {
                   label: "View Mission Plan",
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
-                    console.log(param);
-                    console.log(dataTwo);
+                    // console.log(param);
+                    // console.log(
+                    //   dataTwo?.name?.props.children[0].props.children
+                    // );
+                    router.push(
+                      ADMIN.APPROVE_REJECT_MISSION_PLAN(
+                        dataTwo?.name?.props.children[0].props.children
+                      )
+                    );
                   },
                 },
                 {
                   label: "Approval Status",
-                  color: "  ",
-                  onActionClick: () => {},
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    setDrawerUserId(
+                      dataTwo?.name?.props.children[0].props.children
+                    );
+                    setOpenDrawer(false);
+                    setOpenApprovalStatus(true);
+                  },
                 },
                 {
                   label: "View Comments",
                   color: "",
-                  onActionClick: () => {},
+                  onActionClick: (param: any, dataTwo: any) => {
+                    // console.log(
+                    //   dataTwo?.name?.props.children[0].props.children
+                    // );
+                    setDrawerUserId(
+                      dataTwo?.name?.props.children[0].props.children
+                    );
+                    setOpenApprovalStatus(false);
+                    setOpenDrawer(true);
+                  },
                 },
               ]}
               onPdfChange={handleExport}
@@ -317,6 +346,23 @@ const SingleMissionPlan = () => {
             <PageLoader />
           </div>
         ))}
+
+      <DrawerComment
+        show={openDrawer}
+        handleClose={() => {
+          setDrawerUserId("");
+          setOpenDrawer(false);
+        }}
+        userId={drawerUserId}
+      />
+      <DrawerApprovalStatus
+        show={openApprovalStatus}
+        handleClose={() => {
+          setDrawerUserId("");
+          setOpenApprovalStatus(false);
+        }}
+        userId={drawerUserId}
+      />
     </DashboardLayout>
   );
 };
@@ -325,7 +371,12 @@ export default SingleMissionPlan;
 
 const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((org: any) => ({
-    name: org?.name,
+    name: (
+      <>
+        <span className="hidden">{org.id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
     designation: org?.designation,
     email: org?.email,
     created_at: org?.created_at,

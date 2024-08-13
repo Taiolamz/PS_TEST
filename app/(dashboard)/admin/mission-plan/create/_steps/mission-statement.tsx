@@ -99,7 +99,7 @@ const MissionStatement = () => {
                 rows={3}
                 id="mission"
                 name="mission"
-                placeholder="Input Staff Name"
+                placeholder="Input Mission Statement"
                 className="mt-1 lg:w-1/2 block px-3 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
                 onChange={formik.handleChange}
                 touched={formik.touched.mission}
