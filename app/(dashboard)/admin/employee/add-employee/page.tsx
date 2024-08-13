@@ -85,7 +85,7 @@ export default function AddEmployee() {
             module="Employee"
             form={
               <form
-                className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 mb-14"
+                className="grid grid-cols-2 gap-x-10 gap-y-5 items-end mb-14"
                 onSubmit={formik.handleSubmit}
                 autoComplete="off"
               >

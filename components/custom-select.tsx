@@ -54,8 +54,7 @@ export default function CustomSelect({
         <label
           htmlFor={label}
           className={cn(
-            // "block font-normal text-xs pb-1 relative text-[#616161] md:text-[14px] ",
-            "block relative text-xs text-[#6E7C87] font-normal pb-2",
+            "block font-normal text-sm pb-1 text-[#616161]",
             labelClass
           )}
         >

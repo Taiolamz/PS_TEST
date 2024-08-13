@@ -11,13 +11,17 @@ export const missionStatementSchema = yup.object().shape({
 export const measureSuccessSchema = yup.object().shape({
   // mission_plan_id: yup.string().required("Mission Plan ID is required"),
   // strategic_intent_id: yup.string().required("Strategic Intent ID is required"),
-  allSuccess: yup.array().of(
+  measures: yup.array().of(
     yup.object().shape({
-      success: yup.string().required("Measure of success is required"),
+      measure: yup.string().required("Measure of success is required"),
       unit: yup.string().required("Unit is required"),
       target: yup.string().required("Target is required"),
     })
   ),
+});
+
+export const commentSchema = yup.object().shape({
+ comment: yup.string().min(2,"Can't send empty comment").max(200, "Message is too long").required("Type your comment"),
 });
 
 export const boundariesSchema = yup.object({
@@ -62,8 +66,8 @@ export const specifiedTaskSchema = yup.object().shape({
   tasks: yup.array().of(
     yup.object().shape({
       id: yup.string().required(),
-      title: yup.string().required("Title is required"),
-      pillars: yup
+      task: yup.string().required("Title is required"),
+      strategic_pillars: yup
         .array()
         .of(
           yup.object().shape({
@@ -73,7 +77,7 @@ export const specifiedTaskSchema = yup.object().shape({
           })
         )
         .min(1, "At least one pillar is required"),
-      measures: yup
+      success_measures: yup
         .array()
         .of(
           yup.object().shape({

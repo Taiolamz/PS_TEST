@@ -53,17 +53,31 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    createSpecifiedTask: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/specified-task`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    createMeasureOfSuccess: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/measure-of-success`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
     getFinancialYearPreview: builder.query({
       query: () => ({
         url: `/mission-plan/preview`,
-        method: "GET"
+        method: "GET",
       }),
     }),
     saveFinancialYear: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/save`,
         method: "POST",
-        body: payload
+        body: payload,
       }),
     }),
     getOrganizationMissionPlans: builder.query({
@@ -89,5 +103,16 @@ export const missionPlanApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useLazyGetMyMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation, useGetOrganizationMissionPlansQuery, useCreateMissionStatementMutation } =
-  missionPlanApi;
+export const {
+  useCreateFinancialYearMutation,
+  useAddStrategicIntentMutation,
+  useLazyGetMyMissionPlanQuery,
+  useCreateMissionAndVisionMutation,
+  useCreateStrategicPillarsMutation,
+  useGetFinancialYearPreviewQuery,
+  useSaveFinancialYearMutation,
+  useGetOrganizationMissionPlansQuery,
+  useCreateMissionStatementMutation,
+  useCreateMeasureOfSuccessMutation,
+  useCreateSpecifiedTaskMutation,
+} = missionPlanApi;
