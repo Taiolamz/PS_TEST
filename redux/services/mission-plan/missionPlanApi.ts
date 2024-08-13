@@ -19,8 +19,8 @@ export const missionPlanApi = baseApi.injectEndpoints({
       },
     }),
     getMyMissionPlan: builder.query({
-      query: () => ({
-        url: `/mission-plan/user/current`,
+      query: (payload) => ({
+        url: `/mission-plan?fiscal_year=${payload.id}`,
         method: "GET",
       }),
       // providesTags: ["Branches"],
@@ -53,17 +53,31 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    createSpecifiedTask: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/specified-task`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    createMeasureOfSuccess: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/measure-of-success`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
     getFinancialYearPreview: builder.query({
       query: () => ({
         url: `/mission-plan/preview`,
-        method: "GET"
+        method: "GET",
       }),
     }),
     saveFinancialYear: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/save`,
         method: "POST",
-        body: payload
+        body: payload,
       }),
     }),
     getOrganizationMissionPlans: builder.query({
@@ -72,8 +86,33 @@ export const missionPlanApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    createMissionStatement: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/mission-statement`,
+        method: "POST",
+        body: payload,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (error: any) {
+          // console.log('Error:', error)
+        }
+      },
+    }),
   }),
 });
 
-export const { useCreateFinancialYearMutation, useAddStrategicIntentMutation, useGetMyMissionPlanQuery, useCreateMissionAndVisionMutation, useCreateStrategicPillarsMutation, useGetFinancialYearPreviewQuery, useSaveFinancialYearMutation, useGetOrganizationMissionPlansQuery } =
-  missionPlanApi;
+export const {
+  useCreateFinancialYearMutation,
+  useAddStrategicIntentMutation,
+  useLazyGetMyMissionPlanQuery,
+  useCreateMissionAndVisionMutation,
+  useCreateStrategicPillarsMutation,
+  useGetFinancialYearPreviewQuery,
+  useSaveFinancialYearMutation,
+  useGetOrganizationMissionPlansQuery,
+  useCreateMissionStatementMutation,
+  useCreateMeasureOfSuccessMutation,
+  useCreateSpecifiedTaskMutation,
+} = missionPlanApi;

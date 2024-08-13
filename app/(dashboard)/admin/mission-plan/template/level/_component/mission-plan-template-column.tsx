@@ -162,19 +162,23 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
   {
     accessorKey: "created_by",
     header: "Created by",
-    // cell: ({ row }) => {
-    //   const created_by = row.getValue("created_by") as CreatedBy;
-    //   return (
-    //     <div className="flex items-center capitalize">
-    //       <Image
-    //         src={created_by.profile_picture}
-    //         alt={created_by.name}
-    //         className="w-8 h-8 rounded-full mr-2"
-    //       />
-    //       {created_by.name}
-    //     </div>
-    //   );
-    // },
+    cell: ({ row }) => {
+      const created_by = row.getValue("created_by") as CreatedBy;
+      return (
+        <div className="flex items-center capitalize">
+          {created_by?.profile_picture ? (
+            <>
+              <Image
+                src={created_by?.profile_picture}
+                alt={created_by?.name}
+                className="w-8 h-8 rounded-full mr-2"
+              />
+            </>
+          ) : null}
+          {created_by?.name || "not assigned"}
+        </div>
+      );
+    },
   },
 
   {

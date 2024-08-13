@@ -109,11 +109,13 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     ),
   },
   {
-    accessorKey: "job_title",
+    accessorKey: "designation",
     header: () => <div className="text-right">Job Title</div>,
     cell: ({ row }) => (
       <div className="capitalize text-right">
-        {row.getValue("job_title") ? row.getValue("job_title") : "Not Assigned"}
+        {row?.getValue("designation")
+          ? row?.getValue("designation")
+          : "Not Assigned"}
       </div>
     ),
   },

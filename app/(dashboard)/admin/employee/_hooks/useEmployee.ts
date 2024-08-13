@@ -55,10 +55,10 @@ const formSchema = yup.object().shape({
   gender: yup.string().required("Gender is required"),
   resumption_date: yup.date().required("Resumption date is required."),
   level: yup.string().required("Grade level is required"),
-  subsidiary_id: yup.string().required("Subsidiary is required"),
-  department_id: yup.string().required("Department is required"),
-  branch_id: yup.string().required("Branch is required"),
-  unit_id: yup.string().required("Unit is required"),
+  // subsidiary_id: yup.string().required("Subsidiary is required"),
+  // department_id: yup.string().required("Department is required"),
+  // branch_id: yup.string().required("Branch is required"),
+  // unit_id: yup.string().required("Unit is required"),
   designation: yup.string().required("Job title is required"),
   staff_number: yup.string().required("Staff number is required"),
   new_employee: yup.string().required("New employee status is required"),
@@ -77,7 +77,7 @@ const formSchema = yup.object().shape({
   phone_number: yup
     .string()
     .required("Phone number is required")
-    .matches(/^\d+$/, "Phone number must be digits only")
+    // .matches(/^\d+$/, "Phone number must be digits only")
     .max(14, "Phone number cannot exceed 14 digits"),
   role_id: yup.string().required("Role is required"),
 });

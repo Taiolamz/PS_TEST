@@ -46,45 +46,52 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name")
+          row.getValue("name") || "not assigned"
         )}
       </div>
     ),
   },
   {
     accessorKey: "hod",
-    header: "HOD",
+    header: "HOU",
     cell: ({ row }) => (
       <div className="capitalize">
-        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hod")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "department",
-    header: () => <div className="text-right mr-24">Deparment</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-right mr-24">
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("department")
+          row.getValue("head_of_unit") || "not assigned"
         )}
       </div>
     ),
   },
+
   {
-    accessorKey: "branch",
-    header: () => <div className="text-right mr-24">Branch</div>,
+    accessorKey: "deparment",
+    header: () => <div className="text-right mr-24">Department</div>,
     cell: ({ row }) => {
-    //   const branch = row.getValue("branch");
-      //   console.log(branch.name, "branch name");
+      const department = row.getValue("deparment") as ObjType;
       return (
         <div className="capitalize text-right mr-24">
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            row.getValue("branch")
+            department?.name || "not assigned"
+          )}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "branch",
+    header: () => <div className="text-right mr-24">Branch</div>,
+    cell: ({ row }) => {
+      const branch = row.getValue("branch") as ObjType;
+      return (
+        <div className="capitalize text-right mr-24">
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            branch?.name || "not assigned"
           )}
         </div>
       );

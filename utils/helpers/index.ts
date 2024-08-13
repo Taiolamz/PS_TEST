@@ -88,7 +88,7 @@ export const removeCharFromString = (str: string, char: string) =>
 
 // Custom date validation function
 export const isValidDate = (dateString: string | any) => {
-  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+  const parsedDate = parse(dateString, "yyyy-mm-dd", new Date());
   return isValid(parsedDate) && dateString.length === 10;
 };
 
@@ -202,23 +202,28 @@ export function formatChecklistPercent(param: any) {
 
 export function getLinksAndCollapseNumByTitle(data: any, title: any) {
   const section = data.find((item: any) => item.title === title);
-  
+
   if (!section) {
     return { links: [], collapseNum: null };
   }
-  
-  const links = section.navLinks.reduce((acc: any, navLink: any) => {
-    acc.push(navLink.link);
-    if (navLink.relatedLink) {
-      acc = acc.concat(navLink.relatedLink);
-    }
-    return acc;
-  }, []).filter((link: any) => link !== ""); // Filter out empty strings
-  
+
+  const links = section.navLinks
+    .reduce((acc: any, navLink: any) => {
+      acc.push(navLink.link);
+      if (navLink.relatedLink) {
+        acc = acc.concat(navLink.relatedLink);
+      }
+      return acc;
+    }, [])
+    .filter((link: any) => link !== ""); // Filter out empty strings
+
   return { links, collapseNum: section.collapseNum };
 }
 
-
 export const truncateString = (str: string, maxLength: number = 50) => {
-  return str.length > maxLength ? str.slice(0, maxLength) + '...' : str;
+  return str.length > maxLength ? str.slice(0, maxLength) + "..." : str;
 };
+
+export function findObjectIndexByLabel(arr: any, label: any) {
+  return arr.findIndex((item: any) => item?.label === label) + 1;
+}

@@ -105,7 +105,8 @@ const ChecklistOverviewContent = () => {
           isChecked: checklist?.mission_flow_exist,
           label: "Create Mission Plan Template",
           hide: false,
-          link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_TEMPLATE,
+          link: routesPath?.ADMIN?.MISSION_PLAN_TEMPLATE_LEVEL,
+          // link: routesPath?.ADMIN?.CREATE_MISSION_PLAN_TEMPLATE,
         },
         {
           isChecked: checklist?.approval_flow_exist,
@@ -150,7 +151,6 @@ const ChecklistOverviewContent = () => {
       onClick={() => {
         console.log(checklist);
         console.log(user?.organization?.hierarchy);
-        
       }}
       className="flex flex-col gap-3 w-[768px]"
     >

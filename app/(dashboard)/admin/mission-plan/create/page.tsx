@@ -22,10 +22,11 @@ const CreateMissionPlan = () => {
   const queryParams = useSearchParams();
   const ui = queryParams.get("ui");
 
-  const { active_fy_info } = useAppSelector((state) => state?.mission_plan?.mission_plan)
-
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
   return (
-    <DashboardLayout 
+    <DashboardLayout
       headerTitle={active_fy_info?.title}
       back
       // onBack={() => router.push(ADMIN.MISSION_PLAN)}

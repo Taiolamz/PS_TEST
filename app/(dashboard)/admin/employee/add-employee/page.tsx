@@ -14,6 +14,8 @@ import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { Dictionary } from "@/@types/dictionary";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 const { ADMIN } = routesPath;
 
@@ -49,6 +51,7 @@ export default function AddEmployee() {
   } = useEmployee({ path: route, cancelPath: cancelRoute });
 
   // const [selectedState, setSelectedState] = useState("");
+  const { user, checklist } = useAppSelector((state) => state.auth);
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
@@ -82,7 +85,7 @@ export default function AddEmployee() {
             module="Employee"
             form={
               <form
-                className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 mb-14"
+                className="grid grid-cols-2 gap-x-10 gap-y-5 items-end mb-14"
                 onSubmit={formik.handleSubmit}
                 autoComplete="off"
               >
@@ -193,39 +196,52 @@ export default function AddEmployee() {
                   isRequired
                 />
 
-                <CustomSelect
-                  label="Subsidiary"
-                  isRequired
-                  placeholder="Select Subsidiary"
-                  options={subsidiaries}
-                  selected={selectedSubsidiary}
-                  setSelected={(value) => {
-                    setSelectedSubsidiary(value);
-                    const selectedSubsidiaryId = subsidiaryDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].id;
-                    formik.setFieldValue("subsidiary_id", selectedSubsidiaryId);
-                  }}
-                  labelClass={labelClassName}
-                />
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "subsidiary"
+                ) && (
+                  <CustomSelect
+                    label="Subsidiary"
+                    isRequired
+                    placeholder="Select Subsidiary"
+                    options={subsidiaries}
+                    selected={selectedSubsidiary}
+                    setSelected={(value) => {
+                      setSelectedSubsidiary(value);
+                      const selectedSubsidiaryId = subsidiaryDrop.filter(
+                        (chi) => chi.name === value
+                      )[0].id;
+                      formik.setFieldValue(
+                        "subsidiary_id",
+                        selectedSubsidiaryId
+                      );
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
 
-                <CustomSelect
-                  label="Branch"
-                  isRequired
-                  placeholder="Select Branch"
-                  options={branches}
-                  selected={selectedBranch}
-                  setSelected={(value) => {
-                    setSelectedBranch(value);
-                    const selectedBranchId = branchDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].branch_id;
-                    formik.setFieldValue("branch_id", selectedBranchId);
-                  }}
-                  labelClass={labelClassName}
-                />
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "branch"
+                ) && (
+                  <CustomSelect
+                    label="Branch"
+                    isRequired
+                    placeholder="Select Branch"
+                    options={branches}
+                    selected={selectedBranch}
+                    setSelected={(value) => {
+                      setSelectedBranch(value);
+                      const selectedBranchId = branchDrop.filter(
+                        (chi) => chi.name === value
+                      )[0].branch_id;
+                      formik.setFieldValue("branch_id", selectedBranchId);
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
 
-                <CustomSelect
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "department"
+                ) &&  <CustomSelect
                   label="Department"
                   isRequired
                   placeholder="Select Department"
@@ -239,9 +255,11 @@ export default function AddEmployee() {
                     formik.setFieldValue("department_id", selectedDepartmentId);
                   }}
                   labelClass={labelClassName}
-                />
+                />}
 
-                <CustomSelect
+             {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "unit"
+                ) &&   <CustomSelect
                   label="Unit"
                   isRequired
                   placeholder="Select Unit"
@@ -255,7 +273,7 @@ export default function AddEmployee() {
                     formik.setFieldValue("unit_id", selectedUnitId);
                   }}
                   labelClass={labelClassName}
-                />
+                />}
 
                 <Input
                   label="Job Title"
@@ -269,12 +287,17 @@ export default function AddEmployee() {
 
                 <Input
                   label="Phone Number"
-                  type="phone"
+                  type="tel"
                   placeholder="Phone Number"
                   id="phone_number"
                   name="phone_number"
                   maxLength={14}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const filteredValue = value.replace(/[^0-9+]/g, "");
+                    formik.setFieldValue("phone_number", filteredValue);
+                  }}
+                  value={formik.values.phone_number}
                   isRequired
                 />
 

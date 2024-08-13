@@ -24,7 +24,7 @@ const ApproveMissionPlan = () => {
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
-        <div className="py-14 px-[1.625rem] bg-white">
+        <div className="py-14 px-[1.625rem]">
           <div className="flex justify-between mb-7">
             <div className="flex items-center gap-[0.5625rem]">
               <h1 className="font-semibold text-lg text-[#3E4345]">

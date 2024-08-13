@@ -111,5 +111,6 @@ export const baseApi = createApi({
     "Units",
     "Employees",
     "MissionPlanTemplates",
+    "Comments",
   ],
 });

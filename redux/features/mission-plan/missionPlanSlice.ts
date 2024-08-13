@@ -29,6 +29,7 @@ const initialState: Dictionary = {
   },
   mission_plan: {
     active_fy_info: null,
+    mission_plan: null
   },
 };
 

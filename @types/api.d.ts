@@ -93,6 +93,14 @@ type GradeLevelData = {
   level: string;
 };
 
+type AllStaff = {
+  // staff_members: {
+  email: string;
+  id: string;
+  name: string;
+  // };
+};
+
 type InvitedUser = {
   branch_id: string;
   created_at: string;
@@ -118,6 +126,11 @@ type InvitedUser = {
   status: string;
   unit_id: string;
   updated_at: string;
+};
+
+type ObjType = {
+  name: string;
+  id: string;
 };
 
 type StateData = {
@@ -202,6 +215,7 @@ type QueryParams = {
   per_page?: number;
   total?: number;
   to?: number;
+  status?: string;
 };
 
 // unit services
