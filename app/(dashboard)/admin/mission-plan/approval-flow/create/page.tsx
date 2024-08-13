@@ -54,6 +54,7 @@ const AddApprovalFlow = () => {
         // onSave={handleProceed}
         onSave={formik.handleSubmit}
         onCancel={handleCancelDialog}
+        // btnDisabled={!formik.values.order_of_approvals}
         loading={isCreatingMissionFlow}
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
@@ -81,6 +82,7 @@ const AddApprovalFlow = () => {
           ) : null} */}
           {/* {ui === "approval-flow-step-two" ? ( */}
           <ApprovalFlowTwo
+            setFieldValue={formik.setFieldValue}
             options={level}
             approvals={roles}
             // approvals={reviewers}
