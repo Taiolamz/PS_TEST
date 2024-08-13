@@ -32,7 +32,7 @@ export default function ReusableDrawer({ show, title, children, handleClose, wid
                             onClick={handleClose}
                         ><X className="h-3 w-3" /></span>
                     </div>
-                    <section className="p-4">
+                    <section className="py-4">
                         {children}
                     </section>
                 </SheetContent>
