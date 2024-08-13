@@ -11,19 +11,24 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Comments"],
     }),
-    // getMissionPlanCommentable: builder.query({
-    //   query: (params) => ({
-    //     url: `/mission-plan/organization/${
-    //       params?.fiscal_year_id
-    //     }${generateQueryString({ ...params })}`,
-    //     method: "GET",
-    //     responseHandler: (response) => response.blob(),
-    //     cache: "no-cache",
-    //   }),
-    // }),
+    addMssionPlanComment: builder.mutation({
+      query: (payload) => ({
+        url: `/comments/add`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Comments"],
+    }),
+    getCommentableType: builder.query({
+      query: () => ({
+        url: `/comments/commentable-types`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 export const {
   useAllMssionPlanCommentsMutation,
+  useAddMssionPlanCommentMutation,
 } = allmissionPlanApi;

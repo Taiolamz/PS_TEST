@@ -26,7 +26,7 @@ export default function DrawerComment({
     },
     validationSchema: commentSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       clearForm();
     },
   });
@@ -41,7 +41,6 @@ export default function DrawerComment({
     clearForm();
   }, [userId]);
 
-  console.log(formik);
   return (
     <ReusableDrawer
       title="Comment"

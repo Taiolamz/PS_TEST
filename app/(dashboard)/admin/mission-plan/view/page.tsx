@@ -287,8 +287,8 @@ const SingleMissionPlan = () => {
               }}
               hideNewBtnOne={true}
               tableBodyList={FORMAT_TABLE_DATA(
-                employeeData?.mission_plans?.data
-                // allemployeeData
+                // employeeData?.mission_plans?.data
+                allemployeeData
               )}
               loading={isFetchingEmployee}
               handleSearchClick={(param) => {
@@ -300,10 +300,6 @@ const SingleMissionPlan = () => {
                   label: "View Mission Plan",
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
-                    // console.log(param);
-                    // console.log(
-                    //   dataTwo?.name?.props.children[0].props.children
-                    // );
                     router.push(
                       ADMIN.APPROVE_REJECT_MISSION_PLAN(
                         dataTwo?.name?.props.children[0].props.children
@@ -326,9 +322,6 @@ const SingleMissionPlan = () => {
                   label: "View Comments",
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
-                    // console.log(
-                    //   dataTwo?.name?.props.children[0].props.children
-                    // );
                     setDrawerUserId(
                       dataTwo?.name?.props.children[0].props.children
                     );
