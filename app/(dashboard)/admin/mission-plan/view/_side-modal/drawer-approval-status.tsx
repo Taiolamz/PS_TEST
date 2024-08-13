@@ -1,6 +1,7 @@
 import { ReusableDrawer } from "@/components/fragment";
+import { useLazyEmployeeMissionPlanApprovalStepsQuery } from "@/redux/services/mission-plan/missionPlanApprovalStep";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function DrawerApprovalStatus({
   show,
@@ -33,6 +34,15 @@ export default function DrawerApprovalStatus({
       status: "Approved",
     },
   ]
+console.log(userId)
+  const [getApprovalSteps] = useLazyEmployeeMissionPlanApprovalStepsQuery();
+  useEffect(() => {
+    getApprovalSteps('01j562kwcmbwxwbtwzk180xqmy').unwrap().then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.error(err);
+    })
+  }, [userId]);
   return (
     <ReusableDrawer
       title="Approval Status"
