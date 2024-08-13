@@ -63,9 +63,9 @@ export default function AllEmployeeMissionCard({
             Overall progress
           </p>
           <h4 className=" font-medium text-2xl text-custom-dark-blue flex items-center pr-3">
-            {overall_progress}%{" "}
+            {Math.ceil(overall_progress ? overall_progress : 0)}%{" "}
             <Progress
-              value={overall_progress}
+              value={Math.ceil(overall_progress ? overall_progress : 0)}
               className="h-[6px] bg-[var(--primary-accent-color)] ml-3 mr-7"
             />
           </h4>

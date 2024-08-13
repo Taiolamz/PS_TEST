@@ -6,12 +6,13 @@ import { cn } from "@/lib/utils";
 import {
   useAddMssionPlanCommentMutation,
   useAllMssionPlanCommentsMutation,
+  useLazyGetCommentableTypeQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 import { useAppSelector } from "@/redux/store";
 import { returnInitial } from "@/utils/helpers";
 import { commentSchema } from "@/utils/schema/mission-plan";
 import { useFormik } from "formik";
-import React, { useEffect } from "react"; 
+import React, { useEffect } from "react";
 
 export default function DrawerComment({
   show,
@@ -23,15 +24,16 @@ export default function DrawerComment({
   userId?: string;
 }) {
   const { user } = useAppSelector((state) => state.auth);
+
   const [
     allMissionPlanComments,
     { isLoading: loadingComment, error: allCommenterror, data: allComment },
   ] = useAllMssionPlanCommentsMutation();
 
-  const [
-    addMissionPlanComments,
-    { isLoading: loadingAddComment },
-  ] = useAddMssionPlanCommentMutation();
+  const [addMissionPlanComments, { isLoading: loadingAddComment }] =
+    useAddMssionPlanCommentMutation();
+
+  const [getCommentableType] = useLazyGetCommentableTypeQuery();
 
   const formik = useFormik({
     initialValues: {
@@ -69,6 +71,9 @@ export default function DrawerComment({
         commentable_id: userId,
         commentable_type: "mission-plan",
       });
+      getCommentableType({})
+        .unwrap()
+        .then((data) => {});
     }
   }, [userId]);
 
@@ -148,12 +153,12 @@ export default function DrawerComment({
                     <div className="flex items-center gap-x-[7px]">
                       <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
                         <span className="text-white font-semibold uppercase text-xs">
-                          {returnInitial(item?.staff_member)}
+                          {returnInitial(item?.staff_member?.name)}
                         </span>
                       </div>
                       <div className="space-y-1">
                         <h3 className="text-sm font-medium text-custom-dark-gray">
-                          {item?.staff_member}
+                          {item?.staff_member?.name}
                         </h3>
                         <p className="text-[10px] font-light text-custom-gray-scale-400">
                           {item?.created_at}
