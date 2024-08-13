@@ -70,10 +70,10 @@ const Onboarding = () => {
   ] = useOnboardingMutation();
 
   const onSubmit = async () => {
-    if (isStartDateLater) {
-      toast.error("End date must be a future date!");
-      return;
-    }
+    // if (isStartDateLater) {
+    //   toast.error("End date must be a future date!");
+    //   return;
+    // }
 
     if (!formik.isValid) {
       toast.error(
@@ -148,12 +148,6 @@ const Onboarding = () => {
   // }, [formik.values.end_fy, formik.values.start_fy]);
 
   const logo = formik.values.logo;
-  console.log({
-    formik1234: formik.errors,
-    isStartDateLater,
-    formikStart: formik.values.start_fy,
-    formikEnd: formik.values.end_fy,
-  });
 
   useEffect(() => {
     if (!ui) {
