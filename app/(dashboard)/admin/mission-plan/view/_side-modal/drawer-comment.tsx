@@ -115,8 +115,8 @@ export default function DrawerComment({
               <Button
                 type="submit"
                 disabled={loadingAddComment || loadingComment}
-                //   loading={isLoadingStrategicIntent}
-                loadingText="Save & Continue"
+                loading={loadingAddComment}
+                loadingText="Comment"
                 className={cn(
                   "w-full mt-3.5 float-right",
                   !formik.isValid
@@ -126,7 +126,7 @@ export default function DrawerComment({
                 )}
                 // className={`text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] min-w-28`}
               >
-                {loadingAddComment ? "Sending" : "Comment"}
+                Comment
               </Button>
             </div>
           </div>
