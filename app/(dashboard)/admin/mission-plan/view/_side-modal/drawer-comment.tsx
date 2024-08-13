@@ -84,7 +84,7 @@ export default function DrawerComment({
       handleClose={handleClose}
       closeOnClickOutside={false}
     >
-      <section className="">
+      <section className="h-[92vh] flex flex-col">
         <form
           onSubmit={formik.handleSubmit}
           className="bg-custom-gray-2 px-6 pt-7 pb-5"
@@ -102,6 +102,7 @@ export default function DrawerComment({
               <Textarea
                 rows={3}
                 id="comment"
+                disabled={loadingComment}
                 name="comment"
                 placeholder="type here your comment"
                 className="mt-1 w-full !bg-white block px-3 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
@@ -112,7 +113,7 @@ export default function DrawerComment({
               />
               <Button
                 type="submit"
-                disabled={loadingAddComment}
+                disabled={loadingAddComment || loadingComment}
                 //   loading={isLoadingStrategicIntent}
                 loadingText="Save & Continue"
                 className={cn(
@@ -130,15 +131,17 @@ export default function DrawerComment({
           </div>
         </form>
 
-        <main className="pl-4 pt-3">
+        <main className="pl-4 pt-3 flex-1 flex flex-col">
           <h3 className="text-sm mb-4">Previous Comments</h3>
-          <section className="space-y-4 h-[53vh] overflow-y-auto pr-3">
+          <section className="space-y-4 h-[53dvh] grid overflow-y-auto pr-3">
             {allCommenterror ? (
               <></>
             ) : loadingComment ? (
-              <PageLoader />
+              <div className="place-content-center">
+                <PageLoader />
+              </div>
             ) : allComment?.data?.length === 0 ? (
-              <div className="text-center mt-16">
+              <div className="text-center place-content-center mt-16">
                 <p className="text-custom-gray-scale-400 font-medium text-sm">
                   No Comments Yet
                 </p>
@@ -147,7 +150,7 @@ export default function DrawerComment({
               allComment?.data?.map((item: any) => (
                 <div
                   key={item}
-                  className="border border-custom-divider bg-custom-bg rounded-md p-[15px]"
+                  className="border border-custom-divider w-full bg-custom-bg rounded-md p-[15px]"
                 >
                   <div className="flex justify-between mb-2">
                     <div className="flex items-center gap-x-[7px]">
