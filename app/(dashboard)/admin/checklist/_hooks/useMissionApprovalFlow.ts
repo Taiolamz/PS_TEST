@@ -96,7 +96,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     await createMissionFlow(payload)
       .unwrap()
       .then(() => {
-        toast.success("Approval Created Successfully");
+        toast.success("Approval Flow Created Successfully");
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
