@@ -1,7 +1,7 @@
 import { baseApi } from "../baseApi";
 import { generateQueryString } from "@/utils/helpers";
 
-export const allmissionPlanApi = baseApi.injectEndpoints({
+export const missionPlanCommentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     allMssionPlanComments: builder.mutation({
       query: (payload) => ({
@@ -31,4 +31,5 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
 export const {
   useAllMssionPlanCommentsMutation,
   useAddMssionPlanCommentMutation,
-} = allmissionPlanApi;
+  useLazyGetCommentableTypeQuery,
+} = missionPlanCommentApi;
