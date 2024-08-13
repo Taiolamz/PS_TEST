@@ -67,7 +67,9 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
         )}
       </div>
       <div ref={pickerref} className="mb-4">
-        <label className="block mb-6">Brand Color</label>
+        <label className="block mb-6  font-medium text-[#162238] text-lg">
+          Brand Color
+        </label>
         <p className="mb-[0.7813rem] text-xs text-[#5A5B5F]">
           Current color <sup className="text-[#CC0905]">*</sup>
         </p>

@@ -40,7 +40,7 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
         title="Setup Default Organization Hierarchy"
         subTitle="Set organization operating Hierarchy"
       />
-      <h3 className="block mb-1.5 text-sm font-medium text-[#5A5B5F]">
+      <h3 className="block mb-1.5 text-sm font-medium text-[#162238]">
         1. Organizational Hierarchy
       </h3>
       <p className="text-gray-600">

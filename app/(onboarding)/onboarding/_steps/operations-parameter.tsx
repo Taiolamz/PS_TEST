@@ -39,7 +39,7 @@ const OperationsParameter = ({
   return (
     <section
       // style={{ overflowY: "scroll" }}
-      className="max-w-[54.625rem]"
+      className="max-w-[54.625rem] pr-28"
     >
       <FormHeader
         title="Give details of your organizational information and hierarchical
