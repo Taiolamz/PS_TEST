@@ -4,7 +4,7 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Comment from "./comment";
+import Comment from "./Comment";
 
 type Props = {
   title: string;
