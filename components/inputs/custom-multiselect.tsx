@@ -108,7 +108,7 @@ export default function CustomMultiSelect({
         </MultiSelectorTrigger>
         <MultiSelectorContent>
           <MultiSelectorList>
-            {options.map((option) => (
+            {options?.map((option) => (
               <MultiSelectorItem
                 value={option?.value}
                 key={option.value}
