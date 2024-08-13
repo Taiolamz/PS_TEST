@@ -124,10 +124,10 @@ const SpecifiedTask = () => {
       (task: any) => ({
         id: task.id || uuidv4(),
         task: task.task,
-        strategic_pillars: mappedStrategicPillars.filter((obj: { id: any }) =>
+        strategic_pillars: mappedStrategicPillars?.filter((obj: { id: any }) =>
           JSON.parse(task.strategic_pillars).includes(obj.id)
         ),
-        success_measures: mappedSuccessMeasures.filter((obj: { id: any }) =>
+        success_measures: mappedSuccessMeasures?.filter((obj: { id: any }) =>
           JSON.parse(task.success_measures).includes(obj.id)
         ),
         start_date: task.start_date,
