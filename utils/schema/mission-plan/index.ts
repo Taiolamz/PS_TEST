@@ -20,6 +20,10 @@ export const measureSuccessSchema = yup.object().shape({
   ),
 });
 
+export const commentSchema = yup.object().shape({
+ comment: yup.string().min(2,"Can't send empty comment").max(200, "Message is too long").required("Type your comment"),
+});
+
 export const boundariesSchema = yup.object({
   constraints: yup.array().of(yup.string().required("Constraint is required")),
   freedoms: yup.array().of(yup.string().required("Freedom is required")),
