@@ -11,13 +11,18 @@ import { cn } from "@/lib/utils";
 import { formatRMDatePicker } from "@/utils/helpers/date-formatter";
 import { ErrorMessage, FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 import { v4 as uuidv4 } from "uuid";
 import { useCreateImpliedTaskMutation } from "@/redux/services/mission-plan/impliedTaskApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/store";
+import {
+  useCreateMissionStatementMutation,
+  useLazyGetMyMissionPlanQuery,
+} from "@/redux/services/mission-plan/missionPlanApi";
 
 type ImpliedTaskType = {
   task: string;
@@ -80,6 +85,41 @@ const ImpliedTask = () => {
       });
   };
 
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
+
+  console.log(mission_plan_info, "fiscal year id");
+
+  const [
+    getMyMissionPlan,
+    {
+      data: mission_plan,
+      isLoading: isLoadingMissionPlan,
+      isFetching: isFetchingMissionPlan,
+      isSuccess: fetchedMissionPlan,
+    },
+  ] = useLazyGetMyMissionPlanQuery({});
+
+  // const [createMissionStatement, { isLoading }] =
+  //   useCreateMissionStatementMutation();
+
+  useEffect(() => {
+    handleGetMyMissionPlan();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [FISCAL_YEAR_ID]);
+
+  console.log(mission_plan, "mission_plan");
+
+  const handleGetMyMissionPlan = async () => {
+    const payload = { id: FISCAL_YEAR_ID };
+    getMyMissionPlan(payload)
+      .unwrap()
+      .then((payload) => {});
+  };
+
   const formik = useFormik({
     initialValues: {
       tasks: [
@@ -97,8 +137,8 @@ const ImpliedTask = () => {
         },
       ],
       mission_plan_id: "string",
-      validationSchema: validationSchema,
     },
+    validationSchema: validationSchema,
     onSubmit: handleSubmit,
     // validationSchema: validationSchema,
     enableReinitialize: true,
