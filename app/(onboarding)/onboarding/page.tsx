@@ -177,12 +177,12 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20"
+          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20 h-[calc(100vh_-_4rem)] overflow-y-auto scroll-hidden"
           onSubmit={formik.handleSubmit}
         >
           {/* <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden"> */}
-          <div className="flex flex-col h-[calc(100vh_-_14rem)] overflow-y-auto">
-            <h1 className="text-2xl font-bold text-[--primary-color] mb-16">
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-bold text-[#162238] mb-[3.9375rem]">
               {`Welcome ${
                 trimLongString(user?.organization?.name, 25) || ""
               }! Let's setup your organization`}

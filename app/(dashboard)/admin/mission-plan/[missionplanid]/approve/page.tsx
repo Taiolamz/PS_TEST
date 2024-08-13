@@ -4,16 +4,16 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 
 import React, { useState } from "react";
-import SpecifiedTasks from "../../_components/SpecifiedTasks";
-import ImpliedTask from "../../_components/ImpliedTask";
-import MeasureOfSuccessTable from "../../_components/measureOfSuccessTable";
+import SpecifiedTasks from "../../_components/specified-task";
+import ImpliedTask from "../../_components/implied-task";
+import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
 import {
   measureColumns,
   measuresData,
 } from "@/utils/data/dashboard/missionplan/dummy";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PresentationView from "./_presentation/presentation-view";
-import Comment from "../../_components/Comment";
+import Comment from "../../_components/comment";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const ApproveMissionPlan = () => {
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
-        <div className="py-14 px-[1.625rem]">
+        <div className="py-14 px-[1.625rem] bg-white">
           <div className="flex justify-between mb-7">
             <div className="flex items-center gap-[0.5625rem]">
               <h1 className="font-semibold text-lg text-[#3E4345]">
@@ -51,7 +51,7 @@ const ApproveMissionPlan = () => {
                   Mission Statement
                 </h2>
                 <div className="flex justify-between items-end w-full">
-                  <p className="w-[52%]">
+                  <p className="w-[52%] text-[#162238]">
                     My MISSION PLAN Lorem ipsum dolor sit amet, consectetur
                     adipiscing elit. Feugiat sit sed at neque. Semper
                     suspendisse diam habitant pulvinar arcu, mi.
@@ -72,7 +72,7 @@ const ApproveMissionPlan = () => {
 
             {/* Measure of Success */}
             <section>
-              <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
+              <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
                 <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
                   Measure of Success
                 </h2>
@@ -99,7 +99,7 @@ const ApproveMissionPlan = () => {
 
             {/* Strategic Intent */}
             <section>
-              <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
+              <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
                 <h2 className="text-[var(--primary-color)] text-sm mb-[0.6875rem] font-medium">
                   Strategic Intent
                 </h2>
@@ -146,7 +146,7 @@ const ApproveMissionPlan = () => {
 
             {/* Freedom and Constraint */}
             <section>
-              <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
+              <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
                 <div className=" flex justify-between items-end">
                   <div className="flex flex-col gap-4">
                     <div>

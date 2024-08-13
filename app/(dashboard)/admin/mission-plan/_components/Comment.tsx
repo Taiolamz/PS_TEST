@@ -63,7 +63,9 @@ const Comment = ({ id, name, label }: Props) => {
     <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] bg-[#F6F8F9]">
       <div className="flex justify-between items-center mb-2.5">
         <div className="flex gap-3 items-center">
-          <h2 className="text-[var(--primary-color)] text-sm">Comments</h2>
+          <h2 className="text-[var(--primary-color)] text-sm text-medium">
+            Comments
+          </h2>
           <p className="inline-flex py-0.5 px-2 text-xs rounded-full text-[var(--primary-color)] bg-[#0080801A]">
             {comments.length}
           </p>
@@ -99,7 +101,9 @@ const Comment = ({ id, name, label }: Props) => {
         {showTextArea && (
           <div className="basis-1/2 p-2 rounded-[0.3125rem] border bg-white border-[var(--primary-color)]">
             <div className="flex justify-between items-center mb-0.5 ">
-              <label className="uppercase px-3 py-1 text-xs">{label}</label>
+              <label className="uppercase px-3 py-1 text-[0.625rem]  text-[#6E7C87]">
+                {label}
+              </label>
               <div className="flex items-center gap-1">
                 <MdCancel
                   color="red"
@@ -116,8 +120,8 @@ const Comment = ({ id, name, label }: Props) => {
               id="comment"
               name="comment"
               placeholder="Input Comment"
-              rows={4}
-              className="bg-white border-0 focus:border-0 outline-none focus:outline-none"
+              rows={3}
+              className="bg-white border-0 focus:border-0 focus-visible:ring-0"
             />
           </div>
         )}
@@ -139,7 +143,9 @@ const Comment = ({ id, name, label }: Props) => {
                 </div>
                 <HiDotsHorizontal />
               </div>
-              <p>{comment.text}</p>
+              <p className="text-xs font-light text-[#162238]">
+                {comment.text}
+              </p>
               <div className="flex gap-[0.4375rem] justify-end">
                 <p className="font-light text-[0.625rem] text-[#6E7C87] tracking-tighter">
                   {comment.date}

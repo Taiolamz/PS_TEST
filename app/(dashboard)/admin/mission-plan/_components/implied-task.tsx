@@ -4,7 +4,7 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Comment from "./Comment";
+import Comment from "./comment";
 
 type Props = {
   title: string;
@@ -13,7 +13,7 @@ type Props = {
 const ImpliedTask = ({ title }: Props) => {
   return (
     <section>
-      <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem]">
+      <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
         <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
           {title}
         </h2>
