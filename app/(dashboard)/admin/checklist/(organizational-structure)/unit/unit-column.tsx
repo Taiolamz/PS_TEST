@@ -52,17 +52,17 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
     ),
   },
   {
-    accessorKey: "hod",
-    header: "HOD",
+    accessorKey: "hou",
+    header: "HOU",
     cell: ({ row }) => (
       <div className="capitalize">
-        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hod")}
+        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hou")}
       </div>
     ),
   },
   {
     accessorKey: "department",
-    header: () => <div className="text-right mr-24">Deparment</div>,
+    header: () => <div className="text-right mr-24">Department</div>,
     cell: ({ row }) => (
       <div className="capitalize text-right mr-24">
         {loading ? (
@@ -90,19 +90,19 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
       );
     },
   },
-  {
-    accessorKey: "address",
-    header: () => <div className="text-left">Address</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-left">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("address")
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "address",
+  //   header: () => <div className="text-left">Address</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize text-left">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("address")
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     id: "actions",
     header: "Actions",
