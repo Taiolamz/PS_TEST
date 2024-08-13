@@ -31,4 +31,5 @@ export const missionPlanCommentApi = baseApi.injectEndpoints({
 export const {
   useAllMssionPlanCommentsMutation,
   useAddMssionPlanCommentMutation,
+  useLazyGetCommentableTypeQuery,
 } = missionPlanCommentApi;
