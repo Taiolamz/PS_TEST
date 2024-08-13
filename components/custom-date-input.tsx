@@ -70,7 +70,7 @@ export default function CustomDateInput({
         format={format ? format : ""}
         placeholder={placeholder ? placeholder : "MM/DD/YYYY"}
         inputClass={cn(
-          "border rounded-[4px] bg-white px-3 py-[7px] text-[.85rem] w-full focus:outline-none focus:border-[var(--primary-color)]",
+          "border rounded-[4px] bg-white px-3 py-[7px] text-sm w-full focus:outline-none focus:border-[var(--primary-color)]",
           inputClass,
           error && touched && "border-red-500"
         )}
