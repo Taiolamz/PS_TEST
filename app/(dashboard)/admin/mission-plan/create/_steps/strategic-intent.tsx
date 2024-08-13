@@ -82,16 +82,16 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
       intents: intents.map(
         (intent: { intent: any; behaviours: { value: any }[]; id: any }) => ({
           intent: intent.intent,
-          id: intent.id,
           behaviours: intent.behaviours.map(
             (behaviour: { value: any }) => behaviour.value
           ),
+          strategic_intent_id: intent.id === undefined ? "" : intent.id,
         })
       ),
       mission_plan_id,
-      strategic_intent_id,
     };
     try {
+      // console.log(transformedIntents);
       await addStrategicIntent(transformedIntents).unwrap();
       router.push(`${location}?ui=specified-intent`);
       toast.success("Strategic intent saved successfully");
@@ -139,10 +139,10 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
         {
           intent: "",
           behaviours: [{ id: uuidv4(), value: "" }],
+          strategic_intent_id: "",
         },
       ],
       mission_plan_id: "",
-      strategic_intent_id: "",
     };
   }, [initialValues]);
 
@@ -150,7 +150,6 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     initialValues: {
       intents: initialVals,
       mission_plan_id: mission_plan_info?.mission_plan?.id || "",
-      strategic_intent_id: "",
     },
     onSubmit: handleSaveStrategicIntent,
     validationSchema: setStrategicIntentsSchema,
