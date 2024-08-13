@@ -165,8 +165,6 @@ export const allemployeeColumns: ColumnDef<EmployeeRolesData>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const { id } = row?.original;
-      const [showDrawer, setShowDrawer] = useState(false);
-      const handleCloseDrawer = () => setShowDrawer(false);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -189,9 +187,6 @@ export const allemployeeColumns: ColumnDef<EmployeeRolesData>[] = [
               View Comments
             </DropdownMenuItem>
           </DropdownMenuContent>
-          <ReusableDrawer show={showDrawer} title="Approval Status" handleClose={handleCloseDrawer}>
-            yo
-          </ReusableDrawer>
         </DropdownMenu>
       );
     },
