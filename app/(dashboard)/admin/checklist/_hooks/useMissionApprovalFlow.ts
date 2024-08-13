@@ -44,6 +44,22 @@ const reviewers = [
     value: "None",
   },
 ];
+
+const formSchema = yup.object().shape({
+  order_of_approvals: yup
+    .array()
+    .of(
+      yup.object().shape({
+        title: yup.string().required("Title is required"),
+        approvals: yup
+          .array()
+          .of(yup.string().required("Approval is required"))
+          .min(1, "At least one approval is required")
+          .required("Approvals are required"),
+      })
+    )
+    .required("Order of approvals is required"),
+});
 const { ADMIN } = routesPath;
 export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const handleFormatDropdown = (items: Select[]) => {
@@ -71,15 +87,16 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     useCreateMissionFlowMutation();
 
   const handleSubmit = async () => {
-    console.log(formik.values.order_of_approvals, "values");
+    // console.log(formik.values.order_of_approvals, "values");
     const payload = {
-      order_of_approvals: formik.values.order_of_approvals,
+      // order_of_approvals: formik.values.order_of_approvals,
+      ...formik.values,
       organization_id: organization?.id,
     };
     await createMissionFlow(payload)
       .unwrap()
       .then(() => {
-        toast.success("Branch Created Successfully");
+        toast.success("Approval Created Successfully");
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
@@ -103,19 +120,18 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   // };
   const formik = useFormik({
     initialValues: {
-      level: "",
-      reviewers: "",
-      order_of_approvals: [{ title: "", approvals: [""] }],
+      // level: "",
+      // reviewers: "",
+      order_of_approvals: [{ title: "", approvals: [] }],
     },
-    // validationSchema: formSchema,
+    validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
 
   const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
-    value: (i + 1).toString(),
-    label: (i + 1).toString(),
+    value: i.toString(),
+    label: i.toString(),
   }));
-
   const {
     isOpen: openCancelModal,
     open: onOpenCancelModal,
