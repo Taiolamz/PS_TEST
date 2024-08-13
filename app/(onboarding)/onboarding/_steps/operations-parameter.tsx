@@ -36,7 +36,6 @@ const OperationsParameter = ({
     formik.setFieldValue(name, newDate.format("HH:mm"));
   };
 
-  console.log({ Formikkk: formik.values.opening_time, fyDate, time });
   return (
     <section
       // style={{ overflowY: "scroll" }}

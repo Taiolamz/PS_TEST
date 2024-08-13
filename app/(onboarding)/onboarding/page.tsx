@@ -18,11 +18,12 @@ import { FormikProvider, useFormik } from "formik";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
-import { OnbaordingSchema } from "@/utils/schema/onboarding";
+import { OnboardingSchema } from "@/utils/schema/onboarding";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useAppSelector } from "@/redux/store";
 import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
+import { isDateAfter } from "@/utils/date";
 
 const { ADMIN } = routesPath;
 interface FormValues {
@@ -69,6 +70,11 @@ const Onboarding = () => {
   ] = useOnboardingMutation();
 
   const onSubmit = async () => {
+    // if (!isEndDateLater) {
+    //   toast.error("End date must be a future date!");
+    //   return;
+    // }
+
     if (!formik.isValid) {
       toast.error(
         "Please fill in the required fiscal year title field before submitting."
@@ -125,11 +131,23 @@ const Onboarding = () => {
       hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
     },
-    validationSchema: OnbaordingSchema,
+    validationSchema: OnboardingSchema,
     onSubmit: onSubmit,
   });
 
+  const isEndDateLater = isDateAfter(
+    formik.values.end_fy,
+    formik.values.start_fy
+  );
+  useEffect(() => {
+    console.log(isEndDateLater);
+    if (isEndDateLater === false) {
+      formik.setFieldError("end_fy", "End date must be a future date");
+    }
+  }, [formik.values.end_fy, formik.values.start_fy, isEndDateLater]);
+
   const logo = formik.values.logo;
+  console.log({ formik1234: formik.errors });
 
   useEffect(() => {
     if (!ui) {
