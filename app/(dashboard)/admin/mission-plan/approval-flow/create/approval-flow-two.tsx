@@ -111,7 +111,7 @@ const ApprovalFlowTwo = ({
     <div className="flex flex-col gap-5">
       {isLoadingGradeLevel ? (
         <PageLoader />
-      ) : approvalsArray?.length > 0 ? (
+      ) : gradeLevels?.length > 0 ? (
         approvalsArray.map((chi, idx) => (
           <CustomAccordion
             key={idx}
