@@ -23,21 +23,29 @@ export const formatDate = (timestamp: string): string => {
   return `${year}-${month}-${day}`;
 };
 
-export const formatTimestamp = (timestamp: any) => {
+export const formatTimestamp = (timestamp: string | number | Date) => {
   const date = new Date(timestamp);
-  const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-  const formattedDate = date.toLocaleDateString("en-US", options);
-
-  const diffInSeconds = Math.floor((Date.now() - date) / 1000);
-
-  let timeDiff;
-  if (diffInSeconds < 60) {
-    timeDiff = `${diffInSeconds} secs`;
-  } else if (diffInSeconds < 3600) {
-    timeDiff = `${Math.floor(diffInSeconds / 60)} mins`;
-  } else {
-    timeDiff = `${Math.floor(diffInSeconds / 3600)} hrs`;
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid time");
   }
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  const diffInSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+ let timeDiff: string;
+ if (diffInSeconds < 60) {
+   timeDiff = `${diffInSeconds} secs`;
+ } else if (diffInSeconds < 3600) {
+   timeDiff = `${Math.floor(diffInSeconds / 60)} mins`;
+ } else if (diffInSeconds < 86400) {
+   timeDiff = `${Math.floor(diffInSeconds / 3600)} hrs`;
+ } else {
+   timeDiff = `${Math.floor(diffInSeconds / 86400)} days`;
+ }
 
   return `${formattedDate}, ${timeDiff}`;
 };
