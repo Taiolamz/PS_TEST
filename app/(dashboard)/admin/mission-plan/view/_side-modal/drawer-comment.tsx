@@ -12,10 +12,12 @@ export default function DrawerComment({
   show,
   handleClose,
   userId,
+  missionPlanId,
 }: {
   show: boolean;
   handleClose: () => void;
-  userId: string;
+  userId?: string;
+  missionPlanId?: string;
 }) {
   const { user } = useAppSelector((state) => state.auth);
   const formik = useFormik({
@@ -37,7 +39,7 @@ export default function DrawerComment({
 
   useEffect(() => {
     clearForm();
-  },[userId]);
+  }, [userId]);
 
   console.log(formik);
   return (

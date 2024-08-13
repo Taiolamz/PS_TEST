@@ -287,8 +287,8 @@ const SingleMissionPlan = () => {
               }}
               hideNewBtnOne={true}
               tableBodyList={FORMAT_TABLE_DATA(
-                // employeeData?.mission_plans?.data
-                allemployeeData
+                employeeData?.mission_plans?.data
+                // allemployeeData
               )}
               loading={isFetchingEmployee}
               handleSearchClick={(param) => {
@@ -354,6 +354,7 @@ const SingleMissionPlan = () => {
           setOpenDrawer(false);
         }}
         userId={drawerUserId}
+        missionPlanId={id ? id : ""}
       />
       <DrawerApprovalStatus
         show={openApprovalStatus}
