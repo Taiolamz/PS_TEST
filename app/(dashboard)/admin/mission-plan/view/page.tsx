@@ -25,6 +25,7 @@ import { Dictionary } from "@/@types/dictionary";
 import Link from "next/link";
 import DrawerComment from "./_side-modal/drawer-comment";
 import DrawerApprovalStatus from "./_side-modal/drawer-approval-status";
+import { formatDate } from "@/utils/helpers/date-formatter";
 
 const { ADMIN } = routesPath;
 
@@ -372,7 +373,7 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     ),
     designation: org?.designation,
     email: org?.email,
-    created_at: org?.created_at,
+    created_at: formatDate(org?.created_at),
     status: (
       <BadgeComponent
         text={org?.status}

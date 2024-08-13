@@ -10,6 +10,7 @@ import {
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 import { useAppSelector } from "@/redux/store";
 import { returnInitial } from "@/utils/helpers";
+import { formatTimestamp } from "@/utils/helpers/date-formatter";
 import { commentSchema } from "@/utils/schema/mission-plan";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
@@ -164,7 +165,7 @@ export default function DrawerComment({
                           {item?.staff_member?.name}
                         </h3>
                         <p className="text-[10px] font-light text-custom-gray-scale-400">
-                          {item?.created_at}
+                          {formatTimestamp(item?.created_at)}
                         </p>
                       </div>
                     </div>
