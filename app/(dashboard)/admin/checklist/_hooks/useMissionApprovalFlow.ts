@@ -100,6 +100,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
+            router.push(ADMIN.CHECKLIST)
             // router.push(BranchRoute);
           }, 2000);
         });
