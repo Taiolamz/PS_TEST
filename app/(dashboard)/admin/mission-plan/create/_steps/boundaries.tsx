@@ -10,23 +10,43 @@ import { cn } from "@/lib/utils";
 import { LiaTimesSolid } from "react-icons/lia";
 import Icon from "@/components/icon/Icon";
 import { boundariesSchema } from "@/utils/schema/mission-plan";
-
-const initialValues = {
-  constraints: ["", ""],
-  freedoms: ["", ""],
-};
-
+import { useAppSelector } from "@/redux/store";
+import { useCreateBoundariesMutation } from "@/redux/services/mission-plan/missionPlanApi";
+import { toast } from "sonner";
 
 const Boundaries = () => {
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+
+  const initialValues = {
+    constraints: ["", ""],
+    freedoms: ["", ""],
+    mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+  };
+
+  const [createBoundaries, { isLoading: isCreatingBoundaries }] =
+    useCreateBoundariesMutation();
   const router = useRouter();
   const location = usePathname();
   const step = useSearchParams().get("step");
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: boundariesSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log("Form data", values);
-      router.push(`${location}?ui=boundaries&step=preview`);
+      await createBoundaries(values)
+        .unwrap()
+        .then(() => {
+          toast.success("Freedom and Constraints Created Successfully");
+          new Promise(() => {
+            setTimeout(() => {
+              toast.dismiss();
+              router.push(`${location}?ui=boundaries&step=preview`);
+              // router.push(ADMIN);
+            }, 2000);
+          });
+        });
     },
   });
 
@@ -42,7 +62,7 @@ const Boundaries = () => {
             {/* Constraints */}
             <div>
               <div className="flex items-center gap-x-2 mb-8">
-                <h1 className="text-[#3E4345]">Constraints</h1>
+                <h1 className="text-[#3E4345]">Constraint</h1>
                 <span>
                   <BsFillInfoCircleFill color="#84919A" />
                 </span>
@@ -170,14 +190,16 @@ const Boundaries = () => {
                 Back
               </Button>
               <Button
+                type="submit"
+                disabled={isCreatingBoundaries}
+                loading={isCreatingBoundaries}
+                loadingText="Save & Continue"
                 className={cn(
                   "w-full",
                   !formik.isValid || !formik.dirty
                     ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
-                    : "cursor-pointer text-white py-5 px-2 rounded-sm  w-max"
+                    : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
                 )}
-                disabled={!formik.isValid || !formik.dirty}
-                type="submit"
               >
                 Save & Continue
               </Button>

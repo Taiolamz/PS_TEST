@@ -8,7 +8,7 @@ import CustomMultiSelect from "@/components/inputs/custom-multiselect";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { formatDate, formatRMDatePicker } from "@/utils/helpers/date-formatter";
+import { formatDate } from "@/utils/helpers/date-formatter";
 import { ErrorMessage, FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle } from "lucide-react";
 import React, { useEffect } from "react";
@@ -46,13 +46,10 @@ type ImpliedTaskType = {
 };
 
 const validationSchema = yup.object({
-  // mission_plan_id: yup.string().required("Mission plan ID is required"),
   tasks: yup.array().of(
     yup.object({
       task: yup.string().required("Task is required"),
-      // resources: yup.string().required("Resources are required"),
       specified_task_id: yup.string(),
-      // implied_task_id: yup.string(),
       weight: yup.string().required("Weight is required"),
       percentage: yup.string().required("Percentage is required"),
       start_date: yup.string().required("Start date is required"),
@@ -63,7 +60,9 @@ const validationSchema = yup.object({
     })
   ),
 });
+
 const { ADMIN } = routesPath;
+
 const ImpliedTask = () => {
   const options = [
     { label: "React", value: "react", color: "#61dafb" },
@@ -74,10 +73,25 @@ const ImpliedTask = () => {
   const [createImpliedTask, { isLoading: isCreatingImpliedTask }] =
     useCreateImpliedTaskMutation();
   const router = useRouter();
+
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
+      tasks: formik.values.tasks.map((task) => ({
+        task: task.task,
+        resources: task.resources.map(
+          (resource: { id: string }) => resource.id
+        ),
+        specified_task_id: task.specified_task_id || "",
+        implied_task_id: task.implied_task_id || uuidv4(),
+        weight: task.weight,
+        percentage: task.percentage,
+        start_date: task.start_date,
+        end_date: task.end_date,
+        expected_outcomes: task.expected_outcomes,
+      })),
     };
+
     await createImpliedTask(payload)
       .unwrap()
       .then(() => {
@@ -85,7 +99,8 @@ const ImpliedTask = () => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            // router.push();
+            router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
+            // router.push(ADMIN);
           }, 2000);
         });
       });
@@ -212,8 +227,8 @@ const ImpliedTask = () => {
                           title={
                             <p className="font-medium text-sm text-graySecondary">
                               {/* Achieve $1 Billion in Company Revenue for the
-                              Financial year */}
-                              {task?.title}
+                            Financial year */}
+                              {task?.title || "Your implied task"}
                             </p>
                           }
                           content={
@@ -233,10 +248,10 @@ const ImpliedTask = () => {
                                     value={formik.values.tasks[index].task}
                                   />
                                   {/* <ErrorMessage
-                                  name={`intents.${index}.behaviours.value`}
-                                  className="text-red-500 text-xs mt-1"
-                                  component={"div"}
-                                /> */}
+                                name={`intents.${index}.behaviours.value`}
+                                className="text-red-500 text-xs mt-1"
+                                component={"div"}
+                              /> */}
                                 </div>
                                 <div>
                                   <Input
@@ -252,10 +267,10 @@ const ImpliedTask = () => {
                                     value={formik.values.tasks[index].weight}
                                   />
                                   {/* <ErrorMessage
-                                  name={`intents.${index}.behaviours.value`}
-                                  className="text-red-500 text-xs mt-1"
-                                  component={"div"}
-                                /> */}
+                                name={`intents.${index}.behaviours.value`}
+                                className="text-red-500 text-xs mt-1"
+                                component={"div"}
+                              /> */}
                                 </div>
                                 <div>
                                   <Input
@@ -273,10 +288,10 @@ const ImpliedTask = () => {
                                     }
                                   />
                                   {/* <ErrorMessage
-                                  name={`intents.${index}.behaviours.value`}
-                                  className="text-red-500 text-xs mt-1"
-                                  component={"div"}
-                                /> */}
+                                name={`intents.${index}.behaviours.value`}
+                                className="text-red-500 text-xs mt-1"
+                                component={"div"}
+                              /> */}
                                 </div>
                               </div>
                               <div className="grid lg:grid-cols-3 gap-x-3 mt-6">
@@ -285,7 +300,6 @@ const ImpliedTask = () => {
                                     values={
                                       formik.values.tasks[index].resources
                                     }
-
                                     // values={(formik.values.tasks[index].resources as string[])
                                     //   .split(",")
                                     //   .map((id: string) =>
@@ -479,11 +493,14 @@ const ImpliedTask = () => {
             </Button>
             <Button
               type="submit"
+              disabled={isCreatingImpliedTask}
+              loading={isCreatingImpliedTask}
               loadingText="Save & Continue"
               className={cn(
                 "w-full",
-
-                "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+                !formik.isValid || !formik.dirty
+                  ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
+                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
               )}
             >
               Save & Continue
