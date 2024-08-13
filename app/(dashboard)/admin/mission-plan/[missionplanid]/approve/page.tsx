@@ -13,7 +13,7 @@ import {
 } from "@/utils/data/dashboard/missionplan/dummy";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PresentationView from "./_presentation/presentation-view";
-import Comment from "../../_components/comment";
+import Comment from "../../_components/Comment";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();

@@ -4,7 +4,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import { BsArrowUpCircleFill } from "react-icons/bs";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { MdCancel, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const comments = [
   {
@@ -17,7 +17,7 @@ const comments = [
   },
   {
     id: 2,
-    title: "VISION STATEMENT",
+    title: "MISSION STATEMENT",
     author: "Bayo Taiwo",
     text: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     date: "08/10/2024",
@@ -25,7 +25,7 @@ const comments = [
   },
   {
     id: 3,
-    title: "CORE VALUES",
+    title: "MISSION STATEMENT",
     author: "Bayo Taiwo",
     text: "When an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     date: "08/10/2024",
@@ -100,14 +100,21 @@ const Comment = ({ id, name, label }: Props) => {
           <div className="basis-1/2 p-2 rounded-[0.3125rem] border bg-white border-[var(--primary-color)]">
             <div className="flex justify-between items-center mb-0.5 ">
               <label className="uppercase px-3 py-1 text-xs">{label}</label>
-              <BsArrowUpCircleFill
-                color="text-primary"
-                className="text-[var(--primary-color)] "
-              />
+              <div className="flex items-center gap-1">
+                <MdCancel
+                  color="red"
+                  size={19}
+                  onClick={() => setShowTextArea(false)}
+                />
+                <BsArrowUpCircleFill
+                  color="text-primary"
+                  className="text-[var(--primary-color)] "
+                />
+              </div>
             </div>
             <Textarea
-              id={id || name}
-              name={name}
+              id="comment"
+              name="comment"
               placeholder="Input Comment"
               rows={4}
               className="bg-white border-0 focus:border-0 outline-none focus:outline-none"

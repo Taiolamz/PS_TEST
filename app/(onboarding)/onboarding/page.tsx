@@ -70,10 +70,10 @@ const Onboarding = () => {
   ] = useOnboardingMutation();
 
   const onSubmit = async () => {
-    // if (!isEndDateLater) {
-    //   toast.error("End date must be a future date!");
-    //   return;
-    // }
+    if (isStartDateLater) {
+      toast.error("End date must be a future date!");
+      return;
+    }
 
     if (!formik.isValid) {
       toast.error(
@@ -135,19 +135,25 @@ const Onboarding = () => {
     onSubmit: onSubmit,
   });
 
-  const isEndDateLater = isDateAfter(
-    formik.values.end_fy,
-    formik.values.start_fy
+  const isStartDateLater = isDateAfter(
+    formik.values.start_fy,
+    formik.values.end_fy
   );
-  useEffect(() => {
-    console.log(isEndDateLater);
-    if (isEndDateLater === false) {
-      formik.setFieldError("end_fy", "End date must be a future date");
-    }
-  }, [formik.values.end_fy, formik.values.start_fy, isEndDateLater]);
+
+  // useEffect(() => {
+  //   console.log(isStartDateLater);
+  //   if (isStartDateLater) {
+  //     formik.setFieldError("end_fy", "End date must be a future date");
+  //   }
+  // }, [formik.values.end_fy, formik.values.start_fy]);
 
   const logo = formik.values.logo;
-  console.log({ formik1234: formik.errors });
+  console.log({
+    formik1234: formik.errors,
+    isStartDateLater,
+    formikStart: formik.values.start_fy,
+    formikEnd: formik.values.end_fy,
+  });
 
   useEffect(() => {
     if (!ui) {
@@ -174,7 +180,8 @@ const Onboarding = () => {
           className="px-10 xl:pl-[9.375rem] max-h-full  pb-20"
           onSubmit={formik.handleSubmit}
         >
-          <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden">
+          {/* <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden"> */}
+          <div className="flex flex-col h-[calc(100vh_-_14rem)] overflow-y-auto">
             <h1 className="text-2xl font-bold text-[--primary-color] mb-16">
               {`Welcome ${
                 trimLongString(user?.organization?.name, 25) || ""

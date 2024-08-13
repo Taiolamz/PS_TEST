@@ -75,14 +75,10 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           style={{
             position: "relative",
             height: "2.4rem",
-            padding: ".2rem",
             borderRadius: ".2rem",
             cursor: "pointer",
           }}
           className="border flex max-w-[16.0625rem] items-center"
-          // onClick={() => {
-          //   setShowColorPicker(!showColorPicker);
-          // }}
         >
           <div
             style={{
@@ -97,7 +93,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           ></div>
           {showColorPicker && (
             <div className="color-picker-wrapper-index">
-              {" "}
               <ColorPicker
                 // id="brand_colour"
                 // name="brand_colour"
@@ -129,6 +124,9 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
             </p>
           )}
         </div>
+        <p className="text-[#84919A] text-xs mt-[0.6875rem]">
+          Click on the color palette to select your preffered color
+        </p>
       </div>
     </section>
   );

@@ -7,6 +7,7 @@ import compareDates from "./compareDates";
  * @returns {boolean} - Returns true if dateStr1 comes after dateStr2, otherwise false.
  */
 const isDateAfter = (dateStr1: string, dateStr2: string): boolean => {
+  // console.log(compareDates(dateStr1, dateStr2) === 1);
   return compareDates(dateStr1, dateStr2) === 1;
 };
 

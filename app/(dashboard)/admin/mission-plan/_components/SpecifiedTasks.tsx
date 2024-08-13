@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import Comment from "./comment";
+import Comment from "./Comment";
 
 type Props = {
   title: string;
@@ -56,7 +56,7 @@ const SpecifiedTasks = ({ title }: Props) => {
           </div>
         </div>
       </div>
-      <Comment />
+      <Comment label="Specified task" />
     </section>
   );
 };
