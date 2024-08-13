@@ -20,6 +20,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import { ReusableDrawer } from "@/components/fragment";
+import { useState } from "react";
 
 export type EmployeeRolesData = {
   id: string;
@@ -163,6 +165,8 @@ export const allemployeeColumns: ColumnDef<EmployeeRolesData>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const { id } = row?.original;
+      const [showDrawer, setShowDrawer] = useState(false);
+      const handleCloseDrawer = () => setShowDrawer(false);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -185,6 +189,9 @@ export const allemployeeColumns: ColumnDef<EmployeeRolesData>[] = [
               View Comments
             </DropdownMenuItem>
           </DropdownMenuContent>
+          <ReusableDrawer show={showDrawer} title="Approval Status" handleClose={handleCloseDrawer}>
+            yo
+          </ReusableDrawer>
         </DropdownMenu>
       );
     },
