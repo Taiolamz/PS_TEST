@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { ErrorMessage, FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle } from "lucide-react";
 import { LiaTimesSolid } from "react-icons/lia";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 
 import { v4 as uuidv4 } from "uuid";
@@ -22,228 +22,331 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { MEASURE_OF_SUCCESS_UNITS } from "../_data";
 import { measureSuccessSchema } from "@/utils/schema/mission-plan";
+// import {
+//   useCreateMeasureOfSuccessMutation,
+//   useGetMyMissionPlanQuery,
+// } from "@/redux/services/mission-plan/missionPlanApi";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import routesPath from "@/utils/routes";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { toast } from "sonner";
+import {
+  useCreateMeasureOfSuccessMutation,
+  useLazyGetMyMissionPlanQuery,
+} from "@/redux/services/mission-plan/missionPlanApi";
+import { PageLoader } from "@/components/custom-loader";
+
+const { ADMIN } = routesPath;
 
 const MeasureofSuccess = () => {
-  const location = usePathname();
   const router = useRouter();
+  const location = usePathname();
+  const dispatch = useAppDispatch();
 
-  //   const [addStrategicIntent, { isLoading: isLoadingStrategicIntent }] =
-  //     useAddStrategicIntentMutation();
+  const [initialValues, setInitialValues] = useState();
 
-  //   const handleSaveStrategicIntent = async () => {
-  //     const { intents, mission_plan_id, strategic_intent_id } = formik.values;
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
 
-  //     const transformedIntents = {
-  //       intents: intents.map(
-  //         (intent: { intent: any; behaviours: { value: any }[] }) => ({
-  //           intent: intent.intent,
-  //           behaviours: intent.behaviours.map(
-  //             (behaviour: { value: any }) => behaviour.value
-  //           ),
-  //         })
-  //       ),
-  //       mission_plan_id,
-  //       strategic_intent_id,
-  //     };
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
-  //     await addStrategicIntent(transformedIntents);
-  //   };
+  const [
+    getMyMissionPlan,
+    {
+      data: mission_plan,
+      isLoading: isLoadingMissionPlan,
+      isFetching: isFetchingMissionPlan,
+      isSuccess: fetchedMissionPlan,
+    },
+  ] = useLazyGetMyMissionPlanQuery({});
+
+  const handleGetMyMissionPlan = async () => {
+    const payload = { id: FISCAL_YEAR_ID };
+    getMyMissionPlan(payload)
+      .unwrap()
+      .then((payload) => {});
+  };
+
+  const [createMeasureOfSuccess, { isLoading, isSuccess }] =
+    useCreateMeasureOfSuccessMutation();
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
+
+  useEffect(() => {
+    handleGetMyMissionPlan();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [FISCAL_YEAR_ID]);
+
+  useEffect(() => {
+    if (fetchedMissionPlan) {
+      dispatch(
+        updateMissionPlanDetails({
+          slug: "mission_plan",
+          data: mission_plan?.data?.mission_plan,
+        })
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mission_plan, fetchedMissionPlan]);
+
+  const handleFormSubmit = async () => {
+    try {
+      await createMeasureOfSuccess(formik.values);
+      router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=strategic-intent`);
+      toast.success("Measure of Success Created Successfully");
+    } catch (error) {}
+  };
+
+  // This sets the intial saved values
+  useEffect(() => {
+    const measuresOfSuccess =
+      mission_plan_info?.mission_plan?.measure_of_success?.map(
+        (measure: any) => ({
+          id: measure.id || "",
+          measure: measure.measure || "",
+          unit: measure.unit || "",
+          target: measure.target || "",
+        })
+      );
+    setInitialValues(measuresOfSuccess);
+  }, [mission_plan]);
 
   const handleChange = (
     value: string,
     index: number,
-    field: "success" | "unit" | "target"
+    field: "measure" | "unit" | "target"
   ) => {
-    formik.setFieldValue(`allSuccess.${index}.${field}`, value);
+    formik.setFieldValue(`measures.${index}.${field}`, value);
   };
 
   const formik = useFormik({
     initialValues: {
-      allSuccess: [{ success: "", unit: "", target: "" }],
+      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+      measures: initialValues || [
+        {
+          id: "",
+          measure: "",
+          unit: "",
+          target: "",
+        },
+      ],
     },
     validationSchema: measureSuccessSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: handleFormSubmit,
+    validateOnMount: true,
+    enableReinitialize: true,
   });
-  const errorAllSuccess = formik.errors.allSuccess as any;
+
+  const errorAllSuccess = formik.errors.measures as any;
+
+  useEffect(() => {
+    dispatch(
+      updateMissionPlanDetails({
+        slug: "measure_of_success",
+        data: formik.values,
+      })
+    );
+  }, [formik.values]);
 
   return (
     <div className="pr-4">
-      <div className="flex items-center gap-x-2 mb-8">
-        <h1 className="text-[#3E4345]">Measure of Success</h1>
-        <span>
-          <BsFillInfoCircleFill color="#84919A" />
-        </span>
-      </div>
-      <form onSubmit={formik.handleSubmit}>
-        <FormikProvider value={formik}>
-          <FieldArray name="allSuccess">
-            {({ insert, remove, push }) => (
-              <div>
-                {formik.values.allSuccess?.length > 0 &&
-                  formik.values.allSuccess.map(
-                    (success: any, index: number) => (
-                      <div
-                        key={success.id}
-                        className="w-full mb-5 gap-y-5 relative"
-                      >
-                        <div className="grid lg:grid-cols-2 items-center space-x-2 w-full  relative">
-                          <div className="!ml-0">
-                            <Input
-                              id={`success-${success.id}`}
-                              label={`Measure of Success ${index + 1}`}
-                              labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
-                              placeholder="Input measure of success"
-                              name={`allSuccess.${index}.intent`}
-                              error={errorAllSuccess?.success}
-                              onChange={(e) =>
-                                handleChange(e.target.value, index, "success")
-                              }
-                              className="border p-2 bg-[#F6F8F9]"
-                              value={formik.values.allSuccess[index].success}
-                            />
-                            <ErrorMessage
-                              name={`allSuccess.${index}.success`}
-                              className="text-red-500 text-xs"
-                              component={"div"}
-                            />
-                          </div>
-                          <div className="grid grid-cols-2 gap-x-2">
-                            <div className="col-span-1 -mb-1 pb-0 mt-2">
-                              <Label
-                                htmlFor={`success-${success.id}`}
-                                className="text-[#6E7C87] text-[13px] mb-[6px]"
-                              >
-                                Unit
-                              </Label>
-                              <Select>
-                                <SelectTrigger
-                                  className="border p-2 outline-0 bg-[#F6F8F9]"
-                                  error={errorAllSuccess?.success}
-                                >
-                                  <SelectValue
-                                    placeholder={
-                                      formik.values.allSuccess[index].unit ||
-                                      "Select Unit"
-                                    }
-                                  />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <RadioGroup
-                                    onValueChange={(e) =>
-                                      handleChange(e, index, "unit")
-                                    }
-                                    className="flex flex-col space-y-1"
-                                    value={formik.values.allSuccess[index].unit}
-                                    id={`success-${success.id}`}
-                                    name={`allSuccess.${index}.intent`}
-                                  >
-                                    {MEASURE_OF_SUCCESS_UNITS?.map((item) => (
-                                      <div
-                                        key={item}
-                                        className="flex items-center space-x-3 space-y-0"
-                                      >
-                                        <RadioGroupItem
-                                          value={item}
-                                          id={item}
-                                        />
-                                        <Label
-                                          htmlFor={item}
-                                          className="text-[#6E7C87] text-[13px] cursor-pointer"
-                                        >
-                                          {item}
-                                        </Label>
-                                      </div>
-                                    ))}
-                                  </RadioGroup>
-                                </SelectContent>
-                              </Select>
-                              <ErrorMessage
-                                name={`allSuccess.${index}.unit`}
-                                className="text-red-500 text-xs"
-                                component={"div"}
-                              />
-                            </div>
-                            <div className="col-span-1">
-                              <Input
-                                id={`target-${success.id}`}
-                                label={`Target`}
-                                placeholder="Input number"
-                                labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
-                                name={`allSuccess.${index}.target`}
-                                error={errorAllSuccess?.target}
-                                onChange={(e) =>
-                                  handleChange(e.target.value, index, "target")
-                                }
-                                className="border p-2 bg-[#F6F8F9]"
-                                value={formik.values.allSuccess[index].target}
-                              />
-                              <ErrorMessage
-                                name={`allSuccess.${index}.target`}
-                                className="text-red-500 text-xs"
-                                component={"div"}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => remove(index)}
-                          className="text-red-500 hover:text-red-700 absolute right-0 -bottom-6 xl:-right-6 xl:bottom-3"
-                        >
-                          <Icon name="remove" width={14.28} height={18.63} />
-                        </button>
-                      </div>
-                    )
-                  )}
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    push({
-                      success: "",
-                      unit: "",
-                      target: "",
-                    })
-                  }
-                  className="flex items-center gap-2 mt-8 text-[var(--primary-color)] text-sm"
-                >
-                  <LucidePlusCircle color="#04ACAC" size={20} />
-                  Add more level
-                </button>
-              </div>
-            )}
-          </FieldArray>
-          <div className="mt-8 flex gap-x-2 items-center">
-            <Button
-              variant="outline"
-              type="button"
-              className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
-              onClick={() => router.back()}
-            >
-              Back
-            </Button>
-            <Button
-              type="submit"
-              //   disabled={isLoadingStrategicIntent}
-              //   loading={isLoadingStrategicIntent}
-              onClick={() => router.push(`${location}?ui=specified-intent`)}
-              loadingText="Save & Continue"
-              className={cn(
-                "w-full",
-                !formik.isValid
-                  ? // || isLoadingStrategicIntent
-                    "opacity-50 cursor-not-allowed w-max"
-                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
-              )}
-              // className={`text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] min-w-28`}
-            >
-              Save & Continue
-            </Button>
+      {isLoadingMissionPlan || isFetchingMissionPlan ? (
+        <div className="h-[75vh] grid place-content-center">
+          <PageLoader />
+        </div>
+      ) : (
+        <div>
+          <div className="flex items-center gap-x-2 mb-8">
+            <h1 className="text-[#3E4345]">Measure of Success</h1>
+            <span>
+              <BsFillInfoCircleFill color="#84919A" />
+            </span>
           </div>
-        </FormikProvider>
-      </form>
+          <form onSubmit={formik.handleSubmit}>
+            <FormikProvider value={formik}>
+              <FieldArray name="measures">
+                {({ insert, remove, push }) => (
+                  <div>
+                    {formik.values.measures?.length > 0 &&
+                      formik.values.measures.map(
+                        (measure: any, index: number) => (
+                          <div
+                            key={measure.id}
+                            className="w-full mb-5 gap-y-5 relative"
+                          >
+                            <div className="grid lg:grid-cols-2 items-center space-x-2 w-full  relative">
+                              <div className="!ml-0">
+                                <Input
+                                  id={`measure-${measure.id}`}
+                                  label={`Measure of Success ${index + 1}`}
+                                  labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
+                                  placeholder="Input measure of success"
+                                  name={`measures.${index}.measure`}
+                                  error={errorAllSuccess?.measure}
+                                  onChange={(e) =>
+                                    handleChange(
+                                      e.target.value,
+                                      index,
+                                      "measure"
+                                    )
+                                  }
+                                  className="border p-2 bg-[#F6F8F9]"
+                                  value={formik.values.measures[index].measure}
+                                />
+                                <ErrorMessage
+                                  name={`measures.${index}.measure`}
+                                  className="text-red-500 text-xs"
+                                  component={"div"}
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-x-2">
+                                <div className="col-span-1 -mb-1 pb-0 mt-0">
+                                  <Label
+                                    htmlFor={`unit-${measure.id}`}
+                                    className="text-[#6E7C87] text-[13px]"
+                                  >
+                                    Unit
+                                  </Label>
+                                  <Select>
+                                    <SelectTrigger
+                                      className="border px-2 h-fit outline-0 bg-[#F6F8F9] mt-3"
+                                      error={errorAllSuccess?.measure}
+                                    >
+                                      <SelectValue
+                                        placeholder={
+                                          formik.values.measures[index].unit ||
+                                          "Select Unit"
+                                        }
+                                      />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <RadioGroup
+                                        onValueChange={(e) =>
+                                          handleChange(e, index, "unit")
+                                        }
+                                        className="flex flex-col space-y-1"
+                                        value={
+                                          formik.values.measures[index].unit
+                                        }
+                                        id={`success-${measure.id}`}
+                                        name={`measures.${index}.intent`}
+                                      >
+                                        {MEASURE_OF_SUCCESS_UNITS?.map(
+                                          (item) => (
+                                            <div
+                                              key={item}
+                                              className="flex items-center space-x-3 space-y-0"
+                                            >
+                                              <RadioGroupItem
+                                                value={item}
+                                                id={item}
+                                              />
+                                              <Label
+                                                htmlFor={item}
+                                                className="text-[#6E7C87] text-[13px] cursor-pointer"
+                                              >
+                                                {item}
+                                              </Label>
+                                            </div>
+                                          )
+                                        )}
+                                      </RadioGroup>
+                                    </SelectContent>
+                                  </Select>
+                                  <ErrorMessage
+                                    name={`measures.${index}.unit`}
+                                    className="text-red-500 text-xs"
+                                    component={"div"}
+                                  />
+                                </div>
+                                <div className="col-span-1">
+                                  <Input
+                                    id={`target-${measure.id}`}
+                                    label={`Target`}
+                                    type="number"
+                                    placeholder="Input number"
+                                    labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
+                                    name={`measures.${index}.target`}
+                                    error={errorAllSuccess?.target}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        e.target.value,
+                                        index,
+                                        "target"
+                                      )
+                                    }
+                                    className="border p-2 bg-[#F6F8F9]"
+                                    value={formik.values.measures[index].target}
+                                  />
+                                  <ErrorMessage
+                                    name={`measures.${index}.target`}
+                                    className="text-red-500 text-xs"
+                                    component={"div"}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => remove(index)}
+                              className="text-red-500 hover:text-red-700 absolute right-0 -bottom-6 xl:-right-6 xl:bottom-3"
+                            >
+                              <Icon
+                                name="remove"
+                                width={14.28}
+                                height={18.63}
+                              />
+                            </button>
+                          </div>
+                        )
+                      )}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        push({
+                          id: "",
+                          measure: "",
+                          unit: "",
+                          target: "",
+                        })
+                      }
+                      className="flex items-center gap-2 mt-8 text-[var(--primary-color)] text-sm"
+                    >
+                      <LucidePlusCircle
+                        color="var(--primary-color)"
+                        size={20}
+                      />
+                      Add more level
+                    </button>
+                  </div>
+                )}
+              </FieldArray>
+              <div className="mt-8 flex gap-x-2 items-center">
+                <Button
+                  variant="outline"
+                  type="button"
+                  className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
+                  onClick={() => router.back()}
+                >
+                  Back
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={!(formik.isValid && formik.dirty) || isLoading}
+                  loading={isLoading}
+                  loadingText="Save & Continue"
+                  className={"py-5 px-2"}
+                >
+                  Save & Continue
+                </Button>
+              </div>
+            </FormikProvider>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

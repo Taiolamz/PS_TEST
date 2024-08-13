@@ -97,7 +97,8 @@ export default function CustomMultiSelect({
             isFocused && "border-[var(--primary-color)]",
             error &&
               touched &&
-              "border-red-500 focus-visible:ring-transparent focus-visible:ring-0"
+              "border-red-500 focus-visible:ring-transparent focus-visible:ring-0",
+            "overflow-y-scroll"
           )}
         >
           <MultiSelectorInput

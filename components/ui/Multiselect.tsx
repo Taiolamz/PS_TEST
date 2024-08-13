@@ -288,7 +288,7 @@ MultiSelectorList.displayName = "MultiSelectorList";
 const MultiSelectorItem = forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   {
-    option: { label: string; value: string; color: string };
+    option: { label: string; value: string };
     notCheckedIcon?: any;
     checkedIcon?: any;
   } & React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>

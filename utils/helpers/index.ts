@@ -88,7 +88,7 @@ export const removeCharFromString = (str: string, char: string) =>
 
 // Custom date validation function
 export const isValidDate = (dateString: string | any) => {
-  const parsedDate = parse(dateString, "dd/MM/yyyy", new Date());
+  const parsedDate = parse(dateString, "yyyy-mm-dd", new Date());
   return isValid(parsedDate) && dateString.length === 10;
 };
 
