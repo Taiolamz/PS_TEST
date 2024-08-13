@@ -125,7 +125,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
       // reviewers: "",
       order_of_approvals: [{ title: "", approvals: [] }],
     },
-    validationSchema: formSchema,
+    // validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
 
