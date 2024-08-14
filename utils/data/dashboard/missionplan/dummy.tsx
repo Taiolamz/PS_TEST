@@ -241,7 +241,7 @@ export const measuresData = [
   },
 ];
 
-export const measureColumns: ColumnDef<MeasureData>[] = [
+export const measureColumns = (): ColumnDef<MeasureData>[] => [
   {
     accessorKey: "no",
     header: () => <div className="text-left">No</div>,

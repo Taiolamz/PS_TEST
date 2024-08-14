@@ -240,6 +240,8 @@ const Boundaries = () => {
                   <Button
                     variant="outline"
                     className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
+                    type="button"
+                    onClick={router.back}
                   >
                     Back
                   </Button>
@@ -263,6 +265,7 @@ const Boundaries = () => {
           )}
           {step === "preview" && (
             <MissionDetailPreview
+              isFetchingMissionPlan={isFetchingMissionPlan}
               missionDetails={mission_plan?.data?.mission_plan}
             />
           )}

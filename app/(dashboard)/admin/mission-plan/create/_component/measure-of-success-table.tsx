@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
+  ColumnDef,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -19,12 +18,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type measureofSuccessType = {
-  data: any;
-  columns: any;
+type MeasureOfSuccessTableProps = {
+  data: any[];
+  columns: ColumnDef<any>[];
 };
 
-const MeasureOfSuccessTable = ({ data, columns }: measureofSuccessType) => {
+const MeasureOfSuccessTable: React.FC<MeasureOfSuccessTableProps> = ({
+  data = [],
+  columns = [],
+}) => {
   const table = useReactTable({
     data,
     columns,
@@ -34,31 +36,29 @@ const MeasureOfSuccessTable = ({ data, columns }: measureofSuccessType) => {
   });
 
   return (
-    <div className="w-full ">
+    <div className="w-full">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    className="text-custom-dark-blue font-600 text-xs"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  key={header.id}
+                  className="text-custom-dark-blue font-600 text-xs"
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
+              ))}
             </TableRow>
           ))}
         </TableHeader>
         <TableBody className="bg-transparent border-none">
-          {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows.length > 0 ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}

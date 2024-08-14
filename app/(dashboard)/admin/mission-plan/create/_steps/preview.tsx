@@ -13,7 +13,7 @@ import {
 } from "@/utils/data/dashboard/missionplan/dummy";
 import routesPath from "@/utils/routes";
 import { useRouter, usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   MissionHeader,
@@ -25,9 +25,13 @@ import BackIcon from "@/public/assets/icons/BackIcon";
 
 interface Props {
   missionDetails: any;
+  isFetchingMissionPlan?: boolean;
 }
 
-const MissionDetailPreview = ({ missionDetails }: Props) => {
+const MissionDetailPreview = ({
+  missionDetails,
+  isFetchingMissionPlan,
+}: Props) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const location = usePathname();
 
@@ -35,8 +39,15 @@ const MissionDetailPreview = ({ missionDetails }: Props) => {
   const goBack = () => router.back();
 
   const { ADMIN } = routesPath;
+  const missionData = missionDetails || [];
+
+  const measureColumnData = useMemo(
+    () => measureColumns(),
+    [isFetchingMissionPlan]
+  );
 
   console.log(missionDetails, "mission details");
+  console.log(missionData?.strategic_intents, "mission intent");
 
   return (
     <div className="w-[60vw]">
@@ -55,7 +66,7 @@ const MissionDetailPreview = ({ missionDetails }: Props) => {
           />
           <MissionWrapper
             title="Mission Statement"
-            status={missionDetails?.mission_statement?.status}
+            status={missionData?.mission_statement?.status}
             // status={"approved"}
             comment="2"
           >
@@ -63,7 +74,7 @@ const MissionDetailPreview = ({ missionDetails }: Props) => {
               {/* My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
               elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
               pulvinar arcu, mi. */}
-              {missionDetails?.mission_statement?.mission || "_"}
+              {missionData?.mission_statement?.mission || "_"}
             </p>
           </MissionWrapper>
         </MissionPlanWrapper>
@@ -79,9 +90,9 @@ const MissionDetailPreview = ({ missionDetails }: Props) => {
             comment="2"
           >
             <MeasureOfSuccessTable
-              data={missionDetails?.measure_of_success}
+              data={missionData?.measure_of_success}
               // data={measuresData}
-              columns={measureColumns}
+              columns={measureColumnData}
             />
           </MissionWrapper>
         </MissionPlanWrapper>
@@ -94,8 +105,9 @@ const MissionDetailPreview = ({ missionDetails }: Props) => {
           />
           <MissionWrapper title="Strategic Intent" status="pending">
             <MissionItems
-              data={strategicIntent}
-              strategicIntent={missionDetails?.strategic_intent}
+              // data={strategicIntent}
+              strategicIntentData={missionData?.strategic_intents}
+              strategicIntent
             />
           </MissionWrapper>
         </MissionPlanWrapper>
