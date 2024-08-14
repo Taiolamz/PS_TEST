@@ -228,6 +228,43 @@ export function findObjectIndexByLabel(arr: any, label: any) {
   return arr.findIndex((item: any) => item?.label === label) + 1;
 }
 
+export const formatBehaviours = (
+  behavioursString: string | undefined | null
+) => {
+  // Check if the input is a JSON array string
+  const isJSONArrayString = (str: string) => {
+    return str.startsWith("[") && str.endsWith("]");
+  };
+
+  // Parse the JSON string safely
+  const parseJSON = (str: string) => {
+    try {
+      return JSON.parse(str);
+    } catch {
+      return [];
+    }
+  };
+
+  // Join the json array into a string
+  const joinBehaviours = (behavioursArray: any[]) => behavioursArray.join(", ");
+
+  // Main logic
+  if (
+    typeof behavioursString !== "string" ||
+    behavioursString === "" ||
+    behavioursString === "[]"
+  ) {
+    return behavioursString || ""; // Return empty string, "[]", or undefined/null as is
+  }
+
+  if (isJSONArrayString(behavioursString)) {
+    const behavioursArray = parseJSON(behavioursString);
+    return joinBehaviours(behavioursArray);
+  }
+
+  // If it's just a plain string, return it as is
+  return behavioursString;
+};
 
 export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>(array: T[], placeholder: string = "---"): T[] {
   return array?.map(obj => {
@@ -240,3 +277,4 @@ export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>
     return newObj;
   });
 }
+

@@ -23,7 +23,7 @@ export const missionPlanApi = baseApi.injectEndpoints({
         url: `/mission-plan?fiscal_year=${payload.id}`,
         method: "GET",
       }),
-      // providesTags: ["Branches"],
+      providesTags: ["MissionPlan"],
     }),
     createFinancialYear: builder.mutation({
       query: (payload) => ({
