@@ -48,7 +48,7 @@ export const departmentColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name") || "not assigned"
+          row.getValue("name") || "------"
         )}
       </div>
     ),
@@ -61,7 +61,7 @@ export const departmentColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("hod") || "not assigned"
+          row.getValue("hod") || "------"
         )}
       </div>
     ),
@@ -76,7 +76,7 @@ export const departmentColumns = (
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            subsidiary?.name || "not assigned"
+            subsidiary?.name || "------"
           )}
         </div>
       );
@@ -92,7 +92,7 @@ export const departmentColumns = (
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            branch?.name || "not assigned"
+            branch?.name || "------"
           )}
         </div>
       );
@@ -106,7 +106,7 @@ export const departmentColumns = (
   //       {loading ? (
   //         <Skeleton className="h-4 w-[250px]" />
   //       ) : (
-  //         row.getValue("address") || "not assigned"
+  //         row.getValue("address") || "------"
   //       )}
   //     </div>
   //   ),

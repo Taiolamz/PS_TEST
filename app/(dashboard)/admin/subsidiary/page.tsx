@@ -22,6 +22,9 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/store";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
+import TableWrapper from "@/components/tables/TableWrapper";
+import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
 
@@ -200,7 +203,7 @@ const Subsidiary = () => {
             isLoading={isFetchingSubsidiaries}
             header="Subsidiary"
             data={subsidiaries}
-            columns={subsidiariesColumnData}
+            columns={replaceEmptyValuesWithPlaceholder(subsidiariesColumnData)}
             onBulkUploadBtn={handleBulkUploadDialog}
             onOpenBtnChange={handleBtnDrop}
             newBtnOpen={openNewBtn}
@@ -226,7 +229,7 @@ const Subsidiary = () => {
         </DashboardModal>
 
         <DashboardModal
-          className={"w-[600px] max-w-full"}
+          className={`max-w-max`}
           open={openBulkUploadModal}
           onOpenChange={handleBulkUploadDialog}
         >

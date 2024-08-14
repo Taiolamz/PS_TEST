@@ -1,8 +1,12 @@
 "use client";
 import { ManceLoader } from "@/components/custom-loader";
- import { Button } from "@/components/ui/button";
+import TableWrapper from "@/components/tables/TableWrapper";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 interface FileUploadType {
   onSampleCsvDownload: () => void;
@@ -27,10 +31,56 @@ const BulkUploadModal = ({
     if (file && setFile) {
       setUploadedFile(file.name);
       setFile(file);
+      handleUploadTest(file);
     } else {
-      setUploadedFile(null);
+      !uploadedFile && setUploadedFile(null);
     }
   };
+
+  const expectedFormat = {
+    0: { name: "name", required: true, key: "name" },
+    1: { name: "head", required: false, key: "head" },
+    2: { name: "state", required: true, key: "state" },
+    3: { name: "address", required: true, key: "address" },
+    4: { name: "country", required: true, key: "country" },
+    5: { name: "work_email", required: false, key: "work_email" },
+    6: { name: "subsidiary", required: false, key: "subsidiary" },
+  };
+  const tableHeadlist = [
+    "Name",
+    "Head of Department",
+    "State",
+    "Address",
+    "Country",
+    "Work email",
+    "Subsidiary",
+  ];
+  const [tableBodyList, setTableBodyList] = useState<any>([]);
+  const [validFormat, setValideFormat] = useState(false);
+  const handleUploadTest = async (e: any) => {
+    const data = await getDataFromFileUpload(e, expectedFormat, 200);
+    // console.log(data);
+    if (data?.status === "failed") {
+      toast.error(data?.message);
+      setValideFormat(false);
+      setTableBodyList([]);
+      setValideFormat(false);
+      setUploadedFile("");
+    }
+    if (data?.status === "success") {
+      setTableBodyList(data?.array);
+      setValideFormat(true);
+    }
+  };
+
+  const handleCancelUpload = () => {
+    // handleBulkUploadDialog();
+    setTableBodyList([]);
+    setValideFormat(false);
+    onCancel();
+    setUploadedFile("");
+  };
+
   const btnClass =
     "font-normal py-0 px-4 h-[32px]  transition-all duration-300 ";
   const btnGroup = (
@@ -38,7 +88,7 @@ const BulkUploadModal = ({
       <Button
         variant="outline"
         className={`border-primary text-primary hover:bg-transparent font-light  hover:text-primary ${btnClass}`}
-        onClick={onCancel}
+        onClick={handleCancelUpload}
       >
         Cancel
       </Button>
@@ -52,7 +102,7 @@ const BulkUploadModal = ({
               ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
               : ""
           } `}
-          disabled={!uploadedFile}
+          disabled={!uploadedFile || !validFormat}
         >
           {loading ? <ManceLoader /> : "Upload"}
         </Button>
@@ -60,7 +110,7 @@ const BulkUploadModal = ({
     </div>
   );
   return (
-    <div>
+    <div className={tableBodyList?.length > 0 ? `w-[900px]` : "w-[600px]"}>
       <p className="font-medium text-sm">Upload File</p>
       <p className="text-custom-gray-scale-400 text-xs font-light mt-1 ">
         Maximum file is 10mb, format is CSV, xlsv.
@@ -110,6 +160,27 @@ const BulkUploadModal = ({
         </p>
         {btnGroup}
       </div>
+      {/* table start here  */}
+      {tableBodyList?.length > 0 && (
+        <>
+          <div className="preview-reusable-box-table">
+            {" "}
+            <TableWrapper
+              TableTitle={`Preview Branch${
+                tableBodyList?.length > 1 ? "es" : ""
+              } ( ${tableBodyList?.length} )`}
+              tableBodyList={replaceEmptyValuesWithPlaceholder(
+                tableBodyList,
+                "-----"
+              )}
+              hideSearchFilterBox
+              tableheaderList={tableHeadlist}
+              hidePagination
+            />
+          </div>
+        </>
+      )}
+      {/* table start end */}
     </div>
   );
 };
