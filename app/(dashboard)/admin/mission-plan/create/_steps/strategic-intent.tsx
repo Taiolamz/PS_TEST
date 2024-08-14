@@ -30,7 +30,16 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   const location = usePathname();
   const dispatch = useAppDispatch();
 
-  const [initialValues, setInitialValues] = useState();
+  const [initialValues, setInitialValues] = useState({
+    intents: [
+      {
+        intent: "",
+        behaviours: [{ id: uuidv4(), value: "" }],
+        strategic_intent_id: "",
+      },
+    ],
+    mission_plan_id: "",
+  });
 
   const { mission_plan: mission_plan_info } = useAppSelector(
     (state) => state.mission_plan
@@ -134,6 +143,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     if (initialValues) {
       return initialValues;
     }
+
     return {
       intents: [
         {
@@ -147,14 +157,12 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   }, [initialValues]);
 
   const formik = useFormik<any>({
-    initialValues: {
-      intents: initialVals,
-      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
-    },
+    initialValues: initialVals,
     onSubmit: handleSaveStrategicIntent,
     validationSchema: setStrategicIntentsSchema,
     enableReinitialize: true,
   });
+  console.log(formik.values, initialVals);
 
   const errorIntents = formik.errors.intents as any;
   const touchedIntents = formik.touched.intents as any;
