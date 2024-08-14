@@ -175,7 +175,7 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
               />
             </>
           ) : null}
-          {created_by?.name || "not assigned"}
+          {created_by?.name || "-----"}
         </div>
       );
     },
