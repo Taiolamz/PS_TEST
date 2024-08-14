@@ -16,7 +16,6 @@ interface dataProp {
 }
 
 const MissionItems = ({ data, lastColumn }: dataProp) => {
-  console.log(data, "here")
   return (
     <div className="w-full flex flex-col gap-[10px]">
       {data?.map(({ title, description }: missionItems, index: string) => {

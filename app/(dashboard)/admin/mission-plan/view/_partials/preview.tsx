@@ -70,14 +70,30 @@ const Preview = ({ data }: dataProp) => {
         title: `${items?.task} ${
           items?.is_main_effort === 0 ? "" : "(MAIN EFFORT)"
         }`,
+        status: items?.status,
         description: [
           {
             key: "Pillars",
-            value: items?.strategic_pillars,
+            value:
+              items?.strategic_pillars.length !== null &&
+              items?.strategic_pillars?.map(
+                (val: any, index: number) =>
+                  `${val?.title}${
+                    index + 1 === items?.strategic_pillars?.length ? " " : ", "
+                  }`
+              ),
           },
           {
             key: "Measures of success",
-            value: items?.success_measures,
+            // value: items?.success_measures,
+            value:
+              items?.success_measures.length !== null &&
+              items?.success_measures?.map(
+                (val: any, index: number) =>
+                  `${val?.measure}${
+                    index + 1 === items?.success_measures?.length ? " " : ", "
+                  }`
+              ),
           },
           {
             key: `${format(items?.start_date, "do MMM, yyyy")} - ${format(
@@ -93,6 +109,7 @@ const Preview = ({ data }: dataProp) => {
           items?.implied_tasks.map((itemProp: impliedProp) => {
             return {
               title: itemProp?.task,
+              status: itemProp?.status,
               description: [
                 {
                   key: "Specified Task",
@@ -134,8 +151,6 @@ const Preview = ({ data }: dataProp) => {
       };
     });
 
-  // console.log(SpecifiedData, "SpecifiedData");
-
   return (
     <div className="flex flex-col gap-[12px]">
       {mission_statement !== null && (
@@ -149,12 +164,18 @@ const Preview = ({ data }: dataProp) => {
         </MissionWrapper>
       )}
       {measure_of_success.length !== null && (
-        <MissionWrapper title="Measure of Success" status="approved">
+        <MissionWrapper
+          title="Measure of Success"
+          status={measure_of_success[0]?.status}
+        >
           <MeasureOfSuccessTable data={MeasureData} columns={measureColumns} />
         </MissionWrapper>
       )}
       {strategic_intents.length !== null && (
-        <MissionWrapper title="Strategic Intent" status="approved">
+        <MissionWrapper
+          title="Strategic Intent"
+          status={strategic_intents[0]?.status}
+        >
           <MissionItems data={StrategicIntentData} lastColumn={true} />
         </MissionWrapper>
       )}
@@ -164,7 +185,7 @@ const Preview = ({ data }: dataProp) => {
             <div key={index} className="flex flex-col gap-[12px]">
               <MissionWrapper
                 title={`Specified Task ${index + 1}`}
-                status="approved"
+                status={items?.status}
               >
                 <SpecifiedMission
                   data={items}
@@ -177,7 +198,7 @@ const Preview = ({ data }: dataProp) => {
                   return (
                     <MissionWrapper
                       title={`Implied Task ${index + 1}`}
-                      status="approved"
+                      status={item?.status}
                     >
                       <SpecifiedMission data={item} index={index} />
                     </MissionWrapper>
@@ -187,7 +208,7 @@ const Preview = ({ data }: dataProp) => {
           );
         })}
       {boundaries[0]?.freedoms !== null && (
-        <MissionWrapper title="Freedom" status="approved">
+        <MissionWrapper title="Freedom" status={boundaries[0]?.status}>
           <div className="flex flex-col gap-[1rem]">
             <MissionSingleItem data={FreedomData} />
             <div>

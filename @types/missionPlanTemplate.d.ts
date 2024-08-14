@@ -1,7 +1,6 @@
 type MissionPlanTemplate = {
-  missionPlanTemplates: MissionContentDetails[]
+  missionPlanTemplates: MissionContentDetails[];
 };
-
 
 type dataProp = {
   data: any;
@@ -22,13 +21,14 @@ type strategicProp = {
 };
 
 type specifiedProp = {
-  strategic_pillars: string;
+  strategic_pillars: [];
   task: string;
-  success_measures: string;
+  success_measures: [];
   start_date: string;
   end_date: string;
   is_main_effort?: number;
   implied_tasks: [];
+  status: string;
 };
 type impliedProp = {
   expected_outcome: string;
@@ -40,6 +40,7 @@ type impliedProp = {
   end_date: string;
   is_main_effort?: number;
   title: string;
+  status: string;
 };
 
 type resourceProp = {
