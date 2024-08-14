@@ -334,3 +334,51 @@ export const taskData = [
     ],
   },
 ];
+
+export const impliedTask = [
+  {
+    id: 1,
+    title: "Implied Task 1",
+    impliedTask: "Commercialize 4 products",
+    specifiedTask: "Achieve $1 Billion in Company Revenue, Design Mance System",
+    expectedOutcome: "Design Mance System",
+    weight: "100",
+    percentage: "100%",
+    resources: "Ayomipe, Segun",
+    startDate: "22nd July 2022",
+    endDate: "22nd July 2022",
+  },
+  {
+    id: 2,
+    title: "Implied Task 2",
+    impliedTask: "Commercialize 4 products",
+    specifiedTask: "Achieve $1 Billion in Company Revenue, Design Mance System",
+    expectedOutcome: "Design Mance System",
+    weight: "100",
+    percentage: "100%",
+    resources: "Ayomipe, Segun",
+    startDate: "22nd July 2022",
+    endDate: "22nd July 2022",
+  },
+];
+
+export const specifiedTask = [
+  {
+    title: 1,
+    id: "Specified Task 1",
+    specifiedTask: "Commercialize 4 products (MAIN EFFORT)",
+    pillars: "Product, Brand, People",
+    measureOfSuccess: "Measure 1, Measure 2, Measure 3",
+    startDate: "22nd July 2022",
+    endDate: "22nd July 2022",
+  },
+  {
+    title: 11,
+    id: "Specified Task 1",
+    specifiedTask: "Commercialize 4 products",
+    pillars: "Product, Brand, People",
+    measureOfSuccess: "Measure 1, Measure 2, Measure 3",
+    startDate: "22nd July 2022",
+    endDate: "22nd July 2022",
+  },
+];

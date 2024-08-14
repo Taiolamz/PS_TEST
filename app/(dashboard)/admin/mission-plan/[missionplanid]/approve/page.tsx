@@ -10,6 +10,8 @@ import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
 import {
   measureColumns,
   measuresData,
+  specifiedTask,
+  impliedTask,
 } from "@/utils/data/dashboard/missionplan/dummy";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PresentationView from "./_presentation/presentation-view";
@@ -71,28 +73,13 @@ const ApproveMissionPlan = () => {
               setShowTextArea={strategicIntentComment.toggle}
             />
 
-            <SpecifiedTasks
-              title="Specified Task 1"
-              showTextArea={specifiedTaskComment.isOpen}
-              setShowTextArea={specifiedTaskComment.toggle}
-            />
-
-            <SpecifiedTasks
-              title="Specified Task 2"
-              showTextArea={specifiedTaskComment.isOpen}
-              setShowTextArea={specifiedTaskComment.toggle}
-            />
+            <SpecifiedTasks data={specifiedTask ?? []} />
 
             <ImpliedTask
               title="Implied Task 1"
               showTextArea={impliedTaskComment.isOpen}
               setShowTextArea={impliedTaskComment.toggle}
-            />
-
-            <ImpliedTask
-              title="Implied Task 2"
-              showTextArea={impliedTaskComment.isOpen}
-              setShowTextArea={impliedTaskComment.toggle}
+              data={impliedTask ?? []}
             />
 
             <FreedomConstraint
