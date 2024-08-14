@@ -13,7 +13,6 @@ const Preview = ({ data }: dataProp) => {
   const {
     mission_statement,
     boundaries,
-
     measure_of_success,
     specified_tasks,
     strategic_intents,
@@ -199,6 +198,7 @@ const Preview = ({ data }: dataProp) => {
                     <MissionWrapper
                       title={`Implied Task ${index + 1}`}
                       status={item?.status}
+                      key={index}
                     >
                       <SpecifiedMission data={item} index={index} />
                     </MissionWrapper>
