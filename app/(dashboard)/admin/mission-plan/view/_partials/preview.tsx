@@ -5,9 +5,9 @@ import {
   SpecifiedMission,
 } from "@/components/fragment";
 import React from "react";
-import MeasureOfSuccessTable from "../../_components/measureOfSuccessTable";
 import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import { format } from "date-fns";
+import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
 
 const Preview = ({ data }: dataProp) => {
   const {
