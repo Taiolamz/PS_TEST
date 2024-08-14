@@ -37,11 +37,12 @@ type Props = {
   id?: string;
   name?: string;
   label?: string;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const Comment = ({ id, name, label }: Props) => {
+const Comment = ({ id, name, label, showTextArea, setShowTextArea }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showTextArea, setShowTextArea] = useState(false);
 
   const handleNext = () => {
     if (currentIndex < comments.length - (showTextArea ? 1 : 2)) {

@@ -3,7 +3,7 @@
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 
-import React from "react";
+import React, { useState } from "react";
 import SpecifiedTasks from "../../_components/specified-task";
 import ImpliedTask from "../../_components/implied-task";
 import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
@@ -20,6 +20,8 @@ const ApproveMissionPlan = () => {
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
+
+  const [showTextArea, setShowTextArea] = useState(false);
 
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
@@ -60,6 +62,9 @@ const ApproveMissionPlan = () => {
                     <Button
                       variant="outline"
                       className="border-[#FF5855] text-[#FF5855]"
+                      onClick={() => {
+                        setShowTextArea(true);
+                      }}
                     >
                       Reject
                     </Button>
@@ -67,7 +72,11 @@ const ApproveMissionPlan = () => {
                   </div>
                 </div>
               </div>
-              <Comment label="Mission statement" />
+              <Comment
+                label="Mission statement"
+                showTextArea={showTextArea}
+                setShowTextArea={setShowTextArea}
+              />
             </section>
 
             {/* Measure of Success */}
@@ -94,7 +103,11 @@ const ApproveMissionPlan = () => {
                   </div>
                 </div>
               </div>
-              <Comment label="measure of success" />
+              <Comment
+                label="measure of success"
+                showTextArea={showTextArea}
+                setShowTextArea={setShowTextArea}
+              />
             </section>
 
             {/* Strategic Intent */}
@@ -129,20 +142,40 @@ const ApproveMissionPlan = () => {
                   </div>
                 </div>
               </div>
-              <Comment label="strategic intent" />
+              <Comment
+                label="strategic intent"
+                showTextArea={showTextArea}
+                setShowTextArea={setShowTextArea}
+              />
             </section>
 
             {/* Specialized Tasks */}
-            <SpecifiedTasks title="Specified Task 1" />
+            <SpecifiedTasks
+              title="Specified Task 1"
+              showTextArea={showTextArea}
+              setShowTextArea={setShowTextArea}
+            />
 
             {/* Specified Task 2 */}
-            <SpecifiedTasks title="Specified Task 2" />
+            <SpecifiedTasks
+              title="Specified Task 2"
+              showTextArea={showTextArea}
+              setShowTextArea={setShowTextArea}
+            />
 
             {/* Implied Tasks 1 */}
-            <ImpliedTask title="Implied Task 1" />
+            <ImpliedTask
+              title="Implied Task 1"
+              showTextArea={showTextArea}
+              setShowTextArea={setShowTextArea}
+            />
 
             {/* Implied Tasks 2 */}
-            <ImpliedTask title="Implied Task 2" />
+            <ImpliedTask
+              title="Implied Task 2"
+              showTextArea={showTextArea}
+              setShowTextArea={setShowTextArea}
+            />
 
             {/* Freedom and Constraint */}
             <section>
@@ -187,7 +220,11 @@ const ApproveMissionPlan = () => {
                   </div>
                 </div>
               </div>
-              <Comment label="freedom & constraints" />
+              <Comment
+                label="freedom & constraints"
+                showTextArea={showTextArea}
+                setShowTextArea={setShowTextArea}
+              />
             </section>
           </div>
         </div>

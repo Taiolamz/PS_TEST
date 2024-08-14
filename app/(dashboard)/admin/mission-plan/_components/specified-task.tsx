@@ -5,9 +5,11 @@ import Comment from "./comment";
 
 type Props = {
   title: string;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const SpecifiedTasks = ({ title }: Props) => {
+const SpecifiedTasks = ({ title, setShowTextArea, showTextArea }: Props) => {
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -56,7 +58,11 @@ const SpecifiedTasks = ({ title }: Props) => {
           </div>
         </div>
       </div>
-      <Comment label="Specified task" />
+      <Comment
+        label="Specified task"
+        showTextArea={showTextArea}
+        setShowTextArea={setShowTextArea}
+      />
     </section>
   );
 };

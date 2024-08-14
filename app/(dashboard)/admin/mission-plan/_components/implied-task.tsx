@@ -8,9 +8,11 @@ import Comment from "./comment";
 
 type Props = {
   title: string;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const ImpliedTask = ({ title }: Props) => {
+const ImpliedTask = ({ title, showTextArea, setShowTextArea }: Props) => {
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -71,7 +73,11 @@ const ImpliedTask = ({ title }: Props) => {
           </div>
         </div>
       </div>
-      <Comment label="Implied Task" />
+      <Comment
+        label="Implied Task"
+        showTextArea={showTextArea}
+        setShowTextArea={setShowTextArea}
+      />
     </section>
   );
 };
