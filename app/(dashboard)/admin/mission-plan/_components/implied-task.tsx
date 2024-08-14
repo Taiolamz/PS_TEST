@@ -15,37 +15,36 @@ type Props = {
 const ImpliedTask = ({ title, showTextArea, setShowTextArea }: Props) => {
   return (
     <section>
-      <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
+      <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5 text-sm">
         <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
           {title}
         </h2>
-        <div className="mt-2">
-          <h3 className="text-lg font-medium">- Commercialize 4 products</h3>
+        <div className="mt-5 ml-1.5">
+          <h3 className="font-medium">- Commercialize 4 products</h3>
           <div className="flex justify-between items-end">
-            <div className="ml-4 flex flex-col gap-[0.3125rem]">
-              <p className="mt-2">
-                <span className="font-semibold">Specified Task:</span> Lorem
-                Ipsum is simply dummy text of the printing and typesetting
-                industry.
+            <div className="ml-3 flex flex-col gap-[0.3125rem]">
+              <p className="mt-2 font-light">
+                <span className="font-normal">Specified Task:</span> Lorem Ipsum
+                is simply dummy text of the printing and typesetting industry.
               </p>
-              <p className="mt-1">
-                <span className="font-semibold">Expected Outcome:</span> simply
+              <p className="mt-1 font-light">
+                <span className="font-normal">Expected Outcome:</span> simply
                 dummy text of the printing
               </p>
-              <p className="mt-1">
-                <span className="font-semibold">Weight:</span> simply dummy text
+              <p className="mt-1 font-light">
+                <span className="font-normal">Weight:</span> simply dummy text
                 of the printing
               </p>
-              <p className="mt-1">
-                <span className="font-semibold">Percentage:</span> simply dummy
+              <p className="mt-1 font-light">
+                <span className="font-normal">Percentage:</span> simply dummy
                 text of the printing
               </p>
-              <p className="mt-1">
-                <span className="font-semibold">Resource:</span> simply dummy
-                text of the printing
+              <p className="mt-1 font-light">
+                <span className="font-normal">Resource:</span> simply dummy text
+                of the printing
               </p>
-              <p className="mt-1">
-                <span className="font-semibold">
+              <p className="mt-1 font-light">
+                <span className="font-normal">
                   {" "}
                   22nd July 2022 - 15th Dec 2022
                 </span>
@@ -64,7 +63,10 @@ const ImpliedTask = ({ title, showTextArea, setShowTextArea }: Props) => {
               </div>
               <Button
                 variant="outline"
-                className="border-[#FF5855] text-[#FF5855]"
+                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                onClick={() => {
+                  setShowTextArea(true);
+                }}
               >
                 Reject
               </Button>

@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import { BsArrowUpCircleFill } from "react-icons/bs";
+import { FaX } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdCancel, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
@@ -106,9 +107,9 @@ const Comment = ({ id, name, label, showTextArea, setShowTextArea }: Props) => {
                 {label}
               </label>
               <div className="flex items-center gap-1">
-                <MdCancel
+                <FaX
                   color="red"
-                  size={19}
+                  size={12}
                   onClick={() => setShowTextArea(false)}
                 />
                 <BsArrowUpCircleFill
@@ -122,7 +123,7 @@ const Comment = ({ id, name, label, showTextArea, setShowTextArea }: Props) => {
               name="comment"
               placeholder="Input Comment"
               rows={3}
-              className="bg-white border-0 focus:border-0 focus-visible:ring-0"
+              className="bg-white border-0 focus:border-0 focus-visible:ring-0 text-sm"
             />
           </div>
         )}
