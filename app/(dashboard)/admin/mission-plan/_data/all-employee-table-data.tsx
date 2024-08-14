@@ -20,6 +20,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
+import { ReusableDrawer } from "@/components/fragment";
+import { useState } from "react";
 
 export type EmployeeRolesData = {
   id: string;
