@@ -46,7 +46,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name") || "not assigned"
+          row.getValue("name") || "------"
         )}
       </div>
     ),
@@ -59,7 +59,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
   //       {loading ? (
   //         <Skeleton className="h-4 w-[250px]" />
   //       ) : (
-  //         row.getValue("subsidiary?.name") || "not assigned"
+  //         row.getValue("subsidiary?.name") || "------"
   //       )}
   //     </div>
   //   ),
@@ -74,7 +74,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            subsidiary?.name || "not assigned"
+            subsidiary?.name || "------"
           )}
         </div>
       );
@@ -88,7 +88,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("country") || "not assigned"
+          row.getValue("country") || "------"
         )}
       </div>
     ),
@@ -101,7 +101,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("state") || "not assigned"
+          row.getValue("state") || "------"
         )}
       </div>
     ),
@@ -114,7 +114,7 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("address") || "not assigned"
+          row.getValue("address") || "------"
         )}
       </div>
     ),

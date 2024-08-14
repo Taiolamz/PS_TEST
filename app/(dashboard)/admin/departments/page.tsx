@@ -167,7 +167,7 @@ const Departments = () => {
 
   const handleTemplateDownload = async (file: string) => {
     toast.loading("downloading...");
-    downloadDepartmentTemplate({ template: "Department", format: file })
+    downloadDepartmentTemplate({ template: "department", format: file })
       .unwrap()
       .then((payload) => {
         toast.dismiss();
@@ -225,7 +225,7 @@ const Departments = () => {
         </DashboardModal>
 
         <DashboardModal
-          className={"w-[600px] max-w-full"}
+          className={`max-w-max`}
           open={openBulkUploadModal}
           onOpenChange={handleBulkUploadDialog}
         >

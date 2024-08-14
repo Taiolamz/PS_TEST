@@ -8,7 +8,7 @@ type ExpectedFormat = {
     key: string;
   };
 };
- 
+
 type Result = {
   status: "success" | "failed";
   array: any[];
@@ -32,7 +32,7 @@ export function getDataFromFileUpload(
     const fileType = file.type;
     const validFileTypes = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // Excel
-      "text/csv" // CSV
+      "text/csv", // CSV
     ];
 
     if (!validFileTypes.includes(fileType)) {
@@ -56,23 +56,29 @@ export function getDataFromFileUpload(
 
       const headers = parsedJson[0] || [];
 
-      // Validate format
-      const missingFields = Object.keys(expectedFormat).map((index) => {
-        const column = expectedFormat[Number(index)];
-        return column?.required && column?.name !== headers[Number(index)]
-          ? { row: 1, column: column?.name }
-          : null;
-      }).filter((item) => item !== null);
+      // Validate format and find the first row with missing required fields
+      let missingFieldRow: number | undefined;
+      let missingFieldColumn: string | undefined;
 
-      if (missingFields.length > 0) {
-        const messages = missingFields.map(
-          (field) =>
-            `Row ${field?.row}: ${field?.column} field is required, please check uploaded file.`
-        );
+      for (let i = 1; i < parsedJson.length; i++) {
+        const row = parsedJson[i];
+        for (let index in expectedFormat) {
+          const column = expectedFormat[Number(index)];
+          const value = row[Number(index)];
+          if (column?.required && !value) {
+            missingFieldRow = i + 1; // Account for 1-based indexing in Excel
+            missingFieldColumn = column.name;
+            break;
+          }
+        }
+        if (missingFieldRow) break; // Stop at the first missing required field
+      }
+
+      if (missingFieldRow !== undefined) {
         resolve({
           status: "failed",
           array: [],
-          message: messages[0]!,
+          message: `Row ${missingFieldRow - 1}: ${missingFieldColumn} field is required, please check the uploaded file or use the sample file.`,
         });
         return;
       }
