@@ -7,7 +7,7 @@ import MissionItems from "./mission-items";
 import MissionPlanWrapper from "./mission-plan-wrapper";
 import MissionWrapper from "./mission-wrapper";
 import ReusableDrawer from "./drawer";
-import MissionSingleItem from "./mission-singleItem";
+import MissionSingleItem from "./mission-single-item";
 import SpecifiedMission from "./specified-mission";
 
 export {
