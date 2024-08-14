@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { resetAuth } from "../features/auth/authSlice";
 import { resetMissionPlan } from "../features/mission-plan/missionPlanSlice";
+import { resetMissionPlanPreview } from "../features/mission-plan/missionPlanPreviewSlice";
 
 const toastError = (errors: any) => {
   const errorKeys = Object.keys(errors);
@@ -55,6 +56,7 @@ export const baseQueryInterceptor: BaseQueryFn<
       if (res.data.status === "failed") {
         api.dispatch(resetAuth());
         api.dispatch(resetMissionPlan());
+        api.dispatch(resetMissionPlanPreview())
         Cookies.remove("token");
         clearStorageItem();
         window.location.href = "/login";
@@ -112,5 +114,6 @@ export const baseApi = createApi({
     "Employees",
     "MissionPlanTemplates",
     "Comments",
+    "MissionPlan"
   ],
 });
