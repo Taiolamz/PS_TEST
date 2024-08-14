@@ -35,21 +35,21 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
   };
 
   return (
-    <section className="max-w-[55.875rem]">
+    <section className="max-w-[55.875rem] mb-[1.125rem]">
       <FormHeader
         title="Setup Default Organization Hierarchy"
         subTitle="Set organization operating Hierarchy"
       />
-      <h3 className="block mb-1.5 text-sm font-medium text-[#5A5B5F]">
+      <h3 className="block mb-1.5 text-sm font-medium text-[#162238]">
         1. Organizational Hierarchy
       </h3>
-      <p className="text-gray-600">
+      <p className="text-[#6E7C87] text-sm pb-2">
         Does your organization structure have any of the following? Enable any
         of the fields below as it applies to your organization.
       </p>
-      <div className="mt-4">
+      <div>
         {currentHierarchy.map(({ id, name, label }) => (
-          <div className="flex items-center mt-2" key={name}>
+          <div className="flex items-center mt-4" key={name}>
             <Checkbox
               id="hierarchy"
               key={id}
@@ -58,7 +58,7 @@ const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {
               onCheckedChange={() => handleCheckboxChange(name)}
               checked={formik.values.hierarchy.includes(name)}
             />
-            <label className="ml-2 block text-[#6E7C87]">{label}</label>
+            <label className="ml-2 block text-[#6E7C87] text-sm">{label}</label>
           </div>
         ))}
       </div>

@@ -36,11 +36,10 @@ const OperationsParameter = ({
     formik.setFieldValue(name, newDate.format("HH:mm"));
   };
 
-  console.log({ Formikkk: formik.values.opening_time, fyDate, time });
   return (
     <section
       // style={{ overflowY: "scroll" }}
-      className="max-w-[54.625rem] px-4  "
+      className="max-w-[54.625rem] pr-28"
     >
       <FormHeader
         title="Give details of your organizational information and hierarchical

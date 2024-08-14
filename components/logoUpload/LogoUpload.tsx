@@ -19,7 +19,9 @@ const LogoUpload = ({
 }: Props) => {
   return (
     <div>
-      <label className="block mb-1">Logo</label>
+      <label className="block mb-[0.6875rem] font-medium text-[#162238] text-lg">
+        Logo
+      </label>
       <div className="flex items-center">
         {logoName ? (
           <div className="flex gap-3.5">

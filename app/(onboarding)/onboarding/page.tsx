@@ -18,11 +18,12 @@ import { FormikProvider, useFormik } from "formik";
 import { useOnboardingMutation } from "@/redux/services/onboarding/onboardingApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
-import { OnbaordingSchema } from "@/utils/schema/onboarding";
+import { OnboardingSchema } from "@/utils/schema/onboarding";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useAppSelector } from "@/redux/store";
 import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
+import { isDateAfter } from "@/utils/date";
 
 const { ADMIN } = routesPath;
 interface FormValues {
@@ -69,6 +70,11 @@ const Onboarding = () => {
   ] = useOnboardingMutation();
 
   const onSubmit = async () => {
+    // if (isStartDateLater) {
+    //   toast.error("End date must be a future date!");
+    //   return;
+    // }
+
     if (!formik.isValid) {
       toast.error(
         "Please fill in the required fiscal year title field before submitting."
@@ -125,9 +131,21 @@ const Onboarding = () => {
       hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
     },
-    validationSchema: OnbaordingSchema,
+    validationSchema: OnboardingSchema,
     onSubmit: onSubmit,
   });
+
+  const isStartDateLater = isDateAfter(
+    formik.values.start_fy,
+    formik.values.end_fy
+  );
+
+  // useEffect(() => {
+  //   console.log(isStartDateLater);
+  //   if (isStartDateLater) {
+  //     formik.setFieldError("end_fy", "End date must be a future date");
+  //   }
+  // }, [formik.values.end_fy, formik.values.start_fy]);
 
   const logo = formik.values.logo;
 
@@ -153,11 +171,12 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20"
+          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20 h-[calc(100vh_-_4rem)] overflow-y-auto scroll-hidden"
           onSubmit={formik.handleSubmit}
         >
-          <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden">
-            <h1 className="text-2xl font-bold text-[--primary-color] mb-16">
+          {/* <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden"> */}
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-bold text-[#162238] mb-[3.9375rem]">
               {`Welcome ${
                 trimLongString(user?.organization?.name, 25) || ""
               }! Let's setup your organization`}
