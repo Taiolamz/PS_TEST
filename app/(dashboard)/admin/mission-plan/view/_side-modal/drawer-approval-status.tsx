@@ -62,8 +62,8 @@ export default function DrawerApprovalStatus({
                 <div className="flex items-center gap-2">
                   <Image src={item.status === "pending" ? "/svgs/currApprovalStatus.svg" : "/svgs/approvalStatus.svg"} width={23} height={23} alt="approval status" />
                   <div>
-                    <p className="text-sm font-semibold">{item.user.name}</p>
-                    {/* <p className="text-xs font-light text-[#6E7C87]">{item.role}</p> */}
+                    <p className="text-sm font-semibold capitalize">{item.user.name}</p>
+                    <p className="text-xs font-light text-[#6E7C87]">{item.user.role}</p>
                   </div>
                 </div>
                 <div>
