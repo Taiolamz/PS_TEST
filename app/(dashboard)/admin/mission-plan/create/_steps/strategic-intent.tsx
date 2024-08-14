@@ -140,7 +140,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
-    if (initialValues) {
+    if (initialValues.intents?.length > 0) {
       return initialValues;
     }
 
