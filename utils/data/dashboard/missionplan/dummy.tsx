@@ -205,35 +205,35 @@ export const allemployeeColumns: ColumnDef<EmployeeRolesData>[] = [
 
 export const measuresData = [
   {
-    measure: "Measure 1",
+    no: "Measure 1",
     description: "Customer/Client...",
     unit: "%",
     value: 100,
     id: "433",
   },
   {
-    measure: "Measure 2",
+    no: "Measure 2",
     description: "Commercial Products...",
     unit: "No",
     value: 100,
     id: "33",
   },
   {
-    measure: "Measure 3",
+    no: "Measure 3",
     description: "Revenue increase",
     unit: "$",
     value: 500000,
     id: "3234",
   },
   {
-    measure: "Measure 4",
+    no: "Measure 4",
     description: "Customer/Client...",
     unit: "%",
     value: 100,
     id: "3211",
   },
   {
-    measure: "Measure 5",
+    no: "Measure 5",
     description: "Customer/Client...",
     unit: "%",
     value: 100,
@@ -243,17 +243,17 @@ export const measuresData = [
 
 export const measureColumns: ColumnDef<MeasureData>[] = [
   {
-    accessorKey: "measure",
+    accessorKey: "no",
     header: () => <div className="text-left">No</div>,
     cell: ({ row }) => (
-      <div className=" capitalize">{row.getValue("measure")}:</div>
+      <div className="capitalize">{`Measure ${row.index + 1}:`}</div>
     ),
   },
   {
-    accessorKey: "description",
+    accessorKey: "measure",
     header: () => <div className="text-left">Measure</div>,
     cell: ({ row }) => (
-      <div className=" capitalize">{row.getValue("description")}</div>
+      <div className=" capitalize">{row.getValue("measure")}</div>
     ),
   },
   {
@@ -264,10 +264,10 @@ export const measureColumns: ColumnDef<MeasureData>[] = [
     ),
   },
   {
-    accessorKey: "value",
+    accessorKey: "target",
     header: () => <div className="text-left">Target</div>,
     cell: ({ row }) => (
-      <div className=" capitalize">{row.getValue("value")}</div>
+      <div className=" capitalize">{row.getValue("target")}</div>
     ),
   },
 ];

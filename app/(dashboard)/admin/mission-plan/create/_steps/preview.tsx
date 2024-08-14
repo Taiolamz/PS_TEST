@@ -23,7 +23,11 @@ import {
 } from "@/components/fragment";
 import BackIcon from "@/public/assets/icons/BackIcon";
 
-const MissionDetailPreview = () => {
+interface Props {
+  missionDetails: any;
+}
+
+const MissionDetailPreview = ({ missionDetails }: Props) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const location = usePathname();
 
@@ -31,6 +35,8 @@ const MissionDetailPreview = () => {
   const goBack = () => router.back();
 
   const { ADMIN } = routesPath;
+
+  console.log(missionDetails, "mission details");
 
   return (
     <div className="w-[60vw]">
@@ -49,13 +55,15 @@ const MissionDetailPreview = () => {
           />
           <MissionWrapper
             title="Mission Statement"
-            status="approved"
+            status={missionDetails?.mission_statement?.status}
+            // status={"approved"}
             comment="2"
           >
             <p className="leading-relaxed  text-sm">
-              My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
+              {/* My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
               elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
-              pulvinar arcu, mi.
+              pulvinar arcu, mi. */}
+              {missionDetails?.mission_statement?.mission || "_"}
             </p>
           </MissionWrapper>
         </MissionPlanWrapper>
@@ -71,7 +79,8 @@ const MissionDetailPreview = () => {
             comment="2"
           >
             <MeasureOfSuccessTable
-              data={measuresData}
+              data={missionDetails?.measure_of_success}
+              // data={measuresData}
               columns={measureColumns}
             />
           </MissionWrapper>
@@ -84,7 +93,10 @@ const MissionDetailPreview = () => {
             index="3"
           />
           <MissionWrapper title="Strategic Intent" status="pending">
-            <MissionItems data={strategicIntent} />
+            <MissionItems
+              data={strategicIntent}
+              strategicIntent={missionDetails?.strategic_intent}
+            />
           </MissionWrapper>
         </MissionPlanWrapper>
         <MissionPlanWrapper>

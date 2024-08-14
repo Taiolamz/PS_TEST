@@ -34,13 +34,6 @@ const Boundaries = () => {
     },
   ] = useLazyGetMyMissionPlanQuery({});
 
-  // const boundaries = mission_plan?.data?.mission_plan?.boundaries ?? [];
-  console.log(
-    mission_plan?.data?.mission_plan?.id,
-    mission_plan?.data?.mission_plan?.id,
-    "mission plan id"
-  );
-
   const initialValues = {
     constraints: [""],
     freedoms: [""],
@@ -199,7 +192,7 @@ const Boundaries = () => {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.freedoms[index]}
-                                label="Freedom 1"
+                                label={`Freedom ${index + 1}`}
                                 placeholder="Input freedom"
                                 className="px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm bg-[var(--input-bg)]"
                               />
@@ -268,7 +261,11 @@ const Boundaries = () => {
               </form>
             </FormikProvider>
           )}
-          {step === "preview" && <MissionDetailPreview />}
+          {step === "preview" && (
+            <MissionDetailPreview
+              missionDetails={mission_plan?.data?.mission_plan}
+            />
+          )}
         </>
       )}
     </>
