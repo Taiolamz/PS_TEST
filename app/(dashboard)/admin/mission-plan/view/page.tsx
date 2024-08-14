@@ -111,7 +111,21 @@ const SingleMissionPlan = () => {
       })
       .catch(() => toast.dismiss());
   };
-
+  //Conditional render content of subsidiary dropdown
+  const SUBSIDIARY_DATA = (obj: any) => {
+    const newMap = obj?.map((org: { id: string; name: string }) => ({
+      value: org.id,
+      label: org.name,
+    }));
+    return [
+      {
+        label: "Select Subsidiary",
+        value: "",
+      },
+      ...newMap,
+    ];
+  };
+  //Conditional render content of unit dropdown
   const UNIT_DATA = ({
     obj,
     deptId,
@@ -169,6 +183,7 @@ const SingleMissionPlan = () => {
     }
     return finalMapValue;
   };
+  //Conditional render content of department dropdown
   const DEPARTMENT_DATA = ({ obj, SubId }: { obj: any; SubId?: string }) => {
     let finalMapValue = [
       {
@@ -205,6 +220,7 @@ const SingleMissionPlan = () => {
     return finalMapValue;
   };
   //-------- END: API Service for Tab == All Employee ------- //
+
   const user_hierarchy = useAppSelector(
     (state) => state?.auth?.user?.organization?.hierarchy
   );
@@ -281,6 +297,7 @@ const SingleMissionPlan = () => {
                 {active_fy_info?.title}
               </p>
               <div className="flex gap-x-[14px]">
+                {/* render unit subsidiary if part of hierarcy */}
                 {user_hierarchy?.includes("subsidiary") && (
                   <CustomSelect
                     options={SUBSIDIARY_DATA(
@@ -298,6 +315,7 @@ const SingleMissionPlan = () => {
                     placeholder="Select Subsidiary"
                   />
                 )}
+                {/* render department dropdown if part of hierarcy */}
                 {user_hierarchy?.includes("department") && (
                   <CustomSelect
                     options={DEPARTMENT_DATA({
@@ -319,6 +337,7 @@ const SingleMissionPlan = () => {
                     placeholder="Select Department"
                   />
                 )}
+                {/* render unit dropdown if part of hierarcy */}
                 {user_hierarchy?.includes("unit") && (
                   <CustomSelect
                     options={UNIT_DATA({
@@ -478,18 +497,4 @@ const FORMAT_TABLE_DATA = (obj: any) => {
       />
     ),
   }));
-};
-
-const SUBSIDIARY_DATA = (obj: any) => {
-  const newMap = obj?.map((org: { id: string; name: string }) => ({
-    value: org.id,
-    label: org.name,
-  }));
-  return [
-    {
-      label: "Select Subsidiary",
-      value: "",
-    },
-    ...newMap,
-  ];
 };
