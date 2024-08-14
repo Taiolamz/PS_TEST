@@ -3,22 +3,25 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
 
+type Task = {
+  id: number;
+  title: string;
+  specifiedTask: string;
+  pillars: string;
+  measureOfSuccess: string;
+  startDate: string;
+  endDate: string;
+};
+
 type Props = {
-  data: [];
+  data: Task[];
 };
 
 const SpecifiedTasks = ({ data }: Props) => {
-  const [openComments, setOpenComments] = useState<{ [key: number]: boolean }>(
-    {}
-  );
-
-  console.log({ openComments });
+  const [openCommentId, setOpenCommentId] = useState<number | null>(null);
 
   const toggleComment = (id: number) => {
-    setOpenComments((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+    setOpenCommentId((prevId) => (prevId === id ? null : id));
   };
   return (
     <div className="flex flex-col gap-10">
@@ -71,7 +74,7 @@ const SpecifiedTasks = ({ data }: Props) => {
           </div>
           <Comment
             label="Specified task"
-            showTextArea={!!openComments[item.id]}
+            showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
           />
         </section>

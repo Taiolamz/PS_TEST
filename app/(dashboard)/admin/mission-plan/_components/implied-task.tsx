@@ -1,18 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Comment from "./comment";
 
-type Props = {
-  showTextArea: boolean;
-  setShowTextArea: (e: boolean) => void;
-  data: [];
+type Task = {
+  id: number;
+  title: string;
+  specifiedTask: string;
+  startDate: string;
+  endDate: string;
+  impliedTask: string;
+  expectedOutcome: string;
+  weight: string;
+  percentage: string;
+  resources: string;
 };
 
-const ImpliedTask = ({ showTextArea, setShowTextArea, data }: Props) => {
+type Props = {
+  data: Task[];
+};
+
+const ImpliedTask = ({ data }: Props) => {
+  const [openCommentId, setOpenCommentId] = useState<number | null>(null);
+
+  const toggleComment = (id: number) => {
+    setOpenCommentId((prevId) => (prevId === id ? null : id));
+  };
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item) => (
@@ -65,9 +81,7 @@ const ImpliedTask = ({ showTextArea, setShowTextArea, data }: Props) => {
                   <Button
                     variant="outline"
                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                    onClick={() => {
-                      setShowTextArea(true);
-                    }}
+                    onClick={() => toggleComment(item.id)}
                   >
                     Reject
                   </Button>
@@ -78,8 +92,8 @@ const ImpliedTask = ({ showTextArea, setShowTextArea, data }: Props) => {
           </div>
           <Comment
             label="Implied Task"
-            showTextArea={showTextArea}
-            setShowTextArea={setShowTextArea}
+            showTextArea={openCommentId === item.id}
+            setShowTextArea={() => toggleComment(item.id)}
           />
         </section>
       ))}

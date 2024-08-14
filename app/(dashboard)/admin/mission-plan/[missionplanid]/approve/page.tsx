@@ -75,12 +75,7 @@ const ApproveMissionPlan = () => {
 
             <SpecifiedTasks data={specifiedTask ?? []} />
 
-            <ImpliedTask
-              title="Implied Task 1"
-              showTextArea={impliedTaskComment.isOpen}
-              setShowTextArea={impliedTaskComment.toggle}
-              data={impliedTask ?? []}
-            />
+            <ImpliedTask data={impliedTask ?? []} />
 
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}

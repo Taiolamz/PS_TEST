@@ -364,8 +364,8 @@ export const impliedTask = [
 
 export const specifiedTask = [
   {
-    title: 1,
-    id: "Specified Task 1",
+    id: 1,
+    title: "Specified Task 1",
     specifiedTask: "Commercialize 4 products (MAIN EFFORT)",
     pillars: "Product, Brand, People",
     measureOfSuccess: "Measure 1, Measure 2, Measure 3",
@@ -373,8 +373,8 @@ export const specifiedTask = [
     endDate: "22nd July 2022",
   },
   {
-    title: 11,
-    id: "Specified Task 1",
+    id: 11,
+    title: "Specified Task 1",
     specifiedTask: "Commercialize 4 products",
     pillars: "Product, Brand, People",
     measureOfSuccess: "Measure 1, Measure 2, Measure 3",
