@@ -227,3 +227,16 @@ export const truncateString = (str: string, maxLength: number = 50) => {
 export function findObjectIndexByLabel(arr: any, label: any) {
   return arr.findIndex((item: any) => item?.label === label) + 1;
 }
+
+
+export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>(array: T[], placeholder: string = "---"): T[] {
+  return array?.map(obj => {
+    const newObj = { ...obj }; // Create a shallow copy of the object
+    (Object?.keys(newObj) as (keyof T)[])?.forEach(key => {
+      if (newObj[key] === "") {
+        newObj[key] = placeholder as any; // Replace empty value with placeholder
+      }
+    });
+    return newObj;
+  });
+}

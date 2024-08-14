@@ -62,22 +62,7 @@ const BulkUploadModal = ({
     </div>
   );
 
-  const expectedFormat = {
-    0: { name: "Last Name", required: true, key: "last_name" },
-    1: { name: "First Name", required: true, key: "first_name" },
-    2: { name: "Account Number", required: true, key: "account_number" },
-    3: { name: "Bank", required: true, key: "bank" },
-    4: { name: "Bank Code", required: false, key: "bank_code" },
-    5: { name: "Salary", required: true, key: "salary" },
-    6: { name: "Raven  Username", required: false, key: "raven_username" },
-    7: { name: "Employee  Email", required: false, key: "employee_name" },
-    8: { name: "Employee Phone", required: false, key: "employee_phone" },
-  };
-
-  const handleUploadTest = async (e: any) => {
-    const data = await getDataFromFileUpload(e, expectedFormat, 200);
-    console.log(data);
-  };
+ 
 
   return (
     <div>

@@ -46,7 +46,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name") || "not assigned"
+          row.getValue("name") || "------"
         )}
       </div>
     ),
@@ -59,7 +59,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("head_of_unit") || "not assigned"
+          row.getValue("head_of_unit") || "------"
         )}
       </div>
     ),
@@ -75,7 +75,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            department?.name || "not assigned"
+            department?.name || "------"
           )}
         </div>
       );
@@ -91,7 +91,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            branch?.name || "not assigned"
+            branch?.name || "------"
           )}
         </div>
       );
