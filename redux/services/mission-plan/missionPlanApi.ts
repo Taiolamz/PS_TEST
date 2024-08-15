@@ -100,10 +100,18 @@ export const missionPlanApi = baseApi.injectEndpoints({
         }
       },
     }),
+    createBoundaries: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/boundary`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
 export const {
+  useCreateBoundariesMutation,
   useCreateFinancialYearMutation,
   useAddStrategicIntentMutation,
   useLazyGetMyMissionPlanQuery,
