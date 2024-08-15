@@ -107,6 +107,13 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    submitPreviewedMissionPlan: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/${payload?.id}/submit`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -123,4 +130,5 @@ export const {
   useCreateMissionStatementMutation,
   useCreateMeasureOfSuccessMutation,
   useCreateSpecifiedTaskMutation,
+  useSubmitPreviewedMissionPlanMutation,
 } = missionPlanApi;
