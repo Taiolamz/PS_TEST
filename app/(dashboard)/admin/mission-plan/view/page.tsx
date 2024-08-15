@@ -62,10 +62,12 @@ const SingleMissionPlan = () => {
     isFetching: isFetchingSummary,
     error: summaryError,
   }: any = useGetAllOrganizationMissionPlanSummaryQuery({
+    params: {
+      subsidiary: subsidiary,
+      department: departments,
+      unit: units,
+    },
     fiscal_year_id: id,
-    subsidiary: subsidiary,
-    department: departments,
-    unit: units,
   });
 
   const {
@@ -74,13 +76,15 @@ const SingleMissionPlan = () => {
     isFetching: isFetchingEmployee,
     error: employeeError,
   }: any = useGetAllOrganizationEmployeeMissionPlanQuery({
+    params: {
+      subsidiary: subsidiary,
+      department: departments,
+      unit: units,
+      search: search,
+      status: filter,
+      sort_by: sort,
+    },
     fiscal_year_id: id,
-    subsidiary: subsidiary,
-    department: departments,
-    unit: units,
-    search: search,
-    status: filter,
-    sort_by: sort,
   });
 
   const {
