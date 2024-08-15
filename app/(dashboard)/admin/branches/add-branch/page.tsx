@@ -230,7 +230,15 @@ const AddBranch = () => {
                     user?.organization?.hierarchy
                   )?.includes("subsidiary")}
                   placeholder="Select subsidiary"
-                  options={subsidiaries}
+                  options={[
+                    {
+                      name: "",
+                      id: "",
+                      label: "Select subsidiary",
+                      value: "",
+                    },
+                    ...subsidiaries,
+                  ]}
                   selected={formik.values.subsidiary_id.name}
                   setSelected={handleSubsidiaryChange}
                   // setSelected={(value) =>
