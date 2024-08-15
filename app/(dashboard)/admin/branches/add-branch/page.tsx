@@ -43,7 +43,6 @@ const AddBranch = () => {
   const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
     {}
   );
-
   const handleHeadSelectChange = (selectedName: string) => {
     const selectedEmployee = (employees as AllStaff[]).find(
       (emp) => emp.name === selectedName
@@ -53,6 +52,10 @@ const AddBranch = () => {
       formik.setFieldValue("head.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
+    } else {
+      formik.setFieldValue("head.name", "");
+      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("head.id", "");
     }
   };
 
@@ -113,12 +116,18 @@ const AddBranch = () => {
                 label="Country"
                 isRequired
                 placeholder="Select country"
-                options={COUNTRIES_STATES?.map((item) => {
-                  return {
-                    label: item.name,
-                    value: item.name,
-                  };
-                })}
+                options={[
+                  {
+                    label: "Select Country",
+                    value: "",
+                  },
+                  ...COUNTRIES_STATES?.map((item) => {
+                    return {
+                      label: item.name,
+                      value: item.name,
+                    };
+                  }),
+                ]}
                 selected={formik.values.country}
                 setSelected={(value) => {
                   formik.setFieldValue("country", value);
@@ -128,7 +137,7 @@ const AddBranch = () => {
                   formik.setFieldValue("state", "");
                   setSelectedCountryData(countryData);
                 }}
-                // labelClass={labelClassName}
+                labelClass={labelClassName}
               />
 
               <CustomSelect
@@ -145,7 +154,7 @@ const AddBranch = () => {
                 )}
                 selected={formik.values.state}
                 setSelected={(value) => formik.setFieldValue("state", value)}
-                // labelClass={labelClassName}
+                labelClass={labelClassName}
               />
 
               {/* <CustomSelect
@@ -187,10 +196,18 @@ const AddBranch = () => {
               <CustomSelect
                 label="Head of Branch"
                 placeholder="Head of Branch"
-                options={employees}
+                options={[
+                  {
+                    label: "Head of Branch",
+                    value: "",
+                    name: "",
+                    id: "",
+                  },
+                  ...employees,
+                ]}
                 selected={formik.values.head.name}
                 setSelected={handleHeadSelectChange}
-                // labelClass={labelClassName}
+                labelClass={labelClassName}
                 // isRequired
               />
               <Input
@@ -219,7 +236,7 @@ const AddBranch = () => {
                   // setSelected={(value) =>
                   //   formik.setFieldValue("subsidiary.", value)
                   // }
-                  // labelClass={labelClassName}
+                  labelClass={labelClassName}
                 />
               )}
             </form>
