@@ -28,7 +28,7 @@ type CustomSelectType = {
   inputClass: string;
   errorClass: string;
   itemValue?: any;
-  key?: any;
+  keyId?: any;
   itemLabel?: string;
   name: any;
 };
@@ -48,6 +48,7 @@ export default function CustomMultiSelect({
   name,
   error,
   touched,
+  keyId,
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -107,11 +108,11 @@ export default function CustomMultiSelect({
           />
         </MultiSelectorTrigger>
         <MultiSelectorContent>
-          <MultiSelectorList>
+          <MultiSelectorList key={keyId}>
             {options?.map((option) => (
               <MultiSelectorItem
                 value={option?.value}
-                key={option.value}
+                key={keyId}
                 option={option}
                 checkedIcon={
                   <IoCheckbox

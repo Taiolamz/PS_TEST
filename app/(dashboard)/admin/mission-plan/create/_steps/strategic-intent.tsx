@@ -100,7 +100,6 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
       mission_plan_id,
     };
     try {
-      // console.log(transformedIntents);
       await addStrategicIntent(transformedIntents).unwrap();
       router.push(`${location}?ui=specified-intent`);
       toast.success("Strategic intent saved successfully");
@@ -128,14 +127,17 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
       (intent: any) => ({
         intent: intent.intent,
         id: intent.id,
-        behaviours: JSON.parse(intent.behaviours).map((behaviour: string) => ({
+        behaviours: intent?.behaviours?.map((behaviour: string) => ({
           id: uuidv4(),
           value: behaviour,
         })),
       })
     );
 
-    setInitialValues(intents);
+    setInitialValues({
+      intents,
+      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+    });
   }, [currentMissionPlan]);
 
   // This prevents an infinite loop by memoizing the values
@@ -143,7 +145,6 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     if (initialValues.intents?.length > 0) {
       return initialValues;
     }
-
     return {
       intents: [
         {
@@ -152,7 +153,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
           strategic_intent_id: "",
         },
       ],
-      mission_plan_id: "",
+      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
     };
   }, [initialValues]);
 
@@ -162,7 +163,6 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     validationSchema: setStrategicIntentsSchema,
     enableReinitialize: true,
   });
-  console.log(formik.values, initialVals);
 
   const errorIntents = formik.errors.intents as any;
   const touchedIntents = formik.touched.intents as any;

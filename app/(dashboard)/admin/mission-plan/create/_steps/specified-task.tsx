@@ -13,7 +13,7 @@ import {
   useFormik,
 } from "formik";
 import { LucidePlusCircle } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
@@ -70,7 +70,22 @@ const SpecifiedTask = () => {
   const location = usePathname();
   const dispatch = useAppDispatch();
 
-  const [initialValues, setInitialValues] = useState();
+  const uuidRef = useRef(uuidv4());
+
+  const [initialValues, setInitialValues] = useState({
+    tasks: [
+      {
+        id: uuidv4(),
+        task: "",
+        strategic_pillars: [],
+        success_measures: [],
+        start_date: "",
+        end_date: "",
+        is_main_effort: false,
+      },
+    ],
+    mission_plan_id: "",
+  });
   const [mainEffort, setMainEffort] = useState(EFFORT_DATA);
 
   const { mission_plan: mission_plan_info } = useAppSelector(
@@ -141,7 +156,7 @@ const SpecifiedTask = () => {
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
-    if (initialValues) {
+    if (initialValues?.tasks?.length > 0) {
       return {
         tasks: initialValues,
         mission_plan_id: mission_plan_info?.mission_plan?.id || "",
@@ -150,7 +165,7 @@ const SpecifiedTask = () => {
     return {
       tasks: [
         {
-          id: uuidv4(),
+          id: uuidRef.current,
           task: "",
           strategic_pillars: [],
           success_measures: [],
@@ -161,7 +176,7 @@ const SpecifiedTask = () => {
       ],
       mission_plan_id: mission_plan_info?.mission_plan?.id || "",
     };
-  }, [initialValues]);
+  }, [initialValues, mission_plan_info?.mission_plan?.id]);
 
   const handleFormSubmit = async (values: Data) => {
     const updatedData = {
