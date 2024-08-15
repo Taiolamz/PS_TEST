@@ -66,12 +66,63 @@ const AddDepartment = () => {
     if (selectedSub) {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+      formik.setFieldValue("branch_id", "");
     } else {
       formik.setFieldValue("subsidiary_id.name", "");
       formik.setFieldValue("subsidiary_id.id", "");
+      formik.setFieldValue("branch_id", "");
     }
   };
-  console.log(formik?.values);
+
+  const BRANCH_OPTION = ({ obj, SubId }: { obj: any; SubId?: string }) => {
+    let finalMapValue = [
+      {
+        value: "",
+        label: "Select Option",
+      },
+    ];
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
+    ) {
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
+      finalMapValue = [
+        {
+          label: "Select Branch",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else {
+      finalMapValue = [
+        {
+          label: "Select Branch",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...obj?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    }
+    return finalMapValue;
+  };
+  // console.log(
+  //   BRANCH_OPTION({
+  //     obj: branches,
+  //     SubId: formik?.values?.subsidiary_id?.id,
+  //   }),
+  //   "branch dropdown"
+  // );
+  // console.log(formik?.values);
   return (
     <>
       <DashboardLayout back headerTitle="Department">
@@ -201,7 +252,10 @@ const AddDepartment = () => {
                       ...subsidiaries,
                     ]}
                     selected={formik.values.subsidiary_id.name}
-                    setSelected={handleSubsidiaryChange}
+                    setSelected={(selectedName) => {
+                      handleSubsidiaryChange(selectedName);
+                      setSelectedBranch("");  
+                    }}
                     // setSelected={(value) =>
                     //   formik.setFieldValue("subsidiary.", value)
                     // }
@@ -218,15 +272,10 @@ const AddDepartment = () => {
                       user?.organization?.hierarchy
                     )?.includes("branch")}
                     placeholder="Select Branch"
-                    options={[
-                      {
-                        label: "Head of Department",
-                        value: "",
-                        name: "",
-                        id: "",
-                      },
-                      ...branches,
-                    ]}
+                    options={BRANCH_OPTION({
+                      obj: branches,
+                      SubId: formik?.values?.subsidiary_id?.id,
+                    })}
                     disabled={
                       formik?.values.subsidiary_id.name?.length === 0 &&
                       processInputAsArray(
@@ -236,10 +285,11 @@ const AddDepartment = () => {
                     selected={selectedBranch}
                     setSelected={(value) => {
                       setSelectedBranch(value);
-                      const selectedBranchId = branchDrop.filter(
-                        (chi) => chi.name === value
-                      )[0].branch_id;
-                      formik.setFieldValue("branch_id", selectedBranchId);
+                      // console.log(value, "selectedBranchId");
+                      // const selectedBranchId = branchDrop.filter(
+                      //   (chi) => chi.name === value
+                      // )[0].branch_id;
+                      formik.setFieldValue("branch_id", value);
                     }}
                     labelClass={labelClassName}
                   />
