@@ -9,7 +9,7 @@ import TogglePassword from "@/components/toggle-password";
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import EmployeeInviteLayout from "../../onboarding/_components/invite-layout";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const OrganizationInvite = () => {
   const router = useRouter();
@@ -24,8 +24,12 @@ const OrganizationInvite = () => {
   } = useEmployeeInvite();
   const [showPassword, setShowPassword] = useState(false);
   const btnClass = "font-normal py-0 h-[32px]  transition-all duration-300 ";
+
   return (
-    <EmployeeInviteLayout>
+    <EmployeeInviteLayout
+      orgLogo={(invitedUser as InvitedUser)?.organization?.logo}
+      orgName={(invitedUser as InvitedUser)?.organization?.name}
+    >
       <form
         onSubmit={formik.handleSubmit}
         autoComplete="off"
@@ -33,7 +37,6 @@ const OrganizationInvite = () => {
       >
         <Input
           label="First Name"
-          labelClass="pb-0"
           type="text"
           placeholder="First Name"
           id="first_name"
@@ -45,7 +48,6 @@ const OrganizationInvite = () => {
         />
         <Input
           label="Last Name"
-          labelClass="pb-0"
           type="text"
           placeholder="Last Name"
           id="last_name"
@@ -58,7 +60,6 @@ const OrganizationInvite = () => {
 
         <Input
           label="Email"
-          labelClass="pb-0"
           type="text"
           placeholder="Email"
           id="email"
@@ -72,7 +73,6 @@ const OrganizationInvite = () => {
         <div className="relative">
           <Input
             isRequired
-            labelClass="pb-0"
             label="Password"
             id="password"
             name="password"

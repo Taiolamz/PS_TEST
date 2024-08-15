@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import MeasureOfSuccessTable from "../../../../_components/measure-of-success-table";
 import {
   measureColumns,
@@ -8,6 +8,7 @@ import {
 type Props = {};
 
 const MissionStatement = (props: Props) => {
+  const measureColumnData = useMemo(() => measureColumns(), []);
   return (
     <div className="">
       <section className="border w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem] rounded-[0.5rem]">
@@ -39,7 +40,7 @@ const MissionStatement = (props: Props) => {
         <div className="w-[76%] mx-auto mt-9">
           <MeasureOfSuccessTable
             data={measuresData}
-            columns={measureColumns}
+            columns={measureColumnData}
             isPresentationView
           />
         </div>{" "}
