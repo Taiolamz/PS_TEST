@@ -47,13 +47,7 @@ const MyMissionPlan = () => {
           isPreview: true,
         })
       );
-    } else {
-      dispatch(
-        updateMissionPlanPreview({
-          isPreview: false,
-        })
-      );
-    }
+    } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
@@ -80,7 +74,7 @@ const MyMissionPlan = () => {
           </div>
         </EmptyState>
       ) : (
-        <Preview />
+        <Preview data={my_mission_plan?.data?.mission_plan}/>
       )}
     </div>
   );
