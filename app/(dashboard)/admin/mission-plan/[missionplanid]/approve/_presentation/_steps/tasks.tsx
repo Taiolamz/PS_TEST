@@ -7,7 +7,9 @@ const Tasks = () => {
     <div className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
       <section className="">
         {" "}
-        <h2 className="text-primary font-medium text-2xl">Specified/Implied Task</h2>
+        <h2 className="text-primary font-medium text-2xl">
+          Specified/Implied Task
+        </h2>
         <div className="w-[77%] mx-auto overflow-x-auto">
           <div>
             {/* Table */}
@@ -18,11 +20,11 @@ const Tasks = () => {
                     <p className="col-span-1 justify-self-start text-primary text-xs font-medium">
                       {task.id}
                     </p>
-                    <h3 className="col-span-4  text-primary text-sm font-medium whitespace-nowrap">
+                    <h3 className="col-span-4  justify-self-start 2xl:justify-self-center text-primary text-sm font-medium whitespace-nowrap">
                       {task.goal}
                     </h3>
                   </div>{" "}
-                  <table className="min-w-full">
+                  <table className="min-w-full text-xs">
                     <thead>
                       <tr className="bg-[#F4F4F4] text-left">
                         <th className="px-4 py-2 border-b">S/N</th>
@@ -51,14 +53,14 @@ const Tasks = () => {
                             {item.pillar}
                           </td>
                           <td
-                            className={`px-4 py-2 ${
+                            className={` px-4 py-2 ${
                               index % 2 === 0 && "border-r border-[#E5E9EB]"
                             }`}
                           >
                             {item.task}
                           </td>
                           <td
-                            className={`px-4 py-2 ${
+                            className={` px-4 py-2 ${
                               index % 2 === 0 && "border-r border-[#E5E9EB]"
                             }`}
                           >
