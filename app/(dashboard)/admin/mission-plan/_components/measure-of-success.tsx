@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import MeasureOfSuccessTable from "./measure-of-success-table";
 import {
   measureColumns,
@@ -13,6 +13,7 @@ type Props = {
 };
 
 const MeasureOfSuccess = ({ setShowTextArea, showTextArea }: Props) => {
+  const measureColumnData = useMemo(() => measureColumns(), []);
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -23,7 +24,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea }: Props) => {
           <div className="basis-3/4">
             <MeasureOfSuccessTable
               data={measuresData}
-              columns={measureColumns}
+              columns={measureColumnData}
             />
           </div>
           <div className="flex gap-2.5 mr-4">
