@@ -148,34 +148,36 @@ export default function DrawerComment({
                 </p>
               </div>
             ) : (
-              allComment?.data?.map((item: any) => (
-                <div
-                  key={item}
-                  className="border border-custom-divider w-full bg-custom-bg rounded-md p-[15px]"
-                >
-                  <div className="flex justify-between mb-2">
-                    <div className="flex items-center gap-x-[7px]">
-                      <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
-                        <span className="text-white font-semibold uppercase text-xs">
-                          {returnInitial(item?.staff_member?.name)}
-                        </span>
+              <div className="space-y-4">
+                {allComment?.data?.map((item: any) => (
+                  <div
+                    key={item}
+                    className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
+                  >
+                    <div className="flex justify-between mb-2">
+                      <div className="flex items-center gap-x-[7px]">
+                        <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
+                          <span className="text-white font-semibold uppercase text-xs">
+                            {returnInitial(item?.staff_member?.name)}
+                          </span>
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="text-sm font-medium text-custom-dark-gray">
+                            {item?.staff_member?.name}
+                          </h3>
+                          <p className="text-[10px] font-light text-custom-gray-scale-400">
+                            {formatTimestamp(item?.created_at)}
+                          </p>
+                        </div>
                       </div>
-                      <div className="space-y-1">
-                        <h3 className="text-sm font-medium text-custom-dark-gray">
-                          {item?.staff_member?.name}
-                        </h3>
-                        <p className="text-[10px] font-light text-custom-gray-scale-400">
-                          {formatTimestamp(item?.created_at)}
-                        </p>
-                      </div>
+                      <span className="size-1.5 bg-custom-red rounded-full" />
                     </div>
-                    <span className="size-1.5 bg-custom-red rounded-full" />
+                    <div className="text-[13px] text-custom-ash">
+                      {item?.comment}
+                    </div>
                   </div>
-                  <div className="text-[13px] text-custom-ash">
-                    {item?.comment}
-                  </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </section>
         </main>

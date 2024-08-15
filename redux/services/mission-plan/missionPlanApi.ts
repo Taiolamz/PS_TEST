@@ -100,10 +100,25 @@ export const missionPlanApi = baseApi.injectEndpoints({
         }
       },
     }),
+    createBoundaries: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/boundary`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    submitPreviewedMissionPlan: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/${payload?.id}/submit`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
 export const {
+  useCreateBoundariesMutation,
   useCreateFinancialYearMutation,
   useAddStrategicIntentMutation,
   useLazyGetMyMissionPlanQuery,
@@ -115,4 +130,5 @@ export const {
   useCreateMissionStatementMutation,
   useCreateMeasureOfSuccessMutation,
   useCreateSpecifiedTaskMutation,
+  useSubmitPreviewedMissionPlanMutation,
 } = missionPlanApi;

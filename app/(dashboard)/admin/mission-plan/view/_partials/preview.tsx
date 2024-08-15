@@ -4,7 +4,7 @@ import {
   MissionWrapper,
   SpecifiedMission,
 } from "@/components/fragment";
-import React from "react";
+import React, { useMemo } from "react";
 import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import { format } from "date-fns";
 import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
@@ -61,6 +61,8 @@ const Preview = ({ data }: dataProp) => {
         item,
       };
     });
+
+  const measureColumnData = useMemo(() => measureColumns(), []);
 
   const SpecifiedData =
     specified_tasks.length !== null &&
@@ -167,7 +169,10 @@ const Preview = ({ data }: dataProp) => {
           title="Measure of Success"
           status={measure_of_success[0]?.status}
         >
-          <MeasureOfSuccessTable data={MeasureData} columns={measureColumns} />
+          <MeasureOfSuccessTable
+            data={MeasureData}
+            columns={measureColumnData}
+          />
         </MissionWrapper>
       )}
       {strategic_intents.length !== null && (
