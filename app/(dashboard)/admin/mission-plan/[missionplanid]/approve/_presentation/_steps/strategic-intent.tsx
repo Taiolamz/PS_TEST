@@ -4,7 +4,7 @@ type Props = {};
 
 const StrategicIntent = (props: Props) => {
   return (
-    <div className="border w-full mx-auto text-center mb-10 pb-[4.25rem] pt-[2.625rem]">
+    <div className="border rounded-[0.5rem] w-full mx-auto text-center mb-10 pb-[4.25rem] pt-[2.625rem]">
       <section className="">
         {" "}
         <h2 className="text-primary font-medium text-2xl mb-[1.375rem]">

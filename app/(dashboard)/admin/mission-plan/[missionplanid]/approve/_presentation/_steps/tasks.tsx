@@ -4,7 +4,7 @@ import React from "react";
 
 const Tasks = () => {
   return (
-    <div className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
+    <div className="border rounded-[0.5rem] w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
       <section className="">
         {" "}
         <h2 className="text-primary font-medium text-2xl">
