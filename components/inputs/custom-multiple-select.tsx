@@ -25,6 +25,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
+import { ErrorMessage } from "formik";
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -68,6 +69,7 @@ interface MultiSelectProps
   maxCount?: number;
   modalPopover?: boolean;
   asChild?: boolean;
+  name?: string;
   label?: string;
   className?: string;
   badgeClassName?: string;
@@ -100,6 +102,7 @@ export const CustomMultipleSelect = React.forwardRef<
       badgeClassName,
       placeholderClass,
       error,
+      name,
       touched,
       ...props
     },
@@ -215,23 +218,24 @@ export const CustomMultipleSelect = React.forwardRef<
             {selectedValues.length > 0 ? (
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center gap-1">
-                  {selectedValues.slice(0, maxCount).map((value) => {
+                  {selectedValues.slice(0, maxCount)?.map((value) => {
                     const option = options.find((o) => o.value === value);
                     const IconComponent = option?.icon;
                     return (
                       <Badge
                         key={value}
                         className={cn(
+                          "p-0 px-3 ",
                           isAnimating ? "animate-bounce" : "",
                           badgeClassName
                         )}
                       >
                         {IconComponent && (
-                          <IconComponent className="h-3 w-3 mr-2" />
+                          <IconComponent className="h-1 w-1 mr-2" />
                         )}
                         {option?.label}
                         <XCircle
-                          className="ml-2 h-4 w-4 cursor-pointer"
+                          className="ml-2 h-3 w-3 cursor-pointer"
                           onClick={(event) => {
                             event.stopPropagation();
                             toggleOption(value);
@@ -285,6 +289,10 @@ export const CustomMultipleSelect = React.forwardRef<
             )}
           </Button>
         </PopoverTrigger>
+        <span className={cn("text-xs text-red-500 hidden", error && "block")}>
+          {error && touched && error}
+        </span>
+
         <PopoverContent
           className="w-auto p-0"
           align="start"

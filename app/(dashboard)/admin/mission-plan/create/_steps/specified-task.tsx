@@ -133,22 +133,58 @@ const SpecifiedTask = () => {
     (state) => state?.mission_plan?.mission_plan
   );
 
+  const mappedStrategicPillars = useMemo(
+    () =>
+      active_fy_info
+        ? active_fy_info?.strategic_pillars?.map((item: any) => {
+            return {
+              label: item.title,
+              id: item.id,
+              value: item.id,
+              color: "default",
+            };
+          })
+        : [],
+    [active_fy_info]
+  );
+
+  const mappedSuccessMeasures = useMemo(
+    () =>
+      mission_plan
+        ? mission_plan_info?.mission_plan?.measure_of_success?.map(
+            (item: any) => {
+              return {
+                label: `${item.measure} - ${item.target} (${item.unit})`,
+                id: item.id,
+                value: item.id,
+                color: "default",
+              };
+            }
+          )
+        : [],
+    [mission_plan]
+  );
+
   // This sets the intial saved values
   useEffect(() => {
     const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
       (task: any) => ({
         id: task.id || uuidv4(),
         task: task.task,
-        strategic_pillars: mappedStrategicPillars?.filter(
-          (obj: { id: any }) =>
-            mappedStrategicPillars ??
-            JSON.parse(task.strategic_pillars).includes(obj.id)
-        ),
-        success_measures: mappedSuccessMeasures?.filter(
-          (obj: { id: any }) =>
-            mappedStrategicPillars ??
-            JSON.parse(task.success_measures).includes(obj.id)
-        ),
+        strategic_pillars: mappedStrategicPillars
+          .filter((itemA: { id: any }) =>
+            task.strategic_pillars.some(
+              (itemB: { id: any }) => itemB.id === itemA.id
+            )
+          )
+          .map((item: { id: any }) => item.id),
+        success_measures: mappedSuccessMeasures
+          .filter((itemA: { id: any }) =>
+            task.success_measures.some(
+              (itemB: { id: any }) => itemB.id === itemA.id
+            )
+          )
+          .map((item: { id: any }) => item.id),
         start_date: task.start_date,
         end_date: task.end_date,
         is_main_effort: task.is_main_effort ? true : false,
@@ -156,11 +192,11 @@ const SpecifiedTask = () => {
     );
 
     setInitialValues(tasks);
-  }, [mission_plan_info]);
+  }, [mappedStrategicPillars, mappedSuccessMeasures, mission_plan_info]);
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
-    if (initialValues?.tasks?.length > 0) {
+    if (initialValues) {
       return {
         tasks: initialValues,
         mission_plan_id: mission_plan_info?.mission_plan?.id || "",
@@ -180,7 +216,7 @@ const SpecifiedTask = () => {
       ],
       mission_plan_id: mission_plan_info?.mission_plan?.id || "",
     };
-  }, [initialValues, mission_plan_info?.mission_plan?.id]);
+  }, [initialValues]);
 
   const handleFormSubmit = async (values: Data) => {
     const updatedData = {
@@ -241,38 +277,6 @@ const SpecifiedTask = () => {
     | undefined;
 
   const errorTasks = formik.errors.tasks as any;
-
-  const mappedStrategicPillars = useMemo(
-    () =>
-      active_fy_info
-        ? active_fy_info?.strategic_pillars?.map((item: any) => {
-            return {
-              label: item.title,
-              id: item.id,
-              value: item.id,
-              color: "default",
-            };
-          })
-        : [],
-    [active_fy_info]
-  );
-
-  const mappedSuccessMeasures = useMemo(
-    () =>
-      mission_plan
-        ? mission_plan_info?.mission_plan?.measure_of_success?.map(
-            (item: any) => {
-              return {
-                label: `${item.measure} - ${item.target} (${item.unit})`,
-                id: item.id,
-                value: item.id,
-                color: "default",
-              };
-            }
-          )
-        : [],
-    [mission_plan]
-  );
 
   useEffect(() => {
     dispatch(
