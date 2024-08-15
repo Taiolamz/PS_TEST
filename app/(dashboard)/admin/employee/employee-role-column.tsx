@@ -102,8 +102,8 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     header: () => <div className="text-right">Line Manager</div>,
     cell: ({ row }) => (
       <div className="capitalize text-right">
-        {row.getValue("line_manager")
-          ? row.getValue("line_manager")
+        {row.getValue("line_manager_name")
+          ? row.getValue("line_manager_name")
           : "Not Assigned"}
       </div>
     ),

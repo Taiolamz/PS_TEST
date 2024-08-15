@@ -52,6 +52,10 @@ const AddDepartment = () => {
       formik.setFieldValue("head_of_department.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
       formik.setFieldValue("head_of_department.id", selectedEmployee.id);
+    } else {
+      formik.setFieldValue("head_of_department.name", "");
+      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("head_of_department.id", "");
     }
   };
 
@@ -62,9 +66,12 @@ const AddDepartment = () => {
     if (selectedSub) {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    } else {
+      formik.setFieldValue("subsidiary_id.name", "");
+      formik.setFieldValue("subsidiary_id.id", "");
     }
   };
-
+  console.log(formik?.values);
   return (
     <>
       <DashboardLayout back headerTitle="Department">
@@ -149,10 +156,18 @@ const AddDepartment = () => {
                 <CustomSelect
                   label="Head of Department"
                   placeholder="Head of Department"
-                  options={employees}
+                  options={[
+                    {
+                      label: "Head of Department",
+                      value: "",
+                      name: "",
+                      id: "",
+                    },
+                    ...employees,
+                  ]}
                   selected={formik.values.head_of_department.name}
                   setSelected={handleHeadSelectChange}
-                  // labelClass={labelClassName}
+                  labelClass={labelClassName}
                   // isRequired
                 />
                 <Input
@@ -176,13 +191,21 @@ const AddDepartment = () => {
                       user?.organization?.hierarchy
                     )?.includes("subsidiary")}
                     placeholder="Select subsidiary"
-                    options={subsidiaries}
+                    options={[
+                      {
+                        name: "",
+                        id: "",
+                        label: "Select subsidiary",
+                        value: "",
+                      },
+                      ...subsidiaries,
+                    ]}
                     selected={formik.values.subsidiary_id.name}
                     setSelected={handleSubsidiaryChange}
                     // setSelected={(value) =>
                     //   formik.setFieldValue("subsidiary.", value)
                     // }
-                    // labelClass={labelClassName}
+                    labelClass={labelClassName}
                   />
                 )}
 
@@ -195,7 +218,21 @@ const AddDepartment = () => {
                       user?.organization?.hierarchy
                     )?.includes("branch")}
                     placeholder="Select Branch"
-                    options={branches}
+                    options={[
+                      {
+                        label: "Head of Department",
+                        value: "",
+                        name: "",
+                        id: "",
+                      },
+                      ...branches,
+                    ]}
+                    disabled={
+                      formik?.values.subsidiary_id.name?.length === 0 &&
+                      processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("subsidiary")
+                    }
                     selected={selectedBranch}
                     setSelected={(value) => {
                       setSelectedBranch(value);
