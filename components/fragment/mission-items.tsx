@@ -1,3 +1,5 @@
+import { formatBehaviours } from "@/utils/helpers";
+
 interface missionItems {
   title: string;
   description: [
@@ -6,38 +8,43 @@ interface missionItems {
       value: string;
     }
   ];
+  impliedTask?: []
 }
 interface dataProp {
   data: any;
+  lastColumn?: boolean;
 }
 
-const MissionItems = ({ data }: dataProp) => {
+const MissionItems = ({ data, lastColumn }: dataProp) => {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-[10px]">
       {data?.map(({ title, description }: missionItems, index: string) => {
         return (
           <div key={index} className="text-[var(--text-secondary)] text-sm">
-            <div className="text-sm font-normal leading-relaxed">
-              <h4>- {title}</h4>
-            </div>
+            {title !== null && title !== undefined && (
+              <div className="text-sm font-normal leading-relaxed capitalize">
+                <h4>- {title}</h4>
+              </div>
+            )}
             <div className="gap-[5px] flex flex-col pt-[5px]">
               {description !== undefined &&
                 description.map(({ key, value }, index) => {
                   return (
-                    <div
-                      className="pl-[1rem] leading-relaxed "
-                      key={index}
-                    >
+                    <div className="pl-[1rem] leading-relaxed " key={index}>
                       <p className="flex gap-[5px] leading-relaxed text-sm">
-                        <span className="font-[400]">
+                        <span className="font-[400] capitalize">
                           {key}
-                          {index + 1 !== description.length ? (
+                          {lastColumn === true ? (
+                            <span> : </span>
+                          ) : index + 1 !== description.length ? (
                             <span> : </span>
                           ) : (
                             ""
                           )}
                         </span>
-                        <span className="font-[300]">{value}</span>
+                        <span className="font-[300]">
+                          {formatBehaviours(value)}
+                        </span>
                       </p>
                     </div>
                   );
