@@ -146,11 +146,40 @@ const ChecklistOverviewContent = () => {
     }
   }, [user]);
 
+  const getValueNum = (param: any) => {
+    let value;
+    if (param) {
+      const val = Number(param);
+      value = val;
+    } else {
+      value = 0;
+    }
+    // console.log(value);
+
+    return value;
+  };
+
+  const getPercentageFunc = () => {
+    const posibleTotal =
+      getValueNum(checklist?.branch_count) +
+      getValueNum(checklist?.subsidiary_count) +
+      getValueNum(checklist?.unit_count) +
+      getValueNum(checklist?.department_count);
+    const totalValue = getListToUse(checklistDetails[0]?.items)?.length + 3;
+    const totalPercentage = Math.round((posibleTotal / totalValue) * 100);
+    // console.log(totalPercentage);
+    return totalPercentage;
+    // console.log(posibleTotal);
+    // console.log(totalValue);
+  };
+
   return (
     <div
       onClick={() => {
+        getPercentageFunc();
         console.log(checklist);
-        console.log(user?.organization?.hierarchy);
+        // console.log(user?.organization?.hierarchy);
+        // console.log(getPercentageFunc());
       }}
       className="flex flex-col gap-3 w-[768px]"
     >
@@ -165,10 +194,10 @@ const ChecklistOverviewContent = () => {
         </div>
         <div className="flex gap-2 items-center">
           <p className="text-warning text-sm">{`${
-            checklist?.completion_percent || 0
-          } completed`}</p>
+            getPercentageFunc() || 0
+          }% completed`}</p>
           <Progress
-            value={formatChecklistPercent(checklist?.completion_percent)}
+            value={getPercentageFunc()}
             className="w-[150px] h-2 bg-custom-bg *:bg-warning"
           />
         </div>
@@ -180,12 +209,31 @@ const ChecklistOverviewContent = () => {
             <div
               key={idx}
               onClick={() => {
-                if (!isAllChecked && Number(items?.length) > 0) {
+                if (!isAllChecked && Number(items?.length) > 0 && idx === 0) {
                   router?.push(getNextLink(getListToUse(items))[0]?.link);
                   return;
+                  // console.log("first");
                 }
-                if (!items && path && !isAllChecked) {
-                  router?.push(path);
+                if (
+                  getNextLink(getListToUse(checklistDetails[0]?.items))
+                    ?.length < 1 &&
+                  !items &&
+                  path &&
+                  !isAllChecked &&
+                  idx === 1
+                ) {
+                  router?.push(ADMIN.ADD_EMPLOYEE);
+                }
+                if (
+                  Number(checklist?.employee_count) > 1 &&
+                  getNextLink(getListToUse(checklistDetails[0]?.items))
+                    ?.length < 1 &&
+                  !isAllChecked &&
+                  Number(items?.length) > 0 &&
+                  idx === 2
+                ) {
+                  router?.push(getNextLink(getListToUse(items))[0]?.link);
+                  return;
                 }
               }}
               className="bg-custom-gray-scale-white p-10 pl-8 hover:scale-[1.02] transition-all duration-300"
