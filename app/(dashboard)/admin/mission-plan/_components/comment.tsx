@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import { BsArrowUpCircleFill } from "react-icons/bs";
+import { FaX } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdCancel, MdChevronLeft, MdChevronRight } from "react-icons/md";
 
@@ -37,11 +38,12 @@ type Props = {
   id?: string;
   name?: string;
   label?: string;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const Comment = ({ id, name, label }: Props) => {
+const Comment = ({ id, name, label, showTextArea, setShowTextArea }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showTextArea, setShowTextArea] = useState(false);
 
   const handleNext = () => {
     if (currentIndex < comments.length - (showTextArea ? 1 : 2)) {
@@ -105,9 +107,9 @@ const Comment = ({ id, name, label }: Props) => {
                 {label}
               </label>
               <div className="flex items-center gap-1">
-                <MdCancel
+                <FaX
                   color="red"
-                  size={19}
+                  size={12}
                   onClick={() => setShowTextArea(false)}
                 />
                 <BsArrowUpCircleFill
@@ -121,7 +123,7 @@ const Comment = ({ id, name, label }: Props) => {
               name="comment"
               placeholder="Input Comment"
               rows={3}
-              className="bg-white border-0 focus:border-0 focus-visible:ring-0"
+              className="bg-white border-0 focus:border-0 focus-visible:ring-0 text-sm"
             />
           </div>
         )}
