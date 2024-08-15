@@ -76,24 +76,24 @@ const headOfDepartment = [
 const { ADMIN } = routesPath;
 
 export const useDepartment = ({ cancelPath }: Prop) => {
-  const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
-    useGetSubsidiariesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
-  const { data: branchesData, isLoading: isLoadingBranches } =
-    useGetBranchesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
+  // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
+  //   useGetSubsidiariesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
+  // const { data: branchesData, isLoading: isLoadingBranches } =
+  //   useGetBranchesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
   const { data: dropdownData, isLoading: isLoadingDropdown }: any =
     useGetAllOrganizationMissionPlanDropdownQuery({});
 
@@ -256,9 +256,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     employeeDrop,
     employees: handleFormatDropdown(employees),
     stateDrop,
-    branchDrop,
-    isLoadingSubsidiaries,
-    isLoadingBranches,
+    branchDrop, 
+    // isLoadingBranches,
     isLoadingStates,
   };
 };

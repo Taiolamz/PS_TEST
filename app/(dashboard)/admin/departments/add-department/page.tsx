@@ -31,8 +31,7 @@ const AddDepartment = () => {
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
-    isCreatingDepartment,
-    isLoadingSubsidiaries,
+    isCreatingDepartment, 
     branches,
     branchDrop,
     headOfDepartment,
@@ -285,10 +284,6 @@ const AddDepartment = () => {
                     selected={selectedBranch}
                     setSelected={(value) => {
                       setSelectedBranch(value);
-                      // console.log(value, "selectedBranchId");
-                      // const selectedBranchId = branchDrop.filter(
-                      //   (chi) => chi.name === value
-                      // )[0].branch_id;
                       formik.setFieldValue("branch_id", value);
                     }}
                     labelClass={labelClassName}
