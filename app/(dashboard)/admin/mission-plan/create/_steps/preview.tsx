@@ -49,9 +49,6 @@ const MissionDetailPreview = ({
     [isFetchingMissionPlan]
   );
 
-  console.log(missionDetails, "mission details");
-  console.log(missionData?.strategic_intents, "mission intent");
-
   const [submitPreviewedMissionPlan, { isLoading: isSubmittingMissionPlan }] =
     useSubmitPreviewedMissionPlanMutation();
 
@@ -106,7 +103,7 @@ const MissionDetailPreview = ({
           />
           <MissionWrapper
             title="Measure of Success"
-            status="rejected"
+            status={missionData?.measure_of_success?.[0]?.status}
             comment="2"
           >
             <MeasureOfSuccessTable
@@ -123,7 +120,10 @@ const MissionDetailPreview = ({
             link={`${location}?ui=strategic-intent`}
             index="3"
           />
-          <MissionWrapper title="Strategic Intent" status="pending">
+          <MissionWrapper
+            title="Strategic Intent"
+            status={missionData?.strategic_intents?.[0]?.status}
+          >
             <MissionItems
               // data={strategicIntent}
               strategicIntentData={missionData?.strategic_intents}
@@ -137,7 +137,10 @@ const MissionDetailPreview = ({
             link={`${location}?ui=specified-intent`}
             index="4"
           />
-          <MissionWrapper title="Specified Task " status="approved">
+          <MissionWrapper
+            title="Specified Task "
+            status={missionData?.specified_tasks?.[0]?.status}
+          >
             {/* <MissionItems data={missionData?.specified_tasks} /> */}
             <MissionItems
               // data={specificTask}
@@ -152,7 +155,10 @@ const MissionDetailPreview = ({
             link={`${location}?ui=implied-task`}
             index="5"
           />
-          <MissionWrapper title="Implied Task" status="approved">
+          <MissionWrapper
+            title="Implied Task"
+            status={missionData?.specified_tasks?.[0]?.status}
+          >
             <MissionItems
               impliedTask={missionData?.specified_tasks?.length > 0}
               specifiedTasksData={missionData?.specified_tasks}
