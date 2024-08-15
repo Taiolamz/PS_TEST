@@ -239,7 +239,10 @@ const MissionItems = ({
                     <p className="text-primary font-medium">Freedom</p>
                     <div className="flex flex-col gap-2 mt-2">
                       {(freedoms as string[])?.map((chi) => (
-                        <p>{`- ${chi}`}</p>
+                        <p
+                          key={idx}
+                          className="text-sm font-light"
+                        >{`- ${chi}`}</p>
                       ))}
                     </div>
                   </div>
@@ -247,7 +250,10 @@ const MissionItems = ({
                     <p className="text-primary font-medium">Constraints</p>
                     <div className="flex flex-col gap-2 mt-2">
                       {(constraints as string[])?.map((chi) => (
-                        <p>{`- ${chi}`}</p>
+                        <p
+                          key={idx}
+                          className="text-sm font-light"
+                        >{`- ${chi}`}</p>
                       ))}
                     </div>
                   </div>
