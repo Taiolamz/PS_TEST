@@ -142,7 +142,7 @@ const AddSubsidary = () => {
                   options={employees}
                   selected={formik.values.head.name}
                   setSelected={handleHeadSelectChange}
-                  // labelClass={labelClassName}
+                  labelClass={labelClassName}
                   // isRequired
                 />
                 <Input
