@@ -25,6 +25,7 @@ import { MissionContentDetails } from "../level/_component/checklist-steps";
 const { ADMIN } = routesPath;
 
 interface Section {
+  mapTitle: string;
   id: string;
   title: string;
   displayName: string;
@@ -41,6 +42,8 @@ const AddMissionPlanTemplate: React.FC = () => {
     openCancelModal,
     handleCancelDialog,
     isCreatingMissionPlanTemplate,
+    sections,
+    setSections,
   } = useMissionPlanTemplate({ cancelPath: cancelRoute });
 
   const handleMissionDialog = () => {
@@ -53,7 +56,7 @@ const AddMissionPlanTemplate: React.FC = () => {
   const [missionPlanTemplates, setMissionPlanTemplates] = useState<
     MissionContentDetails[]
   >([]);
-  const [sections, setSections] = useState<Section[]>([]);
+  // const [sections, setSections] = useState<Section[]>([]);
 
   const handleGetMissionPlanTemplates = () => {
     const selectedMissionPlanTemplates = localStorage.getItem(
@@ -76,6 +79,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "1",
       title: "Financial Year",
+      mapTitle: "financial_year",
       content: renderFinancialYear,
       displayName: "Name of Financial Year",
       isSelected: handleIsSelectedField()[0],
@@ -83,6 +87,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "2",
       title: "Mission Statement",
+      mapTitle: "mission_statement",
       content: renderMissionStatement,
       displayName: "Mission Statement",
       isSelected: handleIsSelectedField()[1],
@@ -90,6 +95,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "3",
       title: "Measure of Success",
+      mapTitle: "success_measures",
       content: renderMeasureOfSuccess,
       displayName: "Measure of Success",
       isSelected: handleIsSelectedField()[2],
@@ -97,6 +103,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "4",
       title: "Implied Task",
+      mapTitle:"implied_tasks",
       content: renderImpliedTask,
       displayName: "Implied Tasks",
       isSelected: handleIsSelectedField()[3],
@@ -104,6 +111,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "5",
       title: "Specified Task",
+      mapTitle:"specified_tasks",
       content: renderSpecifiedTask,
       displayName: "Specified Tasks",
       isSelected: handleIsSelectedField()[4],
@@ -111,6 +119,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "6",
       title: "Freedom & Constraints",
+      mapTitle:"boundaries",
       content: renderFreedomConstraints,
       displayName: "Freedom & Constraints",
       isSelected: handleIsSelectedField()[5],
@@ -118,6 +127,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "7",
       title: "Set Strategic Intent",
+      mapTitle: "strategic_intents",
       content: renderStrategicIntent,
       displayName: "Strategic Intent/Behaviour",
       isSelected: handleIsSelectedField()[6],
@@ -125,6 +135,7 @@ const AddMissionPlanTemplate: React.FC = () => {
     {
       id: "8",
       title: "Set Strategic Pillars",
+      mapTitle: "duration",
       content: renderStrategicPillars,
       displayName: "Strategic Pillars",
       isSelected: handleIsSelectedField()[7],
@@ -278,7 +289,7 @@ const AddMissionPlanTemplate: React.FC = () => {
             label="Unit"
             placeholder="Select unit"
             options={units}
-            selected={formik.values.measure_of_success.unit}
+            selected={formik.values.success_measures.unit}
             setSelected={(value) =>
               formik.setFieldValue("measure_of_success.unit", value)
             }
@@ -308,8 +319,8 @@ const AddMissionPlanTemplate: React.FC = () => {
           label="Implied Task"
           type="text"
           placeholder="Implied Task"
-          id="implied_task"
-          name="implied_task"
+          id="implied_tasks"
+          name="implied_tasks"
           onChange={formik.handleChange}
           className={`w-[425px]`}
           disabled
@@ -325,8 +336,8 @@ const AddMissionPlanTemplate: React.FC = () => {
           label="Specified Task"
           type="text"
           placeholder="Input Task"
-          id="specified_task"
-          name="specified_task"
+          id="specified_tasks"
+          name="specified_tasks"
           onChange={formik.handleChange}
           className={`w-[425px]`}
           disabled
@@ -395,6 +406,8 @@ const AddMissionPlanTemplate: React.FC = () => {
       </div>
     );
   }
+
+  console.log(sections, missionPlanTemplates, "sections checkings");
 
   return (
     <DashboardLayout back headerTitle="Create Mission Plan Template">
