@@ -281,3 +281,14 @@ export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>
 
 export const allObjValuesNotEmpty = (data: Dictionary) => Object.values(data).every((d) => d.trim() !== "")
 
+
+
+type DataObject = {
+  name: string;
+  required: boolean;
+  key: string;
+};
+
+export function extractNamesFromFormat(data: { [key: number]: DataObject }): string[] {
+  return Object.values(data).map((item) => item.name);
+}

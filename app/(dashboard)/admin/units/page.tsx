@@ -168,7 +168,7 @@ const Units = () => {
 
   const handleTemplateDownload = async (file: string) => {
     toast.loading("downloading...");
-    downloadUnitTemplate({ template: "Unit", format: file })
+    downloadUnitTemplate({ template: "unit", format: file })
       .unwrap()
       .then((payload) => {
         toast.dismiss();
@@ -222,7 +222,7 @@ const Units = () => {
         </DashboardModal>
 
         <DashboardModal
-          className={"w-[600px] max-w-full"}
+          className={`max-w-max`}
           open={openBulkUploadModal}
           onOpenChange={handleBulkUploadDialog}
         >
