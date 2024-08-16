@@ -39,7 +39,7 @@ const StrategicIntent = ({ setShowTextArea, showTextArea, data }: Props) => {
                   <Button
                     variant="outline"
                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                    onClick={() => setShowTextArea(true)}
+                    onClick={() => toggleComment(item.id)}
                   >
                     Reject
                   </Button>
