@@ -5,10 +5,16 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Comment from "./comment";
+import { formatToReadableDate } from "@/utils/helpers/date-formatter";
 
 type StrategicPillarsType = {
   id: string;
   title: string;
+};
+
+type ResourcesType = {
+  staff_member_id: string;
+  name: string;
 };
 
 type ImpliedTaskType = {
@@ -18,9 +24,9 @@ type ImpliedTaskType = {
   expected_outcome: string;
   weight: string;
   percentage: string;
-  resources: "Ayomipe, Segun";
-  start_date: "22nd July 2022";
-  end_date: "22nd July 2022";
+  resources: ResourcesType[];
+  start_date: string;
+  end_date: string;
 };
 
 type Task = {
@@ -46,42 +52,48 @@ const ImpliedTask = ({ data }: Props) => {
   };
   return (
     <div className="flex flex-col gap-10">
-      {data?.map((specifiedTask) => (
+      {data?.map((specifiedTask, index1) => (
         <React.Fragment key={specifiedTask.id}>
-          {specifiedTask?.implied_tasks?.map((item) => (
+          {specifiedTask?.implied_tasks?.map((item, index2) => (
             <section key={item?.id}>
               <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5 text-sm">
                 <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
-                  {/* {item.title} */}
+                  Implied Task {index1 + 1}
                 </h2>
                 <div className="mt-5 ml-1.5">
                   <h3 className="font-medium">- {item?.task}</h3>
                   <div className="flex justify-between items-end">
                     <div className="ml-3 flex flex-col gap-[0.3125rem]">
                       <p className="mt-2 font-light">
-                        <span className="font-normal">Specified Task:</span>{" "}
+                        <span className="font-normal">Specified Task : </span>{" "}
                         {specifiedTask?.task}
                       </p>
                       <p className="mt-1 font-light">
-                        <span className="font-normal">Expected Outcome:</span>{" "}
+                        <span className="font-normal">Expected Outcome : </span>{" "}
                         {item?.expected_outcome}
                       </p>
                       <p className="mt-1 font-light">
-                        <span className="font-normal">Weight:</span>{" "}
+                        <span className="font-normal">Weight : </span>{" "}
                         {item?.weight}
                       </p>
                       <p className="mt-1 font-light">
-                        <span className="font-normal">Percentage:</span>{" "}
-                        {item?.percentage}
+                        <span className="font-normal">Percentage : </span>{" "}
+                        {item?.percentage}%
                       </p>
                       <p className="mt-1 font-light">
-                        <span className="font-normal">Resource:</span>{" "}
+                        <span className="font-normal">Resources : </span>{" "}
                         {/* {item?.resources} */}
+                        {item?.resources?.map((item) => (
+                          <span key={item?.staff_member_id}>
+                            {item?.name},{" "}
+                          </span>
+                        ))}{" "}
                       </p>
                       <p className="mt-1 font-light">
                         <span className="font-normal">
                           {" "}
-                          {item.start_date} - {item.end_date}
+                          {formatToReadableDate(item.start_date)} -{" "}
+                          {formatToReadableDate(item?.end_date)}
                         </span>
                       </p>
                     </div>

@@ -2,10 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
+import { formatToReadableDate } from "@/utils/helpers/date-formatter";
 
 type StrategicPillarsType = {
   id: string;
   title: string;
+};
+
+type SuccessMeasuresType = {
+  id: string;
+  measure: string;
 };
 
 type Task = {
@@ -13,7 +19,7 @@ type Task = {
   task: string;
   specifiedTask: string;
   strategic_pillars: StrategicPillarsType[];
-  measure_of_success: string;
+  success_measures: SuccessMeasuresType[];
   start_date: string;
   end_date: string;
   is_main_effort: number;
@@ -44,18 +50,21 @@ const SpecifiedTasks = ({ data }: Props) => {
               <div className="flex justify-between items-end">
                 <div className="ml-3 mb-2.5 flex flex-col gap-[0.3125rem]">
                   <p className="mt-2 font-light">
-                    <span className="font-normal">Pillars: </span>
+                    <span className="font-normal">Pillars : </span>
                     {item?.strategic_pillars.map((item) => (
-                      <span key={item?.id}>{item?.title}</span>
+                      <span key={item?.id}>{item?.title}, </span>
                     ))}
                   </p>
                   <p className="mt-1 font-light">
-                    <span className="font-normal">Measures of success:</span>{" "}
-                    {item?.measure_of_success}
+                    <span className="font-normal">Measures of success :</span>{" "}
+                    {item?.success_measures?.map((item) => (
+                      <span key={item?.id}>{item?.measure}, </span>
+                    ))}{" "}
                   </p>
                   <p className="mt-1">
                     <span className="font-normal">
-                      {item.start_date} - {item?.end_date}
+                      {formatToReadableDate(item.start_date)} -{" "}
+                      {formatToReadableDate(item?.end_date)}
                     </span>
                   </p>
                 </div>
