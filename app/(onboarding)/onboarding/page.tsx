@@ -40,8 +40,9 @@ interface FormValues {
   closing_time: string;
   hierarchy: string;
   staff_levels: { name: string; level: string }[];
-  head_name: string;
-  head_email: string;
+  head_organization_first_name: string;
+  head_organization_last_name: string;
+  head_organization_email: string;
 }
 
 const Onboarding = () => {
@@ -135,8 +136,9 @@ const Onboarding = () => {
       closing_time: "",
       hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
-      head_email: "",
-      head_name: "",
+      head_organization_first_name: "",
+      head_organization_last_name: "",
+      head_organization_email: "",
     },
     validationSchema: OnboardingSchema,
     onSubmit: onSubmit,
