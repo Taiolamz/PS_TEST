@@ -278,3 +278,14 @@ export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>
   });
 }
 
+
+
+type DataObject = {
+  name: string;
+  required: boolean;
+  key: string;
+};
+
+export function extractNamesFromFormat(data: { [key: number]: DataObject }): string[] {
+  return Object.values(data).map((item) => item.name);
+}

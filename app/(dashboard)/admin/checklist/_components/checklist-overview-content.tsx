@@ -177,7 +177,7 @@ const ChecklistOverviewContent = () => {
     <div
       // onClick={() => {
       //   // getPercentageFunc();
-      //   // console.log(checklist);
+      //   console.log(checklist);
       //   // console.log(user?.organization?.hierarchy);
       //   // console.log(getPercentageFunc());
       // }}
@@ -194,10 +194,10 @@ const ChecklistOverviewContent = () => {
         </div>
         <div className="flex gap-2 items-center">
           <p className="text-warning text-sm">{`${
-            getPercentageFunc() || 0
+            formatChecklistPercent(checklist?.completion_percent) || 0
           }% completed`}</p>
           <Progress
-            value={getPercentageFunc()}
+            value={formatChecklistPercent(checklist?.completion_percent)}
             className="w-[150px] h-2 bg-custom-bg *:bg-warning"
           />
         </div>
