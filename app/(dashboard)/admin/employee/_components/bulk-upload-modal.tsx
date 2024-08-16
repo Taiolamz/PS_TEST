@@ -3,7 +3,10 @@ import { ManceLoader } from "@/components/custom-loader";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { extractNamesFromFormat, replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import {
+  extractNamesFromFormat,
+  replaceEmptyValuesWithPlaceholder,
+} from "@/utils/helpers";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 // import { getDataFromFileUpload } from "@/utils/helpers/TextExtract";
 import React, { useState } from "react";
@@ -61,7 +64,7 @@ const BulkUploadModal = ({
     15: { name: "Phone Number", required: true, key: "phone_number" },
     16: { name: "Staff Number", required: false, key: "staff_number" },
     17: { name: "Role", required: false, key: "role" },
-    18: { name: "Job Title", required: false, key: "job_title" },
+    18: { name: "New Employee", required: false, key: "new_employee" },
   };
   // const tableHeadlist = [
   //   "Name",
@@ -78,14 +81,25 @@ const BulkUploadModal = ({
     // console.log(data);
     if (data?.status === "failed") {
       toast.error(data?.message);
-      setValideFormat(false);
+      // setValideFormat(false);
       setTableBodyList([]);
       setValideFormat(false);
       setUploadedFile("");
     }
     if (data?.status === "success") {
+      // console.log(data?.array);
+
       setTableBodyList(data?.array);
-      setValideFormat(false);
+      setValideFormat(true);
+    }
+  };
+
+  const formatTableList = (list: any) => {
+    if (list?.length > 0) {
+      const newList = list.map((chi: any) => {
+        return { ...chi, new_employee: chi?.new_employee ? "TRUE" : "FALSE" };
+      });
+      return newList;
     }
   };
 
@@ -192,7 +206,7 @@ const BulkUploadModal = ({
                 tableBodyList?.length > 1 ? "s" : ""
               } ( ${tableBodyList?.length} )`}
               tableBodyList={replaceEmptyValuesWithPlaceholder(
-                tableBodyList,
+                formatTableList(tableBodyList),
                 "-----"
               )}
               hideSearchFilterBox
