@@ -137,16 +137,26 @@ const ImpliedTask = () => {
         ...chi,
         label: chi?.name,
         value: chi?.id,
+<<<<<<< HEAD
         id: chi?.id,
       })) || []
     );
   }, [employeesData]);
+=======
+      };
+    });
+    return data;
+  };
+
+  console.log(employeesData, "employees data");
+>>>>>>> d784150 (mission plan template fix)
 
   const handleGetMyMissionPlan = async () => {
     const payload = { id: FISCAL_YEAR_ID };
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
+<<<<<<< HEAD
         if (payload?.data?.mission_plan?.specified_tasks?.length > 0) {
           const impliedTasks = payload?.data?.mission_plan?.specified_tasks;
           const mappedTasks = formatTasks(impliedTasks);
@@ -154,6 +164,28 @@ const ImpliedTask = () => {
         }
       });
   };
+=======
+        console.log(payload?.data?.mission_plan?.specified_tasks, "payload");
+        if (payload?.data?.mission_plan?.specified_tasks?.length > 0) {
+          const impliedTasks = payload?.data?.mission_plan?.specified_tasks;
+          console.log(impliedTasks, "implied tasks");
+
+          // Pass impliedTasks to the formatter
+          const mappedTasks = formatTasks(impliedTasks);
+          console.log(mappedTasks, "mapped tasks");
+
+          // Update Formik state
+          formik.setFieldValue("tasks", mappedTasks);
+          setIsCollapsible(false);
+        }
+      });
+  };
+
+  console.log(
+    mission_plan?.data?.mission_plan?.specified_tasks,
+    "mission plan checkings"
+  );
+>>>>>>> d784150 (mission plan template fix)
 
   const initialValues = {
     tasks: [
@@ -161,17 +193,29 @@ const ImpliedTask = () => {
         task: "",
         user_id: "",
         specified_task_id: "",
-        implied_task_id: "",
+        implied_task_id: "", // Using uuid to generate a unique ID
         weight: "",
         percentage: "",
         start_date: "",
         end_date: "",
+<<<<<<< HEAD
         resources: [],
         expected_outcomes: [""],
+=======
+        resources: [], // Resources as an array of selected values
+        expected_outcomes: [""], // Expected outcomes as an array with initial empty string
+>>>>>>> d784150 (mission plan template fix)
       },
     ],
     mission_plan_id: mission_plan_info?.mission_plan?.id || "",
   };
+
+  // const formik = useFormik({
+  //   initialValues,
+  //   validationSchema,
+  //   onSubmit: handleSubmit,
+  //   enableReinitialize: true,
+  // });
 
   const formik = useFormik({
     initialValues,
@@ -181,6 +225,7 @@ const ImpliedTask = () => {
   });
 
   const formatTasks = (tasks: ImpliedTaskType[]) => {
+<<<<<<< HEAD
     const formattedTasks: any[] = [];
 
     tasks.forEach((task) => {
@@ -206,6 +251,37 @@ const ImpliedTask = () => {
             id: chi?.id || "",
             is_main_effort: chi?.is_main_effort || 0,
             strategic_pillars: chi?.strategic_pillars || [],
+=======
+    console.log(tasks, "tasks checkings");
+
+    const formattedTasks: any[] = [];
+
+    tasks.forEach((task) => {
+      console.log(task?.implied_tasks, "check this");
+
+      // Ensure implied_tasks is an array
+      if (Array.isArray(task?.implied_tasks)) {
+        task.implied_tasks.forEach((chi) => {
+          formattedTasks.push({
+            title: task.task || "", // Title from the main task
+            task: chi.task || "", // Description of the implied task
+            user_id: "", // Default to empty as it's not used
+            specified_task_id: chi.id || "", // ID of the implied task
+            implied_task_id: chi.id || "", // ID of the implied task (same as specified_task_id)
+            weight: chi.weight || "", // Weight of the implied task
+            percentage: chi.percentage || "", // Percentage of the implied task
+            start_date: chi.start_date || "", // Start date of the implied task
+            resources:
+              (chi.resources || []).map((resource: any) => ({
+                value: resource.staff_member_id,
+                label: resource.name,
+              })) || [], // Resources for the implied task
+            end_date: chi.end_date || "", // End date of the implied task
+            expected_outcomes: (chi.expected_outcome || []).join(", ") || "", // Expected outcomes of the implied task
+            id: chi.id || "", // ID of the implied task
+            is_main_effort: chi.is_main_effort || 0, // Main effort flag of the implied task
+            strategic_pillars: chi.strategic_pillars || [], // Strategic pillars for the implied task
+>>>>>>> d784150 (mission plan template fix)
           });
         });
       } else {
@@ -216,9 +292,39 @@ const ImpliedTask = () => {
       }
     });
 
+<<<<<<< HEAD
     return formattedTasks;
   };
 
+=======
+    console.log("Formatted tasks:", formattedTasks);
+    return formattedTasks;
+  };
+
+  console.log(mission_plan_info?.mission_plan?.id, "mission plan info");
+  console.log(specifiedTasks, "specified intent");
+  console.log(mission_plan_info, "mission plan update");
+
+  const [isCollapsible, setIsCollapsible] = useState(true);
+
+  // useEffect(() => {
+  //   handleGetMyMissionPlan();
+  //   if (mission_plan?.data?.mission_plan?.specified_tasks) {
+  //     const mappedTasks = formatTasks(
+  //       mission_plan?.data?.mission_plan?.specified_tasks
+  //     );
+  //     formik.setFieldValue("tasks", mappedTasks);
+  //     console.log(mappedTasks, "mappings");
+  //     setIsCollapsible(false);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   FISCAL_YEAR_ID,
+
+  //   mission_plan?.data?.mission_plan?.specified_tasks,
+  //   isCollapsible,
+  // ]);
+>>>>>>> d784150 (mission plan template fix)
   useEffect(() => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
@@ -392,6 +498,70 @@ const ImpliedTask = () => {
                                     </div>
                                   </div>
 
+                                  {/* <FieldArray
+                                    name={`tasks.${index}.expected_outcomes`}
+                                  >
+                                    {({
+                                      remove: removeOutcome,
+                                      push: pushOutcome,
+                                    }) => (
+                                      <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max mt-4">
+                                        {(Array.isArray(
+                                          formik.values.tasks[index]
+                                            .expected_outcomes
+                                        )
+                                          ? formik.values.tasks[index]
+                                              .expected_outcomes
+                                          : []
+                                        ).map((outcome, outcomeIndex) => (
+                                          <div
+                                            key={outcomeIndex}
+                                            className="items-center w-full relative"
+                                          >
+                                            <Input
+                                              type="text"
+                                              id={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                              label="Expected Outcomes"
+                                              labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                              onBlur={formik.handleBlur}
+                                              onChange={formik.handleChange}
+                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                              placeholder="Input Expected Outcomes"
+                                              className="mr-2 w-full md:w-[12rem] lg:w-[20rem]"
+                                              value={outcome}
+                                            />
+                                            <ErrorMessage
+                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                              className="text-red-500 text-xs mt-1"
+                                              component={"div"}
+                                            />
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                removeOutcome(outcomeIndex)
+                                              }
+                                              className="text-red-600 absolute left-[180px] md:left-[280px] lg:left-[285px] bottom-3 md:bottom-0 lg:bottom-3"
+                                            >
+                                              <LiaTimesSolid size={18} />
+                                            </button>
+                                          </div>
+                                        ))}
+                                        <button
+                                          type="button"
+                                          onClick={() => pushOutcome("")}
+                                          className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
+                                        >
+                                          <LucidePlusCircle
+                                            size={28}
+                                            className="mr-2"
+                                          />
+                                          <span className="text-[15px] font-normal whitespace-nowrap">
+                                            Add Outcomes
+                                          </span>
+                                        </button>
+                                      </div>
+                                    )}
+                                  </FieldArray> */}
                                   <FieldArray
                                     name={`tasks.${index}.expected_outcomes`}
                                   >

@@ -58,8 +58,13 @@ const MeasureOfSuccessTable: React.FC<MeasureOfSuccessTableProps> = ({
           ))}
         </TableHeader>
         <TableBody className="bg-transparent border-none">
+<<<<<<< HEAD
           {table?.getRowModel().rows.length > 0 ? (
             table?.getRowModel().rows.map((row) => (
+=======
+          {table.getRowModel().rows.length > 0 ? (
+            table.getRowModel().rows.map((row) => (
+>>>>>>> d784150 (mission plan template fix)
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
