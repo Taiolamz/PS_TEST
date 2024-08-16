@@ -22,3 +22,30 @@ export const formatDate = (timestamp: string): string => {
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
+
+export const formatTimestamp = (timestamp: string | number | Date) => {
+  const date = new Date(timestamp);
+  if (isNaN(date.getTime())) {
+    throw new Error("Invalid time");
+  }
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  const diffInSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+ let timeDiff: string;
+ if (diffInSeconds < 60) {
+   timeDiff = `${diffInSeconds} secs`;
+ } else if (diffInSeconds < 3600) {
+   timeDiff = `${Math.floor(diffInSeconds / 60)} mins`;
+ } else if (diffInSeconds < 86400) {
+   timeDiff = `${Math.floor(diffInSeconds / 3600)} hrs`;
+ } else {
+   timeDiff = `${Math.floor(diffInSeconds / 86400)} days`;
+ }
+
+  return `${formattedDate}, ${timeDiff}`;
+};

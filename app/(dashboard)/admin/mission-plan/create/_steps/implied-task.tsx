@@ -8,18 +8,22 @@ import CustomMultiSelect from "@/components/inputs/custom-multiselect";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { formatRMDatePicker } from "@/utils/helpers/date-formatter";
+import { formatDate } from "@/utils/helpers/date-formatter";
 import { ErrorMessage, FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { LiaTimesSolid } from "react-icons/lia";
 import { v4 as uuidv4 } from "uuid";
 import { useCreateImpliedTaskMutation } from "@/redux/services/mission-plan/impliedTaskApi";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/store";
+import { useLazyGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 
 type ImpliedTaskType = {
+  title?: string;
   task: string;
   user_id: string;
   specified_task_id: string;
@@ -30,16 +34,22 @@ type ImpliedTaskType = {
   end_date: string;
   resources: string[];
   expected_outcomes: string[];
+  id?: string;
+  is_main_effort?: boolean;
+  mission_plan_id?: string;
+  strategic_pillars?: {
+    label: string;
+    id: string;
+    value: string;
+    color: string;
+  }[];
 };
 
 const validationSchema = yup.object({
-  // mission_plan_id: yup.string().required("Mission plan ID is required"),
   tasks: yup.array().of(
     yup.object({
       task: yup.string().required("Task is required"),
-      resources: yup.string().required("Resources are required"),
       specified_task_id: yup.string(),
-      // implied_task_id: yup.string(),
       weight: yup.string().required("Weight is required"),
       percentage: yup.string().required("Percentage is required"),
       start_date: yup.string().required("Start date is required"),
@@ -50,7 +60,9 @@ const validationSchema = yup.object({
     })
   ),
 });
+
 const { ADMIN } = routesPath;
+
 const ImpliedTask = () => {
   const options = [
     { label: "React", value: "react", color: "#61dafb" },
@@ -61,12 +73,25 @@ const ImpliedTask = () => {
   const [createImpliedTask, { isLoading: isCreatingImpliedTask }] =
     useCreateImpliedTaskMutation();
   const router = useRouter();
+
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
-      // name: formik.values.strategic_intent,
-      // organization_id: organization?.id,
+      tasks: formik.values.tasks.map((task) => ({
+        task: task.task,
+        resources: task.resources.map(
+          (resource: { id: string }) => resource.id
+        ),
+        specified_task_id: task.specified_task_id || "",
+        implied_task_id: task.implied_task_id || uuidv4(),
+        weight: task.weight,
+        percentage: task.percentage,
+        start_date: task.start_date,
+        end_date: task.end_date,
+        expected_outcomes: task.expected_outcomes,
+      })),
     };
+
     await createImpliedTask(payload)
       .unwrap()
       .then(() => {
@@ -74,35 +99,107 @@ const ImpliedTask = () => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            // router.push();
+            router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
+            // router.push(ADMIN);
           }, 2000);
         });
       });
   };
 
-  const formik = useFormik({
-    initialValues: {
-      tasks: [
-        {
-          task: "",
-          user_id: "",
-          specified_task_id: "",
-          implied_task_id: "",
-          weight: "",
-          percentage: "",
-          start_date: "",
-          resources: [],
-          end_date: "",
-          expected_outcomes: [""],
-        },
-      ],
-      mission_plan_id: "string",
-      validationSchema: validationSchema,
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+  const { specified_intent } = mission_plan_info;
+
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetAllEmployeesQuery();
+
+  const handleFormatEmployeeDrop = () => {
+    const data = (employeesData as AllStaff[])?.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return data;
+  };
+
+  console.log(employeesData, "employees data");
+
+  const [
+    getMyMissionPlan,
+    {
+      data: mission_plan,
+      isLoading: isLoadingMissionPlan,
+      isFetching: isFetchingMissionPlan,
+      isSuccess: fetchedMissionPlan,
     },
+  ] = useLazyGetMyMissionPlanQuery({});
+
+  const handleGetMyMissionPlan = async () => {
+    const payload = { id: FISCAL_YEAR_ID };
+    getMyMissionPlan(payload)
+      .unwrap()
+      .then((payload) => {});
+  };
+
+  const initialValues = {
+    tasks: [
+      {
+        task: "",
+        user_id: "",
+        specified_task_id: "",
+        implied_task_id: "",
+        weight: "",
+        percentage: "",
+        start_date: "",
+        resources: [],
+        end_date: "",
+        expected_outcomes: [""],
+      },
+    ],
+    mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
     onSubmit: handleSubmit,
-    // validationSchema: validationSchema,
     enableReinitialize: true,
   });
+
+  const mapTasks = (tasks: ImpliedTaskType[]) => {
+    return tasks.map((task) => ({
+      title: task.task,
+      task: "",
+      user_id: "",
+      specified_task_id: task?.mission_plan_id,
+      implied_task_id: "",
+      weight: "",
+      percentage: "",
+      start_date: "",
+      resources: [],
+      end_date: "",
+      expected_outcomes: [""],
+      id: task.id,
+      is_main_effort: task.is_main_effort,
+      strategic_pillars: task.strategic_pillars,
+    }));
+  };
+
+  console.log(mission_plan_info?.mission_plan?.id, "mission plan info");
+  console.log(specified_intent, "specified intent");
+
+  useEffect(() => {
+    handleGetMyMissionPlan();
+    if (specified_intent?.tasks) {
+      const mappedTasks = mapTasks(specified_intent.tasks);
+      formik.setFieldValue("tasks", mappedTasks);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [FISCAL_YEAR_ID, specified_intent]);
 
   return (
     <div className="pr-4">
@@ -113,8 +210,9 @@ const ImpliedTask = () => {
           <FieldArray name="tasks">
             {({ insert, remove, push }) => (
               <div>
-                {formik.values.tasks?.length > 0 &&
-                  formik.values.tasks.map(
+                {formik.values.tasks &&
+                  formik.values.tasks.length > 0 &&
+                  formik.values.tasks?.map(
                     (task: ImpliedTaskType, index: number) => (
                       <div
                         key={task.implied_task_id}
@@ -128,8 +226,9 @@ const ImpliedTask = () => {
                           contentWrapperClass="overflow-visible"
                           title={
                             <p className="font-medium text-sm text-graySecondary">
-                              Achieve $1 Billion in Company Revenue for the
-                              Financial year
+                              {/* Achieve $1 Billion in Company Revenue for the
+                            Financial year */}
+                              {task?.title || "Your implied task"}
                             </p>
                           }
                           content={
@@ -137,19 +236,6 @@ const ImpliedTask = () => {
                               <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
                                 <div>
                                   <Input
-                                    // type="text"
-                                    // id=""
-                                    // label="Task 1"
-                                    // labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                    // onBlur={formik.handleBlur}
-                                    // error={""}
-                                    // onChange={(e) => ""}
-                                    // name={`tasks.${index}.value`}
-                                    // placeholder="Input Task"
-                                    // className="mr-2 w-full"
-                                    // value={
-                                    //   formik.values.tasks[index].task.value
-                                    // }
                                     type="text"
                                     id={`tasks.${index}.task`}
                                     label="Task 1"
@@ -162,26 +248,13 @@ const ImpliedTask = () => {
                                     value={formik.values.tasks[index].task}
                                   />
                                   {/* <ErrorMessage
-                                  name={`intents.${index}.behaviours.value`}
-                                  className="text-red-500 text-xs mt-1"
-                                  component={"div"}
-                                /> */}
+                                name={`intents.${index}.behaviours.value`}
+                                className="text-red-500 text-xs mt-1"
+                                component={"div"}
+                              /> */}
                                 </div>
                                 <div>
                                   <Input
-                                    // type="text"
-                                    // id=""
-                                    // label="Input Weight"
-                                    // labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                    // onBlur={formik.handleBlur}
-                                    // error={""}
-                                    // onChange={(e) => ""}
-                                    // name={`tasks.${index}.value`}
-                                    // placeholder="Input Weight"
-                                    // className="mr-2 w-full"
-                                    // value={
-                                    //   formik.values.tasks?.[index].weight.value
-                                    // }
                                     type="text"
                                     id={`tasks.${index}.weight`}
                                     label="Input Weight"
@@ -194,27 +267,13 @@ const ImpliedTask = () => {
                                     value={formik.values.tasks[index].weight}
                                   />
                                   {/* <ErrorMessage
-                                  name={`intents.${index}.behaviours.value`}
-                                  className="text-red-500 text-xs mt-1"
-                                  component={"div"}
-                                /> */}
+                                name={`intents.${index}.behaviours.value`}
+                                className="text-red-500 text-xs mt-1"
+                                component={"div"}
+                              /> */}
                                 </div>
                                 <div>
                                   <Input
-                                    // type="text"
-                                    // id=""
-                                    // label="Input Percentage"
-                                    // labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                    // onBlur={formik.handleBlur}
-                                    // error={""}
-                                    // onChange={(e) => ""}
-                                    // name={`intents.${index}.value`}
-                                    // placeholder="Input Percentage"
-                                    // className="mr-2 w-full"
-                                    // value={
-                                    //   formik.values.tasks[index].percentage
-                                    //     .value
-                                    // }
                                     type="text"
                                     id={`tasks.${index}.percentage`}
                                     label="Input Percentage"
@@ -229,49 +288,40 @@ const ImpliedTask = () => {
                                     }
                                   />
                                   {/* <ErrorMessage
-                                  name={`intents.${index}.behaviours.value`}
-                                  className="text-red-500 text-xs mt-1"
-                                  component={"div"}
-                                /> */}
+                                name={`intents.${index}.behaviours.value`}
+                                className="text-red-500 text-xs mt-1"
+                                component={"div"}
+                              /> */}
                                 </div>
                               </div>
                               <div className="grid lg:grid-cols-3 gap-x-3 mt-6">
                                 <div className="mt-1">
                                   <CustomMultiSelect
-                                    // values={
-                                    //   formik.values.tasks?.[index].resources
-                                    // }
-                                    // onValuesChange={(values) =>
-                                    //   formik.setFieldValue(
-                                    //     `tasks.${index}.resources`,
-                                    //     values
-                                    //   )
-                                    // }
-                                    // options={options}
-                                    // label="Select Resources"
-                                    // labelClass="block text-xs text-[#6E7C87] font-normal m-0 p-0 pb-1"
-                                    // onBlur={() =>
-                                    //   formik.setFieldTouched(
-                                    //     `tasks.${index}.resources`,
-                                    //     true
-                                    //   )
-                                    // }
-                                    // triggerClass="rounded-sm border showdow-none !border-[#E5E9EB] bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px]"
-                                    // placeholder="Select Resources"
-                                    // inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                                    // errorClass="text-red-500 text-xs mt-1"
-                                    // itemValue=""
-                                    // name={`tasks.${index}.resources`}
                                     values={
                                       formik.values.tasks[index].resources
                                     }
+                                    // values={(formik.values.tasks[index].resources as string[])
+                                    //   .split(",")
+                                    //   .map((id: string) =>
+                                    //     handleFormatEmployeeDrop().find(
+                                    //       (emp) => emp.id === id
+                                    //     )
+                                    //   )}
+                                    // values={formik.values.tasks[index].resources
+                                    //   .split(",")
+                                    //   .map((id) =>
+                                    //     handleFormatEmployeeDrop().find(
+                                    //       (emp) => emp.id === id
+                                    //     )
+                                    //   )}
                                     onValuesChange={(values) =>
                                       formik.setFieldValue(
                                         `tasks.${index}.resources`,
                                         values
                                       )
                                     }
-                                    options={options}
+                                    options={handleFormatEmployeeDrop()}
+                                    // options={options}
                                     label="Select Resources"
                                     labelClass="block text-xs text-[#6E7C87] font-normal m-0 p-0 pb-1"
                                     onBlur={() =>
@@ -290,22 +340,6 @@ const ImpliedTask = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-x-6">
                                   <CustomDateInput
-                                    // id="start_date"
-                                    // label="Start date"
-                                    // selected={
-                                    //   formik.values.tasks?.[index].start_date
-                                    //     .value
-                                    // }
-                                    // handleChange={(date) =>
-                                    //   formik.setFieldValue(
-                                    //     "date_of_birth",
-                                    //     formatRMDatePicker(date)
-                                    //   )
-                                    // }
-                                    // error={""}
-                                    // className="relative"
-                                    // iconClass="top-[2.7rem]"
-                                    // isRequired
                                     id={`tasks.${index}.start_date`}
                                     label="Start date"
                                     selected={
@@ -315,7 +349,8 @@ const ImpliedTask = () => {
                                     handleChange={(date) =>
                                       formik.setFieldValue(
                                         `tasks.${index}.start_date`,
-                                        formatRMDatePicker(date)
+                                        formatDate(date)
+                                        // formatRMDatePicker(date)
                                       )
                                     }
                                     error={""}
@@ -324,22 +359,6 @@ const ImpliedTask = () => {
                                     isRequired
                                   />
                                   <CustomDateInput
-                                    // id="end_date"
-                                    // label="End date"
-                                    // selected={
-                                    //   formik.values.tasks?.[index].end_date
-                                    //     .value
-                                    // }
-                                    // handleChange={(date) =>
-                                    //   formik.setFieldValue(
-                                    //     "end_date",
-                                    //     formatRMDatePicker(date)
-                                    //   )
-                                    // }
-                                    // error={""}
-                                    // className="relative"
-                                    // iconClass="top-[2.7rem]"
-                                    // isRequired
                                     id={`tasks.${index}.end_date`}
                                     label="End date"
                                     selected={
@@ -348,7 +367,8 @@ const ImpliedTask = () => {
                                     handleChange={(date) =>
                                       formik.setFieldValue(
                                         `tasks.${index}.end_date`,
-                                        formatRMDatePicker(date)
+                                        formatDate(date)
+                                        // formatRMDatePicker(date)
                                       )
                                     }
                                     error={""}
@@ -358,88 +378,7 @@ const ImpliedTask = () => {
                                   />
                                 </div>
                               </div>
-                              {/* 
-                              <FieldArray
-                                name={`tasks.${index}.expected_outcomes`}
-                              >
-                                {({
-                                  insert,
-                                  remove: removeBehaviour,
-                                  push,
-                                }) => (
-                                  <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max mt-4">
-                                    {tasks.expected_outcomes?.length > 0 &&
-                                      tasks.expected_outcomes.map(
-                                        (
-                                          expected_outcomes: any,
-                                          expectedOutcomesIndex: number
-                                        ) => (
-                                          <div
-                                            key={expected_outcomes.id}
-                                            className="items-center w-full relative"
-                                          >
-                                            <Input
-                                              type="text"
-                                              id=""
-                                              label="Expected Outcomes"
-                                              labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                              onBlur={formik.handleBlur}
-                                              error={
-                                                "errorIntents?.[index]?.behaviours?.value"
-                                              }
-                                              onChange={(e) => ""}
-                                              name={`tasks.${index}.expected_outcomes.${expectedOutcomesIndex}.value`}
-                                              placeholder="Input Expected Outcomes"
-                                              className="mr-2 w-full md:w-[12rem] lg:w-[20rem] "
-                                              value={
-                                                formik.values.tasks[index]
-                                                  .expected_outcomes[
-                                                  expectedOutcomesIndex
-                                                ].value
-                                              }
-                                            />
-                                            <ErrorMessage
-                                              name={`tasks.${index}.expected_outcomes.${expectedOutcomesIndex}.value`}
-                                              className="text-red-500 text-xs mt-1"
-                                              component={"div"}
-                                            />
 
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                expectedOutcomesIndex !== 0 &&
-                                                removeBehaviour(
-                                                  expectedOutcomesIndex
-                                                )
-                                              }
-                                              className={`text-red-600 absolute left-[180px] md:left-[170px] lg:left-[290px] top-[39px] ${
-                                                expectedOutcomesIndex === 0 &&
-                                                "cursor-default"
-                                              }`}
-                                            >
-                                              <LiaTimesSolid />
-                                            </button>
-                                          </div>
-                                        )
-                                      )}
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        push({ id: uuidv4(), value: "" })
-                                      }
-                                      className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
-                                    >
-                                      <LucidePlusCircle
-                                        size={20}
-                                        style={{
-                                          color: "var(--primary-color)",
-                                        }}
-                                      />
-                                      Add Expected Outcome
-                                    </button>
-                                  </div>
-                                )}
-                              </FieldArray> */}
                               <FieldArray
                                 name={`tasks.${index}.expected_outcomes`}
                               >
@@ -519,28 +458,7 @@ const ImpliedTask = () => {
                       </div>
                     )
                   )}
-                {/* 
-                <button
-                  type="button"
-                  onClick={() =>
-                    push({
-                      task: "",
-                      weight: "",
-                      percentage: "",
-                      start_date: "",
-                      resources: [],
-                      end_date: "",
-                      expected_outcomes: [""],
-                    })
-                  }
-                  className="flex items-center gap-2 mt-8 text-primary text-sm"
-                >
-                  <LucidePlusCircle
-                    size={20}
-                    style={{ color: "var(--primary-color)" }}
-                  />
-                  Add more level
-                </button> */}
+
                 <button
                   type="button"
                   onClick={() =>
@@ -575,18 +493,14 @@ const ImpliedTask = () => {
             </Button>
             <Button
               type="submit"
-              //   disabled={isLoadingStrategicIntent}
-              //   loading={isLoadingStrategicIntent}
-              // onClick={() => router.push(`${location}?ui=specified-intent`)}
+              disabled={isCreatingImpliedTask}
+              loading={isCreatingImpliedTask}
               loadingText="Save & Continue"
               className={cn(
                 "w-full",
-                // !formik.isValid || isLoadingStrategicIntent
-
-                //   ?
-                //    "opacity-50 cursor-not-allowed w-max py-5 px-2"
-                //   :
-                "cursor-pointer text-white py-5 px-2 rounded-sm bg-primary border border-primary w-max"
+                !formik.isValid || !formik.dirty
+                  ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
+                  : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
               )}
             >
               Save & Continue

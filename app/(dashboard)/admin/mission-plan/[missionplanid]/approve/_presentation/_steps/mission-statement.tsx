@@ -1,5 +1,5 @@
 import React from "react";
-import MeasureOfSuccessTable from "../../../../_components/measureOfSuccessTable";
+import MeasureOfSuccessTable from "../../../../_components/measure-of-success-table";
 import {
   measureColumns,
   measuresData,

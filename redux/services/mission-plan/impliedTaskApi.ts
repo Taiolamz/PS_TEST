@@ -8,7 +8,6 @@ export const impliedTaskApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Branches"],
     }),
   }),
 });

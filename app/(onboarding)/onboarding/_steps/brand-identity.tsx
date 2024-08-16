@@ -67,7 +67,9 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
         )}
       </div>
       <div ref={pickerref} className="mb-4">
-        <label className="block mb-6">Brand Color</label>
+        <label className="block mb-6  font-medium text-[#162238] text-lg">
+          Brand Color
+        </label>
         <p className="mb-[0.7813rem] text-xs text-[#5A5B5F]">
           Current color <sup className="text-[#CC0905]">*</sup>
         </p>
@@ -75,14 +77,10 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           style={{
             position: "relative",
             height: "2.4rem",
-            padding: ".2rem",
             borderRadius: ".2rem",
             cursor: "pointer",
           }}
           className="border flex max-w-[16.0625rem] items-center"
-          // onClick={() => {
-          //   setShowColorPicker(!showColorPicker);
-          // }}
         >
           <div
             style={{
@@ -97,7 +95,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
           ></div>
           {showColorPicker && (
             <div className="color-picker-wrapper-index">
-              {" "}
               <ColorPicker
                 // id="brand_colour"
                 // name="brand_colour"
@@ -129,6 +126,9 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
             </p>
           )}
         </div>
+        <p className="text-[#84919A] text-xs mt-[0.6875rem]">
+          Click on the color palette to select your preffered color
+        </p>
       </div>
     </section>
   );

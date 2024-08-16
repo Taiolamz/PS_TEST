@@ -20,11 +20,11 @@ const OrganizationStatement = ({ formik }: OrganizationStatementProps) => {
             1. Vision Statement
           </label>
           <Textarea
-            rows={4}
+            rows={3}
             id="vision"
             name="vision"
             onChange={formik.handleChange}
-            className="border p-2 w-full"
+            className="border p-2 w-full bg-white text-[#162238] text-base"
             value={formik.values.vision}
             touched={formik.touched.vision}
             error={formik.errors.vision}
@@ -35,11 +35,11 @@ const OrganizationStatement = ({ formik }: OrganizationStatementProps) => {
             2. Mission Statement
           </label>
           <Textarea
-            rows={4}
+            rows={3}
             id="mission"
             name="mission"
             onChange={formik.handleChange}
-            className="border p-2 w-full"
+            className="border p-2 w-full bg-white text-[#162238] text-base"
             value={formik.values.mission}
             touched={formik.touched.mission}
             error={formik.errors.mission}
