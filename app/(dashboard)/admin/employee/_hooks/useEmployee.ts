@@ -43,7 +43,6 @@ const newEmployeeStatuses = [
 const genderOptions = [
   { name: "Male", value: "Male" },
   { name: "Female", Value: "Female" },
-  { name: "Others", value: "Others" },
 ];
 
 const formSchema = yup.object().shape({
