@@ -52,27 +52,47 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
     ),
   },
   {
-    accessorKey: "hou",
+    accessorKey: "head_of_unit",
     header: "HOU",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hou")}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const head_of_unit = row.getValue("head_of_unit") as ObjType;
+      return (
+        <div className="capitalize ">
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            head_of_unit?.name || "------"
+          )}
+        </div>
+      );
+    },
   },
-  {
-    accessorKey: "department",
-    header: () => <div className="text-right mr-24">Deparment</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-right mr-24">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("head_of_unit") || "------"
-        )}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: "hou",
+  //   header: "HOU",
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("head_of_unit") || "------"
+  //       )}
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   accessorKey: "department",
+  //   header: () => <div className="text-right mr-24">Deparment</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize text-right mr-24">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("head_of_unit") || "------"
+  //       )}
+  //     </div>
+  //   ),
+  // },
 
   {
     accessorKey: "deparment",

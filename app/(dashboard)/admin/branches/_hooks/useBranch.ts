@@ -18,6 +18,7 @@ import { processInputAsArray } from "@/utils/helpers";
 import { useGetEmployeesQuery } from "@/redux/services/checklist/employeeApi";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
   cancelPath: string;
@@ -48,15 +49,17 @@ const { ADMIN } = routesPath;
 export const useBranch = ({ cancelPath }: Prop) => {
   // const { user, checklist } = useAppSelector((state) => state.auth);
   const actionCtx = useContext(ActionContext);
-  const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
-    useGetSubsidiariesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
+    const { data: dropdownData, isLoading: isLoadingSubsidiaries }: any =
+      useGetAllOrganizationMissionPlanDropdownQuery({});
+  // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
+  //   useGetSubsidiariesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
@@ -77,7 +80,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
     return data;
   };
 
-  const subsidiaries = subsidiariesData ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
   const states = statesData ?? [];
   const employees = employeesData ?? [];
   const employeeDrop = handleDropdown(employees);
@@ -114,11 +117,11 @@ export const useBranch = ({ cancelPath }: Prop) => {
       .string()
       .min(1, "Address is required")
       .required("Address is required"),
-    country: yup
-      .string()
-      .oneOf(handleFormatArray(COUNTRIES), "Country is required")
-      .required("Country is required"),
-    state: yup.string().required(),
+    // country: yup
+    //   .string()
+    //   .oneOf(handleFormatArray(COUNTRIES), "Country is required")
+    //   .required("Country is required"),
+    // state:  yup.string().required(),
     // head: yup.string().min(1, "Head of Subsidiary is required").optional(),
     // work_email: yup
     //   .string()
@@ -127,8 +130,8 @@ export const useBranch = ({ cancelPath }: Prop) => {
     //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     //   .required("Work Email is required"),
     // subsidiary:
-    //   processInputAsArray(user?.organization?.hierarchy)?.includes(
-    //     "subsidiary"
+      // processInputAsArray(user?.organization?.hierarchy)?.includes(
+      //   "subsidiary"
     //   ) && yup.string().required() ? true : false as any,
   });
 

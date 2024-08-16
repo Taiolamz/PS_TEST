@@ -50,6 +50,10 @@ const AddSubsidary = () => {
       formik.setFieldValue("head.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
+    } else {
+      formik.setFieldValue("head.name", "");
+      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("head.id", "");
     }
   };
 
@@ -101,12 +105,18 @@ const AddSubsidary = () => {
                   label="Country"
                   isRequired
                   placeholder="Select country"
-                  options={COUNTRIES_STATES?.map((item) => {
-                    return {
-                      label: item.name,
-                      value: item.name,
-                    };
-                  })}
+                  options={[
+                    {
+                      label: "Select Country",
+                      value: "",
+                    },
+                    ...COUNTRIES_STATES?.map((item) => {
+                      return {
+                        label: item.name,
+                        value: item.name,
+                      };
+                    }),
+                  ]}
                   selected={formik.values.country}
                   setSelected={(value) => {
                     formik.setFieldValue("country", value);
@@ -139,10 +149,18 @@ const AddSubsidary = () => {
                 <CustomSelect
                   label="Head of Subsidiary"
                   placeholder="Head of Subsidiary"
-                  options={employees}
+                  options={[
+                    {
+                      label: "Head of Subsidiary",
+                      value: "",
+                      name: "",
+                      id: "",
+                    },
+                    ...employees,
+                  ]}
                   selected={formik.values.head.name}
                   setSelected={handleHeadSelectChange}
-                  // labelClass={labelClassName}
+                  labelClass={labelClassName}
                   // isRequired
                 />
                 <Input

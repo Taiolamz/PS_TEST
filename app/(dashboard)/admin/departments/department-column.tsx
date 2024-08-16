@@ -54,18 +54,34 @@ export const departmentColumns = (
     ),
   },
   {
-    accessorKey: "hod",
+    accessorKey: "head_of_department",
     header: "HOD",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("hod") || "------"
-        )}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const head_of_department = row.getValue("head_of_department") as ObjType;
+      return (
+        <div className="capitalize">
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            head_of_department?.name || "------"
+          )}
+        </div>
+      );
+    },
   },
+  // {
+  //   accessorKey: "hod",
+  //   header: "HOD",
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("hod") || "------"
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "subsidiary",
     header: () => <div className="text-right mr-24">Subsidiary</div>,

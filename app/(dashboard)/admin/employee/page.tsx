@@ -328,7 +328,7 @@ const Employee = () => {
         </DashboardModal>
 
         <DashboardModal
-          className={"w-[600px] max-w-full"}
+          className={`max-w-max`}
           open={openBulkUploadModal}
           onOpenChange={handleBulkUploadDialog}
         >

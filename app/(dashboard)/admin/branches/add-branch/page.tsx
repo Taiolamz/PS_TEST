@@ -43,7 +43,6 @@ const AddBranch = () => {
   const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
     {}
   );
-
   const handleHeadSelectChange = (selectedName: string) => {
     const selectedEmployee = (employees as AllStaff[]).find(
       (emp) => emp.name === selectedName
@@ -53,6 +52,10 @@ const AddBranch = () => {
       formik.setFieldValue("head.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
+    } else {
+      formik.setFieldValue("head.name", "");
+      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("head.id", "");
     }
   };
 
@@ -109,44 +112,51 @@ const AddBranch = () => {
                 onChange={formik.handleChange}
                 isRequired
               />
-              <CustomSelect
-                label="Country"
-                isRequired
-                placeholder="Select country"
-                options={COUNTRIES_STATES?.map((item) => {
-                  return {
-                    label: item.name,
-                    value: item.name,
-                  };
-                })}
-                selected={formik.values.country}
-                setSelected={(value) => {
-                  formik.setFieldValue("country", value);
-                  const countryData = COUNTRIES_STATES?.filter(
-                    (f: Dictionary) => f.name === value
-                  )?.[0];
-                  formik.setFieldValue("state", "");
-                  setSelectedCountryData(countryData);
-                }}
-                // labelClass={labelClassName}
-              />
-
-              <CustomSelect
-                label="State"
-                isRequired
-                placeholder="Branch state"
-                options={selectedCountryData?.stateProvinces?.map(
-                  (item: Dictionary) => {
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "subsidiary"
+              ) && (
+                <CustomSelect
+                  label="Country"
+                  isRequired
+                  placeholder="Select country"
+                  options={COUNTRIES_STATES?.map((item) => {
                     return {
                       label: item.name,
                       value: item.name,
                     };
-                  }
-                )}
-                selected={formik.values.state}
-                setSelected={(value) => formik.setFieldValue("state", value)}
-                // labelClass={labelClassName}
-              />
+                  })}
+                  selected={formik.values.country}
+                  setSelected={(value) => {
+                    formik.setFieldValue("country", value);
+                    const countryData = COUNTRIES_STATES?.filter(
+                      (f: Dictionary) => f.name === value
+                    )?.[0];
+                    formik.setFieldValue("state", "");
+                    setSelectedCountryData(countryData);
+                  }}
+                  // labelClass={labelClassName}
+                />
+              )}
+              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                "subsidiary"
+              ) && (
+                <CustomSelect
+                  label="State"
+                  isRequired
+                  placeholder="Branch state"
+                  options={selectedCountryData?.stateProvinces?.map(
+                    (item: Dictionary) => {
+                      return {
+                        label: item.name,
+                        value: item.name,
+                      };
+                    }
+                  )}
+                  selected={formik.values.state}
+                  setSelected={(value) => formik.setFieldValue("state", value)}
+                  // labelClass={labelClassName}
+                />
+              )}
 
               {/* <CustomSelect
                 label="Head of Branch"
@@ -187,10 +197,18 @@ const AddBranch = () => {
               <CustomSelect
                 label="Head of Branch"
                 placeholder="Head of Branch"
-                options={employees}
+                options={[
+                  {
+                    label: "Head of Branch",
+                    value: "",
+                    name: "",
+                    id: "",
+                  },
+                  ...employees,
+                ]}
                 selected={formik.values.head.name}
                 setSelected={handleHeadSelectChange}
-                // labelClass={labelClassName}
+                labelClass={labelClassName}
                 // isRequired
               />
               <Input
@@ -213,13 +231,21 @@ const AddBranch = () => {
                     user?.organization?.hierarchy
                   )?.includes("subsidiary")}
                   placeholder="Select subsidiary"
-                  options={subsidiaries}
+                  options={[
+                    {
+                      name: "",
+                      id: "",
+                      label: "Select subsidiary",
+                      value: "",
+                    },
+                    ...subsidiaries,
+                  ]}
                   selected={formik.values.subsidiary_id.name}
                   setSelected={handleSubsidiaryChange}
                   // setSelected={(value) =>
                   //   formik.setFieldValue("subsidiary.", value)
                   // }
-                  // labelClass={labelClassName}
+                  labelClass={labelClassName}
                 />
               )}
             </form>
