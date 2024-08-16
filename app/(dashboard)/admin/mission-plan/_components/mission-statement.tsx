@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Comment from "./comment";
+import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
+  data?: MissionStatementType;
 };
-const MissionStatement = ({ setShowTextArea, showTextArea }: Props) => {
+const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -15,9 +17,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea }: Props) => {
         </h2>
         <div className="flex justify-between items-end w-full">
           <p className="w-[52%] text-[#162238] text-sm">
-            My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
-            pulvinar arcu, mi.
+            {data?.mission ?? ""}
           </p>
           <div className="flex gap-2.5 mr-4">
             <Button
@@ -37,6 +37,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea }: Props) => {
         label="Mission statement"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        comments={[]}
       />
     </section>
   );

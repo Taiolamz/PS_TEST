@@ -1,6 +1,7 @@
 import chroma from "chroma-js";
 import { adminRoleList, employeeRoleList, specialRoleList } from "../routes";
 import { format, parse, isValid } from "date-fns";
+import { Dictionary } from "@/@types/dictionary";
 
 export const timeToMinuteSecond = (time: number) =>
   `${Math.floor(time / 60)}:${("0" + (time % 60)).slice(-2)}`;
@@ -278,3 +279,16 @@ export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>
   });
 }
 
+export const allObjValuesNotEmpty = (data: Dictionary) => Object.values(data).every((d) => d.trim() !== "")
+
+
+
+type DataObject = {
+  name: string;
+  required: boolean;
+  key: string;
+};
+
+export function extractNamesFromFormat(data: { [key: number]: DataObject }): string[] {
+  return Object.values(data).map((item) => item.name);
+}

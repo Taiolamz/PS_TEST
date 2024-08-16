@@ -117,11 +117,11 @@ export const useBranch = ({ cancelPath }: Prop) => {
       .string()
       .min(1, "Address is required")
       .required("Address is required"),
-    country: yup
-      .string()
-      .oneOf(handleFormatArray(COUNTRIES), "Country is required")
-      .required("Country is required"),
-    state: yup.string().required(),
+    // country: yup
+    //   .string()
+    //   .oneOf(handleFormatArray(COUNTRIES), "Country is required")
+    //   .required("Country is required"),
+    // state:  yup.string().required(),
     // head: yup.string().min(1, "Head of Subsidiary is required").optional(),
     // work_email: yup
     //   .string()
@@ -130,8 +130,8 @@ export const useBranch = ({ cancelPath }: Prop) => {
     //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     //   .required("Work Email is required"),
     // subsidiary:
-    //   processInputAsArray(user?.organization?.hierarchy)?.includes(
-    //     "subsidiary"
+      // processInputAsArray(user?.organization?.hierarchy)?.includes(
+      //   "subsidiary"
     //   ) && yup.string().required() ? true : false as any,
   });
 

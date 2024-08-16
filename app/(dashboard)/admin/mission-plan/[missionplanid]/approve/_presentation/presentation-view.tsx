@@ -11,7 +11,11 @@ import Boundaries from "./_steps/boundaries";
 import Tasks from "./_steps/tasks";
 import StrategicIntent from "./_steps/strategic-intent";
 
-const PresentationView = ({}) => {
+type Props = {
+  data: any;
+};
+
+const PresentationView = ({ data }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const location = usePathname();

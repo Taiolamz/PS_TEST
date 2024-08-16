@@ -6,14 +6,32 @@ import {
 } from "@/utils/data/dashboard/missionplan/dummy";
 import { Button } from "@/components/ui/button";
 import Comment from "./comment";
+import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
+  data: MeasureOfSuccessType[];
 };
 
-const MeasureOfSuccess = ({ setShowTextArea, showTextArea }: Props) => {
+const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
   const measureColumnData = useMemo(() => measureColumns(), []);
+
+  const transformedMeasureOfSuccessRows = (
+    mappedData: MeasureOfSuccessType[]
+  ): MeasureOfSuccessType[] => {
+    return mappedData.map((item) => ({
+      id: item.id,
+      measure: item.measure,
+      status: item.status,
+      target: item.target,
+      unit: item.unit,
+    }));
+  };
+
+  const measureOfSuccessData: MeasureOfSuccessType[] =
+    transformedMeasureOfSuccessRows(data);
+
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -23,7 +41,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea }: Props) => {
         <div className="flex justify-between items-end">
           <div className="basis-3/4">
             <MeasureOfSuccessTable
-              data={measuresData}
+              data={measureOfSuccessData}
               columns={measureColumnData}
             />
           </div>
@@ -45,6 +63,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea }: Props) => {
         label="measure of success"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        comments={[]}
       />
     </section>
   );

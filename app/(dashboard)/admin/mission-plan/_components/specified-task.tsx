@@ -2,15 +2,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
+import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+
+type StrategicPillarsType = {
+  id: string;
+  title: string;
+};
+
+type SuccessMeasuresType = {
+  id: string;
+  measure: string;
+};
 
 type Task = {
-  id: number;
-  title: string;
+  id: string;
+  task: string;
   specifiedTask: string;
-  pillars: string;
-  measureOfSuccess: string;
-  startDate: string;
-  endDate: string;
+  strategic_pillars: StrategicPillarsType[];
+  success_measures: SuccessMeasuresType[];
+  start_date: string;
+  end_date: string;
+  is_main_effort: number;
 };
 
 type Props = {
@@ -18,34 +30,41 @@ type Props = {
 };
 
 const SpecifiedTasks = ({ data }: Props) => {
-  const [openCommentId, setOpenCommentId] = useState<number | null>(null);
+  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
 
-  const toggleComment = (id: number) => {
+  const toggleComment = (id: string) => {
     setOpenCommentId((prevId) => (prevId === id ? null : id));
   };
   return (
     <div className="flex flex-col gap-10">
-      {data?.map((item) => (
+      {data?.map((item, index) => (
         <section key={item?.id}>
           <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5 text-sm">
             <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
-              {item?.title}
+              Specified Task {index + 1}
             </h2>
             <div className="mt-5 ml-1.5">
-              <h3 className="font-medium">- {item?.specifiedTask}</h3>
+              <h3 className="font-medium">{`- ${item?.task} ${
+                item?.is_main_effort === 1 ? "(MAIN EFFORT)" : ""
+              }`}</h3>
               <div className="flex justify-between items-end">
                 <div className="ml-3 mb-2.5 flex flex-col gap-[0.3125rem]">
                   <p className="mt-2 font-light">
-                    <span className="font-normal">Pillars: </span>
-                    {item.pillars}.
+                    <span className="font-normal">Pillars : </span>
+                    {item?.strategic_pillars.map((item) => (
+                      <span key={item?.id}>{item?.title}, </span>
+                    ))}
                   </p>
                   <p className="mt-1 font-light">
-                    <span className="font-normal">Measures of success:</span>{" "}
-                    {item?.measureOfSuccess}
+                    <span className="font-normal">Measures of success :</span>{" "}
+                    {item?.success_measures?.map((item) => (
+                      <span key={item?.id}>{item?.measure}, </span>
+                    ))}{" "}
                   </p>
                   <p className="mt-1">
                     <span className="font-normal">
-                      {item.startDate} - {item.endDate}
+                      {formatToReadableDate(item.start_date)} -{" "}
+                      {formatToReadableDate(item?.end_date)}
                     </span>
                   </p>
                 </div>
@@ -76,6 +95,7 @@ const SpecifiedTasks = ({ data }: Props) => {
             label="Specified task"
             showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
+            comments={[]}
           />
         </section>
       ))}

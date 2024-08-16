@@ -24,6 +24,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useAppSelector } from "@/redux/store";
 import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 import { isDateAfter } from "@/utils/date";
+import HeadDetails from "./_steps/head-details";
 
 const { ADMIN } = routesPath;
 interface FormValues {
@@ -39,6 +40,9 @@ interface FormValues {
   closing_time: string;
   hierarchy: string;
   staff_levels: { name: string; level: string }[];
+  head_organization_first_name: string;
+  head_organization_last_name: string;
+  head_organization_email: string;
 }
 
 const Onboarding = () => {
@@ -75,12 +79,12 @@ const Onboarding = () => {
     //   return;
     // }
 
-    if (!formik.isValid) {
-      toast.error(
-        "Please fill in the required fiscal year title field before submitting."
-      );
-      return;
-    }
+    // if (!formik.isValid) {
+    //   toast.error(
+    //     "Please fill in the required fiscal year title field before submitting."
+    //   );
+    //   return;
+    // }
 
     const formDataToSend = new FormData();
 
@@ -97,6 +101,8 @@ const Onboarding = () => {
     // Might be added later from the backend
     const appraisalCycle = "annual";
     formDataToSend.append("appraisal_cycle", appraisalCycle);
+
+    console.log({ formDataToSend });
 
     try {
       onboarding(formDataToSend)
@@ -130,6 +136,9 @@ const Onboarding = () => {
       closing_time: "",
       hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
+      head_organization_first_name: "",
+      head_organization_last_name: "",
+      head_organization_email: "",
     },
     validationSchema: OnboardingSchema,
     onSubmit: onSubmit,
@@ -198,7 +207,8 @@ const Onboarding = () => {
               <OrganizationStructure formik={formik} />
             )}
             {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-            {getCurrentStep() === 6 && <Preview formik={formik} />}
+            {getCurrentStep() === 6 && <HeadDetails formik={formik} />}
+            {getCurrentStep() === 7 && <Preview formik={formik} />}
           </div>
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
             <button

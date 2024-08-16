@@ -14,8 +14,6 @@ interface Prop {
   contentClass?: string;
   title: ReactNode | string;
   content: ReactNode | string;
-  onAccordionChange?: () => void;
-  collapsible?: boolean;
 }
 
 export function CustomAccordion({
@@ -25,17 +23,9 @@ export function CustomAccordion({
   triggerClass,
   contentClass,
   contentWrapperClass,
-  collapsible,
-  onAccordionChange,
 }: Prop) {
   return (
-    <Accordion
-      type="single"
-      defaultValue="khk"
-      collapsible={collapsible}
-      onValueChange={onAccordionChange}
-      className={(cn("w-full"), className)}
-    >
+    <Accordion type="single" collapsible className={(cn("w-full"), className)}>
       <AccordionItem value="item-1" className="border-b-0">
         <AccordionTrigger
           className={cn("border-b-0 hover:no-underline", triggerClass)}
