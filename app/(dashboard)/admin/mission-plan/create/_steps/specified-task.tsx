@@ -165,7 +165,7 @@ const SpecifiedTask = () => {
           )
           .map((item: { id: any }) => item.id),
         success_measures: mappedSuccessMeasures
-          .filter((itemA: { id: any }) =>
+          ?.filter((itemA: { id: any }) =>
             task.success_measures.some(
               (itemB: { id: any }) => itemB.id === itemA.id
             )

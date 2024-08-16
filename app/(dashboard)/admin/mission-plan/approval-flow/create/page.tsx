@@ -11,6 +11,7 @@ import DashboardModal from "../../template/_components/checklist-dashboard-modal
 import CancelModal from "../../template/_components/cancel-modal";
 import ApprovalFlowTwo from "./approval-flow-two";
 import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
+import { useGetAllApproverListQuery } from "@/redux/services/employee/employeeApi";
 
 const { ADMIN } = routesPath;
 
@@ -39,10 +40,22 @@ const AddApprovalFlow = () => {
   //   // }
   // };
 
-  const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
-    {}
-  );
-  const roles = rolesData?.data ?? [];
+  const { data: rolesData, isLoading: isLoadingroles } =
+    useGetAllApproverListQuery();
+  console.log(rolesData, "roles data");
+  // const roles = rolesData?.data ?? [];
+  const formatRolesData = (roles: string[]) => {
+    return roles?.map((role) => ({
+      name: role,
+      value: role,
+    }));
+  };
+  console.log(formatRolesData(rolesData as string[]), "new roles data");
+  const roles = formatRolesData(rolesData as string[]) ?? [];
+  // const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
+  //   {}
+  // );
+  // const roles = rolesData?.data ?? [];
 
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">

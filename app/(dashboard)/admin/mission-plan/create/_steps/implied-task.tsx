@@ -180,43 +180,43 @@ const ImpliedTask = () => {
     enableReinitialize: true,
   });
 
-  const formatTasks = (tasks: ImpliedTaskType[]) => {
-    const formattedTasks: any[] = [];
-
-    tasks.forEach((task) => {
-      if (Array.isArray(task?.implied_tasks)) {
-        task.implied_tasks.forEach((chi) => {
-          formattedTasks.push({
-            title: task?.task || "",
-            task: chi?.task || "",
-            user_id: "",
-            specified_task_id: task?.id || "",
-            implied_task_id: chi?.id || "",
-            weight: chi?.weight || "",
-            percentage: chi?.percentage || "",
-            start_date: chi?.start_date || "",
-            resources:
-              (chi?.resources || []).map((resource: any) => ({
-                value: resource?.staff_member_id,
-                label: resource?.name,
-                id: resource?.staff_member_id,
-              })) || [],
-            end_date: chi?.end_date || "",
-            expected_outcomes: chi?.expected_outcome,
-            id: chi?.id || "",
-            is_main_effort: chi?.is_main_effort || 0,
-            strategic_pillars: chi?.strategic_pillars || [],
-          });
-        });
-      } else {
+  const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
+    return tasks.reduce<any[]>((formattedTasks, task) => {
+      if (!Array.isArray(task.implied_tasks)) {
         console.warn(
           "Expected implied_tasks to be an array, got:",
           task.implied_tasks
         );
+        return formattedTasks;
       }
-    });
 
-    return formattedTasks;
+      const taskItems = task.implied_tasks.map((chi) => ({
+        title: task.task || "",
+        task: chi.task || "",
+        user_id: "",
+        specified_task_id: task.id || "",
+        implied_task_id: chi.id || "",
+        weight: chi.weight || "",
+        percentage: chi.percentage || "",
+        start_date: chi.start_date || "",
+        end_date: chi.end_date || "",
+        // resources:
+        //   (chi.resources).map((resource: any) => ({
+        //     value: resource.staff_member_id,
+        //     label: resource.name,
+        //     id: resource.staff_member_id,
+        //   })),
+        resources: (chi.resources || []).map(
+          (resource: any) => resource.staff_member_id
+        ),
+        expected_outcomes: chi.expected_outcome || "",
+        id: chi.id || "",
+        is_main_effort: chi.is_main_effort || 0,
+        strategic_pillars: chi.strategic_pillars || [],
+      }));
+
+      return [...formattedTasks, ...taskItems];
+    }, []);
   };
 
   useEffect(() => {
@@ -322,7 +322,7 @@ const ImpliedTask = () => {
                                       />
                                     </div>
                                   </div>
-                                  <div className="grid lg:grid-cols-3 gap-x-3 mt-6">
+                                  <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
                                     <div className="mt-1">
                                       <CustomMultipleSelect
                                         options={formattedEmployeesDrop}
@@ -339,7 +339,8 @@ const ImpliedTask = () => {
                                         }
                                         placeholder="Select Resources"
                                         badgeClassName={`rounded-[20px] text-[10px] font-normal`}
-                                        triggerClassName={`min-h-[30px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm h-9`}
+                                        // triggerClassName={`min-h-[30px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm h-9`}
+                                        triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1`}
                                         placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
                                         labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[9px]`}
                                         error={errorTasks?.[index]?.resources}
