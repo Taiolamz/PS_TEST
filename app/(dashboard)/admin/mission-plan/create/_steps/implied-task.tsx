@@ -355,10 +355,10 @@ const ImpliedTask = () => {
                                         }
                                       />
                                     </div>
-                                    <div className="grid grid-cols-2 gap-x-6">
+                                    <div className="grid grid-cols-2 ">
                                       <CustomDateInput
                                         id={`tasks.${index}.start_date`}
-                                        label="Start date"
+                                        label="Start Date"
                                         selected={
                                           formik.values.tasks[index]
                                             .start_date as any
@@ -367,17 +367,16 @@ const ImpliedTask = () => {
                                           formik.setFieldValue(
                                             `tasks.${index}.start_date`,
                                             formatDate(date)
-                                            // formatRMDatePicker(date)
                                           )
                                         }
                                         error={""}
-                                        className="relative"
-                                        iconClass="top-[2.7rem]"
+                                        className="relative pr-8"
+                                        iconClass="top-[2.7rem] right-3"
                                         isRequired
                                       />
                                       <CustomDateInput
                                         id={`tasks.${index}.end_date`}
-                                        label="End date"
+                                        label="End Date"
                                         selected={
                                           formik.values.tasks[index]
                                             .end_date as any
@@ -386,12 +385,11 @@ const ImpliedTask = () => {
                                           formik.setFieldValue(
                                             `tasks.${index}.end_date`,
                                             formatDate(date)
-                                            // formatRMDatePicker(date)
                                           )
                                         }
                                         error={""}
-                                        className="relative"
-                                        iconClass="top-[2.7rem]"
+                                        className="relative pr-8"
+                                        iconClass="top-[2.7rem] right-3"
                                         isRequired
                                       />
                                     </div>
