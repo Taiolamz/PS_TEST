@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
 import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
@@ -10,6 +10,11 @@ type Props = {
 };
 
 const StrategicIntent = ({ setShowTextArea, showTextArea, data }: Props) => {
+  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
+
+  const toggleComment = (id: string) => {
+    setOpenCommentId((prevId) => (prevId === id ? null : id));
+  };
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
@@ -45,8 +50,9 @@ const StrategicIntent = ({ setShowTextArea, showTextArea, data }: Props) => {
           </div>
           <Comment
             label="strategic intent"
-            showTextArea={showTextArea}
-            setShowTextArea={setShowTextArea}
+            showTextArea={openCommentId === item.id}
+            setShowTextArea={() => toggleComment(item.id)}
+            comments={[]}
           />
         </section>
       ))}

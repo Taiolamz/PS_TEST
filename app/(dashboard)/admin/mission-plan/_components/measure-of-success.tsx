@@ -47,6 +47,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
         label="measure of success"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        comments={[]}
       />
     </section>
   );

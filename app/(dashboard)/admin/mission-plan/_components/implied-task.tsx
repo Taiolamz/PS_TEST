@@ -112,6 +112,7 @@ const ImpliedTask = ({ data }: Props) => {
                 label="Implied Task"
                 showTextArea={openCommentId === item.id}
                 setShowTextArea={() => toggleComment(item.id)}
+                comments={[]}
               />
             </section>
           ))}

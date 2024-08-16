@@ -9,7 +9,7 @@ type StrategicPillarsType = {
 };
 
 type Task = {
-  id: number;
+  id: string;
   task: string;
   specifiedTask: string;
   strategic_pillars: StrategicPillarsType[];
@@ -24,9 +24,9 @@ type Props = {
 };
 
 const SpecifiedTasks = ({ data }: Props) => {
-  const [openCommentId, setOpenCommentId] = useState<number | null>(null);
+  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
 
-  const toggleComment = (id: number) => {
+  const toggleComment = (id: string) => {
     setOpenCommentId((prevId) => (prevId === id ? null : id));
   };
   return (
@@ -86,6 +86,7 @@ const SpecifiedTasks = ({ data }: Props) => {
             label="Specified task"
             showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
+            comments={[]}
           />
         </section>
       ))}

@@ -68,6 +68,7 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea, data }: Props) => {
         label="freedom & constraints"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        comments={[]}
       />
     </section>
   );

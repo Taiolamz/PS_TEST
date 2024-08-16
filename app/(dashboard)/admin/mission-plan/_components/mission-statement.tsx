@@ -37,6 +37,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
         label="Mission statement"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        comments={[]}
       />
     </section>
   );
