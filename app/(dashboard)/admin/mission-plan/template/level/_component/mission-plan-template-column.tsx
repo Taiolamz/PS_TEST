@@ -22,7 +22,7 @@ export const missionPlanData: MissionPlanTemplateData[] = [
   {
     id: "dsjflsd4",
     process_name: "C-level mission plan",
-    assigned_to: ["Intermediate/Experienced Level", "Entry level"],
+   assignees: ["Intermediate/Experienced Level", "Entry level"],
     created_by: {
       profile_picture: ProfileImg,
       name: "MD",
@@ -31,7 +31,7 @@ export const missionPlanData: MissionPlanTemplateData[] = [
   {
     id: "dsjflsd4",
     process_name: "Flow 1",
-    assigned_to: ["Entry level"],
+   assignees: ["Entry level"],
     created_by: {
       profile_picture: ProfileImg,
       name: "MD",
@@ -40,7 +40,7 @@ export const missionPlanData: MissionPlanTemplateData[] = [
   {
     id: "dsjflsd4",
     process_name: "Flow 2",
-    assigned_to: ["Entry level"],
+   assignees: ["Entry level"],
     created_by: {
       profile_picture: ProfileImg,
       name: "MD",
@@ -49,7 +49,7 @@ export const missionPlanData: MissionPlanTemplateData[] = [
   {
     id: "dsjflsd4",
     process_name: "Flow 3",
-    assigned_to: ["Entry level"],
+   assignees: ["Entry level"],
     created_by: {
       profile_picture: ProfileImg,
       name: "MD",
@@ -96,7 +96,7 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "assigned_to",
+    accessorKey: "assignees",
     header: "Assigned To",
     cell: ({ row }) => {
       const assignedTo = row.getValue("assignees") as string[];
@@ -151,7 +151,7 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
                 </div>
               </>
             ) : (
-              <span>Not assigned</span>
+              <span>------</span>
             )}
           </div>
         </div>
