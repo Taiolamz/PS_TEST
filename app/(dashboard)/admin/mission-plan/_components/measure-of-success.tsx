@@ -6,13 +6,15 @@ import {
 } from "@/utils/data/dashboard/missionplan/dummy";
 import { Button } from "@/components/ui/button";
 import Comment from "./comment";
+import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
+  data: MeasureOfSuccessType;
 };
 
-const MeasureOfSuccess = ({ setShowTextArea, showTextArea }: Props) => {
+const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
   const measureColumnData = useMemo(() => measureColumns(), []);
   return (
     <section>

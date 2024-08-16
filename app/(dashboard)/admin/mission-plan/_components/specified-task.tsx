@@ -3,14 +3,20 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
 
+type StrategicPillarsType = {
+  id: string;
+  title: string;
+};
+
 type Task = {
   id: number;
-  title: string;
+  task: string;
   specifiedTask: string;
-  pillars: string;
-  measureOfSuccess: string;
-  startDate: string;
-  endDate: string;
+  strategic_pillars: StrategicPillarsType[];
+  measure_of_success: string;
+  start_date: string;
+  end_date: string;
+  is_main_effort: number;
 };
 
 type Props = {
@@ -25,27 +31,31 @@ const SpecifiedTasks = ({ data }: Props) => {
   };
   return (
     <div className="flex flex-col gap-10">
-      {data?.map((item) => (
+      {data?.map((item, index) => (
         <section key={item?.id}>
           <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5 text-sm">
             <h2 className="text-primary text-sm mb-[0.6875rem] font-medium">
-              {item?.title}
+              Specified Task {index + 1}
             </h2>
             <div className="mt-5 ml-1.5">
-              <h3 className="font-medium">- {item?.specifiedTask}</h3>
+              <h3 className="font-medium">{`- ${item?.task} ${
+                item?.is_main_effort === 1 ? "(MAIN EFFORT)" : ""
+              }`}</h3>
               <div className="flex justify-between items-end">
                 <div className="ml-3 mb-2.5 flex flex-col gap-[0.3125rem]">
                   <p className="mt-2 font-light">
                     <span className="font-normal">Pillars: </span>
-                    {item.pillars}.
+                    {item?.strategic_pillars.map((item) => (
+                      <span key={item?.id}>{item?.title}</span>
+                    ))}
                   </p>
                   <p className="mt-1 font-light">
                     <span className="font-normal">Measures of success:</span>{" "}
-                    {item?.measureOfSuccess}
+                    {item?.measure_of_success}
                   </p>
                   <p className="mt-1">
                     <span className="font-normal">
-                      {item.startDate} - {item.endDate}
+                      {item.start_date} - {item?.end_date}
                     </span>
                   </p>
                 </div>
