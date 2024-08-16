@@ -97,7 +97,7 @@ const ApproveMissionPlan = () => {
         </div>
       ) : (
         <div className="min-h-screen bg-white">
-          <PresentationView />
+          <PresentationView data={data?.data ?? []} />
         </div>
       )}
     </DashboardLayout>
