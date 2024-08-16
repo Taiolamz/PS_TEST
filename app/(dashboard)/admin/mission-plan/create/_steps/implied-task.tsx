@@ -4,7 +4,6 @@ import * as yup from "yup";
 import { CustomAccordion } from "@/components/custom-accordion";
 import CustomDateInput from "@/components/custom-date-input";
 import Icon from "@/components/icon/Icon";
-import CustomMultiSelect from "@/components/inputs/custom-multiselect";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -22,6 +21,7 @@ import { useAppSelector } from "@/redux/store";
 import { useLazyGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { PageLoader } from "@/components/custom-loader";
+import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 
 type ImpliedTaskType = {
   implied_tasks?: any[];
@@ -62,14 +62,9 @@ const validationSchema = yup.object({
         .of(yup.string().required("Expected outcome is required")),
       resources: yup
         .array()
-        .of(
-          yup.object().shape({
-            id: yup.string().required("Resource ID is required"),
-            label: yup.string().required("Resource label is required"),
-            value: yup.string().required("Resource value is required"),
-          })
-        )
-        .min(1, "At least one resource is required"),
+        .of(yup.string().required("Resource ID is required"))
+        .min(1, "At least one resource is required")
+        .required("Resource is required"),
     })
   ),
 });
@@ -96,9 +91,7 @@ const ImpliedTask = () => {
       mission_plan_id: mission_plan?.data?.mission_plan?.id,
       tasks: formik.values.tasks.map((task) => ({
         task: task.task,
-        resources: task.resources.map(
-          (resource: { id: string }) => resource.id
-        ),
+        resources: task.resources,
         specified_task_id: task.specified_task_id || "",
         implied_task_id: task.implied_task_id || "",
         weight: task.weight,
@@ -223,6 +216,8 @@ const ImpliedTask = () => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
 
+  const errorTasks = formik.errors.tasks as any;
+  const touchedTasks = formik.touched.tasks as any;
   return (
     <>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (
@@ -322,32 +317,35 @@ const ImpliedTask = () => {
                                   </div>
                                   <div className="grid lg:grid-cols-3 gap-x-3 mt-6">
                                     <div className="mt-1">
-                                      <CustomMultiSelect
-                                        values={
-                                          formik.values.tasks[index].resources
-                                        }
-                                        onValuesChange={(values) =>
+                                      <CustomMultipleSelect
+                                        options={formattedEmployeesDrop}
+                                        onValueChange={(values) =>
                                           formik.setFieldValue(
                                             `tasks.${index}.resources`,
                                             values
                                           )
                                         }
-                                        options={formattedEmployeesDrop}
-                                        // options={options}
                                         label="Select Resources"
-                                        labelClass="block text-xs text-[#6E7C87] font-normal m-0 p-0 pb-1"
+                                        name={`tasks.${index}.resources`}
+                                        defaultValue={
+                                          formik.values.tasks[index].resources
+                                        }
+                                        placeholder="Select Resources"
+                                        badgeClassName={`rounded-[20px] text-[10px] font-normal`}
+                                        triggerClassName={`min-h-[30px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm h-9`}
+                                        placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
+                                        labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[9px]`}
+                                        error={errorTasks?.[index]?.resources}
+                                        touched={
+                                          touchedTasks?.[index]?.resources
+                                        }
+                                        maxCount={6}
                                         onBlur={() =>
                                           formik.setFieldTouched(
                                             `tasks.${index}.resources`,
                                             true
                                           )
                                         }
-                                        triggerClass="rounded-sm border showdow-none !border-[#E5E9EB] bg-transparent text-sm bg-[#F6F8F9] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px]"
-                                        placeholder="Select Resources"
-                                        inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                                        errorClass="text-red-500 text-xs mt-1"
-                                        itemValue=""
-                                        name={`tasks.${index}.resources`}
                                       />
                                     </div>
                                     <div className="grid grid-cols-2 gap-x-6">

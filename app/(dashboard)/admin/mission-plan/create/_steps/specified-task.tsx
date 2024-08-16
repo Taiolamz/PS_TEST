@@ -1,6 +1,5 @@
 import CustomCheckbox from "@/components/custom-checkbox";
 import CustomDateInput from "@/components/custom-date-input";
-import CustomMultiSelect from "@/components/inputs/custom-multiselect";
 import Icon from "@/components/icon/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -72,20 +71,7 @@ const SpecifiedTask = () => {
 
   const uuidRef = useRef(uuidv4());
 
-  const [initialValues, setInitialValues] = useState({
-    tasks: [
-      {
-        id: uuidv4(),
-        task: "",
-        strategic_pillars: [],
-        success_measures: [],
-        start_date: "",
-        end_date: "",
-        is_main_effort: false,
-      },
-    ],
-    mission_plan_id: "",
-  });
+  const [initialValues, setInitialValues] = useState<any>();
   const [mainEffort, setMainEffort] = useState(EFFORT_DATA);
 
   const { mission_plan: mission_plan_info } = useAppSelector(
@@ -196,7 +182,7 @@ const SpecifiedTask = () => {
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
-    if (initialValues) {
+    if (initialValues?.length > 0) {
       return {
         tasks: initialValues,
         mission_plan_id: mission_plan_info?.mission_plan?.id || "",
@@ -296,7 +282,7 @@ const SpecifiedTask = () => {
       ) : (
         <div>
           <div className="flex items-center gap-x-2 mb-8">
-            <h1 className="text-[#3E4345]">Specified Task</h1>
+            <h1 className="text-[#3E4345]">Set Specified Task</h1>
             <span>
               <BsFillInfoCircleFill color="#84919A" />
             </span>
@@ -533,7 +519,7 @@ const SpecifiedTask = () => {
                         style={{ color: "var(--primary-color)" }}
                         size={20}
                       />
-                      Add new Specific Task
+                      Add new specified task
                     </button>
                   </div>
                 )}

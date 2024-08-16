@@ -321,7 +321,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                         style={{ color: "var(--primary-color)" }}
                         size={20}
                       />
-                      Add new Strategic intent
+                      Add new strategic intent
                     </button>
                   </div>
                 )}
