@@ -30,7 +30,16 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
   const location = usePathname();
   const dispatch = useAppDispatch();
 
-  const [initialValues, setInitialValues] = useState();
+  const [initialValues, setInitialValues] = useState({
+    intents: [
+      {
+        intent: "",
+        behaviours: [{ id: uuidv4(), value: "" }],
+        strategic_intent_id: "",
+      },
+    ],
+    mission_plan_id: "",
+  });
 
   const { mission_plan: mission_plan_info } = useAppSelector(
     (state) => state.mission_plan
@@ -91,7 +100,6 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
       mission_plan_id,
     };
     try {
-      // console.log(transformedIntents);
       await addStrategicIntent(transformedIntents).unwrap();
       router.push(`${location}?ui=specified-intent`);
       toast.success("Strategic intent saved successfully");
@@ -119,19 +127,22 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
       (intent: any) => ({
         intent: intent.intent,
         id: intent.id,
-        behaviours: JSON.parse(intent.behaviours).map((behaviour: string) => ({
+        behaviours: intent?.behaviours?.map((behaviour: string) => ({
           id: uuidv4(),
           value: behaviour,
         })),
       })
     );
 
-    setInitialValues(intents);
+    setInitialValues({
+      intents,
+      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+    });
   }, [currentMissionPlan]);
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
-    if (initialValues) {
+    if (initialValues.intents?.length > 0) {
       return initialValues;
     }
     return {
@@ -142,15 +153,12 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
           strategic_intent_id: "",
         },
       ],
-      mission_plan_id: "",
+      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
     };
   }, [initialValues]);
 
   const formik = useFormik<any>({
-    initialValues: {
-      intents: initialVals,
-      mission_plan_id: mission_plan_info?.mission_plan?.id || "",
-    },
+    initialValues: initialVals,
     onSubmit: handleSaveStrategicIntent,
     validationSchema: setStrategicIntentsSchema,
     enableReinitialize: true,
@@ -313,7 +321,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                         style={{ color: "var(--primary-color)" }}
                         size={20}
                       />
-                      Add new Strategic intent
+                      Add new strategic intent
                     </button>
                   </div>
                 )}

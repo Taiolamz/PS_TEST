@@ -16,6 +16,7 @@ import routesPath from "@/utils/routes";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
   cancelPath: string;
@@ -68,35 +69,40 @@ const { ADMIN } = routesPath;
 
 export const useUnit = ({ cancelPath }: Prop) => {
   const actionCtx = useContext(ActionContext);
-  const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
-    useGetSubsidiariesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
 
-  const { data: branchesData, isLoading: isLoadingBranches } =
-    useGetBranchesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
+  // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
+  //   useGetSubsidiariesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
 
-  const { data: departmentsData, isLoading: isLoadingDepartments } =
-    useGetDepartmentsQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
+  // const { data: branchesData, isLoading: isLoadingBranches } =
+  //   useGetBranchesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
+
+  // const { data: departmentsData, isLoading: isLoadingDepartments } =
+  //   useGetDepartmentsQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
+
+  const { data: dropdownData, isLoading: isLoadingDropdown }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
+
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
@@ -145,9 +151,9 @@ export const useUnit = ({ cancelPath }: Prop) => {
     return array;
   };
 
-  const subsidiaries = subsidiariesData ?? [];
-  const branches = branchesData ?? [];
-  const departments = departmentsData ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
+  const branches = dropdownData?.organization_info?.branches ?? [];
+  const departments = dropdownData?.organization_info?.departments ?? [];
   const states = statesData ?? [];
   const employees = employeesData ?? [];
   const employeeDrop = handleDropdown(employees);
@@ -257,7 +263,6 @@ export const useUnit = ({ cancelPath }: Prop) => {
     subsidiaryDrop,
     branchDrop,
     departmentDrop,
-    isLoadingSubsidiaries,
-    isLoadingBranches,
+    isLoadingDropdown,
   };
 };

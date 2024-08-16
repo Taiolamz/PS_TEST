@@ -13,7 +13,7 @@ import {
 } from "@/utils/data/dashboard/missionplan/dummy";
 import routesPath from "@/utils/routes";
 import { useRouter, usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   MissionHeader,
@@ -22,8 +22,19 @@ import {
   MissionWrapper,
 } from "@/components/fragment";
 import BackIcon from "@/public/assets/icons/BackIcon";
+import { useSubmitPreviewedMissionPlanMutation } from "@/redux/services/mission-plan/missionPlanApi";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
-const MissionDetailPreview = () => {
+interface Props {
+  missionDetails: any;
+  isFetchingMissionPlan?: boolean;
+}
+
+const MissionDetailPreview = ({
+  missionDetails,
+  isFetchingMissionPlan,
+}: Props) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const location = usePathname();
 
@@ -31,6 +42,29 @@ const MissionDetailPreview = () => {
   const goBack = () => router.back();
 
   const { ADMIN } = routesPath;
+  const missionData = missionDetails || [];
+
+  const measureColumnData = useMemo(
+    () => measureColumns(),
+    [isFetchingMissionPlan]
+  );
+
+  const [submitPreviewedMissionPlan, { isLoading: isSubmittingMissionPlan }] =
+    useSubmitPreviewedMissionPlanMutation();
+
+  const handleUpload = async () => {
+    const payload = { ...missionData };
+    await submitPreviewedMissionPlan(payload)
+      .unwrap()
+      .then(() => {
+        setShowSuccessModal(true);
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+          }, 2000);
+        });
+      });
+  };
 
   return (
     <div className="w-[60vw]">
@@ -49,13 +83,15 @@ const MissionDetailPreview = () => {
           />
           <MissionWrapper
             title="Mission Statement"
-            status="approved"
+            status={missionData?.mission_statement?.status}
+            // status={"approved"}
             comment="2"
           >
             <p className="leading-relaxed  text-sm">
-              My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
+              {/* My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
               elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
-              pulvinar arcu, mi.
+              pulvinar arcu, mi. */}
+              {missionData?.mission_statement?.mission || "_"}
             </p>
           </MissionWrapper>
         </MissionPlanWrapper>
@@ -67,12 +103,13 @@ const MissionDetailPreview = () => {
           />
           <MissionWrapper
             title="Measure of Success"
-            status="rejected"
+            status={missionData?.measure_of_success?.[0]?.status}
             comment="2"
           >
             <MeasureOfSuccessTable
-              data={measuresData}
-              columns={measureColumns}
+              data={missionData?.measure_of_success}
+              // data={measuresData}
+              columns={measureColumnData}
             />
           </MissionWrapper>
         </MissionPlanWrapper>
@@ -83,8 +120,15 @@ const MissionDetailPreview = () => {
             link={`${location}?ui=strategic-intent`}
             index="3"
           />
-          <MissionWrapper title="Strategic Intent" status="pending">
-            <MissionItems data={strategicIntent} />
+          <MissionWrapper
+            title="Strategic Intent"
+            status={missionData?.strategic_intents?.[0]?.status}
+          >
+            <MissionItems
+              // data={strategicIntent}
+              strategicIntentData={missionData?.strategic_intents}
+              strategicIntent
+            />
           </MissionWrapper>
         </MissionPlanWrapper>
         <MissionPlanWrapper>
@@ -93,8 +137,16 @@ const MissionDetailPreview = () => {
             link={`${location}?ui=specified-intent`}
             index="4"
           />
-          <MissionWrapper title="Specified Task 1" status="approved">
-            <MissionItems data={specificTask} />
+          <MissionWrapper
+            title="Specified Task "
+            status={missionData?.specified_tasks?.[0]?.status}
+          >
+            {/* <MissionItems data={missionData?.specified_tasks} /> */}
+            <MissionItems
+              // data={specificTask}
+              specifiedTasks={missionData?.specified_tasks?.length > 0}
+              specifiedTasksData={missionData?.specified_tasks}
+            />
           </MissionWrapper>
         </MissionPlanWrapper>
         <MissionPlanWrapper>
@@ -103,8 +155,15 @@ const MissionDetailPreview = () => {
             link={`${location}?ui=implied-task`}
             index="5"
           />
-          <MissionWrapper title="Implied Task 1" status="approved">
-            <MissionItems data={impliedTask} />
+          <MissionWrapper
+            title="Implied Task"
+            status={missionData?.specified_tasks?.[0]?.status}
+          >
+            <MissionItems
+              impliedTask={missionData?.specified_tasks?.length > 0}
+              specifiedTasksData={missionData?.specified_tasks}
+            />
+            {/* <MissionItems data={impliedTask} /> */}
           </MissionWrapper>
         </MissionPlanWrapper>
         <MissionPlanWrapper>
@@ -113,14 +172,19 @@ const MissionDetailPreview = () => {
             link={`${location}?ui=boundaries`}
             index="6"
           />
-          <MissionWrapper title="Freedom" status="approved">
+          <MissionWrapper
+            title=""
+            status={missionData?.boundaries?.[0]?.status}
+          >
             <div className="flex flex-col gap-[1rem]">
-              <MissionItems data={freedom} />
+              {/* <MissionItems data={freedom} /> */}
               <div>
-                <div className="text-[var(--primary-color)] font-[500] leading-relaxed pb-[11px]">
-                  <h4>Constraints</h4>
-                </div>
-                <MissionItems data={constraints} />
+                {/* <MissionItems data={missionData?.boundaries[0]} /> */}
+                <MissionItems
+                  // data={constraints}
+                  boundaries={missionData?.boundaries?.length > 0}
+                  boundariesData={missionData?.boundaries}
+                />
               </div>
             </div>
           </MissionWrapper>
@@ -138,9 +202,19 @@ const MissionDetailPreview = () => {
         </div>
 
         <Button
-          type="button"
-          onClick={() => setShowSuccessModal(true)}
-          className="bg-[var(--primary-color)] text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--primary-accent-color)] rounded-sm shadow-md"
+          // type="button"
+          onClick={handleUpload}
+          // className="bg-[var(--primary-color)] text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--primary-accent-color)] rounded-sm shadow-md"
+          type="submit"
+          disabled={isSubmittingMissionPlan}
+          loading={isSubmittingMissionPlan}
+          loadingText="Uploading..."
+          className={cn(
+            "",
+            isSubmittingMissionPlan
+              ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
+              : "bg-[var(--primary-color)] text-sm text-white px-[22px] py-[8px] cursor-pointer select-none hover:bg-[var(--primary-accent-color)] rounded-sm shadow-md"
+          )}
         >
           <p>Upload</p>
         </Button>

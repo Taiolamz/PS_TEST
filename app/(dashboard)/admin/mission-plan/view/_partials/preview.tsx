@@ -4,7 +4,7 @@ import {
   MissionWrapper,
   SpecifiedMission,
 } from "@/components/fragment";
-import React from "react";
+import React, { useMemo } from "react";
 import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import { format } from "date-fns";
 import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
@@ -25,7 +25,7 @@ const Preview = ({ data }: dataProp) => {
         measure: `Measure ${index + 1}`,
         description: item?.measure,
         unit: item?.unit,
-        value: item?.target,
+        target: item?.target,
         id: item?.id,
       };
     });
@@ -61,6 +61,8 @@ const Preview = ({ data }: dataProp) => {
         item,
       };
     });
+
+  const measureColumnData = useMemo(() => measureColumns(), []);
 
   const SpecifiedData =
     specified_tasks.length !== null &&
@@ -152,7 +154,7 @@ const Preview = ({ data }: dataProp) => {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      {mission_statement !== null && (
+      {mission_statement !== 0 && (
         <MissionWrapper
           title="Mission Statement"
           status={mission_statement?.status}
@@ -162,15 +164,18 @@ const Preview = ({ data }: dataProp) => {
           </p>
         </MissionWrapper>
       )}
-      {measure_of_success.length !== null && (
+      {measure_of_success.length !== 0 && (
         <MissionWrapper
           title="Measure of Success"
           status={measure_of_success[0]?.status}
         >
-          <MeasureOfSuccessTable data={MeasureData} columns={measureColumns} />
+          <MeasureOfSuccessTable
+            data={MeasureData}
+            columns={measureColumnData}
+          />
         </MissionWrapper>
       )}
-      {strategic_intents.length !== null && (
+      {strategic_intents.length !== 0 && (
         <MissionWrapper
           title="Strategic Intent"
           status={strategic_intents[0]?.status}
@@ -178,7 +183,7 @@ const Preview = ({ data }: dataProp) => {
           <MissionItems data={StrategicIntentData} lastColumn={true} />
         </MissionWrapper>
       )}
-      {SpecifiedData.length !== null &&
+      {SpecifiedData.length !== 0 &&
         SpecifiedData?.map((items: any, index: number) => {
           return (
             <div key={index} className="flex flex-col gap-[12px]">
@@ -192,7 +197,7 @@ const Preview = ({ data }: dataProp) => {
                   index={index}
                 />
               </MissionWrapper>
-              {items?.impliedTask.length !== null &&
+              {items?.impliedTask.length !== 0 &&
                 items?.impliedTask.map((item: any, index: number) => {
                   return (
                     <MissionWrapper
@@ -207,7 +212,7 @@ const Preview = ({ data }: dataProp) => {
             </div>
           );
         })}
-      {boundaries[0]?.freedoms !== null && (
+      {boundaries?.length !== 0 && (
         <MissionWrapper title="Freedom" status={boundaries[0]?.status}>
           <div className="flex flex-col gap-[1rem]">
             <MissionSingleItem data={FreedomData} />

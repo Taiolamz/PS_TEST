@@ -9,12 +9,31 @@ import Routes from "@/lib/routes/routes";
 import { toast } from "sonner";
 import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import routesPath from "@/utils/routes";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
 };
+
+interface Section {
+  id: string;
+  title: string;
+  displayName: string;
+  mapTitle: string;
+  content: () => JSX.Element;
+  isSelected?: boolean;
+}
+
+type SectionKeys =
+  | "financial_year"
+  | "mission_statement"
+  | "success_measures"
+  | "strategic_intents"
+  | "boundaries"
+  | "specified_tasks"
+  | "implied_tasks"
+  | "duration";
 
 const units = [
   { label: "unit1", value: "unit1" },
@@ -73,6 +92,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     next_page_url: "",
     prev_page_url: "",
   });
+  const [sections, setSections] = useState<Section[]>([]);
 
   const units = unitsData ?? [];
   const user = useAppSelector(selectUser);
@@ -89,6 +109,27 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     return data;
   };
 
+  const transformData = (input: any) => {
+    const payload = {
+      id: "",
+      // id: organization?.id,
+      assignees: [], 
+      name: input.template_title,
+      duration: {
+        order: 0,
+      },
+    };
+
+    sections.forEach((section, index) => {
+      (payload as any)[section.mapTitle] = {
+        order: index + 1,
+        ...input[section.mapTitle],
+      };
+    });
+
+    return payload;
+  };
+
   const { organization } = user;
 
   const MissionPlanTemplateRoute = ADMIN.MISSION_PLAN_TEMPLATE;
@@ -98,12 +139,14 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   ] = useCreateMissionPlanTemplateMutation();
 
   const handleSubmit = async () => {
-    const payload = {
-      ...formik.values,
-      // name: formik.values.strategic_intent,
-      name: formik.values.template_title,
-      organization_id: organization?.id,
-    };
+    // const payload = {
+    //   ...formik.values,
+    //   // name: formik.values.strategic_intent,
+    //   name: formik.values.template_title,
+    //   organization_id: organization?.id,
+    // };
+    const payload = transformData(formik.values);
+    console.log(payload, "payload");
     await createMissionPlanTemplate(payload)
       .unwrap()
       .then(() => {
@@ -118,6 +161,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
         });
       });
   };
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -129,14 +173,14 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
         // end_period: new Date(),
       },
       mission_statement: "",
-      measure_of_success: {
+      success_measures: {
         measure_of_success: "",
         unit: "",
         target: "",
       },
-      implied_task: "",
-      specified_task: "",
-      freedom_and_constraints: {
+      implied_tasks: "",
+      specified_tasks: "",
+      boundaries: {
         constraint: "",
         freedom: "",
       },
@@ -174,5 +218,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     closeCancelModal,
     handleCancelDialog,
     units: handleFormatDropdown(units),
+    sections,
+    setSections,
   };
 };

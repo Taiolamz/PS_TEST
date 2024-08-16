@@ -4,7 +4,7 @@ import * as yup from "yup";
 export const missionStatementSchema = yup.object().shape({
   mission: yup
     .string()
-    .min(5, 'mission statement must be at least 5 characters')
+    .min(5, "mission statement must be at least 5 characters")
     .required("This field is required"),
 });
 
@@ -21,7 +21,11 @@ export const measureSuccessSchema = yup.object().shape({
 });
 
 export const commentSchema = yup.object().shape({
- comment: yup.string().min(2,"Can't send empty comment").max(200, "Message is too long").required("Type your comment"),
+  comment: yup
+    .string()
+    .min(2, "Can't send empty comment")
+    .max(200, "Message is too long")
+    .required("Type your comment"),
 });
 
 export const boundariesSchema = yup.object({
@@ -69,24 +73,14 @@ export const specifiedTaskSchema = yup.object().shape({
       task: yup.string().required("Title is required"),
       strategic_pillars: yup
         .array()
-        .of(
-          yup.object().shape({
-            label: yup.string().required(),
-            value: yup.string().required(),
-            color: yup.string().required(),
-          })
-        )
-        .min(1, "At least one pillar is required"),
+        .of(yup.string().required("Pillar is required"))
+        .min(1, "At least one strategic pillar is required")
+        .required("Strategic pillar is required"),
       success_measures: yup
         .array()
-        .of(
-          yup.object().shape({
-            label: yup.string().required(),
-            value: yup.string().required(),
-            color: yup.string().required(),
-          })
-        )
-        .min(1, "At least one measure is required"),
+        .of(yup.string().required("Measure is required"))
+        .min(1, "At least one measure is required")
+        .required("Measure is required"),
 
       start_date: yup
         .string()
