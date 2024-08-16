@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import React from "react";
+import { FormHeader } from "../_components";
 
 type Props = {
   formik: any;
@@ -8,6 +9,10 @@ type Props = {
 const HeadDetails = ({ formik }: Props) => {
   return (
     <section className="max-w-[35rem]">
+      <FormHeader
+        title="Head of Organization Information"
+        subTitle="Setup Head of Organization Details"
+      />
       <div>
         <Input
           label="Email of Head of Organization"
