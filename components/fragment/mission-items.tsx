@@ -4,6 +4,8 @@ import React from "react";
 
 interface missionItems {
   title: string;
+  behaviours: string;
+  intent: string;
   description: [
     {
       key: string;
