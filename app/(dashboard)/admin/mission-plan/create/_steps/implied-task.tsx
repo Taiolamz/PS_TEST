@@ -25,6 +25,7 @@ import {
 } from "@/redux/services/employee/employeeApi";
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
+import { isValid, parse } from "date-fns";
 
 type ImpliedTaskType = {
   implied_tasks?: any[];
@@ -58,8 +59,47 @@ const validationSchema = yup.object({
       specified_task_id: yup.string(),
       weight: yup.string().required("Weight is required"),
       percentage: yup.string().required("Percentage is required"),
-      start_date: yup.string().required("Start date is required"),
-      end_date: yup.string().required("End date is required"),
+      start_date: yup
+        .string()
+        .required("Start date is required")
+        .test("valid-date", "Start date must be a valid date", (value) => {
+          const formattedDate = formatDate(value);
+          const parsedDate = parse(formattedDate, "yyyy-MM-dd", new Date());
+          return isValid(parsedDate);
+        }),
+      end_date: yup
+        .string()
+        .required("End date is required")
+        .test("valid-date", "End date must be a valid date", (value) => {
+          const formattedDate = formatDate(value);
+          const parsedDate = parse(formattedDate, "yyyy-MM-dd", new Date());
+          return isValid(parsedDate);
+        })
+        .test(
+          "is-greater",
+          "End date must be after start date",
+          function (value) {
+            const { start_date } = this.parent;
+            const formattedEndDate = formatDate(value);
+            const formattedStartDate = formatDate(start_date);
+            const parsedEndDate = parse(
+              formattedEndDate,
+              "yyyy-MM-dd",
+              new Date()
+            );
+            const parsedStartDate = parse(
+              formattedStartDate,
+              "yyyy-MM-dd",
+              new Date()
+            );
+
+            return (
+              isValid(parsedEndDate) &&
+              isValid(parsedStartDate) &&
+              parsedEndDate > parsedStartDate
+            );
+          }
+        ),
       expected_outcomes: yup
         .array()
         .of(yup.string().required("Expected outcome is required")),
@@ -97,8 +137,8 @@ const ImpliedTask = () => {
         resources: task.resources,
         specified_task_id: task.specified_task_id || "",
         implied_task_id: task.implied_task_id || "",
-        weight: task.weight,
-        percentage: task.percentage,
+        weight: String(task.weight),
+        percentage: String(task.percentage),
         start_date: task.start_date,
         end_date: task.end_date,
         expected_outcomes: task.expected_outcomes,
@@ -164,9 +204,9 @@ const ImpliedTask = () => {
             user_id: "",
             specified_task_id: item.id || "",
             implied_task_id: "",
-            weight:      "",
+            weight: "",
             percentage: item.percentage || "",
-            start_date:  "",
+            start_date: "",
             end_date: "",
             resources: item.resources || [],
           },
@@ -218,105 +258,7 @@ const ImpliedTask = () => {
     enableReinitialize: true,
   });
 
-  // const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
-  //   return tasks.reduce<any[]>((formattedTasks, task) => {
-  //     if (!Array.isArray(task.implied_tasks)) {
-  //       console.warn(
-  //         "Expected implied_tasks to be an array, got:",
-  //         task.implied_tasks
-  //       );
-  //       return formattedTasks;
-  //     }
-
-  //     const taskItems = task.implied_tasks.map((chi) => ({
-  //       title: chi.task || "",
-  //       task: chi.task || "",
-  //       user_id: "",
-  //       specified_task_id: task.id || "",
-  //       implied_task_id: chi.id || "",
-  //       weight: chi.weight || "",
-  //       percentage: chi.percentage || "",
-  //       start_date: chi.start_date || "",
-  //       end_date: chi.end_date || "",
-  //       // resources:
-  //       //   (chi.resources).map((resource: any) => ({
-  //       //     value: resource.staff_member_id,
-  //       //     label: resource.name,
-  //       //     id: resource.staff_member_id,
-  //       //   })),
-  //       resources: (chi.resources || []).map(
-  //         (resource: any) => resource.staff_member_id
-  //       ),
-  //       expected_outcomes: chi.expected_outcome || "",
-  //       id: chi.id || "",
-  //       is_main_effort: chi.is_main_effort || 0,
-  //       strategic_pillars: chi.strategic_pillars || [],
-  //     }));
-
-  //     return [...formattedTasks, ...taskItems];
-  //   }, []);
-  // };
-
-  // console.log(formik.values.tasks, "tasks checking");
-
-  // const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
-  //   console.log(tasks, "tasking...");
-  //   const data = tasks.map((task: any) =>
-  //     task.implied_tasks.map((chi: any) => ({
-  //       console.log(chi,'chi')
-  //       title: task.task || "",
-  //       task: chi.task || "",
-  //       user_id: "",
-  //       specified_task_id: task.id || "",
-  //       implied_task_id: chi.id || "",
-  //       weight: chi.weight || "",
-  //       percentage: chi.percentage || "",
-  //       start_date: chi.start_date || "",
-  //       end_date: chi.end_date || "",
-  //       resources: (chi.resources || []).map(
-  //         (resource: any) => resource.staff_member_id
-  //       ),
-  //       expected_outcomes: chi.expected_outcome || "",
-  //       id: chi.id || "",
-  //       is_main_effort: chi.is_main_effort || 0,
-  //       strategic_pillars: chi.strategic_pillars || [],
-  //     }))
-  //   );
-  //   console.log(data, "data check");
-  //   return data;
-  // };
-
-  // const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
-  //   console.log(tasks, "tasking...");
-
-  //   const data = tasks.flatMap((task: any) =>
-  //     task.implied_tasks.map((chi: any) => {
-  //       console.log(chi, "children");
-
-  //       return {
-  //         title: task.task || "",
-  //         task: chi.task || "",
-  //         user_id: "",
-  //         specified_task_id: task.id || "",
-  //         implied_task_id: chi.id || "",
-  //         weight: chi.weight || "",
-  //         percentage: chi.percentage || "",
-  //         start_date: chi.start_date || "",
-  //         end_date: chi.end_date || "",
-  //         resources: (chi.resources || []).map(
-  //           (resource: any) => resource.staff_member_id
-  //         ),
-  //         expected_outcomes: chi.expected_outcome || "",
-  //         id: chi.id || "",
-  //         is_main_effort: chi.is_main_effort || 0,
-  //         strategic_pillars: chi.strategic_pillars || [],
-  //       };
-  //     })
-  //   );
-
-  //   console.log(data, "data check");
-  //   return data;
-  // };
+  console.log(formik.errors, "errors");
 
   useEffect(() => {
     handleGetMyMissionPlan();
@@ -380,7 +322,7 @@ const ImpliedTask = () => {
                                     </div>
                                     <div>
                                       <Input
-                                        type="text"
+                                        type="number"
                                         id={`tasks.${index}.weight`}
                                         label="Input Weight"
                                         labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
@@ -401,7 +343,7 @@ const ImpliedTask = () => {
                                     </div>
                                     <div>
                                       <Input
-                                        type="text"
+                                        type="number"
                                         id={`tasks.${index}.percentage`}
                                         label="Input Percentage"
                                         labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
@@ -455,7 +397,7 @@ const ImpliedTask = () => {
                                         }
                                       />
                                     </div>
-                                    <div className="grid grid-cols-2 ">
+                                    <div className="grid grid-cols-2 gap-3 w-full">
                                       <CustomDateInput
                                         id={`tasks.${index}.start_date`}
                                         label="Start Date"
@@ -470,7 +412,7 @@ const ImpliedTask = () => {
                                           )
                                         }
                                         error={""}
-                                        className="relative pr-8"
+                                        className="relative pr-8 w-full"
                                         iconClass="top-[2.7rem] right-3"
                                         isRequired
                                       />
@@ -577,34 +519,37 @@ const ImpliedTask = () => {
                                         ).map((outcome, outcomeIndex) => (
                                           <div
                                             key={outcomeIndex}
-                                            className="items-center w-full relative"
+                                            className="items-center w-full relative "
                                           >
-                                            <Input
-                                              type="text"
-                                              id={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                              label="Expected Outcomes"
-                                              labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                              onBlur={formik.handleBlur}
-                                              onChange={formik.handleChange}
-                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                              placeholder="Input Expected Outcomes"
-                                              className="mr-2 w-full md:w-[12rem] lg:w-[20rem]"
-                                              value={outcome}
-                                            />
+                                            <div className="grid place-items-center">
+                                              <Input
+                                                type="text"
+                                                id={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                                label="Expected Outcomes"
+                                                labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                onBlur={formik.handleBlur}
+                                                onChange={formik.handleChange}
+                                                name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                                placeholder="Input Expected Outcomes"
+                                                className="mr-2 w-full md:w-[12rem] lg:w-[20rem]"
+                                                value={outcome}
+                                              />
+
+                                              <button
+                                                type="button"
+                                                onClick={() =>
+                                                  removeOutcome(outcomeIndex)
+                                                }
+                                                className="text-red-600 absolute right-0 mr-5  mt-7"
+                                              >
+                                                <LiaTimesSolid size={18} />
+                                              </button>
+                                            </div>
                                             <ErrorMessage
                                               name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
                                               className="text-red-500 text-xs mt-1"
                                               component={"div"}
                                             />
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                removeOutcome(outcomeIndex)
-                                              }
-                                              className="text-red-600 absolute left-[180px] md:left-[280px] lg:left-[285px] bottom-3 md:bottom-0 lg:bottom-3"
-                                            >
-                                              <LiaTimesSolid size={18} />
-                                            </button>
                                           </div>
                                         ))}
                                         <button
