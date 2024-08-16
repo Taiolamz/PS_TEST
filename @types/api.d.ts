@@ -102,6 +102,12 @@ type AllStaff = {
 };
 
 type InvitedUser = {
+  organization: {
+    name: string;
+    logo: string;
+  };
+  logo: string;
+  name: string;
   branch_id: string;
   created_at: string;
   date_of_birth: string;

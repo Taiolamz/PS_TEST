@@ -9,18 +9,23 @@ import { ZojatechIcon } from "@/public/assets/icons";
 import Image from "next/image";
 
 const RejectInvite = () => {
-  const { formik, reasons, loading, isRejectSuccess } =
+  const { formik, reasons, loading, isRejectSuccess, invitedUser } =
     useRejectEmployeeInvite();
   const btnClass = "font-normal py-0 h-[32px]  transition-all duration-300 ";
 
   return (
     <EmployeeInviteLayout
+      orgLogo={(invitedUser as InvitedUser)?.organization?.logo}
+      orgName={(invitedUser as InvitedUser)?.organization?.name}
       headerText="Reason for Rejection"
       height="h-[554px]"
       subText={
         <p>
           Kindly state your reasons for rejecting{" "}
-          <span className="text-custom-blue-color">Zojatech’s</span> invite{" "}
+          <span className="text-custom-blue-color">
+            {(invitedUser as InvitedUser)?.organization?.name || "Orgainzation"}
+          </span>{" "}
+          invite{" "}
         </p>
       }
     >

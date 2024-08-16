@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
+  ColumnDef,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -20,17 +19,17 @@ import {
 } from "@/components/ui/table";
 import clsx from "clsx";
 
-type measureofSuccessType = {
-  data: any;
-  columns: any;
+interface MeasureOfSuccessType {
+  data: any[];
+  columns: ColumnDef<any>[];
   isPresentationView?: boolean;
-};
+}
 
-const MeasureOfSuccessTable = ({
+const MeasureOfSuccessTable: React.FC<MeasureOfSuccessType> = ({
   data,
   columns,
-  isPresentationView,
-}: measureofSuccessType) => {
+  isPresentationView = false,
+}) => {
   const table = useReactTable({
     data,
     columns,
@@ -38,6 +37,11 @@ const MeasureOfSuccessTable = ({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   });
+
+  if (!Array.isArray(columns)) {
+    console.error("Columns prop must be an array", columns);
+    return <div>Error: Columns prop must be an array</div>;
+  }
 
   return (
     <div className="w-full ">
@@ -48,26 +52,24 @@ const MeasureOfSuccessTable = ({
               key={headerGroup.id}
               className={`${isPresentationView && "bg-[#0080800D]"}`}
             >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead
-                    key={header.id}
-                    className="text-custom-dark-blue font-600 text-xs"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
+              {headerGroup.headers.map((header) => (
+                <TableHead
+                  key={header.id}
+                  className="text-custom-dark-blue font-600 text-xs"
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
+              ))}
             </TableRow>
           ))}
         </TableHeader>
         <TableBody className="bg-transparent border-none">
-          {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row, index) => (
               <TableRow
                 key={row.id}

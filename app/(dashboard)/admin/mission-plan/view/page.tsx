@@ -39,7 +39,6 @@ const SingleMissionPlan = () => {
   );
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
   const { isPreview } = useAppSelector((state) => state?.mission_plan_preview);
-  //   console.log(isPreview, "isPreview");
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -48,8 +47,8 @@ const SingleMissionPlan = () => {
   const [filter, setFilter] = useState<string>("");
   const [sort, setSort] = useState<string>("");
   const [subsidiary, setSubsidiary] = useState<string>("");
-  const [units, setUnits] = useState<string>("");
   const [departments, setDepartments] = useState<string>("");
+  const [units, setUnits] = useState<string>("");
 
   // State to handle drawer state and id
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
@@ -63,10 +62,12 @@ const SingleMissionPlan = () => {
     isFetching: isFetchingSummary,
     error: summaryError,
   }: any = useGetAllOrganizationMissionPlanSummaryQuery({
+    params: {
+      subsidiary: subsidiary,
+      department: departments,
+      unit: units,
+    },
     fiscal_year_id: id,
-    subsidiary: subsidiary,
-    department: departments,
-    unit: units,
   });
 
   const {
@@ -75,13 +76,15 @@ const SingleMissionPlan = () => {
     isFetching: isFetchingEmployee,
     error: employeeError,
   }: any = useGetAllOrganizationEmployeeMissionPlanQuery({
+    params: {
+      subsidiary: subsidiary,
+      department: departments,
+      unit: units,
+      search: search,
+      status: filter,
+      sort_by: sort,
+    },
     fiscal_year_id: id,
-    subsidiary: subsidiary,
-    department: departments,
-    unit: units,
-    search: search,
-    status: filter,
-    sort_by: sort,
   });
 
   const {
@@ -112,24 +115,116 @@ const SingleMissionPlan = () => {
       })
       .catch(() => toast.dismiss());
   };
-
-  const UNIT_DATA = (obj: any, deptId?: string) => {
+  //Conditional render content of subsidiary dropdown
+  const SUBSIDIARY_DATA = (obj: any) => {
+    const newMap = obj?.map((org: { id: string; name: string }) => ({
+      value: org.id,
+      label: org.name,
+    }));
+    return [
+      {
+        label: "Select Subsidiary",
+        value: "",
+      },
+      ...newMap,
+    ];
+  };
+  //Conditional render content of unit dropdown
+  const UNIT_DATA = ({
+    obj,
+    deptId,
+    SubId,
+  }: {
+    obj: any;
+    deptId?: string;
+    SubId?: string;
+  }) => {
+    let finalMapValue = [
+      {
+        value: "",
+        label: "Select Option",
+      },
+    ];
     if (user_hierarchy?.includes("department")) {
       const filtered = obj?.filter(
         (item: any) => item?.department_id === deptId
       );
-      return filtered?.map((org: { id: string; name: string }) => ({
-        value: org.id,
-        label: org.name,
-      }));
+      finalMapValue = [
+        {
+          value: "",
+          label: "Select Unit",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else if (user_hierarchy?.includes("subsidiary")) {
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
+      finalMapValue = [
+        {
+          value: "",
+          label: "Select Unit",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
     } else {
-      return obj?.map((org: { id: string; name: string }) => ({
-        value: org.id,
-        label: org.name,
-      }));
+      finalMapValue = [
+        {
+          value: "",
+          label: "Select Unit",
+        },
+        ...obj?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
     }
+    return finalMapValue;
+  };
+  //Conditional render content of department dropdown
+  const DEPARTMENT_DATA = ({ obj, SubId }: { obj: any; SubId?: string }) => {
+    let finalMapValue = [
+      {
+        value: "",
+        label: "Select Option",
+      },
+    ];
+    if (user_hierarchy?.includes("subsidiary")) {
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
+      finalMapValue = [
+        {
+          value: "",
+          label: "Select Department",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else {
+      finalMapValue = [
+        {
+          value: "",
+          label: "Select Department",
+        },
+        ...obj?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    }
+    return finalMapValue;
   };
   //-------- END: API Service for Tab == All Employee ------- //
+
   const user_hierarchy = useAppSelector(
     (state) => state?.auth?.user?.organization?.hierarchy
   );
@@ -206,42 +301,61 @@ const SingleMissionPlan = () => {
                 {active_fy_info?.title}
               </p>
               <div className="flex gap-x-[14px]">
+                {/* render unit subsidiary if part of hierarcy */}
                 {user_hierarchy?.includes("subsidiary") && (
                   <CustomSelect
-                    options={MAP_DATA(
-                      dropdownData?.organization_info?.subsidiary
+                    options={SUBSIDIARY_DATA(
+                      dropdownData?.organization_info?.subsidiaries
                     )}
                     selected={subsidiary}
-                    setSelected={(e) => setSubsidiary(e)}
+                    setSelected={(e) => {
+                      if (subsidiary !== e) {
+                        setDepartments("");
+                        setUnits("");
+                      }
+                      setSubsidiary(e);
+                    }}
                     className="min-w-40 bg-white"
-                    placeholder="Select subsidiary"
+                    placeholder="Select Subsidiary"
                   />
                 )}
+                {/* render department dropdown if part of hierarcy */}
                 {user_hierarchy?.includes("department") && (
                   <CustomSelect
-                    options={MAP_DATA(
-                      dropdownData?.organization_info?.departments
-                    )}
+                    options={DEPARTMENT_DATA({
+                      obj: dropdownData?.organization_info?.departments,
+                      SubId: subsidiary,
+                    })}
                     className="min-w-44 bg-white"
+                    disabled={
+                      subsidiary?.length === 0 &&
+                      user_hierarchy?.includes("subsidiary")
+                    }
                     selected={departments}
                     setSelected={(e) => {
+                      if (departments !== e) {
+                        setUnits("");
+                      }
                       setDepartments(e);
-                      setUnits("");
                     }}
                     placeholder="Select Department"
                   />
                 )}
+                {/* render unit dropdown if part of hierarcy */}
                 {user_hierarchy?.includes("unit") && (
                   <CustomSelect
-                    options={UNIT_DATA(
-                      dropdownData?.organization_info?.units,
-                      departments
-                    )}
+                    options={UNIT_DATA({
+                      obj: dropdownData?.organization_info?.units,
+                      deptId: departments,
+                      SubId: subsidiary,
+                    })}
                     selected={units}
                     setSelected={(e) => setUnits(e)}
                     disabled={
-                      departments?.length === 0 &&
-                      user_hierarchy?.includes("department")
+                      (departments?.length === 0 &&
+                        user_hierarchy?.includes("department")) ||
+                      (subsidiary?.length === 0 &&
+                        user_hierarchy?.includes("subsidiary"))
                     }
                     className="min-w-40 bg-white"
                     placeholder="Select Unit"
@@ -347,7 +461,7 @@ const SingleMissionPlan = () => {
           setDrawerUserId("");
           setOpenDrawer(false);
         }}
-        userId={drawerUserId} 
+        userId={drawerUserId}
       />
       <DrawerApprovalStatus
         show={openApprovalStatus}
@@ -386,12 +500,5 @@ const FORMAT_TABLE_DATA = (obj: any) => {
         }
       />
     ),
-  }));
-};
-
-const MAP_DATA = (obj: any) => {
-  return obj?.map((org: { id: string; name: string }) => ({
-    value: org.id,
-    label: org.name,
   }));
 };
