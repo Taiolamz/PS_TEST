@@ -48,24 +48,40 @@ export const departmentColumns = (
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name") || "Not Assigned"
+          row.getValue("name") || "------"
         )}
       </div>
     ),
   },
   {
-    accessorKey: "hod",
+    accessorKey: "head_of_department",
     header: "HOD",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
-        ) : (
-          row.getValue("hod") || "Not Assigned"
-        )}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const head_of_department = row.getValue("head_of_department") as ObjType;
+      return (
+        <div className="capitalize">
+          {loading ? (
+            <Skeleton className="h-4 w-[250px]" />
+          ) : (
+            head_of_department?.name || "------"
+          )}
+        </div>
+      );
+    },
   },
+  // {
+  //   accessorKey: "hod",
+  //   header: "HOD",
+  //   cell: ({ row }) => (
+  //     <div className="capitalize">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("hod") || "------"
+  //       )}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: "subsidiary",
     header: () => <div className="text-right mr-24">Subsidiary</div>,
@@ -76,7 +92,7 @@ export const departmentColumns = (
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            subsidiary?.name || "Not Assigned"
+            subsidiary?.name || "------"
           )}
         </div>
       );
@@ -92,7 +108,7 @@ export const departmentColumns = (
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            branch?.name || "Not Assigned"
+            branch?.name || "------"
           )}
         </div>
       );
@@ -106,7 +122,7 @@ export const departmentColumns = (
   //       {loading ? (
   //         <Skeleton className="h-4 w-[250px]" />
   //       ) : (
-  //         row.getValue("address") || "Not Assigned"
+  //         row.getValue("address") || "------"
   //       )}
   //     </div>
   //   ),

@@ -151,7 +151,7 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
                 </div>
               </>
             ) : (
-              <span>Not assigned</span>
+              <span>------</span>
             )}
           </div>
         </div>
