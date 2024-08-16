@@ -115,7 +115,10 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-    getMissionPlanItemsById: builder.query({
+    getMissionPlanItemsById: builder.query<
+      { data: MissionPlanApprovablesType },
+      { missionplanid: string }
+    >({
       query: ({ missionplanid }) => ({
         url: `/mission-plan/${missionplanid}/with-approvables`,
         method: "GET",

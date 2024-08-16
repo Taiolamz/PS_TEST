@@ -10,7 +10,10 @@ export type MeasureOfSuccessType = {
   unit?: string;
 };
 
-export type BoundariesType = {};
+export type BoundariesType = {
+  constraints: [];
+  freedoms: [];
+};
 export type SpecifiedTasksType = {};
 
 export type StrategicIntentType = {
@@ -21,9 +24,9 @@ export type StrategicIntentType = {
 };
 
 type MissionPlanApprovablesType = {
-  mission_statement?: MissionStatementType;
-  measure_of_success?: MeasureOfSuccessType[];
-  strategic_intent?: StrategicIntentType[];
+  mission_statement: MissionStatementType;
+  measure_of_success: MeasureOfSuccessType[];
+  strategic_intents: StrategicIntentType[];
   organization_id: string;
   approvables: [];
   boundaries: BoundariesType[];

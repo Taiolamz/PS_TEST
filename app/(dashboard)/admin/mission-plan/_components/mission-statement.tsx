@@ -6,7 +6,7 @@ import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
-  data: MissionStatementType;
+  data?: MissionStatementType;
 };
 const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
   return (

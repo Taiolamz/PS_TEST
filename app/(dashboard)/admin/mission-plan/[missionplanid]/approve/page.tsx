@@ -35,12 +35,12 @@ const ApproveMissionPlan = () => {
 
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
-  const strategicIntentComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
 
-  const { data, isLoading } = useGetMissionPlanItemsByIdQuery({
-    missionplanid: params.missionplanid as string,
-  });
+  const { data, isLoading: isGettingMissionPlanItems } =
+    useGetMissionPlanItemsByIdQuery({
+      missionplanid: params.missionplanid as string,
+    });
 
   console.log({ data, params });
   return (
@@ -75,7 +75,7 @@ const ApproveMissionPlan = () => {
             <MeasureOfSuccess
               showTextArea={measureOfSuccessComment.isOpen}
               setShowTextArea={measureOfSuccessComment.toggle}
-              data={data?.data?.measure_of_success}
+              data={data?.data?.measure_of_success ?? []}
             />
 
             <StrategicIntent data={data?.data?.strategic_intents ?? []} />

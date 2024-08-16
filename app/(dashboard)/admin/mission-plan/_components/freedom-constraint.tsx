@@ -1,11 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Comment from "./comment";
-
-type BoundariesType = {
-  constraints: [];
-  freedoms: [];
-};
+import { BoundariesType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
   showTextArea: boolean;
