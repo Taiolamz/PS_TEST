@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas";
 
 type StrategicPillarsType = {
   id: string;
@@ -56,10 +57,17 @@ const SpecifiedTasks = ({ data }: Props) => {
                     ))}
                   </p>
                   <p className="mt-1 font-light">
-                    <span className="font-normal">Measures of success :</span>{" "}
-                    {item?.success_measures?.map((item) => (
+                    <span className="font-normal">Measures of success : </span>{" "}
+                    {/* {item?.success_measures?.map((item) => (
                       <span key={item?.id}>{item?.measure}, </span>
-                    ))}{" "}
+                    ))}{" "} */}
+                    <span key={item?.id}>
+                      {formatNamesWithCommas(
+                        item?.success_measures,
+                        "id",
+                        "measure"
+                      )}
+                    </span>
                   </p>
                   <p className="mt-1">
                     <span className="font-normal">

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas";
 
 type StrategicPillarsType = {
   id: string;
@@ -82,12 +83,18 @@ const ImpliedTask = ({ data }: Props) => {
                       </p>
                       <p className="mt-1 font-light">
                         <span className="font-normal">Resources : </span>{" "}
-                        {/* {item?.resources} */}
-                        {item?.resources?.map((item) => (
+                        {/* {item?.resources?.map((item) => (
                           <span key={item?.staff_member_id}>
                             {item?.name},{" "}
                           </span>
-                        ))}{" "}
+                        ))}{" "} */}
+                        <span key={item?.id}>
+                          {formatNamesWithCommas(
+                            item?.resources,
+                            "staff_member_id",
+                            "name"
+                          )}
+                        </span>
                       </p>
                       <p className="mt-1 font-light">
                         <span className="font-normal">
