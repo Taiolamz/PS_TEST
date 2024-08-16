@@ -40,6 +40,14 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: { data: string[] }) => response.data,
     }),
+    getAllDownliners: builder.query<Downliners[], void>({
+      query: () => ({
+        url: `/mission-plan/downliners`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: { data: Downliners[] } }) =>
+        response.data.data,
+    }),
   }),
 });
 
@@ -49,4 +57,5 @@ export const {
   useGetInvitedEmployeesQuery,
   useGetAllEmployeesQuery,
   useGetAllApproverListQuery,
+  useGetAllDownlinersQuery,
 } = employeeInvitationApi;

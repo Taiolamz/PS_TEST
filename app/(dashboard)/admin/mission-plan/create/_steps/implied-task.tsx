@@ -19,7 +19,7 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { useLazyGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { useGetAllDownlinersQuery, useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 
@@ -122,11 +122,11 @@ const ImpliedTask = () => {
 
   const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
   const { data: employeesData, isLoading: isLoadingEmployees } =
-    useGetAllEmployeesQuery();
+    useGetAllDownlinersQuery();
 
   const formattedEmployeesDrop = useMemo(() => {
     return (
-      (employeesData as AllStaff[])?.map((chi) => ({
+      (employeesData as Downliners[])?.map((chi) => ({
         ...chi,
         label: chi?.name,
         value: chi?.id,
