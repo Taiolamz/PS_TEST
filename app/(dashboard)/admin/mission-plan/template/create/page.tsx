@@ -101,7 +101,7 @@ const AddMissionPlanTemplate: React.FC = () => {
       isSelected: handleIsSelectedField()[2],
     },
     {
-      id: "5",
+      id: "4",
       title: "Specified Task",
       mapTitle:"specified_tasks",
       content: renderSpecifiedTask,
@@ -109,7 +109,7 @@ const AddMissionPlanTemplate: React.FC = () => {
       isSelected: handleIsSelectedField()[4],
     },
     {
-      id: "4",
+      id: "5",
       title: "Implied Task",
       mapTitle:"implied_tasks",
       content: renderImpliedTask,
