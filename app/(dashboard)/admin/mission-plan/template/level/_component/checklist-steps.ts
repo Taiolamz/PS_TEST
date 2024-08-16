@@ -146,7 +146,7 @@ export const missionContentModal: MissionContentDetails[] = [
     isSelected: false,
   },
   {
-    id: "5",
+    id: "4",
     label: "Specified Tasks",
     title: "Specified Task",
     content:
@@ -154,7 +154,7 @@ export const missionContentModal: MissionContentDetails[] = [
     isSelected: false,
   },
   {
-    id: "4",
+    id: "5",
     label: "Implied Tasks",
     title: "Implied Task",
     content:
