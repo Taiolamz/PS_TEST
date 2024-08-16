@@ -8,23 +8,14 @@ import { Button } from "@/components/ui/button";
 
 import SpecifiedTasks from "../../_components/specified-task";
 import ImpliedTask from "../../_components/implied-task";
-import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
-import {
-  measureColumns,
-  measuresData,
-  specifiedTask,
-  impliedTask,
-} from "@/utils/data/dashboard/missionplan/dummy";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PresentationView from "./_presentation/presentation-view";
-import Comment from "../../_components/comment";
 import StrategicIntent from "../../_components/strategic-intent";
 import MissionStatement from "../../_components/mission-statement";
 import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
