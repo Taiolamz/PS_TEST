@@ -1,40 +1,39 @@
 "use client";
 
+import React, { useState } from "react";
+import { useParams } from "next/navigation";
+
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 
-import React, { useState } from "react";
 import SpecifiedTasks from "../../_components/specified-task";
 import ImpliedTask from "../../_components/implied-task";
-import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
-import {
-  measureColumns,
-  measuresData,
-  specifiedTask,
-  impliedTask,
-} from "@/utils/data/dashboard/missionplan/dummy";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PresentationView from "./_presentation/presentation-view";
-import Comment from "../../_components/comment";
 import StrategicIntent from "../../_components/strategic-intent";
 import MissionStatement from "../../_components/mission-statement";
 import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
+import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
+  const params = useParams();
 
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
-  const strategicIntentComment = useDisclosure();
-  const specifiedTaskComment = useDisclosure();
-  const impliedTaskComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
 
+  const { data, isLoading: isGettingMissionPlanItems } =
+    useGetMissionPlanItemsByIdQuery({
+      missionplanid: params.missionplanid as string,
+    });
+
+  console.log({ data, params });
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
@@ -61,31 +60,29 @@ const ApproveMissionPlan = () => {
             <MissionStatement
               showTextArea={missionStatementComment.isOpen}
               setShowTextArea={missionStatementComment.toggle}
+              data={data?.data?.mission_statement}
             />
 
             <MeasureOfSuccess
               showTextArea={measureOfSuccessComment.isOpen}
               setShowTextArea={measureOfSuccessComment.toggle}
+              data={data?.data?.measure_of_success ?? []}
             />
 
-            <StrategicIntent
-              showTextArea={strategicIntentComment.isOpen}
-              setShowTextArea={strategicIntentComment.toggle}
-            />
-
-            <SpecifiedTasks data={specifiedTask ?? []} />
-
-            <ImpliedTask data={impliedTask ?? []} />
+            <StrategicIntent data={data?.data?.strategic_intents ?? []} />
+            <SpecifiedTasks data={data?.data?.specified_tasks ?? []} />
+            <ImpliedTask data={data?.data?.specified_tasks ?? []} />
 
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}
               setShowTextArea={freedomConstraintComment.toggle}
+              data={data?.data?.boundaries ?? []}
             />
           </div>
         </div>
       ) : (
         <div className="min-h-screen bg-white">
-          <PresentationView />
+          <PresentationView data={data?.data ?? []} />
         </div>
       )}
     </DashboardLayout>
