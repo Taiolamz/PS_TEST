@@ -154,7 +154,7 @@ const ImpliedTask = () => {
         task: "",
         user_id: "",
         specified_task_id: "",
-        implied_task_id: "",
+        implied_task_id: "", // Using uuid to generate a unique ID
         weight: "",
         percentage: "",
         start_date: "",
@@ -165,6 +165,13 @@ const ImpliedTask = () => {
     ],
     mission_plan_id: mission_plan_info?.mission_plan?.id || "",
   };
+
+  // const formik = useFormik({
+  //   initialValues,
+  //   validationSchema,
+  //   onSubmit: handleSubmit,
+  //   enableReinitialize: true,
+  // });
 
   const formik = useFormik({
     initialValues,
@@ -390,6 +397,70 @@ const ImpliedTask = () => {
                                     </div>
                                   </div>
 
+                                  {/* <FieldArray
+                                    name={`tasks.${index}.expected_outcomes`}
+                                  >
+                                    {({
+                                      remove: removeOutcome,
+                                      push: pushOutcome,
+                                    }) => (
+                                      <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max mt-4">
+                                        {(Array.isArray(
+                                          formik.values.tasks[index]
+                                            .expected_outcomes
+                                        )
+                                          ? formik.values.tasks[index]
+                                              .expected_outcomes
+                                          : []
+                                        ).map((outcome, outcomeIndex) => (
+                                          <div
+                                            key={outcomeIndex}
+                                            className="items-center w-full relative"
+                                          >
+                                            <Input
+                                              type="text"
+                                              id={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                              label="Expected Outcomes"
+                                              labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                              onBlur={formik.handleBlur}
+                                              onChange={formik.handleChange}
+                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                              placeholder="Input Expected Outcomes"
+                                              className="mr-2 w-full md:w-[12rem] lg:w-[20rem]"
+                                              value={outcome}
+                                            />
+                                            <ErrorMessage
+                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
+                                              className="text-red-500 text-xs mt-1"
+                                              component={"div"}
+                                            />
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                removeOutcome(outcomeIndex)
+                                              }
+                                              className="text-red-600 absolute left-[180px] md:left-[280px] lg:left-[285px] bottom-3 md:bottom-0 lg:bottom-3"
+                                            >
+                                              <LiaTimesSolid size={18} />
+                                            </button>
+                                          </div>
+                                        ))}
+                                        <button
+                                          type="button"
+                                          onClick={() => pushOutcome("")}
+                                          className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
+                                        >
+                                          <LucidePlusCircle
+                                            size={28}
+                                            className="mr-2"
+                                          />
+                                          <span className="text-[15px] font-normal whitespace-nowrap">
+                                            Add Outcomes
+                                          </span>
+                                        </button>
+                                      </div>
+                                    )}
+                                  </FieldArray> */}
                                   <FieldArray
                                     name={`tasks.${index}.expected_outcomes`}
                                   >

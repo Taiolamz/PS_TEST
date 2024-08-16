@@ -22,7 +22,10 @@ const RejectInvite = () => {
       subText={
         <p>
           Kindly state your reasons for rejecting{" "}
-          <span className="text-custom-blue-color">Zojatech’s</span> invite{" "}
+          <span className="text-custom-blue-color">
+            {(invitedUser as InvitedUser)?.organization?.name || "Orgainzation"}
+          </span>{" "}
+          invite{" "}
         </p>
       }
     >
