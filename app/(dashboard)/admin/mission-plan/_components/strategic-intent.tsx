@@ -6,12 +6,12 @@ import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables"
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
-  data: StrategicIntentType;
+  data: StrategicIntentType[];
 };
 
 const StrategicIntent = ({ setShowTextArea, showTextArea, data }: Props) => {
   return (
-    <div>
+    <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
         <section key={item?.id}>
           <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5 text-sm text-[#162238]">

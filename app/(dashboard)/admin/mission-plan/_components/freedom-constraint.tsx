@@ -2,10 +2,15 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import Comment from "./comment";
 
+type BoundariesType = {
+  constraints: [];
+  freedoms: [];
+};
+
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
-  data: any;
+  data: BoundariesType[];
 };
 
 const FreedomConstraint = ({ setShowTextArea, showTextArea, data }: Props) => {
@@ -19,12 +24,14 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea, data }: Props) => {
                 Freedom{" "}
               </h2>
               <div className="mt-2">
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Transportation to and from client location
-                </h3>
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Lack of experienced team members
-                </h3>
+                {data[0]?.freedoms?.map((freedom) => (
+                  <h3
+                    className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5"
+                    key={freedom}
+                  >
+                    <span>-</span> {freedom}
+                  </h3>
+                ))}
               </div>
             </div>
             <div>
@@ -32,12 +39,14 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea, data }: Props) => {
                 Constraints
               </h2>
               <div className="mt-2">
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Ability to innovate design process
-                </h3>
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Select skill to improve on
-                </h3>
+                {data[0]?.constraints?.map((item) => (
+                  <h3
+                    className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5"
+                    key={item}
+                  >
+                    <span>-</span> {item}
+                  </h3>
+                ))}
               </div>
             </div>
           </div>
