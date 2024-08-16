@@ -43,7 +43,6 @@ const MissionDetailPreview = ({
 
   const { ADMIN } = routesPath;
   const missionData = missionDetails || [];
-<<<<<<< HEAD
 
   const measureColumnData = useMemo(
     () => measureColumns(),
@@ -66,16 +65,6 @@ const MissionDetailPreview = ({
         });
       });
   };
-=======
-
-  const measureColumnData = useMemo(
-    () => measureColumns(),
-    [isFetchingMissionPlan]
-  );
-
-  console.log(missionDetails, "mission details");
-  console.log(missionData?.strategic_intents, "mission intent");
->>>>>>> d784150 (mission plan template fix)
 
   return (
     <div className="w-[60vw]">
