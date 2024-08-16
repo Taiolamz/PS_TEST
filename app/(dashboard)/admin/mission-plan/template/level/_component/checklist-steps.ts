@@ -146,17 +146,17 @@ export const missionContentModal: MissionContentDetails[] = [
     isSelected: false,
   },
   {
-    id: "4",
-    label: "Implied Tasks",
-    title: "Implied Task",
+    id: "5",
+    label: "Specified Tasks",
+    title: "Specified Task",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,
   },
   {
-    id: "5",
-    label: "Specified Tasks",
-    title: "Specified Task",
+    id: "4",
+    label: "Implied Tasks",
+    title: "Implied Task",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,
