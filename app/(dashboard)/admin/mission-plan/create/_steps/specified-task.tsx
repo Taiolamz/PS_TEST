@@ -1,6 +1,5 @@
 import CustomCheckbox from "@/components/custom-checkbox";
 import CustomDateInput from "@/components/custom-date-input";
-import CustomMultiSelect from "@/components/inputs/custom-multiselect";
 import Icon from "@/components/icon/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,7 @@ import {
   useFormik,
 } from "formik";
 import { LucidePlusCircle } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
@@ -29,9 +28,9 @@ import {
   useCreateSpecifiedTaskMutation,
   useLazyGetMyMissionPlanQuery,
 } from "@/redux/services/mission-plan/missionPlanApi";
-import { isValid } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PageLoader } from "@/components/custom-loader";
+import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 
 const { ADMIN } = routesPath;
 
@@ -70,7 +69,9 @@ const SpecifiedTask = () => {
   const location = usePathname();
   const dispatch = useAppDispatch();
 
-  const [initialValues, setInitialValues] = useState();
+  const uuidRef = useRef(uuidv4());
+
+  const [initialValues, setInitialValues] = useState<any>();
   const [mainEffort, setMainEffort] = useState(EFFORT_DATA);
 
   const { mission_plan: mission_plan_info } = useAppSelector(
@@ -118,22 +119,58 @@ const SpecifiedTask = () => {
     (state) => state?.mission_plan?.mission_plan
   );
 
+  const mappedStrategicPillars = useMemo(
+    () =>
+      active_fy_info
+        ? active_fy_info?.strategic_pillars?.map((item: any) => {
+            return {
+              label: item.title,
+              id: item.id,
+              value: item.id,
+              color: "default",
+            };
+          })
+        : [],
+    [active_fy_info]
+  );
+
+  const mappedSuccessMeasures = useMemo(
+    () =>
+      mission_plan
+        ? mission_plan_info?.mission_plan?.measure_of_success?.map(
+            (item: any) => {
+              return {
+                label: `${item.measure} - ${item.target} (${item.unit})`,
+                id: item.id,
+                value: item.id,
+                color: "default",
+              };
+            }
+          )
+        : [],
+    [mission_plan]
+  );
+
   // This sets the intial saved values
   useEffect(() => {
     const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
       (task: any) => ({
         id: task.id || uuidv4(),
         task: task.task,
-        strategic_pillars: mappedStrategicPillars?.filter(
-          (obj: { id: any }) =>
-            mappedStrategicPillars ??
-            JSON.parse(task.strategic_pillars).includes(obj.id)
-        ),
-        success_measures: mappedSuccessMeasures?.filter(
-          (obj: { id: any }) =>
-            mappedStrategicPillars ??
-            JSON.parse(task.success_measures).includes(obj.id)
-        ),
+        strategic_pillars: mappedStrategicPillars
+          .filter((itemA: { id: any }) =>
+            task.strategic_pillars.some(
+              (itemB: { id: any }) => itemB.id === itemA.id
+            )
+          )
+          .map((item: { id: any }) => item.id),
+        success_measures: mappedSuccessMeasures
+          .filter((itemA: { id: any }) =>
+            task.success_measures.some(
+              (itemB: { id: any }) => itemB.id === itemA.id
+            )
+          )
+          .map((item: { id: any }) => item.id),
         start_date: task.start_date,
         end_date: task.end_date,
         is_main_effort: task.is_main_effort ? true : false,
@@ -141,11 +178,11 @@ const SpecifiedTask = () => {
     );
 
     setInitialValues(tasks);
-  }, [mission_plan_info]);
+  }, [mappedStrategicPillars, mappedSuccessMeasures, mission_plan_info]);
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
-    if (initialValues) {
+    if (initialValues?.length > 0) {
       return {
         tasks: initialValues,
         mission_plan_id: mission_plan_info?.mission_plan?.id || "",
@@ -154,7 +191,7 @@ const SpecifiedTask = () => {
     return {
       tasks: [
         {
-          id: uuidv4(),
+          id: uuidRef.current,
           task: "",
           strategic_pillars: [],
           success_measures: [],
@@ -174,12 +211,8 @@ const SpecifiedTask = () => {
         ({ id, success_measures, strategic_pillars, ...rest }) => ({
           ...rest,
           id: id.includes("-") ? "" : id,
-          success_measures: success_measures?.map(
-            (measure: { id: any }) => measure.id
-          ),
-          strategic_pillars: strategic_pillars?.map(
-            (pillar: { id: string }) => pillar.id
-          ),
+          success_measures: success_measures,
+          strategic_pillars: strategic_pillars,
         })
       ),
     };
@@ -231,38 +264,6 @@ const SpecifiedTask = () => {
 
   const errorTasks = formik.errors.tasks as any;
 
-  const mappedStrategicPillars = useMemo(
-    () =>
-      active_fy_info
-        ? active_fy_info?.strategic_pillars?.map((item: any) => {
-            return {
-              label: item.title,
-              id: item.id,
-              value: item.title,
-              color: "default",
-            };
-          })
-        : [],
-    [active_fy_info]
-  );
-
-  const mappedSuccessMeasures = useMemo(
-    () =>
-      mission_plan
-        ? mission_plan_info?.mission_plan?.measure_of_success?.map(
-            (item: any) => {
-              return {
-                label: `${item.measure} - ${item.target} (${item.unit})`,
-                id: item.id,
-                value: item.id,
-                color: "default",
-              };
-            }
-          )
-        : [],
-    [mission_plan]
-  );
-
   useEffect(() => {
     dispatch(
       updateMissionPlanDetails({
@@ -281,7 +282,7 @@ const SpecifiedTask = () => {
       ) : (
         <div>
           <div className="flex items-center gap-x-2 mb-8">
-            <h1 className="text-[#3E4345]">Specified Task</h1>
+            <h1 className="text-[#3E4345]">Set Specified Task</h1>
             <span>
               <BsFillInfoCircleFill color="#84919A" />
             </span>
@@ -324,34 +325,34 @@ const SpecifiedTask = () => {
                               </div>
 
                               <div className="flex-1 w-[100%]">
-                                <CustomMultiSelect
-                                  values={
-                                    formik.values.tasks[index].strategic_pillars
-                                  }
-                                  onValuesChange={(values) =>
+                                <CustomMultipleSelect
+                                  options={mappedStrategicPillars}
+                                  onValueChange={(values: any) =>
                                     formik.setFieldValue(
                                       `tasks.${index}.strategic_pillars`,
                                       values
                                     )
                                   }
-                                  options={mappedStrategicPillars}
                                   label="Select Pillars"
-                                  labelClass="block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-1"
+                                  name={`tasks.${index}.strategic_pillars`}
+                                  defaultValue={
+                                    formik.values.tasks[index].strategic_pillars
+                                  }
+                                  placeholder="Select Pillars"
+                                  badgeClassName={`rounded-[20px] text-[10px] font-normal`}
+                                  triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm`}
+                                  placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
+                                  labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[11px]`}
+                                  error={errorTasks?.[index]?.strategic_pillars}
+                                  touched={
+                                    touchedTasks?.[index]?.strategic_pillars
+                                  }
+                                  maxCount={6}
                                   onBlur={() =>
                                     formik.setFieldTouched(
                                       `tasks.${index}.strategic_pillars`,
                                       true
                                     )
-                                  }
-                                  triggerClass={`rounded-md border bg-transparent text-sm bg-[#ffffff] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px] max-h-[35px]`}
-                                  placeholder="Select Pillars"
-                                  inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                                  errorClass="text-red-500 text-xs mt-1 relative bottom-3"
-                                  itemValue=""
-                                  name={`tasks.${index}.strategic_pillars`}
-                                  error={errorTasks?.[index]?.strategic_pillars}
-                                  touched={
-                                    touchedTasks?.[index]?.strategic_pillars
                                   }
                                 />
                               </div>
@@ -367,13 +368,10 @@ const SpecifiedTask = () => {
                                 />
                               </button>
                             </div>
-                            <div className="max-w-5xl !ml-0 flex flex-col lg:flex-row gap-y-3 gap-x-3 justify-between mb-4 items-start">
+                            <div className="max-w-5xl !ml-0 flex flex-col lg:flex-row gap-y-3 gap-x-3 justify-between mb-2 items-start">
                               <div className="ml-0">
-                                <CustomMultiSelect
-                                  values={
-                                    formik.values.tasks[index].success_measures
-                                  }
-                                  onValuesChange={(values) =>
+                                <CustomMultipleSelect
+                                  onValueChange={(values) =>
                                     formik.setFieldValue(
                                       `tasks.${index}.success_measures`,
                                       values
@@ -381,21 +379,25 @@ const SpecifiedTask = () => {
                                   }
                                   options={mappedSuccessMeasures}
                                   label="Select Measure of Success"
-                                  labelClass="block text-xs text-[#6E7C87] font-normal m-0 p-0"
+                                  name={`tasks.${index}.success_measures`}
+                                  defaultValue={
+                                    formik.values.tasks[index].success_measures
+                                  }
+                                  placeholder="Select Multiple"
+                                  badgeClassName={`rounded-[20px] text-[10px] font-normal`}
+                                  triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1`}
+                                  placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
+                                  labelClass={`block text-xs text-[#6E7C87] font-normal mt-0 p-0 pb-2`}
+                                  error={errorTasks?.[index]?.success_measures}
+                                  touched={
+                                    touchedTasks?.[index]?.success_measures
+                                  }
+                                  maxCount={6}
                                   onBlur={() =>
                                     formik.setFieldTouched(
                                       `tasks.${index}.success_measures`,
                                       true
                                     )
-                                  }
-                                  triggerClass="rounded-md border bg-transparent text-sm bg-[#ffffff] focus-visible:ring-1 file:border-0 file:bg-transparent file:text-sm border-gray-300 shadow-sm py-[7px] min-w-[20rem] max-h-[35px]"
-                                  placeholder="Select Multiple"
-                                  inputClass="py-0 flex transition-colors placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-#6E7C87"
-                                  errorClass="text-red-500 text-xs mt-1 relative bottom-3"
-                                  name={`tasks.${index}.success_measures`}
-                                  error={errorTasks?.[index]?.success_measures}
-                                  touched={
-                                    touchedTasks?.[index]?.success_measures
                                   }
                                 />
                               </div>
@@ -411,7 +413,7 @@ const SpecifiedTask = () => {
                                 >
                                   <CustomDateInput
                                     labelClass="pb-2"
-                                    className="relative"
+                                    className="relative p-4"
                                     placeholder="DD/MM/YYYY"
                                     format="DD/MM/YYYY"
                                     id={`tasks.${index}.start_date`}
@@ -424,7 +426,7 @@ const SpecifiedTask = () => {
                                       )
                                     }
                                     label="Start Date"
-                                    inputClass="text-[.75rem]"
+                                    inputClass="text-[.75rem] p-[9px]"
                                     handleChange={(date) =>
                                       formik.setFieldValue(
                                         `tasks.${index}.start_date`,
@@ -463,7 +465,7 @@ const SpecifiedTask = () => {
                                     }
                                     labelClass="pb-2"
                                     className="relative"
-                                    inputClass="w-full text-[.75rem]"
+                                    inputClass="w-full text-[.75rem] p-[9px]"
                                     //   value={formik.values.tasks[index].end_date}
                                     touched={touchedTasks?.[index]?.end_date}
                                     error={errorTasks?.[index]?.end_date}
@@ -517,7 +519,7 @@ const SpecifiedTask = () => {
                         style={{ color: "var(--primary-color)" }}
                         size={20}
                       />
-                      Add new Specific Task
+                      Add new specified task
                     </button>
                   </div>
                 )}
