@@ -78,14 +78,8 @@ const ApproveMissionPlan = () => {
               data={data?.data?.measure_of_success}
             />
 
-            <StrategicIntent
-              showTextArea={strategicIntentComment.isOpen}
-              setShowTextArea={strategicIntentComment.toggle}
-              data={data?.data?.strategic_intents ?? []}
-            />
-
+            <StrategicIntent data={data?.data?.strategic_intents ?? []} />
             <SpecifiedTasks data={data?.data?.specified_tasks ?? []} />
-
             <ImpliedTask data={data?.data?.specified_tasks ?? []} />
 
             <FreedomConstraint

@@ -4,12 +4,10 @@ import { Button } from "@/components/ui/button";
 import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
-  showTextArea: boolean;
-  setShowTextArea: (e: boolean) => void;
   data: StrategicIntentType[];
 };
 
-const StrategicIntent = ({ setShowTextArea, showTextArea, data }: Props) => {
+const StrategicIntent = ({ data }: Props) => {
   const [openCommentId, setOpenCommentId] = useState<string | null>(null);
 
   const toggleComment = (id: string) => {
