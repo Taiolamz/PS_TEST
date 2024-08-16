@@ -46,7 +46,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("name") || "------"
+          row.getValue("name") || "Not Assigned"
         )}
       </div>
     ),
@@ -56,23 +56,27 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
     header: "HOU",
     cell: ({ row }) => (
       <div className="capitalize">
-        {loading ? <Skeleton className="h-4 w-[250px]" /> : row.getValue("hou")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "department",
-    header: () => <div className="text-right mr-24">Deparment</div>,
-    cell: ({ row }) => (
-      <div className="capitalize text-right mr-24">
         {loading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          row.getValue("head_of_unit") || "------"
+          row.getValue("head_of_unit") || "Not Assigned"
         )}
       </div>
     ),
   },
+  // {
+  //   accessorKey: "department",
+  //   header: () => <div className="text-right mr-24">Deparment</div>,
+  //   cell: ({ row }) => (
+  //     <div className="capitalize text-right mr-24">
+  //       {loading ? (
+  //         <Skeleton className="h-4 w-[250px]" />
+  //       ) : (
+  //         row.getValue("head_of_unit") || "Not Assigned"
+  //       )}
+  //     </div>
+  //   ),
+  // },
 
   {
     accessorKey: "deparment",
@@ -84,7 +88,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            department?.name || "------"
+            department?.name || "Not Assigned"
           )}
         </div>
       );
@@ -100,7 +104,7 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
-            branch?.name || "------"
+            branch?.name || "Not Assigned"
           )}
         </div>
       );

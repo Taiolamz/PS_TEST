@@ -14,6 +14,7 @@ import routesPath from "@/utils/routes";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
   cancelPath: string;
@@ -75,24 +76,26 @@ const headOfDepartment = [
 const { ADMIN } = routesPath;
 
 export const useDepartment = ({ cancelPath }: Prop) => {
-  const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
-    useGetSubsidiariesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
-  const { data: branchesData, isLoading: isLoadingBranches } =
-    useGetBranchesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
+  // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
+  //   useGetSubsidiariesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
+  // const { data: branchesData, isLoading: isLoadingBranches } =
+  //   useGetBranchesQuery({
+  //     to: 0,
+  //     total: 0,
+  //     per_page: 50,
+  //     currentPage: 0,
+  //     next_page_url: "",
+  //     prev_page_url: "",
+  //   });
+  const { data: dropdownData, isLoading: isLoadingDropdown }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
 
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
@@ -139,8 +142,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     return array;
   };
 
-  const subsidiaries = subsidiariesData ?? [];
-  const branches = branchesData ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
+  const branches = dropdownData?.organization_info?.branches ?? [];
   const states = statesData ?? [];
   const employees = employeesData ?? [];
 
@@ -253,9 +256,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     employeeDrop,
     employees: handleFormatDropdown(employees),
     stateDrop,
-    branchDrop,
-    isLoadingSubsidiaries,
-    isLoadingBranches,
+    branchDrop, 
+    // isLoadingBranches,
     isLoadingStates,
   };
 };
