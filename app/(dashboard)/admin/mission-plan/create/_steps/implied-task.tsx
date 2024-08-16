@@ -19,7 +19,10 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { useLazyGetMyMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { useGetAllDownlinersQuery, useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import {
+  useGetAllDownlinersQuery,
+  useGetAllEmployeesQuery,
+} from "@/redux/services/employee/employeeApi";
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 
@@ -140,12 +143,54 @@ const ImpliedTask = () => {
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
+        // console.log("testing", payload);
         if (payload?.data?.mission_plan?.specified_tasks?.length > 0) {
           const impliedTasks = payload?.data?.mission_plan?.specified_tasks;
-          const mappedTasks = formatTasks(impliedTasks);
+          const mappedTasks = formattedData(impliedTasks);
           formik.setFieldValue("tasks", mappedTasks);
+          console.log(impliedTasks, "implied tasks");
+          console.log(mappedTasks, "mapped tasks");
         }
       });
+  };
+
+  const formattedData = (items: ImpliedTaskType[]) => {
+    const newData = items?.flatMap((item: any) => {
+      if (!item?.implied_tasks?.length) {
+        return [
+          {
+            title: item.task || "",
+            task: "",
+            user_id: "",
+            specified_task_id: item.id || "",
+            implied_task_id: "",
+            weight:      "",
+            percentage: item.percentage || "",
+            start_date:  "",
+            end_date: "",
+            resources: item.resources || [],
+          },
+        ];
+      }
+      return item.implied_tasks.map((chi: any) => {
+        return {
+          title: item?.task || "",
+          task: chi?.task || "",
+          user_id: "",
+          specified_task_id: item?.id || "",
+          implied_task_id: chi?.id || "",
+          weight: chi?.weight || "",
+          percentage: chi?.percentage || "",
+          start_date: chi?.start_date || chi?.start_date || "",
+          end_date: chi?.end_date || chi?.end_date || "",
+          resources: (chi?.resources || [])?.map(
+            (resource: { staff_member_id: string }) => resource?.staff_member_id
+          ),
+          expected_outcomes: chi?.expected_outcome || "",
+        };
+      });
+    });
+    return newData;
   };
 
   const initialValues = {
@@ -154,7 +199,7 @@ const ImpliedTask = () => {
         task: "",
         user_id: "",
         specified_task_id: "",
-        implied_task_id: "", // Using uuid to generate a unique ID
+        implied_task_id: "",
         weight: "",
         percentage: "",
         start_date: "",
@@ -166,13 +211,6 @@ const ImpliedTask = () => {
     mission_plan_id: mission_plan_info?.mission_plan?.id || "",
   };
 
-  // const formik = useFormik({
-  //   initialValues,
-  //   validationSchema,
-  //   onSubmit: handleSubmit,
-  //   enableReinitialize: true,
-  // });
-
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -180,44 +218,105 @@ const ImpliedTask = () => {
     enableReinitialize: true,
   });
 
-  const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
-    return tasks.reduce<any[]>((formattedTasks, task) => {
-      if (!Array.isArray(task.implied_tasks)) {
-        console.warn(
-          "Expected implied_tasks to be an array, got:",
-          task.implied_tasks
-        );
-        return formattedTasks;
-      }
+  // const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
+  //   return tasks.reduce<any[]>((formattedTasks, task) => {
+  //     if (!Array.isArray(task.implied_tasks)) {
+  //       console.warn(
+  //         "Expected implied_tasks to be an array, got:",
+  //         task.implied_tasks
+  //       );
+  //       return formattedTasks;
+  //     }
 
-      const taskItems = task.implied_tasks.map((chi) => ({
-        title: task.task || "",
-        task: chi.task || "",
-        user_id: "",
-        specified_task_id: task.id || "",
-        implied_task_id: chi.id || "",
-        weight: chi.weight || "",
-        percentage: chi.percentage || "",
-        start_date: chi.start_date || "",
-        end_date: chi.end_date || "",
-        // resources:
-        //   (chi.resources).map((resource: any) => ({
-        //     value: resource.staff_member_id,
-        //     label: resource.name,
-        //     id: resource.staff_member_id,
-        //   })),
-        resources: (chi.resources || []).map(
-          (resource: any) => resource.staff_member_id
-        ),
-        expected_outcomes: chi.expected_outcome || "",
-        id: chi.id || "",
-        is_main_effort: chi.is_main_effort || 0,
-        strategic_pillars: chi.strategic_pillars || [],
-      }));
+  //     const taskItems = task.implied_tasks.map((chi) => ({
+  //       title: chi.task || "",
+  //       task: chi.task || "",
+  //       user_id: "",
+  //       specified_task_id: task.id || "",
+  //       implied_task_id: chi.id || "",
+  //       weight: chi.weight || "",
+  //       percentage: chi.percentage || "",
+  //       start_date: chi.start_date || "",
+  //       end_date: chi.end_date || "",
+  //       // resources:
+  //       //   (chi.resources).map((resource: any) => ({
+  //       //     value: resource.staff_member_id,
+  //       //     label: resource.name,
+  //       //     id: resource.staff_member_id,
+  //       //   })),
+  //       resources: (chi.resources || []).map(
+  //         (resource: any) => resource.staff_member_id
+  //       ),
+  //       expected_outcomes: chi.expected_outcome || "",
+  //       id: chi.id || "",
+  //       is_main_effort: chi.is_main_effort || 0,
+  //       strategic_pillars: chi.strategic_pillars || [],
+  //     }));
 
-      return [...formattedTasks, ...taskItems];
-    }, []);
-  };
+  //     return [...formattedTasks, ...taskItems];
+  //   }, []);
+  // };
+
+  // console.log(formik.values.tasks, "tasks checking");
+
+  // const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
+  //   console.log(tasks, "tasking...");
+  //   const data = tasks.map((task: any) =>
+  //     task.implied_tasks.map((chi: any) => ({
+  //       console.log(chi,'chi')
+  //       title: task.task || "",
+  //       task: chi.task || "",
+  //       user_id: "",
+  //       specified_task_id: task.id || "",
+  //       implied_task_id: chi.id || "",
+  //       weight: chi.weight || "",
+  //       percentage: chi.percentage || "",
+  //       start_date: chi.start_date || "",
+  //       end_date: chi.end_date || "",
+  //       resources: (chi.resources || []).map(
+  //         (resource: any) => resource.staff_member_id
+  //       ),
+  //       expected_outcomes: chi.expected_outcome || "",
+  //       id: chi.id || "",
+  //       is_main_effort: chi.is_main_effort || 0,
+  //       strategic_pillars: chi.strategic_pillars || [],
+  //     }))
+  //   );
+  //   console.log(data, "data check");
+  //   return data;
+  // };
+
+  // const formatTasks = (tasks: ImpliedTaskType[]): any[] => {
+  //   console.log(tasks, "tasking...");
+
+  //   const data = tasks.flatMap((task: any) =>
+  //     task.implied_tasks.map((chi: any) => {
+  //       console.log(chi, "children");
+
+  //       return {
+  //         title: task.task || "",
+  //         task: chi.task || "",
+  //         user_id: "",
+  //         specified_task_id: task.id || "",
+  //         implied_task_id: chi.id || "",
+  //         weight: chi.weight || "",
+  //         percentage: chi.percentage || "",
+  //         start_date: chi.start_date || "",
+  //         end_date: chi.end_date || "",
+  //         resources: (chi.resources || []).map(
+  //           (resource: any) => resource.staff_member_id
+  //         ),
+  //         expected_outcomes: chi.expected_outcome || "",
+  //         id: chi.id || "",
+  //         is_main_effort: chi.is_main_effort || 0,
+  //         strategic_pillars: chi.strategic_pillars || [],
+  //       };
+  //     })
+  //   );
+
+  //   console.log(data, "data check");
+  //   return data;
+  // };
 
   useEffect(() => {
     handleGetMyMissionPlan();
