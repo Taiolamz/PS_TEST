@@ -137,14 +137,14 @@ const AddUnit = () => {
       },
     ];
     if (
-      processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
+      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
     ) {
       const filtered = obj?.filter(
-        (item: any) => item?.subsidiary_id === BranId
+        (item: any) => item?.subsidiary_id === SubId
       );
       finalMapValue = [
         {
-          label: "Select Branch",
+          label: "Select Department",
           value: "",
           name: "",
           id: "",
@@ -155,14 +155,12 @@ const AddUnit = () => {
         })),
       ];
     } else if (
-      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
+      processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
     ) {
-      const filtered = obj?.filter(
-        (item: any) => item?.branch_id === BranId
-      );
+      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
       finalMapValue = [
         {
-          label: "Select Branch",
+          label: "Select Department",
           value: "",
           name: "",
           id: "",
@@ -175,7 +173,7 @@ const AddUnit = () => {
     } else {
       finalMapValue = [
         {
-          label: "Select Branch",
+          label: "Select Department",
           value: "",
           name: "",
           id: "",
@@ -387,13 +385,10 @@ const AddUnit = () => {
                     selected={selectedDepartment}
                     setSelected={(value) => {
                       setSelectedDepartment(value);
-                      const selectedDepartmentId = departmentDrop.filter(
-                        (chi) => chi.name === value
-                      )[0].id;
-                      formik.setFieldValue(
-                        "department_id",
-                        selectedDepartmentId
-                      );
+                      formik.setFieldValue("department_id", value);
+                      // const selectedDepartmentId = departmentDrop.filter(
+                      //   (chi) => chi.name === value
+                      // )[0].id;
                     }}
                     labelClass={labelClassName}
                   />
