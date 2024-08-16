@@ -1,4 +1,7 @@
-import { useRejectEmployeeInvitationMutation } from "@/redux/services/employee/employeeApi";
+import {
+  useGetInvitedEmployeesQuery,
+  useRejectEmployeeInvitationMutation,
+} from "@/redux/services/employee/employeeApi";
 import { useAppSelector } from "@/redux/store";
 import { checkUserRole } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
@@ -26,6 +29,11 @@ export const useRejectEmployeeInvite = () => {
 
   const searchParams = useSearchParams();
   const invitedID = searchParams.get("id");
+
+  const { data: invitedUsersData, isLoading: isLoadingInvitedUsers } =
+    useGetInvitedEmployeesQuery(String(invitedID));
+
+  const invitedUser = invitedUsersData ?? [];
 
   const handleSubmit = async () => {
     const payload = {
@@ -64,5 +72,6 @@ export const useRejectEmployeeInvite = () => {
     reasons,
     loading: isRejectingInvitation,
     isRejectSuccess,
+    invitedUser,
   };
 };
