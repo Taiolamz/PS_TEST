@@ -102,19 +102,19 @@ const AddMissionPlanTemplate: React.FC = () => {
     },
     {
       id: "4",
-      title: "Implied Task",
-      mapTitle:"implied_tasks",
-      content: renderImpliedTask,
-      displayName: "Implied Tasks",
-      isSelected: handleIsSelectedField()[3],
-    },
-    {
-      id: "5",
       title: "Specified Task",
       mapTitle:"specified_tasks",
       content: renderSpecifiedTask,
       displayName: "Specified Tasks",
       isSelected: handleIsSelectedField()[4],
+    },
+    {
+      id: "5",
+      title: "Implied Task",
+      mapTitle:"implied_tasks",
+      content: renderImpliedTask,
+      displayName: "Implied Tasks",
+      isSelected: handleIsSelectedField()[3],
     },
     {
       id: "6",

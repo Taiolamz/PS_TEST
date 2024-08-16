@@ -33,6 +33,13 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: { staff_members: AllStaff[] } }) =>
         response.data.staff_members,
     }),
+    getAllApproverList: builder.query<string[], void>({
+      query: () => ({
+        url: `admin/organization/approver-list`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: string[] }) => response.data,
+    }),
   }),
 });
 
@@ -41,4 +48,5 @@ export const {
   useRejectEmployeeInvitationMutation,
   useGetInvitedEmployeesQuery,
   useGetAllEmployeesQuery,
+  useGetAllApproverListQuery,
 } = employeeInvitationApi;

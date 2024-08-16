@@ -84,7 +84,7 @@ const ApproveMissionPlan = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="min-h-screen bg-white">
           <PresentationView />
         </div>
       )}

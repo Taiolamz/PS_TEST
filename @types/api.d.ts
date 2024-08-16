@@ -142,6 +142,7 @@ type ObjType = {
 type StateData = {
   name: string;
   id: string;
+  work_email: string;
 };
 
 type RolesData = {
