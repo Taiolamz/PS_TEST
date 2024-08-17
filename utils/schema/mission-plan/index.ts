@@ -103,3 +103,7 @@ export const specifiedTaskSchema = yup.object().shape({
     })
   ),
 });
+
+export const ApprovalItemsSchema = yup.object().shape({
+  comments: yup.array().of(yup.string().required("Comment is required")),
+});

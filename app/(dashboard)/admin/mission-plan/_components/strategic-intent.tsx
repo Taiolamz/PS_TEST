@@ -1,6 +1,8 @@
 import React from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
+import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
+import { useFormik } from "formik";
 
 type Props = {
   showTextArea: boolean;
@@ -8,6 +10,36 @@ type Props = {
 };
 
 const StrategicIntent = ({ setShowTextArea, showTextArea }: Props) => {
+const oldComments = ['1', '2', '3'];
+  const FormikApprovalForm = useFormik({
+    initialValues: {
+      comments: [...oldComments,""],
+    },
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+  });
+
+
+  const [approveMissionPlanItems, {
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  }] = useApproveMissionPlanItemsMutation();
+  const handleSubmit = async () => {
+    const payload = { 
+      "mission_plan_id": 1,
+      "approval_type": "strategic_intent",
+      "status": "approved",
+      "comments": ["comm1", "comm2"]
+     };
+    try {
+      await approveMissionPlanItems({ id: 1 });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5 text-sm text-[#162238]">
@@ -44,6 +76,7 @@ const StrategicIntent = ({ setShowTextArea, showTextArea }: Props) => {
         label="strategic intent"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        formik={FormikApprovalForm}
       />
     </section>
   );

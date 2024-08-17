@@ -40,9 +40,10 @@ type Props = {
   label?: string;
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
+  formik?: any;
 };
 
-const Comment = ({ id, name, label, showTextArea, setShowTextArea }: Props) => {
+const Comment = ({ id, name, label, showTextArea, setShowTextArea, formik }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleNext = () => {
@@ -122,6 +123,10 @@ const Comment = ({ id, name, label, showTextArea, setShowTextArea }: Props) => {
               id="comment"
               name="comment"
               placeholder="Input Comment"
+              value={formik.values.comments}
+              onChange={formik.handleChange}
+              touched={formik.touched.comments}
+              error={formik.errors.comments}
               rows={3}
               className="bg-white border-0 focus:border-0 focus-visible:ring-0 text-sm"
             />
