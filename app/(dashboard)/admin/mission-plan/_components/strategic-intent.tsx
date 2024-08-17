@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
+import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
+import { Formik, useFormik } from "formik";
 import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
+import { useParams } from "next/navigation";
+import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
+import { useApproval } from "./useApproval";
 
 type Props = {
   data: StrategicIntentType[];
 };
 
 const StrategicIntent = ({ data }: Props) => {
-  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
+  const { missionplanid } = useParams();
+  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+  const initialActionType = "";
 
-  const toggleComment = (id: string) => {
-    setOpenCommentId((prevId) => (prevId === id ? null : id));
-  };
+  const {
+    openCommentId,
+    toggleComment,
+    handleReject,
+    handleApprove,
+    FormikApprovalForm,
+  } = useApproval(initialComments, initialActionType, missionplanid as string, "strategic-intent");
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
@@ -37,20 +48,28 @@ const StrategicIntent = ({ data }: Props) => {
                   <Button
                     variant="outline"
                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                    onClick={() => toggleComment(item.id)}
+                    onClick={() => {
+                      handleReject(item.id);
+                    }}
                   >
                     Reject
                   </Button>
-                  <Button>Approve</Button>
+                  <Button
+                  onClick={() => {
+                    handleApprove();
+                  }}
+                  >Approve</Button>
                 </div>
               </div>
             </div>
           </div>
           <Comment
-            label="strategic intent"
+            label="Strategic intent"
             showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
             comments={[]}
+            // comments={FormikApprovalForm.values.comments}
+            formik={FormikApprovalForm}
           />
         </section>
       ))}

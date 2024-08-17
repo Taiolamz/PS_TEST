@@ -25,21 +25,15 @@ const AddDepartment = () => {
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
     formik,
-    states,
-    stateDrop,
     subsidiaries,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
-    isCreatingDepartment, 
+    isCreatingDepartment,
     branches,
-    branchDrop,
-    headOfDepartment,
-    employeeDrop,
     employees,
   } = useDepartment({ cancelPath: cancelRoute });
-
-  // const [selectedState, setSelectedState] = useState("");
+ 
   const [selectedBranch, setSelectedBranch] = useState("");
 
   const handleHeadSelectChange = (selectedName: string) => {
@@ -113,15 +107,7 @@ const AddDepartment = () => {
       ];
     }
     return finalMapValue;
-  };
-  // console.log(
-  //   BRANCH_OPTION({
-  //     obj: branches,
-  //     SubId: formik?.values?.subsidiary_id?.id,
-  //   }),
-  //   "branch dropdown"
-  // );
-  // console.log(formik?.values);
+  }; 
   return (
     <>
       <DashboardLayout back headerTitle="Department">
@@ -165,44 +151,7 @@ const AddDepartment = () => {
                   onChange={formik.handleChange}
                   isRequired
                 />
-                {/* 
-                <CustomSelect
-                  label="State"
-                  isRequired
-                  placeholder="Department state"
-                  options={states}
-                  selected={selectedState}
-                  setSelected={(value) => {
-                    setSelectedState(value);
-                    const selectedStateId = stateDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].id;
-                    formik.setFieldValue("state_id", selectedStateId);
-                  }}
-                  labelClass={labelClassName}
-                /> */}
-
-                {/* <CustomSelect
-                  label="Head of Department"
-                  // isRequired
-                  placeholder="Head of Department"
-                  options={[]}
-                  selected={formik.values.head_of_department}
-                  setSelected={(value) =>
-                    formik.setFieldValue("head_of_department", value)
-                  }
-                  labelClass={labelClassName}
-                />
-
-                <Input
-                  label="Work Email"
-                  type="text"
-                  placeholder="Work Email"
-                  id="work_email"
-                  name="work_email"
-                  onChange={formik.handleChange}
-                  isRequired
-                /> */}
+                
                 <CustomSelect
                   label="Head of Department"
                   placeholder="Head of Department"
@@ -253,11 +202,8 @@ const AddDepartment = () => {
                     selected={formik.values.subsidiary_id.name}
                     setSelected={(selectedName) => {
                       handleSubsidiaryChange(selectedName);
-                      setSelectedBranch("");  
+                      setSelectedBranch("");
                     }}
-                    // setSelected={(value) =>
-                    //   formik.setFieldValue("subsidiary.", value)
-                    // }
                     labelClass={labelClassName}
                   />
                 )}

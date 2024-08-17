@@ -27,16 +27,12 @@ const AddBranch = () => {
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
     formik,
-    countries,
-    states,
-    stateDrop,
     subsidiaries,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
     isCreatingBranch,
     isLoadingSubsidiaries,
-    employeeDrop,
     employees,
   } = useBranch({ cancelPath: cancelRoute });
 
@@ -66,6 +62,9 @@ const AddBranch = () => {
     if (selectedSub) {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    } else {
+      formik.setFieldValue("subsidiary_id.name", "");
+      formik.setFieldValue("subsidiary_id.id", "");
     }
   };
 
@@ -158,42 +157,6 @@ const AddBranch = () => {
                 />
               )}
 
-              {/* <CustomSelect
-                label="Head of Branch"
-                placeholder="Head of Branch"
-                options={employees as AllStaff[]}
-                selected={formik.values.head.name}
-                // setSelected={(value) => {
-                //   // console.log(formik.values.head.email, "value");
-                //   // formik.setFieldValue("head.name", value);
-                //   // formik.setFieldValue("work_email", formik.values.head.email);
-                //   // const selectedEmail = (employeeDrop as AllStaff[]).map(
-                //   //   (chi) => chi
-                //   // )[0].id;
-                //   // formik.setFieldValue("branch_id", selectedEmail);
-
-                //   // const selectedEmail =  employeeDrop.
-                // }}
-                setSelected={handleHeadSelectChange}
-                //   setSelectedHead(value);
-                //   const selectedBranchId = employeeDrop.filter(
-                //     (chi) => chi.name === value
-                //   )[0].id;
-                //   formik.setFieldValue("branch_id", selectedBranchId);
-                // setSelected={(value) => {
-                // }}
-                labelClass={`${labelClassName} mb-2`}
-              />
-              <Input
-                label="Work Email"
-                type="text"
-                placeholder="Work Email"
-                id="work_email"
-                value={formik.values.head.email}
-                name="work_email"
-                onChange={formik.handleChange}
-                isRequired
-              /> */}
               <CustomSelect
                 label="Head of Branch"
                 placeholder="Head of Branch"

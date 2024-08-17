@@ -29,11 +29,6 @@ export default function AddEmployee() {
     subsidiaries,
     departments,
     branches,
-    // isLoadingSubsidiaries,
-    // isLoadingBranches,
-    // isLoadingDepartments,
-    // isLoadingUnits,
-    // isLoadingGradeLevel,
     units,
     isCreatingEmployee,
     genderOptions,
@@ -43,17 +38,224 @@ export default function AddEmployee() {
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
-    // stateDrop,
-    subsidiaryDrop,
-    branchDrop,
-    departmentDrop,
-    unitsDrop,
   } = useEmployee({ path: route, cancelPath: cancelRoute });
+
+  const handleSubsidiaryChange = (selectedName: string) => {
+    const selectedSub = (subsidiaries as SubsidiaryData[]).find(
+      (emp) => emp.name === selectedName
+    );
+    if (selectedSub) {
+      formik.setFieldValue("subsidiary_id.name", selectedSub.name);
+      formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+      formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
+      formik.setFieldValue("unit_id", "");
+    } else {
+      formik.setFieldValue("subsidiary_id.name", "");
+      formik.setFieldValue("subsidiary_id.id", "");
+      formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
+      formik.setFieldValue("unit_id", "");
+    }
+  };
+
+  const BRANCH_OPTION = ({ obj, SubId }: { obj: any; SubId?: string }) => {
+    let finalMapValue = [
+      {
+        value: "",
+        label: "Select Option",
+      },
+    ];
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
+    ) {
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
+      finalMapValue = [
+        {
+          label: "Select Branch",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else {
+      finalMapValue = [
+        {
+          label: "Select Branch",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...obj?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    }
+    return finalMapValue;
+  };
+
+  const DEPT_OPTION = ({
+    obj,
+    SubId,
+    BranId,
+  }: {
+    obj: any;
+    SubId?: string;
+    BranId?: string;
+  }) => {
+    let finalMapValue = [
+      {
+        value: "",
+        label: "Select Option",
+      },
+    ];
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
+    ) {
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
+      finalMapValue = [
+        {
+          label: "Select Department",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
+    ) {
+      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
+      finalMapValue = [
+        {
+          label: "Select Department",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else {
+      finalMapValue = [
+        {
+          label: "Select Department",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...obj?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    }
+    return finalMapValue;
+  };
+
+  const UNIT_OPTION = ({
+    obj,
+    SubId,
+    BranId,
+    DeptId,
+  }: {
+    obj: any;
+    SubId?: string;
+    BranId?: string;
+    DeptId?: string;
+  }) => {
+    let finalMapValue = [
+      {
+        value: "",
+        label: "Select Option",
+      },
+    ];
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("department")
+    ) {
+      const filtered = obj?.filter(
+        (item: any) => item?.department_id === DeptId
+      );
+      finalMapValue = [
+        {
+          label: "Select Unit",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
+    ) {
+      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
+      finalMapValue = [
+        {
+          label: "Select Unit",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
+    ) {
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
+      finalMapValue = [
+        {
+          label: "Select Unit",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...filtered?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    } else {
+      finalMapValue = [
+        {
+          label: "Select Unit",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...obj?.map((org: { id: string; name: string }) => ({
+          value: org.id,
+          label: org.name,
+        })),
+      ];
+    }
+    return finalMapValue;
+  };
 
   // const [selectedState, setSelectedState] = useState("");
   const { user, checklist } = useAppSelector((state) => state.auth);
   const [selectedBranch, setSelectedBranch] = useState("");
-  const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
@@ -62,7 +264,6 @@ export default function AddEmployee() {
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
   );
-
   return (
     <>
       <DashboardLayout back headerTitle="Employee">
@@ -203,17 +404,22 @@ export default function AddEmployee() {
                     label="Subsidiary"
                     isRequired
                     placeholder="Select Subsidiary"
-                    options={subsidiaries}
-                    selected={selectedSubsidiary}
+                    options={[
+                      {
+                        name: "",
+                        id: "",
+                        label: "Select Subsidiary",
+                        value: "",
+                      },
+                      ...subsidiaries,
+                    ]}
+                    // selected={selectedSubsidiary}
+                    selected={formik.values.subsidiary_id.name}
                     setSelected={(value) => {
-                      setSelectedSubsidiary(value);
-                      const selectedSubsidiaryId = subsidiaryDrop.filter(
-                        (chi) => chi.name === value
-                      )[0].id;
-                      formik.setFieldValue(
-                        "subsidiary_id",
-                        selectedSubsidiaryId
-                      );
+                      handleSubsidiaryChange(value);
+                      setSelectedBranch("");
+                      setSelectedDepartment("");
+                      setSelectedUnit("");
                     }}
                     labelClass={labelClassName}
                   />
@@ -226,54 +432,97 @@ export default function AddEmployee() {
                     label="Branch"
                     isRequired
                     placeholder="Select Branch"
-                    options={branches}
+                    options={BRANCH_OPTION({
+                      obj: branches,
+                      SubId: formik?.values?.subsidiary_id?.id,
+                    })}
+                    disabled={
+                      formik?.values.subsidiary_id.name?.length === 0 &&
+                      processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("subsidiary")
+                    }
                     selected={selectedBranch}
                     setSelected={(value) => {
                       setSelectedBranch(value);
-                      const selectedBranchId = branchDrop.filter(
-                        (chi) => chi.name === value
-                      )[0].branch_id;
-                      formik.setFieldValue("branch_id", selectedBranchId);
+                      formik.setFieldValue("branch_id", value);
+                      setSelectedDepartment("");
+                      formik.setFieldValue("department_id", "");
+                      setSelectedUnit("");
+                      formik.setFieldValue("unit_id", "");
                     }}
                     labelClass={labelClassName}
                   />
                 )}
 
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "department"
-                ) &&  <CustomSelect
-                  label="Department"
-                  isRequired
-                  placeholder="Select Department"
-                  options={departments}
-                  selected={selectedDepartment}
-                  setSelected={(value) => {
-                    setSelectedDepartment(value);
-                    const selectedDepartmentId = departmentDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].id;
-                    formik.setFieldValue("department_id", selectedDepartmentId);
-                  }}
-                  labelClass={labelClassName}
-                />}
+                ) && (
+                  <CustomSelect
+                    label="Department"
+                    isRequired
+                    placeholder="Select Department"
+                    options={DEPT_OPTION({
+                      obj: departments,
+                      SubId: formik?.values?.subsidiary_id?.id,
+                      BranId: formik?.values?.branch_id,
+                    })}
+                    disabled={
+                      (formik?.values.subsidiary_id.name?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("subsidiary")) ||
+                      (formik?.values.branch_id?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("branch"))
+                    }
+                    selected={selectedDepartment}
+                    setSelected={(value) => {
+                      setSelectedDepartment(value);
+                      formik.setFieldValue("department_id", value);
+                      setSelectedUnit("");
+                      formik.setFieldValue("unit_id", "");
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
 
-             {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "unit"
-                ) &&   <CustomSelect
-                  label="Unit"
-                  isRequired
-                  placeholder="Select Unit"
-                  options={units}
-                  selected={selectedUnit}
-                  setSelected={(value) => {
-                    setSelectedUnit(value);
-                    const selectedUnitId = unitsDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].id;
-                    formik.setFieldValue("unit_id", selectedUnitId);
-                  }}
-                  labelClass={labelClassName}
-                />}
+                ) && (
+                  <CustomSelect
+                    label="Unit"
+                    isRequired
+                    placeholder="Select Unit"
+                    options={UNIT_OPTION({
+                      obj: units,
+                      SubId: formik?.values?.subsidiary_id?.id,
+                      BranId: formik?.values?.branch_id,
+                      DeptId: formik?.values?.department_id,
+                    })}
+                    disabled={
+                      (formik?.values.subsidiary_id.name?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("subsidiary")) ||
+                      (formik?.values.branch_id?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("branch")) ||
+                      (formik?.values.department_id?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("department"))
+                    }
+                    selected={selectedUnit}
+                    setSelected={(value) => {
+                      setSelectedUnit(value);
+                      formik.setFieldValue("unit_id", value);
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
 
                 <Input
                   label="Job Title"

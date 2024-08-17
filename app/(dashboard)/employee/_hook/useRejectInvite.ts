@@ -54,8 +54,26 @@ export const useRejectEmployeeInvite = () => {
   };
 
   const validationSchema = yup.object().shape({
-    reason: yup.string().required(),
-    others: yup.string().required(),
+    reason: yup
+      .string()
+      .test(
+        "reason-required",
+        "Either reason or others is required.",
+        function (value) {
+          const { others } = this.parent;
+          return value || others;
+        }
+      ),
+    others: yup
+      .string()
+      .test(
+        "others-required",
+        "Either reason or others is required.",
+        function (value) {
+          const { reason } = this.parent;
+          return value || reason;
+        }
+      ),
   });
 
   const formik = useFormik({

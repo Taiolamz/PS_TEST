@@ -1,23 +1,16 @@
-import * as yup from "yup";
-import { HomeIcon } from "@radix-ui/react-icons";
+import * as yup from "yup"; 
 import { useRouter } from "next/navigation";
 import useDisclosure from "./useDisclosure";
 import { useFormik } from "formik";
-import { toast } from "sonner";
-import Routes from "@/lib/routes/routes";
+import { toast } from "sonner"; 
 import { useAppSelector } from "@/redux/store";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
+import { selectUser } from "@/redux/features/auth/authSlice"; 
 import { useCreateBranchMutation } from "@/redux/services/checklist/branchApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
-import routesPath from "@/utils/routes";
-import { COUNTRIES_STATES } from "@/utils/data";
+import routesPath from "@/utils/routes"; 
 import { useContext } from "react";
-import ActionContext from "@/app/(dashboard)/context/ActionContext";
-import { processInputAsArray } from "@/utils/helpers";
-import { useGetEmployeesQuery } from "@/redux/services/checklist/employeeApi";
-import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
-import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
+import ActionContext from "@/app/(dashboard)/context/ActionContext"; 
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi"; 
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
@@ -27,47 +20,20 @@ type Prop = {
 type Select = {
   label: string | number;
   value: string | number;
-};
-
-// DUMMY DATA
-const countries = [
-  { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
-  { label: "Germany", value: "Germany", icon: HomeIcon },
-  { label: "South Africa", value: "South Africa", icon: HomeIcon },
-];
-
-const COUNTRIES = COUNTRIES_STATES?.map((d) => {
-  return {
-    label: d.name,
-    value: d.name,
-    icon: HomeIcon,
-  };
-});
-
+}; 
 const { ADMIN } = routesPath;
 
 export const useBranch = ({ cancelPath }: Prop) => {
   // const { user, checklist } = useAppSelector((state) => state.auth);
   const actionCtx = useContext(ActionContext);
-    const { data: dropdownData, isLoading: isLoadingSubsidiaries }: any =
-      useGetAllOrganizationMissionPlanDropdownQuery({});
-  // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
-  //   useGetSubsidiariesQuery({
-  //     to: 0,
-  //     total: 0,
-  //     per_page: 50,
-  //     currentPage: 0,
-  //     next_page_url: "",
-  //     prev_page_url: "",
-  //   });
+  const { data: dropdownData, isLoading: isLoadingSubsidiaries }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
+
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
   const { data: employeesData, isLoading: isLoadingEmployees } =
     useGetAllEmployeesQuery();
-
-  // const { data: organizationData, isLoading: isLoadingOrganizationsDetails } =
-  //   useGetOrgDetailsQuery();
 
   const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
@@ -83,8 +49,6 @@ export const useBranch = ({ cancelPath }: Prop) => {
   const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
   const states = statesData ?? [];
   const employees = employeesData ?? [];
-  const employeeDrop = handleDropdown(employees);
-  const stateDrop = handleDropdown(states);
 
   const handleFormatDropdown = (
     items: SubsidiaryData[] | BranchData[] | StateData[] | AllStaff[]
@@ -97,11 +61,6 @@ export const useBranch = ({ cancelPath }: Prop) => {
       };
     });
     return data;
-  };
-
-  const handleFormatArray = (items: SelectFormType) => {
-    const array = items.map((item) => item.label);
-    return array;
   };
 
   const router = useRouter();
@@ -130,8 +89,8 @@ export const useBranch = ({ cancelPath }: Prop) => {
     //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     //   .required("Work Email is required"),
     // subsidiary:
-      // processInputAsArray(user?.organization?.hierarchy)?.includes(
-      //   "subsidiary"
+    // processInputAsArray(user?.organization?.hierarchy)?.includes(
+    //   "subsidiary"
     //   ) && yup.string().required() ? true : false as any,
   });
 
@@ -198,16 +157,12 @@ export const useBranch = ({ cancelPath }: Prop) => {
   return {
     formik,
     isCreatingBranch,
-    countries,
     handleProceedCancel,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    stateDrop,
-    states: handleFormatDropdown(states),
     subsidiaries: handleFormatDropdown(subsidiaries),
-    employeeDrop,
     employees: handleFormatDropdown(employees),
     isLoadingSubsidiaries,
   };

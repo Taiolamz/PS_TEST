@@ -1,11 +1,11 @@
+import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "@radix-ui/react-icons";
-import React, { useState } from "react";
 import { BsArrowUpCircleFill } from "react-icons/bs";
 import { FaX } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { MdCancel, MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 type CommentType = {
   id: string;
@@ -23,6 +23,7 @@ type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
   comments: CommentType[];
+  formik?: any;
 };
 
 const Comment = ({
@@ -32,6 +33,7 @@ const Comment = ({
   showTextArea,
   setShowTextArea,
   comments,
+  formik,
 }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -75,19 +77,17 @@ const Comment = ({
             <div className="flex items-center gap-2">
               <MdChevronLeft
                 onClick={handlePrev}
-                className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
-                  currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 size={24}
               />
               <MdChevronRight
                 onClick={handleNext}
                 size={24}
-                className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
-                  currentIndex >= comments?.length - (showTextArea ? 1 : 2)
+                className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${currentIndex >= comments?.length - (showTextArea ? 1 : 2)
                     ? "opacity-50 cursor-not-allowed"
                     : ""
-                }`}
+                  }`}
               />
             </div>
           </div>
@@ -109,13 +109,21 @@ const Comment = ({
                 <BsArrowUpCircleFill
                   color="text-primary"
                   className="text-[var(--primary-color)] "
+                  onClick={() => { 
+                    formik?.handleSubmit();
+                    setShowTextArea(false);
+                  }}
                 />
               </div>
             </div>
             <Textarea
-              id="comment"
-              name="comment"
+              id="newComment"
+              name="newComment"
               placeholder="Input Comment"
+              value={formik?.values.newComment}
+              onChange={formik?.handleChange}
+              touched={formik?.touched.newComment}
+              error={formik?.errors.newComment}
               rows={3}
               className="bg-white border-0 focus:border-0 focus-visible:ring-0 text-sm"
             />

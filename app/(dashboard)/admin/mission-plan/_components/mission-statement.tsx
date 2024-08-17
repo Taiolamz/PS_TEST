@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import Comment from "./comment";
 import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables";
+import { useParams } from "next/navigation";
+import { useApproval } from "./useApproval";
 
 type Props = {
   showTextArea: boolean;
@@ -9,6 +11,15 @@ type Props = {
   data?: MissionStatementType;
 };
 const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
+  const { missionplanid } = useParams();
+  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+  const initialActionType = "";
+
+  const {
+    handleReject,
+    handleApprove,
+    FormikApprovalForm,
+  } = useApproval(initialComments, initialActionType, missionplanid as string, "mission-statement");
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -25,11 +36,14 @@ const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
               className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
               onClick={() => {
                 setShowTextArea(true);
+                handleReject();
               }}
             >
               Reject
             </Button>
-            <Button>Approve</Button>
+            <Button
+              onClick={() => handleApprove()}
+            >Approve</Button>
           </div>
         </div>
       </div>
@@ -38,6 +52,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
         comments={[]}
+        formik={FormikApprovalForm}
       />
     </section>
   );
