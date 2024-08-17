@@ -1,9 +1,7 @@
 "use client";
 
-import Routes from "@/lib/routes/routes";
 import { useContext, useState } from "react";
 import { useUnit } from "../_hooks/useUnit";
-import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
 import { Input } from "@/components/ui/input";
 import CustomSelect from "@/components/custom-select";
@@ -25,7 +23,6 @@ const AddUnit = () => {
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
     formik,
-    states,
     subsidiaries,
     branches,
     departments,
@@ -34,18 +31,10 @@ const AddUnit = () => {
     handleCancelDialog,
     isCreatingUnit,
     isLoadingDropdown,
-    headOfUnit,
-    stateDrop,
-    subsidiaryDrop,
-    branchDrop,
-    departmentDrop,
-    employeeDrop,
     employees,
   } = useUnit({ cancelPath: cancelRoute });
 
-  // const [selectedState, setSelectedState] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
-  const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const handleHeadSelectChange = (selectedName: string) => {
@@ -72,10 +61,12 @@ const AddUnit = () => {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
       formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
     } else {
       formik.setFieldValue("subsidiary_id.name", "");
       formik.setFieldValue("subsidiary_id.id", "");
       formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
     }
   };
 
@@ -139,9 +130,7 @@ const AddUnit = () => {
     if (
       processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
     ) {
-      const filtered = obj?.filter(
-        (item: any) => item?.subsidiary_id === SubId
-      );
+      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
       finalMapValue = [
         {
           label: "Select Department",
@@ -157,7 +146,9 @@ const AddUnit = () => {
     } else if (
       processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
     ) {
-      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
       finalMapValue = [
         {
           label: "Select Department",
@@ -187,7 +178,6 @@ const AddUnit = () => {
     return finalMapValue;
   };
 
-  console.log(formik?.values, "form value");
   return (
     <>
       <DashboardLayout back headerTitle="Unit">
@@ -225,44 +215,6 @@ const AddUnit = () => {
                   onChange={formik.handleChange}
                   isRequired
                 />
-
-                {/* <CustomSelect
-                  label="State"
-                  isRequired
-                  placeholder="Branch state"
-                  options={states}
-                  selected={selectedState}
-                  setSelected={(value) => {
-                    setSelectedState(value);
-                    const selectedStateId = stateDrop.filter(
-                      (chi) => chi.name === value
-                    )[0].id;
-                    formik.setFieldValue("state_id", selectedStateId);
-                  }}
-                  labelClass={labelClassName}
-                /> */}
-
-                {/* <CustomSelect
-                  label="Head of Unit"
-                  isRequired
-                  placeholder="Head of Unit"
-                  options={[]}
-                  selected={formik.values.head_of_unit}
-                  setSelected={(value) =>
-                    formik.setFieldValue("head_of_unit", value)
-                  }
-                  labelClass={labelClassName}
-                />
-
-                <Input
-                  label="Work Email"
-                  type="text"
-                  placeholder="Work Email"
-                  id="work_email"
-                  name="work_email"
-                  onChange={formik.handleChange}
-                  isRequired
-                /> */}
                 <CustomSelect
                   label="Head of Unit"
                   placeholder="Head of Unit"
@@ -288,23 +240,6 @@ const AddUnit = () => {
                   "subsidiary"
                 ) && (
                   <CustomSelect
-                    // label="Subsidiary"
-                    // isRequired={processInputAsArray(
-                    //   user?.organization?.hierarchy
-                    // )?.includes("subsidiary")}
-                    // placeholder="Select Subsidiary"
-                    // options={subsidiaries}
-                    // selected={selectedSubsidiary}
-                    // setSelected={(value) => {
-                    //   setSelectedSubsidiary(value);
-                    //   const selectedSubsidiaryId = subsidiaryDrop.filter(
-                    //     (chi) => chi.name === value
-                    //   )[0].id;
-                    //   formik.setFieldValue(
-                    //     "subsidiary_id",
-                    //     selectedSubsidiaryId
-                    //   );
-                    // }}
                     label="Subsidiary"
                     isRequired={processInputAsArray(
                       user?.organization?.hierarchy
@@ -353,6 +288,7 @@ const AddUnit = () => {
                       setSelectedBranch(value);
                       formik.setFieldValue("branch_id", value);
                       setSelectedDepartment("");
+                      formik.setFieldValue("department_id", "");
                     }}
                     labelClass={labelClassName}
                   />
@@ -386,9 +322,6 @@ const AddUnit = () => {
                     setSelected={(value) => {
                       setSelectedDepartment(value);
                       formik.setFieldValue("department_id", value);
-                      // const selectedDepartmentId = departmentDrop.filter(
-                      //   (chi) => chi.name === value
-                      // )[0].id;
                     }}
                     labelClass={labelClassName}
                   />
