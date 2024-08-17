@@ -105,5 +105,17 @@ export const specifiedTaskSchema = yup.object().shape({
 });
 
 export const ApprovalItemsSchema = yup.object().shape({
-  comments: yup.array().of(yup.string().required("Comment is required")),
+  comments: yup.array().of(
+    yup.string().test(
+      "comment-required",
+      "Comment is required when rejecting.",
+      function (value) {
+        const { actionType } = this.parent;
+        if (actionType === "reject" && (!value || value.trim() === "")) {
+          return false;
+        }
+        return true;
+      }
+    )
+  ),
 });

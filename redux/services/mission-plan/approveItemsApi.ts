@@ -8,6 +8,7 @@ export const approveItemsApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Approvables"],
     }),
   }),
 });

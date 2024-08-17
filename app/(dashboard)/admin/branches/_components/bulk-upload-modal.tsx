@@ -3,7 +3,10 @@ import { ManceLoader } from "@/components/custom-loader";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import {
+  extractNamesFromFormat,
+  replaceEmptyValuesWithPlaceholder,
+} from "@/utils/helpers";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -174,7 +177,7 @@ const BulkUploadModal = ({
                 "-----"
               )}
               hideSearchFilterBox
-              tableheaderList={tableHeadlist}
+              tableheaderList={extractNamesFromFormat(expectedFormat)}
               hidePagination
             />
           </div>

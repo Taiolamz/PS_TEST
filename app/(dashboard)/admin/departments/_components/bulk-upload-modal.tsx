@@ -3,7 +3,7 @@ import { ManceLoader } from "@/components/custom-loader";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import { extractNamesFromFormat, replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ const BulkUploadModal = ({
     if (file && setFile) {
       setUploadedFile(file.name);
       setFile(file);
-      // handleUploadTest(file);
+      handleUploadTest(file);
     } else {
       !uploadedFile && setUploadedFile(null);
     }
@@ -39,19 +39,15 @@ const BulkUploadModal = ({
 
   const expectedFormat = {
     0: { name: "name", required: true, key: "name" },
-    1: { name: "address", required: true, key: "address" },
-    2: { name: "country", required: true, key: "country" },
-    3: { name: "state", required: true, key: "state" },
-    4: { name: "head", required: false, key: "head" },
-    5: { name: "work email", required: false, key: "work_email" },
+    1: { name: "head_of_department", required: false, key: "head_of_department" },
+    2: { name: "subsidiary", required: true, key: "subsidiary" },
+    3: { name: "branch", required: true, key: "branch" },
   };
   const tableHeadlist = [
     "Name",
-    "Address",
-    "Country",
-    "State",
-    "Head of Subsidairy",
-    "Work email",
+    "Head of Dept.",
+    "Subsidiary",
+    "Branch",
   ];
   const [tableBodyList, setTableBodyList] = useState<any>([]);
   const [validFormat, setValideFormat] = useState(false);
@@ -100,8 +96,8 @@ const BulkUploadModal = ({
               ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
               : ""
           } `}
-          disabled={!uploadedFile }
-          // disabled={!uploadedFile || !validFormat}
+          // disabled={!uploadedFile || !}
+          disabled={!uploadedFile || !validFormat}
         >
           {loading ? <ManceLoader /> : "Upload"}
         </Button>
@@ -174,7 +170,7 @@ const BulkUploadModal = ({
                 "-----"
               )}
               hideSearchFilterBox
-              tableheaderList={tableHeadlist}
+              tableheaderList={extractNamesFromFormat(expectedFormat)}
               hidePagination
             />
           </div>

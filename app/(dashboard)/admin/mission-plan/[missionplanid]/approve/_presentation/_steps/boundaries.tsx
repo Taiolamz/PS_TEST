@@ -4,7 +4,7 @@ type Props = {};
 
 const Boundaries = (props: Props) => {
   return (
-    <div className="border-[0.0313rem] border-[#f7f7f7] shadow-md w-full mx-auto text-left mb-10 pb-[1.375rem] pt-[2.375rem] pl-[7.625rem]">
+    <div className="border rounded-[0.5rem] w-full mx-auto text-left mb-10 pb-[1.375rem] pt-[2.375rem] pl-[7.625rem]">
       <h2 className="text-2xl font-medium">Boundaries</h2>
       <div className="flex gap-14 w-3/4 xl:w-1/2">
         <div className="basis-1/2">

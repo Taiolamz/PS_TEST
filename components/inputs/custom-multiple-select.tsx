@@ -158,10 +158,10 @@ export const CustomMultipleSelect = React.forwardRef<
     };
 
     const toggleAll = () => {
-      if (selectedValues.length === options.length) {
+      if (selectedValues.length === options?.length) {
         handleClear();
       } else {
-        const allValues = options.map((option) => option.value);
+        const allValues = options?.map((option) => option?.value);
         setSelectedValues(allValues);
         onValueChange(allValues);
       }
@@ -324,11 +324,11 @@ export const CustomMultipleSelect = React.forwardRef<
                   <span>(Select All)</span>
                 </CommandItem>
                 {options?.map((option) => {
-                  const isSelected = selectedValues.includes(option.value);
+                  const isSelected = selectedValues.includes(option?.value);
                   return (
                     <CommandItem
                       key={option.value}
-                      onSelect={() => toggleOption(option.value)}
+                      onSelect={() => toggleOption(option?.value)}
                       className="cursor-pointer"
                     >
                       <div

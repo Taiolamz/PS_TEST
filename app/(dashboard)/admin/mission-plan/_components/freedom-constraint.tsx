@@ -1,13 +1,26 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import Comment from "./comment";
+import { BoundariesType } from "@/@types/missionPlan/MissionPlanAprovables";
+import { useParams } from "next/navigation";
+import { useApproval } from "./useApproval";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
+  data: BoundariesType[];
 };
 
-const FreedomConstraint = ({ setShowTextArea, showTextArea }: Props) => {
+const FreedomConstraint = ({ setShowTextArea, showTextArea, data }: Props) => {
+  const { missionplanid } = useParams();
+  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+  const initialActionType = "";
+
+  const {
+    handleReject,
+    handleApprove,
+    FormikApprovalForm,
+  } = useApproval(initialComments, initialActionType, missionplanid as string, "boundary");
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -18,12 +31,14 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea }: Props) => {
                 Freedom{" "}
               </h2>
               <div className="mt-2">
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Transportation to and from client location
-                </h3>
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Lack of experienced team members
-                </h3>
+                {data[0]?.freedoms?.map((freedom) => (
+                  <h3
+                    className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5"
+                    key={freedom}
+                  >
+                    <span>-</span> {freedom}
+                  </h3>
+                ))}
               </div>
             </div>
             <div>
@@ -31,12 +46,14 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea }: Props) => {
                 Constraints
               </h2>
               <div className="mt-2">
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Ability to innovate design process
-                </h3>
-                <h3 className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5">
-                  <span>-</span> Select skill to improve on
-                </h3>
+                {data[0]?.constraints?.map((item) => (
+                  <h3
+                    className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5"
+                    key={item}
+                  >
+                    <span>-</span> {item}
+                  </h3>
+                ))}
               </div>
             </div>
           </div>
@@ -46,11 +63,14 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea }: Props) => {
               className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
               onClick={() => {
                 setShowTextArea(true);
+                handleReject();
               }}
             >
               Reject
             </Button>
-            <Button>Approve</Button>
+            <Button
+                          onClick={() => handleApprove()}
+            >Approve</Button>
           </div>
         </div>
       </div>
@@ -58,6 +78,8 @@ const FreedomConstraint = ({ setShowTextArea, showTextArea }: Props) => {
         label="freedom & constraints"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
+        comments={[]}
+        formik={FormikApprovalForm}
       />
     </section>
   );

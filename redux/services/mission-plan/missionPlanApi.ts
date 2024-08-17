@@ -1,6 +1,7 @@
 import { resetAuth, setAuthUser } from "@/redux/features/auth/authSlice";
 import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
+import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovables";
 
 export const missionPlanApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -114,6 +115,16 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    getMissionPlanItemsById: builder.query<
+      { data: MissionPlanApprovablesType },
+      { missionplanid: string }
+    >({
+      query: ({ missionplanid }) => ({
+        url: `/mission-plan/${missionplanid}/with-approvables`,
+        method: "GET",
+      }),
+      providesTags: ["Approvables"],
+    }),
   }),
 });
 
@@ -131,4 +142,5 @@ export const {
   useCreateMeasureOfSuccessMutation,
   useCreateSpecifiedTaskMutation,
   useSubmitPreviewedMissionPlanMutation,
+  useGetMissionPlanItemsByIdQuery,
 } = missionPlanApi;

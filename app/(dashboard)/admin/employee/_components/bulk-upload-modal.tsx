@@ -1,10 +1,16 @@
 "use client";
 import { ManceLoader } from "@/components/custom-loader";
- import { Button } from "@/components/ui/button";
+import TableWrapper from "@/components/tables/TableWrapper";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  extractNamesFromFormat,
+  replaceEmptyValuesWithPlaceholder,
+} from "@/utils/helpers";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 // import { getDataFromFileUpload } from "@/utils/helpers/TextExtract";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 interface FileUploadType {
   onSampleCsvDownload: () => void;
@@ -29,10 +35,82 @@ const BulkUploadModal = ({
     if (file && setFile) {
       setUploadedFile(file.name);
       setFile(file);
+      handleUploadTest(file);
     } else {
-      setUploadedFile(null);
+      !uploadedFile && setUploadedFile(null);
     }
   };
+
+  const expectedFormat = {
+    0: { name: "First Name", required: false, key: "first_name" },
+    1: { name: "Middle  Name", required: true, key: "middle_name" },
+    2: { name: "Maiden Name", required: true, key: "maiden_name" },
+    3: { name: "Last Name", required: false, key: "last_name" },
+    4: { name: "Gender", required: false, key: "gender" },
+    5: { name: "Date of Birth", required: true, key: "dob" },
+    6: { name: "Resumption Date", required: false, key: "resumption_date" },
+    7: { name: "Work Email", required: false, key: "work_email" },
+    8: { name: "Grade Level", required: true, key: "grade_level" },
+    9: {
+      name: "Line Manager Email",
+      required: false,
+      key: "line_manager_email",
+    },
+    10: { name: "Subsidiary", required: false, key: "subsidiary" },
+    11: { name: "Branch", required: false, key: "branch" },
+    12: { name: "Department", required: false, key: "department" },
+    13: { name: "Unit", required: false, key: "unit" },
+    14: { name: "Job Title", required: false, key: "job_title" },
+    15: { name: "Phone Number", required: true, key: "phone_number" },
+    16: { name: "Staff Number", required: false, key: "staff_number" },
+    17: { name: "Role", required: false, key: "role" },
+    18: { name: "New Employee", required: false, key: "new_employee" },
+  };
+  // const tableHeadlist = [
+  //   "Name",
+  //   "Head of Unit",
+  //   "Subsidiary",
+  //   "Branch",
+  //   "Department",
+  // ];
+  const [tableBodyList, setTableBodyList] = useState<any>([]);
+  const [validFormat, setValideFormat] = useState(false);
+
+  const handleUploadTest = async (e: any) => {
+    const data = await getDataFromFileUpload(e, expectedFormat, 200);
+    // console.log(data);
+    if (data?.status === "failed") {
+      toast.error(data?.message);
+      // setValideFormat(false);
+      setTableBodyList([]);
+      setValideFormat(false);
+      setUploadedFile("");
+    }
+    if (data?.status === "success") {
+      // console.log(data?.array);
+
+      setTableBodyList(data?.array);
+      setValideFormat(true);
+    }
+  };
+
+  const formatTableList = (list: any) => {
+    if (list?.length > 0) {
+      const newList = list.map((chi: any) => {
+        return { ...chi, new_employee: chi?.new_employee ? "TRUE" : "FALSE" };
+      });
+      return newList;
+    }
+  };
+
+  const handleCancelUpload = () => {
+    // handleBulkUploadDialog();
+    setTableBodyList([]);
+    setValideFormat(false);
+    onCancel();
+    setUploadedFile("");
+  };
+
   const btnClass =
     "font-normal py-0 px-4 h-[32px]  transition-all duration-300 ";
   const btnGroup = (
@@ -40,7 +118,7 @@ const BulkUploadModal = ({
       <Button
         variant="outline"
         className={`border-primary text-primary hover:bg-transparent font-light  hover:text-primary ${btnClass}`}
-        onClick={onCancel}
+        onClick={handleCancelUpload}
       >
         Cancel
       </Button>
@@ -54,7 +132,7 @@ const BulkUploadModal = ({
               ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
               : ""
           } `}
-          disabled={!uploadedFile}
+          disabled={!uploadedFile || !validFormat}
         >
           {loading ? <ManceLoader /> : "Upload"}
         </Button>
@@ -62,10 +140,8 @@ const BulkUploadModal = ({
     </div>
   );
 
- 
-
   return (
-    <div>
+    <div className={tableBodyList?.length > 0 ? `w-[1200px]` : "w-[600px]"}>
       <p className="font-medium text-sm">Upload File</p>
       <p className="text-custom-gray-scale-400 text-xs font-light mt-1 ">
         Maximum file is 10mb, format is CSV, xlsv.
@@ -88,7 +164,7 @@ const BulkUploadModal = ({
               onChange={handleFileChange}
               // onChange={(e) => {
               //   // @ts-ignore
-              //   const file = e.target?.files[0] 
+              //   const file = e.target?.files[0]
               //  handleUploadTest(file)
               // }}
             />
@@ -120,6 +196,27 @@ const BulkUploadModal = ({
         </p>
         {btnGroup}
       </div>
+      {/* table start here  */}
+      {tableBodyList?.length > 0 && (
+        <>
+          <div className="preview-reusable-box-table">
+            {" "}
+            <TableWrapper
+              TableTitle={`Preview Unit${
+                tableBodyList?.length > 1 ? "s" : ""
+              } ( ${tableBodyList?.length} )`}
+              tableBodyList={replaceEmptyValuesWithPlaceholder(
+                formatTableList(tableBodyList),
+                "-----"
+              )}
+              hideSearchFilterBox
+              tableheaderList={extractNamesFromFormat(expectedFormat)}
+              hidePagination
+            />
+          </div>
+        </>
+      )}
+      {/* table start end */}
     </div>
   );
 };
