@@ -259,8 +259,7 @@ export default function AddEmployee() {
 
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
-  );
-  console.log(formik?.values);
+  ); 
   return (
     <>
       <DashboardLayout back headerTitle="Employee">
