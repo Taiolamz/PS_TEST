@@ -33,7 +33,8 @@ const ApproveMissionPlan = () => {
       missionplanid: params.missionplanid as string,
     });
 
-  console.log({ data, params });
+  console.log({ data });
+
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
