@@ -8,12 +8,12 @@
  * @example
  * // Default key:
  * const staff = [{ id: "1", name: "John" }, { id: "2", name: "Jane" }];
- * console.log(formatNames(staff)); // Output: "John, Jane"
+ * console.log(formatNamesWithComma(staff)); // Output: "John, Jane"
  *
  * @example
  * // Custom key:
  * const tasks = [{ staff_id: "1", title: "Task 1" }, { staff_id: "2", title: "Task 2" }];
- * console.log(formatNames(tasks, "title")); // Output: "Task 1, Task 2"
+ * console.log(formatNamesWithComma(tasks, "title")); // Output: "Task 1, Task 2"
  */
 export const formatNamesWithCommas = (
   items: { [key: string]: string }[],

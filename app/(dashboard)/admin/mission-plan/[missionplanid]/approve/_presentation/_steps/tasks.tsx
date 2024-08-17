@@ -1,6 +1,7 @@
 import React from "react";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
+import { formatToDDMMYYYY } from "@/utils/helpers/date-formatter";
 
 type Props = {
   data: SpecifiedTasksType[];
@@ -67,12 +68,24 @@ const Tasks = ({ data }: Props) => {
                 <table className="min-w-full text-xs w-full">
                   <thead>
                     <tr className="bg-[#F4F4F4] text-left w-full">
-                      <th className="px-4 py-2 border-b w-12">S/N</th>
-                      <th className="px-4 py-2 border-b">Pillars</th>
-                      <th className="px-4 py-2 border-b">Implied Tasks</th>
-                      <th className="px-4 py-2 border-b">Resources</th>
-                      <th className="px-4 py-2 border-b">Start Date</th>
-                      <th className="px-4 py-2 border-b">End Date</th>
+                      <th className="px-4 py-2 border-b  font-medium w-12">
+                        S/N
+                      </th>
+                      <th className="px-4 py-2 border-b  font-medium">
+                        Pillars
+                      </th>
+                      <th className="px-4 py-2 border-b  font-medium">
+                        Implied Tasks
+                      </th>
+                      <th className="px-4 py-2 border-b  font-medium">
+                        Resources
+                      </th>
+                      <th className="px-4 py-2 border-b  font-medium">
+                        Start Date
+                      </th>
+                      <th className="px-4 py-2 border-b  font-medium">
+                        End Date
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="border-b border-[#E5E9EB] w-full">
@@ -85,24 +98,28 @@ const Tasks = ({ data }: Props) => {
                             : "bg-[#F4F4F4]"
                         }`}
                       >
-                        <td className="px-4 py-2 border-r border-[#E5E9EB] w-12">
+                        <td className="px-4 py-2 font-medium border-r border-[#E5E9EB] w-12">
                           {impliedTask.sn}
                         </td>
-                        <td className="px-4 py-2 flex gap-3 items-center justify-start bg-white border-r border-[#E5E9EB]">
-                          <DotFilledIcon className="w-6 h-6" />
-                          {task.strategic_pillars
-                            .map((pillar) => pillar.title)
-                            .join(", ")}
+                        <td className="px-4 py-2 font-medium bg-white border-r border-[#E5E9EB]">
+                          <div className="flex gap-3 items-center justify-start">
+                            <DotFilledIcon className="w-6 h-6" />
+                            <span>
+                              {task.strategic_pillars
+                                .map((pillar) => pillar.title)
+                                .join(", ")}
+                            </span>
+                          </div>
                         </td>
                         <td
-                          className={` px-4 py-2 text-left capitalize ${
+                          className={` px-4 py-2 font-medium text-left capitalize w-[28%] ${
                             index % 2 === 0 && "border-r border-[#E5E9EB]"
                           }`}
                         >
                           {impliedTask.task}
                         </td>
                         <td
-                          className={` px-4 py-2 ${
+                          className={` px-4 py-2 font-medium w-[28%] ${
                             index % 2 === 0 && "border-r border-[#E5E9EB]"
                           }`}
                         >
@@ -111,18 +128,18 @@ const Tasks = ({ data }: Props) => {
                             .join(", ")}
                         </td>
                         <td
-                          className={`px-4 py-2 ${
+                          className={`px-4 py-2 font-medium w-[6.75rem] ${
                             index % 2 === 0 && "border-r border-[#E5E9EB]"
                           }`}
                         >
-                          {impliedTask.start_date}
+                          {formatToDDMMYYYY(impliedTask.start_date)}
                         </td>
                         <td
-                          className={`px-4 py-2 ${
+                          className={`px-4 py-2 font-medium w-[6.75rem]  ${
                             index % 2 === 0 && "border-r border-[#E5E9EB]"
                           }`}
                         >
-                          {impliedTask.end_date}
+                          {formatToDDMMYYYY(impliedTask.end_date)}
                         </td>
                       </tr>
                     ))}

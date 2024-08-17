@@ -14,9 +14,10 @@ import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovabl
 
 type Props = {
   data?: MissionPlanApprovablesType;
+  loading: boolean;
 };
 
-const PresentationView = ({ data }: Props) => {
+const PresentationView = ({ data, loading }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const location = usePathname();

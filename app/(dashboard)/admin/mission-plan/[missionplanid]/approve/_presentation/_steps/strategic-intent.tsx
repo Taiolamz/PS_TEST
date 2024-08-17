@@ -24,16 +24,18 @@ const StrategicIntent = ({ data }: Props) => {
                   {item?.intent}
                 </p>
               </div>
-              <div className="text-left w-3/5 mx-auto mt-[3.625rem]">
-                <h3 className=" font-medium text-2xl text-[#1E1E1E] mb-4">
-                  Behaviours
-                </h3>
-                <ul className="flex flex-col gap-2 text-sm text-[#162238] font-normal list-inside list-disc">
-                  <li> {item?.behaviours}</li>
-                </ul>
-              </div>
             </div>
           ))}
+          <div className="text-left w-3/5 mx-auto mt-[3.625rem]">
+            <h3 className=" font-medium text-2xl text-[#1E1E1E] mb-4">
+              Behaviours
+            </h3>
+            <ul className="flex flex-col gap-2 text-sm text-[#162238] font-normal list-inside list-disc">
+              {data?.map((item, index) => (
+                <li key={item?.id}> {item?.behaviours}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
     </div>
