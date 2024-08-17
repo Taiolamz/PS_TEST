@@ -7,42 +7,10 @@ import { Input } from "@/components/ui/input";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
 import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas";
+import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 
-type StrategicPillarsType = {
-  id: string;
-  title: string;
-};
-
-type ResourcesType = {
-  staff_member_id: string;
-  name: string;
-};
-
-type ImpliedTaskType = {
-  id: string;
-  // title: "Implied Task 1";
-  task: string;
-  expected_outcome: string;
-  weight: string;
-  percentage: string;
-  resources: ResourcesType[];
-  start_date: string;
-  end_date: string;
-};
-
-type Task = {
-  id: number;
-  task: string;
-  specifiedTask: string;
-  strategic_pillars: StrategicPillarsType[];
-  measure_of_success: string;
-  start_date: string;
-  end_date: string;
-  is_main_effort: number;
-  implied_tasks: ImpliedTaskType[];
-};
 type Props = {
-  data: Task[];
+  data: SpecifiedTasksType[];
 };
 
 const ImpliedTask = ({ data }: Props) => {
@@ -89,11 +57,7 @@ const ImpliedTask = ({ data }: Props) => {
                           </span>
                         ))}{" "} */}
                         <span key={item?.id}>
-                          {formatNamesWithCommas(
-                            item?.resources,
-                            "staff_member_id",
-                            "name"
-                          )}
+                          {formatNamesWithCommas(item?.resources, "name")}
                         </span>
                       </p>
                       <p className="mt-1 font-light">

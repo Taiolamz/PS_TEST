@@ -4,30 +4,10 @@ import React, { useState } from "react";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
 import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas";
-
-type StrategicPillarsType = {
-  id: string;
-  title: string;
-};
-
-type SuccessMeasuresType = {
-  id: string;
-  measure: string;
-};
-
-type Task = {
-  id: string;
-  task: string;
-  specifiedTask: string;
-  strategic_pillars: StrategicPillarsType[];
-  success_measures: SuccessMeasuresType[];
-  start_date: string;
-  end_date: string;
-  is_main_effort: number;
-};
+import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
-  data: Task[];
+  data: SpecifiedTasksType[];
 };
 
 const SpecifiedTasks = ({ data }: Props) => {
@@ -63,8 +43,7 @@ const SpecifiedTasks = ({ data }: Props) => {
                     ))}{" "} */}
                     <span key={item?.id}>
                       {formatNamesWithCommas(
-                        item?.success_measures,
-                        "id",
+                        item?.success_measures ?? [],
                         "measure"
                       )}
                     </span>

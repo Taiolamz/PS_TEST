@@ -10,9 +10,10 @@ import Link from "next/link";
 import Boundaries from "./_steps/boundaries";
 import Tasks from "./_steps/tasks";
 import StrategicIntent from "./_steps/strategic-intent";
+import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
-  data: any;
+  data?: MissionPlanApprovablesType;
 };
 
 const PresentationView = ({ data }: Props) => {
@@ -48,10 +49,12 @@ const PresentationView = ({ data }: Props) => {
           <Link href={`/admin/mission-plan/2023/approve`}>Close</Link>
         </Button>
       </div>
-      {getCurrentStep() === 1 && <MissionStatement />}
-      {getCurrentStep() === 2 && <StrategicIntent />}
-      {getCurrentStep() === 3 && <Tasks />}
-      {getCurrentStep() === 4 && <Boundaries />}
+      {getCurrentStep() === 1 && <MissionStatement data={data} />}
+      {getCurrentStep() === 2 && (
+        <StrategicIntent data={data?.strategic_intents ?? []} />
+      )}
+      {getCurrentStep() === 3 && <Tasks data={data?.specified_tasks ?? []} />}
+      {getCurrentStep() === 4 && <Boundaries data={data?.boundaries ?? []} />}
 
       <div className="flex justify-start items-center gap-[1.625rem] mt-8">
         {getCurrentStep() > 1 && (

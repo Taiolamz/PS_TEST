@@ -1,14 +1,30 @@
 import React, { useMemo } from "react";
 import MeasureOfSuccessTable from "../../../../_components/measure-of-success-table";
-import {
-  measureColumns,
-  measuresData,
-} from "@/utils/data/dashboard/missionplan/dummy";
+import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
+import MissionPlanApprovablesType, {
+  MeasureOfSuccessType,
+} from "@/@types/missionPlan/MissionPlanAprovables";
 
-type Props = {};
+type Props = {
+  data?: MissionPlanApprovablesType;
+};
 
-const MissionStatement = (props: Props) => {
+const MissionStatement = ({ data }: Props) => {
   const measureColumnData = useMemo(() => measureColumns(), []);
+  const transformedMeasureOfSuccessRows = (
+    mappedData: MeasureOfSuccessType[]
+  ): MeasureOfSuccessType[] => {
+    return mappedData?.map((item) => ({
+      id: item.id,
+      measure: item.measure,
+      status: item.status,
+      target: item.target,
+      unit: item.unit,
+    }));
+  };
+
+  const measureOfSuccessData: MeasureOfSuccessType[] =
+    transformedMeasureOfSuccessRows(data?.measure_of_success ?? []);
   return (
     <div className="">
       <section className="border w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem] rounded-[0.5rem]">
@@ -16,19 +32,7 @@ const MissionStatement = (props: Props) => {
         <h2 className="text-primary font-medium text-2xl">Mission Statement</h2>
         <div className="mt-5 flex flex-col gap-3">
           <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
-            My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
-            pulvinar arcu, mi.
-          </p>
-          <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
-            My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
-            pulvinar arcu, mi.
-          </p>
-          <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
-            My MISSION PLAN Lorem ipsum dolor sit amet, consectetur adipiscing
-            elit. Feugiat sit sed at neque. Semper suspendisse diam habitant
-            pulvinar arcu, mi.
+            {data?.mission_statement?.mission}
           </p>
         </div>
       </section>
@@ -39,7 +43,7 @@ const MissionStatement = (props: Props) => {
         </h2>
         <div className="w-[76%] mx-auto mt-9">
           <MeasureOfSuccessTable
-            data={measuresData}
+            data={measureOfSuccessData}
             columns={measureColumnData}
             isPresentationView
           />
