@@ -123,6 +123,7 @@ export const missionPlanApi = baseApi.injectEndpoints({
         url: `/mission-plan/${missionplanid}/with-approvables`,
         method: "GET",
       }),
+      providesTags: ["Approvables"],
     }),
   }),
 });

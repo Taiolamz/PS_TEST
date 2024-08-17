@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import { useParams } from "next/navigation";
+import { useApproval } from "./useApproval";
 
 type StrategicPillarsType = {
   id: string;
@@ -30,11 +32,18 @@ type Props = {
 };
 
 const SpecifiedTasks = ({ data }: Props) => {
-  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
+  const { missionplanid } = useParams();
+  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+  const initialActionType = "";
 
-  const toggleComment = (id: string) => {
-    setOpenCommentId((prevId) => (prevId === id ? null : id));
-  };
+  const {
+    openCommentId,
+    toggleComment,
+    handleReject,
+    handleApprove,
+    FormikApprovalForm,
+  } = useApproval(initialComments, initialActionType, missionplanid as string, "specified-task");
+  console.log('bingo', data)
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
@@ -82,11 +91,13 @@ const SpecifiedTasks = ({ data }: Props) => {
                   <Button
                     variant="outline"
                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                    onClick={() => toggleComment(item.id)}
+                    onClick={() => handleReject(item.id)}
                   >
                     Reject
                   </Button>
-                  <Button>Approve</Button>
+                  <Button
+                  onClick={() => handleApprove()}
+                  >Approve</Button>
                 </div>
               </div>
             </div>
@@ -96,6 +107,7 @@ const SpecifiedTasks = ({ data }: Props) => {
             showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
             comments={[]}
+            formik={FormikApprovalForm}
           />
         </section>
       ))}

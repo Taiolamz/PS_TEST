@@ -7,6 +7,8 @@ import {
 import { Button } from "@/components/ui/button";
 import Comment from "./comment";
 import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
+import { useParams } from "next/navigation";
+import { useApproval } from "./useApproval";
 
 type Props = {
   showTextArea: boolean;
@@ -31,6 +33,16 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
 
   const measureOfSuccessData: MeasureOfSuccessType[] =
     transformedMeasureOfSuccessRows(data);
+    
+    const { missionplanid } = useParams();
+    const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+    const initialActionType = "";
+  
+    const {
+      handleReject,
+      handleApprove,
+      FormikApprovalForm,
+    } = useApproval(initialComments, initialActionType, missionplanid as string, "success-measure");
 
   return (
     <section>
@@ -51,11 +63,14 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
               className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
               onClick={() => {
                 setShowTextArea(true);
+                handleReject();
               }}
             >
               Reject
             </Button>
-            <Button>Approve</Button>
+            <Button
+                          onClick={() => handleApprove()}
+            >Approve</Button>
           </div>
         </div>
       </div>
@@ -64,6 +79,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
         comments={[]}
+        formik={FormikApprovalForm}
       />
     </section>
   );
