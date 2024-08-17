@@ -37,13 +37,13 @@ const EmployeeInviteLayout = ({
           <div className="flex justify-center gap-3 items-center ">
             <Image
               src={orgLogo}
-              alt={`${orgName || "Organization"} Logo`}
+              alt={`${orgName || "logo"}`}
               width={80}
               height={80}
             />
 
             <p className="font-medium text-lg text-custom-blue-color capitalize">
-              {orgName || ""}
+              {orgName || "---------"}
             </p>
           </div>
           <div className="mt-6 flex flex-col gap-1">
@@ -55,7 +55,7 @@ const EmployeeInviteLayout = ({
                 <>
                   Welcome to{" "}
                   <span className="text-custom-blue-color text-xs">
-                    {orgName || "Organization"}
+                    {orgName || "---------"}
                   </span>
                   , We are thrilled to have you join our team.
                 </>

@@ -23,7 +23,7 @@ const RejectInvite = () => {
         <p>
           Kindly state your reasons for rejecting{" "}
           <span className="text-custom-blue-color">
-            {(invitedUser as InvitedUser)?.organization?.name || "Orgainzation"}
+            {(invitedUser as InvitedUser)?.organization?.name || "---------"}
           </span>{" "}
           invite{" "}
         </p>
