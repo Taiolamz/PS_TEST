@@ -62,6 +62,9 @@ const AddBranch = () => {
     if (selectedSub) {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
+    } else {
+      formik.setFieldValue("subsidiary_id.name", "");
+      formik.setFieldValue("subsidiary_id.id", "");
     }
   };
 
@@ -153,7 +156,7 @@ const AddBranch = () => {
                   // labelClass={labelClassName}
                 />
               )}
- 
+
               <CustomSelect
                 label="Head of Branch"
                 placeholder="Head of Branch"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { useUnit } from "../_hooks/useUnit"; 
+import { useUnit } from "../_hooks/useUnit";
 import FormLayout from "../_components/form-layout";
 import { Input } from "@/components/ui/input";
 import CustomSelect from "@/components/custom-select";
@@ -22,7 +22,7 @@ const AddUnit = () => {
   const cancelRoute = ADMIN.CHECKLIST;
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const {
-    formik, 
+    formik,
     subsidiaries,
     branches,
     departments,
@@ -30,11 +30,11 @@ const AddUnit = () => {
     openCancelModal,
     handleCancelDialog,
     isCreatingUnit,
-    isLoadingDropdown, 
+    isLoadingDropdown,
     employees,
   } = useUnit({ cancelPath: cancelRoute });
- 
-  const [selectedBranch, setSelectedBranch] = useState(""); 
+
+  const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const handleHeadSelectChange = (selectedName: string) => {
@@ -61,10 +61,12 @@ const AddUnit = () => {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
       formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
     } else {
       formik.setFieldValue("subsidiary_id.name", "");
       formik.setFieldValue("subsidiary_id.id", "");
       formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
     }
   };
 
@@ -174,7 +176,7 @@ const AddUnit = () => {
       ];
     }
     return finalMapValue;
-  }; 
+  };
 
   return (
     <>
@@ -237,7 +239,7 @@ const AddUnit = () => {
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "subsidiary"
                 ) && (
-                  <CustomSelect 
+                  <CustomSelect
                     label="Subsidiary"
                     isRequired={processInputAsArray(
                       user?.organization?.hierarchy
@@ -286,6 +288,7 @@ const AddUnit = () => {
                       setSelectedBranch(value);
                       formik.setFieldValue("branch_id", value);
                       setSelectedDepartment("");
+                      formik.setFieldValue("department_id", "");
                     }}
                     labelClass={labelClassName}
                   />

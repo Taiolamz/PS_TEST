@@ -48,10 +48,14 @@ export default function AddEmployee() {
       formik.setFieldValue("subsidiary_id.name", selectedSub.name);
       formik.setFieldValue("subsidiary_id.id", selectedSub.id);
       formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
+      formik.setFieldValue("unit_id", "");
     } else {
       formik.setFieldValue("subsidiary_id.name", "");
       formik.setFieldValue("subsidiary_id.id", "");
       formik.setFieldValue("branch_id", "");
+      formik.setFieldValue("department_id", "");
+      formik.setFieldValue("unit_id", "");
     }
   };
 
@@ -251,7 +255,7 @@ export default function AddEmployee() {
 
   // const [selectedState, setSelectedState] = useState("");
   const { user, checklist } = useAppSelector((state) => state.auth);
-  const [selectedBranch, setSelectedBranch] = useState(""); 
+  const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedUnit, setSelectedUnit] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
@@ -259,7 +263,7 @@ export default function AddEmployee() {
 
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
-  ); 
+  );
   return (
     <>
       <DashboardLayout back headerTitle="Employee">
@@ -411,7 +415,7 @@ export default function AddEmployee() {
                     ]}
                     // selected={selectedSubsidiary}
                     selected={formik.values.subsidiary_id.name}
-                    setSelected={(value) => { 
+                    setSelected={(value) => {
                       handleSubsidiaryChange(value);
                       setSelectedBranch("");
                       setSelectedDepartment("");
@@ -443,6 +447,9 @@ export default function AddEmployee() {
                       setSelectedBranch(value);
                       formik.setFieldValue("branch_id", value);
                       setSelectedDepartment("");
+                      formik.setFieldValue("department_id", "");
+                      setSelectedUnit("");
+                      formik.setFieldValue("unit_id", "");
                     }}
                     labelClass={labelClassName}
                   />
@@ -475,6 +482,7 @@ export default function AddEmployee() {
                       setSelectedDepartment(value);
                       formik.setFieldValue("department_id", value);
                       setSelectedUnit("");
+                      formik.setFieldValue("unit_id", "");
                     }}
                     labelClass={labelClassName}
                   />
