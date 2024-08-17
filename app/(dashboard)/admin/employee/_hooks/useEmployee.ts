@@ -2,23 +2,17 @@
 import * as yup from "yup";
 import useDisclosure from "./useDisclosure";
 import { useCreateEmployeeMutation } from "@/redux/services/checklist/employeeApi";
-import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
-import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
 import { toast } from "sonner";
-import { HomeIcon } from "@/public/assets/icons";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useFormik } from "formik";
-import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
-import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
-// import { Dictionary } from "@/@types/dictionary";
 import routesPath from "@/utils/routes";
-// import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 // dummy data
 type Prop = {
@@ -43,6 +37,7 @@ const newEmployeeStatuses = [
 const genderOptions = [
   { name: "Male", value: "Male" },
   { name: "Female", Value: "Female" },
+  { name: "Others", value: "Others" },
 ];
 
 const formSchema = yup.object().shape({
@@ -86,47 +81,12 @@ const { ADMIN } = routesPath;
 export const useEmployee = ({ path, cancelPath }: Prop) => {
   const router = useRouter();
 
-  const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
-    useGetSubsidiariesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
-
-  const { data: branchesData, isLoading: isLoadingBranches } =
-    useGetBranchesQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
-
-  const { data: departmentData, isLoading: isLoadingDepartments } =
-    useGetDepartmentsQuery({
-      to: 0,
-      total: 0,
-      per_page: 50,
-      currentPage: 0,
-      next_page_url: "",
-      prev_page_url: "",
-    });
+  const { data: dropdownData, isLoading: isLoadingDropdown }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
 
   const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
     useGetGradeLevelsQuery({});
 
-  const { data: unitData, isLoading: isLoadingUnits } = useGetUnitsQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
-  });
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
@@ -139,17 +99,6 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
         ...chi,
         label: chi?.name,
         value: chi?.id,
-      };
-    });
-    return data;
-  };
-
-  const handleGradeDrop = (items: GradeLevelData[]) => {
-    const data = items.map((chi) => {
-      return {
-        ...chi,
-        label: chi.name,
-        value: chi.level,
       };
     });
     return data;
@@ -174,32 +123,14 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     return data;
   };
 
-  const handleBranchDropdown = (items: BranchData[]) => {
-    const data = items.map((chi) => {
-      return {
-        ...chi,
-        label: chi?.name,
-        value: chi?.branch_id,
-      };
-    });
-    return data;
-  };
-
-  const subsidiaries = subsidiariesData ?? [];
-  const branches = branchesData ?? [];
-  const departments = departmentData ?? [];
-  const units = unitData ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
+  const branches = dropdownData?.organization_info?.branches ?? [];
+  const departments = dropdownData?.organization_info?.departments ?? [];
+  const units = dropdownData?.organization_info?.units ?? [];
   const states = statesData ?? [];
-  // console.log(gradeLevelData, "grade level data");
   const gradeLevels = gradeLevelData ?? [];
 
-  const stateDrop = handleDropdown(states);
-  const subsidiaryDrop = handleDropdown(subsidiaries);
-  const branchDrop = handleBranchDropdown(branches);
-  const departmentDrop = handleDropdown(departments);
-  const unitsDrop = handleDropdown(units);
   const newEmployeeDrop = handleDropdown(newEmployeeStatuses);
-  const gradeLevelDrop = handleGradeDrop(gradeLevels);
   const actionCtx = useContext(ActionContext);
   const EmployeeRoute = ADMIN.EMPLOYEES;
   const user = useAppSelector(selectUser);
@@ -211,6 +142,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
+      subsidiary_id: formik.values.subsidiary_id.id,
     };
     await createEmployee(payload)
       .unwrap()
@@ -237,7 +169,10 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       gender: "",
       resumption_date: "",
       level: "",
-      subsidiary_id: "",
+      subsidiary_id: {
+        name: "",
+        id: "",
+      },
       department_id: "",
       branch_id: "",
       unit_id: "",
@@ -277,22 +212,11 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     branches: handleFormatDropdown(branches),
     departments: handleFormatDropdown(departments),
     units: handleFormatDropdown(units),
-    isLoadingSubsidiaries,
-    isLoadingBranches,
-    isLoadingDepartments,
-    isLoadingUnits,
     genderOptions: handleFormatDropdown(genderOptions),
     gradeLevels: handleFormatDropdown(gradeLevels),
-    gradeLevelDrop,
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
     newEmployeeDrop,
     states: handleFormatDropdown(states),
-    stateDrop,
-    subsidiaryDrop,
-    branchDrop,
-    departmentDrop,
-    isLoadingGradeLevel,
-    unitsDrop,
     openCancelModal,
     handleProceedCancel,
     onOpenCancelModal,

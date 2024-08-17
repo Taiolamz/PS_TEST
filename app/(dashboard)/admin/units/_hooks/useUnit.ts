@@ -27,44 +27,6 @@ type Select = {
   value: string | number;
 };
 
-const headOfBranches = [
-  {
-    label: "Hassan",
-    value: "Hassan",
-  },
-  {
-    label: "Lamidi",
-    value: "Lamidi",
-  },
-  {
-    label: "Friday",
-    value: "Friday",
-  },
-  {
-    label: "Emeka",
-    value: "Emeka",
-  },
-];
-
-const headOfUnit = [
-  {
-    label: "Hassan",
-    value: "Hassan",
-  },
-  {
-    label: "Lamidi",
-    value: "Lamidi",
-  },
-  {
-    label: "Friday",
-    value: "Friday",
-  },
-  {
-    label: "Emeka",
-    value: "Emeka",
-  },
-];
-
 const { ADMIN } = routesPath;
 
 export const useUnit = ({ cancelPath }: Prop) => {
@@ -159,9 +121,9 @@ export const useUnit = ({ cancelPath }: Prop) => {
   const employeeDrop = handleDropdown(employees);
 
   const stateDrop = handleDropdown(states);
-  const subsidiaryDrop = handleDropdown(subsidiaries);
-  const branchDrop = handleBranchDropdown(branches);
-  const departmentDrop = handleDropdown(departments);
+  // const subsidiaryDrop = handleDropdown(subsidiaries);
+  // const branchDrop = handleBranchDropdown(branches);
+  // const departmentDrop = handleDropdown(departments);
 
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
@@ -246,13 +208,10 @@ export const useUnit = ({ cancelPath }: Prop) => {
     formik,
     isCreatingUnit,
     handleProceedCancel,
-
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    headOfBranches,
-    headOfUnit,
     states: handleFormatDropdown(states),
     subsidiaries: handleFormatDropdown(subsidiaries),
     branches: handleFormatDropdown(branches),
@@ -260,9 +219,9 @@ export const useUnit = ({ cancelPath }: Prop) => {
     employeeDrop,
     employees: handleFormatDropdown(employees),
     stateDrop,
-    subsidiaryDrop,
-    branchDrop,
-    departmentDrop,
+    // subsidiaryDrop,
+    // branchDrop,
+    // departmentDrop,
     isLoadingDropdown,
   };
 };
