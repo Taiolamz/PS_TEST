@@ -67,6 +67,7 @@ const ApproveMissionPlan = () => {
               data={data?.data?.mission_statement}
               setApprovalTypeId={setApprovalTypeId}
               approvables={data?.data?.approvables ?? []}
+              loading={isGettingMissionPlanItems}
             />
 
             <MeasureOfSuccess
@@ -75,11 +76,13 @@ const ApproveMissionPlan = () => {
               data={data?.data?.measure_of_success ?? []}
               // setApprovalTypeId={setApprovalTypeId}
               approvables={data?.data?.approvables ?? []}
+              loading={isGettingMissionPlanItems}
             />
 
             <StrategicIntent
               data={data?.data?.strategic_intents ?? []}
               approvables={data?.data?.approvables ?? []}
+              loading={isGettingMissionPlanItems}
             />
             <SpecifiedTasks
               data={data?.data?.specified_tasks ?? []}

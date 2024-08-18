@@ -10,12 +10,14 @@ import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
   data: MeasureOfSuccessType[];
   approvables?: [];
+  loading: boolean;
 };
 
 const MeasureOfSuccess = ({
@@ -23,6 +25,7 @@ const MeasureOfSuccess = ({
   showTextArea,
   data,
   approvables,
+  loading,
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -63,6 +66,7 @@ const MeasureOfSuccess = ({
         </h2>
         <div className="flex justify-between items-end">
           <div className="basis-3/4">
+            {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
             <MeasureOfSuccessTable
               data={measureOfSuccessData}
               columns={measureColumnData}

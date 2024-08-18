@@ -5,10 +5,6 @@ import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-pla
 import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { toast } from "sonner";
 
-type ApprovablesType = {
-  comments: string[];
-  approvable_id: string;
-};
 type Props = {
   initialComments: string[];
   initialActionType: string;

@@ -5,6 +5,7 @@ import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   showTextArea: boolean;
@@ -12,6 +13,7 @@ type Props = {
   data?: MissionStatementType;
   approvables?: [];
   setApprovalTypeId: (e: string) => void;
+  loading: boolean;
 };
 const MissionStatement = ({
   setShowTextArea,
@@ -19,6 +21,7 @@ const MissionStatement = ({
   data,
   approvables,
   setApprovalTypeId,
+  loading,
 }: Props) => {
   const approvableTypeId = data?.id;
   const params = useParams();
@@ -34,6 +37,8 @@ const MissionStatement = ({
     approval_type,
   });
 
+  console.log({ loading });
+
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -41,6 +46,7 @@ const MissionStatement = ({
           Mission Statement
         </h2>
         <div className="flex justify-between items-end w-full">
+          {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
           <p className="w-[52%] text-[#162238] text-sm">
             {data?.mission ?? ""}
           </p>

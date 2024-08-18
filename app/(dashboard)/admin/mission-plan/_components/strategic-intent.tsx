@@ -8,13 +8,15 @@ import { useParams } from "next/navigation";
 import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   data: StrategicIntentType[];
   approvables?: [];
+  loading: boolean;
 };
 
-const StrategicIntent = ({ data, approvables }: Props) => {
+const StrategicIntent = ({ data, approvables, loading }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
@@ -44,6 +46,8 @@ const StrategicIntent = ({ data, approvables }: Props) => {
               Strategic Intent
             </h2>
             <div className="mt-2.5 ml-1.5">
+              {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
+
               <h3 className="font-normal">- Strategic Intent {index + 1}</h3>
               <div className="flex justify-between items-end">
                 <div className="ml-3">
