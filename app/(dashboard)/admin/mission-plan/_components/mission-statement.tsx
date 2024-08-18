@@ -1,25 +1,44 @@
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Comment from "./comment";
 import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
+import useGetComments from "./useGetComments.hook";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
   data?: MissionStatementType;
+  approvables?: [];
+  setApprovalTypeId: (e: string) => void;
+  loading: boolean;
 };
-const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
-  const { missionplanid } = useParams();
-  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+const MissionStatement = ({
+  setShowTextArea,
+  showTextArea,
+  data,
+  approvables,
+  setApprovalTypeId,
+  loading,
+}: Props) => {
+  const approvableTypeId = data?.id;
+  const params = useParams();
+  const missionplanid = params.missionplanid as string;
+  const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
+  const approval_type = "mission-statement";
 
-  const {
-    handleReject,
-    handleApprove,
-    FormikApprovalForm,
-  } = useApproval(initialComments, initialActionType, missionplanid as string, "mission-statement");
+  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
+    initialComments: comments?.comment,
+    initialActionType,
+    missionplanid,
+    approval_type,
+  });
+
+  console.log({ loading });
+
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -27,6 +46,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
           Mission Statement
         </h2>
         <div className="flex justify-between items-end w-full">
+          {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
           <p className="w-[52%] text-[#162238] text-sm">
             {data?.mission ?? ""}
           </p>
@@ -41,9 +61,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
             >
               Reject
             </Button>
-            <Button
-              onClick={() => handleApprove()}
-            >Approve</Button>
+            <Button onClick={() => handleApprove()}>Approve</Button>
           </div>
         </div>
       </div>
@@ -51,7 +69,7 @@ const MissionStatement = ({ setShowTextArea, showTextArea, data }: Props) => {
         label="Mission statement"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
-        comments={[]}
+        comments={comments}
         formik={FormikApprovalForm}
       />
     </section>

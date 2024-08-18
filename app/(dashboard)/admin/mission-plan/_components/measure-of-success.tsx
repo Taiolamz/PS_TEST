@@ -9,15 +9,30 @@ import Comment from "./comment";
 import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
+import useGetComments from "./useGetComments.hook";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
   data: MeasureOfSuccessType[];
+  approvables?: [];
+  loading: boolean;
 };
 
-const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
+const MeasureOfSuccess = ({
+  setShowTextArea,
+  showTextArea,
+  data,
+  approvables,
+  loading,
+}: Props) => {
+  const approvableTypeId = data?.map((item) => item.id as string);
+  const params = useParams();
+  const missionplanid = params.missionplanid as string;
   const measureColumnData = useMemo(() => measureColumns(), []);
+  const commentItem = useGetComments({ approvables, approvableTypeId });
+  const approval_type = "success-measure";
 
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
@@ -33,16 +48,15 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
 
   const measureOfSuccessData: MeasureOfSuccessType[] =
     transformedMeasureOfSuccessRows(data);
-    
-    const { missionplanid } = useParams();
-    const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
-    const initialActionType = "";
-  
-    const {
-      handleReject,
-      handleApprove,
-      FormikApprovalForm,
-    } = useApproval(initialComments, initialActionType, missionplanid as string, "success-measure");
+
+  const initialActionType = "";
+
+  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
+    initialComments: commentItem?.comment ?? [],
+    initialActionType,
+    missionplanid,
+    approval_type,
+  });
 
   return (
     <section>
@@ -52,10 +66,14 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
         </h2>
         <div className="flex justify-between items-end">
           <div className="basis-3/4">
+            {loading ? <Loader2 className="w-6 h-6 animate-spin mr-1" /> :
+
             <MeasureOfSuccessTable
               data={measureOfSuccessData}
               columns={measureColumnData}
             />
+            
+            }
           </div>
           <div className="flex gap-2.5 mr-4">
             <Button
@@ -68,9 +86,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
             >
               Reject
             </Button>
-            <Button
-                          onClick={() => handleApprove()}
-            >Approve</Button>
+            <Button onClick={() => handleApprove()}>Approve</Button>
           </div>
         </div>
       </div>
@@ -78,7 +94,7 @@ const MeasureOfSuccess = ({ setShowTextArea, showTextArea, data }: Props) => {
         label="measure of success"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
-        comments={[]}
+        comments={commentItem}
         formik={FormikApprovalForm}
       />
     </section>

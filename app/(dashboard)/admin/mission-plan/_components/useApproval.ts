@@ -5,7 +5,19 @@ import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-pla
 import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { toast } from "sonner";
 
-export const useApproval = (initialComments: string[], initialActionType: string, missionPlanId: string, approval_type: string) => {
+type Props = {
+  initialComments: string[];
+  initialActionType: string;
+  missionplanid: string;
+  approval_type?: string;
+};
+
+export const useApproval = ({
+  initialComments,
+  initialActionType,
+  missionplanid,
+  approval_type,
+}: Props) => {
   const [openCommentId, setOpenCommentId] = useState<string | null>(null);
   const [approveMissionPlanItems] = useApproveMissionPlanItemsMutation();
 
@@ -44,10 +56,10 @@ export const useApproval = (initialComments: string[], initialActionType: string
   const handleSubmit = async (allComments: string[]) => {
     toast.loading("Processing...");
     const payload = {
-      "mission_plan_id": missionPlanId,
-      "approval_type": `${approval_type}`,
-      "status": FormikApprovalForm.values.actionType,
-      "comments": allComments,
+      mission_plan_id: missionplanid,
+      approval_type: `${approval_type}`,
+      status: FormikApprovalForm.values.actionType,
+      comments: allComments,
     };
     try {
       await approveMissionPlanItems(payload).unwrap();

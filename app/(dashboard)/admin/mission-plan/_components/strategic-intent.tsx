@@ -7,15 +7,23 @@ import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables"
 import { useParams } from "next/navigation";
 import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
+import useGetComments from "./useGetComments.hook";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   data: StrategicIntentType[];
+  approvables?: [];
+  loading: boolean;
 };
 
-const StrategicIntent = ({ data }: Props) => {
-  const { missionplanid } = useParams();
-  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+const StrategicIntent = ({ data, approvables, loading }: Props) => {
+  const approvableTypeId = data?.map((item) => item.id as string);
+  const params = useParams();
+  const missionplanid = params.missionplanid as string;
+  const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
+
+  const approval_type = "strategic-intent";
 
   const {
     openCommentId,
@@ -23,7 +31,12 @@ const StrategicIntent = ({ data }: Props) => {
     handleReject,
     handleApprove,
     FormikApprovalForm,
-  } = useApproval(initialComments, initialActionType, missionplanid as string, "strategic-intent");
+  } = useApproval({
+    initialComments: comments?.comment ?? [],
+    initialActionType,
+    missionplanid,
+    approval_type,
+  });
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
@@ -33,6 +46,8 @@ const StrategicIntent = ({ data }: Props) => {
               Strategic Intent
             </h2>
             <div className="mt-2.5 ml-1.5">
+              {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
+
               <h3 className="font-normal">- Strategic Intent {index + 1}</h3>
               <div className="flex justify-between items-end">
                 <div className="ml-3">
@@ -55,10 +70,12 @@ const StrategicIntent = ({ data }: Props) => {
                     Reject
                   </Button>
                   <Button
-                  onClick={() => {
-                    handleApprove();
-                  }}
-                  >Approve</Button>
+                    onClick={() => {
+                      handleApprove();
+                    }}
+                  >
+                    Approve
+                  </Button>
                 </div>
               </div>
             </div>
@@ -67,7 +84,7 @@ const StrategicIntent = ({ data }: Props) => {
             label="Strategic intent"
             showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
-            comments={[]}
+            comments={comments}
             // comments={FormikApprovalForm.values.comments}
             formik={FormikApprovalForm}
           />

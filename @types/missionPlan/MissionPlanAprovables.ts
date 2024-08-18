@@ -1,5 +1,6 @@
 export type MissionStatementType = {
   mission: string;
+  id: string;
 };
 
 export type MeasureOfSuccessType = {
@@ -13,6 +14,7 @@ export type MeasureOfSuccessType = {
 export type BoundariesType = {
   constraints: [];
   freedoms: [];
+  id: string;
 };
 
 export type SpecifiedTasksType = {
