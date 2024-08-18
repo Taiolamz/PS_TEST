@@ -87,3 +87,17 @@ export const formatToReadableDate = (dateString: string): string => {
 
   return `${day}${daySuffix(day)} ${month}, ${year}`;
 };
+
+export const formatToDDMMYYYY = (date: string | Date): string => {
+  const parsedDate = new Date(date);
+
+  if (isNaN(parsedDate.getTime())) {
+    throw new Error("Invalid date");
+  }
+
+  const day = String(parsedDate.getDate()).padStart(2, "0");
+  const month = String(parsedDate.getMonth() + 1).padStart(2, "0");
+  const year = parsedDate.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};

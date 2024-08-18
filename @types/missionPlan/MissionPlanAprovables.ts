@@ -14,13 +14,49 @@ export type BoundariesType = {
   constraints: [];
   freedoms: [];
 };
-export type SpecifiedTasksType = {};
+
+export type SpecifiedTasksType = {
+  id: string;
+  task?: string;
+  strategic_pillars: StrategicPillarsType[];
+  success_measures?: SuccessMeasuresType[];
+  start_date: string;
+  end_date: string;
+  is_main_effort?: number;
+  implied_tasks: ImpliedTaskType[];
+};
+
+export type ImpliedTaskType = {
+  id: string;
+  task: string;
+  expected_outcome: string;
+  weight: string;
+  percentage: string;
+  resources: ResourcesType[];
+  start_date: string;
+  end_date: string;
+};
 
 export type StrategicIntentType = {
   behaviours: string;
   id: string;
   intent: string;
   status: string;
+};
+
+type StrategicPillarsType = {
+  id: string;
+  title: string;
+};
+
+type SuccessMeasuresType = {
+  id: string;
+  measure: string;
+};
+
+type ResourcesType = {
+  staff_member_id: string;
+  name: string;
 };
 
 type MissionPlanApprovablesType = {
@@ -33,7 +69,7 @@ type MissionPlanApprovablesType = {
   created_at: string;
   fiscal_year_id: string;
   id: string;
-  specified_tasks: [];
+  specified_tasks: SpecifiedTasksType[];
   staff_member_id: string;
 };
 

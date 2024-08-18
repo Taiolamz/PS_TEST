@@ -3,37 +3,18 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas";
+import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 
-type StrategicPillarsType = {
-  id: string;
-  title: string;
-};
-
-type SuccessMeasuresType = {
-  id: string;
-  measure: string;
-};
-
-type Task = {
-  id: string;
-  task: string;
-  specifiedTask: string;
-  strategic_pillars: StrategicPillarsType[];
-  success_measures: SuccessMeasuresType[];
-  start_date: string;
-  end_date: string;
-  is_main_effort: number;
-};
-
 type Props = {
-  data: Task[];
+  data: SpecifiedTasksType[];
 };
 
 const SpecifiedTasks = ({ data }: Props) => {
   const { missionplanid } = useParams();
-  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+  const initialComments = ["1", "2", "3"]; // wiil be Replaced with actual data
   const initialActionType = "";
 
   const {
@@ -42,8 +23,13 @@ const SpecifiedTasks = ({ data }: Props) => {
     handleReject,
     handleApprove,
     FormikApprovalForm,
-  } = useApproval(initialComments, initialActionType, missionplanid as string, "specified-task");
-  console.log('bingo', data)
+  } = useApproval(
+    initialComments,
+    initialActionType,
+    missionplanid as string,
+    "specified-task"
+  );
+  console.log("bingo", data);
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
@@ -65,10 +51,16 @@ const SpecifiedTasks = ({ data }: Props) => {
                     ))}
                   </p>
                   <p className="mt-1 font-light">
-                    <span className="font-normal">Measures of success :</span>{" "}
-                    {item?.success_measures?.map((item) => (
+                    <span className="font-normal">Measures of success : </span>{" "}
+                    {/* {item?.success_measures?.map((item) => (
                       <span key={item?.id}>{item?.measure}, </span>
-                    ))}{" "}
+                    ))}{" "} */}
+                    <span key={item?.id}>
+                      {formatNamesWithCommas(
+                        item?.success_measures ?? [],
+                        "measure"
+                      )}
+                    </span>
                   </p>
                   <p className="mt-1">
                     <span className="font-normal">
@@ -95,9 +87,7 @@ const SpecifiedTasks = ({ data }: Props) => {
                   >
                     Reject
                   </Button>
-                  <Button
-                  onClick={() => handleApprove()}
-                  >Approve</Button>
+                  <Button onClick={() => handleApprove()}>Approve</Button>
                 </div>
               </div>
             </div>

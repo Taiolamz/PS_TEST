@@ -6,49 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Comment from "./comment";
 import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas";
+import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 
-type StrategicPillarsType = {
-  id: string;
-  title: string;
-};
-
-type ResourcesType = {
-  staff_member_id: string;
-  name: string;
-};
-
-type ImpliedTaskType = {
-  id: string;
-  // title: "Implied Task 1";
-  task: string;
-  expected_outcome: string;
-  weight: string;
-  percentage: string;
-  resources: ResourcesType[];
-  start_date: string;
-  end_date: string;
-};
-
-type Task = {
-  id: number;
-  task: string;
-  specifiedTask: string;
-  strategic_pillars: StrategicPillarsType[];
-  measure_of_success: string;
-  start_date: string;
-  end_date: string;
-  is_main_effort: number;
-  implied_tasks: ImpliedTaskType[];
-};
 type Props = {
-  data: Task[];
+  data: SpecifiedTasksType[];
 };
 
 const ImpliedTask = ({ data }: Props) => {
   const { missionplanid } = useParams();
-  const initialComments = ['1', '2', '3']; // wiil be Replaced with actual data
+  const initialComments = ["1", "2", "3"]; // wiil be Replaced with actual data
   const initialActionType = "";
 
   const {
@@ -57,7 +26,12 @@ const ImpliedTask = ({ data }: Props) => {
     handleReject,
     handleApprove,
     FormikApprovalForm,
-  } = useApproval(initialComments, initialActionType, missionplanid as string, "implied-task");
+  } = useApproval(
+    initialComments,
+    initialActionType,
+    missionplanid as string,
+    "implied-task"
+  );
   return (
     <div className="flex flex-col gap-10">
       {data?.map((specifiedTask, index1) => (
@@ -90,12 +64,14 @@ const ImpliedTask = ({ data }: Props) => {
                       </p>
                       <p className="mt-1 font-light">
                         <span className="font-normal">Resources : </span>{" "}
-                        {/* {item?.resources} */}
-                        {item?.resources?.map((item) => (
+                        {/* {item?.resources?.map((item) => (
                           <span key={item?.staff_member_id}>
                             {item?.name},{" "}
                           </span>
-                        ))}{" "}
+                        ))}{" "} */}
+                        <span key={item?.id}>
+                          {formatNamesWithCommas(item?.resources, "name")}
+                        </span>
                       </p>
                       <p className="mt-1 font-light">
                         <span className="font-normal">
@@ -123,9 +99,7 @@ const ImpliedTask = ({ data }: Props) => {
                       >
                         Reject
                       </Button>
-                      <Button
-                       onClick={() => handleApprove()}
-                      >Approve</Button>
+                      <Button onClick={() => handleApprove()}>Approve</Button>
                     </div>
                   </div>
                 </div>

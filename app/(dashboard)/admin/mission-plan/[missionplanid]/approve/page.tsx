@@ -33,7 +33,8 @@ const ApproveMissionPlan = () => {
       missionplanid: params.missionplanid as string,
     });
 
-  console.log({ data, params });
+  console.log({ data });
+
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
@@ -82,7 +83,10 @@ const ApproveMissionPlan = () => {
         </div>
       ) : (
         <div className="min-h-screen bg-white">
-          <PresentationView data={data?.data ?? []} />
+          <PresentationView
+            data={data?.data}
+            loading={isGettingMissionPlanItems}
+          />
         </div>
       )}
     </DashboardLayout>
