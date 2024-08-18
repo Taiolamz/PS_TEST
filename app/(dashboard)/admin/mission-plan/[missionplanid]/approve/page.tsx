@@ -36,8 +36,6 @@ const ApproveMissionPlan = () => {
       missionplanid: missionplanid as string,
     });
 
-  console.log({ data, approvalTypeId });
-
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
@@ -60,7 +58,7 @@ const ApproveMissionPlan = () => {
             </div>
             <Button>Approve All</Button>
           </div>
-          <div className="flex flex-col gap-10 text-[#162238]">
+          <div className="flex flex-col gap-2 text-[#162238]">
             <MissionStatement
               showTextArea={missionStatementComment.isOpen}
               setShowTextArea={missionStatementComment.toggle}

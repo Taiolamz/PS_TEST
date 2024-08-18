@@ -66,11 +66,14 @@ const MeasureOfSuccess = ({
         </h2>
         <div className="flex justify-between items-end">
           <div className="basis-3/4">
-            {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
+            {loading ? <Loader2 className="w-6 h-6 animate-spin mr-1" /> :
+
             <MeasureOfSuccessTable
               data={measureOfSuccessData}
               columns={measureColumnData}
             />
+            
+            }
           </div>
           <div className="flex gap-2.5 mr-4">
             <Button
