@@ -46,25 +46,34 @@ const MissionStatement = ({
           Mission Statement
         </h2>
         <div className="flex justify-between items-end w-full">
-          {loading && <Loader2 className="w-6 h-6 animate-spin mr-1" />}
-          <p className="w-[52%] text-[#162238] text-sm">
-            {data?.mission ?? ""}
-          </p>
-          <div className="flex gap-2.5 mr-4">
-            <Button
-              variant="outline"
-              className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-              onClick={() => {
-                setShowTextArea(true);
-                handleReject();
-              }}
-            >
-              Reject
-            </Button>
-            <Button onClick={() => handleApprove()}>Approve</Button>
-          </div>
+          {loading && (
+            <div className="w-full flex justify-center items-center">
+              <Loader2 className="w-6 h-6 animate-spin mr-1" />
+            </div>
+          )}
+          {!loading && (
+            <p className="w-[52%] text-[#162238] text-sm">
+              {data?.mission ?? "No Mission Statement"}
+            </p>
+          )}
+          {!loading && data?.mission !== null && (
+            <div className="flex gap-2.5 mr-4">
+              <Button
+                variant="outline"
+                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                onClick={() => {
+                  setShowTextArea(true);
+                  handleReject();
+                }}
+              >
+                Reject
+              </Button>
+              <Button onClick={() => handleApprove()}>Approve</Button>
+            </div>
+          )}
         </div>
       </div>
+
       <Comment
         label="Mission statement"
         showTextArea={showTextArea}

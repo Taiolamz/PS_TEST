@@ -26,12 +26,15 @@ import Link from "next/link";
 import DrawerComment from "./_side-modal/drawer-comment";
 import DrawerApprovalStatus from "./_side-modal/drawer-approval-status";
 import { formatDate } from "@/utils/helpers/date-formatter";
+import { useDispatch } from "react-redux";
+import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDataSlice";
 
 const { ADMIN } = routesPath;
 
 const SingleMissionPlan = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useDispatch();
   const ui = searchParams.get("ui");
   const id = searchParams.get("id"); //The fiscial year ID
   const { active_fy_info } = useAppSelector(
@@ -369,7 +372,7 @@ const SingleMissionPlan = () => {
                 "Staff Name",
                 "Designation",
                 "Email",
-                "Date Submtted",
+                "Date Submitted",
                 "Status",
                 "Action",
               ]}
@@ -415,6 +418,11 @@ const SingleMissionPlan = () => {
                   label: "View Mission Plan",
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
+                    dispatch(
+                      updateEmployeeDetails({
+                        name: dataTwo?.name?.props?.children[1].props?.children,
+                      })
+                    );
                     router.push(
                       ADMIN.APPROVE_REJECT_MISSION_PLAN(
                         dataTwo?.name?.props.children[0].props.children
