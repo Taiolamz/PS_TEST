@@ -5,7 +5,7 @@ type ApprovablesType = {
   approvable_id: string;
   approver: { name: string };
   created_at: string;
-  approval_type: string;
+  approvable_type: string;
 };
 
 type CommentType = {
@@ -25,7 +25,7 @@ type Props = {
 const useGetComments = ({
   approvables,
   approvableTypeId,
-}: Props): CommentType | {} => {
+}: Props): CommentType => {
   return useMemo(() => {
     const approvable = approvables?.find((approvable) => {
       if (Array.isArray(approvableTypeId)) {
@@ -59,7 +59,14 @@ const useGetComments = ({
       };
     }
 
-    return {};
+    return {
+      id: "",
+      title: "",
+      author: "",
+      comment: [],
+      date: "",
+      time: "",
+    };
   }, [approvables, approvableTypeId]);
 };
 

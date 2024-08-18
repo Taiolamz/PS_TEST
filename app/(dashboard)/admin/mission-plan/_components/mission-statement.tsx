@@ -28,21 +28,11 @@ const MissionStatement = ({
   const approval_type = "mission-statement";
 
   const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
-    initialComments: comments?.comment ?? [],
+    initialComments: comments?.comment,
     initialActionType,
     missionplanid,
     approval_type,
   });
-
-  console.log({ comments });
-
-  // useEffect(() => {
-  //   if (!approvableTypeId) {
-  //     return;
-  //   } else {
-  //     setApprovalTypeId(approvableTypeId);
-  //   }
-  // }, []);
 
   return (
     <section>

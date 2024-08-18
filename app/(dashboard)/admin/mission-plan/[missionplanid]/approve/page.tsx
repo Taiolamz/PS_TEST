@@ -27,9 +27,6 @@ const ApproveMissionPlan = () => {
   const missionplanid = params.missionplanid as string;
   const [approvalTypeId, setApprovalTypeId] = useState("");
 
-  const initialComments = ["1", "2", "3"]; // wiil be Replaced with actual data
-  const initialActionType = "";
-
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
@@ -38,8 +35,6 @@ const ApproveMissionPlan = () => {
     useGetMissionPlanItemsByIdQuery({
       missionplanid: missionplanid as string,
     });
-
-  // const approvableTypeId = "xxxx";
 
   console.log({ data, approvalTypeId });
 
