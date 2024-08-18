@@ -7,15 +7,21 @@ import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas"
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
+import useGetComments from "./useGetComments.hook";
 
 type Props = {
   data: SpecifiedTasksType[];
+  approvables?: [];
 };
 
-const SpecifiedTasks = ({ data }: Props) => {
-  const { missionplanid } = useParams();
-  const initialComments = ["1", "2", "3"]; // wiil be Replaced with actual data
+const SpecifiedTasks = ({ data, approvables }: Props) => {
+  const approvableTypeId = data?.map((item) => item.id as string);
+  const params = useParams();
+  const missionplanid = params.missionplanid as string;
+  const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
+
+  const approval_type = "specified-task";
 
   const {
     openCommentId,
@@ -23,13 +29,12 @@ const SpecifiedTasks = ({ data }: Props) => {
     handleReject,
     handleApprove,
     FormikApprovalForm,
-  } = useApproval(
-    initialComments,
+  } = useApproval({
+    initialComments: comments?.comment ?? [],
     initialActionType,
-    missionplanid as string,
-    "specified-task"
-  );
-  console.log("bingo", data);
+    missionplanid,
+    approval_type,
+  });
   return (
     <div className="flex flex-col gap-10">
       {data?.map((item, index) => (
@@ -96,7 +101,7 @@ const SpecifiedTasks = ({ data }: Props) => {
             label="Specified task"
             showTextArea={openCommentId === item.id}
             setShowTextArea={() => toggleComment(item.id)}
-            comments={[]}
+            comments={comments}
             formik={FormikApprovalForm}
           />
         </section>

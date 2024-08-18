@@ -16,6 +16,7 @@ import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useApproval } from "../../_components/useApproval";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -23,6 +24,11 @@ const ApproveMissionPlan = () => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
   const params = useParams();
+  const missionplanid = params.missionplanid as string;
+  const [approvalTypeId, setApprovalTypeId] = useState("");
+
+  const initialComments = ["1", "2", "3"]; // wiil be Replaced with actual data
+  const initialActionType = "";
 
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
@@ -30,10 +36,12 @@ const ApproveMissionPlan = () => {
 
   const { data, isLoading: isGettingMissionPlanItems } =
     useGetMissionPlanItemsByIdQuery({
-      missionplanid: params.missionplanid as string,
+      missionplanid: missionplanid as string,
     });
 
-  console.log({ data });
+  // const approvableTypeId = "xxxx";
+
+  console.log({ data, approvalTypeId });
 
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
@@ -62,17 +70,30 @@ const ApproveMissionPlan = () => {
               showTextArea={missionStatementComment.isOpen}
               setShowTextArea={missionStatementComment.toggle}
               data={data?.data?.mission_statement}
+              setApprovalTypeId={setApprovalTypeId}
+              approvables={data?.data?.approvables ?? []}
             />
 
             <MeasureOfSuccess
               showTextArea={measureOfSuccessComment.isOpen}
               setShowTextArea={measureOfSuccessComment.toggle}
               data={data?.data?.measure_of_success ?? []}
+              // setApprovalTypeId={setApprovalTypeId}
+              approvables={data?.data?.approvables ?? []}
             />
 
-            <StrategicIntent data={data?.data?.strategic_intents ?? []} />
-            <SpecifiedTasks data={data?.data?.specified_tasks ?? []} />
-            <ImpliedTask data={data?.data?.specified_tasks ?? []} />
+            <StrategicIntent
+              data={data?.data?.strategic_intents ?? []}
+              approvables={data?.data?.approvables ?? []}
+            />
+            <SpecifiedTasks
+              data={data?.data?.specified_tasks ?? []}
+              approvables={data?.data?.approvables ?? []}
+            />
+            <ImpliedTask
+              data={data?.data?.specified_tasks ?? []}
+              approvables={data?.data?.approvables ?? []}
+            />
 
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}

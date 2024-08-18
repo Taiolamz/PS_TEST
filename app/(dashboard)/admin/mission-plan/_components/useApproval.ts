@@ -1,17 +1,39 @@
 // hooks/useApproval.ts
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
 import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { toast } from "sonner";
 
-export const useApproval = (initialComments: string[], initialActionType: string, missionPlanId: string, approval_type: string) => {
+type ApprovablesType = {
+  comments: string[];
+  approvable_id: string;
+};
+type Props = {
+  approvableTypeId?: string;
+  initialComments: string[];
+  initialActionType: string;
+  missionplanid: string;
+  approval_type?: string;
+  approvables?: ApprovablesType[] | [];
+};
+
+export const useApproval = ({
+  initialComments,
+  initialActionType,
+  missionplanid,
+  approval_type,
+  approvableTypeId,
+  approvables,
+}: Props) => {
+  const [comments, setComments] = useState<string[] | []>();
   const [openCommentId, setOpenCommentId] = useState<string | null>(null);
   const [approveMissionPlanItems] = useApproveMissionPlanItemsMutation();
 
   const FormikApprovalForm = useFormik({
     initialValues: {
-      comments: [...initialComments],
+      // comments: [...initialComments],
+      comments: initialComments,
       newComment: "",
       actionType: initialActionType,
     },
@@ -44,10 +66,10 @@ export const useApproval = (initialComments: string[], initialActionType: string
   const handleSubmit = async (allComments: string[]) => {
     toast.loading("Processing...");
     const payload = {
-      "mission_plan_id": missionPlanId,
-      "approval_type": `${approval_type}`,
-      "status": FormikApprovalForm.values.actionType,
-      "comments": allComments,
+      mission_plan_id: missionplanid,
+      approval_type: `${approval_type}`,
+      status: FormikApprovalForm.values.actionType,
+      comments: allComments,
     };
     try {
       await approveMissionPlanItems(payload).unwrap();
@@ -59,11 +81,29 @@ export const useApproval = (initialComments: string[], initialActionType: string
     }
   };
 
+  // Get comments
+  // const getCommentsFromApprovables = () => {
+  //   const approvable = approvables?.find(
+  //     (approvable) =>
+  //       approvable?.approvable_id === approvableTypeId &&
+  //       approvable?.comments?.length > 0
+  //   );
+
+  //   if (approvable) {
+  //     setComments([...approvable.comments]);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getCommentsFromApprovables();
+  // }, [approvableTypeId]);
+
   return {
     openCommentId,
     toggleComment,
     handleReject,
     handleApprove,
     FormikApprovalForm,
+    comments,
   };
 };

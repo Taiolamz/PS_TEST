@@ -10,15 +10,23 @@ import { formatNamesWithCommas } from "@/utils/helpers/format-names-with-commas"
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
+import useGetComments from "./useGetComments.hook";
 
 type Props = {
   data: SpecifiedTasksType[];
+  approvables?: [];
 };
 
-const ImpliedTask = ({ data }: Props) => {
-  const { missionplanid } = useParams();
-  const initialComments = ["1", "2", "3"]; // wiil be Replaced with actual data
+const ImpliedTask = ({ data, approvables }: Props) => {
+  const approvableTypeId = data
+    ?.map((item) => item.implied_tasks?.map((task) => task.id))
+    ?.flat();
+  const params = useParams();
+  const missionplanid = params.missionplanid as string;
+  const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
+
+  const approval_type = "implied-task";
 
   const {
     openCommentId,
@@ -26,12 +34,12 @@ const ImpliedTask = ({ data }: Props) => {
     handleReject,
     handleApprove,
     FormikApprovalForm,
-  } = useApproval(
-    initialComments,
+  } = useApproval({
+    initialComments: comments?.comment ?? [],
     initialActionType,
-    missionplanid as string,
-    "implied-task"
-  );
+    missionplanid,
+    approval_type,
+  });
   return (
     <div className="flex flex-col gap-10">
       {data?.map((specifiedTask, index1) => (
@@ -108,7 +116,7 @@ const ImpliedTask = ({ data }: Props) => {
                 label="Implied Task"
                 showTextArea={openCommentId === item.id}
                 setShowTextArea={() => toggleComment(item.id)}
-                comments={[]}
+                comments={comments}
                 formik={FormikApprovalForm}
               />
             </section>
