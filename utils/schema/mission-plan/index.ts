@@ -1,5 +1,8 @@
 import { isValidDate } from "@/utils/helpers";
-import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import {
+  formatToReadableDate,
+  parseDate,
+} from "@/utils/helpers/date-formatter";
 import * as yup from "yup";
 
 export const missionStatementSchema = yup.object().shape({
@@ -106,6 +109,17 @@ export const specifiedTaskSchema = (endDate: any, startDate: any) => {
               startDate.setHours(0, 0, 0, 0);
               return enteredDate.getTime() >= startDate.getTime();
             }
+          )
+          .test(
+            "is-later-than-end-date",
+            "Start date must be later than the end date",
+            function (value) {
+              const { end_date } = this.parent;
+              if (!value || !end_date) return true;
+              const startDate = parseDate(value);
+              const endDate = parseDate(end_date);
+              return startDate < endDate;
+            }
           ),
         end_date: yup
           .string()
@@ -126,6 +140,17 @@ export const specifiedTaskSchema = (endDate: any, startDate: any) => {
                 `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
               );
               return enteredDate <= endDate;
+            }
+          )
+          .test(
+            "is-before-start-date",
+            "End date must be earlier than the start date",
+            function (value) {
+              const { start_date } = this.parent;
+              if (!value || !start_date) return true; // Skip if either date is not provided
+              const endDate = parseDate(value);
+              const startDate = parseDate(start_date);
+              return endDate > startDate; // end date should be greater than start date
             }
           ),
       })
