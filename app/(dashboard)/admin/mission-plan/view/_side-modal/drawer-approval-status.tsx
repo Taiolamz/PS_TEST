@@ -50,7 +50,7 @@ export default function DrawerApprovalStatus({
           ) : approvalSteps.length === 0 ? (
             <div className="text-center place-content-center mt-16">
             <p className="text-custom-gray-scale-400 font-medium text-sm">
-              No Comments Yet
+              No Approval Status Found
             </p>
           </div>
           ) : (

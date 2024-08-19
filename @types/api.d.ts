@@ -17,6 +17,17 @@ type RejectValues = {
   id: string;
 };
 
+type Downliners = {
+  date_submitted: string;
+  designation: string;
+  email: string;
+  id: string;
+  manager_id: string;
+  name: string;
+  role: string;
+  status: string;
+};
+
 type AuthResponseType = {
   setErrors?: (errors: string[]) => void; // Function to set errors (array of strings)
   setStatus?: (status: string[]) => void; // Function to set status (array of strings)

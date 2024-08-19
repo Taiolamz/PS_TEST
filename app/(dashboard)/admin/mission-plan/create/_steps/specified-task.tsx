@@ -415,15 +415,11 @@ const SpecifiedTask = () => {
                                     labelClass="pb-2"
                                     className="relative p-4"
                                     placeholder="DD/MM/YYYY"
-                                    format="DD/MM/YYYY"
                                     id={`tasks.${index}.start_date`}
                                     name={`tasks.${index}.start_date`}
                                     selected={
-                                      new Date(
-                                        formik.values?.tasks?.[
-                                          index
-                                        ]?.start_date
-                                      )
+                                      formik?.values?.tasks[index]
+                                        ?.start_date as any
                                     }
                                     label="Start Date"
                                     inputClass="text-[.75rem] p-[9px]"
@@ -450,12 +446,10 @@ const SpecifiedTask = () => {
                                     id={`tasks.${index}.end_date`}
                                     name={`tasks.${index}.end_date`}
                                     label="End Date"
-                                    format="DD/MM/YYYY"
                                     placeholder="DD/MM/YYYY"
                                     selected={
-                                      new Date(
-                                        formik.values?.tasks?.[index]?.end_date
-                                      )
+                                      formik?.values?.tasks[index]
+                                        ?.end_date as any
                                     }
                                     handleChange={(date) =>
                                       formik.setFieldValue(

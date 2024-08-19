@@ -14,9 +14,9 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
     }),
     getAllOrganizationMissionPlanSummary: builder.query({
       query: ({ params, fiscal_year_id }) => ({
-        url: `/mission-plan/organization/${
-          fiscal_year_id
-        }/summary${generateQueryString({ ...params })}`,
+        url: `/mission-plan/organization/${fiscal_year_id}/summary${generateQueryString(
+          { ...params }
+        )}`,
         method: "GET",
       }),
       transformResponse: (response: { data: any[] }) => response.data,
@@ -26,6 +26,13 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
         url: `/admin/organization/organization-info-dropdown`,
         method: "GET",
       }),
+      providesTags: [
+        "Subsidiaries",
+        "Branches",
+        "Departments",
+        "Units",
+        "Employees",
+      ],
       transformResponse: (response: { data: any[] }) => response.data,
     }),
     getAllOrganizationEmployeeMissionPlanExport: builder.query({

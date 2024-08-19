@@ -80,9 +80,8 @@ const MissionItems = ({
           <div className="flex flex-col gap-3">
             {strategicIntentData?.map((chi, idx) => {
               const { title, intent, behaviours } = chi;
-              const formattedBehaviours = JSON.parse(behaviours as string).join(
-                ", "
-              );
+              const formattedBehaviours =
+                behaviours ?? JSON.parse(behaviours as string).join(", ");
 
               return (
                 <div key={idx} className="flex flex-col gap-1">
