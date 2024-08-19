@@ -94,9 +94,17 @@ const RejectInvite = () => {
       <ConfirmationModal
         content={
           <div className="flex justify-center gap-3 items-center absolute left-0 right-0 m-auto top-0 mt-3">
-            <Image src={ZojatechIcon} alt="Zojatech" />
+            {/* <Image src={ZojatechIcon} alt="Zojatech" /> */}
+            <Image
+              src={(invitedUser as InvitedUser)?.organization?.logo}
+              alt={`${
+                (invitedUser as InvitedUser)?.organization?.name || "logo"
+              }`}
+              width={80}
+              height={80}
+            />
             <p className="font-medium text-lg text-custom-blue-color">
-              Zojatech Limited
+              {(invitedUser as InvitedUser)?.organization?.name || "---------"}
             </p>
           </div>
         }
