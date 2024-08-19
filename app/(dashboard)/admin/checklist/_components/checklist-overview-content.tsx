@@ -177,8 +177,8 @@ const ChecklistOverviewContent = () => {
     <div
       onClick={() => {
         // getPercentageFunc();
-        console.log(checklist);
-        console.log(user?.organization?.hierarchy);
+        // console.log(checklist);
+        // console.log(user?.organization?.hierarchy);
         // console.log(getPercentageFunc());
       }}
       className="flex flex-col gap-3 w-[768px]"
