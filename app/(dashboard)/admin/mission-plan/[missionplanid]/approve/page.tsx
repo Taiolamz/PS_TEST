@@ -17,6 +17,7 @@ import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { useApproval } from "../../_components/useApproval";
+import { useAppSelector } from "@/redux/store";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -31,6 +32,8 @@ const ApproveMissionPlan = () => {
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
 
+  const { name } = useAppSelector((state) => state?.single_employee);
+
   const { data, isLoading: isGettingMissionPlanItems } =
     useGetMissionPlanItemsByIdQuery({
       missionplanid: missionplanid as string,
@@ -42,21 +45,25 @@ const ApproveMissionPlan = () => {
         <div className="py-14 px-[1.625rem] bg-white text-sm">
           <div className="flex justify-between mb-7">
             <div className="flex items-center gap-[0.5625rem]">
-              <h1 className="font-semibold text-lg text-[#3E4345]">
-                Oluwaseyi Ajayi Mission Plan
+              <h1 className="font-semibold text-lg text-[#3E4345] capitalize">
+                {name} Mission Plan
               </h1>
-              <Button
-                type="button"
-                variant="outline"
-                className="border-primary text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-transparent"
-                onClick={() => {
-                  router.push(`${location}?ui=presentation&step=1`);
-                }}
-              >
-                View Presentation Mode
-              </Button>
+              {!isGettingMissionPlanItems && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-primary text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-transparent"
+                  onClick={() => {
+                    router.push(`${location}?ui=presentation&step=1`);
+                  }}
+                >
+                  View Presentation Mode
+                </Button>
+              )}
             </div>
-            <Button>Approve All</Button>
+            {!isGettingMissionPlanItems && data?.data !== null && (
+              <Button>Approve All</Button>
+            )}
           </div>
           <div className="flex flex-col gap-2 text-[#162238]">
             <MissionStatement
@@ -85,16 +92,19 @@ const ApproveMissionPlan = () => {
             <SpecifiedTasks
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
+              loading={isGettingMissionPlanItems}
             />
             <ImpliedTask
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
+              loading={isGettingMissionPlanItems}
             />
 
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}
               setShowTextArea={freedomConstraintComment.toggle}
               data={data?.data?.boundaries ?? []}
+              loading={isGettingMissionPlanItems}
             />
           </div>
         </div>

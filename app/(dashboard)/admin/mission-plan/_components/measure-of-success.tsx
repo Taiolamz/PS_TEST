@@ -65,29 +65,35 @@ const MeasureOfSuccess = ({
           Measure of Success
         </h2>
         <div className="flex justify-between items-end">
-          <div className="basis-3/4">
-            {loading ? <Loader2 className="w-6 h-6 animate-spin mr-1" /> :
-
-            <MeasureOfSuccessTable
-              data={measureOfSuccessData}
-              columns={measureColumnData}
-            />
-            
-            }
+          <div className="w-full">
+            {loading ? (
+              <div className="w-full flex justify-center items-center">
+                <Loader2 className="w-6 h-6 animate-spin mr-1" />
+              </div>
+            ) : (
+              <div className="basis-3/4">
+                <MeasureOfSuccessTable
+                  data={measureOfSuccessData}
+                  columns={measureColumnData}
+                />
+              </div>
+            )}
           </div>
-          <div className="flex gap-2.5 mr-4">
-            <Button
-              variant="outline"
-              className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-              onClick={() => {
-                setShowTextArea(true);
-                handleReject();
-              }}
-            >
-              Reject
-            </Button>
-            <Button onClick={() => handleApprove()}>Approve</Button>
-          </div>
+          {!loading && data?.length !== null && (
+            <div className="flex gap-2.5 mr-4">
+              <Button
+                variant="outline"
+                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                onClick={() => {
+                  setShowTextArea(true);
+                  handleReject();
+                }}
+              >
+                Reject
+              </Button>
+              <Button onClick={() => handleApprove()}>Approve</Button>
+            </div>
+          )}
         </div>
       </div>
       <Comment
