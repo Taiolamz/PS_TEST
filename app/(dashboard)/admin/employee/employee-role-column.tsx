@@ -98,7 +98,7 @@ export const employeerolesColumns: ColumnDef<EmployeeRolesData>[] = [
     },
   },
   {
-    accessorKey: "line_manager",
+    accessorKey: "line_manager_name",
     header: () => <div className="text-right">Line Manager</div>,
     cell: ({ row }) => (
       <div className="capitalize text-right">
