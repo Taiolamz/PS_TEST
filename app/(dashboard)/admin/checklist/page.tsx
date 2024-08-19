@@ -1,3 +1,5 @@
+"use client"
+
 import { useLazyGetChecklistQuery } from "@/redux/services/onboarding/checkListApi";
 import React, { useEffect } from "react";
 import {
