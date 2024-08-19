@@ -54,7 +54,6 @@ const Boundaries = () => {
         ...values,
         mission_plan_id: mission_plan?.data?.mission_plan?.id,
       };
-      console.log(obj, "objective");
       await createBoundaries(obj)
         .unwrap()
         .then(() => {
