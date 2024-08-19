@@ -45,7 +45,7 @@ const ApproveMissionPlan = () => {
         <div className="py-14 px-[1.625rem] bg-white text-sm">
           <div className="flex justify-between mb-7">
             <div className="flex items-center gap-[0.5625rem]">
-              <h1 className="font-semibold text-lg text-[#3E4345]">
+              <h1 className="font-semibold text-lg text-[#3E4345] capitalize">
                 {name} Mission Plan
               </h1>
               {!isGettingMissionPlanItems && (
