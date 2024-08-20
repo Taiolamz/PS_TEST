@@ -73,12 +73,15 @@ interface MultiSelectProps
   label?: string;
   className?: string;
   badgeClassName?: string;
+  randomBadgeColor?: boolean;
   triggerClassName?: string;
   placeholderClass?: string;
   labelClass?: string;
   error?: string;
   touched?: boolean;
 }
+
+type BadgeColor = "purple" | "danger" | "success" | "pending";
 
 export const CustomMultipleSelect = React.forwardRef<
   HTMLButtonElement,
@@ -100,6 +103,7 @@ export const CustomMultipleSelect = React.forwardRef<
       className,
       triggerClassName,
       badgeClassName,
+      randomBadgeColor,
       placeholderClass,
       error,
       name,
@@ -114,6 +118,15 @@ export const CustomMultipleSelect = React.forwardRef<
     const [isAnimating, setIsAnimating] = React.useState(false);
     const [isFocused, setIsFocused] = React.useState(false);
     const divRef = React.useRef<any>(null);
+    // Set the badge color of the multiselect to have random color
+
+const randomColor = (): BadgeColor => {
+  const badgeColors: BadgeColor[] = ["purple", "danger", "success", "pending"];
+  const randColor: BadgeColor =
+    badgeColors[Math.floor(Math.random() * badgeColors.length)];
+  return randColor;
+};
+
 
     React.useEffect(() => {
       if (JSON.stringify(selectedValues) !== JSON.stringify(defaultValue)) {
@@ -224,6 +237,7 @@ export const CustomMultipleSelect = React.forwardRef<
                     return (
                       <Badge
                         key={value}
+                        variant={randomBadgeColor ? randomColor() : "default"}
                         className={cn(
                           "p-0 px-3 ",
                           isAnimating ? "animate-bounce" : "",

@@ -188,8 +188,6 @@ const ImpliedTask = () => {
           const impliedTasks = payload?.data?.mission_plan?.specified_tasks;
           const mappedTasks = formattedData(impliedTasks);
           formik.setFieldValue("tasks", mappedTasks);
-          console.log(impliedTasks, "implied tasks");
-          console.log(mappedTasks, "mapped tasks");
         }
       });
   };
@@ -366,6 +364,7 @@ const ImpliedTask = () => {
                                   <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
                                     <div className="mt-1">
                                       <CustomMultipleSelect
+                                      randomBadgeColor
                                         options={formattedEmployeesDrop}
                                         onValueChange={(values) =>
                                           formik.setFieldValue(
@@ -412,7 +411,7 @@ const ImpliedTask = () => {
                                           )
                                         }
                                         error={""}
-                                        className="relative pr-8 w-full"
+                                        className="relative pr-8 w-full min-w-40"
                                         iconClass="top-[2.7rem] right-3"
                                         isRequired
                                       />

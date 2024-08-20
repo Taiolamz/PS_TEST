@@ -308,7 +308,7 @@ const SpecifiedTask = () => {
                             <h2 className="text-grayText font-semibold text-sm">
                               Task {index + 1}
                             </h2>
-                            <div className="max-w-4xl flex flex-col md:flex-row gap-x-3 gap-y-5 justify-between lg:mb-8 items-start relative !ml-0">
+                            <div className="max-w-4xl pr-4 flex flex-col md:flex-row gap-x-3 gap-y-5 justify-between lg:mb-8 items-start relative !ml-0">
                               <div className="w-full flex-1">
                                 <Input
                                   type="text"
@@ -336,6 +336,7 @@ const SpecifiedTask = () => {
                                       values
                                     )
                                   }
+                                  randomBadgeColor
                                   label="Select Pillars"
                                   name={`tasks.${index}.strategic_pillars`}
                                   defaultValue={
@@ -362,7 +363,7 @@ const SpecifiedTask = () => {
                               <button
                                 type="button"
                                 onClick={() => remove(index)}
-                                className="text-red-500 hover:text-red-700 absolute right-[-6%] md:right-[-3%] top-10"
+                                className="text-red-500 hover:text-red-700 absolute right-[-4%] md:right-[-1%] top-10"
                               >
                                 <Icon
                                   name="remove"
@@ -380,6 +381,7 @@ const SpecifiedTask = () => {
                                       values
                                     )
                                   }
+                                  randomBadgeColor
                                   options={mappedSuccessMeasures}
                                   label="Select Measure of Success"
                                   name={`tasks.${index}.success_measures`}
