@@ -101,3 +101,9 @@ export const formatToDDMMYYYY = (date: string | Date): string => {
 
   return `${day}/${month}/${year}`;
 };
+
+// Helper function to parse date in DD/MM/YYYY format
+export const parseDate = (value: any) => {
+  const [day, month, year] = value.split("/");
+  return new Date(`${year}-${month}-${day}`);
+};
