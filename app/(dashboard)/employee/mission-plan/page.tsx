@@ -28,14 +28,13 @@ const AUTH_USER_ROLE = {
 
 };
 
-const { ADMIN } = routesPath
+const { EMPLOYEE } = routesPath
 
 export default function Page() {
 
   // const { data: allRoles, isLoading: isLoadingRoles } = useGetAllRolesQuery({})
   const { data: all_mission_plans, isLoading: isLoadingMissionPlans, isFetching: isFetchingMissionPlans } = useGetOrganizationMissionPlansQuery({})
   const user_info = useAppSelector((state) => state?.auth?.user);
-
   // console.log(all_mission_plans?.data?.fiscal_years)
 
   const kickstartcard = (
@@ -80,13 +79,13 @@ export default function Page() {
             ui == "mission-plan" &&
             (all_mission_plans?.data?.fiscal_years?.length === 0 ?
               <>
-                {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && (
+                {/* {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && (
                   <EmptyState
                     text="Create your Mission plan by using the button below"
                     handleClick={() => router.push("mission-plan/kickstart?ui=financial-year")}
                     btnText="Kickstart Financial Year"
                   />
-                )}
+                )} */}
                 {user_info?.role !== SUPER_ADMIN && (
                   <EmptyState
                     text="Fiscal Year not available"
@@ -104,7 +103,7 @@ export default function Page() {
 
               :
               <div className="w-full grid grid-cols-4 gap-4">
-                {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && kickstartcard}
+                {/* {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && kickstartcard} */}
                 {
                   all_mission_plans?.data?.fiscal_years?.map((item: Dictionary, idx: number) => (
                     <YearMissionPlanCard 
@@ -115,7 +114,9 @@ export default function Page() {
                       date={formatDate(item?.created_at)}
                       handleClick={() => {
                         dispatch(updateMissionPlanDetails({slug: 'active_fy_info', data: item}))
-                        router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${item?.id}`)
+                        router.push(
+                          `${EMPLOYEE.SINGLE_MISSION_PLAN}?id=${item?.id}`
+                        );
                       }} 
                     />
                   ))
@@ -123,8 +124,8 @@ export default function Page() {
               </div>)
           }
 
-          {/* This section shows screens base on active tab*/}
-          {ui == "all-employees" && <AllEmployees data={allemployeeData} columns={allemployeeColumns} />}
+          {/* This section shows screens base on active tab
+          {ui == "all-employees" && <AllEmployees data={allemployeeData} columns={allemployeeColumns} />} */}
         </div>
       }
     </DashboardLayout>
