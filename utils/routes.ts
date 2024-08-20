@@ -31,7 +31,8 @@ const routesPath = {
     MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
-    APPROVE_REJECT_MISSION_PLAN: (id:string) => ( `/${admin_auth}/mission-plan/${id}/approve`),
+    APPROVE_REJECT_MISSION_PLAN: (id: string) =>
+      `/${admin_auth}/mission-plan/${id}/approve`,
     PERFORMANCE: `/${admin_auth}/performance`,
     KPI: `/${admin_auth}/kpi`,
     BRANCHES: `/${admin_auth}/branches`,
@@ -54,7 +55,17 @@ const routesPath = {
   },
   EMPLOYEE: {
     OVERVIEW: `/${employee_auth}/overview`,
-    MISSION_PLAN: `/${employee_auth}/mission-plan`,
+    MISSION_PLAN: `/${employee_auth}/mission-plan?ui=mission-plan`,
+    MAIN_MISSION_PLAN: `/${employee_auth}/mission-plan`,
+    CREATE_MISSION_PLAN: `/${employee_auth}/mission-plan/create`,
+    SINGLE_MISSION_PLAN: `/${employee_auth}/mission-plan/view`,
+    MISSION_PLAN_TEMPLATE: `/${employee_auth}/mission-plan/template`,
+    CREATE_MISSION_PLAN_TEMPLATE: `/${employee_auth}/mission-plan/template/create`,
+    MISSION_PLAN_TEMPLATE_LEVEL: `/${employee_auth}/mission-plan/template/level`,
+    MISSION_PLAN_APPROVAL_FLOW: `/${employee_auth}/mission-plan/approval-flow`,
+    CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${employee_auth}/mission-plan/approval-flow/create`,
+    APPROVE_REJECT_MISSION_PLAN: (id: string) =>
+      `/${employee_auth}/mission-plan/${id}/approve`,
     MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report`,
     KPI: `/${employee_auth}/kpi`,
     MY_TEAM: `/${employee_auth}/my-team`,
