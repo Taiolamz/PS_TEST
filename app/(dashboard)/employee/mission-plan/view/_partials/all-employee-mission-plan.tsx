@@ -6,7 +6,7 @@ import routesPath from "@/utils/routes";
 // import { allemployeeData } from "../_data/all-employee-table-data";
 import TableWrapper from "@/components/tables/TableWrapper";
 import CustomSelect from "@/components/custom-select";
-import { PageLoader } from "@/components/custom-loader";
+import { ManceLogoLoader, PageLoader } from "@/components/custom-loader";
 import {
   useGetAllOrganizationEmployeeMissionPlanQuery,
   useGetAllOrganizationMissionPlanDropdownQuery,
@@ -408,7 +408,7 @@ const AllEmployeeMissionPlan = () => {
         </div>
       ) : (
         <div className="h-[75vh] place-content-center">
-          <PageLoader />
+          <ManceLogoLoader />
         </div>
       )}
       <DrawerComment

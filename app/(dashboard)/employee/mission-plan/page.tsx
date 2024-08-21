@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Dictionary } from "@/@types/dictionary";
-import { PageLoader } from "@/components/custom-loader";
+import { ManceLogoLoader, PageLoader } from "@/components/custom-loader";
 import { EmptyState, ReusableDrawer } from "@/components/fragment";
 import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
@@ -71,7 +71,7 @@ export default function Page() {
       {
         isLoadingMissionPlans || isFetchingMissionPlans ? (
           <div className="h-full grid place-content-center">
-            <PageLoader/>
+            <ManceLogoLoader/>
           </div>
         ) :
         <div className="flex flex-col p-5 w-full">
@@ -79,13 +79,6 @@ export default function Page() {
             ui == "mission-plan" &&
             (all_mission_plans?.data?.fiscal_years?.length === 0 ?
               <>
-                {/* {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && (
-                  <EmptyState
-                    text="Create your Mission plan by using the button below"
-                    handleClick={() => router.push("mission-plan/kickstart?ui=financial-year")}
-                    btnText="Kickstart Financial Year"
-                  />
-                )} */}
                 {user_info?.role !== SUPER_ADMIN && (
                   <EmptyState
                     text="Fiscal Year not available"
@@ -124,9 +117,7 @@ export default function Page() {
               </div>)
           }
 
-          {/* This section shows screens base on active tab
-          {ui == "all-employees" && <AllEmployees data={allemployeeData} columns={allemployeeColumns} />} */}
-        </div>
+          </div>
       }
     </DashboardLayout>
   );
