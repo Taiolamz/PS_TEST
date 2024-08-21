@@ -32,7 +32,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 
-const { ADMIN } = routesPath;
+const { EMPLOYEE } = routesPath;
 
 export const EFFORT_DATA = [
   {
@@ -233,7 +233,7 @@ const SpecifiedTask = () => {
           .unwrap()
           .then(() => {
             toast.success("Specified Task Addedd Successfully");
-            router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=implied-task`);
+            router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task`);
           });
       }
     } catch (error) {}

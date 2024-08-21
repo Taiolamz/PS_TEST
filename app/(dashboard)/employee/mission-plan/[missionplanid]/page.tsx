@@ -25,7 +25,7 @@ export default function MissionPlanId() {
                 Title
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                2022 Financial Year
+                ----------------------
               </p>
             </div>
             {/* Start Period */}
@@ -34,7 +34,7 @@ export default function MissionPlanId() {
                 Start Period
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                March 2022
+                --------
               </p>
             </div>
             {/* End Period */}
@@ -43,7 +43,7 @@ export default function MissionPlanId() {
                 End Period
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                Feb 2023
+                --------
               </p>
             </div>
           </div>
@@ -57,8 +57,7 @@ export default function MissionPlanId() {
                 Mission
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                To be a pacesetter in digital transformation and software
-                solutions in West Africa by 2025.
+                ------------------------------------------------------------------------------------------------------------
               </p>
             </div>
             {/* Vision */}
@@ -67,8 +66,7 @@ export default function MissionPlanId() {
                 Vision
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                Providing you with innovative software solutions that exceed
-                your expectations.
+                --------------------------------------------------------------------------------------------------------------
               </p>
             </div>
           </div>
@@ -82,7 +80,7 @@ export default function MissionPlanId() {
                 Pillar 1
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                Brand
+                --------
               </p>
             </div>
             {/* Pillar 2 */}
@@ -91,7 +89,7 @@ export default function MissionPlanId() {
                 Pillar 2
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                People
+                --------
               </p>
             </div>
             {/* Pillar 3 */}
@@ -100,7 +98,7 @@ export default function MissionPlanId() {
                 Pillar 3
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                Product
+                --------
               </p>
             </div>
           </div>

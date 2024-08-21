@@ -8,8 +8,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import React, { useEffect, useMemo, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
-import * as Yup from "yup";
-import { cn } from "@/lib/utils";
+import * as Yup from "yup"; 
 import {
   useAddStrategicIntentMutation,
   useLazyGetMyMissionPlanQuery,

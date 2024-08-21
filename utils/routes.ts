@@ -11,12 +11,11 @@ export const adminRoleList = [
   "compliance",
   "super-admin",
   "user",
-  "ceo"
+  "ceo",
 ];
 
 export const specialRoleList = ["super-admin"];
 // const
-
 
 const routesPath = {
   ADMIN: {
@@ -60,10 +59,6 @@ const routesPath = {
     CREATE_MISSION_PLAN: `/${employee_auth}/mission-plan/create`,
     SINGLE_MISSION_PLAN: `/${employee_auth}/mission-plan/view`,
     MISSION_PLAN_TEMPLATE: `/${employee_auth}/mission-plan/template`,
-    CREATE_MISSION_PLAN_TEMPLATE: `/${employee_auth}/mission-plan/template/create`,
-    MISSION_PLAN_TEMPLATE_LEVEL: `/${employee_auth}/mission-plan/template/level`,
-    MISSION_PLAN_APPROVAL_FLOW: `/${employee_auth}/mission-plan/approval-flow`,
-    CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${employee_auth}/mission-plan/approval-flow/create`,
     APPROVE_REJECT_MISSION_PLAN: (id: string) =>
       `/${employee_auth}/mission-plan/${id}/approve`,
     MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report`,
@@ -81,7 +76,6 @@ const routesPath = {
   ONBOARDING: "/onboarding",
 };
 
-
 export const checkListRoutes = [
   routesPath?.ADMIN?.SUBSIDIARY,
   routesPath?.ADMIN?.BRANCH,
@@ -91,7 +85,7 @@ export const checkListRoutes = [
   routesPath?.ADMIN?.MAIN_MISSION_PLAN,
   routesPath?.ADMIN?.UNIT,
   routesPath?.ADMIN?.MISSION_PLAN_TEMPLATE,
-  // routesPath?.ADMIN?. 
+  // routesPath?.ADMIN?.
 ];
 
 export default routesPath;

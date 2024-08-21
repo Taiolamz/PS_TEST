@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Comment from "./comment";
 import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";

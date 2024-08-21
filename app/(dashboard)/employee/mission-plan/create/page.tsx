@@ -15,7 +15,7 @@ import {
   StrategicIntent,
 } from "./_steps";
 
-const { ADMIN } = routesPath;
+const { EMPLOYEE } = routesPath;
 
 const CreateMissionPlan = () => {
   const router = useRouter();

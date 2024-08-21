@@ -256,8 +256,6 @@ const ImpliedTask = () => {
     enableReinitialize: true,
   });
 
-  console.log(formik.errors, "errors");
-
   useEffect(() => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
@@ -298,7 +296,8 @@ const ImpliedTask = () => {
                                   {/* Achieve $1 Billion in Company Revenue for the
                             Financial year */}
                                   {/* the title should come from another array */}
-                                  {task?.title || `${index + 1}. Specified task`}
+                                  {task?.title ||
+                                    `${index + 1}. Specified task`}
                                 </p>
                               }
                               content={
@@ -364,7 +363,7 @@ const ImpliedTask = () => {
                                   <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
                                     <div className="mt-1">
                                       <CustomMultipleSelect
-                                      randomBadgeColor
+                                        randomBadgeColor
                                         options={formattedEmployeesDrop}
                                         onValueChange={(values) =>
                                           formik.setFieldValue(
@@ -396,7 +395,7 @@ const ImpliedTask = () => {
                                         }
                                       />
                                     </div>
-                                    <div className="grid grid-cols-2 gap-3 w-full">
+                                    <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%]">
                                       <CustomDateInput
                                         id={`tasks.${index}.start_date`}
                                         label="Start Date"
@@ -411,8 +410,9 @@ const ImpliedTask = () => {
                                           )
                                         }
                                         error={""}
-                                        className="relative pr-8 w-full min-w-40"
+                                        className="relative pr-8 w-full"
                                         iconClass="top-[2.7rem] right-3"
+                                        inputClass=" "
                                         isRequired
                                       />
                                       <CustomDateInput
