@@ -40,14 +40,14 @@ export default function DrawerApprovalStatus({
       handleClose={handleClose}
       closeOnClickOutside={false}
     >
-      <section className="border-t w-full border-[#E5E9EB] pt-5">
-        <div className="flex flex-col space-y-11 w-[90%] mx-auto">
+      <section className="border-t w-full h-[90.5vh] border-[#E5E9EB] pt-5">
+        <div className="flex flex-col h-full space-y-11 w-[90%] mx-auto">
           {loading ? (
-            <div className="place-content-center items-center w-full">
+            <div className="place-content-center items-center h-full">
               <ManceLogoLoader />
             </div>
           ) : approvalSteps.length === 0 ? (
-            <div className="text-center place-content-center mt-16">
+            <div className="text-center place-content-center items-center h-full mt-16">
               <p className="text-custom-gray-scale-400 font-medium text-sm">
                 No Approval Status Found
               </p>
