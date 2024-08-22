@@ -6,10 +6,16 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
-import { AllEmployeeMissionPlan, FiscalYearInfo, MyMissionPlan } from "./_partials";
+import {
+  AllEmployeeMissionPlan,
+  Approvals,
+  DirectDownline,
+  FiscalYearInfo,
+  MyMissionPlan,
+} from "./_partials";
 import { Dictionary } from "@/@types/dictionary";
-import Link from "next/link"; 
-import { useDispatch } from "react-redux"; 
+import Link from "next/link";
+import { useDispatch } from "react-redux";
 
 const { EMPLOYEE } = routesPath;
 
@@ -41,7 +47,7 @@ const SingleMissionPlan = () => {
     >
       <div
         style={{ backgroundColor: "rgba(244, 244, 244, 1)" }}
-        className="p-5 w-full global_sticky_class flex justify-between items-center"
+        className="p-5 w-full global_sticky_class  items-center"
       >
         {/* user_info?.role */}
         <CustomTab
@@ -52,8 +58,8 @@ const SingleMissionPlan = () => {
           slug="ui"
         />
 
-        {isPreview && (
-          <div className="flex gap-[10px]">
+        {/* {isPreview && (
+          <div className="flex gap-[10px] ml-auto">
             <div className={`${btn}`}>
               <Link href="#">View Presentation Mode</Link>
             </div>
@@ -64,7 +70,7 @@ const SingleMissionPlan = () => {
               </Link>
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       {ui === "mission-plan" && (
@@ -74,6 +80,8 @@ const SingleMissionPlan = () => {
         </>
       )}
 
+      {ui === "downlines" && <DirectDownline />}
+      {ui === "approvals" && <Approvals />}
       {ui === "all-employees" && <AllEmployeeMissionPlan />}
     </DashboardLayout>
   );
