@@ -19,9 +19,7 @@ export default function Approvals() {
   const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
   const [sort, setSort] = useState<string>("");
-  const user_hierarchy = useAppSelector(
-    (state) => state?.auth?.user?.organization?.hierarchy
-  );
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
