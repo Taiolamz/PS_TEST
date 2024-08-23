@@ -72,12 +72,10 @@ const logoIcon = (
   </svg>
 );
 
-export const ManceLogoLoader = () => (
-  <div className="flex flex-col gap-2 items-center">
-    <div className=" animate-ping duration-1000" role="status">
-      {logoIcon}
-    </div>
-
-    {/* <p className="text-xs font-medium">Fetching data...</p> */}
-  </div>
-);
+// export const ManceLogoLoader = () => (
+//   <div className="flex flex-col gap-2 items-center">
+//     <div className=" animate-ping duration-1000" role="status">
+//       {logoIcon}
+//     </div>
+//   </div>
+// );

@@ -1,5 +1,5 @@
 import { Dictionary } from "@/@types/dictionary";
-import { ManceLogoLoader, PageLoader } from "@/components/custom-loader";
+import { PageLoader } from "@/components/custom-loader";
 import { EmptyState } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import { updateMissionPlanPreview } from "@/redux/features/mission-plan/missionPlanPreviewSlice";
@@ -55,7 +55,7 @@ const MyMissionPlan = () => {
     <div className="p-5">
       {isLoading ? (
         <div className="h-[70vh] grid place-content-center">
-          <ManceLogoLoader />
+          <PageLoader />
         </div>
       ) : !my_mission_plan?.data?.mission_plan ? (
         <EmptyState text="Create your Mission plan by using the button below">

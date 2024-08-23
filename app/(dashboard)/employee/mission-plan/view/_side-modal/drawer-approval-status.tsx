@@ -1,5 +1,5 @@
 import { ApprovalSteps } from "@/@types/missionPlan";
-import { ManceLogoLoader, PageLoader } from "@/components/custom-loader";
+import {  PageLoader } from "@/components/custom-loader";
 import { ReusableDrawer } from "@/components/fragment";
 import { useLazyEmployeeMissionPlanApprovalStepsQuery } from "@/redux/services/mission-plan/missionPlanApprovalStep";
 import Image from "next/image";
@@ -44,7 +44,7 @@ export default function DrawerApprovalStatus({
         <div className="flex flex-col h-full space-y-11 w-[90%] mx-auto">
           {loading ? (
             <div className="place-content-center items-center h-full">
-              <ManceLogoLoader />
+              <PageLoader />
             </div>
           ) : approvalSteps.length === 0 ? (
             <div className="text-center place-content-center items-center h-full mt-16">

@@ -48,7 +48,7 @@ const Tasks = ({ data }: Props) => {
     transformedMeasureOfSuccessRows(data);
 
   return (
-    <div className="border rounded-[0.5rem] w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
+    <div className="bg-white custom-shadow rounded-[0.5rem] w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]">
       <section>
         <h2 className="text-primary font-medium text-2xl">
           Specified/Implied Task

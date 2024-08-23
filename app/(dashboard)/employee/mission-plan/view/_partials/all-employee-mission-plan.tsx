@@ -6,7 +6,7 @@ import routesPath from "@/utils/routes";
 // import { allemployeeData } from "../_data/all-employee-table-data";
 import TableWrapper from "@/components/tables/TableWrapper";
 import CustomSelect from "@/components/custom-select";
-import { ManceLogoLoader, PageLoader } from "@/components/custom-loader";
+import { PageLoader } from "@/components/custom-loader";
 import {
   useGetAllOrganizationEmployeeMissionPlanQuery,
   useGetAllOrganizationMissionPlanDropdownQuery,
@@ -23,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDataSlice";
 import AllEmployeeMissionCard from "../../_components/all-employee-mission-card";
 
-const { ADMIN } = routesPath;
+const { EMPLOYEE } = routesPath;
 
 const AllEmployeeMissionPlan = () => {
   const searchParams = useSearchParams();
@@ -115,9 +115,9 @@ const AllEmployeeMissionPlan = () => {
         value: "",
       },
       ...obj?.map((org: { id: string; name: string }) => ({
-      value: org.id,
-      label: org.name,
-    })),
+        value: org.id,
+        label: org.name,
+      })),
     ];
   };
   //Conditional render content of unit dropdown
@@ -373,7 +373,7 @@ const AllEmployeeMissionPlan = () => {
                     })
                   );
                   router.push(
-                    ADMIN.APPROVE_REJECT_MISSION_PLAN(
+                    EMPLOYEE.APPROVE_REJECT_MISSION_PLAN(
                       dataTwo?.name?.props.children[0].props.children
                     )
                   );
@@ -408,7 +408,7 @@ const AllEmployeeMissionPlan = () => {
         </div>
       ) : (
         <div className="h-[75vh] place-content-center">
-          <ManceLogoLoader />
+          <PageLoader />
         </div>
       )}
       <DrawerComment

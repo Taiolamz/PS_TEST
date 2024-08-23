@@ -27,7 +27,7 @@ const MissionStatement = ({ data }: Props) => {
     transformedMeasureOfSuccessRows(data?.measure_of_success ?? []);
   return (
     <div className="">
-      <section className="border w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem] rounded-[0.5rem]">
+      <section className="custom-shadow w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem] rounded-[0.5rem] bg-white">
         {" "}
         <h2 className="text-primary font-medium text-2xl">Mission Statement</h2>
         <div className="mt-5 flex flex-col gap-3">
@@ -36,7 +36,7 @@ const MissionStatement = ({ data }: Props) => {
           </p>
         </div>
       </section>
-      <section className="border w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]  rounded-[0.5rem]">
+      <section className="custom-shadow w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem] rounded-[0.5rem] bg-white">
         {" "}
         <h2 className="text-primary font-medium text-2xl">
           Measure of Success

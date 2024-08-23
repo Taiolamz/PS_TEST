@@ -7,7 +7,7 @@ type Props = {
 
 const Boundaries = ({ data }: Props) => {
   return (
-    <div className="border rounded-[0.5rem] w-full mx-auto text-left mb-10 pb-[1.375rem] pt-[2.375rem] pl-[7.625rem]">
+    <div className="bg-white custom-shadow rounded-[0.5rem] w-full mx-auto text-left mb-10 pb-[1.375rem] pt-[2.375rem] pl-[7.625rem]">
       <h2 className="text-2xl font-medium">Boundaries</h2>
       <div className="flex gap-14 w-3/4 xl:w-1/2">
         <div className="basis-1/2">

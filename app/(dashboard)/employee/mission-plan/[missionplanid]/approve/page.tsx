@@ -42,11 +42,11 @@ const ApproveMissionPlan = () => {
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
-        <div className="py-14 px-[1.625rem] bg-white text-sm">
+        <div className="py-14 px-[1.625rem] text-sm bg-[var(--btn-light-color)]">
           <div className="flex justify-between mb-7">
             <div className="flex items-center gap-[0.5625rem]">
               <h1 className="font-semibold text-lg text-[#3E4345] capitalize">
-                {name} Mission Plan
+                {data?.data?.staff_member} Mission Plan
               </h1>
               {!isGettingMissionPlanItems && (
                 <Button
@@ -109,10 +109,11 @@ const ApproveMissionPlan = () => {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-[var(--btn-light-color)]">
           <PresentationView
             data={data?.data}
             loading={isGettingMissionPlanItems}
+            closeLocation={location}
           />
         </div>
       )}
