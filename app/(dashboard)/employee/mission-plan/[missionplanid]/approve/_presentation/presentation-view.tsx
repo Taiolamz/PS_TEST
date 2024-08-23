@@ -50,7 +50,7 @@ const PresentationView = ({ data, loading, closeLocation }: Props) => {
           </h1>
         </div>
         <Button variant="outline">
-          <Link href={closeLocation}>Close</Link>
+          <Link href={closeLocation ?? "#"}>Close</Link>
         </Button>
       </div>
       {getCurrentStep() === 1 && <MissionStatement data={data} />}
