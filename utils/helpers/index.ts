@@ -117,6 +117,16 @@ export const PAGE_TABS = {
       title: "All Employees",
       accessor: "all-employees",
     },
+    {
+      id: 3,
+      title: "Direct Downlines",
+      accessor: "downlines",
+    },
+    {
+      id: 4,
+      title: "Approvals",
+      accessor: "approvals",
+    },
   ],
   LINE_MANAGER: [
     {

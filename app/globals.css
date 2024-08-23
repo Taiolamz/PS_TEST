@@ -99,6 +99,12 @@ input:-webkit-autofill:hover {
   width: 100%;
 }
 
+.custom-shadow {
+  box-shadow:
+    0px 12px 24px -4px #919EAB1F,
+    0px 0px 2px 0px #919EAB33;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
