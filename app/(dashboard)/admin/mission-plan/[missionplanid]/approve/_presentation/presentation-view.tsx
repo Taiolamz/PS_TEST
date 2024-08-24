@@ -11,13 +11,15 @@ import Boundaries from "./_steps/boundaries";
 import Tasks from "./_steps/tasks";
 import StrategicIntent from "./_steps/strategic-intent";
 import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovables";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   data?: MissionPlanApprovablesType;
   loading: boolean;
+  name: string;
 };
 
-const PresentationView = ({ data, loading }: Props) => {
+const PresentationView = ({ data, loading, name }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const location = usePathname();
@@ -42,21 +44,30 @@ const PresentationView = ({ data, loading }: Props) => {
     <div className="py-6 pl-[1.625rem] pr-14 bg-white">
       <div className="flex justify-between mb-7">
         <div className="flex items-center gap-[0.5625rem]">
-          <h1 className="font-semibold text-lg text-[#3E4345]">
-            Oluwaseyi Ajayi Mission Plan
+          <h1 className="font-semibold text-lg text-[#3E4345] capitalize">
+            {name} Mission Plan
           </h1>
         </div>
-        <Button variant="outline">
+        <Button variant="outline" className="text-primary">
           <Link href={`/admin/mission-plan/2023/approve`}>Close</Link>
         </Button>
       </div>
-      {getCurrentStep() === 1 && <MissionStatement data={data} />}
-      {getCurrentStep() === 2 && (
-        <StrategicIntent data={data?.strategic_intents ?? []} />
-      )}
-      {getCurrentStep() === 3 && <Tasks data={data?.specified_tasks ?? []} />}
-      {getCurrentStep() === 4 && <Boundaries data={data?.boundaries ?? []} />}
 
+      {getCurrentStep() === 1 && (
+        <MissionStatement data={data} isLoading={loading} />
+      )}
+      {getCurrentStep() === 2 && (
+        <StrategicIntent
+          data={data?.strategic_intents ?? []}
+          isLoading={loading}
+        />
+      )}
+      {getCurrentStep() === 3 && (
+        <Tasks data={data?.specified_tasks ?? []} isLoading={loading} />
+      )}
+      {getCurrentStep() === 4 && (
+        <Boundaries data={data?.boundaries ?? []} isLoading={loading} />
+      )}
       <div className="flex justify-start items-center gap-[1.625rem] mt-8">
         {getCurrentStep() > 1 && (
           <Button type="button" onClick={previousView} variant="outline">

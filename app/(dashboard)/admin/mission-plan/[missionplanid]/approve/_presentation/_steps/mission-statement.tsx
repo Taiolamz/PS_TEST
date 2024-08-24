@@ -1,16 +1,26 @@
-import React, { useMemo } from "react";
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
 import MeasureOfSuccessTable from "../../../../_components/measure-of-success-table";
-import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
+import {
+  measureColumns,
+  measureOfSuccessPresentationViewColumns,
+} from "@/utils/data/dashboard/missionplan/dummy";
 import MissionPlanApprovablesType, {
   MeasureOfSuccessType,
 } from "@/@types/missionPlan/MissionPlanAprovables";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   data?: MissionPlanApprovablesType;
+  isLoading: boolean;
 };
 
-const MissionStatement = ({ data }: Props) => {
-  const measureColumnData = useMemo(() => measureColumns(), []);
+const MissionStatement = ({ data, isLoading }: Props) => {
+  const measureColumnData = useMemo(
+    () => measureOfSuccessPresentationViewColumns(),
+    []
+  );
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
   ): MeasureOfSuccessType[] => {
@@ -19,7 +29,8 @@ const MissionStatement = ({ data }: Props) => {
       measure: item.measure,
       status: item.status,
       target: item.target,
-      unit: item.unit,
+      unit: item.unit + "%",
+      weight: item?.weight ? item?.weight + "%" : "--",
     }));
   };
 
@@ -31,6 +42,11 @@ const MissionStatement = ({ data }: Props) => {
         {" "}
         <h2 className="text-primary font-medium text-2xl">Mission Statement</h2>
         <div className="mt-5 flex flex-col gap-3">
+          {isLoading && (
+            <div className="w-full flex justify-center items-center">
+              <Loader2 className="w-6 h-6 animate-spin mr-1" />
+            </div>
+          )}{" "}
           <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
             {data?.mission_statement?.mission}
           </p>

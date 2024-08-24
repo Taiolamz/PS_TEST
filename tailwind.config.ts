@@ -71,6 +71,7 @@ const config = {
           DEFAULT: "var(--primary-color)",
           // DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          faded: "hsla(var(--primary-color) 0.05)",
         },
 
         secondary: {
