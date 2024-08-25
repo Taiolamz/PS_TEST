@@ -151,8 +151,8 @@ const AddSubsidary = () => {
                   placeholder="Head of Subsidiary"
                   options={[
                     {
-                      label: "Head of Subsidiary",
-                      value: "",
+                      label: "Select Head of Subsidiary",
+                      value: "", 
                       name: "",
                       id: "",
                     },

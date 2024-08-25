@@ -5,18 +5,7 @@ import Routes from "@/lib/routes/routes";
 import DashboardLayout from "../../_layout/DashboardLayout";
 
 const OverView = () => {
-  return (
-    <DashboardLayout headerTitle="Employee Overview">
-      <Link
-        href={Routes.ChecklistRoute.ChecklistOverview()}
-        className=" text-primary font-semibold text-sm"
-        >
-        <p className="p-4 font-semibold underline bg-[#FFFCC2]">
-          Setup Checklist...
-        </p>
-      </Link>
-      </DashboardLayout>
-  );
+  return <DashboardLayout headerTitle="Employee Overview"></DashboardLayout>;
 };
 
 export default OverView;

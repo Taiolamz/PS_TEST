@@ -119,6 +119,9 @@ const SpecifiedTask = () => {
     (state) => state?.mission_plan?.mission_plan
   );
 
+  const endDate = new Date(active_fy_info?.end_date);
+  const startDate = new Date(active_fy_info?.start_date);
+
   const mappedStrategicPillars = useMemo(
     () =>
       active_fy_info
@@ -239,7 +242,7 @@ const SpecifiedTask = () => {
   const formik = useFormik<any>({
     initialValues: initialVals,
     onSubmit: handleFormSubmit,
-    validationSchema: specifiedTaskSchema,
+    validationSchema: specifiedTaskSchema(endDate, startDate),
     validateOnMount: true,
     enableReinitialize: true,
   });

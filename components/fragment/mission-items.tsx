@@ -79,9 +79,9 @@ const MissionItems = ({
         {strategicIntent ? (
           <div className="flex flex-col gap-3">
             {strategicIntentData?.map((chi, idx) => {
-              const { title, intent, behaviours } = chi;
+              const { title, intent, behaviour } = chi;
               const formattedBehaviours =
-                behaviours ?? JSON.parse(behaviours as string).join(", ");
+                behaviour ?? JSON?.parse(behaviour as string)?.join(", ");
 
               return (
                 <div key={idx} className="flex flex-col gap-1">

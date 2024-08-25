@@ -94,7 +94,7 @@ const ChecklistOverviewContent = () => {
       // isChecked: checklist?.employee_count < 1 ? false : true,
       path: ADMIN.ADD_EMPLOYEE,
       hide: false,
-      isAllChecked: checklist?.employee_count < 3 ? false : true,
+      isAllChecked: checklist?.employee_count < 1 ? false : true,
     },
     {
       title: "Set up mission plan",
@@ -175,12 +175,12 @@ const ChecklistOverviewContent = () => {
 
   return (
     <div
-      // onClick={() => {
-      //   // getPercentageFunc();
-      //   console.log(checklist);
-      //   // console.log(user?.organization?.hierarchy);
-      //   // console.log(getPercentageFunc());
-      // }}
+      onClick={() => {
+        // getPercentageFunc();
+        // console.log(checklist);
+        // console.log(user?.organization?.hierarchy);
+        // console.log(getPercentageFunc());
+      }}
       className="flex flex-col gap-3 w-[768px]"
     >
       <div className="flex gap-2 items-center justify-between bg-primary p-3 px-5 pl-8">

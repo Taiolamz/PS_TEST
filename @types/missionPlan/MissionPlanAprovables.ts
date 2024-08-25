@@ -74,7 +74,6 @@ type MissionPlanApprovablesType = {
   fiscal_year_id: string;
   id: string;
   specified_tasks: SpecifiedTasksType[];
-  staff_member_id: string;
   staff_member: string;
 };
 
