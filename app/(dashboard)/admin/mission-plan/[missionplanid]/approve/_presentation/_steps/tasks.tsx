@@ -3,7 +3,10 @@ import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
-import { formatToReadableDate } from "@/utils/helpers/date-formatter";
+import {
+  formatToReadableDate,
+  formatToReadableDateShort,
+} from "@/utils/helpers/date-formatter";
 import StatusBadge from "@/components/status-badge";
 
 type Props = {
@@ -74,7 +77,9 @@ const Tasks = ({ data, isLoading }: Props) => {
                         <div className="flex items-center gap-2">
                           <p>Specified Task Weight</p>
                           <p className="text-base fot-bold text-[#015858]">
-                            20%
+                            {specifiedTask.weight
+                              ? specifiedTask?.weight + "%"
+                              : "--"}
                           </p>
                         </div>
                       </div>
@@ -91,8 +96,8 @@ const Tasks = ({ data, isLoading }: Props) => {
                           ))}
                         </div>
                         <p className="text-[#5A5B5F]">
-                          {formatToReadableDate(specifiedTask?.start_date)} -
-                          {formatToReadableDate(specifiedTask?.end_date)}
+                          {formatToReadableDateShort(specifiedTask?.start_date)}{" "}
+                          - {formatToReadableDateShort(specifiedTask?.end_date)}
                         </p>
                       </div>
                     </div>
@@ -151,11 +156,11 @@ const Tasks = ({ data, isLoading }: Props) => {
                                     Duration
                                   </p>
                                   <p className="text-[#5A5B5F] font-medium">
-                                    {formatToReadableDate(
+                                    {formatToReadableDateShort(
                                       impliedTask.start_date
                                     )}{" "}
-                                    -
-                                    {formatToReadableDate(
+                                    -{" "}
+                                    {formatToReadableDateShort(
                                       impliedTask.start_date
                                     )}
                                   </p>

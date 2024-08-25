@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export const formatRMDatePicker = (date: any) => {
   // Format the date as 'YYYY-MM-DD'
   const day = date?.day?.toString()?.padStart(2, "0");
@@ -106,4 +108,12 @@ export const formatToDDMMYYYY = (date: string | Date): string => {
 export const parseDate = (value: any) => {
   const [day, month, year] = value.split("/");
   return new Date(`${year}-${month}-${day}`);
+};
+
+export const formatToReadableDateShort = (isoDate: string): string => {
+  try {
+    return format(new Date(isoDate), "do MMM yyyy");
+  } catch (error) {
+    throw new Error("Invalid date format");
+  }
 };

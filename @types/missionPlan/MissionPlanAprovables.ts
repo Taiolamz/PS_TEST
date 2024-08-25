@@ -29,6 +29,7 @@ export type SpecifiedTasksType = {
   is_main_effort?: number;
   implied_tasks: ImpliedTaskType[];
   status?: string;
+  weight?: number;
 };
 
 export type ImpliedTaskType = {
