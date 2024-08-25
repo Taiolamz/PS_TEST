@@ -42,14 +42,15 @@ const MissionStatement = ({ data, isLoading }: Props) => {
         {" "}
         <h2 className="text-primary font-medium text-2xl">Mission Statement</h2>
         <div className="mt-5 flex flex-col gap-3">
-          {isLoading && (
+          {isLoading ? (
             <div className="w-full flex justify-center items-center">
               <Loader2 className="w-6 h-6 animate-spin mr-1" />
             </div>
-          )}{" "}
-          <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
-            {data?.mission_statement?.mission}
-          </p>
+          ) : (
+            <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
+              {data?.mission_statement?.mission || "no mission statement found"}
+            </p>
+          )}
         </div>
       </section>
       <section className="border w-full mx-auto text-center mb-10 pb-[1.375rem] pt-[2.625rem]  rounded-[0.5rem]">
@@ -63,7 +64,7 @@ const MissionStatement = ({ data, isLoading }: Props) => {
             columns={measureColumnData}
             isPresentationView
           />
-        </div>{" "}
+        </div>
       </section>
     </div>
   );

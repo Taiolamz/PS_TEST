@@ -20,18 +20,20 @@ const StrategicIntent = ({ data, isLoading }: Props) => {
               <Loader2 className="w-6 h-6 animate-spin mr-1" />
             </div>
           )}
-          {data?.map((item, index) => (
-            <div key={item?.id}>
-              <div className=" flex flex-col gap-3">
-                <h3 className=" font-medium text-2xl text-[#1E1E1E]">
-                  Intent {index + 1}
-                </h3>
-                <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
-                  {item?.intent}
-                </p>
-              </div>
-            </div>
-          ))}
+          {data.length
+            ? data?.map((item, index) => (
+                <div key={item?.id}>
+                  <div className=" flex flex-col gap-3">
+                    <h3 className=" font-medium text-2xl text-[#1E1E1E]">
+                      Intent {index + 1}
+                    </h3>
+                    <p className="w-3/5 mx-auto text-sm text-[#6E7C87]">
+                      {item?.intent}
+                    </p>
+                  </div>
+                </div>
+              ))
+            : "no content found"}
           <div className="text-left w-3/5 mx-auto mt-[3.625rem]">
             <h3 className=" font-medium text-2xl text-[#1E1E1E] mb-4">
               Behaviours
@@ -42,13 +44,15 @@ const StrategicIntent = ({ data, isLoading }: Props) => {
               </div>
             )}
             <ul className="flex flex-col gap-2 text-sm text-[#162238] font-normal list-inside list-disc">
-              {data?.map((item, index) => (
-                <li key={item?.id}>
-                  {" "}
-                  {item?.behaviours ??
-                    `no behaviour inputted for intent ${index + 1}`}
-                </li>
-              ))}
+              {data?.length
+                ? data?.map((item, index) => (
+                    <li key={item?.id}>
+                      {" "}
+                      {item?.behaviours ??
+                        `no behaviour found for intent ${index + 1}.`}
+                    </li>
+                  ))
+                : "no supporting behaviour found."}
             </ul>
           </div>
         </div>

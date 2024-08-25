@@ -48,7 +48,10 @@ const PresentationView = ({ data, loading, name }: Props) => {
             {name} Mission Plan
           </h1>
         </div>
-        <Button variant="outline" className="text-primary">
+        <Button
+          variant="outline"
+          className="text-primary hover:text-primary border-primary"
+        >
           <Link href={`/admin/mission-plan/2023/approve`}>Close</Link>
         </Button>
       </div>
@@ -70,7 +73,12 @@ const PresentationView = ({ data, loading, name }: Props) => {
       )}
       <div className="flex justify-start items-center gap-[1.625rem] mt-8">
         {getCurrentStep() > 1 && (
-          <Button type="button" onClick={previousView} variant="outline">
+          <Button
+            type="button"
+            onClick={previousView}
+            variant="outline"
+            className="text-primary hover:text-primary border-primary"
+          >
             Back
           </Button>
         )}
