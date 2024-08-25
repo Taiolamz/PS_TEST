@@ -18,10 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import clsx from "clsx";
-import {
-  addAlphaToHex,
-  cssVarHSLToHexWithOpacity,
-} from "@/utils/helpers/add-alpha-to-hex";
+import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 interface MeasureOfSuccessType {
