@@ -28,6 +28,7 @@ export type SpecifiedTasksType = {
   end_date: string;
   is_main_effort?: number;
   implied_tasks: ImpliedTaskType[];
+  status?: string;
 };
 
 export type ImpliedTaskType = {
