@@ -3,7 +3,7 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogTitle,
-} from "../components/ui/alert-dialog";
+} from "./ui/alert-dialog";
 import { cn } from "../lib/utils";
 import { X } from "lucide-react";
 
@@ -16,7 +16,7 @@ interface ModalContainerProps {
   modalClass?: string;
 }
 
-export default function SecondModalContainer({
+export default function ReusableModalContainer({
   show,
   handleClose,
   children,
@@ -34,7 +34,7 @@ export default function SecondModalContainer({
               {title}
             </h3>
             <span
-              className="cursor-pointer text-[var(--error-color)]"
+              className="cursor-pointer"
               onClick={handleClose}
             >
               <X width={17} height={17} />

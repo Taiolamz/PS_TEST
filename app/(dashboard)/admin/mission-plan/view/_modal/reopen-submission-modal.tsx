@@ -1,19 +1,19 @@
-import SecondModalContainer from "@/components/second-modal-container";
+import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React from "react";
 
-interface ModalContainerProps { 
+interface ModalContainerProps {
   show: boolean;
-  handleClose?: () => void;     
+  handleClose?: () => void;
 }
 
 export default function ReopenSubmissionModal({
   show,
-  handleClose, 
+  handleClose,
 }: ModalContainerProps) {
   return (
-    <SecondModalContainer
+    <ReusableModalContainer
       show={show}
       title="Reopen Submission"
       handleClose={handleClose}
@@ -23,6 +23,6 @@ export default function ReopenSubmissionModal({
       <div className="px-6">
         <Button>Re-open</Button>
       </div>
-    </SecondModalContainer>
+    </ReusableModalContainer>
   );
 }

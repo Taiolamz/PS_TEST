@@ -1,4 +1,4 @@
-import SecondModalContainer from "@/components/second-modal-container";
+import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -13,7 +13,7 @@ export default function FYExtendModal({
   handleClose,
 }: ModalContainerProps) {
   return (
-    <SecondModalContainer
+    <ReusableModalContainer
       show={show}
       handleClose={handleClose}
       hasCloseButton={true}
@@ -23,6 +23,6 @@ export default function FYExtendModal({
       <div className="px-6">
         <Button>Extend Financial Year</Button>
       </div>
-    </SecondModalContainer>
+    </ReusableModalContainer>
   );
 }
