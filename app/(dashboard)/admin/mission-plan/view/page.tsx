@@ -29,6 +29,8 @@ import { formatDate } from "@/utils/helpers/date-formatter";
 import { useDispatch } from "react-redux";
 import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDataSlice";
 import { cn } from "@/lib/utils";
+import ReopenSubmissionModal from "./_modal/reopen-submission-modal";
+import SubmissionExtendModal from "./_modal/submission-extend-modal";
 
 const { ADMIN } = routesPath;
 
@@ -53,6 +55,9 @@ const SingleMissionPlan = () => {
   const [subsidiary, setSubsidiary] = useState<string>("");
   const [departments, setDepartments] = useState<string>("");
   const [units, setUnits] = useState<string>("");
+  //Approval extension
+  const [extendSubmission, setExtendSubmission] = useState<boolean>(false);
+  const [reopenSubmission, setReopenSubmission] = useState<boolean>(false);
 
   // State to handle drawer state and id
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
@@ -299,7 +304,7 @@ const SingleMissionPlan = () => {
         (summaryError && employeeError ? (
           <></>
         ) : !isLoadingSummary && !isLoadingEmployee && !isLoadingdropdown ? (
-          <div className="p-5 space-y-5">
+          <div className="pb-5 px-5 mt-1 space-y-5">
             <div className="flex gap-[10px] justify-end">
               <button
                 className={cn(
@@ -308,6 +313,7 @@ const SingleMissionPlan = () => {
                     "opacity-30 hover:bg-white"
                 )}
                 disabled={active_fy_info?.status !== "active"}
+                onClick={() => setExtendSubmission(true)}
               >
                 Extend Submission Period
               </button>
@@ -317,6 +323,7 @@ const SingleMissionPlan = () => {
                   active_fy_info?.status !== "active" &&
                     "opacity-30 hover:bg-white"
                 )}
+                onClick={() => setReopenSubmission(true)}
                 disabled={active_fy_info?.status !== "active"}
               >
                 Reopen Submissions
@@ -478,6 +485,14 @@ const SingleMissionPlan = () => {
               ]}
               onPdfChange={handleExport}
               onCsvChange={handleExport}
+            />
+            <ReopenSubmissionModal
+              show={reopenSubmission}
+              handleClose={() => setReopenSubmission(false)}
+            />
+            <SubmissionExtendModal
+              show={extendSubmission}
+              handleClose={() => setExtendSubmission(false)}
             />
           </div>
         ) : (
