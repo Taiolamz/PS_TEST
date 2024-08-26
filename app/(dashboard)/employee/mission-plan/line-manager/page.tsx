@@ -19,7 +19,6 @@ const LineManagerMissionPlan = () => {
     isSuccess: fetchedLineManagerMissionPlan,
   } = useGetLineManagerMissionPlanQuery({ fiscalYear: active_fy_info.id });
 
-  console.log(active_fy_info);
   return (
     <DashboardLayout
       headerTitle={active_fy_info?.title}
