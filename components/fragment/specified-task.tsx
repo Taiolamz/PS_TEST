@@ -43,15 +43,19 @@ const SpecifiedTasks = ({ data, isLoading, bg }: Props) => {
                     <EditableLabel status={specifiedTask?.status ?? ""} />
 
                     {expandedTaskIndex === index ? (
-                      <ChevronUp
-                        className="text-[var(--primary-color)] cursor-pointer"
-                        onClick={() => toggleShowMore(index)}
-                      />
+                      <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full border-[#1E1E1E]  shadow-sm">
+                        <ChevronUp
+                          className="text-[var(--primary-color)] cursor-pointer"
+                          onClick={() => toggleShowMore(index)}
+                        />
+                      </div>
                     ) : (
-                      <ChevronDown
-                        className="text-[var(--primary-color)] cursor-pointer"
-                        onClick={() => toggleShowMore(index)}
-                      />
+                      <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full border-[#1E1E1E]  shadow-sm">
+                        <ChevronDown
+                          className="text-[var(--primary-color)] cursor-pointer"
+                          onClick={() => toggleShowMore(index)}
+                        />
+                      </div>
                     )}
                   </div>
                 </div>

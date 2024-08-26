@@ -71,14 +71,15 @@ const MissionStatement = ({
           )}
         </div>
       </div>
-
-      <Comment
-        label="Mission statement"
-        showTextArea={showTextArea}
-        setShowTextArea={setShowTextArea}
-        comments={comments}
-        formik={FormikApprovalForm}
-      />
+      {showTextArea && (
+        <Comment
+          label="Mission statement"
+          showTextArea={showTextArea}
+          setShowTextArea={setShowTextArea}
+          comments={comments}
+          formik={FormikApprovalForm}
+        />
+      )}
     </section>
   );
 };
