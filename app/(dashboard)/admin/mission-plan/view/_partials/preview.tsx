@@ -8,8 +8,15 @@ import React, { useMemo } from "react";
 import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import { format } from "date-fns";
 import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
+import Link from "next/link";
+import routesPath from "@/utils/routes";
+
+const { ADMIN } = routesPath;
 
 const Preview = ({ data }: dataProp) => {
+  const btn =
+    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+
   const {
     mission_statement,
     boundaries,
@@ -154,6 +161,17 @@ const Preview = ({ data }: dataProp) => {
 
   return (
     <div className="flex flex-col gap-[12px]">
+      <div className="flex gap-[10px] ml-auto">
+        <div className={`${btn}`}>
+          <Link href="#">View Presentation Mode</Link>
+        </div>
+
+        <div className={`${btn}`}>
+          <Link href={`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`}>
+            Edit Mission Plan
+          </Link>
+        </div>
+      </div>
       {mission_statement !== 0 && (
         <MissionWrapper
           title="Mission Statement"
