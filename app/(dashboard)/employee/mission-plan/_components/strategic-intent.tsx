@@ -92,14 +92,16 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                 </div>
               </div>
             </div>
-            <Comment
-              label="Strategic intent"
-              showTextArea={openCommentId === item.id}
-              setShowTextArea={() => toggleComment(item.id)}
-              comments={comments}
-              // comments={FormikApprovalForm.values.comments}
-              formik={FormikApprovalForm}
-            />
+            {openCommentId === item.id && (
+              <Comment
+                label="Strategic intent"
+                showTextArea={openCommentId === item.id}
+                setShowTextArea={() => toggleComment(item.id)}
+                comments={comments}
+                // comments={FormikApprovalForm.values.comments}
+                formik={FormikApprovalForm}
+              />
+            )}
           </section>
         ))}
       {!loading && data?.length === 0 && (
@@ -112,14 +114,6 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
               <h3 className="font-normal">No Strategic Intent Found</h3>
             </div>
           </div>
-          <Comment
-            label="Strategic intent"
-            showTextArea={false}
-            setShowTextArea={() => toggleComment("3")}
-            comments={comments}
-            // comments={FormikApprovalForm.values.comments}
-            formik={FormikApprovalForm}
-          />
         </>
       )}
     </div>
