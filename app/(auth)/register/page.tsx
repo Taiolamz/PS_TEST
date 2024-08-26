@@ -132,15 +132,17 @@ const SignupPage = () => {
   return (
     <section className="w-4/6  flex flex-col items-start">
       <div className="flex items-center mb-4 relative">
-        <button
-          type="button"
-          onClick={() => {
-            router.back();
-          }}
-          className="text-[#6E7C87] flex gap-1 items-center text-xs absolute -left-20"
-        >
-          <HiChevronDoubleLeft width={10} height={10} /> Back
-        </button>
+        {ui !== "organization-information" && (
+          <button
+            type="button"
+            onClick={() => {
+              router.back();
+            }}
+            className="text-[#6E7C87] flex gap-1 items-center text-xs absolute -left-20"
+          >
+            <HiChevronDoubleLeft width={10} height={10} /> Back
+          </button>
+        )}
         <h1 className=" text-2xl font-semibold  text-[#162238]">
           Register your account
         </h1>

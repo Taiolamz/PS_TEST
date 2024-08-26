@@ -10,7 +10,7 @@ import {
   STATES,
 } from "@/utils/data";
 import { passwordValidations, passwordValidation as pv } from "@/utils/schema";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface OrganizationInformationProps {
   formik: any;
@@ -22,7 +22,12 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
     {}
   );
 
-  console.log({ form: formik.touched.employees_range });
+  useEffect(() => {
+    const countryDataForSelectedCountry = COUNTRIES_STATES?.filter(
+      (f) => f.name === formik.values.country
+    )?.[0];
+    setSelectedCountryData(countryDataForSelectedCountry);
+  }, [formik.values.country]);
 
   return (
     <div style={{ width: "100%" }}>
