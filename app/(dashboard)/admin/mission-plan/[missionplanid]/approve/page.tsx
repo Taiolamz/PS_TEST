@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-
 import SpecifiedTasks from "../../_components/specified-task";
 import ImpliedTask from "../../_components/implied-task";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -16,8 +15,6 @@ import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { useApproval } from "../../_components/useApproval";
-import { useAppSelector } from "@/redux/store";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -32,12 +29,13 @@ const ApproveMissionPlan = () => {
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
 
-  const { name } = useAppSelector((state) => state?.single_employee);
+  // const { name } = useAppSelector((state) => state?.single_employee);
 
   const { data, isLoading: isGettingMissionPlanItems } =
     useGetMissionPlanItemsByIdQuery({
       missionplanid: missionplanid as string,
     });
+  const name = data?.data?.staff_member ?? "";
 
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
@@ -79,7 +77,6 @@ const ApproveMissionPlan = () => {
               showTextArea={measureOfSuccessComment.isOpen}
               setShowTextArea={measureOfSuccessComment.toggle}
               data={data?.data?.measure_of_success ?? []}
-              // setApprovalTypeId={setApprovalTypeId}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
@@ -113,6 +110,7 @@ const ApproveMissionPlan = () => {
           <PresentationView
             data={data?.data}
             loading={isGettingMissionPlanItems}
+            name={name}
           />
         </div>
       )}

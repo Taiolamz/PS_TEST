@@ -4,23 +4,27 @@ import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
 import { formatToReadableDateShort } from "@/utils/helpers/date-formatter";
-import StatusBadge from "@/components/status-badge";
+import { EditableLabel } from "@/components/fragment";
 
 type Props = {
   data: SpecifiedTasksType[];
-  isLoading: boolean;
+  isLoading?: boolean;
+  bg?: string;
 };
-const Tasks = ({ data, isLoading }: Props) => {
-  const [showMore, setShowMore] = useState(false);
+const SpecifiedTasks = ({ data, isLoading, bg }: Props) => {
+  const [expandedTaskIndex, setExpandedTaskIndex] = useState<number | null>(
+    null
+  );
   const { primaryColorHexValue } = React.useContext(ActionContext);
   const colorWithAlpha = primaryColorHexValue
     ? addAlphaToHex(primaryColorHexValue, 0.05)
     : "";
+
+  const toggleShowMore = (index: number) => {
+    setExpandedTaskIndex(expandedTaskIndex === index ? null : index);
+  };
   return (
     <section className="">
-      <h2 className="text-primary font-medium text-2xl text-center mb-10 ">
-        Specified/Implied Task
-      </h2>
       {isLoading ? (
         <div className="w-full flex justify-center items-center">
           <Loader2 className="w-6 h-6 animate-spin mr-1" />
@@ -30,30 +34,31 @@ const Tasks = ({ data, isLoading }: Props) => {
           {data?.length ? (
             data.map((specifiedTask, index) => (
               <div
-                className="border rounded-[0.5rem] w-full mb-10 px-[1.375rem] py-8 text-sm"
+                className={`border rounded-[0.5rem] w-full mb-10 px-[1.375rem] py-8 text-sm ${bg}`}
                 key={specifiedTask?.id}
               >
-                <div className="flex justify-between items-center mb-[1.4375rem]">
-                  <h2>Specified Task {index + 1}</h2>
+                <div className="flex justify-between items-center mb-[1.4375rem] text-[var(--primary-color)] text-sm">
+                  <h4>Specified Task {index + 1}</h4>
                   <div className="flex gap-[3.125rem] items-center">
-                    <StatusBadge status={specifiedTask?.status ?? ""} />
-                    {showMore ? (
+                    <EditableLabel status={specifiedTask?.status ?? ""} />
+
+                    {expandedTaskIndex === index ? (
                       <ChevronUp
-                        className="text-primary"
-                        onClick={() => setShowMore(false)}
+                        className="text-[var(--primary-color)] cursor-pointer"
+                        onClick={() => toggleShowMore(index)}
                       />
                     ) : (
                       <ChevronDown
-                        className="text-primary"
-                        onClick={() => setShowMore(true)}
+                        className="text-[var(--primary-color)] cursor-pointer"
+                        onClick={() => toggleShowMore(index)}
                       />
                     )}
                   </div>
                 </div>
-                <h3 className="text-[1.095rem] text-[#1E1E1E] ">
+                <h3 className="text-[1.095rem] text-[#1E1E1E] text-sm">
                   {specifiedTask?.task}
                 </h3>
-                {showMore && (
+                {expandedTaskIndex === index && (
                   <div className="transition-all duration-500 ease-in-out">
                     <hr className="my-[1.4375rem]" />
                     <div>
@@ -180,7 +185,7 @@ const Tasks = ({ data, isLoading }: Props) => {
                         )
                       ) : (
                         <p className="text-center text-sm">
-                          no implied tasks found.
+                          No implied tasks found.
                         </p>
                       )}
                     </div>
@@ -189,7 +194,7 @@ const Tasks = ({ data, isLoading }: Props) => {
               </div>
             ))
           ) : (
-            <p className="text-center text-sm">no data found.</p>
+            <p className="text-center text-sm">No data found.</p>
           )}
         </div>
       )}
@@ -197,4 +202,4 @@ const Tasks = ({ data, isLoading }: Props) => {
   );
 };
 
-export default Tasks;
+export default SpecifiedTasks;

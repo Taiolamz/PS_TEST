@@ -31,6 +31,16 @@ import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDat
 import { cn } from "@/lib/utils";
 import ReopenSubmissionModal from "./_modal/reopen-submission-modal";
 import SubmissionExtendModal from "./_modal/submission-extend-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ExportIcon } from "@/public/assets/icons";
+import Image from "next/image";
 
 const { ADMIN } = routesPath;
 
@@ -259,6 +269,36 @@ const SingleMissionPlan = () => {
         : "Unable to fetch data"
     );
   }
+  const newBtnClass =
+    "text-custom-gray-scale-400 text-xs font-light cursor-pointer";
+
+  const exportDrop = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className="ml-auto border px-4 rounded-[6px] h-[33px] focus:border-0 hover:bg-white"
+        >
+          <div className="flex gap-3 items-center">
+            <Image src={ExportIcon} alt="export" />
+            <p className="text-custom-gray-scale-400 font-normal text-xs">
+              Export
+            </p>
+          </div>
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        className="border rounded-sm"
+        align="end"
+        style={{ width: "10rem" }}
+      >
+        <DropdownMenuItem className={newBtnClass}>PDF</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className={newBtnClass}>CSV</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   return (
     <DashboardLayout
@@ -271,13 +311,18 @@ const SingleMissionPlan = () => {
         className="p-5 w-full global_sticky_class flex justify-between items-center"
       >
         {/* user_info?.role */}
-        <CustomTab
-          options={getAvailableTabs({
-            role: user_info?.role as string,
-            isLineManager: user_info?.is_line_manager as boolean,
-          })}
-          slug="ui"
-        />
+        <div className="flex flex-end w-full items-center">
+          <div className="w-full">
+            <CustomTab
+              options={getAvailableTabs({
+                role: user_info?.role as string,
+                isLineManager: user_info?.is_line_manager as boolean,
+              })}
+              slug="ui"
+            />
+          </div>
+          <div>{ui === "mission-plan" && exportDrop}</div>
+        </div>
         {/* {isPreview && (
           <div className="flex gap-[10px]">
             <div className={`${btn}`}>
