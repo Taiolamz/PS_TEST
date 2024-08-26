@@ -120,7 +120,7 @@ const SignupPage = () => {
   });
 
   const { timeLeft, startTimer, isTimerElapsed } = useTimeout({
-    initialTime: 600,
+    initialTime: 300,
   });
 
   useEffect(() => {
@@ -216,7 +216,7 @@ const SignupPage = () => {
             <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
               Didn’t get the code?{" "}
               <Button
-                disabled={isResendingOTP}
+                disabled={isResendingOTP || !isTimerElapsed}
                 variant="link"
                 className="px-0 text-primary font-normal"
                 onClick={() => handleResendOTP()}
