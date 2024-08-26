@@ -14,10 +14,8 @@ import {
   SpecifiedTask,
   StrategicIntent,
 } from "./_steps";
-import { Button } from "@/components/ui/button";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import ShowLineManager from "./_component/show-line-manager";
-import { useState } from "react";
 
 const { EMPLOYEE } = routesPath;
 
@@ -48,7 +46,7 @@ const CreateMissionPlan = () => {
         />
         <aside className="p-5 w-full overflow-y-scroll pb-10 scroll-hidden">
           <h1 className="mb-3">Mission Plan</h1>
-          {line_manger?.id !== null && (
+          {line_manger?.id === null && (
             <ShowLineManager
               btnText="View"
               title="Line Manager Mission Plan"
