@@ -20,14 +20,15 @@ import {
 import clsx from "clsx";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 
-interface MeasureOfSuccessType {
-  data: any[];
+interface Props {
+  data: MeasureOfSuccessType[];
   columns: ColumnDef<any>[];
   isPresentationView?: boolean;
 }
 
-const MeasureOfSuccessTable: React.FC<MeasureOfSuccessType> = ({
+const MeasureOfSuccessTable: React.FC<Props> = ({
   data,
   columns,
   isPresentationView = false,
