@@ -171,8 +171,8 @@ const Tasks = ({ data, isLoading }: Props) => {
                                     Weight
                                   </p>
                                   <p className="text-xl text-[#015858] font-medium">
-                                    {impliedTask?.percentage
-                                      ? impliedTask?.percentage + "%"
+                                    {impliedTask?.weight
+                                      ? impliedTask?.weight
                                       : ""}
                                   </p>
                                 </div>

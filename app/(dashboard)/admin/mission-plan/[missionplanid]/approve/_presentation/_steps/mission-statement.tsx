@@ -2,10 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import MeasureOfSuccessTable from "../../../../_components/measure-of-success-table";
-import {
-  measureColumns,
-  measureOfSuccessPresentationViewColumns,
-} from "@/utils/data/dashboard/missionplan/dummy";
+import { measureOfSuccessPresentationViewColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import MissionPlanApprovablesType, {
   MeasureOfSuccessType,
 } from "@/@types/missionPlan/MissionPlanAprovables";
@@ -24,12 +21,12 @@ const MissionStatement = ({ data, isLoading }: Props) => {
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
   ): MeasureOfSuccessType[] => {
-    return mappedData?.map((item) => ({
+    return mappedData?.map((item, index) => ({
       id: item.id,
       measure: item.measure,
       status: item.status,
       target: item.target,
-      unit: item.unit + "%",
+      unit: item.unit,
       weight: item?.weight ? item?.weight + "%" : "--",
     }));
   };

@@ -37,6 +37,8 @@ const MeasureOfSuccessTable: React.FC<MeasureOfSuccessType> = ({
     ? addAlphaToHex(primaryColorHexValue, 0.05)
     : "";
 
+  console.log({ data });
+
   const table = useReactTable({
     data,
     columns,

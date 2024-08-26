@@ -5,7 +5,7 @@ export type MissionStatementType = {
 };
 
 export type MeasureOfSuccessType = {
-  id?: string;
+  id?: string | number;
   measure?: string;
   status?: string;
   target?: string;

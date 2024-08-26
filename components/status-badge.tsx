@@ -12,7 +12,6 @@ const StatusBadge = ({ status }: Props) => {
     // Add more statuses if needed
   };
 
-  // Get the styles for the passed status, default to 'pending' if the status is unknown
   const currentStatusStyle =
     statusStyles[status.toLowerCase()] || statusStyles["pending"];
 

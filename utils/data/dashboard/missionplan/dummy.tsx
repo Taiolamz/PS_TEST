@@ -277,9 +277,7 @@ export const measureOfSuccessPresentationViewColumns =
     {
       accessorKey: "no",
       header: () => <div className="text-left">S/N</div>,
-      cell: ({ row }) => (
-        <div className="capitalize">{`Measure ${row.index + 1}:`}</div>
-      ),
+      cell: ({ row }) => <div className="capitalize">{`${row.index + 1}`}</div>,
     },
     {
       accessorKey: "measure",
