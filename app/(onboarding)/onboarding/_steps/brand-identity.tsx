@@ -101,8 +101,6 @@ const BrandIdentity = ({ formik }: BrandIdentityProps) => {
                 width={300}
                 height={200}
                 color={color}
-                // hideHEX
-
                 hideHSV
                 hideRGB
                 onChange={(e) => {

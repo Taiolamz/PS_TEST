@@ -53,6 +53,11 @@ export const useApproval = ({
     FormikApprovalForm.handleSubmit();
   };
 
+  const undoStatus = () => {
+    FormikApprovalForm.setFieldValue("actionType", "pending");
+    FormikApprovalForm.handleSubmit();
+  };
+
   const handleSubmit = async (allComments: string[]) => {
     toast.loading("Processing...");
     const payload = {
@@ -77,5 +82,6 @@ export const useApproval = ({
     handleReject,
     handleApprove,
     FormikApprovalForm,
+    undoStatus,
   };
 };

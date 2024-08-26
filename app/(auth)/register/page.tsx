@@ -23,6 +23,7 @@ import { resetAuth } from "@/redux/features/auth/authSlice";
 import useTimeout from "@/utils/hooks/useTimeout";
 import { timeToMinuteSecond } from "@/utils/helpers";
 import LoadingModal from "@/components/atoms/modals/loading";
+import { HiChevronDoubleLeft } from "react-icons/hi";
 
 const { LOGIN, ONBOARDING, REGISTER } = routesPath;
 
@@ -129,9 +130,20 @@ const SignupPage = () => {
 
   return (
     <section className="w-4/6  flex flex-col items-start">
-      <h1 className=" text-2xl font-semibold mb-4 text-[#162238]">
-        Register your account
-      </h1>
+      <div className="flex items-center mb-4 relative">
+        <button
+          type="button"
+          onClick={() => {
+            router.back();
+          }}
+          className="text-[#6E7C87] flex gap-1 items-center text-xs absolute -left-20"
+        >
+          <HiChevronDoubleLeft width={10} height={10} /> Back
+        </button>
+        <h1 className=" text-2xl font-semibold  text-[#162238]">
+          Register your account
+        </h1>
+      </div>
       <div className="h-[calc(100vh_-_6rem)] w-full pb-10 scroll-hidden overflow-y-auto px-1 ">
         <form onSubmit={formik.handleSubmit}>
           {ui === "organization-information" && (
