@@ -31,16 +31,6 @@ import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDat
 import { cn } from "@/lib/utils";
 import ReopenSubmissionModal from "./_modal/reopen-submission-modal";
 import SubmissionExtendModal from "./_modal/submission-extend-modal";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { ExportIcon } from "@/public/assets/icons";
-import Image from "next/image";
 
 const { ADMIN } = routesPath;
 
@@ -269,36 +259,6 @@ const SingleMissionPlan = () => {
         : "Unable to fetch data"
     );
   }
-  const newBtnClass =
-    "text-custom-gray-scale-400 text-xs font-light cursor-pointer";
-
-  const exportDrop = (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          className="ml-auto border px-4 rounded-[6px] h-[33px] focus:border-0 hover:bg-white"
-        >
-          <div className="flex gap-3 items-center">
-            <Image src={ExportIcon} alt="export" />
-            <p className="text-custom-gray-scale-400 font-normal text-xs">
-              Export
-            </p>
-          </div>
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent
-        className="border rounded-sm"
-        align="end"
-        style={{ width: "10rem" }}
-      >
-        <DropdownMenuItem className={newBtnClass}>PDF</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className={newBtnClass}>CSV</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
 
   return (
     <DashboardLayout
@@ -320,8 +280,7 @@ const SingleMissionPlan = () => {
               })}
               slug="ui"
             />
-          </div>
-          <div>{ui === "mission-plan" && exportDrop}</div>
+          </div> 
         </div>
         {/* {isPreview && (
           <div className="flex gap-[10px]">
