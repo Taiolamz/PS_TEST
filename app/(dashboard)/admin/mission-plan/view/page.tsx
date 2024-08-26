@@ -28,6 +28,7 @@ import DrawerApprovalStatus from "./_side-modal/drawer-approval-status";
 import { formatDate } from "@/utils/helpers/date-formatter";
 import { useDispatch } from "react-redux";
 import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDataSlice";
+import { cn } from "@/lib/utils";
 
 const { ADMIN } = routesPath;
 
@@ -43,7 +44,7 @@ const SingleMissionPlan = () => {
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
   const { isPreview } = useAppSelector((state) => state?.mission_plan_preview);
   const btn =
-    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+    "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
   // const data = useAppSelector((state) => state?.auth?.user);
   const [search, setSearch] = useState<string>("");
@@ -272,7 +273,7 @@ const SingleMissionPlan = () => {
           })}
           slug="ui"
         />
-        {isPreview && (
+        {/* {isPreview && (
           <div className="flex gap-[10px]">
             <div className={`${btn}`}>
               <Link href="#">View Presentation Mode</Link>
@@ -284,7 +285,7 @@ const SingleMissionPlan = () => {
               </Link>
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       {ui === "mission-plan" && (
@@ -299,6 +300,28 @@ const SingleMissionPlan = () => {
           <></>
         ) : !isLoadingSummary && !isLoadingEmployee && !isLoadingdropdown ? (
           <div className="p-5 space-y-5">
+            <div className="flex gap-[10px] justify-end">
+              <button
+                className={cn(
+                  btn,
+                  active_fy_info?.status !== "active" &&
+                    "opacity-30 hover:bg-white"
+                )}
+                disabled={active_fy_info?.status !== "active"}
+              >
+                Extend Submission Period
+              </button>
+              <button
+                className={cn(
+                  btn,
+                  active_fy_info?.status !== "active" &&
+                    "opacity-30 hover:bg-white"
+                )}
+                disabled={active_fy_info?.status !== "active"}
+              >
+                Reopen Submissions
+              </button>
+            </div>
             <div className="flex justify-between">
               <p className="text-xl font-medium text-primary">
                 {active_fy_info?.title}
