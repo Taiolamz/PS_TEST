@@ -1,8 +1,9 @@
 import { Dictionary } from "@/@types/dictionary";
+import EndFinancialYearModal from "@/components/atoms/modals/end-financial-year";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/store";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const FiscalYearInfo = () => {
   const { active_fy_info } = useAppSelector(
@@ -11,9 +12,19 @@ const FiscalYearInfo = () => {
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handleEndFinancialYearClick = () => {
+    setShowSuccessModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+  };
+
   return (
     <div className="space-y-5 mb-6 px-5 text-[var(--text-color3)]">
       {/* Financial Year */}
+
       <div className="flex gap-[10px] justify-end mt-1">
         <button
           className={cn(
@@ -30,10 +41,25 @@ const FiscalYearInfo = () => {
             active_fy_info?.status !== "active" && "opacity-30 hover:bg-white"
           )}
           disabled={active_fy_info?.status !== "active"}
+          onClick={handleEndFinancialYearClick}
         >
           End Financial Year
         </button>
       </div>
+
+      <EndFinancialYearModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title="You Are About to End the Current Financial Year?"
+        message="Ending this Financial year closes all mission plans and task progress will also be lost and saved as at the time of this action, This action is permanent, Proceed?"
+        show={showSuccessModal}
+        handleClose={() => {
+          setShowSuccessModal(false);
+        }}
+        actionBtnTitle="Yes, End Financial Year"
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
+      />
+
       <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
         <h3 className="text-sm font-normal ">1. Financial Year</h3>
         <div className="grid grid-cols-10 gap-5 mt-4 max-w-4xl">
