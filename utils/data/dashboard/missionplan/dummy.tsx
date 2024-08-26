@@ -272,6 +272,43 @@ export const measureColumns = (): ColumnDef<MeasureData>[] => [
   },
 ];
 
+export const measureOfSuccessPresentationViewColumns =
+  (): ColumnDef<MeasureData>[] => [
+    {
+      accessorKey: "no",
+      header: () => <div className="text-left">S/N</div>,
+      cell: ({ row }) => <div className="capitalize">{`${row.index + 1}`}</div>,
+    },
+    {
+      accessorKey: "measure",
+      header: () => <div className="text-left">Measure of Success</div>,
+      cell: ({ row }) => (
+        <div className=" capitalize">{row.getValue("measure")}</div>
+      ),
+    },
+    {
+      accessorKey: "unit",
+      header: () => <div className="text-left">Unit</div>,
+      cell: ({ row }) => (
+        <div className=" capitalize">{row.getValue("unit")}</div>
+      ),
+    },
+    {
+      accessorKey: "target",
+      header: () => <div className="text-left">Target</div>,
+      cell: ({ row }) => (
+        <div className=" capitalize">{row.getValue("target")}</div>
+      ),
+    },
+    {
+      accessorKey: "weight",
+      header: () => <div className="text-left">Weight</div>,
+      cell: ({ row }) => (
+        <div className=" capitalize">{row.getValue("weight")}</div>
+      ),
+    },
+  ];
+
 export const taskData = [
   {
     id: "Task 1",

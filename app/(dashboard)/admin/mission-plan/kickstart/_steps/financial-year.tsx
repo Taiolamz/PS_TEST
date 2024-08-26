@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Dictionary } from '@/@types/dictionary';
 import CustomDateInput from '@/components/custom-date-input';
+import CustomSelect from '@/components/custom-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { updateFinancialYearDetails } from '@/redux/features/mission-plan/missionPlanSlice';
@@ -18,7 +19,7 @@ import { toast } from 'sonner';
 const { ADMIN } = routesPath
 
 const FinancialYear = () => {
-    const [createFinancialYear, {isLoading}] = useCreateFinancialYearMutation()
+    const [createFinancialYear, { isLoading }] = useCreateFinancialYearMutation()
     const { fy_info: { financial_year } } = useAppSelector((state) => state.mission_plan)
 
     const location = usePathname()
@@ -26,26 +27,27 @@ const FinancialYear = () => {
     const dispatch = useAppDispatch()
 
     const handleFormSubmit = async (values: Dictionary
-    ) => {     
+    ) => {
         const DATE_DIFFERENCE = Number(removeCharFromString(values.end_date, "-")) - Number(removeCharFromString(values.start_date, "-"))
-       if (DATE_DIFFERENCE <= 0) {
-           toast.info("End date must be a future date")
+        if (DATE_DIFFERENCE <= 0) {
+            toast.info("End date must be a future date")
             return
-       } 
+        }
         createFinancialYear(values)
-        .unwrap()
-        .then(() => {
-            toast.success("Financial Year Created Successfully")
-            router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`)
-        })
+            .unwrap()
+            .then(() => {
+                toast.success("Financial Year Created Successfully")
+                router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`)
+            })
     }
 
-   
+
     const formik = useFormik({
         initialValues: {
             title: (financial_year?.title as string) || "",
             start_date: (financial_year?.start_date as string) || "",
-            end_date: (financial_year?.end_date as string) || ""
+            end_date: (financial_year?.end_date as string) || "",
+            review_period: (financial_year?.review_period as string) || ""
         },
         validationSchema: fiscalYearSchema,
         onSubmit: handleFormSubmit,
@@ -53,19 +55,27 @@ const FinancialYear = () => {
     })
 
     useEffect(() => {
-        dispatch(updateFinancialYearDetails({slug: "financial_year", data: formik.values}))
-    },[formik.values])
+        dispatch(updateFinancialYearDetails({ slug: "financial_year", data: formik.values }))
+    }, [formik.values])
 
+    useEffect(() => {
+        dispatch(updateFinancialYearDetails({ slug: "financial_year", data: {
+            title: "",
+            start_date: "",
+            end_date: "",
+            review_period: ""
+        }}))
+    },[])
 
     return (
-        <div>
+        <div className="w-full">
             <h1>Financial Year</h1>
             <form className="mt-4"
                 onSubmit={formik.handleSubmit}
                 autoComplete="off"
             >
                 <div className='flex items-center gap-5'>
-                    <div className='w-[90%]'>
+                    <div className='w-[40rem]'>
                         <Input
                             label='Title'
                             id='title'
@@ -75,9 +85,10 @@ const FinancialYear = () => {
                             touched={formik.touched.title}
                             error={formik.errors.title}
                             placeholder='2022 Financial Year'
+                            isRequired
                         />
                     </div>
-                    <div className="w-full flex gap-4">
+                    <div className="w-full flex gap-4 items-center">
                         <CustomDateInput
                             label='Start Period'
                             id='start_date'
@@ -88,6 +99,8 @@ const FinancialYear = () => {
                             touched={formik.touched.start_date}
                             error={formik.errors.start_date as string}
                             placeholder='YYYY-MM-DD'
+                            isRequired
+                            iconClass='top-10'
                         />
                         <CustomDateInput
                             label='End Period'
@@ -99,14 +112,30 @@ const FinancialYear = () => {
                             touched={formik.touched.end_date}
                             error={formik.errors.end_date as string}
                             placeholder='YYYY-MM-DD'
+                            isRequired
+                            iconClass='top-10'
                         />
                     </div>
                 </div>
+                <div className="mt-3 w-1/4">
+                    <CustomSelect
+                        label="Review Period"
+                        id=""
+                        options={[
+                            {label: "Monthly", value: "Monthly"},
+                            {label: "Quarterly", value: "Quarterly"},
+                            {label: "Bi-Annual (twice/year)", value: "Bi-Annual (twice/year)"},
+                        ]}
+                        selected={formik.values.review_period}
+                        setSelected={(selected) => formik.setFieldValue('review_period', selected)}
+                        isRequired
+                    />
+                </div>
                 <div className="mt-5">
                     <Button
-                        disabled={!formik.values.title 
-                            || !formik.values.start_date 
-                            || !formik.values.end_date || isLoading
+                        disabled={!formik.values.title
+                            || !formik.values.start_date
+                            || !formik.values.end_date || !formik.values.review_period || isLoading
                         }
                         className=''
                         type='submit'

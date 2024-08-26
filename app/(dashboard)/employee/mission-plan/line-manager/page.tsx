@@ -27,7 +27,7 @@ const LineManagerMissionPlan = () => {
       // onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
       <div className="p-5">
-        <Preview
+        {/* <Preview
           data={{
             mission_statement: [],
             boundaries: [],
@@ -35,8 +35,8 @@ const LineManagerMissionPlan = () => {
             specified_tasks: [],
             strategic_intents: [],
           }}
-          type="lineManagerPreview"
-        />
+          //   type="lineManagerPreview"
+        /> */}
       </div>
     </DashboardLayout>
   );

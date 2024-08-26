@@ -13,12 +13,7 @@ import routesPath from "@/utils/routes";
 
 const { EMPLOYEE } = routesPath;
 
-interface PreviewProp {
-  data: any;
-  type?: string;
-}
-
-const Preview = ({ data, type }: PreviewProp) => {
+const Preview = ({ data }: dataProp) => {
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -166,19 +161,17 @@ const Preview = ({ data, type }: PreviewProp) => {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      {type !== "lineManagerPreview" && (
-        <div className="flex gap-[10px] ml-auto">
-          <div className={`${btn}`}>
-            <Link href="#">View Presentation Mode</Link>
-          </div>
-
-          <div className={`${btn}`}>
-            <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
-              Edit Mission Plan
-            </Link>
-          </div>
+      <div className="flex gap-[10px] ml-auto">
+        <div className={`${btn}`}>
+          <Link href="#">View Presentation Mode</Link>
         </div>
-      )}
+
+        <div className={`${btn}`}>
+          <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
+            Edit Mission Plan
+          </Link>
+        </div>
+      </div>
       {mission_statement !== 0 && (
         <MissionWrapper
           title="Mission Statement"

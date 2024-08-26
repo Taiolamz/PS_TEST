@@ -97,12 +97,12 @@ export const PAGE_TABS = {
   SUPER_ADMIN: [
     {
       id: 1,
-      title: "Mission Plan",
+      title: "Financial Year Details",
       accessor: "mission-plan",
     },
     {
       id: 2,
-      title: "All Employees",
+      title: "Organization Mission Plans",
       accessor: "all-employees",
     },
   ],

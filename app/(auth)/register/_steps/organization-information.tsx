@@ -10,7 +10,7 @@ import {
   STATES,
 } from "@/utils/data";
 import { passwordValidations, passwordValidation as pv } from "@/utils/schema";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface OrganizationInformationProps {
   formik: any;
@@ -22,13 +22,18 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
     {}
   );
 
-  console.log({ form: formik.touched.employees_range });
+  useEffect(() => {
+    const countryDataForSelectedCountry = COUNTRIES_STATES?.filter(
+      (f) => f.name === formik.values.country
+    )?.[0];
+    setSelectedCountryData(countryDataForSelectedCountry);
+  }, [formik.values.country]);
 
   return (
     <div style={{ width: "100%" }}>
       <div className="flex flex-col gap-5">
         <Input
-          label="Organization Name"
+          label="Business Name"
           id="organization_name"
           name="organization_name"
           value={formik.values.organization_name}
@@ -36,10 +41,11 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
           touched={formik.touched.organization_name}
           error={formik.errors.organization_name}
           onBlur={formik.handleBlur}
-          placeholder="Enter Organization Name"
+          placeholder="Enter Business Name"
         />
         <CustomSelect
           label="Number of Employees"
+          placeholder="Number of Employees"
           options={NUMBER_OF_EMPLOYEES}
           selected={formik.values.employees_range}
           setSelected={(selected) => {
@@ -48,6 +54,7 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
           touched={formik.touched.employees_range}
           error={formik.errors.employees_range}
           onBlur={formik.handleBlur}
+          canSearch={false}
         />
       </div>
       <div className="mt-6 flex flex-col gap-3">
@@ -112,25 +119,46 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
           />
         </div>
       </div>
-      <div className="mt-9 relative">
-        <Input
-          label="Password"
-          id="password"
-          name="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          touched={formik.touched.password}
-          error={formik.errors.password}
-          placeholder="Input Password"
-          type={showPassword ? "text" : "password"}
-        />
-        <TogglePassword
-          showPassword={showPassword}
-          setShowPassword={() => setShowPassword(!showPassword)}
-          className="top-8"
-        />
-        <div className="mt-3 flex flex-col gap-2">
+      <div>
+        <div className="mt-9 relative mb-5">
+          <Input
+            label="Password"
+            id="password"
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.password}
+            error={formik.errors.password}
+            placeholder="Input Password"
+            type={showPassword ? "text" : "password"}
+          />
+          <TogglePassword
+            showPassword={showPassword}
+            setShowPassword={() => setShowPassword(!showPassword)}
+            className="top-8"
+          />
+        </div>
+        <div className=" relative">
+          <Input
+            label="Confirm Password"
+            id="password"
+            name="confirm_password"
+            value={formik.values.confirm_password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.confirm_password}
+            error={formik.errors.confirm_password}
+            placeholder="Input Password"
+            type={showPassword ? "text" : "password"}
+          />
+          <TogglePassword
+            showPassword={showPassword}
+            setShowPassword={() => setShowPassword(!showPassword)}
+            className="top-8"
+          />
+        </div>
+        <div className="mt-6 flex flex-col gap-2">
           {passwordValidations.map((validation, idx) => (
             <PasswordChecker
               key={idx}
