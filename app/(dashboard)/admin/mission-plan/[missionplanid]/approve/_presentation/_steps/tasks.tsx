@@ -11,8 +11,12 @@ type Props = {
   isLoading: boolean;
 };
 const Tasks = ({ data, isLoading }: Props) => {
-  const [showMore, setShowMore] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const { primaryColorHexValue } = React.useContext(ActionContext);
+
+  const toggleExpand = (id: string) => {
+    setExpandedId((prevId) => (prevId === id ? null : id));
+  };
   const colorWithAlpha = primaryColorHexValue
     ? addAlphaToHex(primaryColorHexValue, 0.05)
     : "";
@@ -37,15 +41,15 @@ const Tasks = ({ data, isLoading }: Props) => {
                   <h2>Specified Task {index + 1}</h2>
                   <div className="flex gap-[3.125rem] items-center">
                     <StatusBadge status={specifiedTask?.status ?? ""} />
-                    {showMore ? (
+                    {expandedId === specifiedTask?.id ? (
                       <ChevronUp
                         className="text-primary"
-                        onClick={() => setShowMore(false)}
+                        onClick={() => toggleExpand(specifiedTask?.id)}
                       />
                     ) : (
                       <ChevronDown
                         className="text-primary"
-                        onClick={() => setShowMore(true)}
+                        onClick={() => toggleExpand(specifiedTask?.id)}
                       />
                     )}
                   </div>
@@ -53,7 +57,7 @@ const Tasks = ({ data, isLoading }: Props) => {
                 <h3 className="text-[1.095rem] text-[#1E1E1E] ">
                   {specifiedTask?.task}
                 </h3>
-                {showMore && (
+                {expandedId === specifiedTask?.id && (
                   <div className="transition-all duration-500 ease-in-out">
                     <hr className="my-[1.4375rem]" />
                     <div>
