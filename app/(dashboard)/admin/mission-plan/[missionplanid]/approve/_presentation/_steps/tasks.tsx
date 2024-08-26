@@ -79,7 +79,7 @@ const Tasks = ({ data, isLoading }: Props) => {
                           <p className="text-base fot-bold text-[#015858]">
                             {specifiedTask.weight
                               ? specifiedTask?.weight + "%"
-                              : "--"}
+                              : "N/A"}
                           </p>
                         </div>
                       </div>
@@ -173,7 +173,7 @@ const Tasks = ({ data, isLoading }: Props) => {
                                   <p className="text-xl text-[#015858] font-medium">
                                     {impliedTask?.weight
                                       ? impliedTask?.weight
-                                      : ""}
+                                      : "N/A"}
                                   </p>
                                 </div>
                               </div>

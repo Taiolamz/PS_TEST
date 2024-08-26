@@ -27,7 +27,7 @@ const MissionStatement = ({ data, isLoading }: Props) => {
       status: item.status,
       target: item.target,
       unit: item.unit,
-      weight: item?.weight ? item?.weight + "%" : "--",
+      weight: item?.weight ? item?.weight + "%" : "NA",
     }));
   };
 
