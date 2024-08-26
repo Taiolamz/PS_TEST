@@ -72,7 +72,6 @@ const ApproveMissionPlan = () => {
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
-
             <MeasureOfSuccess
               showTextArea={measureOfSuccessComment.isOpen}
               setShowTextArea={measureOfSuccessComment.toggle}
@@ -80,7 +79,6 @@ const ApproveMissionPlan = () => {
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
-
             <StrategicIntent
               data={data?.data?.strategic_intents ?? []}
               approvables={data?.data?.approvables ?? []}
@@ -96,7 +94,6 @@ const ApproveMissionPlan = () => {
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
-
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}
               setShowTextArea={freedomConstraintComment.toggle}
