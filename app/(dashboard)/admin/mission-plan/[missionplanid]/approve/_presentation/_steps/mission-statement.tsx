@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import MeasureOfSuccessTable from "../../../../_components/measure-of-success-table";
 import { measureOfSuccessPresentationViewColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import MissionPlanApprovablesType, {
@@ -21,13 +21,13 @@ const MissionStatement = ({ data, isLoading }: Props) => {
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
   ): MeasureOfSuccessType[] => {
-    return mappedData?.map((item, index) => ({
+    return mappedData?.map((item) => ({
       id: item.id,
       measure: item.measure,
       status: item.status,
       target: item.target,
       unit: item.unit,
-      weight: item?.weight ? item?.weight + "%" : "NA",
+      weight: item?.weight ? item?.weight + "%" : "N/A",
     }));
   };
 

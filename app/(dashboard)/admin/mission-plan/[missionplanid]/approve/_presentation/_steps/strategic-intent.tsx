@@ -1,6 +1,7 @@
-import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
-import { Loader2 } from "lucide-react";
 import React from "react";
+import { Loader2 } from "lucide-react";
+
+import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
 
 type Props = {
   data: StrategicIntentType[];

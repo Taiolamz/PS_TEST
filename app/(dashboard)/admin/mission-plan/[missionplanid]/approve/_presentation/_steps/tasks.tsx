@@ -1,12 +1,9 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
-import {
-  formatToReadableDate,
-  formatToReadableDateShort,
-} from "@/utils/helpers/date-formatter";
+import { formatToReadableDateShort } from "@/utils/helpers/date-formatter";
 import StatusBadge from "@/components/status-badge";
 
 type Props = {
@@ -125,6 +122,7 @@ const Tasks = ({ data, isLoading }: Props) => {
                                       {impliedTask?.task}
                                     </p>
                                   </div>
+
                                   {/* Resource */}
                                   <div>
                                     <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">

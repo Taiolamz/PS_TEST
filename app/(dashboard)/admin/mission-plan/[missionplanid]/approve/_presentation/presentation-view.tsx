@@ -11,7 +11,6 @@ import Boundaries from "./_steps/boundaries";
 import Tasks from "./_steps/tasks";
 import StrategicIntent from "./_steps/strategic-intent";
 import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovables";
-import { Loader2 } from "lucide-react";
 
 type Props = {
   data?: MissionPlanApprovablesType;

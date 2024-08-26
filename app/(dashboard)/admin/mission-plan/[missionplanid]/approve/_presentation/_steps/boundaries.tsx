@@ -1,7 +1,5 @@
 import { BoundariesType } from "@/@types/missionPlan/MissionPlanAprovables";
-import ActionContext from "@/app/(dashboard)/context/ActionContext";
-import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
-import { Dot, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React from "react";
 
 type Props = {
@@ -10,10 +8,6 @@ type Props = {
 };
 
 const Boundaries = ({ data, isLoading }: Props) => {
-  const { primaryColorHexValue } = React.useContext(ActionContext);
-  const colorWithAlpha = primaryColorHexValue
-    ? addAlphaToHex(primaryColorHexValue, 0.05)
-    : "";
   return (
     <div className="border rounded-[0.5rem] w-full mx-auto text-left mb-10 pb-[1.375rem] pt-[2.375rem] pl-[7.625rem]">
       <h2 className="text-2xl font-medium">Boundaries</h2>
