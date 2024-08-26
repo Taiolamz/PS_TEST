@@ -28,7 +28,7 @@ const MeasureOfSuccess = ({
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   const measureColumnData = useMemo(() => measureColumns(), []);
-  const commentItem = useGetComments({ approvables, approvableTypeId });
+  const comments = useGetComments({ approvables, approvableTypeId });
   const approval_type = "success-measure";
 
   const transformedMeasureOfSuccessRows = (
@@ -48,8 +48,8 @@ const MeasureOfSuccess = ({
 
   const initialActionType = "";
 
-  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
-    initialComments: commentItem?.comment ?? [],
+  const { handleReject, handleApprove, FormikApprovalForm, undoStatus } = useApproval({
+    initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
     approval_type,
@@ -76,7 +76,7 @@ const MeasureOfSuccess = ({
               </div>
             )}
           </div>
-          {!loading && data?.length !== null && (
+          {comments?.status === "pending" && !loading && data?.length !== null ? (
             <div className="flex gap-2.5 mr-4">
               <Button
                 variant="outline"
@@ -90,6 +90,20 @@ const MeasureOfSuccess = ({
               </Button>
               <Button onClick={() => handleApprove()}>Approve</Button>
             </div>
+          ) : comments?.status === "approved" &&
+            !loading &&
+            data?.length !== null ? (
+            <div className="flex gap-2.5 mr-4">
+              <Button onClick={() => undoStatus()}>Undo Approval</Button>
+            </div>
+          ) : comments?.status === "rejected" &&
+            !loading &&
+            data?.length !== null ? (
+            <div className="flex gap-2.5 mr-4">
+              <Button onClick={() => undoStatus()}>Undo Rejection</Button>
+            </div>
+          ) : (
+            ""
           )}
         </div>
       </div>
@@ -97,7 +111,7 @@ const MeasureOfSuccess = ({
         label="measure of success"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
-        comments={commentItem}
+        comments={comments}
         formik={FormikApprovalForm}
       />
     </section>

@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
-
+ 
 type Props = {
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
@@ -29,14 +29,17 @@ const MissionStatement = ({
   const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
   const approval_type = "mission-statement";
-
-  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
-    initialComments: comments?.comment,
-    initialActionType,
-    missionplanid,
-    approval_type,
-  });
-
+ 
+  const { handleReject, handleApprove, FormikApprovalForm, undoStatus } =
+    useApproval({
+      initialComments: comments?.comment,
+      initialActionType,
+      missionplanid,
+      approval_type,
+    });
+ 
+  console.log({ loading });
+  console.log(comments?.status);
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -54,7 +57,7 @@ const MissionStatement = ({
               {data?.mission ?? "No Mission Statement"}
             </p>
           )}
-          {!loading && data?.mission !== null && (
+          {comments?.status === "pending" && !loading && data?.mission !== null ? (
             <div className="flex gap-2.5 mr-4">
               <Button
                 variant="outline"
@@ -68,10 +71,24 @@ const MissionStatement = ({
               </Button>
               <Button onClick={() => handleApprove()}>Approve</Button>
             </div>
+          ) : comments?.status === "approved" &&
+            !loading &&
+            data?.mission !== null ? (
+            <div className="flex gap-2.5 mr-4">
+              <Button onClick={() => undoStatus()}>Undo Approval</Button>
+            </div>
+          ) : comments?.status === "rejected" &&
+            !loading &&
+            data?.mission !== null ? (
+            <div className="flex gap-2.5 mr-4">
+              <Button onClick={() => undoStatus()}>Undo Rejection</Button>
+            </div>
+          ) : (
+            ""
           )}
         </div>
       </div>
-
+ 
       <Comment
         label="Mission statement"
         showTextArea={showTextArea}
@@ -82,5 +99,5 @@ const MissionStatement = ({
     </section>
   );
 };
-
+ 
 export default MissionStatement;
