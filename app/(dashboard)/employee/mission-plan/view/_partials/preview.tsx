@@ -3,6 +3,7 @@ import {
   MissionSingleItem,
   MissionWrapper,
   SpecifiedMission,
+  SpecifiedTasks,
 } from "@/components/fragment";
 import React, { useMemo } from "react";
 import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
@@ -163,13 +164,17 @@ const Preview = ({ data }: dataProp) => {
     <div className="flex flex-col gap-[12px]">
       <div className="flex gap-[10px] ml-auto">
         <div className={`${btn}`}>
-          <Link href="#">View Presentation Mode</Link>
+          <Link href="#">Approval Status</Link>
+        </div>
+        <div className={`${btn}`}>
+          <Link href="#">History</Link>
+        </div>
+        <div className={`${btn}`}>
+          <Link href="#">Presentation Mode</Link>
         </div>
 
         <div className={`${btn}`}>
-          <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
-            Edit Mission Plan
-          </Link>
+          <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>Edit</Link>
         </div>
       </div>
       {mission_statement !== 0 && (
@@ -201,35 +206,9 @@ const Preview = ({ data }: dataProp) => {
           <MissionItems data={StrategicIntentData} lastColumn={true} />
         </MissionWrapper>
       )}
-      {SpecifiedData.length !== 0 &&
-        SpecifiedData?.map((items: any, index: number) => {
-          return (
-            <div key={index} className="flex flex-col gap-[12px]">
-              <MissionWrapper
-                title={`Specified Task ${index + 1}`}
-                status={items?.status}
-              >
-                <SpecifiedMission
-                  data={items}
-                  lastColumn={false}
-                  index={index}
-                />
-              </MissionWrapper>
-              {items?.impliedTask.length !== 0 &&
-                items?.impliedTask.map((item: any, index: number) => {
-                  return (
-                    <MissionWrapper
-                      title={`Implied Task ${index + 1}`}
-                      status={item?.status}
-                      key={index}
-                    >
-                      <SpecifiedMission data={item} index={index} />
-                    </MissionWrapper>
-                  );
-                })}
-            </div>
-          );
-        })}
+      {specified_tasks.length !== 0 && (
+        <SpecifiedTasks data={specified_tasks ?? []} bg="bg-white" />
+      )}
       {boundaries?.length !== 0 && (
         <MissionWrapper title="Freedom" status={boundaries[0]?.status}>
           <div className="flex flex-col gap-[1rem]">
