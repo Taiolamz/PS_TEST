@@ -30,7 +30,7 @@ const CreateMissionPlan = () => {
 
   const user = useAppSelector(selectUser);
 
-  const { line_manger } = user;
+  const { line_manager } = user;
 
   return (
     <DashboardLayout
@@ -46,7 +46,7 @@ const CreateMissionPlan = () => {
         />
         <aside className="p-5 w-full overflow-y-scroll pb-10 scroll-hidden">
           <h1 className="mb-3">Mission Plan</h1>
-          {line_manger?.id === null && (
+          {line_manager?.id !== null && (
             <ShowLineManager
               btnText="View"
               title="Line Manager Mission Plan"

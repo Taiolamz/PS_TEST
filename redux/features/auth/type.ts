@@ -36,7 +36,7 @@ type User = {
   id?: string;
   name?: string;
   organization?: Organization;
-  line_manger?: LineManager;
+  line_manager?: LineManager;
 };
 
 export type Auth = {
