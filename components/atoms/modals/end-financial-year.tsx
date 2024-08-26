@@ -106,7 +106,7 @@ export default function EndFinancialYearModal({
             <EndFinancialYearCompleteModal
               icon="/assets/images/success.gif"
               iconClass="w-40"
-              title="Current Year Ended?"
+              title="Current Financial Year Ended!"
               message="Congratulations ! you have successfully brought the current Financial Year to a close"
               show={showSuccessModal}
               handleClose={() => {
