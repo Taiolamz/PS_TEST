@@ -13,9 +13,14 @@ import routesPath from "@/utils/routes";
 
 const { EMPLOYEE } = routesPath;
 
-const Preview = ({ data }: dataProp) => {
-   const btn =
-     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+interface PreviewProp {
+  data: any;
+  type?: string;
+}
+
+const Preview = ({ data, type }: PreviewProp) => {
+  const btn =
+    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
   const {
     mission_statement,
@@ -161,17 +166,19 @@ const Preview = ({ data }: dataProp) => {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      <div className="flex gap-[10px] ml-auto">
-        <div className={`${btn}`}>
-          <Link href="#">View Presentation Mode</Link>
-        </div>
+      {type !== "lineManagerPreview" && (
+        <div className="flex gap-[10px] ml-auto">
+          <div className={`${btn}`}>
+            <Link href="#">View Presentation Mode</Link>
+          </div>
 
-        <div className={`${btn}`}>
-          <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
-            Edit Mission Plan
-          </Link>
+          <div className={`${btn}`}>
+            <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
+              Edit Mission Plan
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
       {mission_statement !== 0 && (
         <MissionWrapper
           title="Mission Statement"

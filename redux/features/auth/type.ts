@@ -21,6 +21,13 @@ type Organization = {
   vision?: string | null;
 };
 
+type LineManager = {
+  designation?: string | null;
+  email?: string | null;
+  id?: string;
+  name?: string | null;
+};
+
 type User = {
   role?: string;
   designation?: string;
@@ -29,6 +36,7 @@ type User = {
   id?: string;
   name?: string;
   organization?: Organization;
+  line_manger?: LineManager;
 };
 
 export type Auth = {

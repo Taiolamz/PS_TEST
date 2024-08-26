@@ -109,7 +109,7 @@ const Boundaries = () => {
                 {/* Constraints */}
                 <div>
                   <div className="flex items-center gap-x-2 mb-8">
-                    <h1 className="text-[#3E4345]">Constraint</h1>
+                    <h2 className="text-[#3E4345]">Constraint</h2>
                     <span>
                       <BsFillInfoCircleFill color="#84919A" />
                     </span>
@@ -173,7 +173,7 @@ const Boundaries = () => {
                 {/* Freedoms */}
                 <div>
                   <div className="flex items-center gap-x-2 mb-8">
-                    <h1 className="text-[#3E4345]">Freedoms</h1>
+                    <h2 className="text-[#3E4345]">Freedoms</h2>
                     <span>
                       <BsFillInfoCircleFill color="#84919A" />
                     </span>
