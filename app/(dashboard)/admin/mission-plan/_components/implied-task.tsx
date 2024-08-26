@@ -44,6 +44,7 @@ const ImpliedTask = ({
     handleReject,
     handleApprove,
     FormikApprovalForm,
+    undoStatus,
   } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,

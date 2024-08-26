@@ -33,6 +33,7 @@ const SpecifiedTasks = ({ data, approvables, loading, showTextArea, setShowTextA
     handleReject,
     handleApprove,
     FormikApprovalForm,
+    undoStatus,
   } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
