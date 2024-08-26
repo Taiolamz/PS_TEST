@@ -73,15 +73,15 @@ const ResetPassword = () => {
   const router = useRouter();
 
   const { timeLeft, startTimer, isTimerElapsed } = useTimeout({
-    initialTime: 30,
+    initialTime: 300,
   });
 
-  const handleVerifyOTP = (OTP: any) => {
+  const handleVerifyOTP = (OTP: string | number) => {
     const payload = {
       code: OTP,
       email: formik.values.email,
-      otpType: "password_reset"
-    }
+      otpType: "password_reset",
+    };
     verifyOTP(payload)
       .unwrap()
       .then((payload) => {
@@ -170,7 +170,7 @@ const ResetPassword = () => {
             />
           </div>
           <div className="flex items-center justify-between">
-          <Button
+            <Button
               loading={isSendingPasswordResetLink}
               disabled={isSendingPasswordResetLink}
               loadingText="Send"
@@ -180,7 +180,13 @@ const ResetPassword = () => {
               Send
             </Button>
           </div>
-            <span className="text-sm text-center block mt-4"> Already have an account? <Link href={LOGIN}className="text-primary hover:underline">Login</Link></span>
+          <span className="text-sm text-center block mt-4">
+            {" "}
+            Already have an account?{" "}
+            <Link href={LOGIN} className="text-primary hover:underline">
+              Login
+            </Link>
+          </span>
         </div>
       </form>
 
@@ -205,7 +211,12 @@ const ResetPassword = () => {
         handleClose={() => setShowVerifyOTP(false)}
         hasCloseButton={false}
         title="Recover Password"
-        message={<span>A Six digit recovery OTP code has been sent to your email <span className="font-semibold">{formik.values.email}</span></span>}
+        message={
+          <span>
+            A Six digit recovery OTP code has been sent to your email{" "}
+            <span className="font-semibold">{formik.values.email}</span>
+          </span>
+        }
         handleClick={() => handleVerifyOTP(OTP)}
         actionBtnTitle="Verify OTP"
         actionBtnLoading={false}
@@ -213,28 +224,25 @@ const ResetPassword = () => {
         content={
           <div className="my-8 flex justify-center flex-col items-center">
             <InputOTPGenerator length={6} onChange={(code) => setOTP(code)} />
+            <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
+              {" "}
+              {timeToMinuteSecond(timeLeft)} mins remaining
+            </div>
           </div>
         }
         footerContent={
           <>
-            {!isTimerElapsed ? (
-              <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
-                {" "}
-                {timeToMinuteSecond(timeLeft)} mins remaining
-              </div>
-            ) : (
-              <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
-                Didn’t get the code?{" "}
-                <Button
-                  disabled={false}
-                  variant="link"
-                  className="px-0 text-primary font-normal"
-                  onClick={() => handleResendOTP()}
-                >
-                  Resend
-                </Button>{" "}
-              </span>
-            )}
+            <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
+              Didn’t get the code?{" "}
+              <Button
+                disabled={!isTimerElapsed}
+                variant="link"
+                className="px-0 text-primary font-normal"
+                onClick={() => handleResendOTP()}
+              >
+                Resend
+              </Button>{" "}
+            </span>
           </>
         }
       />
@@ -249,7 +257,6 @@ const ResetPassword = () => {
         show={isVerifyingOTP || isResendingOTP}
         handleClose={() => null}
       />
-      
     </div>
   );
 };

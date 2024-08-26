@@ -4,8 +4,11 @@ import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/redux/store";
 import Link from "next/link";
 import React, { useState } from "react";
+import FYExtendModal from "../_modal/fy-extend-modal";
+
 
 const FiscalYearInfo = () => {
+  const [extendSubmission, setExtendSubmission] = useState<boolean>(false);
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
@@ -22,15 +25,15 @@ const FiscalYearInfo = () => {
   };
 
   return (
-    <div className="space-y-5 mb-6 px-5 text-[var(--text-color3)]">
+    <div className="space-y-5 mb-6 px-5 mt-1 text-[var(--text-color3)]">
       {/* Financial Year */}
-
-      <div className="flex gap-[10px] justify-end mt-1">
+      <div className="flex gap-[10px] justify-end ">
         <button
           className={cn(
             btn,
             active_fy_info?.status !== "active" && "opacity-30 hover:bg-white"
           )}
+          onClick={() => setExtendSubmission(true)}
           disabled={active_fy_info?.status !== "active"}
         >
           Extend Financial Year
@@ -133,6 +136,10 @@ const FiscalYearInfo = () => {
           )}
         </div>
       </div>
+      <FYExtendModal
+        show={extendSubmission}
+        handleClose={() => setExtendSubmission(false)}
+      />
     </div>
   );
 };
