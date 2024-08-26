@@ -65,6 +65,10 @@ export const RegistrationSchema = [
       .test("minUppercase", "Must include small letters", (value) =>
         /[A-Z]/.test(value)
       ),
+    confirm_password: yup
+      .string()
+      .required("Please confirm your password")
+      .oneOf([yup.ref("password"), ""], "Passwords do not match"),
   }),
   yup.object().shape({
     first_name: yup.string().required("First name is required"),
