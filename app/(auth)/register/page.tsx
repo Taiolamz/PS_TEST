@@ -70,6 +70,7 @@ const SignupPage = () => {
       router.push(`${location}?ui=employee-information`);
     }
     if (ui === "employee-information") {
+      console.log({ FORMIKKKK: formik.values });
       register({ ...formik.values })
         .unwrap()
         .then(() => {

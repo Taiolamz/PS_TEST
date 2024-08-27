@@ -199,8 +199,8 @@ const Onboarding = () => {
             {getCurrentStep() === 4 && (
               <OrganizationStructure formik={formik} />
             )}
-            {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-            {getCurrentStep() === 6 && <HeadDetails formik={formik} />}
+            {getCurrentStep() === 5 && <HeadDetails formik={formik} />}
+            {getCurrentStep() === 6 && <GradeLevel formik={formik} />}
             {getCurrentStep() === 7 && <Preview formik={formik} />}
           </div>
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
