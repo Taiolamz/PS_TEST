@@ -280,6 +280,7 @@ const SpecifiedTask = () => {
       }
     }
   }, [formik.errors]);
+
   return (
     <div>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (
@@ -530,6 +531,7 @@ const SpecifiedTask = () => {
                         push({
                           id: uuidv4(),
                           task: "",
+                          weight: "",
                           strategic_pillars: [],
                           success_measures: [],
                           start_date: "",
