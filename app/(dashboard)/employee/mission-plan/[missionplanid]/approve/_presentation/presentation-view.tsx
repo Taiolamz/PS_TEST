@@ -15,7 +15,8 @@ import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovabl
 type Props = {
   data?: MissionPlanApprovablesType;
   loading: boolean;
-  name: string;
+  name?: string;
+  closeLocation?:string;
 };
 
 const PresentationView = ({ data, loading, name }: Props) => {
