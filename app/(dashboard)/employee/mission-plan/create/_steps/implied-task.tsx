@@ -386,6 +386,24 @@ const ImpliedTask = () => {
     // Update the Formik field value
     formik.setFieldValue(`tasks.${index}.subItems`, updatedSubItems);
   };
+
+  const handleDeleteSubItem = (taskIndex: number, subItemIndex: number) => {
+    // Get the current subItems array
+    const currentSubItems = formik.values.tasks[taskIndex].subItems || [];
+
+    // Remove the subItem at the given index
+    const updatedSubItems = (currentSubItems as any[]).filter(
+      (_, index) => index !== subItemIndex
+    );
+
+    // Log for debugging
+    console.log("Before Delete:", currentSubItems);
+    console.log("Deleting SubItem at Index:", subItemIndex);
+    console.log("After Delete:", updatedSubItems);
+
+    // Update Formik values
+    formik.setFieldValue(`tasks.${taskIndex}.subItems`, updatedSubItems);
+  };
   console.log(formik.values.tasks, "formik");
   // const [data, setData] = useState<any[]>([
   //   {
@@ -755,7 +773,7 @@ const ImpliedTask = () => {
                                                     }
                                                   />
                                                 </div>
-                                                <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%]">
+                                                <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%] relative place-items-center">
                                                   <CustomDateInput
                                                     id={`tasks.${index}.subItems.${subIndex}.start_date`}
                                                     label="Start Date"
@@ -796,8 +814,23 @@ const ImpliedTask = () => {
                                                     isRequired
                                                   />
                                                 </div>
+                                                <div
+                                                  className="absolute right-0 mr-5 cursor-pointer"
+                                                  onClick={() =>
+                                                    handleDeleteSubItem(
+                                                      index,
+                                                      subIndex
+                                                    )
+                                                  }
+                                                >
+                                                  <Icon
+                                                    name="remove"
+                                                    width={14.28}
+                                                    height={18.63}
+                                                  />
+                                                </div>
                                               </div>
-                                              <button
+                                              {/* <button
                                                 type="button"
                                                 // onClick={() =>
                                                 //   handleDeleteSubItem(
@@ -808,7 +841,7 @@ const ImpliedTask = () => {
                                                 className="mt-2 text-red-500 hover:text-red-700"
                                               >
                                                 Delete Subitem
-                                              </button>
+                                              </button> */}
                                             </div>
                                           );
                                         }
