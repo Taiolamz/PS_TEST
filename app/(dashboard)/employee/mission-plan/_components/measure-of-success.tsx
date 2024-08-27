@@ -96,13 +96,15 @@ const MeasureOfSuccess = ({
           )}
         </div>
       </div>
-      <Comment
-        label="measure of success"
-        showTextArea={showTextArea}
-        setShowTextArea={setShowTextArea}
-        comments={commentItem}
-        formik={FormikApprovalForm}
-      />
+      {showTextArea && (
+        <Comment
+          label="measure of success"
+          showTextArea={showTextArea}
+          setShowTextArea={setShowTextArea}
+          comments={commentItem}
+          formik={FormikApprovalForm}
+        />
+      )}
     </section>
   );
 };

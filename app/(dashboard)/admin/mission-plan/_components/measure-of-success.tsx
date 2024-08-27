@@ -1,9 +1,6 @@
 import React, { useMemo } from "react";
 import MeasureOfSuccessTable from "./measure-of-success-table";
-import {
-  measureColumns,
-  measuresData,
-} from "@/utils/data/dashboard/missionplan/dummy";
+import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
 import { Button } from "@/components/ui/button";
 import Comment from "./comment";
 import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";

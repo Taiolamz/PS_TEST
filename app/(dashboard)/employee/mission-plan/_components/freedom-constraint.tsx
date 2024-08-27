@@ -129,13 +129,15 @@ const FreedomConstraint = ({
           </div>
         </div>
       )}
-      <Comment
-        label="freedom & constraints"
-        showTextArea={showTextArea}
-        setShowTextArea={setShowTextArea}
-        comments={comments}
-        formik={FormikApprovalForm}
-      />
+      {showTextArea && (
+        <Comment
+          label="freedom & constraints"
+          showTextArea={showTextArea}
+          setShowTextArea={setShowTextArea}
+          comments={comments}
+          formik={FormikApprovalForm}
+        />
+      )}
     </section>
   );
 };

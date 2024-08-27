@@ -68,6 +68,8 @@ const routesPath = {
     CALENDAR: `/${employee_auth}/calendar`,
     TO_DO: `/${employee_auth}/to-do`,
     SETTINGS: `/${employee_auth}/settings`,
+    APPROVE_REJECT_MISSION_PLAN_DOWN_LINE: (id: string) =>
+      `/${employee_auth}/mission-plan/${id}/approve/downline`,
   },
   HOME: "/",
   LOGIN: "/login",
