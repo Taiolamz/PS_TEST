@@ -71,7 +71,7 @@ const FreedomConstraint = ({
                 <div className="mt-2">
                   {data[0]?.freedoms?.map((freedom) => (
                     <h3
-                      className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5"
+                      className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5 capitalize"
                       key={freedom}
                     >
                       <span>-</span> {freedom}
@@ -86,7 +86,7 @@ const FreedomConstraint = ({
                 <div className="mt-2">
                   {data[0]?.constraints?.map((item) => (
                     <h3
-                      className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5"
+                      className="text-sm font-normal flex items-center gap-[0.9375rem] ml-1.5 capitalize"
                       key={item}
                     >
                       <span>-</span> {item}
@@ -129,15 +129,15 @@ const FreedomConstraint = ({
           </div>
         </div>
       )}
-      {showTextArea && (
-        <Comment
-          label="freedom & constraints"
-          showTextArea={showTextArea}
-          setShowTextArea={setShowTextArea}
-          comments={comments}
-          formik={FormikApprovalForm}
-        />
-      )}
+      {/* {showTextArea && ( */}
+      <Comment
+        label="freedom & constraints"
+        showTextArea={showTextArea}
+        setShowTextArea={setShowTextArea}
+        comments={comments}
+        formik={FormikApprovalForm}
+      />
+      {/* )} */}
     </section>
   );
 };

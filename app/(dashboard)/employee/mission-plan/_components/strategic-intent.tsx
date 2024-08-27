@@ -92,16 +92,13 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                 </div>
               </div>
             </div>
-            {openCommentId === item.id && (
-              <Comment
-                label="Strategic intent"
-                showTextArea={openCommentId === item.id}
-                setShowTextArea={() => toggleComment(item.id)}
-                comments={comments}
-                // comments={FormikApprovalForm.values.comments}
-                formik={FormikApprovalForm}
-              />
-            )}
+            <Comment
+              label="Strategic intent"
+              showTextArea={openCommentId === item.id}
+              setShowTextArea={() => toggleComment(item.id)}
+              comments={comments}
+              formik={FormikApprovalForm}
+            />
           </section>
         ))}
       {!loading && data?.length === 0 && (

@@ -103,8 +103,7 @@ const DownlineApproval = () => {
           <PresentationView
             data={data?.data}
             loading={isGettingMissionPlanItems}
-            closeLocation={location}
-            name={data?.data?.staff_member}
+            name={data?.data?.staff_member ?? ""}
           />
         </div>
       )}
