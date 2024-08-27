@@ -140,7 +140,7 @@ const Onboarding = () => {
 
   return (
     <section className="">
-      <div className="px-2.5 py-3 bg-[#F4f4f4] w-full mb-10">
+      <div className="px-2.5 py-3.5 bg-[#F4f4f4] w-full mb-10">
         <button
           type="button"
           onClick={() => {
