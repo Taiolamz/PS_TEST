@@ -4,11 +4,11 @@ import React from "react";
 import Preview from "../view/_partials/preview";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { useAppSelector } from "@/redux/store";
-import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetLineManagerMissionPlanQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { PageLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { isObjectEmpty } from "@/utils/helpers";
 
 const LineManagerMissionPlan = () => {
   const router = useRouter();
@@ -24,12 +24,6 @@ const LineManagerMissionPlan = () => {
     isSuccess: fetchedLineManagerMissionPlan,
     isError: errorLineManagerMissionPlan,
   } = useGetLineManagerMissionPlanQuery({ fiscalYear: active_fy_info.id });
-
-  const isEmpty = (obj: {}) => {
-    if (obj) {
-      return Object.keys(obj).length === 0;
-    }
-  };
 
   return (
     <DashboardLayout
@@ -55,7 +49,8 @@ const LineManagerMissionPlan = () => {
                 Close
               </Button>
             </div>
-            {errorLineManagerMissionPlan || isEmpty(lineManagerMissionPlan) ? (
+            {errorLineManagerMissionPlan ||
+            isObjectEmpty(lineManagerMissionPlan) ? (
               <div> Empty </div>
             ) : (
               <Preview

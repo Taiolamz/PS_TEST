@@ -277,10 +277,12 @@ export const formatBehaviours = (
   return behavioursString;
 };
 
-export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>(array: T[], placeholder: string = "---"): T[] {
-  return array?.map(obj => {
+export function replaceEmptyValuesWithPlaceholder<
+  T extends Record<string, any>
+>(array: T[], placeholder: string = "---"): T[] {
+  return array?.map((obj) => {
     const newObj = { ...obj }; // Create a shallow copy of the object
-    (Object?.keys(newObj) as (keyof T)[])?.forEach(key => {
+    (Object?.keys(newObj) as (keyof T)[])?.forEach((key) => {
       if (newObj[key] === "") {
         newObj[key] = placeholder as any; // Replace empty value with placeholder
       }
@@ -289,9 +291,8 @@ export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>
   });
 }
 
-export const allObjValuesNotEmpty = (data: Dictionary) => Object.values(data).every((d) => d.trim() !== "")
-
-
+export const allObjValuesNotEmpty = (data: Dictionary) =>
+  Object.values(data).every((d) => d.trim() !== "");
 
 type DataObject = {
   name: string;
@@ -299,6 +300,14 @@ type DataObject = {
   key: string;
 };
 
-export function extractNamesFromFormat(data: { [key: number]: DataObject }): string[] {
+export function extractNamesFromFormat(data: {
+  [key: number]: DataObject;
+}): string[] {
   return Object.values(data).map((item) => item.name);
 }
+
+export const isObjectEmpty = (obj: {}) => {
+  if (obj) {
+    return Object.keys(obj).length === 0;
+  }
+};
