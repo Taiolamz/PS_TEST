@@ -1,4 +1,4 @@
-import CustomDateInput from "@/components/custom-date-input"; 
+import CustomDateInput from "@/components/custom-date-input";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,8 @@ import * as Yup from "yup";
 
 interface ModalContainerProps {
   show: boolean;
-  handleClose?: () => void;
+  setSuccessModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleClose: () => void;
 }
 
 interface FormValues {
@@ -54,12 +55,13 @@ const validationSchema = Yup.object().shape({
 
 export default function ReopenSubmissionModal({
   show,
+  setSuccessModal,
   handleClose,
 }: ModalContainerProps) {
   const [defaultMultiselect, setDefaultMultiselect] = useState<string[]>([]);
+
   //Get all staffs
-  const { data: employeesData, isLoading: isLoadingEmployees } =
-    useGetAllEmployeesQuery();
+  const { data: employeesData } = useGetAllEmployeesQuery();
   //Get hierarcy dropdown
   const { data: dropdownData }: any =
     useGetAllOrganizationMissionPlanDropdownQuery({});
@@ -119,6 +121,8 @@ export default function ReopenSubmissionModal({
     onSubmit: (values) => {
       try {
         // logic for form submission
+        setSuccessModal(true)
+        handleClose()
       } catch (error) {
         console.error("Form Submission Error:", error);
       }
@@ -152,7 +156,7 @@ export default function ReopenSubmissionModal({
           selected
         </p>
         <form onSubmit={formik?.handleSubmit} className="space-y-6 mt-2">
-          <div className="grid grid-cols-3 gap-x-4">
+          <div className="grid grid-col-2 md:grid-cols-3 gap-x-4">
             <Input
               id="previousStartPeriod"
               name="previousStartPeriod"
@@ -177,7 +181,7 @@ export default function ReopenSubmissionModal({
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-x-4">
+          <div className="grid grid-col-2 md:grid-cols-3 gap-x-4">
             <div>
               <CustomDateInput
                 id="newEndDate"
@@ -212,7 +216,7 @@ export default function ReopenSubmissionModal({
             </Label>
             <RadioGroup
               onValueChange={async (e) => {
-               await formik?.setFieldValue("staffSelection", "all_staff");
+                await formik?.setFieldValue("staffSelection", "all_staff");
                 formik?.setFieldValue("multiselectInput", []);
                 formik?.setFieldValue("staffSelection", e);
               }}
@@ -303,8 +307,7 @@ export default function ReopenSubmissionModal({
                 >
                   <CustomMultipleSelect
                     onValueChange={(values: any) => {
-                      formik.setFieldValue("multiselectInput", values); 
-                      console.log(values, "hfhfhf");
+                      formik.setFieldValue("multiselectInput", values);
                     }}
                     randomBadgeColor
                     label={`Name of ${formik?.values?.staffSelection}`}
@@ -319,7 +322,7 @@ export default function ReopenSubmissionModal({
                     maxCount={6}
                     onBlur={formik?.handleBlur}
                     error={formik?.errors?.multiselectInput}
-                    touched={formik?.touched?.multiselectInput} 
+                    touched={formik?.touched?.multiselectInput}
                   />
                 </div>
               </div>
@@ -345,11 +348,17 @@ export default function ReopenSubmissionModal({
                 touched={formik?.touched?.note}
                 error={formik?.errors?.note}
               />
-
             </div>
           </div>
 
-          <Button type="submit">Re-open</Button>
+          <Button
+            type="submit"
+            loadingText="Re-open"
+            disabled={false}
+            loading={false}
+          >
+            Re-open
+          </Button>
         </form>
       </div>
     </ReusableModalContainer>
