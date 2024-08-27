@@ -63,7 +63,7 @@ const OnboardingLayout = ({ children }: Props) => {
       <section className="flex h-screen overflow-hidden">
         <aside className="w-1/4 p-4 pr-0 bg-[--primary-color] text-white xl:w-2/12">
           <Icon width={74} height={15} name="mance" className="mx-auto" />
-          <h2 className="font-semibold mb-2 mt-[1.125rem]">Steps</h2>
+          <h2 className="font-semibold mb-2 mt-[1.125rem] pl-2">Steps</h2>
           <ul className="flex flex-col gap-2">
             {filteredSteps.map((step, index) => (
               <li
