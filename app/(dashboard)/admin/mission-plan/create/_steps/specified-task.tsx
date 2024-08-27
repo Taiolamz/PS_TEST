@@ -52,6 +52,7 @@ const options = [
 interface Task {
   id: string;
   start_date: string;
+  weight: string;
   end_date: string;
   task?: string;
   strategic_pillars?: [];
@@ -160,6 +161,7 @@ const SpecifiedTask = () => {
       (task: any) => ({
         id: task.id || uuidv4(),
         task: task.task,
+        weight: task.weight,
         strategic_pillars: mappedStrategicPillars
           .filter((itemA: { id: any }) =>
             task.strategic_pillars.some(
@@ -196,6 +198,7 @@ const SpecifiedTask = () => {
         {
           id: uuidRef.current,
           task: "",
+          weight: "",
           strategic_pillars: [],
           success_measures: [],
           start_date: "",
@@ -247,8 +250,8 @@ const SpecifiedTask = () => {
     enableReinitialize: true,
   });
 
-  const handleChange = (value: string, index: number) => {
-    formik.setFieldValue(`tasks.${index}.task`, value);
+  const handleChange = (value: string, index: number, name: string) => {
+    formik.setFieldValue(`tasks.${index}.${name}`, value);
   };
 
   const handleCheckClick = useCallback(
@@ -275,6 +278,14 @@ const SpecifiedTask = () => {
       })
     );
   }, [formik.values]);
+
+  useEffect(() => {
+    if (formik.errors.tasks && typeof formik.errors.tasks === "string") {
+      {
+        toast.error(formik.errors.tasks);
+      }
+    }
+  }, [formik.errors]);
 
   return (
     <div>
@@ -321,7 +332,7 @@ const SpecifiedTask = () => {
                                   placeholder="Input Task"
                                   className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                                   onChange={(e) =>
-                                    handleChange(e.target.value, index)
+                                    handleChange(e.target.value, index, "task")
                                   }
                                   value={formik.values.tasks[index].task}
                                 />
@@ -357,6 +368,27 @@ const SpecifiedTask = () => {
                                       true
                                     )
                                   }
+                                />
+                              </div>
+                              <div className="w-full flex-1">
+                                <Input
+                                  type="text"
+                                  id="weight"
+                                  name={`tasks.${index}.weight`}
+                                  label="Weight %"
+                                  error={errorTasks?.[index]?.weight}
+                                  touched={touchedTasks?.[index]?.weight}
+                                  onBlur={formik.handleBlur}
+                                  placeholder="Input Weight(%)"
+                                  className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                                  onChange={(e) =>
+                                    handleChange(
+                                      e.target.value,
+                                      index,
+                                      "weight"
+                                    )
+                                  }
+                                  value={formik.values.tasks[index].weight}
                                 />
                               </div>
                               <button
@@ -503,6 +535,7 @@ const SpecifiedTask = () => {
                         push({
                           id: uuidv4(),
                           task: "",
+                          weight: "",
                           strategic_pillars: [],
                           success_measures: [],
                           start_date: "",

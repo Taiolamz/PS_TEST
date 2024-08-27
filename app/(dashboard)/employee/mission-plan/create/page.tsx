@@ -45,16 +45,19 @@ const CreateMissionPlan = () => {
           slug="ui"
         />
         <aside className="p-5 w-full overflow-y-scroll pb-10 scroll-hidden">
-          <h1 className="mb-3">Mission Plan</h1>
-          {line_manager?.id !== null && (
-            <ShowLineManager
-              btnText="View"
-              title="Line Manager Mission Plan"
-              clickAction={() =>
-                router.push(EMPLOYEE.LINE_MANAGER_MISSION_PLAN)
-              }
-            />
+          {line_manager?.id !== null && ui !== "overview" && (
+            <>
+              <h1 className="mb-3">Mission Plan</h1>
+              <ShowLineManager
+                btnText="View"
+                title="Line Manager Mission Plan"
+                clickAction={() =>
+                  router.push(EMPLOYEE.LINE_MANAGER_MISSION_PLAN)
+                }
+              />
+            </>
           )}
+
           {ui === "overview" && <MissionPlanOverview />}
           {ui === "mission-statement" && <MissionStatement />}
           {ui === "measure-success" && <MeasureOfSuccess />}
