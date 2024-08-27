@@ -142,13 +142,13 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
         <div className=" relative">
           <Input
             label="Confirm Password"
-            id="password"
-            name="confirm_password"
-            value={formik.values.confirm_password}
+            id="password_confirmation"
+            name="password_confirmation"
+            value={formik.values.password_confirmation}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            touched={formik.touched.confirm_password}
-            error={formik.errors.confirm_password}
+            touched={formik.touched.password_confirmation}
+            error={formik.errors.password_confirmation}
             placeholder="Input Password"
             type={showPassword ? "text" : "password"}
           />

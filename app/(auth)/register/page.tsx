@@ -103,7 +103,7 @@ const SignupPage = () => {
       last_name: "",
       email: "",
       password: "",
-      confirm_password: "",
+      password_confirmation: "",
       designation: "",
       organization_name: "",
       employees_range: "",
