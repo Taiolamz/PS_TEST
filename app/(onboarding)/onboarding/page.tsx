@@ -79,13 +79,6 @@ const Onboarding = () => {
     //   return;
     // }
 
-    // if (!formik.isValid) {
-    //   toast.error(
-    //     "Please fill in the required fiscal year title field before submitting."
-    //   );
-    //   return;
-    // }
-
     const formDataToSend = new FormData();
 
     Object.entries(formik.values).forEach(([key, value]) => {

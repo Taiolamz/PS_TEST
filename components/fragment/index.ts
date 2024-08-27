@@ -9,6 +9,8 @@ import MissionWrapper from "./mission-wrapper";
 import ReusableDrawer from "./drawer";
 import MissionSingleItem from "./mission-single-item";
 import SpecifiedMission from "./specified-mission";
+import SpecifiedTasks from "./specified-task";
+
 
 export {
   EmptyState,
@@ -20,4 +22,5 @@ export {
   ReusableDrawer,
   MissionSingleItem,
   SpecifiedMission,
+  SpecifiedTasks,
 };

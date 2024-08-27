@@ -11,17 +11,15 @@ import Boundaries from "./_steps/boundaries";
 import Tasks from "./_steps/tasks";
 import StrategicIntent from "./_steps/strategic-intent";
 import MissionPlanApprovablesType from "@/@types/missionPlan/MissionPlanAprovables";
-import routesPath from "@/utils/routes";
 
 type Props = {
   data?: MissionPlanApprovablesType;
   loading: boolean;
-  closeLocation?: string;
+  name?: string;
+  closeLocation?:string;
 };
 
-const { EMPLOYEE } = routesPath;
-
-const PresentationView = ({ data, loading, closeLocation }: Props) => {
+const PresentationView = ({ data, loading, name }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const location = usePathname();
@@ -41,28 +39,46 @@ const PresentationView = ({ data, loading, closeLocation }: Props) => {
     getCurrentStep() > 1 &&
       router.push(`${location}?ui=${ui}&step=${getCurrentStep() - 1}`);
   };
+
   return (
-    <div className="py-6 pl-[1.625rem] pr-14">
+    <div className="py-6 pl-[1.625rem] pr-14 bg-white">
       <div className="flex justify-between mb-7">
         <div className="flex items-center gap-[0.5625rem]">
-          <h1 className="font-semibold text-lg text-[#3E4345]">
-            {data?.staff_member} Mission Plan
+          <h1 className="font-semibold text-lg text-[#3E4345] capitalize">
+            {name} Mission Plan
           </h1>
         </div>
-        <Button variant="outline">
-          <Link href={closeLocation ?? "#"}>Close</Link>
+        <Button
+          variant="outline"
+          className="text-primary hover:text-primary border-primary"
+        >
+          <Link href={`${location}`}>Close</Link>
         </Button>
       </div>
-      {getCurrentStep() === 1 && <MissionStatement data={data} />}
-      {getCurrentStep() === 2 && (
-        <StrategicIntent data={data?.strategic_intents ?? []} />
-      )}
-      {getCurrentStep() === 3 && <Tasks data={data?.specified_tasks ?? []} />}
-      {getCurrentStep() === 4 && <Boundaries data={data?.boundaries ?? []} />}
 
+      {getCurrentStep() === 1 && (
+        <MissionStatement data={data} isLoading={loading} />
+      )}
+      {getCurrentStep() === 2 && (
+        <StrategicIntent
+          data={data?.strategic_intents ?? []}
+          isLoading={loading}
+        />
+      )}
+      {getCurrentStep() === 3 && (
+        <Tasks data={data?.specified_tasks ?? []} isLoading={loading} />
+      )}
+      {getCurrentStep() === 4 && (
+        <Boundaries data={data?.boundaries ?? []} isLoading={loading} />
+      )}
       <div className="flex justify-start items-center gap-[1.625rem] mt-8">
         {getCurrentStep() > 1 && (
-          <Button type="button" onClick={previousView} variant="outline">
+          <Button
+            type="button"
+            onClick={previousView}
+            variant="outline"
+            className="text-primary hover:text-primary border-primary"
+          >
             Back
           </Button>
         )}
@@ -71,7 +87,7 @@ const PresentationView = ({ data, loading, closeLocation }: Props) => {
           onClick={nextView}
           className={`${
             getCurrentStep() >= presentationSteps.length &&
-            "border-[#E5E9EB] border-[0.0313rem]"
+            "bg-[#F6F8F9] text-[#9AA6AC] border-[#E5E9EB] border-[0.0313rem]"
           }`}
           disabled={getCurrentStep() >= presentationSteps.length}
         >

@@ -506,6 +506,7 @@ export const sideMenuEmployeeList = [
           routesPath?.EMPLOYEE?.CREATE_MISSION_PLAN,
           routesPath?.EMPLOYEE?.SINGLE_MISSION_PLAN,
           routesPath?.EMPLOYEE?.MAIN_MISSION_PLAN,
+          routesPath?.EMPLOYEE?.LINE_MANAGER_MISSION_PLAN,
         ],
       },
       {

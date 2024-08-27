@@ -13,13 +13,13 @@ const EditableLabel = ({ status }: prop) => {
           ? "success"
           : "pending"
       }
-      className={`select-none w-fit text-xs ${
+      className={`select-none w-fit text-xs capitalize ${
         status.toLowerCase() === "rejected"
           ? "border border-[var(--text-danger)]"
           : ""
       }`}
     >
-      {status.toLowerCase()}
+      {status}
     </Badge>
   );
 };

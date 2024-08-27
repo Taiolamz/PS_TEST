@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
 
-const { HOME } = routesPath
+const { HOME } = routesPath;
 
 export default function AuthLayout({
   children,

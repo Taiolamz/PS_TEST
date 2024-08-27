@@ -28,6 +28,19 @@ import DrawerApprovalStatus from "./_side-modal/drawer-approval-status";
 import { formatDate } from "@/utils/helpers/date-formatter";
 import { useDispatch } from "react-redux";
 import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDataSlice";
+import { cn } from "@/lib/utils";
+import ReopenSubmissionModal from "./_modal/reopen-submission-modal";
+import SubmissionExtendModal from "./_modal/submission-extend-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ExportIcon } from "@/public/assets/icons";
+import Image from "next/image";
 
 const { ADMIN } = routesPath;
 
@@ -43,7 +56,7 @@ const SingleMissionPlan = () => {
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
   const { isPreview } = useAppSelector((state) => state?.mission_plan_preview);
   const btn =
-    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+    "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
   // const data = useAppSelector((state) => state?.auth?.user);
   const [search, setSearch] = useState<string>("");
@@ -52,6 +65,9 @@ const SingleMissionPlan = () => {
   const [subsidiary, setSubsidiary] = useState<string>("");
   const [departments, setDepartments] = useState<string>("");
   const [units, setUnits] = useState<string>("");
+  //Approval extension
+  const [extendSubmission, setExtendSubmission] = useState<boolean>(false);
+  const [reopenSubmission, setReopenSubmission] = useState<boolean>(false);
 
   // State to handle drawer state and id
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
@@ -253,6 +269,36 @@ const SingleMissionPlan = () => {
         : "Unable to fetch data"
     );
   }
+  const newBtnClass =
+    "text-custom-gray-scale-400 text-xs font-light cursor-pointer";
+
+  const exportDrop = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className="ml-auto border px-4 rounded-[6px] h-[33px] focus:border-0 hover:bg-white"
+        >
+          <div className="flex gap-3 items-center">
+            <Image src={ExportIcon} alt="export" />
+            <p className="text-custom-gray-scale-400 font-normal text-xs">
+              Export
+            </p>
+          </div>
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        className="border rounded-sm"
+        align="end"
+        style={{ width: "10rem" }}
+      >
+        <DropdownMenuItem className={newBtnClass}>PDF</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className={newBtnClass}>CSV</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   return (
     <DashboardLayout
@@ -265,14 +311,19 @@ const SingleMissionPlan = () => {
         className="p-5 w-full global_sticky_class flex justify-between items-center"
       >
         {/* user_info?.role */}
-        <CustomTab
-          options={getAvailableTabs({
-            role: user_info?.role as string,
-            isLineManager: user_info?.is_line_manager as boolean,
-          })}
-          slug="ui"
-        />
-        {isPreview && (
+        <div className="flex flex-end w-full items-center">
+          <div className="w-full">
+            <CustomTab
+              options={getAvailableTabs({
+                role: user_info?.role as string,
+                isLineManager: user_info?.is_line_manager as boolean,
+              })}
+              slug="ui"
+            />
+          </div>
+          <div>{ui === "mission-plan" && exportDrop}</div>
+        </div>
+        {/* {isPreview && (
           <div className="flex gap-[10px]">
             <div className={`${btn}`}>
               <Link href="#">View Presentation Mode</Link>
@@ -284,7 +335,7 @@ const SingleMissionPlan = () => {
               </Link>
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       {ui === "mission-plan" && (
@@ -298,7 +349,31 @@ const SingleMissionPlan = () => {
         (summaryError && employeeError ? (
           <></>
         ) : !isLoadingSummary && !isLoadingEmployee && !isLoadingdropdown ? (
-          <div className="p-5 space-y-5">
+          <div className="pb-5 px-5 mt-1 space-y-5">
+            <div className="flex gap-[10px] justify-end">
+              <button
+                className={cn(
+                  btn,
+                  active_fy_info?.status !== "active" &&
+                    "opacity-30 hover:bg-white"
+                )}
+                disabled={active_fy_info?.status !== "active"}
+                onClick={() => setExtendSubmission(true)}
+              >
+                Extend Submission Period
+              </button>
+              <button
+                className={cn(
+                  btn,
+                  active_fy_info?.status !== "active" &&
+                    "opacity-30 hover:bg-white"
+                )}
+                onClick={() => setReopenSubmission(true)}
+                disabled={active_fy_info?.status !== "active"}
+              >
+                Reopen Submissions
+              </button>
+            </div>
             <div className="flex justify-between">
               <p className="text-xl font-medium text-primary">
                 {active_fy_info?.title}
@@ -455,6 +530,14 @@ const SingleMissionPlan = () => {
               ]}
               onPdfChange={handleExport}
               onCsvChange={handleExport}
+            />
+            <ReopenSubmissionModal
+              show={reopenSubmission}
+              handleClose={() => setReopenSubmission(false)}
+            />
+            <SubmissionExtendModal
+              show={extendSubmission}
+              handleClose={() => setExtendSubmission(false)}
             />
           </div>
         ) : (

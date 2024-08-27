@@ -3,6 +3,7 @@ import {
   MissionSingleItem,
   MissionWrapper,
   SpecifiedMission,
+  SpecifiedTasks,
 } from "@/components/fragment";
 import React, { useMemo } from "react";
 import { measureColumns } from "@/utils/data/dashboard/missionplan/dummy";
@@ -10,12 +11,18 @@ import { format } from "date-fns";
 import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
 import Link from "next/link";
 import routesPath from "@/utils/routes";
+import MissionItemsLineManager from "@/components/fragment/mission-items-line-manager";
 
 const { EMPLOYEE } = routesPath;
 
-const Preview = ({ data }: dataProp) => {
-   const btn =
-     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+interface PreviewProps {
+  data: any;
+  type?: string;
+}
+
+const Preview = ({ data, type }: PreviewProps) => {
+  const btn =
+    "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
   const {
     mission_statement,
@@ -23,7 +30,8 @@ const Preview = ({ data }: dataProp) => {
     measure_of_success,
     specified_tasks,
     strategic_intents,
-  } = data;
+    implied_tasks,
+  } = data || {};
 
   const MeasureData =
     measure_of_success.length !== null &&
@@ -41,14 +49,15 @@ const Preview = ({ data }: dataProp) => {
     strategic_intents.length !== null &&
     strategic_intents.map((item: strategicProp) => {
       return {
+        title: "Strategic Intent",
         description: [
-          {
-            key: "Behaviours",
-            value: item?.behaviours,
-          },
           {
             key: "Intent",
             value: item?.intent,
+          },
+          {
+            key: "Behaviours",
+            value: item?.behaviours,
           },
         ],
       };
@@ -161,21 +170,31 @@ const Preview = ({ data }: dataProp) => {
 
   return (
     <div className="flex flex-col gap-[12px]">
-      <div className="flex gap-[10px] ml-auto">
-        <div className={`${btn}`}>
-          <Link href="#">View Presentation Mode</Link>
-        </div>
+      {type !== "lineManagerPreview" && (
+        <div className="flex gap-[10px] ml-auto">
+          <div className={`${btn}`}>
+            <Link href="#">Approval Status</Link>
+          </div>
+          <div className={`${btn}`}>
+            <Link href="#">History</Link>
+          </div>
+          <div className={`${btn}`}>
+            <Link href="#">Presentation Mode</Link>
+          </div>
 
-        <div className={`${btn}`}>
-          <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
-            Edit Mission Plan
-          </Link>
+          <div className={`${btn}`}>
+            <Link href={`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`}>
+              Edit
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
       {mission_statement !== 0 && (
         <MissionWrapper
           title="Mission Statement"
-          status={mission_statement?.status}
+          status={
+            type !== "lineManagerPreview" ? mission_statement?.status : ""
+          }
         >
           <p className="leading-relaxed  text-sm">
             {mission_statement?.mission}
@@ -185,7 +204,9 @@ const Preview = ({ data }: dataProp) => {
       {measure_of_success.length !== 0 && (
         <MissionWrapper
           title="Measure of Success"
-          status={measure_of_success[0]?.status}
+          status={
+            type !== "lineManagerPreview" ? measure_of_success[0]?.status : ""
+          }
         >
           <MeasureOfSuccessTable
             data={MeasureData}
@@ -196,42 +217,31 @@ const Preview = ({ data }: dataProp) => {
       {strategic_intents.length !== 0 && (
         <MissionWrapper
           title="Strategic Intent"
-          status={strategic_intents[0]?.status}
+          status={
+            type !== "lineManagerPreview" ? strategic_intents[0]?.status : ""
+          }
         >
           <MissionItems data={StrategicIntentData} lastColumn={true} />
         </MissionWrapper>
       )}
-      {SpecifiedData.length !== 0 &&
-        SpecifiedData?.map((items: any, index: number) => {
-          return (
-            <div key={index} className="flex flex-col gap-[12px]">
-              <MissionWrapper
-                title={`Specified Task ${index + 1}`}
-                status={items?.status}
-              >
-                <SpecifiedMission
-                  data={items}
-                  lastColumn={false}
-                  index={index}
-                />
-              </MissionWrapper>
-              {items?.impliedTask.length !== 0 &&
-                items?.impliedTask.map((item: any, index: number) => {
-                  return (
-                    <MissionWrapper
-                      title={`Implied Task ${index + 1}`}
-                      status={item?.status}
-                      key={index}
-                    >
-                      <SpecifiedMission data={item} index={index} />
-                    </MissionWrapper>
-                  );
-                })}
-            </div>
-          );
-        })}
+      {specified_tasks.length !== 0 && (
+        <>
+          {type === "lineManagerPreview" ? (
+            <MissionItemsLineManager
+              data={specified_tasks}
+              type="specifiedTasks"
+            />
+          ) : (
+            <SpecifiedTasks data={specified_tasks ?? []} bg="bg-white" />
+          )}
+        </>
+      )}
+
       {boundaries?.length !== 0 && (
-        <MissionWrapper title="Freedom" status={boundaries[0]?.status}>
+        <MissionWrapper
+          title="Freedom"
+          status={type !== "lineManagerPreview" ? boundaries[0]?.status : ""}
+        >
           <div className="flex flex-col gap-[1rem]">
             <MissionSingleItem data={FreedomData} />
             <div>

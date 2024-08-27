@@ -24,6 +24,7 @@ interface contextProps {
   listToUse: any;
   setCheckListLength: (param: any, list?: any) => void;
   // setTriggerUpdateUser: () => void;
+  primaryColorHexValue?: string; // primary color hexvalue
 }
 
 const ActionContext = createContext<contextProps>({
@@ -35,11 +36,13 @@ const ActionContext = createContext<contextProps>({
   triggerUpdateUser: () => {},
   triggerUpdateChecklist: () => {},
   checkListLength: 0,
-  listToUse:[],
+  listToUse: [],
   setCheckListLength: (param, list) => {},
+  primaryColorHexValue: "",
 });
 
 export function ActionContextProvider(props?: any) {
+  const [primaryColorHexValue, setPrimaryColorHexValue] = useState("");
   const { user } = useAppSelector((state) => state.auth);
   const [collapseSideval, setCollapseSideVal] = useState(false);
   const [showNavVal, setShowNavVal] = useState<string>("two");
@@ -56,13 +59,11 @@ export function ActionContextProvider(props?: any) {
     if (Object?.keys(user)?.length > 0) {
       if (checkUserRole(user?.role as string) === "ADMIN") {
         getCurrentAdminDrop();
-      }
-      else{
-        getCurrentEmpDrop()
+      } else {
+        getCurrentEmpDrop();
       }
     }
   }, [user]);
-  
 
   function getCurrentAdminDrop() {
     // check tool ----
@@ -175,6 +176,7 @@ export function ActionContextProvider(props?: any) {
   }
 
   function setPrimaryColorsFunc(param: any) {
+    setPrimaryColorHexValue(param);
     document.documentElement.style.setProperty(
       "--primary-color",
       param || ("#008080" as string)
@@ -203,11 +205,11 @@ export function ActionContextProvider(props?: any) {
   };
 
   const [checkListVal, setCheckListVal] = useState(0);
-  const [listToUse, setListToUse] = useState([])
-  const checkListFunc = (param:any, list: any) => {
+  const [listToUse, setListToUse] = useState([]);
+  const checkListFunc = (param: any, list: any) => {
     setCheckListVal(param);
-    setListToUse(list)
-    }
+    setListToUse(list);
+  };
 
   const contextValue = {
     collapseSideNav: collapseSideval,
@@ -220,6 +222,7 @@ export function ActionContextProvider(props?: any) {
     checkListLength: checkListVal,
     setCheckListLength: checkListFunc,
     listToUse: listToUse,
+    primaryColorHexValue: primaryColorHexValue, // Expose value
   };
 
   return (
