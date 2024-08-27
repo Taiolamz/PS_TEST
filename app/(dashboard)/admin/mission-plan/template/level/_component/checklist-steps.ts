@@ -140,8 +140,8 @@ export const missionContentModal: MissionContentDetails[] = [
   },
   {
     id: "2",
-    label: "Measure of Success/Target",
-    title: "Measure of Success/Target",
+    label: "Measure of Success",
+    title: "Measure of Success",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: true,

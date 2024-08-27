@@ -92,7 +92,7 @@ const AddMissionPlanTemplate: React.FC = () => {
       mapTitle: "success_measures",
       content: renderMeasureOfSuccess,
       displayName: "Measure of Success",
-      isSelected: handleIsSelectedField()[2],
+      isSelected: handleIsSelectedField()[1],
       isRequired: true,
     },
     {
@@ -101,7 +101,7 @@ const AddMissionPlanTemplate: React.FC = () => {
       mapTitle: "specified_tasks",
       content: renderSpecifiedTask,
       displayName: "Specified Tasks",
-      isSelected: handleIsSelectedField()[4],
+      isSelected: handleIsSelectedField()[2],
       isRequired: true,
     },
     {
@@ -119,7 +119,7 @@ const AddMissionPlanTemplate: React.FC = () => {
       mapTitle: "mission_statement",
       content: renderMissionStatement,
       displayName: "Mission Statement",
-      isSelected: handleIsSelectedField()[1],
+      isSelected: handleIsSelectedField()[4],
     },
     {
       id: "6",
