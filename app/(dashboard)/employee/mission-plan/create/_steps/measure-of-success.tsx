@@ -159,7 +159,7 @@ const MeasureofSuccess = () => {
       ) : (
         <div>
           <div className="flex items-center gap-x-2 mb-8">
-            <h1 className="text-[#3E4345]">Measure of Success</h1>
+            <h2 className="text-[#3E4345]">Measure of Success</h2>
             <span>
               <BsFillInfoCircleFill color="#84919A" />
             </span>

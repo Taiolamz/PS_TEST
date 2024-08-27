@@ -54,6 +54,7 @@ interface Task {
   start_date: string;
   end_date: string;
   task?: string;
+  weight?: string;
   strategic_pillars?: [];
   success_measures?: [];
 }
@@ -336,7 +337,7 @@ const SpecifiedTask = () => {
                                       values
                                     )
                                   }
-                                  randomBadgeColor
+                                  // randomBadgeColor
                                   label="Select Pillars"
                                   name={`tasks.${index}.strategic_pillars`}
                                   defaultValue={
@@ -360,6 +361,23 @@ const SpecifiedTask = () => {
                                   }
                                 />
                               </div>
+                              <div className="w-full flex-1">
+                                <Input
+                                  type="text"
+                                  id="weight"
+                                  name={`tasks.${index}.weight`}
+                                  label="Weight %"
+                                  error={errorTasks?.[index]?.weight}
+                                  touched={touchedTasks?.[index]?.weight}
+                                  onBlur={formik.handleBlur}
+                                  placeholder="Input Weight(%)"
+                                  className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                                  onChange={(e) =>
+                                    handleChange(e.target.value, index)
+                                  }
+                                  value={formik.values.tasks[index].weight}
+                                />
+                              </div>
                               <button
                                 type="button"
                                 onClick={() => remove(index)}
@@ -381,7 +399,7 @@ const SpecifiedTask = () => {
                                       values
                                     )
                                   }
-                                  randomBadgeColor
+                                  // randomBadgeColor
                                   options={mappedSuccessMeasures}
                                   label="Select Measure of Success"
                                   name={`tasks.${index}.success_measures`}

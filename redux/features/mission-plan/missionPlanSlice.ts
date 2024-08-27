@@ -8,6 +8,7 @@ const initialState: Dictionary = {
       title: "",
       start_date: "",
       end_date: "",
+      review_period: ""
     },
     mission_vision: {
       mission: "",

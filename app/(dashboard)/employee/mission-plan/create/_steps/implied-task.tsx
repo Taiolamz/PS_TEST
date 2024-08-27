@@ -270,7 +270,7 @@ const ImpliedTask = () => {
         </div>
       ) : (
         <div className="pr-4">
-          <h1>Implied Task</h1>
+          <h2>Implied Task</h2>
 
           <form onSubmit={formik.handleSubmit} className="mt-7">
             <FormikProvider value={formik}>

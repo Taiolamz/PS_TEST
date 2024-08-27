@@ -68,9 +68,9 @@ const MissionDetailPreview = ({
 
   return (
     <div className="w-[60vw]">
-      <h1 className=" text-[var(--primary-color)] font-[600] text-base">
+      <h2 className=" text-[var(--primary-color)] font-[600] text-base">
         Preview Mission Plan Information
-      </h1>
+      </h2>
       <span className="block mt-1 text-[#6E7C87] text-sm">
         Filled Information
       </span>

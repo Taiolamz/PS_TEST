@@ -74,6 +74,12 @@ export const missionPlanApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getLineManagerMissionPlan: builder.query({
+      query: ({ fiscalYear }) => ({
+        url: `/mission-plan/line-manager/${fiscalYear}`,
+        method: "GET",
+      }),
+    }),
     saveFinancialYear: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/save`,
@@ -143,4 +149,5 @@ export const {
   useCreateSpecifiedTaskMutation,
   useSubmitPreviewedMissionPlanMutation,
   useGetMissionPlanItemsByIdQuery,
+  useGetLineManagerMissionPlanQuery,
 } = missionPlanApi;
