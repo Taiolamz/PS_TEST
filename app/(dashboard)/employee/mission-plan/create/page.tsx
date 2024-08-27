@@ -25,6 +25,16 @@ const CreateMissionPlan = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+<<<<<<< Updated upstream
+=======
+
+  const user = useAppSelector(selectUser);
+
+  const { line_manager } = user;
+
+  console.log(line_manager);
+
+>>>>>>> Stashed changes
   return (
     <DashboardLayout
       headerTitle={active_fy_info?.title}
