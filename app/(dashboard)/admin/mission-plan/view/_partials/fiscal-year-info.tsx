@@ -5,6 +5,7 @@ import { useAppSelector } from "@/redux/store";
 import Link from "next/link";
 import React, { useState } from "react";
 import FYExtendModal from "../_modal/fy-extend-modal";
+import CustomDateInput from "@/components/custom-date-input";
 
 
 const FiscalYearInfo = () => {
@@ -139,7 +140,37 @@ const FiscalYearInfo = () => {
       <FYExtendModal
         show={extendSubmission}
         handleClose={() => setExtendSubmission(false)}
-      />
+        >
+         <form className="p-5">
+            <div className=" flex text-custom-gray-scale-300">
+              <div className=" ">
+                <label htmlFor="start_date">  Previous start date  </label>
+                <input placeholder="Start Date" id="start_date" name="start_date" className="w-[205px] h-[40px] border-[2px] p-2 outline-none border-custom-divider rounded-md"/>
+              </div>
+              <div className=" ">
+                <label htmlFor="end_date"> Previous End date  </label>
+                <input placeholder="End Date" id="end_date" name="end_date" className="w-[205px] h-[40px] border-[2px] p-2 outline-none border-custom-divider rounded-md"/>
+              </div>
+            </div>
+            <div className=" flex flex-col mt-5 w-[205px] h-[40px]">
+              <CustomDateInput 
+                id="new_end_date"
+                label="New End Date"
+                handleChange={handleCloseModal}
+                className="w-full h-full"
+                placeholder=" "
+                labelClass=" text-[16px] text-black"
+                showIcon = {false}
+                format=""
+                error="nothing"
+              />
+            </div>
+            <div className="mt-10">
+              <label htmlFor="new_date" className="text-custom-gray-scale-300"> Reason for Extension  </label>
+              <textarea placeholder="" id="new_date" name="new_date" className=" w-[425px] mt-2 h-[71px] rounded-md border-[2px] p-2 outline-none border-custom-divider resize-none"/>
+            </div> 
+         </form>
+        </FYExtendModal>
     </div>
   );
 };

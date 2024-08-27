@@ -6,11 +6,13 @@ import React from "react";
 interface ModalContainerProps {
   show: boolean;
   handleClose?: () => void;
+  children?: React.ReactNode
 }
 
 export default function FYExtendModal({
   show,
   handleClose,
+  children
 }: ModalContainerProps) {
   return (
     <ReusableModalContainer
@@ -20,6 +22,7 @@ export default function FYExtendModal({
       title="Financial Year Extension"
       modalClass="md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[39.5rem]"
     >
+      {children}
       <div className="px-6">
         <Button>Extend Financial Year</Button>
       </div>
