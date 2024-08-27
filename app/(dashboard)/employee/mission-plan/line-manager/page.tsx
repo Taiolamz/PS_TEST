@@ -9,6 +9,8 @@ import { PageLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { isObjectEmpty } from "@/utils/helpers";
+import { EmptyState } from "@/components/fragment";
+import { EmptyFileIcon } from "@/public/assets/icons";
 
 const LineManagerMissionPlan = () => {
   const router = useRouter();
@@ -51,7 +53,11 @@ const LineManagerMissionPlan = () => {
             </div>
             {errorLineManagerMissionPlan ||
             isObjectEmpty(lineManagerMissionPlan) ? (
-              <div> Empty </div>
+              <EmptyState icon={EmptyFileIcon}>
+                <p className="text-custom-gray-scale-400 font-medium text-sm -mt-3">
+                  No Mission plan found
+                </p>
+              </EmptyState>
             ) : (
               <Preview
                 data={lineManagerMissionPlan?.data}
