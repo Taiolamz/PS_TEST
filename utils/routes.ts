@@ -57,6 +57,7 @@ const routesPath = {
     MISSION_PLAN: `/${employee_auth}/mission-plan?ui=mission-plan`,
     MAIN_MISSION_PLAN: `/${employee_auth}/mission-plan`,
     CREATE_MISSION_PLAN: `/${employee_auth}/mission-plan/create`,
+    LINE_MANAGER_MISSION_PLAN: `/${employee_auth}/mission-plan/line-manager`,
     SINGLE_MISSION_PLAN: `/${employee_auth}/mission-plan/view`,
     MISSION_PLAN_TEMPLATE: `/${employee_auth}/mission-plan/template`,
     APPROVE_REJECT_MISSION_PLAN: (id: string) =>

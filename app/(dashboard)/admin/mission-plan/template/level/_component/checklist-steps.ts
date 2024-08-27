@@ -62,54 +62,60 @@ export const checklistDetails = [
 
 export const missionPlanDetails = [
   {
-    label: "C-Level Mission Plan",
+    label: "Default Mission Plan Template",
     content: "",
     path: "",
     icon: GraySkeleton,
   },
-  {
-    label: "Entry Level Mission Plan",
-    content: "",
-    path: "",
-    icon: SuccessSkeleton,
-  },
-  {
-    label: "C-Level Mission Plan",
-    content: "",
-    path: "",
-    icon: WarningSkeleton,
-  },
-  {
-    label: "Entry Level Mission Plan",
-    content: "",
-    path: "",
-    icon: SuccessSkeleton,
-  },
-  {
-    label: "C-Level Mission Plan",
-    content: "",
-    path: "",
-    icon: WarningSkeleton,
-  },
-  {
-    label: "Entry Level Mission Plan",
-    content: "",
-    path: "",
-    icon: SuccessSkeleton,
-  },
-  {
-    label: "C-Level Mission Plan",
-    content: "",
-    path: "",
-    icon: WarningSkeleton,
-  },
+  // {
+  //   label: "C-Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: GraySkeleton,
+  // },
+  // {
+  //   label: "Entry Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: SuccessSkeleton,
+  // },
+  // {
+  //   label: "C-Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: WarningSkeleton,
+  // },
+  // {
+  //   label: "Entry Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: SuccessSkeleton,
+  // },
+  // {
+  //   label: "C-Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: WarningSkeleton,
+  // },
+  // {
+  //   label: "Entry Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: SuccessSkeleton,
+  // },
+  // {
+  //   label: "C-Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: WarningSkeleton,
+  // },
 
-  {
-    label: "C-Level Mission Plan",
-    content: "",
-    path: "",
-    icon: GraySkeleton,
-  },
+  // {
+  //   label: "C-Level Mission Plan",
+  //   content: "",
+  //   path: "",
+  //   icon: GraySkeleton,
+  // },
 ];
 
 export type MissionContentDetails = {
@@ -118,6 +124,7 @@ export type MissionContentDetails = {
   label: string;
   content: string;
   isSelected: boolean;
+  isRequired?: boolean;
 };
 
 export const missionContentModal: MissionContentDetails[] = [
@@ -127,36 +134,44 @@ export const missionContentModal: MissionContentDetails[] = [
     title: "Financial Year",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
-    isSelected: false,
+    isSelected: true,
+    // isSelected: false,
+    isRequired: true,
   },
   {
     id: "2",
-    label: "Mission Statement",
-    title: "Mission Statement",
-    content:
-      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
-    isSelected: false,
-  },
-  {
-    id: "3",
     label: "Measure of Success",
     title: "Measure of Success",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
-    isSelected: false,
+    isSelected: true,
+    // isSelected: false,
+    isRequired: true,
   },
   {
-    id: "4",
+    id: "3",
     label: "Specified Tasks",
     title: "Specified Task",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
-    isSelected: false,
+    isSelected: true,
+    // isSelected: false,
+    isRequired: true,
+  },
+  {
+    id: "4",
+    label: "Implied Tasks",
+    title: "Implied Task",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+    // isSelected: false,
+    isRequired: true,
   },
   {
     id: "5",
-    label: "Implied Tasks",
-    title: "Implied Task",
+    label: "Mission Statement",
+    title: "Mission Statement",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,

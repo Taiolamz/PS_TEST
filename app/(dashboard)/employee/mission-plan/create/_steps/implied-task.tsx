@@ -27,6 +27,19 @@ import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 import { isValid, parse } from "date-fns";
 
+interface SubItem {
+  task: string;
+  user_id: string;
+  specified_task_id: string;
+  implied_task_id: string;
+  weight: string;
+  percentage: string;
+  start_date: string;
+  end_date: string;
+  resources: string[];
+  expected_outcomes: string[];
+}
+
 type ImpliedTaskType = {
   implied_tasks?: any[];
   title?: string;
@@ -44,6 +57,7 @@ type ImpliedTaskType = {
   id?: string;
   is_main_effort?: boolean;
   mission_plan_id?: string;
+  subItems?: SubItem[];
   strategic_pillars?: {
     label: string;
     id: string;
@@ -142,6 +156,7 @@ const ImpliedTask = () => {
         start_date: task.start_date,
         end_date: task.end_date,
         expected_outcomes: task.expected_outcomes,
+        subItems: [],
       })),
     };
 
@@ -207,6 +222,7 @@ const ImpliedTask = () => {
             start_date: "",
             end_date: "",
             resources: item.resources || [],
+            subItems: [],
           },
         ];
       }
@@ -225,28 +241,68 @@ const ImpliedTask = () => {
             (resource: { staff_member_id: string }) => resource?.staff_member_id
           ),
           expected_outcomes: chi?.expected_outcome || "",
+          subItems: [],
         };
       });
     });
     return newData;
   };
 
-  const initialValues = {
+  // const initialValues = {
+  //   tasks:  [
+  //     {
+  //       task: "",
+  //       user_id: "",
+  //       specified_task_id: "",
+  //       implied_task_id: "",
+  //       weight: "",
+  //       percentage: "",
+  //       start_date: "",
+  //       end_date: "",
+  //       resources: [],
+  //       expected_outcomes: [""],
+  //       subItems: [],
+  //     },
+  //   ],
+  //   mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+  // };
+
+  interface Task {
+    task: string;
+    weight: number;
+    percentage: number;
+    resources: any[];
+    start_date: string;
+    end_date: string;
+    subItems: SubItem[];
+  }
+  const initialValues: {
+    tasks: any[];
+  } = {
     tasks: [
       {
         task: "",
-        user_id: "",
-        specified_task_id: "",
-        implied_task_id: "",
         weight: "",
         percentage: "",
+        resources: [],
         start_date: "",
         end_date: "",
-        resources: [],
-        expected_outcomes: [""],
+        subItems: [
+          {
+            task: "",
+            user_id: "",
+            specified_task_id: "",
+            implied_task_id: "",
+            weight: "",
+            percentage: "",
+            start_date: "",
+            end_date: "",
+            resources: [],
+            expected_outcomes: [""],
+          },
+        ],
       },
     ],
-    mission_plan_id: mission_plan_info?.mission_plan?.id || "",
   };
 
   const formik = useFormik({
@@ -262,6 +318,155 @@ const ImpliedTask = () => {
 
   const errorTasks = formik.errors.tasks as any;
   const touchedTasks = formik.touched.tasks as any;
+
+  const [impliedTasks, setImpliedTasks] = useState(formik.values.tasks);
+
+  console.log(impliedTasks, "state tasks");
+  console.log(formik.values.tasks, "formik tasks");
+
+  const formatImpliedTasks = () => {
+    const newData = formik.values.tasks?.map((chi) => {
+      return {
+        ...chi,
+        subItems: [],
+      };
+    });
+    return newData;
+  };
+
+  console.log(formatImpliedTasks(), "implied tasks format");
+
+  // const handleAddMoreImpliedTasks = (index: number) => {
+  //   formik.setFieldValue("tasks", (prevData: any) => {
+  //     const newData = [...prevData];
+  //     const targetItem = newData[index];
+  //     newData[index] = {
+  //       ...targetItem,
+  //       subItems: [
+  //         ...targetItem.subItems,
+  //         {
+  //           task: "",
+  //           user_id: "",
+  //           specified_task_id: "",
+  //           implied_task_id: "",
+  //           weight: "",
+  //           percentage: "",
+  //           start_date: "",
+  //           end_date: "",
+  //           resources: [],
+  //           expected_outcomes: [""],
+  //         },
+  //       ],
+  //     };
+  //     return newData;
+  //   });
+  // };
+  const handleAddMoreImpliedTasks = (index: number) => {
+    const currentSubItems = formik.values.tasks[index].subItems || [];
+    const newSubItem = {
+      task: "",
+      user_id: "",
+      specified_task_id: "",
+      implied_task_id: "",
+      weight: "",
+      percentage: "",
+      start_date: "",
+      end_date: "",
+      resources: [],
+      expected_outcomes: [""],
+    };
+
+    const updatedSubItems = [...currentSubItems, newSubItem];
+
+    // Log the updated value
+    console.log("Before Update:", formik.values.tasks[index].subItems);
+    console.log("Adding New SubItem:", newSubItem);
+    console.log("After Update:", updatedSubItems);
+
+    // Update the Formik field value
+    formik.setFieldValue(`tasks.${index}.subItems`, updatedSubItems);
+  };
+
+  const handleDeleteSubItem = (taskIndex: number, subItemIndex: number) => {
+    // Get the current subItems array
+    const currentSubItems = formik.values.tasks[taskIndex].subItems || [];
+
+    // Remove the subItem at the given index
+    const updatedSubItems = (currentSubItems as any[]).filter(
+      (_, index) => index !== subItemIndex
+    );
+
+    // Log for debugging
+    console.log("Before Delete:", currentSubItems);
+    console.log("Deleting SubItem at Index:", subItemIndex);
+    console.log("After Delete:", updatedSubItems);
+
+    // Update Formik values
+    formik.setFieldValue(`tasks.${taskIndex}.subItems`, updatedSubItems);
+  };
+  console.log(formik.values.tasks, "formik");
+  // const [data, setData] = useState<any[]>([
+  //   {
+  //     name: "hassan",
+  //     id: "2",
+  //     score: 3,
+  //     subItems: [], // Initialize with an empty array for subItems
+  //   },
+  //   {
+  //     name: "taiwo",
+  //     id: "4",
+  //     score: 9,
+  //     subItems: [], // Initialize with an empty array for subItems
+  //   },
+  //   {
+  //     name: "micha",
+  //     id: "9",
+  //     score: 9,
+  //     subItems: [], // Initialize with an empty array for subItems
+  //   },
+  // ]);
+
+  // const handleAddMore = (index: number) => {
+  //   setData((prevData) => {
+  //     // Clone the current data
+  //     const newData = [...prevData];
+  //     // Get the target item
+  //     const targetItem = newData[index];
+
+  //     // Add a new subItem to the target item's subItems array
+  //     newData[index] = {
+  //       ...targetItem,
+  //       subItems: [
+  //         ...targetItem.subItems,
+  //         {
+  //           title: "",
+  //           id: "",
+  //           score: "",
+  //           add_more: "",
+  //         },
+  //       ],
+  //     };
+
+  //     return newData;
+  //   });
+  // };
+
+  // const handleDeleteSubItem = (itemIndex: number, subItemIndex: number) => {
+  //   setData((prevData) => {
+  //     const newData = [...prevData];
+  //     const targetItem = newData[itemIndex];
+
+  //     newData[itemIndex] = {
+  //       ...targetItem,
+  //       subItems: (targetItem.subItems as any[]).filter(
+  //         (_, i) => i !== subItemIndex
+  //       ),
+  //     };
+
+  //     return newData;
+  //   });
+  // };
+
   return (
     <>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (
@@ -270,7 +475,7 @@ const ImpliedTask = () => {
         </div>
       ) : (
         <div className="pr-4">
-          <h1>Implied Task</h1>
+          <h2>Implied Task</h2>
 
           <form onSubmit={formik.handleSubmit} className="mt-7">
             <FormikProvider value={formik}>
@@ -301,273 +506,363 @@ const ImpliedTask = () => {
                                 </p>
                               }
                               content={
-                                <div>
-                                  <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
-                                    <div>
-                                      <Input
-                                        type="text"
-                                        id={`tasks.${index}.task`}
-                                        label={`Task ${index + 1}`}
-                                        labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        name={`tasks.${index}.task`}
-                                        placeholder="Input Task"
-                                        className="mr-2 w-full"
-                                        value={formik.values.tasks[index].task}
-                                      />
+                                <>
+                                  <div>
+                                    <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
+                                      <div>
+                                        <Input
+                                          type="text"
+                                          id={`tasks.${index}.task`}
+                                          label={`Task ${index + 1}`}
+                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                          onBlur={formik.handleBlur}
+                                          onChange={formik.handleChange}
+                                          name={`tasks.${index}.task`}
+                                          placeholder="Input Task"
+                                          className="mr-2 w-full"
+                                          value={
+                                            formik.values.tasks[index].task
+                                          }
+                                        />
+                                      </div>
+                                      <div>
+                                        <Input
+                                          type="number"
+                                          id={`tasks.${index}.weight`}
+                                          label="Input Weight"
+                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                          onBlur={formik.handleBlur}
+                                          onChange={formik.handleChange}
+                                          name={`tasks.${index}.weight`}
+                                          placeholder="Input Weight"
+                                          className="mr-2 w-full"
+                                          value={
+                                            formik.values.tasks[index].weight
+                                          }
+                                        />
+                                        <ErrorMessage
+                                          name={`intents.${index}.behaviours.value`}
+                                          className="text-red-500 text-xs mt-1"
+                                          component={"div"}
+                                        />
+                                      </div>
+                                      <div>
+                                        <Input
+                                          type="number"
+                                          id={`tasks.${index}.percentage`}
+                                          label="Input Percentage"
+                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                          onBlur={formik.handleBlur}
+                                          onChange={formik.handleChange}
+                                          name={`tasks.${index}.percentage`}
+                                          placeholder="Input Percentage"
+                                          className="mr-2 w-full"
+                                          value={
+                                            formik.values.tasks[index]
+                                              .percentage
+                                          }
+                                        />
+                                        <ErrorMessage
+                                          name={`intents.${index}.behaviours.value`}
+                                          className="text-red-500 text-xs mt-1"
+                                          component={"div"}
+                                        />
+                                      </div>
                                     </div>
-                                    <div>
-                                      <Input
-                                        type="number"
-                                        id={`tasks.${index}.weight`}
-                                        label="Input Weight"
-                                        labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        name={`tasks.${index}.weight`}
-                                        placeholder="Input Weight"
-                                        className="mr-2 w-full"
-                                        value={
-                                          formik.values.tasks[index].weight
-                                        }
-                                      />
-                                      <ErrorMessage
-                                        name={`intents.${index}.behaviours.value`}
-                                        className="text-red-500 text-xs mt-1"
-                                        component={"div"}
-                                      />
+                                    <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
+                                      <div className="mt-1">
+                                        <CustomMultipleSelect
+                                          randomBadgeColor
+                                          options={formattedEmployeesDrop}
+                                          onValueChange={(values) =>
+                                            formik.setFieldValue(
+                                              `tasks.${index}.resources`,
+                                              values
+                                            )
+                                          }
+                                          label="Select Resources"
+                                          name={`tasks.${index}.resources`}
+                                          defaultValue={
+                                            formik.values.tasks[index].resources
+                                          }
+                                          placeholder="Select Resources"
+                                          badgeClassName={`rounded-[20px] text-[10px] font-normal`}
+                                          // triggerClassName={`min-h-[30px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm h-9`}
+                                          triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1`}
+                                          placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
+                                          labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[9px]`}
+                                          error={errorTasks?.[index]?.resources}
+                                          touched={
+                                            touchedTasks?.[index]?.resources
+                                          }
+                                          maxCount={6}
+                                          onBlur={() =>
+                                            formik.setFieldTouched(
+                                              `tasks.${index}.resources`,
+                                              true
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                      <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%]">
+                                        <CustomDateInput
+                                          id={`tasks.${index}.start_date`}
+                                          label="Start Date"
+                                          selected={
+                                            formik.values.tasks[index]
+                                              .start_date as any
+                                          }
+                                          handleChange={(date) =>
+                                            formik.setFieldValue(
+                                              `tasks.${index}.start_date`,
+                                              formatDate(date)
+                                            )
+                                          }
+                                          error={""}
+                                          className="relative pr-8 w-full"
+                                          iconClass="top-[2.7rem] right-3"
+                                          inputClass=" "
+                                          isRequired
+                                        />
+                                        <CustomDateInput
+                                          id={`tasks.${index}.end_date`}
+                                          label="End Date"
+                                          selected={
+                                            formik.values.tasks[index]
+                                              .end_date as any
+                                          }
+                                          handleChange={(date) =>
+                                            formik.setFieldValue(
+                                              `tasks.${index}.end_date`,
+                                              formatDate(date)
+                                            )
+                                          }
+                                          error={""}
+                                          className="relative pr-8"
+                                          iconClass="top-[2.7rem] right-3"
+                                          isRequired
+                                        />
+                                      </div>
                                     </div>
-                                    <div>
-                                      <Input
-                                        type="number"
-                                        id={`tasks.${index}.percentage`}
-                                        label="Input Percentage"
-                                        labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                        onBlur={formik.handleBlur}
-                                        onChange={formik.handleChange}
-                                        name={`tasks.${index}.percentage`}
-                                        placeholder="Input Percentage"
-                                        className="mr-2 w-full"
-                                        value={
-                                          formik.values.tasks[index].percentage
-                                        }
-                                      />
-                                      <ErrorMessage
-                                        name={`intents.${index}.behaviours.value`}
-                                        className="text-red-500 text-xs mt-1"
-                                        component={"div"}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
-                                    <div className="mt-1">
-                                      <CustomMultipleSelect
-                                        randomBadgeColor
-                                        options={formattedEmployeesDrop}
-                                        onValueChange={(values) =>
-                                          formik.setFieldValue(
-                                            `tasks.${index}.resources`,
-                                            values
-                                          )
-                                        }
-                                        label="Select Resources"
-                                        name={`tasks.${index}.resources`}
-                                        defaultValue={
-                                          formik.values.tasks[index].resources
-                                        }
-                                        placeholder="Select Resources"
-                                        badgeClassName={`rounded-[20px] text-[10px] font-normal`}
-                                        // triggerClassName={`min-h-[30px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm h-9`}
-                                        triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1`}
-                                        placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
-                                        labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[9px]`}
-                                        error={errorTasks?.[index]?.resources}
-                                        touched={
-                                          touchedTasks?.[index]?.resources
-                                        }
-                                        maxCount={6}
-                                        onBlur={() =>
-                                          formik.setFieldTouched(
-                                            `tasks.${index}.resources`,
-                                            true
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                    <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%]">
-                                      <CustomDateInput
-                                        id={`tasks.${index}.start_date`}
-                                        label="Start Date"
-                                        selected={
-                                          formik.values.tasks[index]
-                                            .start_date as any
-                                        }
-                                        handleChange={(date) =>
-                                          formik.setFieldValue(
-                                            `tasks.${index}.start_date`,
-                                            formatDate(date)
-                                          )
-                                        }
-                                        error={""}
-                                        className="relative pr-8 w-full"
-                                        iconClass="top-[2.7rem] right-3"
-                                        inputClass=" "
-                                        isRequired
-                                      />
-                                      <CustomDateInput
-                                        id={`tasks.${index}.end_date`}
-                                        label="End Date"
-                                        selected={
-                                          formik.values.tasks[index]
-                                            .end_date as any
-                                        }
-                                        handleChange={(date) =>
-                                          formik.setFieldValue(
-                                            `tasks.${index}.end_date`,
-                                            formatDate(date)
-                                          )
-                                        }
-                                        error={""}
-                                        className="relative pr-8"
-                                        iconClass="top-[2.7rem] right-3"
-                                        isRequired
-                                      />
-                                    </div>
-                                  </div>
+                                    {task.subItems &&
+                                      task.subItems.length > 0 &&
+                                      (task.subItems as SubItem[]).map(
+                                        (subItem, subIndex) => {
+                                          // Log subItem to the console for debugging
+                                          console.log("SubItem:", subItem);
 
-                                  {/* <FieldArray
-                                    name={`tasks.${index}.expected_outcomes`}
-                                  >
-                                    {({
-                                      remove: removeOutcome,
-                                      push: pushOutcome,
-                                    }) => (
-                                      <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max mt-4">
-                                        {(Array.isArray(
-                                          formik.values.tasks[index]
-                                            .expected_outcomes
-                                        )
-                                          ? formik.values.tasks[index]
-                                              .expected_outcomes
-                                          : []
-                                        ).map((outcome, outcomeIndex) => (
-                                          <div
-                                            key={outcomeIndex}
-                                            className="items-center w-full relative"
-                                          >
-                                            <Input
-                                              type="text"
-                                              id={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                              label="Expected Outcomes"
-                                              labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                              onBlur={formik.handleBlur}
-                                              onChange={formik.handleChange}
-                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                              placeholder="Input Expected Outcomes"
-                                              className="mr-2 w-full md:w-[12rem] lg:w-[20rem]"
-                                              value={outcome}
-                                            />
-                                            <ErrorMessage
-                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                              className="text-red-500 text-xs mt-1"
-                                              component={"div"}
-                                            />
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                removeOutcome(outcomeIndex)
-                                              }
-                                              className="text-red-600 absolute left-[180px] md:left-[280px] lg:left-[285px] bottom-3 md:bottom-0 lg:bottom-3"
+                                          return (
+                                            <div
+                                              key={subIndex}
+                                              className="mt-5"
                                             >
-                                              <LiaTimesSolid size={18} />
-                                            </button>
-                                          </div>
-                                        ))}
-                                        <button
-                                          type="button"
-                                          onClick={() => pushOutcome("")}
-                                          className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
-                                        >
-                                          <LucidePlusCircle
-                                            size={28}
-                                            className="mr-2"
-                                          />
-                                          <span className="text-[15px] font-normal whitespace-nowrap">
-                                            Add Outcomes
-                                          </span>
-                                        </button>
-                                      </div>
-                                    )}
-                                  </FieldArray> */}
-                                  <FieldArray
-                                    name={`tasks.${index}.expected_outcomes`}
-                                  >
-                                    {({
-                                      remove: removeOutcome,
-                                      push: pushOutcome,
-                                    }) => (
-                                      <div className="grid md:grid-cols-2 items-start gap-x-6 gap-y-3 relative !ml-0 justify-between w-max mt-4">
-                                        {(Array.isArray(
-                                          formik.values.tasks[index]
-                                            .expected_outcomes
-                                        )
-                                          ? formik.values.tasks[index]
-                                              .expected_outcomes
-                                          : []
-                                        ).map((outcome, outcomeIndex) => (
-                                          <div
-                                            key={outcomeIndex}
-                                            className="items-center w-full relative "
-                                          >
-                                            <div className="grid place-items-center">
-                                              <Input
-                                                type="text"
-                                                id={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                                label="Expected Outcomes"
-                                                labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                                onBlur={formik.handleBlur}
-                                                onChange={formik.handleChange}
-                                                name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                                placeholder="Input Expected Outcomes"
-                                                className="mr-2 w-full md:w-[12rem] lg:w-[20rem]"
-                                                value={outcome}
-                                              />
-
-                                              <button
+                                              <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
+                                                <div>
+                                                  <Input
+                                                    type="text"
+                                                    id={`tasks.${index}.subItems.${subIndex}.task`}
+                                                    label={`Subtask ${
+                                                      subIndex + 1
+                                                    }`}
+                                                    labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                    onBlur={formik.handleBlur}
+                                                    onChange={
+                                                      formik.handleChange
+                                                    }
+                                                    name={`tasks.${index}.subItems.${subIndex}.task`}
+                                                    placeholder="Input Subtask"
+                                                    className="mr-2 w-full"
+                                                    value={
+                                                      formik.values.tasks[index]
+                                                        .subItems[subIndex].task
+                                                    }
+                                                  />
+                                                </div>
+                                                <div>
+                                                  <Input
+                                                    type="number"
+                                                    id={`tasks.${index}.subItems.${subIndex}.weight`}
+                                                    label="Input Weight"
+                                                    labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                    onBlur={formik.handleBlur}
+                                                    onChange={
+                                                      formik.handleChange
+                                                    }
+                                                    name={`tasks.${index}.subItems.${subIndex}.weight`}
+                                                    placeholder="Input Weight"
+                                                    className="mr-2 w-full"
+                                                    value={
+                                                      formik.values.tasks[index]
+                                                        .subItems[subIndex]
+                                                        .weight
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name={`tasks.${index}.subItems.${subIndex}.weight`}
+                                                    className="text-red-500 text-xs mt-1"
+                                                    component={"div"}
+                                                  />
+                                                </div>
+                                                <div>
+                                                  <Input
+                                                    type="number"
+                                                    id={`tasks.${index}.subItems.${subIndex}.percentage`}
+                                                    label="Input Percentage"
+                                                    labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                    onBlur={formik.handleBlur}
+                                                    onChange={
+                                                      formik.handleChange
+                                                    }
+                                                    name={`tasks.${index}.subItems.${subIndex}.percentage`}
+                                                    placeholder="Input Percentage"
+                                                    className="mr-2 w-full"
+                                                    value={
+                                                      formik.values.tasks[index]
+                                                        .subItems[subIndex]
+                                                        .percentage
+                                                    }
+                                                  />
+                                                  <ErrorMessage
+                                                    name={`tasks.${index}.subItems.${subIndex}.percentage`}
+                                                    className="text-red-500 text-xs mt-1"
+                                                    component={"div"}
+                                                  />
+                                                </div>
+                                              </div>
+                                              <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
+                                                <div className="mt-1">
+                                                  <CustomMultipleSelect
+                                                    randomBadgeColor
+                                                    options={
+                                                      formattedEmployeesDrop
+                                                    }
+                                                    onValueChange={(values) =>
+                                                      formik.setFieldValue(
+                                                        `tasks.${index}.subItems.${subIndex}.resources`,
+                                                        values
+                                                      )
+                                                    }
+                                                    label="Select Resources"
+                                                    name={`tasks.${index}.subItems.${subIndex}.resources`}
+                                                    defaultValue={
+                                                      formik.values.tasks[index]
+                                                        .subItems[subIndex]
+                                                        .resources
+                                                    }
+                                                    placeholder="Select Resources"
+                                                    badgeClassName={`rounded-[20px] text-[10px] font-normal`}
+                                                    triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1`}
+                                                    placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
+                                                    labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[9px]`}
+                                                    error={
+                                                      errorTasks?.[index]
+                                                        ?.subItems?.[subIndex]
+                                                        ?.resources
+                                                    }
+                                                    touched={
+                                                      touchedTasks?.[index]
+                                                        ?.subItems?.[subIndex]
+                                                        ?.resources
+                                                    }
+                                                    maxCount={6}
+                                                    onBlur={() =>
+                                                      formik.setFieldTouched(
+                                                        `tasks.${index}.subItems.${subIndex}.resources`,
+                                                        true
+                                                      )
+                                                    }
+                                                  />
+                                                </div>
+                                                <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%] relative place-items-center">
+                                                  <CustomDateInput
+                                                    id={`tasks.${index}.subItems.${subIndex}.start_date`}
+                                                    label="Start Date"
+                                                    selected={
+                                                      formik.values.tasks[index]
+                                                        .subItems[subIndex]
+                                                        .start_date as any
+                                                    }
+                                                    handleChange={(date) =>
+                                                      formik.setFieldValue(
+                                                        `tasks.${index}.subItems.${subIndex}.start_date`,
+                                                        formatDate(date)
+                                                      )
+                                                    }
+                                                    error={""}
+                                                    className="relative pr-8 w-full"
+                                                    iconClass="top-[2.7rem] right-3"
+                                                    inputClass=" "
+                                                    isRequired
+                                                  />
+                                                  <CustomDateInput
+                                                    id={`tasks.${index}.subItems.${subIndex}.end_date`}
+                                                    label="End Date"
+                                                    selected={
+                                                      formik.values.tasks[index]
+                                                        .subItems[subIndex]
+                                                        .end_date as any
+                                                    }
+                                                    handleChange={(date) =>
+                                                      formik.setFieldValue(
+                                                        `tasks.${index}.subItems.${subIndex}.end_date`,
+                                                        formatDate(date)
+                                                      )
+                                                    }
+                                                    error={""}
+                                                    className="relative pr-8"
+                                                    iconClass="top-[2.7rem] right-3"
+                                                    isRequired
+                                                  />
+                                                </div>
+                                                <div
+                                                  className="absolute right-0 mr-5 cursor-pointer"
+                                                  onClick={() =>
+                                                    handleDeleteSubItem(
+                                                      index,
+                                                      subIndex
+                                                    )
+                                                  }
+                                                >
+                                                  <Icon
+                                                    name="remove"
+                                                    width={14.28}
+                                                    height={18.63}
+                                                  />
+                                                </div>
+                                              </div>
+                                              {/* <button
                                                 type="button"
-                                                onClick={() =>
-                                                  removeOutcome(outcomeIndex)
-                                                }
-                                                className="text-red-600 absolute right-0 mr-5  mt-7"
+                                                // onClick={() =>
+                                                //   handleDeleteSubItem(
+                                                //     index,
+                                                //     subIndex
+                                                //   )
+                                                // }
+                                                className="mt-2 text-red-500 hover:text-red-700"
                                               >
-                                                <LiaTimesSolid size={18} />
-                                              </button>
+                                                Delete Subitem
+                                              </button> */}
                                             </div>
-                                            <ErrorMessage
-                                              name={`tasks.${index}.expected_outcomes.${outcomeIndex}`}
-                                              className="text-red-500 text-xs mt-1"
-                                              component={"div"}
-                                            />
-                                          </div>
-                                        ))}
-                                        <button
-                                          type="button"
-                                          onClick={() => pushOutcome("")}
-                                          className="text-left flex items-center gap-x-2 relative mt-4 md:mt-8 text-primary text-sm"
-                                        >
-                                          <LucidePlusCircle
-                                            size={28}
-                                            className="mr-2"
-                                          />
-                                          <span className="text-[15px] font-normal whitespace-nowrap">
-                                            Add Outcomes
-                                          </span>
-                                        </button>
-                                      </div>
-                                    )}
-                                  </FieldArray>
-                                </div>
+                                          );
+                                        }
+                                      )}
+
+                                    <div
+                                      className="flex gap-2 items-center mt-5 cursor-pointer"
+                                      onClick={() =>
+                                        handleAddMoreImpliedTasks(index)
+                                      }
+                                    >
+                                      <LucidePlusCircle
+                                        size={28}
+                                        className="mr-2 text-primary"
+                                      />
+                                      <p className="text-primary">
+                                        Add new Task
+                                      </p>
+                                    </div>
+                                  </div>
+                                </>
                               }
                             />
 
@@ -635,6 +930,29 @@ const ImpliedTask = () => {
               </div>
             </FormikProvider>
           </form>
+          <div>
+            {/* {data.map((item, index) => (
+              <div key={index}>
+                <h3>{item.name}</h3>
+                <p>ID: {item.id}</p>
+                <p>Score: {item.score}</p>
+                <button onClick={() => handleAddMore(index)}>Add More</button>
+                {(item.subItems as any[]).map((subItem, subIndex) => (
+                  <div key={subIndex} style={{ marginLeft: "20px" }}>
+                    <p>Subitem Name: {subItem.name}</p>
+                    <p>Subitem ID: {subItem.id}</p>
+                    <p>Subitem Score: {subItem.score}</p>
+                    <p>Subitem Add More: {subItem.add_more}</p>
+                    <button
+                      onClick={() => handleDeleteSubItem(index, subIndex)}
+                    >
+                      Delete Subitem
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ))} */}
+          </div>
           <div className="mt-7"></div>
         </div>
       )}
