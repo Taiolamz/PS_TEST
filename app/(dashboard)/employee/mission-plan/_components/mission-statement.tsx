@@ -37,8 +37,6 @@ const MissionStatement = ({
     approval_type,
   });
 
-  console.log({ loading });
-
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -73,7 +71,7 @@ const MissionStatement = ({
           )}
         </div>
       </div>
-
+      {/* {showTextArea && ( */}
       <Comment
         label="Mission statement"
         showTextArea={showTextArea}
@@ -81,6 +79,7 @@ const MissionStatement = ({
         comments={comments}
         formik={FormikApprovalForm}
       />
+      {/* )} */}
     </section>
   );
 };

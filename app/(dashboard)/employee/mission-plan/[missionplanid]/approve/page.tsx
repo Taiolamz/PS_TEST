@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-
 import SpecifiedTasks from "../../_components/specified-task";
 import ImpliedTask from "../../_components/implied-task";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -16,8 +15,7 @@ import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
-import { useApproval } from "../../_components/useApproval";
-import { useAppSelector } from "@/redux/store";
+import Tasks from "../../_components/tasks";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -32,21 +30,20 @@ const ApproveMissionPlan = () => {
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
 
-  const { name } = useAppSelector((state) => state?.single_employee);
-
   const { data, isLoading: isGettingMissionPlanItems } =
     useGetMissionPlanItemsByIdQuery({
       missionplanid: missionplanid as string,
     });
+  const name = data?.data?.staff_member ?? "";
 
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (
-        <div className="py-14 px-[1.625rem] text-sm bg-[var(--btn-light-color)]">
+        <div className="py-14 px-[1.625rem] bg-white text-sm">
           <div className="flex justify-between mb-7">
             <div className="flex items-center gap-[0.5625rem]">
               <h1 className="font-semibold text-lg text-[#3E4345] capitalize">
-                {data?.data?.staff_member} Mission Plan
+                {name} Mission Plan
               </h1>
               {!isGettingMissionPlanItems && (
                 <Button
@@ -65,7 +62,7 @@ const ApproveMissionPlan = () => {
               <Button>Approve All</Button>
             )}
           </div>
-          <div className="flex flex-col gap-2 text-[#162238]">
+          <div className="flex flex-col gap-10 text-[#162238]">
             <MissionStatement
               showTextArea={missionStatementComment.isOpen}
               setShowTextArea={missionStatementComment.toggle}
@@ -79,7 +76,6 @@ const ApproveMissionPlan = () => {
               showTextArea={measureOfSuccessComment.isOpen}
               setShowTextArea={measureOfSuccessComment.toggle}
               data={data?.data?.measure_of_success ?? []}
-              // setApprovalTypeId={setApprovalTypeId}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
@@ -89,7 +85,13 @@ const ApproveMissionPlan = () => {
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
-            <SpecifiedTasks
+
+            <Tasks
+              data={data?.data?.specified_tasks ?? []}
+              approvables={data?.data?.approvables ?? []}
+              loading={isGettingMissionPlanItems}
+            />
+            {/* <SpecifiedTasks
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
@@ -98,7 +100,7 @@ const ApproveMissionPlan = () => {
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
-            />
+            /> */}
 
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}
@@ -109,11 +111,11 @@ const ApproveMissionPlan = () => {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen bg-[var(--btn-light-color)]">
+        <div className="min-h-screen bg-white">
           <PresentationView
             data={data?.data}
             loading={isGettingMissionPlanItems}
-            closeLocation={location}
+            name={name}
           />
         </div>
       )}

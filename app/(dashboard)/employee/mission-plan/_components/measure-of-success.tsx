@@ -96,6 +96,7 @@ const MeasureOfSuccess = ({
           )}
         </div>
       </div>
+      {/* {showTextArea && ( */}
       <Comment
         label="measure of success"
         showTextArea={showTextArea}
@@ -103,6 +104,7 @@ const MeasureOfSuccess = ({
         comments={commentItem}
         formik={FormikApprovalForm}
       />
+      {/* )} */}
     </section>
   );
 };

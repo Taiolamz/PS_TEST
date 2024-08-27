@@ -24,10 +24,10 @@ const MissionWrapper = ({ title, status, comment, children }: missionProp) => {
               {status === "rejected" && comment && status !== undefined && (
                 <div className="text-xs">
                   <p className="flex gap-2 items-center">
-                    <span className="text-[var(--gray-scale)] text-xs font-normal">
+                    <span className="text-[#9AA6AC] text-xs font-normal">
                       View Comments
                     </span>
-                    <span className="bg-[var(--btn-danger)]  text-[var(--text-danger)] p-[3px] px-[6px] rounded-full text-xs">
+                    <span className="bg-[#D6130F1A]  text-[#D6130F] p-[3px] px-[6px] rounded-full text-xs">
                       {comment}
                     </span>
                   </p>

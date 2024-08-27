@@ -14,6 +14,8 @@ import {
   SpecifiedTask,
   StrategicIntent,
 } from "./_steps";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import ShowLineManager from "./_component/show-line-manager";
 
 const { EMPLOYEE } = routesPath;
 
@@ -25,16 +27,22 @@ const CreateMissionPlan = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> eeb187121ba6e612ab5cb4dcff06775d09652d7e
 
   const user = useAppSelector(selectUser);
 
   const { line_manager } = user;
 
+<<<<<<< HEAD
   console.log(line_manager);
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> eeb187121ba6e612ab5cb4dcff06775d09652d7e
   return (
     <DashboardLayout
       headerTitle={active_fy_info?.title}
@@ -48,6 +56,16 @@ const CreateMissionPlan = () => {
           slug="ui"
         />
         <aside className="p-5 w-full overflow-y-scroll pb-10 scroll-hidden">
+          <h1 className="mb-3">Mission Plan</h1>
+          {line_manager?.id !== null && (
+            <ShowLineManager
+              btnText="View"
+              title="Line Manager Mission Plan"
+              clickAction={() =>
+                router.push(EMPLOYEE.LINE_MANAGER_MISSION_PLAN)
+              }
+            />
+          )}
           {ui === "overview" && <MissionPlanOverview />}
           {ui === "mission-statement" && <MissionStatement />}
           {ui === "measure-success" && <MeasureOfSuccess />}

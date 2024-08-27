@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "@radix-ui/react-icons";
@@ -6,6 +6,8 @@ import { BsArrowUpCircleFill } from "react-icons/bs";
 import { FaX } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
 
 type CommentType = {
   id?: string;
@@ -38,6 +40,10 @@ const Comment = ({
   formik,
 }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { primaryColorHexValue } = useContext(ActionContext);
+  const colorWithAlpha = primaryColorHexValue
+    ? addAlphaToHex(primaryColorHexValue, 0.05)
+    : "";
 
   const handleNext = () => {
     if (comments?.comment?.length && comments?.comment?.length > 0) {
@@ -64,39 +70,45 @@ const Comment = ({
           <h2 className="text-[var(--primary-color)] text-sm text-medium">
             Comments
           </h2>
-          <p className="inline-flex py-0.5 px-2 text-xs rounded-full text-[var(--primary-color)] bg-[#0080801A]">
+          <p
+            className="inline-flex py-0.5 px-2 text-xs rounded-full text-[var(--primary-color)] bg-[#0080801A]"
+            style={{
+              backgroundColor: colorWithAlpha,
+            }}
+          >
             {comments?.comment?.length || 0}
           </p>
         </div>
-        {comments?.comment?.length && comments?.comment?.length > 0 && (
-          <div className="flex gap-3.5 items-center">
-            <p
-              className="flex gap-2.5 items-center text-[#6E7C87] text-sm cursor-pointer"
-              onClick={handleAddComment}
-            >
-              <PlusIcon width={24} height={24} /> Add comment
-            </p>
-            <div className="flex items-center gap-2">
-              <MdChevronLeft
-                onClick={handlePrev}
-                className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
-                  currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                size={24}
-              />
-              <MdChevronRight
-                onClick={handleNext}
-                size={24}
-                className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
-                  currentIndex >=
-                  comments?.comment.length - (showTextArea ? 1 : 2)
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-              />
-            </div>
+        <div className="flex gap-3.5 items-center">
+          <p
+            className="flex gap-2.5 items-center text-[#6E7C87] text-sm cursor-pointer"
+            onClick={handleAddComment}
+          >
+            <PlusIcon width={24} height={24} /> Add comment
+          </p>
+          {/* {comments?.comment?.length && ( */}
+          <div className="flex items-center gap-2">
+            <MdChevronLeft
+              onClick={handlePrev}
+              className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
+                currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              size={24}
+            />
+            <MdChevronRight
+              onClick={handleNext}
+              size={24}
+              className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
+                comments?.comment?.length &&
+                currentIndex >=
+                  comments?.comment?.length - (showTextArea ? 1 : 2)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+            />
           </div>
-        )}
+          {/* )} */}
+        </div>
       </div>
       <div className="flex gap-3.5">
         {showTextArea && (
@@ -106,11 +118,6 @@ const Comment = ({
                 {label}
               </label>
               <div className="flex items-center gap-1">
-                <FaX
-                  color="red"
-                  size={12}
-                  onClick={() => setShowTextArea(false)}
-                />
                 <BsArrowUpCircleFill
                   color="text-primary"
                   className="text-[var(--primary-color)] "

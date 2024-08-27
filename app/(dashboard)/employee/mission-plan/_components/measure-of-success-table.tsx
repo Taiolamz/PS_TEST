@@ -18,18 +18,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import clsx from "clsx";
+import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 
-interface MeasureOfSuccessType {
-  data: any[];
+interface Props {
+  data: MeasureOfSuccessType[];
   columns: ColumnDef<any>[];
   isPresentationView?: boolean;
 }
 
-const MeasureOfSuccessTable: React.FC<MeasureOfSuccessType> = ({
+const MeasureOfSuccessTable: React.FC<Props> = ({
   data,
   columns,
   isPresentationView = false,
 }) => {
+  const { primaryColorHexValue } = React.useContext(ActionContext);
+  const colorWithAlpha = primaryColorHexValue
+    ? addAlphaToHex(primaryColorHexValue, 0.05)
+    : "";
+
   const table = useReactTable({
     data,
     columns,
@@ -42,7 +50,6 @@ const MeasureOfSuccessTable: React.FC<MeasureOfSuccessType> = ({
     console.error("Columns prop must be an array", columns);
     return <div>Error: Columns prop must be an array</div>;
   }
-
   return (
     <div className="w-full ">
       <Table>
@@ -50,12 +57,18 @@ const MeasureOfSuccessTable: React.FC<MeasureOfSuccessType> = ({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className={`${isPresentationView && "bg-[#0080800D]"}`}
+              style={
+                isPresentationView ? { backgroundColor: colorWithAlpha } : {}
+              }
             >
               {headerGroup.headers.map((header) => (
                 <TableHead
                   key={header.id}
-                  className="text-custom-dark-blue font-600 text-xs"
+                  className={`${
+                    isPresentationView
+                      ? "text-[var(--primary-color)]"
+                      : "text-custom-dark-blue"
+                  } font-600 text-xs bg-transparent`}
                 >
                   {header.isPlaceholder
                     ? null
