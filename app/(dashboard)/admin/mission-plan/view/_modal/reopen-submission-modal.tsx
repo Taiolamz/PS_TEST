@@ -40,11 +40,17 @@ const validationSchema = Yup.object().shape({
       "Invalid staff selection"
     )
     .required("Please select a staff option"),
-  individualName: Yup.string().when("staffSelection", {
-    is: (val: string) => val === "individual",
-    then: () => Yup.string().required("Please select a staff name"),
-    otherwise: () => Yup.string().optional(),
-  }),
+  individualName: Yup.string()
+    .when("staffSelection", {
+      is: (val: string) => val === "individual",
+      then: () => Yup.string().required("Please select a staff name"),
+      otherwise: () => Yup.string().optional(),
+    })
+    .when("staffSelection", {
+      is: (val: string) => val === "department",
+      then: () => Yup.string().required("Please select a staff name"),
+      otherwise: () => Yup.string().optional(),
+    }),
   note: Yup.string().required("Please add a note"),
 });
 
