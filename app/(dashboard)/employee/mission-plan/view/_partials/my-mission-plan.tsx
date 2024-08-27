@@ -12,33 +12,34 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Preview from "./preview";
 
-const { ADMIN } = routesPath;
+const { EMPLOYEE } = routesPath;
 
 const MyMissionPlan = () => {
-  const [getMyMissionPlan, { data: my_mission_plan, isLoading }] = useLazyGetMyMissionPlanQuery({});
+  const [getMyMissionPlan, { data: my_mission_plan, isLoading }] =
+    useLazyGetMyMissionPlanQuery({});
 
   const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
 
-  const { mission_plan: mission_plan_info } = useAppSelector((state) => state.mission_plan)
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
 
-  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || ""
-
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
   const dispatch = useDispatch();
   const router = useRouter();
 
   const handleGetMyMissionPlan = async () => {
-    const payload = {id: FISCAL_YEAR_ID}
+    const payload = { id: FISCAL_YEAR_ID };
     getMyMissionPlan(payload)
-    .unwrap()
-    .then(() => {})
-  }
-
+      .unwrap()
+      .then(() => {});
+  };
 
   useEffect(() => {
-    handleGetMyMissionPlan()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[FISCAL_YEAR_ID])
+    handleGetMyMissionPlan();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [FISCAL_YEAR_ID]);
 
   useEffect(() => {
     if (!isLoading && my_mission_plan?.data?.mission_plan) {
@@ -47,8 +48,8 @@ const MyMissionPlan = () => {
           isPreview: true,
         })
       );
-    } 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   return (
@@ -62,7 +63,7 @@ const MyMissionPlan = () => {
           <div className="flex flex-col gap-3">
             <Button
               onClick={() =>
-                router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=overview`)
+                router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=overview`)
               }
             >
               Create Mission Plan{" "}

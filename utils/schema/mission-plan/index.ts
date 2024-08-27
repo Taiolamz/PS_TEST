@@ -72,89 +72,111 @@ export const setStrategicIntentsSchema = yup.object().shape({
 
 export const specifiedTaskSchema = (endDate: any, startDate: any) => {
   return yup.object().shape({
-    tasks: yup.array().of(
-      yup.object().shape({
-        id: yup.string().required(),
-        task: yup.string().required("Title is required"),
-        strategic_pillars: yup
-          .array()
-          .of(yup.string().required("Pillar is required"))
-          .min(1, "At least one strategic pillar is required")
-          .required("Strategic pillar is required"),
-        success_measures: yup
-          .array()
-          .of(yup.string().required("Measure is required"))
-          .min(1, "At least one measure is required")
-          .required("Measure is required"),
+    tasks: yup
+      .array()
+      .of(
+        yup.object().shape({
+          id: yup.string().required(),
+          task: yup.string().required("Title is required"),
+          weight: yup
+            .number()
+            .typeError("Weight must be a number")
+            .required("Weight is required")
+            .max(100, "Weight must not be greater than 100"),
+          strategic_pillars: yup
+            .array()
+            .of(yup.string().required("Pillar is required"))
+            .min(1, "At least one strategic pillar is required")
+            .required("Strategic pillar is required"),
+          success_measures: yup
+            .array()
+            .of(yup.string().required("Measure is required"))
+            .min(1, "At least one measure is required")
+            .required("Measure is required"),
 
-        start_date: yup
-          .string()
-          .required("Start date is required")
-          .typeError("Start date must be a valid date")
-          .test(
-            "is-valid-date",
-            "Start date must be a valid date in DD/MM/YYYY format",
-            (value) => isValidDate(value)
-          )
-          .test(
-            "is-after-min-start-date",
-            `Start date must not be before ${formatToReadableDate(startDate)}`, // Format: DD/MM/YYYY
-            (value) => {
-              if (!value) return true; // Skip this test if value is empty or undefined
-              const dateParts = value.split("/"); // Assuming DD/MM/YYYY format
-              const enteredDate = new Date(
-                `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
-              );
-              enteredDate.setHours(0, 0, 0, 0);
-              startDate.setHours(0, 0, 0, 0);
-              return enteredDate.getTime() >= startDate.getTime();
-            }
-          )
-          .test(
-            "is-later-than-end-date",
-            "Start date must be later than the end date",
-            function (value) {
-              const { end_date } = this.parent;
-              if (!value || !end_date) return true;
-              const startDate = parseDate(value);
-              const endDate = parseDate(end_date);
-              return startDate < endDate;
-            }
-          ),
-        end_date: yup
-          .string()
-          .required("End date is required")
-          .typeError("End date must be a valid date")
-          .test(
-            "is-valid-date",
-            "End date must be a valid date in DD/MM/YYYY format",
-            (value) => isValidDate(value)
-          )
-          .test(
-            "is-after-end-date",
-            `End date must not be later than ${formatToReadableDate(endDate)}`,
-            (value) => {
-              if (!value) return true;
-              const dateParts = value.split("/");
-              const enteredDate = new Date(
-                `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
-              );
-              return enteredDate <= endDate;
-            }
-          )
-          .test(
-            "is-before-start-date",
-            "End date must be earlier than the start date",
-            function (value) {
-              const { start_date } = this.parent;
-              if (!value || !start_date) return true; // Skip if either date is not provided
-              const endDate = parseDate(value);
-              const startDate = parseDate(start_date);
-              return endDate > startDate; // end date should be greater than start date
-            }
-          ),
-      })
-    ),
+          start_date: yup
+            .string()
+            .required("Start date is required")
+            .typeError("Start date must be a valid date")
+            .test(
+              "is-valid-date",
+              "Start date must be a valid date in DD/MM/YYYY format",
+              (value) => isValidDate(value)
+            )
+            .test(
+              "is-after-min-start-date",
+              `Start date must not be before ${formatToReadableDate(
+                startDate
+              )}`, // Format: DD/MM/YYYY
+              (value) => {
+                if (!value) return true; // Skip this test if value is empty or undefined
+                const dateParts = value.split("/"); // Assuming DD/MM/YYYY format
+                const enteredDate = new Date(
+                  `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+                );
+                enteredDate.setHours(0, 0, 0, 0);
+                startDate.setHours(0, 0, 0, 0);
+                return enteredDate.getTime() >= startDate.getTime();
+              }
+            )
+            .test(
+              "is-later-than-end-date",
+              "Start date must be later than the end date",
+              function (value) {
+                const { end_date } = this.parent;
+                if (!value || !end_date) return true;
+                const startDate = parseDate(value);
+                const endDate = parseDate(end_date);
+                return startDate < endDate;
+              }
+            ),
+          end_date: yup
+            .string()
+            .required("End date is required")
+            .typeError("End date must be a valid date")
+            .test(
+              "is-valid-date",
+              "End date must be a valid date in DD/MM/YYYY format",
+              (value) => isValidDate(value)
+            )
+            .test(
+              "is-after-end-date",
+              `End date must not be later than ${formatToReadableDate(
+                endDate
+              )}`,
+              (value) => {
+                if (!value) return true;
+                const dateParts = value.split("/");
+                const enteredDate = new Date(
+                  `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+                );
+                return enteredDate <= endDate;
+              }
+            )
+            .test(
+              "is-before-start-date",
+              "End date must be earlier than the start date",
+              function (value) {
+                const { start_date } = this.parent;
+                if (!value || !start_date) return true; // Skip if either date is not provided
+                const endDate = parseDate(value);
+                const startDate = parseDate(start_date);
+                return endDate > startDate; // end date should be greater than start date
+              }
+            ),
+        })
+      )
+      .test(
+        "weights-sum",
+        "The sum of all weights must be equal to 100",
+        function (tasks) {
+          const totalWeight = tasks?.reduce(
+            (sum, task) => sum + (task.weight || 0),
+            0
+          );
+          if (totalWeight) return totalWeight === 100;
+        }
+      ),
   });
 };
 
