@@ -63,7 +63,7 @@ const ApproveMissionPlan = () => {
               <Button>Approve All</Button>
             )}
           </div>
-          <div className="flex flex-col gap-2 text-[#162238]">
+          <div className="flex flex-col gap-10 text-[#162238]">
             <MissionStatement
               showTextArea={missionStatementComment.isOpen}
               setShowTextArea={missionStatementComment.toggle}
