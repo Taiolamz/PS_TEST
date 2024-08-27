@@ -1,3 +1,5 @@
+import CustomDateInput from "@/components/custom-date-input";
+import CustomSelect from "@/components/custom-select";
 import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { formatDate } from "@/utils/helpers/date-formatter";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
@@ -22,7 +26,7 @@ interface FormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  newEndDate: Yup.string().required("New end date is required"),
+  newEndDate: Yup.date().required("New end date is required"),
   staffSelection: Yup.string()
     .oneOf(
       [
@@ -36,17 +40,11 @@ const validationSchema = Yup.object().shape({
       "Invalid staff selection"
     )
     .required("Please select a staff option"),
-  individualName: Yup.string()
-    //   .when("staffSelection", (staffSelection:string, schema) => {
-    //         if(staffSelection === "individual")
-    //           return schema.required("Staff Name is required")
-    //         return schema
-    //       })
-    .when("staffSelection", {
-      is: (val: string) => val === "individual",
-      then: () => Yup.string().required("Please select a staff name"),
-      otherwise: () => Yup.string().optional(),
-    }),
+  individualName: Yup.string().when("staffSelection", {
+    is: (val: string) => val === "individual",
+    then: () => Yup.string().required("Please select a staff name"),
+    otherwise: () => Yup.string().optional(),
+  }),
   note: Yup.string().required("Please add a note"),
 });
 
@@ -54,6 +52,33 @@ export default function ReopenSubmissionModal({
   show,
   handleClose,
 }: ModalContainerProps) {
+  //Get all staffs
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetAllEmployeesQuery();
+
+  const handleFormatDropdown = (items: AllStaff[]) => {
+    if (items.length !== 0) {
+      const data = items?.map((chi) => {
+        return {
+          ...chi,
+          label: chi?.name,
+          value: chi?.name,
+        };
+      });
+      return [
+        {
+          label: "Staff Name",
+          value: "",
+          name: "",
+          id: "",
+        },
+        ...data,
+      ];
+    } else {
+      return [];
+    }
+  };
+
   const formik = useFormik<FormValues>({
     initialValues: {
       newEndDate: "",
@@ -63,12 +88,10 @@ export default function ReopenSubmissionModal({
     },
     validationSchema,
     onSubmit: (values) => {
-      try {
-        console.log("Form Submitted", values);
-        // Additional logic for form submission
+      try { 
+        // logic for form submission
       } catch (error) {
-        console.error("Form Submission Error:", error);
-        // Handle error and provide user feedback
+        console.error("Form Submission Error:", error); 
       }
     },
   });
@@ -76,9 +99,10 @@ export default function ReopenSubmissionModal({
   useEffect(() => {
     if (show) {
       formik.setErrors({});
+      formik.resetForm();
     }
   }, [show]);
-  console.log(formik.values, "formik");
+
   return (
     <ReusableModalContainer
       show={show}
@@ -105,6 +129,7 @@ export default function ReopenSubmissionModal({
               placeholder="Input new end date"
               className="border p-2 bg-[#F6F8F9]"
               readOnly
+              disabled
             />
             <Input
               id="previousEndPeriod"
@@ -115,28 +140,32 @@ export default function ReopenSubmissionModal({
               placeholder="Input new end date"
               className="border p-2 bg-[#F6F8F9]"
               readOnly
+              disabled
             />
           </div>
 
           <div className="grid grid-cols-3 gap-x-4">
             <div>
-              <Input
+              <CustomDateInput
                 id="newEndDate"
                 name="newEndDate"
                 label="New End Date"
                 labelClass="text-[#6E7C87] text-[13px] mb-1"
-                placeholder="Input new end date"
-                error={formik?.errors?.newEndDate}
-                onChange={formik?.handleChange}
-                onBlur={formik?.handleBlur}
+                selected={new Date(formik.values.newEndDate)}
+                handleChange={(date) => {
+                  formik.setFieldValue("newEndDate", formatDate(date));
+                }}
+                placeholder="YYYY/MM/DD"
                 className="border p-2 bg-[#F6F8F9]"
-                value={formik?.values?.newEndDate}
+                iconClass="top-9"
+                error={formik?.errors?.newEndDate ?? ""}
+                touched={formik?.touched?.newEndDate}
               />
-              {formik?.touched?.newEndDate && formik?.errors?.newEndDate ? (
+              {/* {formik?.errors?.newEndDate ? (
                 <div className="text-red-500 text-xs">
                   {formik?.errors?.newEndDate}
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
 
@@ -219,7 +248,7 @@ export default function ReopenSubmissionModal({
           {formik?.values?.staffSelection === "individual" && (
             <div className="grid grid-cols-3 gap-x-4">
               <div>
-                <Input
+                {/* <Input
                   id="individualName"
                   name="individualName"
                   type="text"
@@ -231,6 +260,19 @@ export default function ReopenSubmissionModal({
                   placeholder="Input name of staff"
                   className="border p-2 bg-[#F6F8F9]"
                   error={formik?.errors?.individualName}
+                /> */}
+                <CustomSelect
+                  label="Name of Staff"
+                  id="individualName"
+                  labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
+                  placeholder="Input name of staff"
+                  options={handleFormatDropdown(employeesData ?? [])}
+                  selected={formik?.values?.individualName ?? ""}
+                  setSelected={(value) => {
+                    formik.setFieldValue("individualName", value);
+                  }}
+                  onBlur={formik?.handleBlur}
+                  // isRequired
                 />
                 {formik?.touched?.individualName &&
                 formik?.errors?.individualName ? (
