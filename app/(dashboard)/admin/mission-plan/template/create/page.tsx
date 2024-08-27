@@ -25,6 +25,7 @@ import { MissionContentDetails } from "../level/_component/checklist-steps";
 const { ADMIN } = routesPath;
 
 interface Section {
+  isRequired?: boolean;
   mapTitle: string;
   id: string;
   title: string;
@@ -83,9 +84,37 @@ const AddMissionPlanTemplate: React.FC = () => {
       content: renderFinancialYear,
       displayName: "Name of Financial Year",
       isSelected: handleIsSelectedField()[0],
+      isRequired: true,
     },
     {
       id: "2",
+      title: "Measure of Success",
+      mapTitle: "success_measures",
+      content: renderMeasureOfSuccess,
+      displayName: "Measure of Success",
+      isSelected: handleIsSelectedField()[2],
+      isRequired: true,
+    },
+    {
+      id: "3",
+      title: "Specified Task",
+      mapTitle: "specified_tasks",
+      content: renderSpecifiedTask,
+      displayName: "Specified Tasks",
+      isSelected: handleIsSelectedField()[4],
+      isRequired: true,
+    },
+    {
+      id: "4",
+      title: "Implied Task",
+      mapTitle: "implied_tasks",
+      content: renderImpliedTask,
+      displayName: "Implied Tasks",
+      isSelected: handleIsSelectedField()[3],
+      isRequired: true,
+    },
+    {
+      id: "5",
       title: "Mission Statement",
       mapTitle: "mission_statement",
       content: renderMissionStatement,
@@ -93,33 +122,9 @@ const AddMissionPlanTemplate: React.FC = () => {
       isSelected: handleIsSelectedField()[1],
     },
     {
-      id: "3",
-      title: "Measure of Success",
-      mapTitle: "success_measures",
-      content: renderMeasureOfSuccess,
-      displayName: "Measure of Success",
-      isSelected: handleIsSelectedField()[2],
-    },
-    {
-      id: "4",
-      title: "Specified Task",
-      mapTitle:"specified_tasks",
-      content: renderSpecifiedTask,
-      displayName: "Specified Tasks",
-      isSelected: handleIsSelectedField()[4],
-    },
-    {
-      id: "5",
-      title: "Implied Task",
-      mapTitle:"implied_tasks",
-      content: renderImpliedTask,
-      displayName: "Implied Tasks",
-      isSelected: handleIsSelectedField()[3],
-    },
-    {
       id: "6",
       title: "Freedom & Constraints",
-      mapTitle:"boundaries",
+      mapTitle: "boundaries",
       content: renderFreedomConstraints,
       displayName: "Freedom & Constraints",
       isSelected: handleIsSelectedField()[5],
@@ -450,11 +455,21 @@ const AddMissionPlanTemplate: React.FC = () => {
             {sections.map((section, index) => (
               <div
                 key={section.id}
-                className="mt-5 border  rounded-lg p-8 cursor-pointer pb-10 pt-10 bg-white"
-                draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDrop={(e) => handleDrop(e, index)}
-                onDragOver={handleDragOver}
+                className={`mt-5 border  rounded-lg p-8 ${
+                  section.isRequired ? "cursor-not-allowed" : "cursor-pointer"
+                } pb-10 pt-10 bg-white`}
+                // draggable
+                // onDragStart={(e) => handleDragStart(e, index)}
+                // onDrop={(e) => handleDrop(e, index)}
+                // onDragOver={handleDragOver}
+                draggable={!section.isRequired} // Only draggable if isRequired is false
+                onDragStart={(e) =>
+                  !section.isRequired && handleDragStart(e, index)
+                } // Conditionally attach the drag event handlers
+                onDrop={(e) => !section.isRequired && handleDrop(e, index)}
+                onDragOver={
+                  section.isRequired ? undefined : (e) => handleDragOver(e)
+                }
               >
                 <div className="grid relative">
                   <div className="flex flex-col gap-2">
@@ -464,14 +479,25 @@ const AddMissionPlanTemplate: React.FC = () => {
                     {section.content()}
                   </div>
 
-                  <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2 ">
+                  {/* <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2 ">
                     <Image
                       src={TrashIcon}
                       alt="trash"
                       onClick={() => handleDeleteMissionTemplate(section.id)}
                     />
                     <DraggableIcon />
-                  </div>
+                  </div> */}
+
+                  {!section.isRequired && (
+                    <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2">
+                      <Image
+                        src={TrashIcon}
+                        alt="trash"
+                        onClick={() => handleDeleteMissionTemplate(section.id)}
+                      />
+                      <DraggableIcon />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

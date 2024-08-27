@@ -15,7 +15,11 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
   const handleActiveMissionPlan = (label: string) => {
     setMissionContent((prevContent) =>
       prevContent.map((item) =>
-        item.label === label ? { ...item, isSelected: !item.isSelected } : item
+        item.label === label
+          ? item.isRequired
+            ? { ...item, isSelected: true } // Keep it always selected if required
+            : { ...item, isSelected: !item.isSelected } // Toggle only if not required
+          : item
       )
     );
   };
@@ -78,21 +82,26 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
       </div>
       <div className="grid grid-cols-3 gap-5">
         {missionContent.map((chi, idx) => {
-          const { content, label, isSelected, id } = chi;
+          const { content, label, isSelected, id, isRequired } = chi;
           return (
             <div
               key={idx}
               onClick={() => handleActiveMissionPlan(label)}
               className={`${
                 isSelected ? "bg-primary" : "bg-white"
-              }  flex flex-col gap-2 cursor-pointer group hover:bg-primary shadow-custom-box-shadow-100 transition-all duration-300 p-5 border-0 rounded-lg`}
+              }  flex flex-col gap-2 ${
+                isRequired ? "cursor-not-allowed" : "cursor-pointer"
+              } group hover:bg-primary shadow-custom-box-shadow-100 transition-all duration-300 p-5 border-0 rounded-lg`}
             >
               <p
                 className={`${
                   isSelected ? "text-white" : "text-custom-dark-blue"
-                }  group-hover:text-white font-medium text-sm`}
+                }  group-hover:text-white font-medium relative flex text-sm`}
               >
                 {label}
+                {isRequired ? (
+                  <span className="ml-1 text-red-400">*</span>
+                ) : null}
               </p>
               <p
                 className={` ${
