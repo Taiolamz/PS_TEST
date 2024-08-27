@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 interface ModalContainerProps {
   show: boolean;
-  handleClose?: () => void;
+  handleClose: () => void;
   children?: React.ReactNode;
 }
 
@@ -47,7 +47,7 @@ export default function FYExtendModal({
           message="Congratulations ! you have successfully Extended your financial year. Click on the button below to continue"
           show={showSuccessModal}
           handleClose={() => {
-            handleClose;
+            handleClose();
             setShowSuccessModal(false);
           }}
           modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
