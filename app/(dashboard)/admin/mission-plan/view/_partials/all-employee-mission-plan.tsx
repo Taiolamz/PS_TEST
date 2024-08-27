@@ -477,7 +477,7 @@ const AllEmployeeMissionPlan = () => {
         icon="/assets/images/success.gif"
         iconClass="w-40"
         title="Changes Have been Saved"
-        message="Congratulations! you have successfully Updated your settings. Click on the button below to continue"
+        message="Congratulations! you have successfully updated your settings. Click on the button below to continue"
         show={showSuccessModal}
         handleClose={() => setShowSuccessModal(false)}
         handleClick={() => setShowSuccessModal(false)}

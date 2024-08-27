@@ -9,7 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 import { useAppSelector } from "@/redux/store";
-import { formatDate } from "@/utils/helpers/date-formatter";
+import {
+  formatDate,
+  formatToReadableDate,
+} from "@/utils/helpers/date-formatter";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
@@ -33,28 +36,10 @@ export default function SubmissionExtendModal({
   show,
   handleClose,
   setSuccessModal,
-}: ModalContainerProps) { 
-  //Get all staffs
-  const { data: employeesData, isLoading: isLoadingEmployees } =
-    useGetAllEmployeesQuery();
-  //Get hierarcy dropdown
-  const { data: dropdownData }: any =
-    useGetAllOrganizationMissionPlanDropdownQuery({});
-
-  const handleFormatDropdown = (items: any[] | AllStaff[]) => {
-    if (items.length !== 0) {
-      const data = items?.map((chi) => {
-        return {
-          ...chi,
-          label: chi?.name,
-          value: chi?.id,
-        };
-      });
-      return data;
-    } else {
-      return [];
-    }
-  }; 
+}: ModalContainerProps) {
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -65,17 +50,13 @@ export default function SubmissionExtendModal({
     onSubmit: (values) => {
       try {
         // logic for form submission
-          setSuccessModal(true);
-          handleClose();
+        setSuccessModal(true);
+        handleClose();
       } catch (error) {
         console.error("Form Submission Error:", error);
       }
     },
   });
-
-  const user_hierarchy = useAppSelector(
-    (state) => state?.auth?.user?.organization?.hierarchy
-  );
 
   useEffect(() => {
     if (show) {
@@ -100,7 +81,7 @@ export default function SubmissionExtendModal({
                 id="previousStartPeriod"
                 name="previousStartPeriod"
                 label="Previous Start Period"
-                value="March 2022"
+                value={formatToReadableDate(active_fy_info?.start_date)}
                 labelClass="text-[#6E7C87] text-[13px] mb-1"
                 placeholder="Input new end date"
                 className="border p-2 bg-[var(--input-bg)]"
@@ -113,7 +94,7 @@ export default function SubmissionExtendModal({
                 id="previousEndPeriod"
                 name="previousEndPeriod"
                 label="Previous End Period"
-                value="Feb 2023"
+                value={formatToReadableDate(active_fy_info?.end_date)}
                 labelClass="text-[#6E7C87] text-[13px] mb-1"
                 placeholder="Input new end date"
                 className="border p-2 bg-[var(--input-bg)]"
@@ -128,7 +109,7 @@ export default function SubmissionExtendModal({
               <CustomDateInput
                 id="newEndDate"
                 name="newEndDate"
-                label="New End Date"
+                label="Extension Duration"
                 labelClass="text-[#6E7C87] text-[13px] mb-1"
                 selected={new Date(formik.values.newEndDate)}
                 handleChange={(date) => {
@@ -141,11 +122,6 @@ export default function SubmissionExtendModal({
                 error={formik?.errors?.newEndDate ?? ""}
                 touched={formik?.touched?.newEndDate}
               />
-              {/* {formik?.errors?.newEndDate ? (
-                <div className="text-red-500 text-xs">
-                  {formik?.errors?.newEndDate}
-                </div>
-              ) : null} */}
             </div>
           </div>
 

@@ -9,7 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 import { useAppSelector } from "@/redux/store";
-import { formatDate } from "@/utils/helpers/date-formatter";
+import {
+  formatDate,
+  formatToReadableDate,
+} from "@/utils/helpers/date-formatter";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
@@ -58,8 +61,6 @@ export default function ReopenSubmissionModal({
   setSuccessModal,
   handleClose,
 }: ModalContainerProps) {
-  const [defaultMultiselect, setDefaultMultiselect] = useState<string[]>([]);
-
   //Get all staffs
   const { data: employeesData } = useGetAllEmployeesQuery();
   //Get hierarcy dropdown
@@ -110,6 +111,9 @@ export default function ReopenSubmissionModal({
     return option;
   };
 
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  ); 
   const formik = useFormik<FormValues>({
     initialValues: {
       newEndDate: "",
@@ -121,8 +125,8 @@ export default function ReopenSubmissionModal({
     onSubmit: (values) => {
       try {
         // logic for form submission
-        setSuccessModal(true)
-        handleClose()
+        setSuccessModal(true);
+        handleClose();
       } catch (error) {
         console.error("Form Submission Error:", error);
       }
@@ -155,13 +159,13 @@ export default function ReopenSubmissionModal({
           not the same they will be extended by the same amount of <br /> time
           selected
         </p>
-        <form onSubmit={formik?.handleSubmit} className="space-y-6 mt-2">
+        <form onSubmit={formik?.handleSubmit} className="space-y-6 my-2">
           <div className="grid grid-col-2 md:grid-cols-3 gap-x-4">
             <Input
               id="previousStartPeriod"
               name="previousStartPeriod"
               label="Previous Start Period"
-              value="March 2022"
+              value={formatToReadableDate(active_fy_info?.start_date)}
               labelClass="text-[#6E7C87] text-[13px] mb-1"
               placeholder="Input new end date"
               className="border p-2 bg-[var(--input-bg)]"
@@ -172,7 +176,7 @@ export default function ReopenSubmissionModal({
               id="previousEndPeriod"
               name="previousEndPeriod"
               label="Previous End Period"
-              value="Feb 2023"
+              value={formatToReadableDate(active_fy_info?.end_date)}
               labelClass="text-[#6E7C87] text-[13px] mb-1"
               placeholder="Input new end date"
               className="border p-2 bg-[var(--input-bg)]"
