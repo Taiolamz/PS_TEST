@@ -144,7 +144,7 @@ const FiscalYearInfo = () => {
          <form className="p-5">
             <div className=" flex text-custom-gray-scale-300">
               <div className=" ">
-                <label htmlFor="start_date">  Previous start date  </label>
+                <label htmlFor="start_date">  Previous Start date  </label>
                 <input placeholder="Start Date" id="start_date" name="start_date" className="w-[205px] h-[40px] border-[2px] p-2 outline-none border-custom-divider rounded-md"/>
               </div>
               <div className=" ">
