@@ -12,49 +12,30 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { ProfileImg } from "@/public/assets/images";
+import { useRouter } from "next/navigation";
+import routesPath from "@/utils/routes";
+import { useDeleteMissionPlanTemplateMutation } from "@/redux/services/checklist/missionPlanTemplateApi";
+import useDisclosure from "../../_hooks/useDisclosure";
+import { useState } from "react";
+import DashboardModal from "../../_components/checklist-dashboard-modal";
+import DeleteMissionPlanTemplate from "./delete-mission-plan-template";
 
 type CreatedBy = {
   name: string;
   profile_picture: string;
 };
 
-export const missionPlanData: MissionPlanTemplateData[] = [
+export const missionPlanData = [
   {
     id: "dsjflsd4",
     process_name: "C-level mission plan",
-   assignees: ["Intermediate/Experienced Level", "Entry level"],
+    assignees: ["Intermediate/Experienced Level", "Entry level"],
     created_by: {
       profile_picture: ProfileImg,
       name: "MD",
     },
   },
-  {
-    id: "dsjflsd4",
-    process_name: "Flow 1",
-   assignees: ["Entry level"],
-    created_by: {
-      profile_picture: ProfileImg,
-      name: "MD",
-    },
-  },
-  {
-    id: "dsjflsd4",
-    process_name: "Flow 2",
-   assignees: ["Entry level"],
-    created_by: {
-      profile_picture: ProfileImg,
-      name: "MD",
-    },
-  },
-  {
-    id: "dsjflsd4",
-    process_name: "Flow 3",
-   assignees: ["Entry level"],
-    created_by: {
-      profile_picture: ProfileImg,
-      name: "MD",
-    },
-  },
+  //...other data
 ];
 
 const assignmentLevels = [
@@ -158,7 +139,6 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
       );
     },
   },
-
   {
     accessorKey: "created_by",
     header: "Created by",
@@ -180,12 +160,28 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
       );
     },
   },
-
   {
     id: "actions",
     header: "Actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const {
+        isOpen: openDeleteModal,
+        open: onOpenDeleteModal,
+        close: closeDeleteModal,
+      } = useDisclosure();
+      const router = useRouter();
+      const [deleteMissionPlanTemplate] =
+        useDeleteMissionPlanTemplateMutation();
+      const [data, setData] = useState({});
+
+      const handleDeleteDialog = () => {
+        onOpenDeleteModal();
+        if (openDeleteModal) {
+          closeDeleteModal();
+        }
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="cursor-pointer">
@@ -196,16 +192,45 @@ export const missionPlanColumn: ColumnDef<MissionPlanTemplateData>[] = [
             align="end"
             style={{ width: "170px" }}
           >
-            <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
+            <DropdownMenuItem
+              className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
+              onClick={() => {
+                router.push(routesPath.ADMIN.VIEW_MISSION_PLAN_TEMPLATE);
+                localStorage.setItem(
+                  "selected-mission-plan-template-review",
+                  JSON.stringify(row.original)
+                );
+              }}
+            >
               Edit
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
+            <DropdownMenuItem
+              className="text-custom-red font-light cursor-pointer text-sm"
+              onClick={() => {
+                setData(row.original);
+                handleDeleteDialog();
+              }}
+            >
               Delete
             </DropdownMenuItem>
           </DropdownMenuContent>
+          <>
+            <DashboardModal
+              className={"w-[420px]"}
+              open={openDeleteModal}
+              onOpenChange={handleDeleteDialog}
+            >
+              <DeleteMissionPlanTemplate
+                data={data}
+                onCancel={handleDeleteDialog}
+              />
+            </DashboardModal>
+          </>
+          ,
         </DropdownMenu>
       );
     },
   },
+  // modal
 ];
