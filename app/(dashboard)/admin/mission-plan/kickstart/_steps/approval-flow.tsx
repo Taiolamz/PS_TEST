@@ -34,14 +34,14 @@ const ApprovalFlow = () => {
         useGetAllApproverListQuery();
 
     // const formik = useFormik()
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = (values: any) => {
         // console.log(values)
     }
 
     useEffect(() => {
         if (organization.staff_levels) {
             let STAFF_LEVELS = typeof(organization?.staff_levels) === 'string' ? JSON.parse(organization?.staff_levels) : organization?.staff_levels
-            const LEVELS = STAFF_LEVELS?.map((item) => {
+            const LEVELS = STAFF_LEVELS?.map((item: any) => {
                 return {
                     title: item.name,
                     approvals: [],
@@ -71,7 +71,7 @@ const ApprovalFlow = () => {
                                     >
                                         {({ push, remove }: { push: any, remove: any }) => (
                                             formik?.values?.staff_levels?.length > 0 &&
-                                            formik.values.staff_levels.map((item, idx) => (
+                                            formik.values.staff_levels.map((item: any, idx: number) => (
                                                 <div key={idx} className="flex flex-col gap-10 mt-2">
                                                     <CustomAccordion
                                                         key={1}
