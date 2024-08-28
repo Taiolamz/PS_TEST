@@ -33,7 +33,6 @@ const SpecifiedTasks = ({ data, approvables, loading, showTextArea, setShowTextA
     handleReject,
     handleApprove,
     FormikApprovalForm,
-    undoStatus,
   } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
@@ -104,8 +103,7 @@ const SpecifiedTasks = ({ data, approvables, loading, showTextArea, setShowTextA
                         id="input_weight"
                       />
                     </div>
-                    {comments?.status === "pending" && !loading ? (
-                      <div className="flex gap-2.5 mr-4">
+                    <div className="flex gap-2.5 mr-4">
                         <Button
                           variant="outline"
                           className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
@@ -118,19 +116,6 @@ const SpecifiedTasks = ({ data, approvables, loading, showTextArea, setShowTextA
                         </Button>
                         <Button onClick={() => handleApprove()}>Approve</Button>
                       </div>
-                    ) : comments?.status === "approved" &&
-                      !loading ? (
-                      <div className="flex gap-2.5 mr-4">
-                        <Button onClick={() => undoStatus()}>Undo Approval</Button>
-                      </div>
-                    ) : comments?.status === "rejected" &&
-                      !loading ? (
-                      <div className="flex gap-2.5 mr-4">
-                        <Button onClick={() => undoStatus()}>Undo Rejection</Button>
-                      </div>
-                    ) : (
-                      ""
-                    )}
                   </div>
                 </div>
               </div>

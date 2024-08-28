@@ -30,7 +30,6 @@ const StrategicIntent = ({ data, approvables, loading, showTextArea, setShowText
     handleReject,
     handleApprove,
     FormikApprovalForm,
-    undoStatus,
   } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
@@ -71,33 +70,19 @@ const StrategicIntent = ({ data, approvables, loading, showTextArea, setShowText
                       {item?.behaviours}
                     </p>
                   </div>
-                  {comments?.status === "pending" && !loading ? (
-                    <div className="flex gap-2.5 mr-4">
-                      <Button
-                        variant="outline"
-                        className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                        onClick={() => {
-                          setShowTextArea(true);
-                          handleReject();
-                        }}
-                      >
-                        Reject
-                      </Button>
-                      <Button onClick={() => handleApprove()}>Approve</Button>
-                    </div>
-                  ) : comments?.status === "approved" &&
-                    !loading ? (
-                    <div className="flex gap-2.5 mr-4">
-                      <Button onClick={() => undoStatus()}>Undo Approval</Button>
-                    </div>
-                  ) : comments?.status === "rejected" &&
-                    !loading ? (
-                    <div className="flex gap-2.5 mr-4">
-                      <Button onClick={() => undoStatus()}>Undo Rejection</Button>
-                    </div>
-                  ) : (
-                    ""
-                  )}
+                  <div className="flex gap-2.5 mr-4">
+                        <Button
+                          variant="outline"
+                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                          onClick={() => {
+                            setShowTextArea(true);
+                            handleReject();
+                          }}
+                        >
+                          Reject
+                        </Button>
+                        <Button onClick={() => handleApprove()}>Approve</Button>
+                      </div>
                 </div>
               </div>
             </div>

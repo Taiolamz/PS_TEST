@@ -29,13 +29,12 @@ const FreedomConstraint = ({
   const initialActionType = "";
   const approval_type = "boundary";
 
-  const { handleReject, handleApprove, FormikApprovalForm, undoStatus } = useApproval({
+  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
     approval_type,
   });
-  console.log(comments);
   return (
     <section>
       {loading && (
@@ -96,8 +95,7 @@ const FreedomConstraint = ({
                 </div>
               </div>
             </div>
-            {comments?.status === "pending" && !loading && data[0]?.freedoms  !== null ? (
-              <div className="flex gap-2.5  items-end">
+            <div className="flex gap-2.5  items-end">
                 <Button
                   variant="outline"
                   className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
@@ -110,34 +108,6 @@ const FreedomConstraint = ({
                 </Button>
                 <Button onClick={() => handleApprove()}>Approve</Button>
               </div>
-            ) : comments?.status === "approved" &&
-              !loading &&
-              data[0]?.freedoms !== null ? (
-              <div className="flex gap-2.5 mr-4">
-                <Button onClick={() => undoStatus()}>Undo Approval</Button>
-              </div>
-            ) : comments?.status === "rejected" &&
-              !loading &&
-              data[0]?.freedoms !== null ? (
-              <div className="flex gap-2.5 mr-4">
-                <Button onClick={() => undoStatus()}>Undo Rejection</Button>
-              </div>
-            ) : (
-              ""
-            )}
-            {/* <div className="flex gap-2.5 items-end">
-              <Button
-                variant="outline"
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  handleReject();
-                }}
-              >
-                Reject
-              </Button>
-              <Button onClick={() => handleApprove()}>Approve</Button>
-            </div> */}
           </div>
         </div>
       )}

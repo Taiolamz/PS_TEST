@@ -48,7 +48,7 @@ const MeasureOfSuccess = ({
 
   const initialActionType = "";
 
-  const { handleReject, handleApprove, FormikApprovalForm, undoStatus } = useApproval({
+  const { handleReject, handleApprove, FormikApprovalForm} = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
@@ -76,8 +76,7 @@ const MeasureOfSuccess = ({
               </div>
             )}
           </div>
-          {comments?.status === "pending" && !loading && data?.length !== null ? (
-            <div className="flex gap-2.5 mr-4">
+          <div className="flex gap-2.5 mr-4">
               <Button
                 variant="outline"
                 className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
@@ -90,21 +89,6 @@ const MeasureOfSuccess = ({
               </Button>
               <Button onClick={() => handleApprove()}>Approve</Button>
             </div>
-          ) : comments?.status === "approved" &&
-            !loading &&
-            data?.length !== null ? (
-            <div className="flex gap-2.5 mr-4">
-              <Button onClick={() => undoStatus()}>Undo Approval</Button>
-            </div>
-          ) : comments?.status === "rejected" &&
-            !loading &&
-            data?.length !== null ? (
-            <div className="flex gap-2.5 mr-4">
-              <Button onClick={() => undoStatus()}>Undo Rejection</Button>
-            </div>
-          ) : (
-            ""
-          )}
         </div>
       </div>
       <Comment

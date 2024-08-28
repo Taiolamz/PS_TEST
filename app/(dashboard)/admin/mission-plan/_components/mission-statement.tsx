@@ -30,7 +30,7 @@ const MissionStatement = ({
   const initialActionType = "";
   const approval_type = "mission-statement";
  
-  const { handleReject, handleApprove, FormikApprovalForm, undoStatus } =
+  const { handleReject, handleApprove, FormikApprovalForm } =
     useApproval({
       initialComments: comments?.comment,
       initialActionType,
@@ -57,7 +57,6 @@ const MissionStatement = ({
               {data?.mission ?? "No Mission Statement"}
             </p>
           )}
-          {comments?.status === "pending" && !loading && data?.mission !== null ? (
             <div className="flex gap-2.5 mr-4">
               <Button
                 variant="outline"
@@ -71,21 +70,6 @@ const MissionStatement = ({
               </Button>
               <Button onClick={() => handleApprove()}>Approve</Button>
             </div>
-          ) : comments?.status === "approved" &&
-            !loading &&
-            data?.mission !== null ? (
-            <div className="flex gap-2.5 mr-4">
-              <Button onClick={() => undoStatus()}>Undo Approval</Button>
-            </div>
-          ) : comments?.status === "rejected" &&
-            !loading &&
-            data?.mission !== null ? (
-            <div className="flex gap-2.5 mr-4">
-              <Button onClick={() => undoStatus()}>Undo Rejection</Button>
-            </div>
-          ) : (
-            ""
-          )}
         </div>
       </div>
  
