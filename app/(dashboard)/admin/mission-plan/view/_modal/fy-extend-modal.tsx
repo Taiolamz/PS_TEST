@@ -8,12 +8,14 @@ interface ModalContainerProps {
   show: boolean;
   handleClose: () => void;
   children?: React.ReactNode;
+  style?: string
 }
 
 export default function FYExtendModal({
   show,
   handleClose,
   children,
+  style
 }: ModalContainerProps) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -30,7 +32,7 @@ export default function FYExtendModal({
       handleClose={handleClose}
       hasCloseButton={true}
       title="Financial Year Extension"
-      modalClass="md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[39.5rem]"
+      modalClass={`md:w-[28.8rem] md:max-w-[30.8rem] ${style}`}
     >
       {children}
       <div className="px-6">
