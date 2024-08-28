@@ -108,6 +108,7 @@ const MeasureofSuccess = () => {
           measure: measure.measure || "",
           unit: measure.unit || "",
           target: measure.target || "",
+          weight: measure.weight || "",
         })
       );
     setInitialValues(measuresOfSuccess);
@@ -116,7 +117,7 @@ const MeasureofSuccess = () => {
   const handleChange = (
     value: string,
     index: number,
-    field: "measure" | "unit" | "target"
+    field: "measure" | "unit" | "target" | "weight"
   ) => {
     formik.setFieldValue(`measures.${index}.${field}`, value);
   };
@@ -130,6 +131,7 @@ const MeasureofSuccess = () => {
           measure: "",
           unit: "",
           target: "",
+          weight: "",
         },
       ],
     },
@@ -159,7 +161,7 @@ const MeasureofSuccess = () => {
       ) : (
         <div>
           <div className="flex items-center gap-x-2 mb-8">
-            <h1 className="text-[#3E4345]">Measure of Success</h1>
+            <h2 className="text-[#3E4345]">Measure of Success</h2>
             <span>
               <BsFillInfoCircleFill color="#84919A" />
             </span>
@@ -176,7 +178,7 @@ const MeasureofSuccess = () => {
                             key={measure.id}
                             className="w-full mb-5 gap-y-5 relative"
                           >
-                            <div className="grid lg:grid-cols-2 items-center space-x-2 w-full  relative">
+                            <div className="grid lg:grid-cols-3 items-center space-x-2 w-full  relative">
                               <div className="!ml-0">
                                 <Input
                                   id={`measure-${measure.id}`}
@@ -201,7 +203,7 @@ const MeasureofSuccess = () => {
                                   component={"div"}
                                 />
                               </div>
-                              <div className="grid grid-cols-2 gap-x-2">
+                              <div className="grid grid-cols-3 col-span-2 gap-x-2">
                                 <div className="col-span-1 -mb-1 pb-0 mt-0">
                                   <Label
                                     htmlFor={`unit-${measure.id}`}
@@ -282,6 +284,31 @@ const MeasureofSuccess = () => {
                                   />
                                   <ErrorMessage
                                     name={`measures.${index}.target`}
+                                    className="text-red-500 text-xs"
+                                    component={"div"}
+                                  />
+                                </div>
+                                <div className="col-span-1">
+                                  <Input
+                                    id={`weight-${measure.id}`}
+                                    label={`Weight(%)`}
+                                    type="number"
+                                    placeholder="Input weight%"
+                                    labelClass="text-[#6E7C87] text-[13px] mb-[6px]"
+                                    name={`measures.${index}.weight`}
+                                    error={errorAllSuccess?.weight}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        e.target.value,
+                                        index,
+                                        "weight"
+                                      )
+                                    }
+                                    className="border p-2 bg-[#F6F8F9]"
+                                    value={formik.values.measures[index].weight}
+                                  />
+                                  <ErrorMessage
+                                    name={`measures.${index}.weight`}
                                     className="text-red-500 text-xs"
                                     component={"div"}
                                   />
