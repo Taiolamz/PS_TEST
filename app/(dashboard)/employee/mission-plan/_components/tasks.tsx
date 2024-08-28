@@ -10,7 +10,7 @@ import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
 import CommentsIcon from "@/public/assets/icons/comments";
-import DrawerComment from "../view/_side-modal/drawer-comment";
+import DrawerComment from "./drawer-comment";
 
 type Props = {
   data: SpecifiedTasksType[];
@@ -284,6 +284,7 @@ const Tasks = ({ data, approvables, loading }: Props) => {
         </>
       )}
       <DrawerComment
+        comments={comments}
         show={openDrawer}
         handleClose={() => {
           setDrawerUserId("");
