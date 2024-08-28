@@ -79,6 +79,58 @@ const MissionItems = ({
         {strategicIntent ? (
           <div className="flex flex-col gap-3">
             {strategicIntentData?.map((chi, idx) => {
+              const { title, intent, behaviours } = chi;
+              // const formattedBehaviours =
+              //   behaviours ?? (behaviours as string[])?.join(", ");
+              // console.log(behaviours, "behaviour");
+              // // behaviour ?? JSON?.parse(behaviour as string)?.join(", ");
+              // // behaviour ?? JSON?.parse(behaviour as string)?.join(", ");
+
+              let formattedBehaviours: string | undefined;
+              if (
+                typeof behaviours === "string" &&
+                behaviours.trim().startsWith("[")
+              ) {
+                try {
+                  const parsedBehaviours = JSON.parse(behaviours);
+                  if (Array.isArray(parsedBehaviours)) {
+                    formattedBehaviours = parsedBehaviours.join(", ");
+                  } else {
+                    formattedBehaviours = behaviours;
+                  }
+                } catch (e) {
+                  formattedBehaviours = behaviours;
+                }
+              } else if (Array.isArray(behaviours)) {
+                formattedBehaviours = behaviours.join(", ");
+              } else {
+                formattedBehaviours = behaviours as string;
+              }
+
+              return (
+                <div key={idx} className="flex flex-col gap-1">
+                  <p className="text-primary font-medium">{`- Strategic Intent ${
+                    idx + 1
+                  }`}</p>
+
+                  <div className="flex gap-[5px] items-center mt-2">
+                    <p className="font-[400]">Intent :</p>
+                    <p className="text-sm font-light">{intent}</p>
+                  </div>
+                  <div className="flex gap-[5px] items-center">
+                    <p className="font-[400]">Behaviours :</p>
+                    <p className="text-sm font-light">{formattedBehaviours}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+      </>
+      {/* <>
+        {strategicIntent ? (
+          <div className="flex flex-col gap-3">
+            {strategicIntentData?.map((chi, idx) => {
               const { title, intent, behaviour } = chi;
               const formattedBehaviours =
                 behaviour ?? JSON?.parse(behaviour as string)?.join(", ");
@@ -102,7 +154,7 @@ const MissionItems = ({
             })}
           </div>
         ) : null}
-      </>
+      </> */}
       <>
         {specifiedTasks ? (
           <div className="flex flex-col gap-3">

@@ -159,7 +159,7 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     //   .required(),
     // head_of_department: yup.object().shape({
     //   name: yup.string().required("Head of Department is required"),
-    //   // email: yup.string().email("Invalid email").required("Work Email is required"),
+    //   // email: yup.string().email("Invalid email").required("Head of Department is required"),
     // }),
 
     // work_email: yup
@@ -170,6 +170,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     //   .required("Work Email is required"),
     // subsidiary: yup.string().required(),
     // branch_id: yup.string().required(),
+    department_email: yup.string().email("Invalid email address"),
+    description: yup.string().min(5, "Description too short").optional(),
   });
 
   const router = useRouter();
@@ -185,10 +187,9 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       ...formik.values,
       // address:formik.values.state_id,
       organization_id: organization?.id,
-      state_id: formik.values.state_id.toString(),
       head_of_department: formik.values.head_of_department.id,
       subsidiary_id: formik.values.subsidiary_id.id,
-    };
+    }; 
     await createDepartment(payload)
       .unwrap()
       .then(() => {
@@ -206,18 +207,19 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      state_id: "",
+      department_email: "",
+      subsidiary_id: {
+        name: "",
+        id: "",
+      },
+      branch_id: "",
       head_of_department: {
         name: "",
         email: "",
         id: "",
       },
       work_email: "",
-      subsidiary_id: {
-        name: "",
-        id: "",
-      },
-      branch_id: "",
+      description: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
@@ -247,10 +249,10 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
-    handleCancelDialog, 
+    handleCancelDialog,
     subsidiaries: handleFormatDropdown(subsidiaries),
     branches: handleFormatDropdown(branches),
-    employees: handleFormatDropdown(employees), 
+    employees: handleFormatDropdown(employees),
     // isLoadingBranches,
     isLoadingStates,
   };

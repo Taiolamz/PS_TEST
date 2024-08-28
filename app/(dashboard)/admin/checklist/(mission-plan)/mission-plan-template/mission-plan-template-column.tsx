@@ -18,7 +18,7 @@ type CreatedBy = {
   profile_picture: string;
 };
 
-export const missionPlanData: MissionPlanTemplateData[] = [
+export const missionPlanData = [
   {
     id: "dsjflsd4",
     process_name: "C-level mission plan",
