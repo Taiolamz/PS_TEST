@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
-import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
-import { Formik, useFormik } from "formik";
 import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
-import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
