@@ -127,8 +127,7 @@ const AddDepartment = () => {
           // }
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingDepartment}
-          onSave={formik.handleSubmit}
-          // onCancel={handleCancelDialog}
+          onSave={formik.handleSubmit} 
         />
         <div
           className=""
@@ -231,8 +230,7 @@ const AddDepartment = () => {
                   ]}
                   selected={formik.values.head_of_department.name}
                   setSelected={handleHeadSelectChange}
-                  labelClass={labelClassName}
-                  // isRequired
+                  labelClass={labelClassName} 
                 />
                 <Input
                   label="Work Email"
