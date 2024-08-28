@@ -170,7 +170,11 @@ type DepartmentData = {
   };
 };
 
-type MissionPlanTemplateData = {};
+type MissionPlanTemplateData = {
+  id?: string;
+  name: string;
+  content;
+};
 
 type EmployeeRolesData = {
   id: string;
