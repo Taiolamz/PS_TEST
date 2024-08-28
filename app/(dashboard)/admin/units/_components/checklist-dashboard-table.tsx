@@ -138,9 +138,9 @@ const DashboardTable = ({
       <DropdownMenuContent align="end">
         {!isFilterDrop
           ? table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
+              ?.getAllColumns()
+              ?.filter((column) => column.getCanHide())
+              ?.map((column) => {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
@@ -298,7 +298,7 @@ const DashboardTable = ({
         <div>
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table?.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
@@ -319,8 +319,8 @@ const DashboardTable = ({
               ))}
             </TableHeader>
             <TableBody className="bg-white">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
+              {table?.getRowModel().rows?.length ? (
+                table?.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}

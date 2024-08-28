@@ -125,6 +125,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
       (payload as any)[section.mapTitle] = {
         order: index + 1,
         ...input[section.mapTitle],
+        ...section,
       };
     });
 

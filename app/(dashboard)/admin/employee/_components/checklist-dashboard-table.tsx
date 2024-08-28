@@ -245,12 +245,10 @@ const DashboardTable = ({
         align="end"
         style={{ width: "10rem" }}
       >
-        <DropdownMenuItem className={newBtnClass} onClick={onPdfChange}>
-          {/* <Link href={href} className="flex gap-3"> */}
+        {/* <DropdownMenuItem className={newBtnClass} onClick={onPdfChange}>
           PDF
-          {/* </Link> */}
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator /> */}
         <DropdownMenuItem className={newBtnClass} onClick={onCsvChange}>
           CSV
         </DropdownMenuItem>
@@ -297,7 +295,7 @@ const DashboardTable = ({
         </div>
         <div>
           <Table>
-            <TableHeader >
+            <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
