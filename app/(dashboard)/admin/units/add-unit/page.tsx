@@ -320,7 +320,15 @@ const AddUnit = () => {
                 <CustomSelect
                   label="Head of Unit"
                   placeholder="Head of Unit"
-                  options={employees}
+                  options={[
+                    {
+                      label: "Head of Unit",
+                      value: "",
+                      name: "",
+                      id: "",
+                    },
+                    ...employees,
+                  ]}
                   selected={formik.values.head_of_unit.name}
                   setSelected={handleHeadSelectChange}
                   labelClass={labelClassName}
