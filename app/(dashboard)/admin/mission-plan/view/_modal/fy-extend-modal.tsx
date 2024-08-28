@@ -52,8 +52,9 @@ export default function FYExtendModal({
             handleClose();
             setShowSuccessModal(false);
           }}
-          modalClass="lg:w-[750px] lg:max-w-[600px]"
+          modalClass="lg:w-[753px] lg:max-w-[605px]"
         />
+      
       </div>
     </ReusableModalContainer>
   );

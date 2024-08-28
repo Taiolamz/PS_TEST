@@ -140,7 +140,7 @@ const FiscalYearInfo = () => {
       <FYExtendModal
         show={extendSubmission}
         handleClose={() => setExtendSubmission(false)}
-        style="lg:max-w-[750px] lg:w-[600px]"
+        style="lg:max-w-[700px] lg:w-[600px]"
       >
         <form className="p-5">
           <div className=" flex text-custom-gray-scale-300">
