@@ -140,7 +140,7 @@ const FiscalYearInfo = () => {
       <FYExtendModal
         show={extendSubmission}
         handleClose={() => setExtendSubmission(false)}
-        style="lg:max-w-[900px] lg:w-[800px]"
+        style="lg:max-w-[750px] lg:w-[600px]"
       >
         <form className="p-5">
           <div className=" flex text-custom-gray-scale-300">
@@ -153,7 +153,7 @@ const FiscalYearInfo = () => {
                 labelClass=" text-[16px]"
                 disabled={true}
                 format=" "
-                placeholder="previous start date"
+                placeholder="September 2024"
                 showIcon={false}
                 label=" Previous Start date"
               />
@@ -167,13 +167,13 @@ const FiscalYearInfo = () => {
                 handleChange={handleCloseModal}
                 disabled={true}
                 format=" "
-                placeholder="previous end date"
+                placeholder="October 2024"
                 showIcon={false}
                 label=" Previous End date"
               />
             </div>
           </div>
-          <div className=" flex flex-col mt-5 w-[205px] h-[40px]">
+          <div className=" flex flex-col mt-5 w-[195px] h-[40px]">
             <CustomDateInput
               id="new_end_date"
               label="New End Date"
@@ -192,7 +192,7 @@ const FiscalYearInfo = () => {
               placeholder=" "
               id="reason_for_extension"
               name="reason_for_extension"
-              className="w-[425px] mt-2 h-[71px] rounded-md border-[2px] outline-none border-custom-divider resize-none"
+              className="w-[405px] mt-2 h-[71px] rounded-md border-[2px] outline-none border-custom-divider resize-none"
               labelClass="text-custom-gray-scale-300 pb-1"
             />
           </div>
