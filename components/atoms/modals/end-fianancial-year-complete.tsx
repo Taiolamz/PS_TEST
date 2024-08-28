@@ -2,8 +2,9 @@ import ModalContainer from "@/components/modal-container";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useState } from "react";
 
-interface ConfirmationModalProps {
+interface EndFinancialYearCompleteModalProps {
   show: boolean;
   hasCloseButton?: boolean;
   handleClose: () => void;
@@ -20,7 +21,7 @@ interface ConfirmationModalProps {
   footerContent?: React.ReactNode;
 }
 
-export default function ConfirmationModal({
+export default function EndFinancialYearCompleteModal({
   show,
   hasCloseButton = false,
   handleClose,
@@ -35,7 +36,19 @@ export default function ConfirmationModal({
   content,
   footerContent,
   modalClass,
-}: ConfirmationModalProps) {
+}: EndFinancialYearCompleteModalProps) {
+
+      const [isModalOpen, setIsModalOpen] = useState(false);
+
+       const openModal = () => {
+         setIsModalOpen(true);
+       };
+
+         const closeModal = () => {
+           setIsModalOpen(false);
+         };
+
+
   return (
     <ModalContainer
       show={show}
@@ -66,20 +79,21 @@ export default function ConfirmationModal({
             <p className="text-[13px] w-[300px] font-normal mx-auto mt-3 text-[#5B6871]">
               {message}
             </p>
-          </div>
-          {content}
-          {handleClick && (
-            <div className="mt-8 flex justify-center">
+
+            <div className="mt-4">
               <Button
                 loading={actionBtnLoading}
                 disabled={disableActionBtn}
                 className="w-fit rounded-sm p-3 px-9 mx-auto font-normal"
-                onClick={handleClick}
+                onClick={handleClose}
               >
-                {actionBtnTitle ? actionBtnTitle : "Confirm"}
+                Complete
               </Button>
             </div>
-          )}
+          </div>
+
+          {content}
+
           {footerContent && footerContent}
         </div>
       </section>

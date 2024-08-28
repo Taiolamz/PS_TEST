@@ -45,7 +45,7 @@ const MissionItems = ({
           <div key={index} className="text-[var(--text-secondary)] text-sm">
             {title !== null && title !== undefined && (
               <div className="text-sm font-normal leading-relaxed capitalize">
-                <h4>- {title}</h4>
+                <h4>- {`${title} ${index + 1}`}</h4>
               </div>
             )}
             <div className="gap-[5px] flex flex-col pt-[5px]">
