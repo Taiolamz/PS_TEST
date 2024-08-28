@@ -16,7 +16,7 @@ const OrganizationStatement = ({ formik }: OrganizationStatementProps) => {
       />
       <div className="flex flex-col gap-6">
         <div>
-          <label className="block mb-1.5 text-sm font-normal text-[#5A5B5F]">
+          <label className="block mb-1.5 text-sm font-medium text-[#5A5B5F]">
             1. Vision Statement
           </label>
           <Textarea
@@ -31,8 +31,8 @@ const OrganizationStatement = ({ formik }: OrganizationStatementProps) => {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1.5 text-sm font-normal text-[#5A5B5F]">
-            2. Mission Statement
+          <label className="block mb-1.5 text-sm font-medium text-[#5A5B5F]">
+            2. Purpose Statement
           </label>
           <Textarea
             rows={3}

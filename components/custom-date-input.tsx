@@ -82,8 +82,6 @@ export default function CustomDateInput({
         disabled={disabled}
         onlyMonthPicker={showOnlyMonth}
         highlightToday={false}
-
-        // format="DD-MM-YYYY"
       />
       {showIcon && (
         <Calendar
