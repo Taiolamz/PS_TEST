@@ -137,11 +137,6 @@ const FiscalYearInfo = () => {
           )}
         </div>
       </div>
-      {/* <FYExtendModal
-        show={extendSubmission}
-        handleClose={() => setExtendSubmission(false)}
-        style="lg:max-w-[700px] lg:w-[603px]"
-      > */}
       <FYExtendModal
         show={extendSubmission}
         handleClose={() => setExtendSubmission(false)}
@@ -200,8 +195,6 @@ const FiscalYearInfo = () => {
               className="w-[425px] mt-2 h-[71px] rounded-md border-[2px] outline-none border-custom-divider resize-none"
               labelClass="text-custom-gray-scale-300 pb-1"
             />
-            {/* <label htmlFor="new_date" className="text-custom-gray-scale-300"> Reason for Extension  </label>
-              <textarea placeholder="" id="new_date" name="new_date" className=" w-[425px] mt-2 h-[71px] rounded-md border-[2px] p-2 outline-none border-custom-divider resize-none"/> */}
           </div>
         </form>
       </FYExtendModal>
