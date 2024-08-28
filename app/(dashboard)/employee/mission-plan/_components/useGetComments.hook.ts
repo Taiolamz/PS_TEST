@@ -9,7 +9,7 @@ type ApprovablesType = {
   status: string;
 };
 
-type CommentType = {
+export type CommentType = {
   id: string;
   title: string;
   author: string;
