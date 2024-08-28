@@ -35,6 +35,7 @@ const FreedomConstraint = ({
     missionplanid,
     approval_type,
   });
+  console.log(comments);
   return (
     <section>
       {loading && (
