@@ -13,6 +13,7 @@ export interface InputProps
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   touched?: boolean;
   error?: string;
+  containerClass?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -30,12 +31,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       value,
       touched,
       handleBlur,
+      containerClass,
       ...props
     },
     ref
   ) => {
     return (
-      <div className="mt-1">
+      <div className={cn("mt-1", containerClass)}>
         {label && (
           <label
             htmlFor={label}

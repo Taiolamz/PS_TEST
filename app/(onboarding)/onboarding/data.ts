@@ -3,8 +3,8 @@ export const steps = [
   "Brand Identity",
   "Operations Parameters",
   "Organization Structure",
+  "Head of Organization",
   "Grade Level",
-  "Head of Organization Details",
   "Preview",
 ];
 
