@@ -45,6 +45,14 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+    extendSubmission: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/financial-year/extend-submissions`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlanExtension"],
+    }),
   }),
 });
 
@@ -53,4 +61,5 @@ export const {
   useGetAllOrganizationEmployeeMissionPlanQuery,
   useGetAllOrganizationMissionPlanDropdownQuery,
   useLazyGetAllOrganizationEmployeeMissionPlanExportQuery,
+  useExtendSubmissionMutation,
 } = allmissionPlanApi;

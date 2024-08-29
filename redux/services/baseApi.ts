@@ -56,7 +56,7 @@ export const baseQueryInterceptor: BaseQueryFn<
       if (res.data.status === "failed") {
         api.dispatch(resetAuth());
         api.dispatch(resetMissionPlan());
-        api.dispatch(resetMissionPlanPreview())
+        api.dispatch(resetMissionPlanPreview());
         Cookies.remove("token");
         clearStorageItem();
         window.location.href = "/login";
@@ -115,6 +115,7 @@ export const baseApi = createApi({
     "MissionPlanTemplates",
     "Comments",
     "MissionPlan",
+    "MissionPlanExtension",
     "Approvables",
   ],
 });

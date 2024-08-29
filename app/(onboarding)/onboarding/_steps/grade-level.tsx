@@ -25,11 +25,13 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
   };
 
   return (
-    <section className="max-w-[55.875rem]">
-      <FormHeader
-        title="Setup Default Organization Operating Parameters"
-        subTitle="Set organization operating guidelines"
-      />
+    <section className="max-w-[37.9375rem]">
+      <div className="w-[32rem]">
+        <FormHeader
+          title="Give organization details and outline structure"
+          subTitle="Give details of your organizational information and hierachial structure."
+        />
+      </div>
       <div>
         <h3 className="block mb-5 text-sm font-medium text-[#162238]">
           1. Staff Level
@@ -51,7 +53,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                         (staff_levels: any, index: number) => (
                           <div
                             key={index}
-                            className="flex items-center space-x-2 mb-5"
+                            className="flex items-center space-x-2 mb-5 w-full"
                           >
                             <Input
                               type="text"
@@ -60,7 +62,8 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               value={formik.values.staff_levels[index].name}
                               onChange={(e) => handleStaffName(e, index)}
                               placeholder="Input Level Name"
-                              className="mt-1 block max-w-[26.5625rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              containerClass=" w-[26.5625rem]"
                             />
                             {formik.errors.staff_levels?.[index]?.name &&
                               formik.touched.staff_levels?.[index]?.name && (
