@@ -8,12 +8,14 @@ interface ModalContainerProps {
   show: boolean;
   handleClose: () => void;
   children?: React.ReactNode;
+  style?: string;
 }
 
 export default function FYExtendModal({
   show,
   handleClose,
   children,
+  style,
 }: ModalContainerProps) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -30,7 +32,7 @@ export default function FYExtendModal({
       handleClose={handleClose}
       hasCloseButton={true}
       title="Financial Year Extension"
-      modalClass="md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[39.5rem]"
+      modalClass={`md:w-[28.8rem] md:max-w-[30.8rem] ${style}`}
     >
       {children}
       <div className="px-6">
@@ -44,14 +46,15 @@ export default function FYExtendModal({
           icon="/assets/images/success.gif"
           iconClass="w-40"
           title="Financial Year Extended!!!"
-          message="Congratulations ! you have successfully Extended your financial year. Click on the button below to continue"
+          message="Congratulations! You have successfully extended your financial year. Click on the button below to continue."
           show={showSuccessModal}
           handleClose={() => {
             handleClose();
             setShowSuccessModal(false);
           }}
-          modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
+          modalClass="lg:w-[753px] lg:max-w-[605px]"
         />
+      
       </div>
     </ReusableModalContainer>
   );

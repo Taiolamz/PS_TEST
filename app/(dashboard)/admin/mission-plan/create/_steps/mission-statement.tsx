@@ -106,12 +106,14 @@ const MissionStatement = () => {
                 value={formik.values.mission}
                 error={formik.errors.mission}
               />
-              {/* {formik.errors.mission &&
-                formik.touched.mission && (
-                  <div className="text-red-500 text-xs mt-1">
-                    {formik.errors.mission}
-                  </div>
-                )} */}
+              {/* 
+                {formik.errors.mission &&
+                  formik.touched.mission && (
+                    <div className="text-red-500 text-xs mt-1">
+                      {formik.errors.mission}
+                    </div>
+                  )}
+                 */}
             </div>
             <div className="mt-8 flex gap-x-2 items-center">
               <Button

@@ -75,6 +75,8 @@ export const useUnit = ({ cancelPath }: Prop) => {
     //   .required("Work Email is required"),
     // // subsidiary_id: yup.string().required("Subsidiary is required"),
     // branch_id: yup.string().required("Branch is required"),
+    unit_email: yup.string().email("Invalid email address"),
+    description: yup.string().min(5, "Description too short").optional(),
   });
   const router = useRouter();
   const user = useAppSelector(selectUser);
@@ -108,7 +110,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
   const formik = useFormik({
     initialValues: {
       name: "",
-      state_id: "",
+      unit_email: "",
       head_of_unit: {
         name: "",
         email: "",
@@ -121,6 +123,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
       },
       branch_id: "",
       department_id: "",
+      description: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,

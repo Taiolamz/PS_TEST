@@ -60,13 +60,13 @@ const TimelineAndReminder = () => {
 
 
     return (
-        <div className="ml-4 w-full">
+        <div className="w-full">
             <h1>Set Mission Plan Submission Duration</h1>
             <form className="mt-2"
                 onSubmit={formik.handleSubmit}
                 autoComplete="off"
             >
-                <div className='flex items-center gap-5'>
+                <div className=''>
                     <div className="w-full flex gap-4 items-center">
                         <CustomDateInput
                             label='Start Period'
@@ -96,9 +96,9 @@ const TimelineAndReminder = () => {
                         />
                     </div>
                 </div>
-                <div className="mt-8 w-[40rem]">
+                <div className="mt-8">
                     <h1>Set Mission Plan Approval Duration</h1>
-                    <div className="mt-2 w-full flex gap-4 items-center">
+                    <div className="mt-2 w-ful flex gap-4 items-center">
                         <CustomDateInput
                             label='Start Period'
                             id='approval_start_date'
@@ -127,7 +127,7 @@ const TimelineAndReminder = () => {
                         />
                     </div>
                 </div>
-                <div className="mt-8">
+                <div className="mt-8 lg:w-[80%]">
                     <h1>Employee Reminder Interval</h1>
                     <div className="mt-2 grid grid-cols-3 gap-4 items-center">
                         <CustomSelect
