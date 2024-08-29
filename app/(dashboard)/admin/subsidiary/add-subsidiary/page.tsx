@@ -2,7 +2,7 @@
 
 import Routes from "@/lib/routes/routes";
 import CustomSelect from "@/components/custom-select";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import routesPath from "@/utils/routes";
 import { useSubsidiary } from "../_hooks/useSubsidiary";
 import { ChecklistLayout } from "../_components/checklist-layout";
@@ -16,6 +16,8 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import { useRouter } from "next/navigation";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import LogoUpload from "@/components/logoUpload/LogoUpload";
+import { Textarea } from "@/components/ui/textarea";
 
 const { ADMIN } = routesPath;
 
@@ -41,6 +43,12 @@ const AddSubsidary = () => {
     {}
   );
 
+  const [logo, setLogo] = useState<File | string>();
+  const [logoName, setLogoName] = useState<string | null>(
+    formik.values.logo ? formik.values.logo.name : null
+  );
+  const fileInputRef = useRef<HTMLInputElement | string>();
+
   const handleHeadSelectChange = (selectedName: string) => {
     const selectedEmployee = (employees as AllStaff[]).find(
       (emp) => emp.name === selectedName
@@ -55,6 +63,26 @@ const AddSubsidary = () => {
       formik.setFieldValue("work_email", "");
       formik.setFieldValue("head.id", "");
     }
+  };
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 1024 * 1024) {
+        // 1MB in bytes
+        formik.setFieldError("logo", "Logo size should be at most 1MB");
+        return;
+      }
+      setLogo(file);
+      setLogoName(file?.name);
+      formik.setFieldValue("logo", file);
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setLogo("");
+    setLogoName(null);
   };
 
   return (
@@ -84,7 +112,7 @@ const AddSubsidary = () => {
                 autoComplete="off"
               >
                 <Input
-                  label="Name"
+                  label="Name of Subsidiary"
                   type="text"
                   placeholder="Subsidiary name"
                   id="name"
@@ -93,7 +121,7 @@ const AddSubsidary = () => {
                   isRequired
                 />
                 <Input
-                  label="Address"
+                  label="Subsidiary Address"
                   type="text"
                   placeholder="Subsidiary address"
                   id="address"
@@ -102,7 +130,7 @@ const AddSubsidary = () => {
                   isRequired
                 />
                 <CustomSelect
-                  label="Country"
+                  label="Subsidiary Country"
                   isRequired
                   placeholder="Select country"
                   options={[
@@ -130,7 +158,7 @@ const AddSubsidary = () => {
                 />
 
                 <CustomSelect
-                  label="State"
+                  label="Subsidiary State"
                   isRequired
                   placeholder="Subsidiary state"
                   options={selectedCountryData?.stateProvinces?.map(
@@ -152,7 +180,7 @@ const AddSubsidary = () => {
                   options={[
                     {
                       label: "Select Head of Subsidiary",
-                      value: "", 
+                      value: "",
                       name: "",
                       id: "",
                     },
@@ -164,7 +192,7 @@ const AddSubsidary = () => {
                   // isRequired
                 />
                 <Input
-                  label="Work Email"
+                  label="Head of Subsidiary Email"
                   type="text"
                   placeholder="Work Email"
                   id="work_email"
@@ -173,32 +201,31 @@ const AddSubsidary = () => {
                   onChange={formik.handleChange}
                   // isRequired
                   disabled
+                  className="disabled:opacity-100"
                 />
-
-                {/* <CustomSelect
-                  label="Head of Subsidiary"
-                  // isRequired
-                  placeholder="Head of subsidiary"
-                  options={[]}
-                  selected={formik.values.head}
-                  setSelected={(value) =>
-                    formik.setFieldValue("head", value)
-                  }
-                  labelClass={labelClassName}
+                <LogoUpload
+                  showFootNote={false}
+                  handleLogoChange={handleLogoChange}
+                  logoName={logoName}
+                  setLogo={setLogo}
+                  handleRemoveLogo={handleRemoveLogo}
+                  fileInputRef={fileInputRef}
+                  label="Upload Subsidiary Logo"
+                  containerClass="border-[#E5E9EB] py-2 text-[#6E7C87] bg-white"
+                  labelClass="block relative text-xs mb-0 text-[#6E7C87] font-normal pb-2"
                 />
-                <Input
-                  label="Work Email"
-                  type="text"
-                  placeholder="Work Email"
-                  id="work_email"
-                  name="work_email"
+                <Textarea
+                  rows={3}
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  label="Subsidiary Description"
+                  className="mt-1 w-full  block px-4 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm bg-white"
                   onChange={formik.handleChange}
-                  isRequired
-                /> */}
+                />
               </form>
             }
           />
-
           <DashboardModal
             className={"w-[420px]"}
             open={openCancelModal}

@@ -17,6 +17,17 @@ type Prop = {
   cancelPath: string;
 };
 
+interface FormValues {
+  name: string;
+  address: string;
+  country: string;
+  state: string;
+  head: string;
+  work_email: string;
+  logo: File | null;
+  description: string;
+}
+
 // DUMMY DATA
 const countries = [
   { label: "Nigeria", value: "Nigeria", icon: HomeIcon },
@@ -87,11 +98,29 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
   const [createSubsidiary, { isLoading: isCreatingSubsidiary }] =
     useCreateSubsidiaryMutation();
   const handleSubmit = async () => {
-    const payload = {
-      ...formik.values,
-      organization_id: organization?.id,
-      city: formik.values.state,
-    };
+    const payload = new FormData();
+
+    const { logo } = formik.values;
+
+    Object.entries(formik.values).forEach(([key, value]) => {
+      if (key === "logo" && logo instanceof File) {
+        payload.append(key, logo);
+      } else {
+        payload.append(key, value as string);
+      }
+    });
+
+    payload.append("city", formik.values.state);
+    payload.append("organization_id", organization?.id || "");
+
+    // const payload = {
+    //   ...formik.values,
+    //   organization_id: organization?.id,
+    //   city: formik.values.state,
+    // };
+
+    console.log({ payload });
+
     await createSubsidiary(payload)
       .unwrap()
       .then(() => {
@@ -104,14 +133,17 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
         });
       });
   };
-  const formik = useFormik({
+  const formik = useFormik<FormValues>({
     initialValues: {
       name: "",
       address: "",
       country: "",
       state: "",
-      head_of_subsidiary: "",
+      // head_of_subsidiary: "",
+      head: "",
       work_email: "",
+      logo: null,
+      description: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,

@@ -260,6 +260,7 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                 </div>
               )}
             </div>
+            {/* Deprecated on tasks */}
             {openCommentId === item.id && (
               <Comment
                 label="Specified task"
@@ -291,6 +292,7 @@ const Tasks = ({ data, approvables, loading }: Props) => {
           setOpenDrawer(false);
         }}
         userId={drawerUserId}
+        isLoading={loading}
       />
     </div>
   );
