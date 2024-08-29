@@ -17,6 +17,7 @@ interface CustomDateInputProps {
   error?: string;
   touched?: boolean;
   disabled?: boolean;
+  portal?: boolean;
   showIcon?: boolean;
   showOnlyMonth?: boolean;
   iconClass?: string;
@@ -44,6 +45,7 @@ export default function CustomDateInput({
   showOnlyMonth = false,
   showIcon = true,
   placeholder,
+  portal = true,
 }: CustomDateInputProps) {
   return (
     <div className="relative">
@@ -82,6 +84,7 @@ export default function CustomDateInput({
         disabled={disabled}
         onlyMonthPicker={showOnlyMonth}
         highlightToday={false}
+        portal={portal}
       />
       {showIcon && (
         <Calendar

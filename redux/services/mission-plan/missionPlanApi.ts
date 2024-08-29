@@ -15,7 +15,6 @@ export const missionPlanApi = baseApi.injectEndpoints({
         try {
           const result = await queryFulfilled;
         } catch (error: any) {
-          // console.log('Error:', error)
         }
       },
     }),
@@ -92,6 +91,7 @@ export const missionPlanApi = baseApi.injectEndpoints({
         url: `/mission-plan/fiscal-years/organization`,
         method: "GET",
       }),
+      providesTags: ["OrganizationFiscalYear"],
     }),
     createMissionStatement: builder.mutation({
       query: (payload) => ({
