@@ -53,7 +53,7 @@ const ApprovalFlow = () => {
         }
     }, [organization])
     return (
-        <section className="w-full">
+        <section className="w-full h-full overflow-y-auto pb-20 customScrollbar">
             <h1>Set FY Approval Flow</h1>
             <section className="mt-6">
                 <Formik

@@ -26,7 +26,7 @@ export default function Create() {
     back
     onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
-      <section style={{ height: "100%"}} className="flex">
+      <section style={{ height: "100%"}} className="flex overflow-y-hidden">
         <PageSidebar
           title="Create Mission Plan"
           menu_items={CREATE_FY_LINKS}
