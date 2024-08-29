@@ -180,7 +180,7 @@ const ResetPassword = () => {
               Send
             </Button>
           </div>
-            <span className="text-sm text-center block mt-4"> Already have an account? <Link href={LOGIN}className="text-primary hover:underline">Login</Link></span>
+            <span className="text-sm text-center block mt-4"> Take me back to <Link href={LOGIN}className="text-primary hover:underline">Login ?</Link></span>
         </div>
       </form>
 
