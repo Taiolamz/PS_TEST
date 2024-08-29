@@ -125,8 +125,9 @@ export default function ReopenSubmissionModal({
     onSubmit: (values) => {
       try {
         // logic for form submission
-        setSuccessModal(true);
-        handleClose();
+        // setSuccessModal(true);
+        // handleClose();
+        console.log(values, "vals")
       } catch (error) {
         console.error("Form Submission Error:", error);
       }
