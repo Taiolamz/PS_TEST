@@ -154,7 +154,7 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px- 10 xl:pl-[9.375rem] max-h-full  pb-20 h-[calc(100vh_-_4rem)] overflow-y-auto scroll-hidden"
+          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20 h-[calc(100vh_-_4rem)] overflow-y-auto scroll-hidden"
           onSubmit={formik.handleSubmit}
         >
           {/* <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden"> */}
