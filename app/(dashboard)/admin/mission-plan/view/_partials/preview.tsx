@@ -10,12 +10,52 @@ import { format } from "date-fns";
 import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
 import Link from "next/link";
 import routesPath from "@/utils/routes";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ExportIcon } from "@/public/assets/icons";
+import Image from "next/image";
 
 const { ADMIN } = routesPath;
 
 const Preview = ({ data }: dataProp) => {
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
+  const newBtnClass =
+    "text-custom-gray-scale-400 text-xs font-light cursor-pointer";
+
+  const exportDrop = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="outline"
+          className="ml-auto border px-4 rounded-[6px] h-[33px] focus:border-0 hover:bg-white"
+        >
+          <div className="flex gap-3 items-center">
+            <Image src={ExportIcon} alt="export" />
+            <p className="text-custom-gray-scale-400 font-normal text-xs">
+              Export
+            </p>
+          </div>
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        className="border rounded-sm"
+        align="end"
+        style={{ width: "10rem" }}
+      >
+        <DropdownMenuItem className={newBtnClass}>PDF</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className={newBtnClass}>CSV</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   const {
     mission_statement,
@@ -161,6 +201,7 @@ const Preview = ({ data }: dataProp) => {
 
   return (
     <div className="flex flex-col gap-[12px]">
+      {exportDrop}
       <div className="flex gap-[10px] ml-auto">
         <div className={`${btn}`}>
           <Link href="#">Approval Status</Link>
@@ -206,7 +247,7 @@ const Preview = ({ data }: dataProp) => {
         </MissionWrapper>
       )}
       {specified_tasks.length !== 0 && (
-        <SpecifiedTasks data={specified_tasks ?? []} bg="bg-white"/>
+        <SpecifiedTasks data={specified_tasks ?? []} bg="bg-white" />
       )}
       {boundaries?.length !== 0 && (
         <MissionWrapper title="Freedom" status={boundaries[0]?.status}>

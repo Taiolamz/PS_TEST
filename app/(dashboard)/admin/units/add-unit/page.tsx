@@ -13,6 +13,7 @@ import routesPath from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
 import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { Textarea } from "@/components/ui/textarea";
 
 const { ADMIN } = routesPath;
 
@@ -215,25 +216,14 @@ const AddUnit = () => {
                   onChange={formik.handleChange}
                   isRequired
                 />
-                <CustomSelect
-                  label="Head of Unit"
-                  placeholder="Head of Unit"
-                  options={employees}
-                  selected={formik.values.head_of_unit.name}
-                  setSelected={handleHeadSelectChange}
-                  labelClass={labelClassName}
-                  // isRequired
-                />
+
                 <Input
-                  label="Work Email"
+                  label="Unit Email"
                   type="text"
-                  placeholder="Work Email"
-                  id="work_email"
-                  value={formik.values.work_email}
-                  name="work_email"
+                  placeholder="Unit Email"
+                  id="unit_email"
+                  name="unit_email"
                   onChange={formik.handleChange}
-                  // isRequired
-                  disabled
                 />
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
@@ -326,6 +316,49 @@ const AddUnit = () => {
                     labelClass={labelClassName}
                   />
                 )}
+
+                <CustomSelect
+                  label="Head of Unit"
+                  placeholder="Head of Unit"
+                  options={[
+                    {
+                      label: "Head of Unit",
+                      value: "",
+                      name: "",
+                      id: "",
+                    },
+                    ...employees,
+                  ]}
+                  selected={formik.values.head_of_unit.name}
+                  setSelected={handleHeadSelectChange}
+                  labelClass={labelClassName}
+                  // isRequired
+                />
+
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
+                />
+
+                <Textarea
+                  label="Unit Description"
+                  rows={3}
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  onChange={formik.handleChange}
+                  touched={formik.touched.description}
+                  value={formik.values.description}
+                  error={formik.errors.description}
+                />
               </form>
             }
           />

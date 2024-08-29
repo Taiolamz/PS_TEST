@@ -23,5 +23,11 @@ export const CREATE_FY_LINKS = [
         path: '?ui=timelines-reminders',
         accessor: 'timeline-reminder'
     },
+    {
+        id: 5,
+        title: 'Approval Flow Selection',
+        path: '?ui=approval-flow',
+        accessor: 'approval-flow'
+    },
 ]
 

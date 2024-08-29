@@ -230,7 +230,8 @@ const AddDepartment = () => {
                   ]}
                   selected={formik.values.head_of_department.name}
                   setSelected={handleHeadSelectChange}
-                  labelClass={labelClassName} 
+                  labelClass={labelClassName}
+                  // isRequired
                 />
                 <Input
                   label="Work Email"

@@ -49,7 +49,6 @@
   overflow-y: scroll;
   position: relative;
   z-index: 2;
-  background-color: #f4f4f4;
 }
 .new_dashboard_layout_index_wrap .main_and_header_index_wrap .main_content_box::-webkit-scrollbar {
   display: none;

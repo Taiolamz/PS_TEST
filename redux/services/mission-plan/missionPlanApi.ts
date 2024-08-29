@@ -92,6 +92,7 @@ export const missionPlanApi = baseApi.injectEndpoints({
         url: `/mission-plan/fiscal-years/organization`,
         method: "GET",
       }),
+      providesTags: ["MissionPlanExtension"],
     }),
     createMissionStatement: builder.mutation({
       query: (payload) => ({

@@ -36,7 +36,6 @@ interface FormValues {
   start_fy: string;
   probation_duration: string;
   opening_time: string;
-  fy_title: string;
   closing_time: string;
   hierarchy: string;
   staff_levels: { name: string; level: string }[];
@@ -74,11 +73,6 @@ const Onboarding = () => {
   ] = useOnboardingMutation();
 
   const onSubmit = async () => {
-    // if (isStartDateLater) {
-    //   toast.error("End date must be a future date!");
-    //   return;
-    // }
-
     const formDataToSend = new FormData();
 
     Object.entries(formik.values).forEach(([key, value]) => {
@@ -125,7 +119,6 @@ const Onboarding = () => {
       start_fy: "",
       probation_duration: "",
       opening_time: "",
-      fy_title: "",
       closing_time: "",
       hierarchy: "",
       staff_levels: [{ name: "", level: "" }],
@@ -137,18 +130,6 @@ const Onboarding = () => {
     onSubmit: onSubmit,
   });
 
-  const isStartDateLater = isDateAfter(
-    formik.values.start_fy,
-    formik.values.end_fy
-  );
-
-  // useEffect(() => {
-  //   console.log(isStartDateLater);
-  //   if (isStartDateLater) {
-  //     formik.setFieldError("end_fy", "End date must be a future date");
-  //   }
-  // }, [formik.values.end_fy, formik.values.start_fy]);
-
   const logo = formik.values.logo;
 
   useEffect(() => {
@@ -159,7 +140,7 @@ const Onboarding = () => {
 
   return (
     <section className="">
-      <div className="px-2.5 py-3 bg-[#F4f4f4] w-full mb-10">
+      <div className="px-2.5 py-3.5 bg-[#F4f4f4] w-full mb-10">
         <button
           type="button"
           onClick={() => {
@@ -173,7 +154,7 @@ const Onboarding = () => {
       </div>
       <FormikProvider value={formik}>
         <form
-          className="px- 10 xl:pl-[9.375rem] max-h-full  pb-20 h-[calc(100vh_-_4rem)] overflow-y-auto scroll-hidden"
+          className="px-10 xl:pl-[9.375rem] max-h-full  pb-20 h-[calc(100vh_-_4rem)] overflow-y-auto scroll-hidden"
           onSubmit={formik.handleSubmit}
         >
           {/* <div className="h-[calc(100vh_-_16rem)] overflow-y-scroll px-4 scroll-hidden"> */}
@@ -199,8 +180,8 @@ const Onboarding = () => {
             {getCurrentStep() === 4 && (
               <OrganizationStructure formik={formik} />
             )}
-            {getCurrentStep() === 5 && <GradeLevel formik={formik} />}
-            {getCurrentStep() === 6 && <HeadDetails formik={formik} />}
+            {getCurrentStep() === 5 && <HeadDetails formik={formik} />}
+            {getCurrentStep() === 6 && <GradeLevel formik={formik} />}
             {getCurrentStep() === 7 && <Preview formik={formik} />}
           </div>
           <div className="flex justify-start items-center gap-[1.625rem] mt-8">
