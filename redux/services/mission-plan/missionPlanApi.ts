@@ -14,8 +14,7 @@ export const missionPlanApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-        } catch (error: any) {
-        }
+        } catch (error: any) {}
       },
     }),
     getMyMissionPlan: builder.query({

@@ -254,6 +254,16 @@ const AllEmployeeMissionPlan = () => {
     );
   }
 
+  // Check if submission date has elasped
+  // Define the end date for the report submission
+  const submissionEndDate = new Date(active_fy_info?.creation_end_date);
+
+  // Get today's date
+  const today = new Date();
+
+  // Check if the submission end date has not passed today's date
+  const isSafe = submissionEndDate >= today;
+
   return (
     <>
       {summaryError && employeeError ? (
@@ -261,28 +271,31 @@ const AllEmployeeMissionPlan = () => {
       ) : !isLoadingSummary && !isLoadingEmployee && !isLoadingdropdown ? (
         <div className="pb-5 px-5 mt-1 space-y-5">
           <div className="flex gap-[10px] justify-end">
-            <button
-              className={cn(
-                btn,
-                active_fy_info?.status !== "active" &&
-                  "opacity-30 hover:bg-white"
-              )}
-              disabled={active_fy_info?.status !== "active"}
-              onClick={() => setExtendSubmission(true)}
-            >
-              Extend Submission Period
-            </button>
-            <button
-              className={cn(
-                btn,
-                active_fy_info?.status !== "active" &&
-                  "opacity-30 hover:bg-white"
-              )}
-              onClick={() => setReopenSubmission(true)}
-              disabled={active_fy_info?.status !== "active"}
-            >
-              Reopen Submissions
-            </button>
+            {isSafe ? (
+              <button
+                className={cn(
+                  btn,
+                  active_fy_info?.status !== "active" &&
+                    "opacity-30 hover:bg-white"
+                )}
+                disabled={active_fy_info?.status !== "active"}
+                onClick={() => setExtendSubmission(true)}
+              >
+                Extend Submission Period
+              </button>
+            ) : (
+              <button
+                className={cn(
+                  btn,
+                  active_fy_info?.status !== "active" &&
+                    "opacity-30 hover:bg-white"
+                )}
+                onClick={() => setReopenSubmission(true)}
+                disabled={active_fy_info?.status !== "active"}
+              >
+                Reopen Submissions
+              </button>
+            )}
           </div>
           <div className="flex justify-between">
             <p className="text-xl font-medium text-primary">

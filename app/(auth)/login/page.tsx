@@ -95,7 +95,7 @@ export default function Login() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             <Checkbox
               checked={values.remember}
               id="remember_me"
@@ -109,10 +109,10 @@ export default function Login() {
             >
               Remember me
             </label>
-          </div>
+          </div> */}
           <Link
             href={FORGOT_PASSWORD}
-            className="text-primary font-normal text-xs"
+            className="text-primary font-normal text-xs ml-auto mt-[-2rem]"
           >
             Forgot Password
           </Link>
