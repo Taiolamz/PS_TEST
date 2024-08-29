@@ -47,10 +47,12 @@ export const baseQueryInterceptor: BaseQueryFn<
   if (result.error) {
     let res: any = result.error;
     if (res.status === 403) {
-      api.dispatch(resetAuth());
-      Cookies.remove("token");
-      clearStorageItem();
-      window.location.href = "/login";
+      let message = res.data.error.message;
+      toast.error(message);
+      // api.dispatch(resetAuth());
+      // Cookies.remove("token");
+      // clearStorageItem();
+      // window.location.href = "/login";
     }
     if (res.status === 401) {
       if (res.data.status === "failed") {
@@ -117,5 +119,6 @@ export const baseApi = createApi({
     "MissionPlan",
     "MissionPlanExtension",
     "Approvables",
+    "OrganizationFiscalYear",
   ],
 });

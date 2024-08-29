@@ -1,15 +1,24 @@
 import { Dictionary } from "@/@types/dictionary";
 import EndFinancialYearModal from "@/components/atoms/modals/end-financial-year";
 import { cn } from "@/lib/utils";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FYExtendModal from "../_modal/fy-extend-modal";
 import CustomDateInput from "@/components/custom-date-input";
 import { Textarea } from "@/components/ui/textarea";
+import { useFormik } from "formik";
+import { useExtendFinancialYearMutation } from "@/redux/services/mission-plan/allmissionplanApi";
+import { formatDate, formatRMDatePicker } from "@/utils/helpers/date-formatter";
+import { useSearchParams } from "next/navigation";
+import EndFinancialYearCompleteModal from "@/components/atoms/modals/end-fianancial-year-complete";
+import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { Button } from "@/components/ui/button";
 
 const FiscalYearInfo = () => {
   const [extendSubmission, setExtendSubmission] = useState<boolean>(false);
+  const [showSuccessExtendModal, setShowExtendSuccessModal] = useState(false);
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
@@ -18,6 +27,42 @@ const FiscalYearInfo = () => {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  const [extendFinancialYear, { isLoading, error: apiError }]: any =
+    useExtendFinancialYearMutation();
+
+  const dispatch = useAppDispatch();
+
+  const [date, setdate] = useState({ new_end_date: "" });
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const handleSubmit = async () => {
+    let value = { fiscal_year_id: id, new_end_date: date.new_end_date };
+
+    value.new_end_date = formatDate(value.new_end_date);
+
+    extendFinancialYear(value)
+      .unwrap()
+      .then((payload: Dictionary) => {
+        // Fetch and update fiscal year information after extending financial year
+        dispatch(
+          updateMissionPlanDetails({
+            slug: "active_fy_info",
+            data: payload?.data?.organization_mission_plan,
+          })
+        );
+        setExtendSubmission(false);
+        setShowExtendSuccessModal(true);
+      });
+  };
+
+  const handleChange = (date: any | null) => {
+    if (date) {
+      setdate({ new_end_date: formatDate(date) });
+    }
+  };
+
   const handleEndFinancialYearClick = () => {
     setShowSuccessModal(true);
   };
@@ -25,11 +70,13 @@ const FiscalYearInfo = () => {
     setShowSuccessModal(false);
   };
 
+
+
   return (
     <div className="space-y-5 mb-6 px-5 mt-1 text-[var(--text-color3)]">
       {/* Financial Year */}
       <div className="flex gap-[10px] justify-end ">
-        <button
+        <Button
           className={cn(
             btn,
             active_fy_info?.status !== "active" && "opacity-30 hover:bg-white"
@@ -38,8 +85,8 @@ const FiscalYearInfo = () => {
           disabled={active_fy_info?.status !== "active"}
         >
           Extend Financial Year
-        </button>
-        <button
+        </Button>
+        <Button
           className={cn(
             btn,
             active_fy_info?.status !== "active" && "opacity-30 hover:bg-white"
@@ -48,7 +95,7 @@ const FiscalYearInfo = () => {
           onClick={handleEndFinancialYearClick}
         >
           End Financial Year
-        </button>
+        </Button>
       </div>
 
       <EndFinancialYearModal
@@ -140,64 +187,81 @@ const FiscalYearInfo = () => {
       <FYExtendModal
         show={extendSubmission}
         handleClose={() => setExtendSubmission(false)}
-        style="lg:max-w-[700px] lg:w-[600px]"
+        handleSubmit={handleSubmit}
+        style="lg:max-w-[700px] lg:w-[600px] h-[600px "
+        loading={isLoading}
+        disabled={!date?.new_end_date}
       >
-        <form className="p-5">
-          <div className=" flex text-custom-gray-scale-300">
-            <div className=" ">
+        <form className="p-10">
+          <div className="flex text-custom-gray-scale-300">
+            <div className="">
               <CustomDateInput
                 id="start_date"
                 name="start_date"
-                error="nothing"
+                error=""
                 handleChange={handleCloseModal}
-                labelClass=" text-[16px]"
+                labelClass="text-custom-gray-scale-300 pb-1"
                 disabled={true}
-                format=" "
+                format=""
+                selected={active_fy_info.start_date}
                 placeholder="September 2024"
                 showIcon={false}
-                label=" Previous Start date"
+                label="Previous Start date"
+                className="p-2" // Adjust the padding here as needed
               />
             </div>
-            <div className=" ml-5">
+            <div className="ml-5">
               <CustomDateInput
                 id="end_date"
                 name="end_date"
                 error="nothing"
-                labelClass=" text-[16px]"
+                labelClass="text-custom-gray-scale-300 pb-1"
                 handleChange={handleCloseModal}
+                selected={active_fy_info.end_date}
                 disabled={true}
-                format=" "
                 placeholder="October 2024"
                 showIcon={false}
-                label=" Previous End date"
+                label="Previous End date"
+                className="p-2"
               />
             </div>
           </div>
-          <div className=" flex flex-col mt-5 w-[195px] h-[40px]">
+          <div className="flex flex-col mt-5 w-[195px] h-[40px]">
             <CustomDateInput
               id="new_end_date"
               label="New End Date"
-              handleChange={handleCloseModal}
+              handleChange={handleChange}
               className="w-full h-full"
-              placeholder=" "
-              labelClass=" text-[16px] text-black"
-              showIcon={false}
+              placeholder="YYYY-MM-DD"
+              labelClass="text-custom-gray-scale-300 pb-1"
+              showIcon={true}
               format=""
-              error="nothing"
+              error=""
             />
           </div>
-          <div className=" mt-16">
+          <div className="mt-16">
             <Textarea
               label="Reason For Extension"
               placeholder=" "
               id="reason_for_extension"
               name="reason_for_extension"
-              className="w-[405px] mt-2 h-[71px] rounded-md border-[2px] outline-none border-custom-divider resize-none"
+              className="w-[405px] mt-2 h-[71px] rounded-md border-[2px] outline-none border-custom-divider resize-none p-2"
               labelClass="text-custom-gray-scale-300 pb-1"
             />
           </div>
         </form>
       </FYExtendModal>
+      <EndFinancialYearCompleteModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title="Financial Year Extended!!!"
+        message="Congratulations! You have successfully extended your financial year. Click on the button below to continue."
+        show={showSuccessExtendModal}
+        handleClose={() => {
+          setShowExtendSuccessModal(false);
+        }}
+        modalClass="lg:w-[753px] lg:max-w-[605px] p-6"
+      />
     </div>
   );
 };
