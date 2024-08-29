@@ -97,7 +97,6 @@ const AddSubsidary = () => {
           loading={isCreatingSubsidiary}
           onSave={formik.handleSubmit}
         />
-
         <div
           className=""
           style={{ padding: "0rem 2rem", marginTop: "-1.5rem" }}
@@ -211,7 +210,7 @@ const AddSubsidary = () => {
                   handleRemoveLogo={handleRemoveLogo}
                   fileInputRef={fileInputRef}
                   label="Upload Subsidiary Logo"
-                  containerClass="border-[#E5E9EB] py-2 text-[#6E7C87] bg-white"
+                  containerClass="border-[#E5E9EB] py-2 px-4 text-[#6E7C87] bg-white transition-all duration-300 ease-in-out hover:px-8"
                   labelClass="block relative text-xs mb-0 text-[#6E7C87] font-normal pb-2"
                 />
                 <Textarea
@@ -220,7 +219,7 @@ const AddSubsidary = () => {
                   name="description"
                   placeholder="Description"
                   label="Subsidiary Description"
-                  className="mt-1 w-full  block px-4 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm bg-white"
+                  className=" w-full  block px-4 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm bg-white"
                   onChange={formik.handleChange}
                 />
               </form>
