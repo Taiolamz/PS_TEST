@@ -122,9 +122,9 @@ const FinancialYear = () => {
                         label="Review Period"
                         id=""
                         options={[
-                            {label: "Monthly", value: "Monthly"},
-                            {label: "Quarterly", value: "Quarterly"},
-                            {label: "Bi-Annual (twice/year)", value: "Bi-Annual (twice/year)"},
+                            {label: "Monthly", value: "monthly"},
+                            {label: "Quarterly", value: "buarterly"},
+                            {label: "Bi-Annual (twice/year)", value: "bi-annual"},
                         ]}
                         selected={formik.values.review_period}
                         setSelected={(selected) => formik.setFieldValue('review_period', selected)}
