@@ -61,7 +61,7 @@ const OnboardingLayout = ({ children }: Props) => {
   return (
     <ActionContextProvider>
       <section className="flex h-screen overflow-hidden">
-        <aside className="w-1/4  py-4 pr-0 bg-[--primary-color] text-white xl:w-2/12 relative">
+        <aside className="w-1/4 py-4 pr-0 bg-[--primary-color] text-white xl:w-2/12 relative max-w-[14.6875rem]">
           <Icon width={74} height={15} name="mance" className="mx-auto" />
           <hr className="bg-white my-[0.6rem]" />
           <div className="pl-4">
@@ -70,7 +70,7 @@ const OnboardingLayout = ({ children }: Props) => {
               {filteredSteps.map((step, index) => (
                 <li
                   key={index}
-                  className={`text-xs p-2 cursor-pointer flex items-center gap-2 mr-4 ${
+                  className={`text-xs p-2 cursor-pointer flex items-center gap-2 ${
                     getCurrentStep() - 1 >= index
                       ? "bg-white bg-opacity-[8%]"
                       : ""
