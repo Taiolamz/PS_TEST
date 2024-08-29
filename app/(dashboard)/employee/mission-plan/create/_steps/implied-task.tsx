@@ -572,7 +572,7 @@ const ImpliedTask = () => {
                                     <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
                                       <div className="mt-1">
                                         <CustomMultipleSelect
-                                          randomBadgeColor
+                                          // randomBadgeColor
                                           options={formattedEmployeesDrop}
                                           onValueChange={(values) =>
                                             formik.setFieldValue(
@@ -732,7 +732,7 @@ const ImpliedTask = () => {
                                               <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
                                                 <div className="mt-1">
                                                   <CustomMultipleSelect
-                                                    randomBadgeColor
+                                                    // randomBadgeColor
                                                     options={
                                                       formattedEmployeesDrop
                                                     }
