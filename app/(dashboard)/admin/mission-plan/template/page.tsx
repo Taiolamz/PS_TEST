@@ -5,7 +5,10 @@ import { useMemo } from "react";
 import useDisclosure from "./_hooks/useDisclosure";
 import routesPath from "@/utils/routes";
 import { useGetMissionPlanTemplatesQuery } from "@/redux/services/checklist/missionPlanTemplateApi";
-import { missionPlanColumn } from "./level/_component/mission-plan-template-column";
+import {
+  // missionPlanColumn,
+  MissionPlanColumnData,
+} from "./level/_component/mission-plan-template-column";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
@@ -14,6 +17,7 @@ import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";
 import MissionPlanTemplateModal from "./level/_component/mission-plan-template-modal";
+import DeleteMissionPlanTemplate from "./level/_component/delete-mission-plan-template";
 
 const { ADMIN } = routesPath;
 
@@ -106,6 +110,8 @@ const MissionPlanTemplate = () => {
   });
 
   const missionPlanTemplates = missionPlanTemplateData ?? [];
+  const { missionPlanColumn, data, openDeleteModal, handleDeleteDialog } =
+    MissionPlanColumnData();
 
   const missionPlanTemplatesColumnData = useMemo(() => missionPlanColumn, []);
 
@@ -169,6 +175,17 @@ const MissionPlanTemplate = () => {
           onOpenChange={handleMissionDialog}
         >
           <MissionPlanTemplateModal onSelect={handleSelectedRoute} />
+        </DashboardModal>
+
+        <DashboardModal
+          className={"w-[420px]"}
+          open={openDeleteModal}
+          onOpenChange={handleDeleteDialog}
+        >
+          <DeleteMissionPlanTemplate
+            data={data}
+            onCancel={handleDeleteDialog}
+          />
         </DashboardModal>
       </section>
     </DashboardLayout>

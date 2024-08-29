@@ -6,6 +6,7 @@ type ApprovablesType = {
   approver: { name: string };
   created_at: string;
   approvable_type: string;
+  status: string;
 };
 
 type CommentType = {
@@ -15,6 +16,7 @@ type CommentType = {
   comment: string[];
   date: string;
   time: string;
+  status: string;
 };
 
 type Props = {
@@ -41,7 +43,8 @@ const useGetComments = ({
     });
 
     if (approvable) {
-      const { approver, created_at, approvable_type, comments } = approvable;
+      const { approver, created_at, approvable_type, comments, status } =
+        approvable;
 
       const date = new Date(created_at);
       const formattedDate = date.toLocaleDateString();
@@ -56,6 +59,7 @@ const useGetComments = ({
         comment: comments,
         date: formattedDate,
         time: formattedTime,
+        status,
       };
     }
 
@@ -66,6 +70,7 @@ const useGetComments = ({
       comment: [],
       date: "",
       time: "",
+      status: "",
     };
   }, [approvables, approvableTypeId]);
 };

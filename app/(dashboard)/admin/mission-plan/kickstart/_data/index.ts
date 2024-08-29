@@ -17,5 +17,11 @@ export const CREATE_FY_LINKS = [
         path: '?ui=strategic-pillar',
         accessor: 'strategic-pillar'
     },
+    {
+        id: 4,
+        title: 'Timelines and Reminders',
+        path: '?ui=timelines-reminders',
+        accessor: 'timeline-reminder'
+    },
 ]
 

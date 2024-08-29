@@ -34,7 +34,7 @@ export default function ConfirmationModal({
   handleClick,
   content,
   footerContent,
-  modalClass
+  modalClass,
 }: ConfirmationModalProps) {
   return (
     <ModalContainer
@@ -49,22 +49,23 @@ export default function ConfirmationModal({
       <section>
         <div className="">
           <div className="text-center mb-5">
-            {
-              icon &&
+            {icon && (
               <div className="flex justify-center">
                 <Image
                   src={icon}
                   width={71}
                   height={40}
-                  className={`${cn(
-                    iconClass
-                  )}`}
-                  alt={'icon'}
+                  className={`${cn(iconClass)}`}
+                  alt={"icon"}
                 />
               </div>
-            }
-            <h3 className="mt-[14px] text-isGray900 text-2xl font-bold leading-9 mx-auto">{title}</h3>
-            <p className="text-[13px] w-[300px] font-normal mx-auto mt-3 text-[#5B6871]">{message}</p>
+            )}
+            <h3 className="mt-[14px] text-isGray900 text-2xl font-bold leading-9 mx-auto">
+              {title}
+            </h3>
+            <p className="text-[13px] w-[300px] font-normal mx-auto mt-3 text-[#5B6871]">
+              {message}
+            </p>
           </div>
           {content}
           {handleClick && (

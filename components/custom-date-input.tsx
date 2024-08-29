@@ -14,7 +14,7 @@ interface CustomDateInputProps {
   isRequired?: boolean;
   handleChange: (arg: any) => void;
   selected?: Date;
-  error: string;
+  error?: string;
   touched?: boolean;
   disabled?: boolean;
   showIcon?: boolean;
@@ -82,8 +82,6 @@ export default function CustomDateInput({
         disabled={disabled}
         onlyMonthPicker={showOnlyMonth}
         highlightToday={false}
-
-        // format="DD-MM-YYYY"
       />
       {showIcon && (
         <Calendar

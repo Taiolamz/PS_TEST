@@ -41,3 +41,4 @@ export { default as ZojatechIcon } from "./ZojatechIcon.svg";
 export { default as DraggableIcon } from "./DraggableIcon";
 export { default as TrashIcon } from "./TrashIcon.svg";
 export { default as CirclePlusIcon } from "./CirclePlusIcon";
+export { default as EmptyFileIcon } from "./EmptyFileIcon.svg";

@@ -97,12 +97,12 @@ export const PAGE_TABS = {
   SUPER_ADMIN: [
     {
       id: 1,
-      title: "Mission Plan",
+      title: "Financial Year Details",
       accessor: "mission-plan",
     },
     {
       id: 2,
-      title: "All Employees",
+      title: "Organization Mission Plans",
       accessor: "all-employees",
     },
   ],
@@ -116,6 +116,16 @@ export const PAGE_TABS = {
       id: 2,
       title: "All Employees",
       accessor: "all-employees",
+    },
+    {
+      id: 3,
+      title: "Direct Downlines",
+      accessor: "downlines",
+    },
+    {
+      id: 4,
+      title: "Approvals",
+      accessor: "approvals",
     },
   ],
   LINE_MANAGER: [
@@ -267,10 +277,12 @@ export const formatBehaviours = (
   return behavioursString;
 };
 
-export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>(array: T[], placeholder: string = "---"): T[] {
-  return array?.map(obj => {
+export function replaceEmptyValuesWithPlaceholder<
+  T extends Record<string, any>
+>(array: T[], placeholder: string = "---"): T[] {
+  return array?.map((obj) => {
     const newObj = { ...obj }; // Create a shallow copy of the object
-    (Object?.keys(newObj) as (keyof T)[])?.forEach(key => {
+    (Object?.keys(newObj) as (keyof T)[])?.forEach((key) => {
       if (newObj[key] === "") {
         newObj[key] = placeholder as any; // Replace empty value with placeholder
       }
@@ -279,9 +291,8 @@ export function replaceEmptyValuesWithPlaceholder<T extends Record<string, any>>
   });
 }
 
-export const allObjValuesNotEmpty = (data: Dictionary) => Object.values(data).every((d) => d.trim() !== "")
-
-
+export const allObjValuesNotEmpty = (data: Dictionary) =>
+  Object.values(data).every((d) => d.trim() !== "");
 
 type DataObject = {
   name: string;
@@ -289,6 +300,14 @@ type DataObject = {
   key: string;
 };
 
-export function extractNamesFromFormat(data: { [key: number]: DataObject }): string[] {
+export function extractNamesFromFormat(data: {
+  [key: number]: DataObject;
+}): string[] {
   return Object.values(data).map((item) => item.name);
 }
+
+export const isObjectEmpty = (obj: {}) => {
+  if (obj) {
+    return Object.keys(obj).length === 0;
+  }
+};

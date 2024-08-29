@@ -300,7 +300,7 @@ const ImpliedTask = () => {
                                   {/* Achieve $1 Billion in Company Revenue for the
                             Financial year */}
                                   {/* the title should come from another array */}
-                                  {task?.title || `${index + 1}. Implied task`}
+                                  {task?.title || `${index + 1}. Specified task`}
                                 </p>
                               }
                               content={

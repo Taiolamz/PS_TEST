@@ -13,7 +13,18 @@ export const missionPlanTemplateApi = baseApi.injectEndpoints({
       invalidatesTags: ["MissionPlanTemplates"],
     }),
 
-    getMissionPlanTemplates: builder.query<DepartmentData[], QueryParams>({
+    deleteMissionPlanTemplate: builder.mutation({
+      query: (id) => ({
+        url: `/mission-plan/template/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["MissionPlanTemplates"],
+    }),
+
+    getMissionPlanTemplates: builder.query<
+      MissionPlanTemplateData[],
+      QueryParams
+    >({
       query: (params) => ({
         url: `/mission-plan/template${generateQueryString({
           ...params,
@@ -31,4 +42,5 @@ export const missionPlanTemplateApi = baseApi.injectEndpoints({
 export const {
   useCreateMissionPlanTemplateMutation,
   useGetMissionPlanTemplatesQuery,
+  useDeleteMissionPlanTemplateMutation,
 } = missionPlanTemplateApi;

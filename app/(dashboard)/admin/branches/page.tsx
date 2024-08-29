@@ -158,7 +158,7 @@ const Branches = () => {
         toast.success("Branches Uploaded Successfully");
         handleBulkUploadDialog();
         refetchBranches();
-        new Promise(() => {
+        new Promise(() => { 
           setTimeout(() => {
             toast.dismiss();
           }, 2000);

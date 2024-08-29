@@ -5,9 +5,10 @@ import { useContext, useState } from "react";
 import { ChecklistLayout } from "../_components/checklist-layout";
 import FormLayout from "../_components/form-layout";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import CustomSelect from "@/components/custom-select";
-import DashboardModal from "../_components/checklist-dashboard-modal";
 import CancelModal from "../_components/cancel-modal";
+import DashboardModal from "../_components/checklist-dashboard-modal";
 import { useDepartment } from "../_hooks/useDepartment";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
@@ -33,7 +34,7 @@ const AddDepartment = () => {
     branches,
     employees,
   } = useDepartment({ cancelPath: cancelRoute });
- 
+
   const [selectedBranch, setSelectedBranch] = useState("");
 
   const handleHeadSelectChange = (selectedName: string) => {
@@ -151,34 +152,14 @@ const AddDepartment = () => {
                   onChange={formik.handleChange}
                   isRequired
                 />
-                
-                <CustomSelect
-                  label="Head of Department"
-                  placeholder="Head of Department"
-                  options={[
-                    {
-                      label: "Head of Department",
-                      value: "",
-                      name: "",
-                      id: "",
-                    },
-                    ...employees,
-                  ]}
-                  selected={formik.values.head_of_department.name}
-                  setSelected={handleHeadSelectChange}
-                  labelClass={labelClassName}
-                  // isRequired
-                />
+
                 <Input
-                  label="Work Email"
+                  label="Department Email"
                   type="text"
-                  placeholder="Work Email"
-                  id="work_email"
-                  value={formik.values.work_email}
-                  name="work_email"
+                  placeholder="Department Email"
+                  id="department_email"
+                  name="department_email"
                   onChange={formik.handleChange}
-                  // isRequired
-                  disabled
                 />
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
@@ -235,6 +216,47 @@ const AddDepartment = () => {
                     labelClass={labelClassName}
                   />
                 )}
+
+                <CustomSelect
+                  label="Head of Department"
+                  placeholder="Head of Department"
+                  options={[
+                    {
+                      label: "Head of Department",
+                      value: "",
+                      name: "",
+                      id: "",
+                    },
+                    ...employees,
+                  ]}
+                  selected={formik.values.head_of_department.name}
+                  setSelected={handleHeadSelectChange}
+                  labelClass={labelClassName}
+                  // isRequired
+                />
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.work_email}
+                  name="work_email"
+                  onChange={formik.handleChange} 
+                  disabled
+                />
+
+                <Textarea
+                  label="Department Description"
+                  rows={3}
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  onChange={formik.handleChange}
+                  touched={formik.touched.description}
+                  value={formik.values.description}
+                  error={formik.errors.description}
+                />
               </form>
             }
           />

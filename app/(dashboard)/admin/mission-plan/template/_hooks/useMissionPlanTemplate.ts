@@ -17,6 +17,7 @@ type Prop = {
 };
 
 interface Section {
+  isRequired?: boolean;
   id: string;
   title: string;
   displayName: string;
@@ -113,7 +114,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     const payload = {
       id: "",
       // id: organization?.id,
-      assignees: [], 
+      assignees: [],
       name: input.template_title,
       duration: {
         order: 0,
@@ -124,6 +125,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
       (payload as any)[section.mapTitle] = {
         order: index + 1,
         ...input[section.mapTitle],
+        ...section,
       };
     });
 

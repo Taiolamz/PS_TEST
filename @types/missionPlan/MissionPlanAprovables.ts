@@ -1,14 +1,16 @@
 export type MissionStatementType = {
   mission: string;
   id: string;
+  status: "pending" | "approved" | "rejected";
 };
 
 export type MeasureOfSuccessType = {
-  id?: string;
+  id?: string | number;
   measure?: string;
   status?: string;
   target?: string;
   unit?: string;
+  weight?: string;
 };
 
 export type BoundariesType = {
@@ -26,6 +28,8 @@ export type SpecifiedTasksType = {
   end_date: string;
   is_main_effort?: number;
   implied_tasks: ImpliedTaskType[];
+  status?: string;
+  weight?: number;
 };
 
 export type ImpliedTaskType = {
@@ -72,7 +76,7 @@ type MissionPlanApprovablesType = {
   fiscal_year_id: string;
   id: string;
   specified_tasks: SpecifiedTasksType[];
-  staff_member_id: string;
+  staff_member: string;
 };
 
 export default MissionPlanApprovablesType;

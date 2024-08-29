@@ -501,6 +501,13 @@ export const sideMenuEmployeeList = [
         name: "Mission Plan",
         link: routesPath?.EMPLOYEE?.MISSION_PLAN,
         icon: sideMenuIcons?.mission_plan,
+        relatedLink: [
+          routesPath?.EMPLOYEE?.MISSION_PLAN,
+          routesPath?.EMPLOYEE?.CREATE_MISSION_PLAN,
+          routesPath?.EMPLOYEE?.SINGLE_MISSION_PLAN,
+          routesPath?.EMPLOYEE?.MAIN_MISSION_PLAN,
+          routesPath?.EMPLOYEE?.LINE_MANAGER_MISSION_PLAN,
+        ],
       },
       {
         name: "Mission Plan Report",
