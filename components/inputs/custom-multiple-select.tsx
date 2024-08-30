@@ -303,7 +303,7 @@ const randomColor = (): BadgeColor => {
             )}
           </Button>
         </PopoverTrigger>
-        <span className={cn("text-xs text-red-500 hidden", error && "block")}>
+        <span className={cn("text-xs text-red-500 hidden", error && "block absolute")}>
           {error && touched && error}
         </span>
 
