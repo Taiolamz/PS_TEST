@@ -314,7 +314,7 @@ export default function ReopenSubmissionModal({
                     onValueChange={(values: any) => {
                       formik.setFieldValue("multiselectInput", values);
                     }}
-                    randomBadgeColor
+                    // randomBadgeColor
                     label={`Name of ${formik?.values?.staffSelection}`}
                     id="multiselectInput"
                     name="multiselectInput"

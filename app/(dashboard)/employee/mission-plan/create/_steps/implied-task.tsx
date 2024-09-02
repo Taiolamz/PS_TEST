@@ -777,7 +777,6 @@ const ImpliedTask = () => {
                                               <div className="grid lg:grid-cols-3 gap-x-3 mt-6 ">
                                                 <div className="mt-1 relative">
                                                   <CustomMultipleSelect
-                                                    randomBadgeColor
                                                     options={
                                                       formattedEmployeesDrop
                                                     }
