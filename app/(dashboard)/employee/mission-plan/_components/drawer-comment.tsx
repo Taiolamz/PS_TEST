@@ -21,11 +21,13 @@ export default function DrawerComment({
   handleClose,
   userId,
   comments,
+  isLoading,
 }: {
   show: boolean;
   handleClose: () => void;
   userId?: string;
   comments?: CommentType;
+  isLoading: boolean;
 }) {
   const { user } = useAppSelector((state) => state.auth);
   console.log({ comments });
@@ -139,13 +141,11 @@ export default function DrawerComment({
         <main className="pl-4 pt-3 flex-1 flex flex-col">
           <h3 className="text-sm mb-4">Previous Comments</h3>
           <section className="space-y-4 h-[53dvh] grid overflow-y-auto pr-3">
-            {allCommenterror ? (
-              <></>
-            ) : loadingComment ? (
+            {isLoading ? (
               <div className="place-content-center">
                 <PageLoader />
               </div>
-            ) : allComment?.data?.length === 0 ? (
+            ) : comments?.comment?.length === 0 ? (
               <div className="text-center place-content-center mt-16">
                 <p className="text-custom-gray-scale-400 font-medium text-sm">
                   No Comments Yet
@@ -153,7 +153,7 @@ export default function DrawerComment({
               </div>
             ) : (
               <div className="space-y-4">
-                {allComment?.data?.map((item: any) => (
+                {comments?.comment.map((item: any) => (
                   <div
                     key={item}
                     className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
@@ -162,22 +162,23 @@ export default function DrawerComment({
                       <div className="flex items-center gap-x-[7px]">
                         <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
                           <span className="text-white font-semibold uppercase text-xs">
-                            {returnInitial(item?.staff_member?.name)}
+                            {returnInitial(comments?.author)}
                           </span>
                         </div>
                         <div className="space-y-1">
                           <h3 className="text-sm font-medium text-custom-dark-gray">
-                            {item?.staff_member?.name}
+                            {comments?.author}
                           </h3>
                           <p className="text-[10px] font-light text-custom-gray-scale-400">
-                            {formatTimestamp(item?.created_at)}
+                            {formatTimestamp(comments?.date)}
                           </p>
                         </div>
                       </div>
                       <span className="size-1.5 bg-custom-red rounded-full" />
                     </div>
                     <div className="text-[13px] text-custom-ash">
-                      {item?.comment}
+                      {item}
+                      {/* {item?.comment} */}
                     </div>
                   </div>
                 ))}
