@@ -119,12 +119,27 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
   const [createSubsidiary, { isLoading: isCreatingSubsidiary }] =
     useCreateSubsidiaryMutation();
   const handleSubmit = async () => {
-    const payload = {
-      ...formik.values,
-      organization_id: organization?.id,
-      city: formik.values.state,
-      head: formik.values.head.id,
-    };
+    const payload = new FormData();
+    const { logo } = formik.values;
+
+    Object.entries(formik.values).forEach(([key, value]) => {
+      if (key === "logo" && logo instanceof File) {
+        payload.append(key, logo);
+      } else if (key === "head") {
+        payload.append(key, formik.values.head.id);
+      } else {
+        payload.append(key, value as string);
+      }
+    });
+
+    payload.append("city", formik.values.state);
+
+    // const payload = {
+    //   ...formik.values,
+    //   organization_id: organization?.id,
+    //   city: formik.values.state,
+    //   head: formik.values.head.id,
+    // };
     await createSubsidiary(payload)
       .unwrap()
       .then(() => {
@@ -151,6 +166,8 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
         id: "",
       },
       work_email: "",
+      logo: null as File | null,
+      description: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,

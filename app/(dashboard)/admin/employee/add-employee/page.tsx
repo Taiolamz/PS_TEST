@@ -38,6 +38,7 @@ export default function AddEmployee() {
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
+    employees,
   } = useEmployee({ path: route, cancelPath: cancelRoute });
 
   const handleSubsidiaryChange = (selectedName: string) => {
@@ -264,6 +265,22 @@ export default function AddEmployee() {
   const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
     {}
   );
+  const handleHeadSelectChange = (selectedName: string) => {
+    const selectedEmployee = (employees as AllStaff[]).find(
+      (emp) => emp.name === selectedName
+    );
+
+    if (selectedEmployee) {
+      formik.setFieldValue("line_manager.name", selectedEmployee.name);
+      formik.setFieldValue("line_manager_email", selectedEmployee.email);
+      formik.setFieldValue("head.id", selectedEmployee.id);
+    } else {
+      formik.setFieldValue("line_manager.name", "");
+      formik.setFieldValue("line_manager_email", "");
+      formik.setFieldValue("head.id", "");
+    }
+  };
+
   return (
     <>
       <DashboardLayout back headerTitle="Employee">
@@ -332,7 +349,7 @@ export default function AddEmployee() {
 
                 <CustomSelect
                   label="Gender"
-                  isRequired
+                  // isRequired
                   placeholder="Select Gender"
                   options={genderOptions}
                   selected={formik.values.gender}
@@ -351,7 +368,7 @@ export default function AddEmployee() {
                   error={""}
                   className="relative"
                   iconClass="top-[2.7rem]"
-                  isRequired
+                  // isRequired
                 />
 
                 <CustomDateInput
@@ -365,7 +382,7 @@ export default function AddEmployee() {
                   iconClass="top-[2.7rem]"
                   error={""}
                   className="relative"
-                  isRequired
+                  // isRequired
                 />
                 <Input
                   label="Work Email"
@@ -387,12 +404,43 @@ export default function AddEmployee() {
                   isRequired
                 />
 
+                {/* <CustomSelect
+                  label="Line Manager name"
+                  placeholder="Grade Level"
+                  options={gradeLevels}
+                  selected={formik.values.level}
+                  setSelected={(value) => formik.setFieldValue("level", value)}
+                  labelClass={labelClassName}
+                  isRequired
+                /> */}
+
+                <CustomSelect
+                  label="Line Manager name"
+                  placeholder="Line Manager name"
+                  options={[
+                    {
+                      label: "Select Line Manager name",
+                      value: "",
+                      name: "",
+                      id: "",
+                    },
+                    ...employees,
+                  ]}
+                  isRequired
+                  selected={formik.values.line_manager.name}
+                  setSelected={handleHeadSelectChange}
+                  labelClass={labelClassName}
+                  // isRequired
+                />
+
                 <Input
                   label="Line Manager Email"
                   type="text"
                   placeholder="Line Manager Email"
                   id="line_manager_email"
                   name="line_manager_email"
+                  disabled
+                  value={formik.values.line_manager_email}
                   onChange={formik.handleChange}
                   isRequired
                 />
@@ -531,7 +579,7 @@ export default function AddEmployee() {
                   id="designation"
                   name="designation"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                 />
 
                 <Input
@@ -547,7 +595,7 @@ export default function AddEmployee() {
                     formik.setFieldValue("phone_number", filteredValue);
                   }}
                   value={formik.values.phone_number}
-                  isRequired
+                  // isRequired
                 />
 
                 <Input
@@ -557,7 +605,7 @@ export default function AddEmployee() {
                   id="staff_number"
                   name="staff_number"
                   onChange={formik.handleChange}
-                  isRequired
+                  // isRequired
                 />
 
                 <CustomSelect

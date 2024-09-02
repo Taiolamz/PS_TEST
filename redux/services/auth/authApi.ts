@@ -141,7 +141,7 @@ export const authApi = baseApi.injectEndpoints({
           window.location.href = "/login";
           dispatch(resetAuth());
           dispatch(resetMissionPlan());
-          dispatch(resetMissionPlanPreview())
+          dispatch(resetMissionPlanPreview());
         } catch (error: any) {
           console.log("Error:", error);
         }
@@ -160,8 +160,8 @@ export const authApi = baseApi.injectEndpoints({
             data: { data },
           } = result;
           const key = {
-            user: data
-          }
+            user: data,
+          };
 
           dispatch(setAuthUser(key));
         } catch (error: any) {
