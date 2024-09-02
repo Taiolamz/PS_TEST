@@ -19,7 +19,11 @@ export const missionPlanApi = baseApi.injectEndpoints({
     }),
     getMyMissionPlan: builder.query({
       query: (payload) => ({
-        url: `/mission-plan?fiscal_year=${payload.id}`,
+        url: `/mission-plan?fiscal_year=${payload.id}${
+          payload.isInclude === true
+            ? `&include-approvals=${payload.isInclude}`
+            : ""
+        }`,
         method: "GET",
       }),
       providesTags: ["MissionPlan"],

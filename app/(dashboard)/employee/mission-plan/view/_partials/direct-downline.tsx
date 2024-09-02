@@ -95,7 +95,7 @@ export default function DirectDownline() {
                 })
               );
               router.push(
-                EMPLOYEE.APPROVE_REJECT_MISSION_PLAN_DOWN_LINE(
+                EMPLOYEE.APPROVE_REJECT_MISSION_PLAN(
                   dataTwo?.name?.props.children[0].props.children
                 )
               );
