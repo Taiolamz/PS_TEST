@@ -14,14 +14,16 @@ export const missionPlanApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-        } catch (error: any) {
-          // console.log('Error:', error)
-        }
+        } catch (error: any) {}
       },
     }),
     getMyMissionPlan: builder.query({
       query: (payload) => ({
-        url: `/mission-plan?fiscal_year=${payload.id}`,
+        url: `/mission-plan?fiscal_year=${payload.id}${
+          payload.isInclude === true
+            ? `&include-approvals=${payload.isInclude}`
+            : ""
+        }`,
         method: "GET",
       }),
       providesTags: ["MissionPlan"],
@@ -92,6 +94,7 @@ export const missionPlanApi = baseApi.injectEndpoints({
         url: `/mission-plan/fiscal-years/organization`,
         method: "GET",
       }),
+      providesTags: ["OrganizationFiscalYear"],
     }),
     createMissionStatement: builder.mutation({
       query: (payload) => ({

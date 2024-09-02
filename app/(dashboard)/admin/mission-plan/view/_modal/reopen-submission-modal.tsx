@@ -113,7 +113,7 @@ export default function ReopenSubmissionModal({
 
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
-  ); 
+  );
   const formik = useFormik<FormValues>({
     initialValues: {
       newEndDate: "",
@@ -125,8 +125,9 @@ export default function ReopenSubmissionModal({
     onSubmit: (values) => {
       try {
         // logic for form submission
-        setSuccessModal(true);
-        handleClose();
+        // setSuccessModal(true);
+        // handleClose();
+        console.log(values, "vals");
       } catch (error) {
         console.error("Form Submission Error:", error);
       }
@@ -165,7 +166,7 @@ export default function ReopenSubmissionModal({
               id="previousStartPeriod"
               name="previousStartPeriod"
               label="Previous Start Period"
-              value={formatToReadableDate(active_fy_info?.start_date)}
+              value={formatToReadableDate(active_fy_info?.creation_start_date)}
               labelClass="text-[#6E7C87] text-[13px] mb-1"
               placeholder="Input new end date"
               className="border p-2 bg-[var(--input-bg)]"
@@ -176,7 +177,7 @@ export default function ReopenSubmissionModal({
               id="previousEndPeriod"
               name="previousEndPeriod"
               label="Previous End Period"
-              value={formatToReadableDate(active_fy_info?.end_date)}
+              value={formatToReadableDate(active_fy_info?.creation_end_date)}
               labelClass="text-[#6E7C87] text-[13px] mb-1"
               placeholder="Input new end date"
               className="border p-2 bg-[var(--input-bg)]"
@@ -313,7 +314,7 @@ export default function ReopenSubmissionModal({
                     onValueChange={(values: any) => {
                       formik.setFieldValue("multiselectInput", values);
                     }}
-                    randomBadgeColor
+                    // randomBadgeColor
                     label={`Name of ${formik?.values?.staffSelection}`}
                     id="multiselectInput"
                     name="multiselectInput"

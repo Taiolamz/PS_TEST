@@ -45,6 +45,26 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+    extendFinancialYear: builder.mutation({
+      query: (params) => ({
+        url: `mission-plan/financial-year/extend`,
+        method: "PATCH",
+        body: {
+          fiscal_year_id: params.fiscal_year_id,
+          new_end_date: params.new_end_date,
+        },
+        cache: "no-cache",
+      }),
+      invalidatesTags: ["OrganizationFiscalYear"],
+    }),
+    extendSubmission: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/financial-year/extend-submissions`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["OrganizationFiscalYear"],
+    }),
   }),
 });
 
@@ -53,4 +73,6 @@ export const {
   useGetAllOrganizationEmployeeMissionPlanQuery,
   useGetAllOrganizationMissionPlanDropdownQuery,
   useLazyGetAllOrganizationEmployeeMissionPlanExportQuery,
+  useExtendFinancialYearMutation,
+  useExtendSubmissionMutation,
 } = allmissionPlanApi;

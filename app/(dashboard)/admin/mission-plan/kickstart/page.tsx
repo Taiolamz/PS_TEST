@@ -3,7 +3,7 @@
 import { PageSidebar } from "@/components/atoms";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CREATE_FY_LINKS } from "./_data";
-import { FinancialYear, MissionVision, StrategicPillar, TimelineAndReminder } from "./_steps";
+import { ApprovalFlow, FinancialYear, MissionVision, StrategicPillar, TimelineAndReminder } from "./_steps";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import routesPath from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
@@ -26,7 +26,7 @@ export default function Create() {
     back
     onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
-      <section style={{ height: "100%"}} className="flex">
+      <section style={{ height: "100%"}} className="flex overflow-y-hidden">
         <PageSidebar
           title="Create Mission Plan"
           menu_items={CREATE_FY_LINKS}
@@ -34,11 +34,12 @@ export default function Create() {
           // disableClick={hasItems === false}
         />
 
-        <aside className="p-5 w-[100vw_-_201px]">
+        <aside className="p-5 w-full">
           {ui === "financial-year" && <FinancialYear />}
           {ui === "mission-vision" && <MissionVision />}
           {ui === "strategic-pillar" && <StrategicPillar />}
           {ui === "timeline-reminder" && <TimelineAndReminder />}
+          {ui === "approval-flow" && <ApprovalFlow />}
         </aside>
       </section>
     </DashboardLayout>

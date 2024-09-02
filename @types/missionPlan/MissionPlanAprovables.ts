@@ -30,6 +30,7 @@ export type SpecifiedTasksType = {
   implied_tasks: ImpliedTaskType[];
   status?: string;
   weight?: number;
+  approval_comment_count?: number;
 };
 
 export type ImpliedTaskType = {

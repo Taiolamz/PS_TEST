@@ -94,7 +94,7 @@ const ChecklistOverviewContent = () => {
       // isChecked: checklist?.employee_count < 1 ? false : true,
       path: ADMIN.ADD_EMPLOYEE,
       hide: false,
-      isAllChecked: checklist?.employee_count < 1 ? false : true,
+      isAllChecked: checklist?.employee_count < 3 ? false : true,
     },
     {
       title: "Set up mission plan",
