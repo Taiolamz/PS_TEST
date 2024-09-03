@@ -17,9 +17,17 @@ type Props = {
   data: SpecifiedTasksType[];
   approvables?: [];
   loading: boolean;
+  setShowTextArea: (e: boolean) => void;
+  showTextArea: boolean;
 };
 
-const ImpliedTask = ({ data, approvables, loading }: Props) => {
+const ImpliedTask = ({
+  data,
+  approvables,
+  loading,
+  setShowTextArea,
+  showTextArea,
+}: Props) => {
   const approvableTypeId = data
     ?.map((item) => item.implied_tasks?.map((task) => task.id))
     ?.flat();
@@ -117,14 +125,21 @@ const ImpliedTask = ({ data, approvables, loading }: Props) => {
                             name="input_weight"
                           />
                         </div>
-                        <Button
-                          variant="outline"
-                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                          onClick={() => handleReject(item.id)}
-                        >
-                          Reject
-                        </Button>
-                        <Button onClick={() => handleApprove()}>Approve</Button>
+                        <div className="flex gap-2.5 mr-4">
+                          <Button
+                            variant="outline"
+                            className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                            onClick={() => {
+                              setShowTextArea(true);
+                              handleReject();
+                            }}
+                          >
+                            Reject
+                          </Button>
+                          <Button onClick={() => handleApprove()}>
+                            Approve
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -153,8 +168,8 @@ const ImpliedTask = ({ data, approvables, loading }: Props) => {
           </div>
           <Comment
             label="Strategic intent"
-            showTextArea={false}
-            setShowTextArea={() => toggleComment("3")}
+            showTextArea={showTextArea}
+            setShowTextArea={setShowTextArea}
             comments={comments}
             // comments={FormikApprovalForm.values.comments}
             formik={FormikApprovalForm}

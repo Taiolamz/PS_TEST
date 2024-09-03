@@ -28,6 +28,9 @@ const ApproveMissionPlan = () => {
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
+  const impliedTaskComment = useDisclosure();
+  const specifiedTaskComment = useDisclosure();
+  const strategicIntentComment = useDisclosure();
 
   // const { name } = useAppSelector((state) => state?.single_employee);
 
@@ -83,16 +86,22 @@ const ApproveMissionPlan = () => {
               data={data?.data?.strategic_intents ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              showTextArea={strategicIntentComment.isOpen}
+              setShowTextArea={strategicIntentComment.toggle}
             />
             <SpecifiedTasks
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              showTextArea={specifiedTaskComment.isOpen}
+              setShowTextArea={specifiedTaskComment.toggle}
             />
             <ImpliedTask
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              showTextArea={impliedTaskComment.isOpen}
+              setShowTextArea={impliedTaskComment.toggle}
             />
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}

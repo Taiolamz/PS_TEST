@@ -17,6 +17,7 @@ export type BoundariesType = {
   constraints: [];
   freedoms: [];
   id: string;
+  status?: string;
 };
 
 export type SpecifiedTasksType = {
@@ -48,7 +49,7 @@ export type StrategicIntentType = {
   behaviours: string;
   id: string;
   intent: string;
-  status: string;
+  status?: string;
 };
 
 type StrategicPillarsType = {
