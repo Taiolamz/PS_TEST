@@ -26,11 +26,15 @@ import routesPath from "@/utils/routes";
 import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import {
   useCreateSpecifiedTaskMutation,
+  useGetLineManagerMissionPlanQuery,
+  useGetMySpecifiedTaskQuery,
   useLazyGetMyMissionPlanQuery,
+  useLazyGetMySpecifiedTaskQuery,
 } from "@/redux/services/mission-plan/missionPlanApi";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
+import { selectUser } from "@/redux/features/auth/authSlice";
 
 const { EMPLOYEE } = routesPath;
 
@@ -73,6 +77,14 @@ const SpecifiedTask = () => {
     (state) => state.mission_plan
   );
 
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
+
+  const user = useAppSelector(selectUser);
+
+  const { line_manager } = user;
+
   const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
   const [
@@ -85,6 +97,25 @@ const SpecifiedTask = () => {
     },
   ] = useLazyGetMyMissionPlanQuery({});
 
+  // const {
+  //   data: mySpecifiedTasks,
+  //   isLoading: isLoadingMySpecifiedTasks,
+  //   isFetching: isFetchingMySpecifiedTasks,
+  //   isSuccess: fetchedMySpecifiedTasks,
+  //   isError: errorMySpecifiedTasks,
+  // } = useLazyGetMySpecifiedTaskQuery({});
+
+  const [
+    getMySpecifiedTasks,
+    {
+      data: mySpecifiedTasks,
+      isLoading: isLoadingMySpecifiedTasks,
+      isFetching: isFetchingMySpecifiedTasks,
+      isSuccess: fetchedMySpecifiedTasks,
+      isError: errorMySpecifiedTasks,
+    },
+  ] = useLazyGetMySpecifiedTaskQuery({});
+
   const handleGetMyMissionPlan = async () => {
     const payload = { id: FISCAL_YEAR_ID };
     getMyMissionPlan(payload)
@@ -92,10 +123,23 @@ const SpecifiedTask = () => {
       .then((payload) => {});
   };
 
+  const handleGetMySpecifiedTasks = async () => {
+    getMySpecifiedTasks({})
+      .unwrap()
+      .then(() => {});
+  };
+
   useEffect(() => {
     handleGetMyMissionPlan();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [FISCAL_YEAR_ID]);
+
+  useEffect(() => {
+    if (line_manager?.id !== null) {
+      handleGetMySpecifiedTasks();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (fetchedMissionPlan) {
@@ -110,9 +154,6 @@ const SpecifiedTask = () => {
   }, [mission_plan, fetchedMissionPlan]);
 
   const [createSpecifiedTask, { isLoading }] = useCreateSpecifiedTaskMutation();
-  const { active_fy_info } = useAppSelector(
-    (state) => state?.mission_plan?.mission_plan
-  );
 
   const endDate = new Date(active_fy_info?.end_date);
   const startDate = new Date(active_fy_info?.start_date);
@@ -134,7 +175,7 @@ const SpecifiedTask = () => {
 
   const mappedSuccessMeasures = useMemo(
     () =>
-      mission_plan
+      mission_plan_info
         ? mission_plan_info?.mission_plan?.measure_of_success?.map(
             (item: any) => {
               return {
@@ -146,38 +187,54 @@ const SpecifiedTask = () => {
             }
           )
         : [],
-    [mission_plan]
+    [mission_plan_info]
   );
 
   // This sets the intial saved values
   useEffect(() => {
-    const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
-      (task: any) => ({
-        id: task.id || uuidv4(),
-        task: task.task,
-        weight: task.weight,
-        strategic_pillars: mappedStrategicPillars
-          .filter((itemA: { id: any }) =>
-            task.strategic_pillars.some(
-              (itemB: { id: any }) => itemB.id === itemA.id
+    if (mission_plan_info?.mission_plan?.specified_tasks.length > 0) {
+      const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
+        (task: any) => ({
+          id: task.id || uuidv4(),
+          task: task.task,
+          weight: task.weight,
+          strategic_pillars: mappedStrategicPillars
+            .filter((itemA: { id: any }) =>
+              task.strategic_pillars.some(
+                (itemB: { id: any }) => itemB.id === itemA.id
+              )
             )
-          )
-          .map((item: { id: any }) => item.id),
-        success_measures: mappedSuccessMeasures
-          ?.filter((itemA: { id: any }) =>
-            task.success_measures.some(
-              (itemB: { id: any }) => itemB.id === itemA.id
+            .map((item: { id: any }) => item.id),
+          success_measures: mappedSuccessMeasures
+            ?.filter((itemA: { id: any }) =>
+              task.success_measures.some(
+                (itemB: { id: any }) => itemB.id === itemA.id
+              )
             )
-          )
-          .map((item: { id: any }) => item.id),
-        start_date: task.start_date,
-        end_date: task.end_date,
-        is_main_effort: task.is_main_effort ? true : false,
-      })
-    );
+            .map((item: { id: any }) => item.id),
+          start_date: task.start_date,
+          end_date: task.end_date,
+          is_main_effort: task.is_main_effort ? true : false,
+        })
+      );
 
-    setInitialValues(tasks);
-  }, [mappedStrategicPillars, mappedSuccessMeasures, mission_plan_info]);
+      setInitialValues(tasks);
+    } else {
+      const tasks = mySpecifiedTasks?.data?.map((task: any, idx: any) => ({
+        id: uuidRef.current,
+        task: task?.task,
+        start_date: task?.start_date,
+        end_date: task?.end_date,
+      }));
+
+      setInitialValues(tasks);
+    }
+  }, [
+    mappedStrategicPillars,
+    mappedSuccessMeasures,
+    mission_plan_info,
+    mySpecifiedTasks,
+  ]);
 
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
@@ -308,7 +365,7 @@ const SpecifiedTask = () => {
                         ) => (
                           <div
                             key={task.id}
-                            className="grid gap-y-3 items-center space-x-2 relative"
+                            className="grid gap-y-3 items-center space-x-2 relative mt-5"
                           >
                             <h2 className="text-grayText font-semibold text-sm">
                               Task {index + 1}
@@ -320,6 +377,7 @@ const SpecifiedTask = () => {
                                   id="task"
                                   name={`tasks.${index}.task`}
                                   label="Title"
+                                  disabled={line_manager?.id !== null}
                                   error={errorTasks?.[index]?.task}
                                   touched={touchedTasks?.[index]?.task}
                                   onBlur={formik.handleBlur}
@@ -386,17 +444,19 @@ const SpecifiedTask = () => {
                                   value={formik.values.tasks[index].weight}
                                 />
                               </div>
-                              <button
-                                type="button"
-                                onClick={() => remove(index)}
-                                className="text-red-500 hover:text-red-700 absolute right-[-4%] md:right-[-1%] top-10"
-                              >
-                                <Icon
-                                  name="remove"
-                                  width={14.28}
-                                  height={18.63}
-                                />
-                              </button>
+                              {line_manager?.id === null && (
+                                <button
+                                  type="button"
+                                  onClick={() => remove(index)}
+                                  className="text-red-500 hover:text-red-700 absolute right-[-4%] md:right-[-1%] top-10"
+                                >
+                                  <Icon
+                                    name="remove"
+                                    width={14.28}
+                                    height={18.63}
+                                  />
+                                </button>
+                              )}
                             </div>
                             <div className="max-w-5xl !ml-0 flex flex-col lg:flex-row gap-y-3 gap-x-3 justify-between mb-2 items-start">
                               <div className="ml-0">
@@ -462,6 +522,7 @@ const SpecifiedTask = () => {
                                     }
                                     touched={touchedTasks?.[index]?.start_date}
                                     error={errorTasks?.[index]?.start_date}
+                                    disabled={line_manager?.id !== null}
                                   />
                                 </div>
                                 <div
@@ -494,6 +555,7 @@ const SpecifiedTask = () => {
                                     //   value={formik.values.tasks[index].end_date}
                                     touched={touchedTasks?.[index]?.end_date}
                                     error={errorTasks?.[index]?.end_date}
+                                    disabled={line_manager?.id !== null}
                                   />
                                 </div>
                                 <div className="mt-6 w-full">
@@ -525,28 +587,30 @@ const SpecifiedTask = () => {
                           </div>
                         )
                       )}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        push({
-                          id: uuidv4(),
-                          task: "",
-                          weight: "",
-                          strategic_pillars: [],
-                          success_measures: [],
-                          start_date: "",
-                          end_date: "",
-                          is_main_effort: false,
-                        })
-                      }
-                      className="flex items-center gap-2 mt-5 text-[var(--primary-color)] text-sm px-1"
-                    >
-                      <LucidePlusCircle
-                        style={{ color: "var(--primary-color)" }}
-                        size={20}
-                      />
-                      Add new specified task
-                    </button>
+                    {line_manager?.id === null && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          push({
+                            id: uuidv4(),
+                            task: "",
+                            weight: "",
+                            strategic_pillars: [],
+                            success_measures: [],
+                            start_date: "",
+                            end_date: "",
+                            is_main_effort: false,
+                          })
+                        }
+                        className="flex items-center gap-2 mt-5 text-[var(--primary-color)] text-sm px-1"
+                      >
+                        <LucidePlusCircle
+                          style={{ color: "var(--primary-color)" }}
+                          size={20}
+                        />
+                        Add new specified task
+                      </button>
+                    )}
                   </div>
                 )}
               </FieldArray>

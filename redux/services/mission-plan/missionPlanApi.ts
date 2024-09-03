@@ -131,6 +131,12 @@ export const missionPlanApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Approvables"],
     }),
+    getMySpecifiedTask: builder.query({
+      query: () => ({
+        url: `/mission-plan/fetch-my-specified-tasks`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -150,4 +156,6 @@ export const {
   useSubmitPreviewedMissionPlanMutation,
   useGetMissionPlanItemsByIdQuery,
   useGetLineManagerMissionPlanQuery,
+  useGetMySpecifiedTaskQuery,
+  useLazyGetMySpecifiedTaskQuery,
 } = missionPlanApi;
