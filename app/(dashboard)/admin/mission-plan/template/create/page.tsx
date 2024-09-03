@@ -58,7 +58,6 @@ const AddMissionPlanTemplate: React.FC = () => {
   const [missionPlanTemplates, setMissionPlanTemplates] = useState<
     MissionContentDetails[]
   >([]);
-  // const [sections, setSections] = useState<Section[]>([]);
 
   const handleGetMissionPlanTemplates = () => {
     const selectedMissionPlanTemplates = localStorage.getItem(
@@ -73,7 +72,6 @@ const AddMissionPlanTemplate: React.FC = () => {
   };
 
   const handleIsSelectedField = () => {
-    console.log(missionPlanTemplates, "mission plan templates");
     const missionTemplates = missionPlanTemplates ?? [];
     const selected = missionTemplates?.map((chi) => chi.isSelected);
     return selected;
@@ -88,11 +86,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       displayName: "Name of Financial Year",
       isSelected: handleIsSelectedField()[0],
       isRequired: true,
-      form: {
-        title: "",
-        start_period: "",
-        end_period: "",
-      },
     },
     {
       id: "2",
@@ -102,11 +95,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       displayName: "Measure of Success",
       isSelected: handleIsSelectedField()[1],
       isRequired: true,
-      form: {
-        measure_of_success: "",
-        unit: "",
-        target: "",
-      },
     },
     {
       id: "3",
@@ -116,9 +104,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       displayName: "Specified Tasks",
       isSelected: handleIsSelectedField()[2],
       isRequired: true,
-      form: {
-        specified_task: "",
-      },
     },
     {
       id: "4",
@@ -128,9 +113,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       displayName: "Implied Tasks",
       isSelected: handleIsSelectedField()[3],
       isRequired: true,
-      form: {
-        implied_task: "",
-      },
     },
     {
       id: "5",
@@ -139,9 +121,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       content: renderMissionStatement,
       displayName: "Mission Statement",
       isSelected: handleIsSelectedField()[4],
-      form: {
-        mission_statement: "",
-      },
     },
     {
       id: "6",
@@ -150,10 +129,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       content: renderFreedomConstraints,
       displayName: "Freedom & Constraints",
       isSelected: handleIsSelectedField()[5],
-      form: {
-        constraint: "",
-        freedom: "",
-      },
     },
     {
       id: "7",
@@ -437,8 +412,6 @@ const AddMissionPlanTemplate: React.FC = () => {
       </div>
     );
   }
-
-  console.log(sections, missionPlanTemplates, "sections checkings");
 
   return (
     <DashboardLayout back headerTitle="Create Mission Plan Template">

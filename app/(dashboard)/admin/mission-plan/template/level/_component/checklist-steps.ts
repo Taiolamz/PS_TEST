@@ -125,6 +125,7 @@ export type MissionContentDetails = {
   content: string;
   isSelected: boolean;
   isRequired?: boolean;
+  mapTitle?: string;
 };
 
 export const missionContentModal: MissionContentDetails[] = [
@@ -135,6 +136,7 @@ export const missionContentModal: MissionContentDetails[] = [
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: true,
+    mapTitle: "financial_year",
     // isSelected: false,
     isRequired: true,
   },
@@ -146,6 +148,7 @@ export const missionContentModal: MissionContentDetails[] = [
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: true,
     // isSelected: false,
+    mapTitle: "success_measures",
     isRequired: true,
   },
   {
@@ -155,6 +158,7 @@ export const missionContentModal: MissionContentDetails[] = [
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: true,
+    mapTitle: "specified_tasks",
     // isSelected: false,
     isRequired: true,
   },
@@ -166,12 +170,14 @@ export const missionContentModal: MissionContentDetails[] = [
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: true,
     // isSelected: false,
+    mapTitle: "implied_tasks",
     isRequired: true,
   },
   {
     id: "5",
     label: "Mission Statement",
     title: "Mission Statement",
+    mapTitle: "mission_statement",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,
@@ -180,6 +186,7 @@ export const missionContentModal: MissionContentDetails[] = [
     id: "6",
     label: "Freedom & Constraints",
     title: "Freedom & Constraints",
+    mapTitle: "boundaries",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,
@@ -188,6 +195,7 @@ export const missionContentModal: MissionContentDetails[] = [
     id: "7",
     label: "Strategic Intent/Behaviour",
     title: "Set Strategic Intent",
+    mapTitle: "strategic_intents",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,
@@ -196,9 +204,89 @@ export const missionContentModal: MissionContentDetails[] = [
     id: "8",
     label: "Strategic Pillars",
     title: "Set Strategic Pillars",
+    mapTitle: "duration",
     content:
       "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
     isSelected: false,
+  },
+];
+
+export const missionTemplateReview = [
+  {
+    id: "1",
+    label: "Name of Financial Year",
+    title: "Financial Year",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+    mapTitle: "financial_year",
+    isRequired: true,
+  },
+  {
+    id: "2",
+    label: "Measure of Success",
+    title: "Measure of Success",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+    mapTitle: "success_measures",
+    isRequired: true,
+  },
+  {
+    id: "3",
+    label: "Specified Tasks",
+    title: "Specified Task",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+    mapTitle: "specified_tasks",
+    isRequired: true,
+  },
+  {
+    id: "4",
+    label: "Implied Tasks",
+    title: "Implied Task",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+    mapTitle: "implied_tasks",
+    isRequired: true,
+  },
+  {
+    id: "5",
+    label: "Mission Statement",
+    title: "Mission Statement",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    mapTitle: "mission_statement",
+    isSelected: true,
+  },
+  {
+    id: "6",
+    label: "Freedom & Constraints",
+    title: "Freedom & Constraints",
+    mapTitle: "boundaries",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+  },
+  {
+    id: "7",
+    label: "Strategic Intent/Behaviour",
+    title: "Set Strategic Intent",
+    mapTitle: "strategic_intents",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
+  },
+  {
+    id: "8",
+    label: "Strategic Pillars",
+    title: "Set Strategic Pillars",
+    mapTitle: "duration",
+    content:
+      "Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement Mission Statement",
+    isSelected: true,
   },
 ];
 
