@@ -100,16 +100,18 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                         </p>
                       </p>
                     </div>
-                    <div className="flex gap-2.5 items-end">
-                      <Button
-                        variant="outline"
-                        className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                        onClick={() => handleReject(item.id)}
-                      >
-                        Reject
-                      </Button>
-                      <Button onClick={() => handleApprove()}>Approve</Button>
-                    </div>
+                    {data[0]?.status === "pending" && (
+                      <div className="flex gap-2.5 items-end">
+                        <Button
+                          variant="outline"
+                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                          onClick={() => handleReject(item.id)}
+                        >
+                          Reject
+                        </Button>
+                        <Button onClick={() => handleApprove()}>Approve</Button>
+                      </div>
+                    )}
                   </div>
 
                   {expandedTaskIndex === index ? (
