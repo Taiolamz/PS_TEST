@@ -14,6 +14,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
+  templateID?: string;
 };
 
 interface Section {
@@ -84,7 +85,7 @@ const formSchema = yup.object({
   strategic_pillar: yup.string().min(1, "Strategic pillar is required"),
 });
 const { ADMIN } = routesPath;
-export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
+export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
   const { data: unitsData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
     total: 0,
@@ -99,7 +100,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   const user = useAppSelector(selectUser);
   const actionCtx = useContext(ActionContext);
 
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const handleFormatDropdown = (items: UnitData[]) => {
@@ -115,13 +116,9 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
 
   const transformData = (input: any) => {
     const payload = {
-      id: "",
-      // id: organization?.id,
+      id: templateID || "",
       assignees: [],
       name: input.template_title,
-      // duration: {
-      //   order: 0,
-      // },
     };
 
     sections.forEach((section, index) => {
@@ -135,8 +132,6 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     return payload;
   };
 
-  const { organization } = user;
-
   const MissionPlanTemplateRoute = ADMIN.MISSION_PLAN_TEMPLATE;
   const [
     createMissionPlanTemplate,
@@ -144,38 +139,32 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   ] = useCreateMissionPlanTemplateMutation();
 
   const handleSubmit = async () => {
-    // const payload = {
-    //   ...formik.values,
-    //   // name: formik.values.strategic_intent,
-    //   name: formik.values.template_title,
-    //   organization_id: organization?.id,
-    // };
     const payload = transformData(formik.values);
-    // console.log(payload, "payload");
-    await createMissionPlanTemplate(payload)
-      .unwrap()
-      .then(() => {
-        actionCtx?.triggerUpdateChecklist();
+    await createMissionPlanTemplate(payload).unwrap();
+    actionCtx?.triggerUpdateChecklist();
+    if (searchParams.get("qs") === "kick-start-fy") {
+      toast.success("Mission Plan Template Created Successfully");
+      router.back();
+      return;
+    } else if (searchParams.get("qs") === "template") {
+      toast.success("Mission Plan Template Created Successfully");
+      router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`);
+      return;
+    }
+    if (templateID) {
+      toast.success("Mission Plan Template Updated Successfully");
+    } else {
+      toast.success("Mission Plan Template Created Successfully");
+    }
+
+    new Promise(() => {
+      setTimeout(() => {
+        toast.dismiss();
         router.push(MissionPlanTemplateRoute);
-        toast.success("Mission Plan Template Created Successfully");
-        if(searchParams.get('qs') === 'kick-start-fy'){
-          router.back()
-          return
-        }
-        if(searchParams.get('qs') === 'template'){
-          router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`)
-          return
-        }
-        new Promise(() => {
-          setTimeout(() => {
-            toast.dismiss();
-            router.push(MissionPlanTemplateRoute);
-          }, 2000);
-        });
-      });
+      }, 2000);
+    });
   };
 
-  
   const formik = useFormik({
     initialValues: {
       template_title: "",
@@ -183,7 +172,6 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
         title: "",
         start_period: new Date(),
         end_period: new Date(),
-        // end_period: new Date(),
       },
       mission_statement: "",
       success_measures: {
