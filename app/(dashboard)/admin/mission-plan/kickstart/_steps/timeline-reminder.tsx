@@ -34,7 +34,7 @@ const TimelineAndReminder = () => {
         //     .unwrap()
         //     .then(() => {
         //         toast.success("Financial Year Created Successfully")
-        //         router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`)
+        //         router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=approval-flow`)
         //     })
     }
 

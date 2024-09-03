@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import useDisclosure from "./useDisclosure";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useFormik } from "formik";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
@@ -99,6 +99,9 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   const user = useAppSelector(selectUser);
   const actionCtx = useContext(ActionContext);
 
+  const searchParams = useSearchParams()
+  const router = useRouter();
+
   const handleFormatDropdown = (items: UnitData[]) => {
     const data = items.map((chi) => {
       return {
@@ -148,13 +151,21 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
     //   organization_id: organization?.id,
     // };
     const payload = transformData(formik.values);
-    console.log(payload, "payload");
+    // console.log(payload, "payload");
     await createMissionPlanTemplate(payload)
       .unwrap()
       .then(() => {
         actionCtx?.triggerUpdateChecklist();
         router.push(MissionPlanTemplateRoute);
         toast.success("Mission Plan Template Created Successfully");
+        if(searchParams.get('qs') === 'kick-start-fy'){
+          router.back()
+          return
+        }
+        if(searchParams.get('qs') === 'template'){
+          router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`)
+          return
+        }
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
@@ -164,7 +175,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
       });
   };
 
-  const router = useRouter();
+  
   const formik = useFormik({
     initialValues: {
       template_title: "",
