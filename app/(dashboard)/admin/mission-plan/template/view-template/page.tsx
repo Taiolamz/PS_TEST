@@ -39,6 +39,7 @@ interface Section {
 
 const ViewMissionPlaTemplate: React.FC = () => {
   const cancelRoute = ADMIN.CHECKLIST;
+  const [templateID, setTemplatID] = useState("");
   const {
     formik,
     units,
@@ -48,7 +49,10 @@ const ViewMissionPlaTemplate: React.FC = () => {
     isCreatingMissionPlanTemplate,
     sections,
     setSections,
-  } = useMissionPlanTemplate({ cancelPath: cancelRoute });
+  } = useMissionPlanTemplate({
+    cancelPath: cancelRoute,
+    templateID: templateID,
+  });
 
   const handleMissionDialog = () => {
     onOpenMissionModal();
@@ -69,19 +73,27 @@ const ViewMissionPlaTemplate: React.FC = () => {
     const selectedMissionPlanTemplates = localStorage.getItem(
       "selected-mission-plan-template-review"
     );
+
     if (selectedMissionPlanTemplates) {
       const parseData = JSON.parse(selectedMissionPlanTemplates);
-      const filteredMissionTemplateReview = missionTemplateReview.filter(
-        (item) => {
+      setTemplatID(parseData?.id);
+
+      const filteredMissionTemplateReview = missionTemplateReview
+        .filter((item) => {
           return (
             parseData[item.mapTitle] !== undefined &&
             parseData[item.mapTitle] !== null
           );
-        }
-      );
+        })
+        .sort((a, b) => {
+          const orderA = parseData[a.mapTitle]?.order ?? Number.MAX_VALUE;
+          const orderB = parseData[b.mapTitle]?.order ?? Number.MAX_VALUE;
+          return orderA - orderB;
+        });
       formik.setFieldValue("template_title", parseData?.name);
       setMissionPlanTemplates(filteredMissionTemplateReview);
     }
+
     if (openMissionModal) {
       handleMissionDialog();
     }
@@ -167,11 +179,74 @@ const ViewMissionPlaTemplate: React.FC = () => {
     handleGetMissionPlanTemplates();
   }, [selectedMissionPlanTemplates]);
 
+  // useEffect(() => {
+  //   const filteredSections = initialSections.filter(
+  //     (section) => section.isSelected
+  //   );
+  //   setSections(filteredSections);
+  // }, [missionPlanTemplates]);
+  // useEffect(() => {
+  //   // Filter the sections that are selected
+  //   const updatedSections = (initialSections as any[])
+  //     .map((section) => {
+  //       // Find the matching template in missionPlanTemplates based on mapTitle
+  //       const match = (missionPlanTemplates as any[]).find(
+  //         (template) => template.mapTitle === section.mapTitle
+  //       );
+
+  //       if (match) {
+  //         // Update the section with the properties from the matching template
+  //         return {
+  //           ...section,
+  //           isSelected: match.isSelected,
+  //           content: match.content,
+  //           displayName: match.displayName,
+  //           isRequired: match.isRequired || section.isRequired, // Preserve initial 'isRequired' if not specified
+  //         };
+  //       }
+  //       return section;
+  //     })
+  //     .filter((section) => section.isSelected) // Filter only selected sections
+  //     .sort(
+  //       (a, b) =>
+  //         missionPlanTemplates.findIndex(
+  //           (template) => template.mapTitle === a.mapTitle
+  //         ) -
+  //         missionPlanTemplates.findIndex(
+  //           (template) => template.mapTitle === b.mapTitle
+  //         )
+  //     );
+
+  //   // Update the sections state with the filtered and sorted sections
+  //   setSections(updatedSections);
+  // }, [missionPlanTemplates, initialSections]);
   useEffect(() => {
-    const filteredSections = initialSections.filter(
-      (section) => section.isSelected
-    );
-    setSections(filteredSections);
+    const updatedSections = initialSections
+      .map((section) => {
+        const match = missionPlanTemplates.find(
+          (template) => template.mapTitle === section.mapTitle
+        );
+
+        if (match) {
+          return {
+            ...section,
+            isSelected: match.isSelected,
+          };
+        }
+        return section;
+      })
+      .filter((section) => section.isSelected)
+      .sort(
+        (a, b) =>
+          missionPlanTemplates.findIndex(
+            (template) => template.mapTitle === a.mapTitle
+          ) -
+          missionPlanTemplates.findIndex(
+            (template) => template.mapTitle === b.mapTitle
+          )
+      );
+
+    setSections(updatedSections);
   }, [missionPlanTemplates]);
 
   const headerClass = "text-custom-dark-blue font-normal text-sm";
