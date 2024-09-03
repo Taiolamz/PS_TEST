@@ -15,17 +15,17 @@ import EndFinancialYearCompleteModal from "@/components/atoms/modals/end-fiananc
 import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { Button } from "@/components/ui/button";
+import EndFYModal from "../_modal/end-fy-modal";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
 
 const FiscalYearInfo = () => {
-  const [extendSubmission, setExtendSubmission] = useState<boolean>(false);
+  const [endFY, setExtendSubmission] = useState<boolean>(false);
   const [showSuccessExtendModal, setShowExtendSuccessModal] = useState(false);
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
-
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [extendFinancialYear, { isLoading, error: apiError }]: any =
     useExtendFinancialYearMutation();
@@ -69,47 +69,45 @@ const FiscalYearInfo = () => {
   const handleCloseModal = () => {
     setShowSuccessModal(false);
   };
-
-
+  //Modal for End Financial Year
+  const [endFinancialYear, setEndFinancialYear] = useState<boolean>(false);
+  //Modal for Success End Financial Year
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   return (
     <div className="space-y-5 mb-6 px-5 mt-1 text-[var(--text-color3)]">
       {/* Financial Year */}
       <div className="flex gap-[10px] justify-end ">
         <Button
-          className={cn(
-            btn,
-            active_fy_info?.status !== "active" && "opacity-30 hover:bg-white"
-          )}
-          onClick={() => setExtendSubmission(true)}
+          className={cn(btn, "disabled:opacity-30")}
           disabled={active_fy_info?.status !== "active"}
+          onClick={() => setExtendSubmission(true)}
         >
           Extend Financial Year
         </Button>
         <Button
-          className={cn(
-            btn,
-            active_fy_info?.status !== "active" && "opacity-30 hover:bg-white"
-          )}
+          className={cn(btn, "disabled:opacity-30")}
           disabled={active_fy_info?.status !== "active"}
-          onClick={handleEndFinancialYearClick}
+          onClick={() => {
+            setEndFinancialYear(true);
+          }}
         >
           End Financial Year
         </Button>
       </div>
 
-      <EndFinancialYearModal
+      {/* <EndFinancialYearModal
         icon="/assets/images/success.gif"
         iconClass="w-40"
         title="You Are About to End the Current Financial Year?"
         message="Ending this Financial year closes all mission plans and task progress will also be lost and saved as at the time of this action, This action is permanent, Proceed?"
-        show={showSuccessModal}
+        // show={showSuccessModal}
         handleClose={() => {
           setShowSuccessModal(false);
         }}
         actionBtnTitle="Yes, End Financial Year"
         modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
-      />
+      /> */}
 
       <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
         <h3 className="text-sm font-normal ">1. Financial Year</h3>
@@ -185,7 +183,7 @@ const FiscalYearInfo = () => {
         </div>
       </div>
       <FYExtendModal
-        show={extendSubmission}
+        show={endFY}
         handleClose={() => setExtendSubmission(false)}
         handleSubmit={handleSubmit}
         style="lg:max-w-[700px] lg:w-[600px] h-[600px "
@@ -251,7 +249,7 @@ const FiscalYearInfo = () => {
           </div>
         </form>
       </FYExtendModal>
-      <EndFinancialYearCompleteModal
+      {/* <EndFinancialYearCompleteModal
         icon="/assets/images/success.gif"
         iconClass="w-40"
         title="Financial Year Extended!!!"
@@ -261,6 +259,25 @@ const FiscalYearInfo = () => {
           setShowExtendSuccessModal(false);
         }}
         modalClass="lg:w-[753px] lg:max-w-[605px] p-6"
+      /> */}
+      {/* End FY */}
+      <EndFYModal
+        show={endFinancialYear}
+        setSuccessModal={setShowSuccessModal}
+        handleClose={() => setEndFinancialYear(false)}
+        fy_id={id ?? ""}
+      />
+      {/* Confirm Modal for End of FY */}
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title="Current Financial Year Ended!"
+        message="Congratulations! you have successfully brought the current Financial Year to a close"
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle="Complete"
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
     </div>
   );

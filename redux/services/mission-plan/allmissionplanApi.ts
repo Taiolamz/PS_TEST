@@ -65,6 +65,14 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["OrganizationFiscalYear"],
     }),
+    endFinancialYear: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/financial-year/end`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["OrganizationFiscalYear"],
+    }),
   }),
 });
 
@@ -75,4 +83,5 @@ export const {
   useLazyGetAllOrganizationEmployeeMissionPlanExportQuery,
   useExtendFinancialYearMutation,
   useExtendSubmissionMutation,
+  useEndFinancialYearMutation,
 } = allmissionPlanApi;
