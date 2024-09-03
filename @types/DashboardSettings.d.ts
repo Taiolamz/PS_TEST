@@ -50,4 +50,5 @@ interface DashboardModalType {
   open?: boolean;
   children: React.ReactNode;
   className?: string;
+  title?: string;
 }

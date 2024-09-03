@@ -20,12 +20,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { specifiedTaskSchema } from "@/utils/schema/mission-plan";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Dictionary } from "@/@types/dictionary";
-import { removeCharFromString } from "@/utils/helpers";
+import { checkUserRole, removeCharFromString } from "@/utils/helpers";
 import { toast } from "sonner";
 import routesPath from "@/utils/routes";
 import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import {
   useCreateSpecifiedTaskMutation,
+  useDeleteSpecifiedTaskMutation,
   useGetLineManagerMissionPlanQuery,
   useGetMySpecifiedTaskQuery,
   useLazyGetMyMissionPlanQuery,
@@ -35,6 +36,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import DashboardModal from "@/app/(dashboard)/admin/mission-plan/template/_components/checklist-dashboard-modal";
+import DeleteSpecifiedTaskModal from "../_component/delete-specified-task-modal";
+import useDisclosure from "@/utils/hooks/useDisclosure";
 
 const { EMPLOYEE } = routesPath;
 
@@ -62,6 +66,11 @@ interface Data {
   mission_plan_id: string;
   strategic_intent_id: string;
 }
+interface DeleteData {
+  formikRemove: (args: any) => void;
+  index?: string;
+  id?: string;
+}
 
 const SpecifiedTask = () => {
   const router = useRouter();
@@ -72,6 +81,7 @@ const SpecifiedTask = () => {
 
   const [initialValues, setInitialValues] = useState<any>();
   const [mainEffort, setMainEffort] = useState(EFFORT_DATA);
+  const [deleteData, setDeleteData] = useState<DeleteData>();
 
   const { mission_plan: mission_plan_info } = useAppSelector(
     (state) => state.mission_plan
@@ -115,6 +125,14 @@ const SpecifiedTask = () => {
       isError: errorMySpecifiedTasks,
     },
   ] = useLazyGetMySpecifiedTaskQuery({});
+
+  const [
+    deleteSpecifiedTask,
+    {
+      isLoading: isLoadingDeleteSpecifiedTask,
+      isError: isErrorDeleteSpecifiedTask,
+    },
+  ] = useDeleteSpecifiedTaskMutation();
 
   const handleGetMyMissionPlan = async () => {
     const payload = { id: FISCAL_YEAR_ID };
@@ -197,7 +215,7 @@ const SpecifiedTask = () => {
         (task: any) => ({
           id: task.id || uuidv4(),
           task: task.task,
-          weight: task.weight,
+          weight: Number(task.weight),
           strategic_pillars: mappedStrategicPillars
             .filter((itemA: { id: any }) =>
               task.strategic_pillars.some(
@@ -338,8 +356,42 @@ const SpecifiedTask = () => {
     }
   }, [formik.errors]);
 
+  const {
+    isOpen: openDeleteTaskModal,
+    open: onOpenDeleteTaskModal,
+    close: closeDeleteTaskModal,
+  } = useDisclosure();
+
+  const handleDeleteTaskDialog = () => {
+    onOpenDeleteTaskModal();
+    if (openDeleteTaskModal) {
+      closeDeleteTaskModal();
+    }
+  };
+
+  const handleDeleteTaskOpen = async (remove: any, index: any, id: any) => {
+    handleDeleteTaskDialog();
+    setDeleteData({ formikRemove: remove, index: index, id: id });
+  };
+
+  const handleDeleteTask = async () => {
+    await deleteSpecifiedTask(deleteData?.id);
+    deleteData?.formikRemove(deleteData?.index);
+    closeDeleteTaskModal();
+  };
+
   return (
     <div>
+      <DashboardModal
+        open={openDeleteTaskModal}
+        onOpenChange={handleDeleteTaskDialog}
+        title="Delete Task"
+      >
+        <DeleteSpecifiedTaskModal
+          onProceed={handleDeleteTask}
+          isLoading={isLoadingDeleteSpecifiedTask}
+        />
+      </DashboardModal>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (
         <div className="h-[75vh] grid place-content-center">
           <PageLoader />
@@ -444,10 +496,12 @@ const SpecifiedTask = () => {
                                   value={formik.values.tasks[index].weight}
                                 />
                               </div>
-                              {line_manager?.id === null && (
+                              {user?.role === "ceo" && (
                                 <button
                                   type="button"
-                                  onClick={() => remove(index)}
+                                  onClick={() =>
+                                    handleDeleteTaskOpen(remove, index, task.id)
+                                  }
                                   className="text-red-500 hover:text-red-700 absolute right-[-4%] md:right-[-1%] top-10"
                                 >
                                   <Icon
