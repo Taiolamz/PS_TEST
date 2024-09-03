@@ -56,6 +56,13 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    createTimelineAndReminder: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/timeline-reminder`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
     createSpecifiedTask: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/specified-task`,
@@ -153,4 +160,5 @@ export const {
   useSubmitPreviewedMissionPlanMutation,
   useGetMissionPlanItemsByIdQuery,
   useGetLineManagerMissionPlanQuery,
+  useCreateTimelineAndReminderMutation
 } = missionPlanApi;

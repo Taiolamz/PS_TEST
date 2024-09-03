@@ -61,14 +61,14 @@ const FinancialYear = () => {
         dispatch(updateFinancialYearDetails({ slug: "financial_year", data: formik.values }))
     }, [formik.values])
 
-    useEffect(() => {
-        dispatch(updateFinancialYearDetails({ slug: "financial_year", data: {
-            title: "",
-            start_date: "",
-            end_date: "",
-            review_period: ""
-        }}))
-    },[])
+    // useEffect(() => {
+    //     dispatch(updateFinancialYearDetails({ slug: "financial_year", data: {
+    //         title: "",
+    //         start_date: "",
+    //         end_date: "",
+    //         review_period: ""
+    //     }}))
+    // },[])
 
     return (
         <div className="w-full">

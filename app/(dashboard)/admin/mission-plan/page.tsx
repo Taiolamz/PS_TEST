@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Dictionary } from "@/@types/dictionary";
 import { PageLoader } from "@/components/custom-loader";
-import { EmptyState, ReusableDrawer } from "@/components/fragment";
+import { EmptyState } from "@/components/fragment";
 import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";

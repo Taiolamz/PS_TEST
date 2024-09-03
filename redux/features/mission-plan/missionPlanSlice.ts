@@ -8,7 +8,7 @@ const initialState: Dictionary = {
       title: "",
       start_date: "",
       end_date: "",
-      review_period: ""
+      review_period: "",
     },
     mission_vision: {
       mission: "",
@@ -27,10 +27,19 @@ const initialState: Dictionary = {
         },
       ],
     },
+    timeline_reminder: {
+      creation_start_date: "",
+      creation_end_date: "",
+      approval_start_date: "",
+      approval_end_date: "",
+      setup_reminder: "",
+      approval_reminder: "",
+      before_start_reminder: "",
+    },
   },
   mission_plan: {
     active_fy_info: null,
-    mission_plan: null
+    mission_plan: null,
   },
 };
 
@@ -64,10 +73,12 @@ const missionPlanSlice = createSlice({
   },
 });
 
-export const { updateFinancialYearDetails, updateMissionPlanDetails, resetFinancialYearDetails, 
-  resetMissionPlanDetails
-  } =
-  missionPlanSlice.actions;
+export const {
+  updateFinancialYearDetails,
+  updateMissionPlanDetails,
+  resetFinancialYearDetails,
+  resetMissionPlanDetails,
+} = missionPlanSlice.actions;
 export const resetMissionPlan = missionPlanSlice.actions.reset;
 
 export const missionPlanSliceReducer = missionPlanSlice.reducer;
