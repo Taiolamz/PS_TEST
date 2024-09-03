@@ -120,13 +120,17 @@ export const CustomMultipleSelect = React.forwardRef<
     const divRef = React.useRef<any>(null);
     // Set the badge color of the multiselect to have random color
 
-const randomColor = (): BadgeColor => {
-  const badgeColors: BadgeColor[] = ["purple", "danger", "success", "pending"];
-  const randColor: BadgeColor =
-    badgeColors[Math.floor(Math.random() * badgeColors.length)];
-  return randColor;
-};
-
+    const randomColor = (): BadgeColor => {
+      const badgeColors: BadgeColor[] = [
+        "purple",
+        "danger",
+        "success",
+        "pending",
+      ];
+      const randColor: BadgeColor =
+        badgeColors[Math.floor(Math.random() * badgeColors.length)];
+      return randColor;
+    };
 
     React.useEffect(() => {
       if (JSON.stringify(selectedValues) !== JSON.stringify(defaultValue)) {

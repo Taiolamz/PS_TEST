@@ -88,6 +88,7 @@ export const specifiedTaskSchema = (endDate: any, startDate: any) => {
             .of(yup.string().required("Pillar is required"))
             .min(1, "At least one strategic pillar is required")
             .required("Strategic pillar is required"),
+          is_main_effort: yup.boolean(),
           success_measures: yup
             .array()
             .of(yup.string().required("Measure is required"))
@@ -175,6 +176,20 @@ export const specifiedTaskSchema = (endDate: any, startDate: any) => {
             0
           );
           if (totalWeight) return totalWeight === 100;
+        }
+      )
+      .test(
+        "one-main-effort",
+        "You must select exactly one main effort",
+        function (tasks) {
+          const selectedEfforts = tasks?.filter((task) => task.is_main_effort);
+          if (selectedEfforts?.length !== 1) {
+            return this.createError({
+              path: "tasks",
+              message: "Exactly one main effort must be selected",
+            });
+          }
+          return true;
         }
       ),
   });
