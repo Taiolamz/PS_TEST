@@ -84,7 +84,7 @@ export default function Page() {
                 {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && (
                   <EmptyState
                     text="Create your Mission plan by using the button below"
-                    handleClick={() => router.push("mission-plan/kickstart?ui=financial-year")}
+                    handleClick={() => router.push(ADMIN.KICK_START_MISSION_PLAN_SELECT_TEMPLATE)}
                     btnText="Kickstart Financial Year"
                   />
                 )}

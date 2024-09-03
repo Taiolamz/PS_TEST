@@ -3,7 +3,9 @@
 import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
 import { PageLoader } from '@/components/custom-loader';
 import { GraySkeleton } from '@/public/assets/icons';
+import { updateMissionPlanDetails } from '@/redux/features/mission-plan/missionPlanSlice';
 import { useGetMissionPlanTemplatesQuery } from '@/redux/services/checklist/missionPlanTemplateApi';
+import { useAppDispatch } from '@/redux/store';
 import routesPath from '@/utils/routes';
 import { PlusIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -13,10 +15,11 @@ import React from 'react';
 const { ADMIN } = routesPath
 
 const ChooseTemplate = () => {
-    const { data: missionPlanTemplateData, isLoading } =
-    useGetMissionPlanTemplatesQuery({currentPage:3});
+  const { data: missionPlanTemplateData, isLoading } =
+    useGetMissionPlanTemplatesQuery({ page: 2 });
 
-    const router = useRouter()
+  const router = useRouter()
+  const dispatch = useAppDispatch()
   // CREATE TEMPLATE
   const createTemplate = (
     <div
@@ -40,56 +43,52 @@ const ChooseTemplate = () => {
   );
 
   return (
-    <DashboardLayout headerTitle="Mission Plan" 
-    back
+    <DashboardLayout headerTitle="Mission Plan"
+      back
     // onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
-        <div className="flex flex-col p-5 w-full">
+      <div className="flex flex-col p-5 w-full">
         <p className="text-lg font-medium">Templates</p>
         <>
-            {isLoading ? (
+          {isLoading ? (
             <div className="flex justify-center items-center min-h-screen">
-                <PageLoader />
+              <PageLoader />
             </div>
-            ) : (
+          ) : (
             <div className=" mt-5 w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6  gap-7 ">
-                {createTemplate}
-                {missionPlanTemplateData?.map((chi, idx) => {
+              {createTemplate}
+              {missionPlanTemplateData?.map((chi, idx) => {
                 const { name } = chi;
                 return (
-                    // <Link
-                    //   key={idx}
-                    //   // href={path}
-                    //   className="h-[199px] hover:border-primary transition-all duration-300 border border-custom-gray group bg-custom-light-gray-100 cursor-pointer flex flex-col pl-8 justify-center"
-                    // >
-                    <div
+                  <div
                     key={idx}
-                    className="h-[199px] hover:border-primary transition-all duration-300 border border-custom-gray group bg-custom-light-gray-100 cursor-pointer flex flex-col pl-8 justify-center"
+                    className="h-[199px] hover:border-primary transition-all duration-300 border border-custom-gray group bg-custom-light-gray-100 cursor-pointer flex flex-col justify-center"
                     onClick={() => {
-                        // router.push(`${ADMIN.CREATE_MISSION_PLAN_TEMPLATE}?qs=kick-start-fy`);
-                        localStorage.setItem(
+                      dispatch(updateMissionPlanDetails({slug: 'active_fy_info', data: {
+                        template_id: chi.id
+                      }}))
+                      router.push(`${ADMIN.VIEW_MISSION_PLAN_TEMPLATE}?qs=template`);
+                      localStorage.setItem(
                         "selected-mission-plan-template-review",
                         JSON.stringify(chi)
-                        );
+                      );
                     }}
-                    >
-                    <div className="flex flex-col">
-                        <div className="flex flex-col gap-5">
-                        <p className="w-[107px] text-black mb-3 font-normal text-sm capitalize">
-                            {name}
+                  >
+                    <div className="flex flex-col ml-[2rem]">
+                      <div className="flex flex-col gap-5">
+                        <p className="w-[107px] text-black mb-3 font-medium text-sm capitalize">
+                          {name}
                         </p>
-                        {/* <p className="text-center">{content}</p> */}
-                        </div>
-                        <Image src={GraySkeleton} alt={name} />
+                      </div>
+                      <Image src={GraySkeleton} alt={name} />
                     </div>
-                    </div>
-                    // </Link>
+                  </div>
                 );
-                })}
+              })}
             </div>
-            )}
+          )}
         </>
-        </div>
+      </div>
     </DashboardLayout>
   );
 }
