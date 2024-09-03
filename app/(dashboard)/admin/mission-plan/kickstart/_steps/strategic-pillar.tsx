@@ -36,7 +36,8 @@ const StrategicPillar = () => {
         .unwrap()
         .then(() => {
             toast.success("Strategic Pillars Created Successfully")
-            router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=strategic-pillar&step=preview`)
+            router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=timeline-reminder`)
+            // router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=strategic-pillar&step=preview`)
         })
 
     }
