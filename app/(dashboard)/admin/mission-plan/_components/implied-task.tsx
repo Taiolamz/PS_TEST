@@ -21,7 +21,13 @@ type Props = {
   showTextArea: boolean;
 };
 
-const ImpliedTask = ({ data, approvables, loading, setShowTextArea, showTextArea }: Props) => {
+const ImpliedTask = ({
+  data,
+  approvables,
+  loading,
+  setShowTextArea,
+  showTextArea,
+}: Props) => {
   const approvableTypeId = data
     ?.map((item) => item.implied_tasks?.map((task) => task.id))
     ?.flat();
@@ -120,18 +126,20 @@ const ImpliedTask = ({ data, approvables, loading, setShowTextArea, showTextArea
                           />
                         </div>
                         <div className="flex gap-2.5 mr-4">
-                            <Button
-                              variant="outline"
-                              className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                              onClick={() => {
-                                setShowTextArea(true);
-                                handleReject();
-                              }}
-                            >
-                              Reject
-                            </Button>
-                            <Button onClick={() => handleApprove()}>Approve</Button>
-                          </div>
+                          <Button
+                            variant="outline"
+                            className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                            onClick={() => {
+                              setShowTextArea(true);
+                              handleReject();
+                            }}
+                          >
+                            Reject
+                          </Button>
+                          <Button onClick={() => handleApprove()}>
+                            Approve
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>

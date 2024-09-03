@@ -29,7 +29,7 @@ const FreedomConstraint = ({
   const initialActionType = "";
   const approval_type = "boundary";
 
-  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
+  const { handleReject, handleApprove, FormikApprovalForm, } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
