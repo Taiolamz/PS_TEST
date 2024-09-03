@@ -79,21 +79,23 @@ const MeasureOfSuccess = ({
               </div>
             )}
           </div>
-          {!loading && data?.length !== null && (
-            <div className="flex gap-2.5 mr-4">
-              <Button
-                variant="outline"
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  handleReject();
-                }}
-              >
-                Reject
-              </Button>
-              <Button onClick={() => handleApprove()}>Approve</Button>
-            </div>
-          )}
+          {!loading &&
+            data?.length !== null &&
+            measureOfSuccessData[0]?.status === "pending" && (
+              <div className="flex gap-2.5 mr-4">
+                <Button
+                  variant="outline"
+                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                  onClick={() => {
+                    setShowTextArea(true);
+                    handleReject();
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button onClick={() => handleApprove()}>Approve</Button>
+              </div>
+            )}
         </div>
       </div>
       {/* {showTextArea && ( */}

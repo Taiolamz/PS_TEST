@@ -35,6 +35,7 @@ const FreedomConstraint = ({
     missionplanid,
     approval_type,
   });
+
   return (
     <section>
       {loading && (
@@ -95,19 +96,21 @@ const FreedomConstraint = ({
                 </div>
               </div>
             </div>
-            <div className="flex gap-2.5 items-end">
-              <Button
-                variant="outline"
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  handleReject();
-                }}
-              >
-                Reject
-              </Button>
-              <Button onClick={() => handleApprove()}>Approve</Button>
-            </div>
+            {data[0]?.status === "pending" && (
+              <div className="flex gap-2.5 items-end">
+                <Button
+                  variant="outline"
+                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                  onClick={() => {
+                    setShowTextArea(true);
+                    handleReject();
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button onClick={() => handleApprove()}>Approve</Button>
+              </div>
+            )}
           </div>
         </div>
       )}

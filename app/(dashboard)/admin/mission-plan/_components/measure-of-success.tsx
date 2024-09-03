@@ -28,7 +28,7 @@ const MeasureOfSuccess = ({
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   const measureColumnData = useMemo(() => measureColumns(), []);
-  const commentItem = useGetComments({ approvables, approvableTypeId });
+  const comments = useGetComments({ approvables, approvableTypeId });
   const approval_type = "success-measure";
 
   const transformedMeasureOfSuccessRows = (
@@ -48,8 +48,8 @@ const MeasureOfSuccess = ({
 
   const initialActionType = "";
 
-  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
-    initialComments: commentItem?.comment ?? [],
+  const { handleReject, handleApprove, FormikApprovalForm} = useApproval({
+    initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
     approval_type,
@@ -76,8 +76,7 @@ const MeasureOfSuccess = ({
               </div>
             )}
           </div>
-          {!loading && data?.length !== null && (
-            <div className="flex gap-2.5 mr-4">
+          <div className="flex gap-2.5 mr-4">
               <Button
                 variant="outline"
                 className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
@@ -90,14 +89,13 @@ const MeasureOfSuccess = ({
               </Button>
               <Button onClick={() => handleApprove()}>Approve</Button>
             </div>
-          )}
         </div>
       </div>
       <Comment
         label="measure of success"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
-        comments={commentItem}
+        comments={comments}
         formik={FormikApprovalForm}
       />
     </section>

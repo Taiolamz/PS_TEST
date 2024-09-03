@@ -29,12 +29,13 @@ const FreedomConstraint = ({
   const initialActionType = "";
   const approval_type = "boundary";
 
-  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
+  const { handleReject, handleApprove, FormikApprovalForm, } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
     approval_type,
   });
+
   return (
     <section>
       {loading && (
@@ -95,19 +96,19 @@ const FreedomConstraint = ({
                 </div>
               </div>
             </div>
-            <div className="flex gap-2.5 items-end">
-              <Button
-                variant="outline"
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  handleReject();
-                }}
-              >
-                Reject
-              </Button>
-              <Button onClick={() => handleApprove()}>Approve</Button>
-            </div>
+            <div className="flex gap-2.5  items-end">
+                <Button
+                  variant="outline"
+                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                  onClick={() => {
+                    setShowTextArea(true);
+                    handleReject();
+                  }}
+                >
+                  Reject
+                </Button>
+                <Button onClick={() => handleApprove()}>Approve</Button>
+              </div>
           </div>
         </div>
       )}

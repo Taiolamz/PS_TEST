@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
-import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
-import { Formik, useFormik } from "formik";
 import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
-import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
@@ -14,9 +11,11 @@ type Props = {
   data: StrategicIntentType[];
   approvables?: [];
   loading: boolean;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const StrategicIntent = ({ data, approvables, loading }: Props) => {
+const StrategicIntent = ({ data, approvables, loading, showTextArea, setShowTextArea }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
@@ -72,23 +71,18 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                     </p>
                   </div>
                   <div className="flex gap-2.5 mr-4">
-                    <Button
-                      variant="outline"
-                      className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                      onClick={() => {
-                        handleReject(item.id);
-                      }}
-                    >
-                      Reject
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        handleApprove();
-                      }}
-                    >
-                      Approve
-                    </Button>
-                  </div>
+                        <Button
+                          variant="outline"
+                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                          onClick={() => {
+                            setShowTextArea(true);
+                            handleReject();
+                          }}
+                        >
+                          Reject
+                        </Button>
+                        <Button onClick={() => handleApprove()}>Approve</Button>
+                      </div>
                 </div>
               </div>
             </div>
