@@ -227,7 +227,7 @@ const DashboardLayout = ({
       // isChecked: checklist?.employee_count < 1 ? false : true,
       path: ADMIN.ADD_EMPLOYEE,
       hide: false,
-      isAllChecked: checklist?.employee_count < 3 ? false : true,
+      isAllChecked: checklist?.employee_exist,
     },
     {
       title: "Set up mission plan",

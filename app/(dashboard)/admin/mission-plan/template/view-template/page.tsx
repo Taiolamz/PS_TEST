@@ -20,7 +20,10 @@ import {
 import Image from "next/image";
 import useDisclosure from "../_hooks/useDisclosure";
 import MissionPlanTemplateModal from "../level/_component/mission-plan-template-modal";
-import { MissionContentDetails } from "../level/_component/checklist-steps";
+import {
+  MissionContentDetails,
+  missionTemplateReview,
+} from "../level/_component/checklist-steps";
 
 const { ADMIN } = routesPath;
 
@@ -58,7 +61,9 @@ const ViewMissionPlaTemplate: React.FC = () => {
     MissionContentDetails[]
   >([]);
 
-  // const [sections, setSections] = useState<Section[]>([]);
+  const selectedMissionPlanTemplates = localStorage.getItem(
+    "selected-mission-plan-template-review"
+  );
 
   const handleGetMissionPlanTemplates = () => {
     const selectedMissionPlanTemplates = localStorage.getItem(
@@ -66,32 +71,24 @@ const ViewMissionPlaTemplate: React.FC = () => {
     );
     if (selectedMissionPlanTemplates) {
       const parseData = JSON.parse(selectedMissionPlanTemplates);
-      const sortedArray = Object.values(parseData as any[]).sort(
-        (a, b) => a?.order - b?.order
+      const filteredMissionTemplateReview = missionTemplateReview.filter(
+        (item) => {
+          return (
+            parseData[item.mapTitle] !== undefined &&
+            parseData[item.mapTitle] !== null
+          );
+        }
       );
-      console.log(parseData, "parse data");
-
       formik.setFieldValue("template_title", parseData?.name);
-      const filteredArray = sortedArray?.filter(
-        (_, index) => index !== 0 && index !== 1
-        // (_, index) => index !== 0 && index !== 1 && index !== 2
-      );
-      const newFilteredArray = filteredArray.filter(
-        (item) => typeof item === "object" && item !== null
-      );
-      console.log(newFilteredArray, "newFilteredArray");
-      setMissionPlanTemplates(newFilteredArray);
+      setMissionPlanTemplates(filteredMissionTemplateReview);
     }
     if (openMissionModal) {
       handleMissionDialog();
     }
   };
 
-  // console.log(missionPlanTemplates, "mission plan templates");
-
   const handleIsSelectedField = () => {
     const selected = missionPlanTemplates?.map((chi) => chi.isSelected);
-    // const selected = missionPlanTemplates?.map((chi) => chi.isSelected);
     return selected;
   };
 
@@ -168,7 +165,7 @@ const ViewMissionPlaTemplate: React.FC = () => {
 
   useEffect(() => {
     handleGetMissionPlanTemplates();
-  }, []);
+  }, [selectedMissionPlanTemplates]);
 
   useEffect(() => {
     const filteredSections = initialSections.filter(
@@ -192,22 +189,10 @@ const ViewMissionPlaTemplate: React.FC = () => {
     setSections(newSections);
   };
 
-  const handleGetSelectedTemplate = () => {
-    const selectedTemplate = missionPlanTemplates?.map((chi) => {
-      return {
-        // ...chi,
-        isSelected: chi?.isSelected,
-        label: chi?.title,
-      };
-    });
-    return selectedTemplate;
-  };
-
-  console.log(handleGetSelectedTemplate(), "selected templates");
-
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
+
   const handleDeleteMissionTemplate = (id: string) => {
     const newTemplate = sections.filter((chi) => chi.id !== id);
     setSections(newTemplate);
@@ -215,21 +200,32 @@ const ViewMissionPlaTemplate: React.FC = () => {
     return newTemplate;
   };
 
-  const handleMissionLabelCheck = (updatedSections: Section[]) => {
-    const sectionTitles = updatedSections.map((chi) => chi.title);
-
-    const updatedMissionPlanTemplates = missionPlanTemplates.map((item) => {
-      if (!sectionTitles.includes(item.title)) {
-        return { ...item, isSelected: false };
-      }
-      return item;
-    });
-
-    localStorage.setItem(
-      "selected-mission-plan-template-review",
-      JSON.stringify(updatedMissionPlanTemplates)
+  const handleMissionLabelCheck = (templates: any[]) => {
+    const selectMissionTemplate = localStorage.getItem(
+      "selected-mission-plan-template-review"
     );
-    return updatedMissionPlanTemplates;
+    if (selectMissionTemplate) {
+      const parsedObject = JSON.parse(selectMissionTemplate);
+
+      const mapTitleSet = new Set(templates?.map((item) => item.mapTitle));
+
+      Object.keys(parsedObject).forEach((key) => {
+        if (
+          !mapTitleSet.has(key) &&
+          key !== "id" &&
+          key !== "created_at" &&
+          key !== "name" &&
+          key !== "assignees"
+        ) {
+          parsedObject[key] = null;
+        }
+      });
+
+      localStorage.setItem(
+        "selected-mission-plan-template-review",
+        JSON.stringify(parsedObject)
+      );
+    }
   };
 
   const {
@@ -444,9 +440,6 @@ const ViewMissionPlaTemplate: React.FC = () => {
     );
   }
 
-  console.log(sections, "sections checkings");
-  // console.log(sections, missionPlanTemplates, "sections checkings");
-
   return (
     <DashboardLayout back headerTitle="Create Mission Plan Template">
       <ReusableStepListBox
@@ -493,14 +486,10 @@ const ViewMissionPlaTemplate: React.FC = () => {
                 className={`mt-5 border  rounded-lg p-8 ${
                   section.isRequired ? "cursor-not-allowed" : "cursor-pointer"
                 } pb-10 pt-10 bg-white`}
-                // draggable
-                // onDragStart={(e) => handleDragStart(e, index)}
-                // onDrop={(e) => handleDrop(e, index)}
-                // onDragOver={handleDragOver}
-                draggable={!section.isRequired} // Only draggable if isRequired is false
+                draggable={!section.isRequired}
                 onDragStart={(e) =>
                   !section.isRequired && handleDragStart(e, index)
-                } // Conditionally attach the drag event handlers
+                }
                 onDrop={(e) => !section.isRequired && handleDrop(e, index)}
                 onDragOver={
                   section.isRequired ? undefined : (e) => handleDragOver(e)
@@ -513,15 +502,6 @@ const ViewMissionPlaTemplate: React.FC = () => {
                     </p>
                     {section.content()}
                   </div>
-
-                  {/* <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2 ">
-                    <Image
-                      src={TrashIcon}
-                      alt="trash"
-                      onClick={() => handleDeleteMissionTemplate(section.id)}
-                    />
-                    <DraggableIcon />
-                  </div> */}
 
                   {!section.isRequired && (
                     <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2">
