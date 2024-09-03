@@ -30,7 +30,6 @@ const StrategicIntent = ({ data, approvables, loading, showTextArea, setShowText
     handleReject,
     handleApprove,
     FormikApprovalForm,
-    undoStatus,
   } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
