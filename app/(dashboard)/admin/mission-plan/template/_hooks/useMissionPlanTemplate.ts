@@ -116,9 +116,9 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
       // id: organization?.id,
       assignees: [],
       name: input.template_title,
-      duration: {
-        order: 0,
-      },
+      // duration: {
+      //   order: 0,
+      // },
     };
 
     sections.forEach((section, index) => {

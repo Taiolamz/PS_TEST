@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
-import { MissionContentDetails, missionContentModal } from "./checklist-steps";
+import { missionContentModal } from "./checklist-steps";
 import { usePathname } from "next/navigation";
 import routesPath from "@/utils/routes";
 
@@ -24,25 +24,9 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
     );
   };
 
-  console.log(missionContentModal, "mission content modal");
-  // console.log(missionContentModal, "mission content modal");
-
   const handleIsAnySelected = () => {
     const isAnySelected = missionContent.some((item) => item.isSelected);
     return isAnySelected;
-  };
-
-  const handleAddSelected = () => {
-    const selectedLabels = missionContent.map((item) => {
-      return {
-        ...item,
-      };
-    });
-    localStorage.setItem(
-      "selected-mission-plan-template",
-      JSON.stringify(selectedLabels)
-    );
-    onSelect();
   };
 
   const location = usePathname();
@@ -63,67 +47,66 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
 
     if (selectedMissionPlanTemplates) {
       const parseData = JSON.parse(selectedMissionPlanTemplates);
-      const sortedArray = Object.values(parseData as any[]).sort(
-        (a, b) => a?.order - b?.order
-      );
 
-      const filteredArray = sortedArray?.filter(
-        (_, index) => index !== 0 && index !== 1 && index !== 2
-      );
-      const newFilteredArray = filteredArray.filter(
-        (item) => typeof item === "object" && item !== null
-      );
-      // console.log(newFilteredArray, "newFilteredArray");
-      // // setMissionContent(newFilteredArray);
-
-      const mergedArray = missionContentModal.map((item) => {
-        const matchingItem = newFilteredArray.find(
-          (newItem) => newItem.id === item.id
-        );
-        return matchingItem ? { ...item, ...matchingItem } : item;
-      });
-      setMissionContent(mergedArray);
-      console.log(mergedArray, "array merging");
-    }
-  };
-
-  console.log(missionContent, "main mission content");
-  const handleFormatMergedArray = () => {
-    const selectMissionTemplate = localStorage.getItem(
-      "selected-mission-plan-template"
-    );
-    if (selectMissionTemplate) {
-      const parseArray = JSON.parse(selectMissionTemplate);
-      console.log(parseArray, "parsed array");
-      const firstArray = Object.values(parseArray as any[]).filter(
-        (item) => typeof item === "object" && item?.id
-      );
-      console.log(firstArray, "first array");
-      console.log(missionContent, "mission content suspect");
-      const mergedArray = firstArray
-        .map((item1) => {
-          const matchingItem = missionContent.find(
-            (item2) => item2.id === item1.id
-          );
-
-          if (matchingItem && item1.isSelected && matchingItem.isSelected) {
-            return null;
+      const updatedMissionTemplateReview = (missionContent as any[]).map(
+        (item) => {
+          const relatedValue = parseData[item.mapTitle];
+          if (relatedValue !== undefined && relatedValue !== null) {
+            return { ...item, isSelected: true };
           }
-
-          return {
-            ...item1,
-            ...matchingItem,
-          };
-        })
-        .filter((item) => item !== null);
-      console.log(mergedArray, "merging top array");
-      // return mergedArray;
+          if (relatedValue === null) {
+            return { ...item, isSelected: false };
+          }
+          return item;
+        }
+      );
+      setMissionContent(updatedMissionTemplateReview);
     }
   };
 
-  console.log(handleFormatMergedArray(), "doings");
+  const handleAddSelected = () => {
+    const selectedLabels = missionContent.map((item) => {
+      return {
+        ...item,
+      };
+    });
+    localStorage.setItem(
+      "selected-mission-plan-template",
+      JSON.stringify(selectedLabels)
+    );
+    onSelect();
+    if (location === ADMIN.VIEW_MISSION_PLAN_TEMPLATE) {
+      const selectMissionTemplate = localStorage.getItem(
+        "selected-mission-plan-template-review"
+      );
 
-  console.log(missionContentModal, "mission content select");
+      if (selectMissionTemplate) {
+        const parseArray = JSON.parse(selectMissionTemplate);
+
+        (missionContent as any[]).forEach((item, index) => {
+          const { mapTitle, isSelected } = item;
+
+          if (isSelected === false) {
+            if (parseArray.hasOwnProperty(mapTitle)) {
+              parseArray[mapTitle] = null;
+            }
+          } else {
+            if (
+              !parseArray.hasOwnProperty(mapTitle) ||
+              parseArray[mapTitle] === null
+            ) {
+              parseArray[mapTitle] = { order: index + 1 };
+            }
+          }
+        });
+
+        localStorage.setItem(
+          "selected-mission-plan-template-review",
+          JSON.stringify(parseArray)
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     if (location === ADMIN.CREATE_MISSION_PLAN_TEMPLATE) {

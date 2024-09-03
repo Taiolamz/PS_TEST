@@ -1,6 +1,5 @@
 "use client";
 
-import Routes from "@/lib/routes/routes";
 import { useRouter } from "next/navigation";
 import React from "react";
 import useDisclosure from "../_hooks/useDisclosure";
@@ -63,12 +62,13 @@ const MissionPlanTemplateLevel = () => {
         activeStep="1"
         totalStep="2"
         title="Mission Plan Template"
-        // btnDisabled
         onSave={handleProceed}
         onCancel={() => router.back()}
-        // onCancel={handleCancelDialog}
       />
-      <MissionPlanLevel handleClick={handleMissionDialog} />
+      <MissionPlanLevel
+        handleDefaultClick={() => console.log("route to mission plan")}
+        handleClick={handleMissionDialog}
+      />
 
       <DashboardModal
         className="min-w-[900px] bg-modal-bg-100"
