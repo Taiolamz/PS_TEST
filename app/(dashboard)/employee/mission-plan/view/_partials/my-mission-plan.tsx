@@ -30,7 +30,7 @@ const MyMissionPlan = () => {
   const router = useRouter();
 
   const handleGetMyMissionPlan = async () => {
-    const payload = { id: FISCAL_YEAR_ID };
+    const payload = { id: FISCAL_YEAR_ID, isInclude: true };
     getMyMissionPlan(payload)
       .unwrap()
       .then(() => {});

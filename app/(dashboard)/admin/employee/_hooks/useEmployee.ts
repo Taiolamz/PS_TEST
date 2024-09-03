@@ -13,6 +13,7 @@ import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelAp
 import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 
 // dummy data
 type Prop = {
@@ -45,16 +46,16 @@ const formSchema = yup.object().shape({
   middle_name: yup.string().optional(),
   last_name: yup.string().required("Last name is required"),
   maiden_name: yup.string().optional(),
-  date_of_birth: yup.date().required("A date of birth is required."),
-  gender: yup.string().required("Gender is required"),
-  resumption_date: yup.date().required("Resumption date is required."),
+  date_of_birth: yup.date().optional(),
+  gender: yup.string().optional(),
+  resumption_date: yup.date().optional(),
   level: yup.string().required("Grade level is required"),
   // subsidiary_id: yup.string().required("Subsidiary is required"),
   // department_id: yup.string().required("Department is required"),
   // branch_id: yup.string().required("Branch is required"),
   // unit_id: yup.string().required("Unit is required"),
-  designation: yup.string().required("Job title is required"),
-  staff_number: yup.string().required("Staff number is required"),
+  designation: yup.string().optional(),
+  staff_number: yup.string().optional(),
   new_employee: yup.string().required("New employee status is required"),
   email: yup
     .string()
@@ -70,7 +71,7 @@ const formSchema = yup.object().shape({
     .required("Line Manager Email is required"),
   phone_number: yup
     .string()
-    .required("Phone number is required")
+    .optional()
     // .matches(/^\d+$/, "Phone number must be digits only")
     .max(14, "Phone number cannot exceed 14 digits"),
   role_id: yup.string().required("Role is required"),
@@ -111,6 +112,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       | DepartmentData[]
       | UnitData[]
       | EmployeeData[]
+      | AllStaff[]
     // | GradeLevelData[]
   ) => {
     const data = items?.map((chi) => {
@@ -137,6 +139,12 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
   const { organization } = user;
   const [createEmployee, { isLoading: isCreatingEmployee }] =
     useCreateEmployeeMutation();
+
+  const { data: employeesData, isLoading: isLoadingEmployees } =
+    useGetAllEmployeesQuery();
+
+  const employees = employeesData ?? [];
+  const employeeDrop = handleDropdown(employees);
 
   const handleSubmit = async () => {
     const payload = {
@@ -172,6 +180,11 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       subsidiary_id: {
         name: "",
         id: "",
+      },
+      line_manager: {
+        name:"",
+        email:"",
+        id:""
       },
       department_id: "",
       branch_id: "",
@@ -217,6 +230,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     newEmployeeStatuses: handleFormatDropdown(newEmployeeStatuses),
     newEmployeeDrop,
     states: handleFormatDropdown(states),
+    employees: handleFormatDropdown(employees),
     openCancelModal,
     handleProceedCancel,
     onOpenCancelModal,

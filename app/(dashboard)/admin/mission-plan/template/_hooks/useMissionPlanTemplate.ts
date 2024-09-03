@@ -1,19 +1,20 @@
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { resetFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { useCreateMissionPlanTemplateMutation } from "@/redux/services/checklist/missionPlanTemplateApi";
+import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import routesPath from "@/utils/routes";
+import { useFormik } from "formik";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useContext, useState } from "react";
+import { toast } from "sonner";
 import * as yup from "yup";
 import useDisclosure from "./useDisclosure";
-import { useRouter } from "next/navigation";
-import { useFormik } from "formik";
-import { useAppSelector } from "@/redux/store";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { useCreateMissionPlanTemplateMutation } from "@/redux/services/checklist/missionPlanTemplateApi";
-import Routes from "@/lib/routes/routes";
-import { toast } from "sonner";
-import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
-import routesPath from "@/utils/routes";
-import { useContext, useState } from "react";
-import ActionContext from "@/app/(dashboard)/context/ActionContext";
 
 type Prop = {
   cancelPath: string;
+  templateID?: string;
 };
 
 interface Section {
@@ -84,7 +85,7 @@ const formSchema = yup.object({
   strategic_pillar: yup.string().min(1, "Strategic pillar is required"),
 });
 const { ADMIN } = routesPath;
-export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
+export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
   const { data: unitsData, isLoading: isLoadingUnits } = useGetUnitsQuery({
     to: 0,
     total: 0,
@@ -99,6 +100,10 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   const user = useAppSelector(selectUser);
   const actionCtx = useContext(ActionContext);
 
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const handleFormatDropdown = (items: UnitData[]) => {
     const data = items.map((chi) => {
       return {
@@ -112,26 +117,21 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
 
   const transformData = (input: any) => {
     const payload = {
-      id: "",
-      // id: organization?.id,
+      id: templateID || "",
       assignees: [],
       name: input.template_title,
-      duration: {
-        order: 0,
-      },
     };
 
     sections.forEach((section, index) => {
       (payload as any)[section.mapTitle] = {
         order: index + 1,
         ...input[section.mapTitle],
+        ...section,
       };
     });
 
     return payload;
   };
-
-  const { organization } = user;
 
   const MissionPlanTemplateRoute = ADMIN.MISSION_PLAN_TEMPLATE;
   const [
@@ -140,30 +140,43 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   ] = useCreateMissionPlanTemplateMutation();
 
   const handleSubmit = async () => {
-    // const payload = {
-    //   ...formik.values,
-    //   // name: formik.values.strategic_intent,
-    //   name: formik.values.template_title,
-    //   organization_id: organization?.id,
-    // };
     const payload = transformData(formik.values);
-    console.log(payload, "payload");
-    await createMissionPlanTemplate(payload)
-      .unwrap()
-      .then(() => {
-        actionCtx?.triggerUpdateChecklist();
+    await createMissionPlanTemplate(payload).unwrap();
+    actionCtx?.triggerUpdateChecklist();
+    if (searchParams.get("qs") === "kick-start-fy") {
+      toast.success("Mission Plan Template Created Successfully");
+      router.back();
+      return;
+    } else if (searchParams.get("qs") === "template") {
+      dispatch(resetFinancialYearDetails())
+      toast.success("Mission Plan Template Created Successfully");
+      router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`);
+      return;
+    }
+    if (templateID) {
+      toast.success("Mission Plan Template Updated Successfully");
+    } else {
+      toast.success("Mission Plan Template Created Successfully");
+    }
+
+    new Promise(() => {
+      setTimeout(() => {
+        toast.dismiss();
         router.push(MissionPlanTemplateRoute);
         toast.success("Mission Plan Template Created Successfully");
-        new Promise(() => {
-          setTimeout(() => {
-            toast.dismiss();
-            router.push(MissionPlanTemplateRoute);
-          }, 2000);
-        });
-      });
+        if(searchParams.get('qs') === 'kick-start-fy'){
+          router.back()
+          return
+        }
+        if(searchParams.get('qs') === 'template'){
+          dispatch(resetFinancialYearDetails())
+          router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`)
+          return
+        }
+      }, 2000);
+    });
   };
 
-  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       template_title: "",
@@ -171,7 +184,6 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
         title: "",
         start_period: new Date(),
         end_period: new Date(),
-        // end_period: new Date(),
       },
       mission_statement: "",
       success_measures: {

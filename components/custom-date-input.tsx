@@ -17,12 +17,14 @@ interface CustomDateInputProps {
   error?: string;
   touched?: boolean;
   disabled?: boolean;
+  portal?: boolean;
   showIcon?: boolean;
   showOnlyMonth?: boolean;
   iconClass?: string;
   inputClass?: string;
   placeholder?: string;
   format?: string;
+  onBlur?: () => void;
 }
 
 export default function CustomDateInput({
@@ -44,9 +46,11 @@ export default function CustomDateInput({
   showOnlyMonth = false,
   showIcon = true,
   placeholder,
+  portal = true,
+  onBlur,
 }: CustomDateInputProps) {
   return (
-    <div className="relative">
+    <div className="relative" onBlur={onBlur}>
       {label && (
         <label
           htmlFor={label}
@@ -82,6 +86,7 @@ export default function CustomDateInput({
         disabled={disabled}
         onlyMonthPicker={showOnlyMonth}
         highlightToday={false}
+        portal={portal}
       />
       {showIcon && (
         <Calendar
@@ -89,7 +94,7 @@ export default function CustomDateInput({
           className={cn("absolute right-3 top-8 text-isGray400", iconClass)}
         />
       )}
-      <span className={cn("text-xs text-red-500 hidden", error && "block")}>
+      <span className={cn("text-xs text-red-500 hidden", error && "block absolute")}>
         {error && touched && error}
       </span>
     </div>

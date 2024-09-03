@@ -63,7 +63,7 @@ interface MultiSelectProps
     icon?: React.ComponentType<{ className?: string }>;
   }[];
   onValueChange: (value: string[]) => void;
-  defaultValue: string[];
+  defaultValue?: string[];
   placeholder?: string;
   animation?: number;
   maxCount?: number;
@@ -307,7 +307,7 @@ export const CustomMultipleSelect = React.forwardRef<
             )}
           </Button>
         </PopoverTrigger>
-        <span className={cn("text-xs text-red-500 hidden", error && "block")}>
+        <span className={cn("text-xs text-red-500 hidden", error && "block absolute")}>
           {error && touched && error}
         </span>
 

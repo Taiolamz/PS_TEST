@@ -170,7 +170,11 @@ type DepartmentData = {
   };
 };
 
-type MissionPlanTemplateData = {};
+type MissionPlanTemplateData = {
+  id?: string;
+  name: string;
+  content;
+};
 
 type EmployeeRolesData = {
   id: string;
@@ -227,7 +231,9 @@ type CurrentMissionPlanData = {
 type RolesData = {};
 
 type QueryParams = {
+  page?: number;
   currentPage?: number;
+  page?: number;
   next_page_url?: string;
   prev_page_url?: string;
   per_page?: number;

@@ -20,7 +20,9 @@ const { ADMIN } = routesPath
 
 const FinancialYear = () => {
     const [createFinancialYear, { isLoading }] = useCreateFinancialYearMutation()
-    const { fy_info: { financial_year } } = useAppSelector((state) => state.mission_plan)
+    const { fy_info: { financial_year }, mission_plan } = useAppSelector((state) => state.mission_plan)
+
+    // console.log(mission_plan?.active_fy_info?.template_id)
 
     const location = usePathname()
     const router = useRouter()
@@ -47,7 +49,8 @@ const FinancialYear = () => {
             title: (financial_year?.title as string) || "",
             start_date: (financial_year?.start_date as string) || "",
             end_date: (financial_year?.end_date as string) || "",
-            review_period: (financial_year?.review_period as string) || ""
+            review_period: (financial_year?.review_period as string) || "",
+            template_id: mission_plan?.active_fy_info?.template_id || ""
         },
         validationSchema: fiscalYearSchema,
         onSubmit: handleFormSubmit,
@@ -58,14 +61,14 @@ const FinancialYear = () => {
         dispatch(updateFinancialYearDetails({ slug: "financial_year", data: formik.values }))
     }, [formik.values])
 
-    useEffect(() => {
-        dispatch(updateFinancialYearDetails({ slug: "financial_year", data: {
-            title: "",
-            start_date: "",
-            end_date: "",
-            review_period: ""
-        }}))
-    },[])
+    // useEffect(() => {
+    //     dispatch(updateFinancialYearDetails({ slug: "financial_year", data: {
+    //         title: "",
+    //         start_date: "",
+    //         end_date: "",
+    //         review_period: ""
+    //     }}))
+    // },[])
 
     return (
         <div className="w-full">
@@ -122,9 +125,9 @@ const FinancialYear = () => {
                         label="Review Period"
                         id=""
                         options={[
-                            {label: "Monthly", value: "Monthly"},
-                            {label: "Quarterly", value: "Quarterly"},
-                            {label: "Bi-Annual (twice/year)", value: "Bi-Annual (twice/year)"},
+                            {label: "Monthly", value: "monthly"},
+                            {label: "Quarterly", value: "buarterly"},
+                            {label: "Bi-Annual (twice/year)", value: "bi-annual"},
                         ]}
                         selected={formik.values.review_period}
                         setSelected={(selected) => formik.setFieldValue('review_period', selected)}

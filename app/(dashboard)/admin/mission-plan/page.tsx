@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Dictionary } from "@/@types/dictionary";
 import { PageLoader } from "@/components/custom-loader";
-import { EmptyState, ReusableDrawer } from "@/components/fragment";
+import { EmptyState } from "@/components/fragment";
 import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useGetOrganizationMissionPlansQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
@@ -36,11 +36,12 @@ export default function Page() {
   const { data: all_mission_plans, isLoading: isLoadingMissionPlans, isFetching: isFetchingMissionPlans } = useGetOrganizationMissionPlansQuery({})
   const user_info = useAppSelector((state) => state?.auth?.user);
 
-  // console.log(all_mission_plans?.data?.fiscal_years)
+  // console.log(all_mission_plans?.data?.fiscal_years) KICK_START_MISSION_PLAN_SELECT_TEMPLATE
+  // mission-plan/kickstart?ui=financial-year
 
   const kickstartcard = (
     <Link
-      href="mission-plan/kickstart?ui=financial-year"
+      href={ADMIN.KICK_START_MISSION_PLAN_SELECT_TEMPLATE}
       className="bg-white h-[140px] border bg-transparent rounded-[5px] border-custom-gray group hover:border-primary transition-all duration-300 p-4 cursor-pointer"
     >
       <div className="flex justify-between">
@@ -83,7 +84,7 @@ export default function Page() {
                 {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && (
                   <EmptyState
                     text="Create your Mission plan by using the button below"
-                    handleClick={() => router.push("mission-plan/kickstart?ui=financial-year")}
+                    handleClick={() => router.push(ADMIN.KICK_START_MISSION_PLAN_SELECT_TEMPLATE)}
                     btnText="Kickstart Financial Year"
                   />
                 )}

@@ -467,7 +467,6 @@ const SpecifiedTask = () => {
                                       values
                                     )
                                   }
-                                  // randomBadgeColor
                                   options={mappedSuccessMeasures}
                                   label="Select Measure of Success"
                                   name={`tasks.${index}.success_measures`}

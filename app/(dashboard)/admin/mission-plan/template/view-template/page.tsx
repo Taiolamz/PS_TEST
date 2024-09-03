@@ -20,12 +20,14 @@ import {
 import Image from "next/image";
 import useDisclosure from "../_hooks/useDisclosure";
 import MissionPlanTemplateModal from "../level/_component/mission-plan-template-modal";
-import { MissionContentDetails } from "../level/_component/checklist-steps";
+import {
+  MissionContentDetails,
+  missionTemplateReview,
+} from "../level/_component/checklist-steps";
 
 const { ADMIN } = routesPath;
 
 interface Section {
-  form?: any;
   isRequired?: boolean;
   mapTitle: string;
   id: string;
@@ -35,8 +37,9 @@ interface Section {
   isSelected?: boolean;
 }
 
-const AddMissionPlanTemplate: React.FC = () => {
+const ViewMissionPlaTemplate: React.FC = () => {
   const cancelRoute = ADMIN.CHECKLIST;
+  const [templateID, setTemplatID] = useState("");
   const {
     formik,
     units,
@@ -46,7 +49,10 @@ const AddMissionPlanTemplate: React.FC = () => {
     isCreatingMissionPlanTemplate,
     sections,
     setSections,
-  } = useMissionPlanTemplate({ cancelPath: cancelRoute });
+  } = useMissionPlanTemplate({
+    cancelPath: cancelRoute,
+    templateID: templateID,
+  });
 
   const handleMissionDialog = () => {
     onOpenMissionModal();
@@ -59,21 +65,42 @@ const AddMissionPlanTemplate: React.FC = () => {
     MissionContentDetails[]
   >([]);
 
+  const selectedMissionPlanTemplates = localStorage.getItem(
+    "selected-mission-plan-template-review"
+  );
+
   const handleGetMissionPlanTemplates = () => {
     const selectedMissionPlanTemplates = localStorage.getItem(
-      "selected-mission-plan-template"
+      "selected-mission-plan-template-review"
     );
+
     if (selectedMissionPlanTemplates) {
-      setMissionPlanTemplates(JSON.parse(selectedMissionPlanTemplates));
+      const parseData = JSON.parse(selectedMissionPlanTemplates);
+      setTemplatID(parseData?.id);
+
+      const filteredMissionTemplateReview = missionTemplateReview
+        .filter((item) => {
+          return (
+            parseData[item.mapTitle] !== undefined &&
+            parseData[item.mapTitle] !== null
+          );
+        })
+        .sort((a, b) => {
+          const orderA = parseData[a.mapTitle]?.order ?? Number.MAX_VALUE;
+          const orderB = parseData[b.mapTitle]?.order ?? Number.MAX_VALUE;
+          return orderA - orderB;
+        });
+      formik.setFieldValue("template_title", parseData?.name);
+      setMissionPlanTemplates(filteredMissionTemplateReview);
     }
+
     if (openMissionModal) {
       handleMissionDialog();
     }
   };
 
   const handleIsSelectedField = () => {
-    const missionTemplates = missionPlanTemplates ?? [];
-    const selected = missionTemplates?.map((chi) => chi.isSelected);
+    const selected = missionPlanTemplates?.map((chi) => chi.isSelected);
     return selected;
   };
 
@@ -150,13 +177,76 @@ const AddMissionPlanTemplate: React.FC = () => {
 
   useEffect(() => {
     handleGetMissionPlanTemplates();
-  }, []);
+  }, [selectedMissionPlanTemplates]);
 
+  // useEffect(() => {
+  //   const filteredSections = initialSections.filter(
+  //     (section) => section.isSelected
+  //   );
+  //   setSections(filteredSections);
+  // }, [missionPlanTemplates]);
+  // useEffect(() => {
+  //   // Filter the sections that are selected
+  //   const updatedSections = (initialSections as any[])
+  //     .map((section) => {
+  //       // Find the matching template in missionPlanTemplates based on mapTitle
+  //       const match = (missionPlanTemplates as any[]).find(
+  //         (template) => template.mapTitle === section.mapTitle
+  //       );
+
+  //       if (match) {
+  //         // Update the section with the properties from the matching template
+  //         return {
+  //           ...section,
+  //           isSelected: match.isSelected,
+  //           content: match.content,
+  //           displayName: match.displayName,
+  //           isRequired: match.isRequired || section.isRequired, // Preserve initial 'isRequired' if not specified
+  //         };
+  //       }
+  //       return section;
+  //     })
+  //     .filter((section) => section.isSelected) // Filter only selected sections
+  //     .sort(
+  //       (a, b) =>
+  //         missionPlanTemplates.findIndex(
+  //           (template) => template.mapTitle === a.mapTitle
+  //         ) -
+  //         missionPlanTemplates.findIndex(
+  //           (template) => template.mapTitle === b.mapTitle
+  //         )
+  //     );
+
+  //   // Update the sections state with the filtered and sorted sections
+  //   setSections(updatedSections);
+  // }, [missionPlanTemplates, initialSections]);
   useEffect(() => {
-    const filteredSections = initialSections.filter(
-      (section) => section.isSelected
-    );
-    setSections(filteredSections);
+    const updatedSections = initialSections
+      .map((section) => {
+        const match = missionPlanTemplates.find(
+          (template) => template.mapTitle === section.mapTitle
+        );
+
+        if (match) {
+          return {
+            ...section,
+            isSelected: match.isSelected,
+          };
+        }
+        return section;
+      })
+      .filter((section) => section.isSelected)
+      .sort(
+        (a, b) =>
+          missionPlanTemplates.findIndex(
+            (template) => template.mapTitle === a.mapTitle
+          ) -
+          missionPlanTemplates.findIndex(
+            (template) => template.mapTitle === b.mapTitle
+          )
+      );
+
+    setSections(updatedSections);
   }, [missionPlanTemplates]);
 
   const headerClass = "text-custom-dark-blue font-normal text-sm";
@@ -177,6 +267,7 @@ const AddMissionPlanTemplate: React.FC = () => {
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
+
   const handleDeleteMissionTemplate = (id: string) => {
     const newTemplate = sections.filter((chi) => chi.id !== id);
     setSections(newTemplate);
@@ -184,21 +275,32 @@ const AddMissionPlanTemplate: React.FC = () => {
     return newTemplate;
   };
 
-  const handleMissionLabelCheck = (updatedSections: Section[]) => {
-    const sectionTitles = updatedSections.map((chi) => chi.title);
-
-    const updatedMissionPlanTemplates = missionPlanTemplates.map((item) => {
-      if (!sectionTitles.includes(item.title)) {
-        return { ...item, isSelected: false };
-      }
-      return item;
-    });
-
-    localStorage.setItem(
-      "selected-mission-plan-template",
-      JSON.stringify(updatedMissionPlanTemplates)
+  const handleMissionLabelCheck = (templates: any[]) => {
+    const selectMissionTemplate = localStorage.getItem(
+      "selected-mission-plan-template-review"
     );
-    return updatedMissionPlanTemplates;
+    if (selectMissionTemplate) {
+      const parsedObject = JSON.parse(selectMissionTemplate);
+
+      const mapTitleSet = new Set(templates?.map((item) => item.mapTitle));
+
+      Object.keys(parsedObject).forEach((key) => {
+        if (
+          !mapTitleSet.has(key) &&
+          key !== "id" &&
+          key !== "created_at" &&
+          key !== "name" &&
+          key !== "assignees"
+        ) {
+          parsedObject[key] = null;
+        }
+      });
+
+      localStorage.setItem(
+        "selected-mission-plan-template-review",
+        JSON.stringify(parsedObject)
+      );
+    }
   };
 
   const {
@@ -438,6 +540,8 @@ const AddMissionPlanTemplate: React.FC = () => {
                 type="text"
                 placeholder="C Level Mission Plan"
                 id="template_title"
+                // value={templateTitle}
+                value={formik.values.template_title}
                 name="template_title"
                 onChange={formik.handleChange}
                 className={`w-[425px]`}
@@ -457,14 +561,10 @@ const AddMissionPlanTemplate: React.FC = () => {
                 className={`mt-5 border  rounded-lg p-8 ${
                   section.isRequired ? "cursor-not-allowed" : "cursor-pointer"
                 } pb-10 pt-10 bg-white`}
-                // draggable
-                // onDragStart={(e) => handleDragStart(e, index)}
-                // onDrop={(e) => handleDrop(e, index)}
-                // onDragOver={handleDragOver}
-                draggable={!section.isRequired} // Only draggable if isRequired is false
+                draggable={!section.isRequired}
                 onDragStart={(e) =>
                   !section.isRequired && handleDragStart(e, index)
-                } // Conditionally attach the drag event handlers
+                }
                 onDrop={(e) => !section.isRequired && handleDrop(e, index)}
                 onDragOver={
                   section.isRequired ? undefined : (e) => handleDragOver(e)
@@ -477,15 +577,6 @@ const AddMissionPlanTemplate: React.FC = () => {
                     </p>
                     {section.content()}
                   </div>
-
-                  {/* <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2 ">
-                    <Image
-                      src={TrashIcon}
-                      alt="trash"
-                      onClick={() => handleDeleteMissionTemplate(section.id)}
-                    />
-                    <DraggableIcon />
-                  </div> */}
 
                   {!section.isRequired && (
                     <div className="flex gap-6 items-center absolute right-0 top-1/2 transform -translate-y-1/2">
@@ -535,4 +626,4 @@ const AddMissionPlanTemplate: React.FC = () => {
   );
 };
 
-export default AddMissionPlanTemplate;
+export default ViewMissionPlaTemplate;

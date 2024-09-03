@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
-import { MissionContentDetails, missionContentModal } from "./checklist-steps";
+import { missionContentModal } from "./checklist-steps";
 import { usePathname } from "next/navigation";
 import routesPath from "@/utils/routes";
 
@@ -17,8 +17,8 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
       prevContent.map((item) =>
         item.label === label
           ? item.isRequired
-            ? { ...item, isSelected: true } // Keep it always selected if required
-            : { ...item, isSelected: !item.isSelected } // Toggle only if not required
+            ? { ...item, isSelected: true }
+            : { ...item, isSelected: !item.isSelected }
           : item
       )
     );
@@ -27,6 +27,41 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
   const handleIsAnySelected = () => {
     const isAnySelected = missionContent.some((item) => item.isSelected);
     return isAnySelected;
+  };
+
+  const location = usePathname();
+
+  const handleGetMissionPlanTemplates = () => {
+    const selectedMissionPlanTemplates = localStorage.getItem(
+      "selected-mission-plan-template"
+    );
+    if (selectedMissionPlanTemplates) {
+      setMissionContent(JSON.parse(selectedMissionPlanTemplates));
+    }
+  };
+
+  const handleGetMissionPlanReviewTemplate = () => {
+    const selectedMissionPlanTemplates = localStorage.getItem(
+      "selected-mission-plan-template-review"
+    );
+
+    if (selectedMissionPlanTemplates) {
+      const parseData = JSON.parse(selectedMissionPlanTemplates);
+
+      const updatedMissionTemplateReview = (missionContent as any[]).map(
+        (item) => {
+          const relatedValue = parseData[item.mapTitle];
+          if (relatedValue !== undefined && relatedValue !== null) {
+            return { ...item, isSelected: true };
+          }
+          if (relatedValue === null) {
+            return { ...item, isSelected: false };
+          }
+          return item;
+        }
+      );
+      setMissionContent(updatedMissionTemplateReview);
+    }
   };
 
   const handleAddSelected = () => {
@@ -40,21 +75,44 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
       JSON.stringify(selectedLabels)
     );
     onSelect();
-  };
+    if (location === ADMIN.VIEW_MISSION_PLAN_TEMPLATE) {
+      const selectMissionTemplate = localStorage.getItem(
+        "selected-mission-plan-template-review"
+      );
 
-  const location = usePathname();
+      if (selectMissionTemplate) {
+        const parseArray = JSON.parse(selectMissionTemplate);
 
-  const handleGetMissionPlanTemplates = () => {
-    const selectedMissionPlanTemplates = localStorage.getItem(
-      "selected-mission-plan-template"
-    );
-    if (selectedMissionPlanTemplates) {
-      setMissionContent(JSON.parse(selectedMissionPlanTemplates));
+        (missionContent as any[]).forEach((item, index) => {
+          const { mapTitle, isSelected } = item;
+
+          if (isSelected === false) {
+            if (parseArray.hasOwnProperty(mapTitle)) {
+              parseArray[mapTitle] = null;
+            }
+          } else {
+            if (
+              !parseArray.hasOwnProperty(mapTitle) ||
+              parseArray[mapTitle] === null
+            ) {
+              parseArray[mapTitle] = { order: index + 1 };
+            }
+          }
+        });
+
+        localStorage.setItem(
+          "selected-mission-plan-template-review",
+          JSON.stringify(parseArray)
+        );
+      }
     }
   };
+
   useEffect(() => {
     if (location === ADMIN.CREATE_MISSION_PLAN_TEMPLATE) {
       handleGetMissionPlanTemplates();
+    } else if (location === ADMIN.VIEW_MISSION_PLAN_TEMPLATE) {
+      handleGetMissionPlanReviewTemplate();
     }
   }, []);
 
@@ -88,10 +146,12 @@ const MissionPlanTemplateModal = ({ onSelect }: Prop) => {
               key={idx}
               onClick={() => handleActiveMissionPlan(label)}
               className={`${
-                isSelected ? "bg-primary" : "bg-white"
+                isSelected ? "bg-[var(--primary-color)]" : "bg-white"
               }  flex flex-col gap-2 ${
-                isRequired ? "cursor-not-allowed" : "cursor-pointer"
-              } group hover:bg-primary shadow-custom-box-shadow-100 transition-all duration-300 p-5 border-0 rounded-lg`}
+                isRequired
+                  ? "cursor-not-allowed bg-[var(--primary-color)]"
+                  : "cursor-pointer"
+              } group hover:bg-[var(--primary-color)] shadow-custom-box-shadow-100 transition-all duration-300 p-5 border-0 rounded-lg`}
             >
               <p
                 className={`${

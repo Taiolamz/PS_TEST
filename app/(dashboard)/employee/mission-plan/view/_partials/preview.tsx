@@ -12,6 +12,7 @@ import MeasureOfSuccessTable from "../../_components/measure-of-success-table";
 import Link from "next/link";
 import routesPath from "@/utils/routes";
 import MissionItemsLineManager from "@/components/fragment/mission-items-line-manager";
+import SpecifiedTasksDropDown from "../../_components/specified-task-dropdown";
 
 const { EMPLOYEE } = routesPath;
 
@@ -232,7 +233,14 @@ const Preview = ({ data, type }: PreviewProps) => {
               type="specifiedTasks"
             />
           ) : (
-            <SpecifiedTasks data={specified_tasks ?? []} bg="bg-white" />
+            // <SpecifiedTasks data={specified_tasks ?? []} bg="bg-white" />
+
+            <SpecifiedTasksDropDown
+              data={specified_tasks ?? []}
+              approvables={specified_tasks?.approvables ?? []}
+              loading={false}
+              bg="bg-white"
+            />
           )}
         </>
       )}
