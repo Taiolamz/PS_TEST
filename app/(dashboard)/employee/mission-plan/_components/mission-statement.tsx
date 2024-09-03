@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import React from "react";
 import Comment from "./comment";
 import { MissionStatementType } from "@/@types/missionPlan/MissionPlanAprovables";
@@ -6,6 +7,8 @@ import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
+import { EditableLabel } from "@/components/fragment";
+import { getStatus } from "@/utils/helpers";
 
 type Props = {
   showTextArea: boolean;
@@ -23,20 +26,40 @@ const MissionStatement = ({
   setApprovalTypeId,
   loading,
 }: Props) => {
-  const approvableTypeId = data?.id;
+  const approvableTypeId = data?.id as string;
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
   const approval_type = "mission-statement";
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
+
   const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
     initialComments: comments?.comment,
     initialActionType,
     missionplanid,
     approval_type,
+    setIsLoading,
+    setActionType,
+    setIsSuccess,
+    approvableTypeId,
   });
 
+  useEffect(() => {
+    const status = getStatus(
+      approvables,
+      approval_type,
+      approvableTypeId
+    ) as string;
+
+    setStatus(status);
+  }, [data]);
+
+  console.log("miss",status)
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -54,21 +77,40 @@ const MissionStatement = ({
               {data?.mission ?? "No Mission Statement"}
             </p>
           )}
-          {!loading && data?.mission !== null && data?.status === "pending" && (
-            <div className="flex gap-2.5 mr-4">
-              <Button
-                variant="outline"
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  handleReject();
-                }}
-              >
-                Reject
-              </Button>
-              <Button onClick={() => handleApprove()}>Approve</Button>
-            </div>
-          )}
+          {!loading &&
+            data?.mission !== null &&
+            status === "pending" &&
+            !isSuccess && (
+              <div className="flex gap-2.5 mr-4">
+                <Button
+                  variant="outline"
+                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                  onClick={() => {
+                    setShowTextArea(true);
+                    handleReject();
+                  }}
+                  loading={isLoading && actionType === "rejected"}
+                  disabled={isLoading && actionType === "rejected"}
+                >
+                  Reject
+                </Button>
+                <Button
+                  onClick={() => handleApprove()}
+                  loading={isLoading && actionType === "approved"}
+                  disabled={isLoading && actionType === "approved"}
+                >
+                  Approve
+                </Button>
+              </div>
+            )}
+          {!isLoading &&
+            data?.mission !== null &&
+            status === "pending" &&
+            isSuccess && <EditableLabel status={actionType} />}
+          {!isLoading &&
+            data?.mission !== null &&
+            status !== "pending" &&
+            !isSuccess && <EditableLabel status={status ?? ""} />}
         </div>
       </div>
       {/* {showTextArea && ( */}

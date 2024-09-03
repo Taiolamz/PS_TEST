@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MeasureOfSuccessTable from "./measure-of-success-table";
 import {
   measureColumns,
@@ -11,6 +11,8 @@ import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
+import { getStatus } from "@/utils/helpers";
+import { EditableLabel } from "@/components/fragment";
 
 type Props = {
   showTextArea: boolean;
@@ -33,6 +35,16 @@ const MeasureOfSuccess = ({
   const measureColumnData = useMemo(() => measureColumns(), []);
   const commentItem = useGetComments({ approvables, approvableTypeId });
   const approval_type = "success-measure";
+  const matchingIds: any =
+    approvables !== undefined &&
+    approvables
+      .filter((item: approveItems) => item.approvable_type === approval_type)
+      .map((item: approveItems) => item.approvable_id);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
 
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
@@ -56,7 +68,21 @@ const MeasureOfSuccess = ({
     initialActionType,
     missionplanid,
     approval_type,
+    setIsLoading,
+    setActionType,
+    setIsSuccess,
+    approvableTypeId: matchingIds[0],
   });
+
+  useEffect(() => {
+    const status = getStatus(
+      approvables,
+      approval_type,
+      matchingIds[0]
+    ) as string;
+
+    setStatus(status);
+  }, [data]);
 
   return (
     <section>
@@ -81,7 +107,8 @@ const MeasureOfSuccess = ({
           </div>
           {!loading &&
             data?.length !== null &&
-            measureOfSuccessData[0]?.status === "pending" && (
+            status === "pending" &&
+            !isSuccess && (
               <div className="flex gap-2.5 mr-4">
                 <Button
                   variant="outline"
@@ -90,12 +117,29 @@ const MeasureOfSuccess = ({
                     setShowTextArea(true);
                     handleReject();
                   }}
+                  loading={isLoading && actionType === "rejected"}
+                  disabled={isLoading && actionType === "rejected"}
                 >
                   Reject
                 </Button>
-                <Button onClick={() => handleApprove()}>Approve</Button>
+                <Button
+                  onClick={() => handleApprove()}
+                  loading={isLoading && actionType === "approved"}
+                  disabled={isLoading && actionType === "approved"}
+                >
+                  Approve
+                </Button>
               </div>
             )}
+
+          {!isLoading &&
+            data?.length !== null &&
+            status === "pending" &&
+            isSuccess && <EditableLabel status={actionType} />}
+          {!isLoading &&
+            data?.length !== null &&
+            status !== "pending" &&
+            !isSuccess && <EditableLabel status={status ?? ""} />}
         </div>
       </div>
       {/* {showTextArea && ( */}

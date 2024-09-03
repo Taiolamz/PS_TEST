@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
 import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
@@ -9,6 +9,8 @@ import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
+import { findItemById, getStatus } from "@/utils/helpers";
+import { EditableLabel } from "@/components/fragment";
 
 type Props = {
   data: StrategicIntentType[];
@@ -25,6 +27,23 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
 
   const approval_type = "strategic-intent";
 
+  const matchingIds: any =
+    approvables !== undefined &&
+    approvables
+      .filter((item: approveItems) => item.approvable_type === approval_type)
+      .map((item: approveItems) => {
+        return {
+          approvable_id: item.approvable_id,
+          status: item.status,
+        };
+      });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
+  const [selectedId, setSelectedID] = useState<string>("");
+
   const {
     openCommentId,
     toggleComment,
@@ -36,7 +55,24 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
     initialActionType,
     missionplanid,
     approval_type,
+    setIsLoading,
+    setActionType,
+    setIsSuccess,
+    approvableTypeId: selectedId,
   });
+
+  useEffect(() => {
+    const status = getStatus(
+      approvables,
+      approval_type,
+      matchingIds[0]
+    ) as string;
+
+    setStatus(status);
+  }, [data]);
+
+  console.log("matchingIds", matchingIds);
+
   return (
     <div className="flex flex-col gap-10">
       {loading && (
@@ -71,26 +107,48 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                       {item?.behaviours}
                     </p>
                   </div>
-                  {data[0]?.status === "pending" && (
-                    <div className="flex gap-2.5 mr-4">
-                      <Button
-                        variant="outline"
-                        className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                        onClick={() => {
-                          handleReject(item.id);
-                        }}
-                      >
-                        Reject
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          handleApprove();
-                        }}
-                      >
-                        Approve
-                      </Button>
-                    </div>
-                  )}
+                  {!loading &&
+                    data?.length !== null &&
+                    findItemById(matchingIds ?? [], item?.id)?.status === "pending" &&
+                    !isSuccess && (
+                      <div className="flex gap-2.5 mr-4">
+                        <Button
+                          variant="outline"
+                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                          onClick={() => {
+                            handleReject(item.id);
+                          }}
+                          loading={isLoading && actionType === "rejected"}
+                          disabled={isLoading && actionType === "rejected"}
+                        >
+                          Reject
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            handleApprove();
+                          }}
+                          loading={isLoading && actionType === "approved"}
+                          disabled={isLoading && actionType === "approved"}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    )}
+                  {!isLoading &&
+                    data?.length !== null &&
+                    findItemById(matchingIds, item?.id)?.status === "pending" &&
+                    isSuccess && <EditableLabel status={actionType} />}
+                  {!isLoading &&
+                    data?.length !== null &&
+                    findItemById(matchingIds, item?.id)?.status !== "pending" &&
+                    !isSuccess && (
+                      <EditableLabel
+                        status={
+                          findItemById(matchingIds, item?.id)?.status ??
+                          "pending"
+                        }
+                      />
+                    )}
                 </div>
               </div>
             </div>

@@ -46,3 +46,10 @@ type impliedProp = {
 type resourceProp = {
   name: string;
 };
+
+type approveItems = {
+  approvable_type?: string;
+  approvable_id?: string;
+  status: string
+  id?: string;
+};

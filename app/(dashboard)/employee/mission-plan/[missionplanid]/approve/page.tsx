@@ -17,6 +17,8 @@ import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import Tasks from "../../_components/tasks";
 
+type StatusObject = { [key: string]: any };
+
 const ApproveMissionPlan = () => {
   const router = useRouter();
   const location = usePathname();
@@ -35,6 +37,24 @@ const ApproveMissionPlan = () => {
       missionplanid: missionplanid as string,
     });
   const name = data?.data?.staff_member ?? "";
+
+  console.log("ALL DATA___", data?.data);
+
+  const hasRejectedStatus = (obj: any): boolean => {
+    if (typeof obj === "object" && obj !== null) {
+      for (const key in obj) {
+        if (key === "status" && obj[key] === "rejected") {
+          return true;
+        }
+        if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
+          if (hasRejectedStatus(obj[key])) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
 
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
@@ -59,7 +79,9 @@ const ApproveMissionPlan = () => {
               )}
             </div>
             {!isGettingMissionPlanItems && data?.data !== null && (
-              <Button>Approve All</Button>
+              <Button disabled={hasRejectedStatus(data?.data)}>
+                Approve All
+              </Button>
             )}
           </div>
           <div className="flex flex-col gap-10 text-[#162238]">
