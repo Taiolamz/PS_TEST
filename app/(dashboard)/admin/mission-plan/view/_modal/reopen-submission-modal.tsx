@@ -6,9 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
-import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
-import { useAppSelector } from "@/redux/store";
+import {
+  useExtendSubmissionMutation,
+  useGetAllOrganizationMissionPlanDropdownQuery,
+} from "@/redux/services/mission-plan/allmissionplanApi";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import {
   formatDate,
   formatToReadableDate,
@@ -24,28 +28,22 @@ interface ModalContainerProps {
 }
 
 interface FormValues {
-  newEndDate: string;
-  staffSelection: string;
-  multiselectInput: string[] | any[] | string;
-  note?: string;
+  new_end_date: string;
+  staff_selection: string;
+  fiscal_year_id?: string;
+  staff_members: string[] | any[] | string;
+  reason?: string;
 }
 
 const validationSchema = Yup.object().shape({
-  newEndDate: Yup.date().required("New end date is required"),
-  staffSelection: Yup.string()
+  new_end_date: Yup.date().required("New end date is required"),
+  staff_selection: Yup.string()
     .oneOf(
-      [
-        "individual",
-        "all_staff",
-        "department",
-        "unit",
-        "branches",
-        "subsidiary",
-      ],
+      ["individual", "all_staff", "department", "unit", "branch", "subsidiary"],
       "Invalid staff selection"
     )
     .required("Please select a staff option"),
-  multiselectInput: Yup.string().when("staffSelection", {
+  staff_members: Yup.string().when("staff_selection", {
     is: (val: string) => val !== "all_staff",
     then: () =>
       Yup.array()
@@ -53,7 +51,7 @@ const validationSchema = Yup.object().shape({
         .required("Multiselect input is required"),
     otherwise: () => Yup.array().optional(),
   }),
-  note: Yup.string().required("Please add a note"),
+  reason: Yup.string().required("Please add a reason"),
 });
 
 export default function ReopenSubmissionModal({
@@ -81,6 +79,8 @@ export default function ReopenSubmissionModal({
       return [];
     }
   };
+
+  // Dropdown content for multiselect
   const handleDropdown = (val: string) => {
     let option;
     switch (val) {
@@ -103,7 +103,7 @@ export default function ReopenSubmissionModal({
           dropdownData?.organization_info?.subsidiaries
         );
         break;
-      case "branches":
+      case "branch":
         option = handleFormatDropdown(
           dropdownData?.organization_info?.branches
         );
@@ -114,20 +114,41 @@ export default function ReopenSubmissionModal({
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+  const dispatch = useAppDispatch();
+
+  const [extendSubmission, { isLoading, data: updatedData }] =
+    useExtendSubmissionMutation();
   const formik = useFormik<FormValues>({
     initialValues: {
-      newEndDate: "",
-      staffSelection: "",
-      multiselectInput: [],
-      note: "",
+      new_end_date: "",
+      staff_selection: "",
+      staff_members: [],
+      reason: "",
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values: FormValues) => {
       try {
         // logic for form submission
-        // setSuccessModal(true);
-        // handleClose();
-        console.log(values, "vals");
+        values["fiscal_year_id"] = active_fy_info?.id;
+        extendSubmission(values)
+          .unwrap()
+          .then(
+            (res) => {
+              dispatch(
+                updateMissionPlanDetails({
+                  slug: "active_fy_info",
+                  data: res?.data.organization_mission_plan,
+                })
+              );
+              setSuccessModal(true);
+              formik.setErrors({});
+              formik.resetForm();
+              handleClose();
+            },
+            (error) => {
+              console.log(error, "unknown error");
+            }
+          );
       } catch (error) {
         console.error("Form Submission Error:", error);
       }
@@ -189,46 +210,48 @@ export default function ReopenSubmissionModal({
           <div className="grid grid-col-2 md:grid-cols-3 gap-x-4">
             <div>
               <CustomDateInput
-                id="newEndDate"
-                name="newEndDate"
+                id="new_end_date"
+                name="new_end_date"
                 label="New End Date"
                 labelClass="text-[#6E7C87] text-[13px] mb-1"
-                selected={new Date(formik.values.newEndDate)}
+                selected={new Date(formik.values.new_end_date)}
                 handleChange={(date) => {
-                  formik.setFieldValue("newEndDate", formatDate(date));
+                  formik.setFieldValue("new_end_date", formatDate(date));
                 }}
                 placeholder="YYYY/MM/DD"
                 inputClass="bg-[var(--input-bg)]"
                 className="border p-2 bg-[#F6F8F9]"
                 iconClass="top-9"
-                error={formik?.errors?.newEndDate ?? ""}
-                touched={formik?.touched?.newEndDate}
+                error={formik?.errors?.new_end_date ?? ""}
+                touched={formik?.touched?.new_end_date}
+                portal={false}
               />
-              {/* {formik?.errors?.newEndDate ? (
+              {/* {formik?.errors?.new_end_date ? (
                 <div className="text-red-500 text-xs">
-                  {formik?.errors?.newEndDate}
+                  {formik?.errors?.new_end_date}
                 </div>
               ) : null} */}
             </div>
           </div>
 
+          {/* Select Staff */}
           <div>
             <Label
               className="text-[13px] text-[#6E7C87] font-normal pb-2 cursor-pointer"
-              htmlFor="staffSelection"
+              htmlFor="staff_selection"
             >
               Select Staff
             </Label>
             <RadioGroup
               onValueChange={async (e) => {
-                await formik?.setFieldValue("staffSelection", "all_staff");
-                formik?.setFieldValue("multiselectInput", []);
-                formik?.setFieldValue("staffSelection", e);
+                await formik?.setFieldValue("staff_selection", "all_staff");
+                formik?.setFieldValue("staff_members", []);
+                formik?.setFieldValue("staff_selection", e);
               }}
-              defaultValue={formik?.values?.staffSelection}
+              defaultValue={formik?.values?.staff_selection}
               className="flex space-y-1 mt-3 justify-between items-center w-[90%]"
-              id="staffSelection"
-              name="staffSelection"
+              id="staff_selection"
+              name="staff_selection"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="individual" id="individual" />
@@ -270,9 +293,9 @@ export default function ReopenSubmissionModal({
                   </Label>
                 </div>
               )}
-              {user_hierarchy?.includes("branches") && (
+              {user_hierarchy?.includes("branch") && (
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="branches" id="Branches" />
+                  <RadioGroupItem value="branch" id="Branches" />
                   <Label
                     className=" text-[13px] text-[#6E7C87] font-normal cursor-pointer"
                     htmlFor="Branches"
@@ -293,41 +316,40 @@ export default function ReopenSubmissionModal({
                 </div>
               )}
             </RadioGroup>
-            {formik?.touched.staffSelection && formik?.errors.staffSelection ? (
+            {formik?.touched.staff_selection &&
+            formik?.errors.staff_selection ? (
               <div className="text-red-500 text-xs">
-                {formik?.errors.staffSelection}
+                {formik?.errors.staff_selection}
               </div>
             ) : null}
           </div>
 
-          {formik?.values?.staffSelection !== "all_staff" &&
-            formik?.values?.staffSelection !== "" && (
+          {formik?.values?.staff_selection !== "all_staff" &&
+            formik?.values?.staff_selection !== "" && (
               <div className="grid grid-cols-3 gap-x-4">
                 <div
                   className={`${
-                    formik.values.multiselectInput.length > 1
-                      ? "col-span-2"
-                      : ""
+                    formik.values.staff_members.length > 1 ? "col-span-2" : ""
                   }`}
                 >
                   <CustomMultipleSelect
                     onValueChange={(values: any) => {
-                      formik.setFieldValue("multiselectInput", values);
+                      formik.setFieldValue("staff_members", values);
                     }}
                     // randomBadgeColor
-                    label={`Name of ${formik?.values?.staffSelection}`}
-                    id="multiselectInput"
-                    name="multiselectInput"
+                    label={`Name of ${formik?.values?.staff_selection}`}
+                    id="staff_members"
+                    name="staff_members"
                     labelClass="text-[#6E7C87] text-[13px] block pb-[6px] capitalize"
-                    placeholder={`Select ${formik?.values?.staffSelection}`}
-                    options={handleDropdown(formik?.values?.staffSelection)}
+                    placeholder={`Select ${formik?.values?.staff_selection}`}
+                    options={handleDropdown(formik?.values?.staff_selection)}
                     badgeClassName={`rounded-[20px] text-[10px] font-normal`}
                     triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm`}
                     placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
                     maxCount={6}
                     onBlur={formik?.handleBlur}
-                    error={formik?.errors?.multiselectInput}
-                    touched={formik?.touched?.multiselectInput}
+                    error={formik?.errors?.staff_members}
+                    touched={formik?.touched?.staff_members}
                   />
                 </div>
               </div>
@@ -337,21 +359,21 @@ export default function ReopenSubmissionModal({
             <div className="col-span-2">
               <Label
                 className=" text-[13px] text-[#6E7C87] font-normal pb-2 cursor-pointer"
-                htmlFor="note"
+                htmlFor="reason"
               >
                 Add Note
               </Label>
               <Textarea
                 rows={3}
-                id="note"
-                name="note"
+                id="reason"
+                name="reason"
                 placeholder="Text area label"
                 className="mt-1  block col-span-2 px-3 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
-                value={formik?.values?.note}
+                value={formik?.values?.reason}
                 onChange={formik?.handleChange}
                 onBlur={formik?.handleBlur}
-                touched={formik?.touched?.note}
-                error={formik?.errors?.note}
+                touched={formik?.touched?.reason}
+                error={formik?.errors?.reason}
               />
             </div>
           </div>
@@ -359,8 +381,8 @@ export default function ReopenSubmissionModal({
           <Button
             type="submit"
             loadingText="Re-open"
-            disabled={false}
-            loading={false}
+            disabled={isLoading}
+            loading={isLoading}
           >
             Re-open
           </Button>

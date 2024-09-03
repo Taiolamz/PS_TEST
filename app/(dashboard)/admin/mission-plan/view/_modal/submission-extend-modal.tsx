@@ -146,6 +146,7 @@ export default function SubmissionExtendModal({
                 iconClass="top-9"
                 error={formik?.errors?.new_end_date ?? ""}
                 touched={formik?.touched?.new_end_date}
+                portal={false}
               />
             </div>
           </div>
