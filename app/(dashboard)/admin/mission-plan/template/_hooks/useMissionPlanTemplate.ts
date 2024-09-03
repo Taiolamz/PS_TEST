@@ -2,7 +2,7 @@ import * as yup from "yup";
 import useDisclosure from "./useDisclosure";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useFormik } from "formik";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useCreateMissionPlanTemplateMutation } from "@/redux/services/checklist/missionPlanTemplateApi";
 import Routes from "@/lib/routes/routes";
@@ -11,6 +11,7 @@ import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import routesPath from "@/utils/routes";
 import { useContext, useState } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { resetMissionPlan } from "@/redux/features/mission-plan/missionPlanSlice";
 
 type Prop = {
   cancelPath: string;
@@ -101,6 +102,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
 
   const searchParams = useSearchParams()
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const handleFormatDropdown = (items: UnitData[]) => {
     const data = items.map((chi) => {
@@ -163,6 +165,7 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
           return
         }
         if(searchParams.get('qs') === 'template'){
+          dispatch(resetMissionPlan())
           router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`)
           return
         }

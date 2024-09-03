@@ -16,7 +16,7 @@ const { ADMIN } = routesPath
 
 const ChooseTemplate = () => {
   const { data: missionPlanTemplateData, isLoading } =
-    useGetMissionPlanTemplatesQuery({ page: 2 });
+    useGetMissionPlanTemplatesQuery({ page: 1 });
 
   const router = useRouter()
   const dispatch = useAppDispatch()
