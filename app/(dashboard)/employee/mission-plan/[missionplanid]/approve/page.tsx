@@ -38,7 +38,7 @@ const ApproveMissionPlan = () => {
     });
   const name = data?.data?.staff_member ?? "";
 
-  console.log("ALL DATA___", data?.data);
+  // console.log("ALL DATA___", data?.data);
 
   const hasRejectedStatus = (obj: any): boolean => {
     if (typeof obj === "object" && obj !== null) {
@@ -129,6 +129,7 @@ const ApproveMissionPlan = () => {
               setShowTextArea={freedomConstraintComment.toggle}
               data={data?.data?.boundaries ?? []}
               loading={isGettingMissionPlanItems}
+              approvables={data?.data?.approvables ?? []}
             />
           </div>
         </div>

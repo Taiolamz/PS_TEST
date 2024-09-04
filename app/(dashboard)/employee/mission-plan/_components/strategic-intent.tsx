@@ -27,22 +27,24 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
 
   const approval_type = "strategic-intent";
 
-  const matchingIds: any =
-    approvables !== undefined &&
-    approvables
-      .filter((item: approveItems) => item.approvable_type === approval_type)
-      .map((item: approveItems) => {
-        return {
-          approvable_id: item.approvable_id,
-          status: item.status,
-        };
-      });
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [status, setStatus] = useState<string>("");
   const [selectedId, setSelectedID] = useState<string>("");
+  const [matchingIds, setMatchingIds] = useState<any>([]);
+  useEffect(() => {
+    const matchingIds: any =
+      approvables !== undefined &&
+      approvables
+        .filter((item: approveItems) => item.approvable_type === approval_type)
+        .map((item: approveItems) => {
+          return {
+            approvable_id: item.approvable_id,
+            status: item.status,
+          };
+        });
+    setMatchingIds(matchingIds);
+  }, [data]);
 
   const {
     openCommentId,
@@ -60,18 +62,6 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
     setIsSuccess,
     approvableTypeId: selectedId,
   });
-
-  useEffect(() => {
-    const status = getStatus(
-      approvables,
-      approval_type,
-      matchingIds[0]
-    ) as string;
-
-    setStatus(status);
-  }, [data]);
-
-  console.log("matchingIds", matchingIds);
 
   return (
     <div className="flex flex-col gap-10">
@@ -109,26 +99,45 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                   </div>
                   {!loading &&
                     data?.length !== null &&
-                    findItemById(matchingIds ?? [], item?.id)?.status === "pending" &&
+                    findItemById(matchingIds ?? [], item?.id)?.status ===
+                      "pending" &&
                     !isSuccess && (
                       <div className="flex gap-2.5 mr-4">
                         <Button
                           variant="outline"
                           className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                           onClick={() => {
+                            setSelectedID(item?.id);
                             handleReject(item.id);
                           }}
-                          loading={isLoading && actionType === "rejected"}
-                          disabled={isLoading && actionType === "rejected"}
+                          loading={
+                            isLoading &&
+                            actionType === "rejected" &&
+                            selectedId === item?.id
+                          }
+                          disabled={
+                            isLoading &&
+                            actionType === "rejected" &&
+                            selectedId === item?.id
+                          }
                         >
                           Reject
                         </Button>
                         <Button
                           onClick={() => {
+                            setSelectedID(item?.id);
                             handleApprove();
                           }}
-                          loading={isLoading && actionType === "approved"}
-                          disabled={isLoading && actionType === "approved"}
+                          loading={
+                            isLoading &&
+                            actionType === "approved" &&
+                            selectedId === item?.id
+                          }
+                          disabled={
+                            isLoading &&
+                            actionType === "approved" &&
+                            selectedId === item?.id
+                          }
                         >
                           Approve
                         </Button>

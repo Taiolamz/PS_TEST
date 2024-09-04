@@ -83,7 +83,6 @@ const MeasureOfSuccess = ({
 
     setStatus(status);
   }, [data]);
-
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">

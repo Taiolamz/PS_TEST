@@ -1,11 +1,13 @@
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import React from "react";
 import Comment from "./comment";
 import { BoundariesType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
+import { findItemById, getStatus } from "@/utils/helpers";
+import { EditableLabel } from "@/components/fragment";
 
 type Props = {
   showTextArea: boolean;
@@ -29,12 +31,46 @@ const FreedomConstraint = ({
   const initialActionType = "";
   const approval_type = "boundary";
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("");
+  const [selectedId, setSelectedID] = useState<string>("");
+  const [matchingIds, setMatchingIds] = useState<any>([]);
+
   const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
     approval_type,
+    setIsLoading,
+    setActionType,
+    setIsSuccess,
+    approvableTypeId: selectedId,
+    // approvableTypeId: approvableTypeId[0],
   });
+  // useEffect(() => {
+  //   const status = getStatus(
+  //     approvables,
+  //     approval_type,
+  //     approvableTypeId[0]
+  //   ) as string;
+
+  //   setStatus(status);
+  // }, [data]);
+  useEffect(() => {
+    const matchingIds: any =
+      approvables !== undefined &&
+      approvables
+        .filter((item: approveItems) => item.approvable_type === approval_type)
+        .map((item: approveItems) => {
+          return {
+            approvable_id: item.approvable_id,
+            status: item.status,
+          };
+        });
+    setMatchingIds(matchingIds);
+  }, [data]);
 
   return (
     <section>
@@ -96,21 +132,65 @@ const FreedomConstraint = ({
                 </div>
               </div>
             </div>
-            {data[0]?.status === "pending" && (
-              <div className="flex gap-2.5 items-end">
-                <Button
-                  variant="outline"
-                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                  onClick={() => {
-                    setShowTextArea(true);
-                    handleReject();
-                  }}
-                >
-                  Reject
-                </Button>
-                <Button onClick={() => handleApprove()}>Approve</Button>
-              </div>
-            )}
+            {findItemById(matchingIds ?? [], data[0]?.id)?.status ===
+              "pending" &&
+              !isSuccess && (
+                <div className="flex gap-2.5 items-end">
+                  <Button
+                    variant="outline"
+                    className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                    onClick={() => {
+                      setShowTextArea(true);
+                      setSelectedID(data[0]?.id);
+                      handleReject();
+                    }}
+                    loading={
+                      isLoading &&
+                      actionType === "rejected" &&
+                      selectedId === data[0]?.id
+                    }
+                    disabled={
+                      isLoading &&
+                      actionType === "rejected" &&
+                      selectedId === data[0]?.id
+                    }
+                  >
+                    Reject
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSelectedID(data[0]?.id);
+                      handleApprove();
+                    }}
+                    loading={
+                      isLoading &&
+                      actionType === "approved" &&
+                      selectedId === data[0]?.id
+                    }
+                    disabled={
+                      isLoading &&
+                      actionType === "approved" &&
+                      selectedId === data[0]?.id
+                    }
+                  >
+                    Approve
+                  </Button>
+                </div>
+              )}
+            {!isLoading &&
+              data?.length !== null &&
+              findItemById(matchingIds, data[0]?.id)?.status === "pending" &&
+              isSuccess && <EditableLabel status={actionType} />}
+            {!isLoading &&
+              data?.length !== null &&
+              findItemById(matchingIds, data[0]?.id)?.status !== "pending" &&
+              !isSuccess && (
+                <EditableLabel
+                  status={
+                    findItemById(matchingIds, data[0]?.id)?.status ?? "pending"
+                  }
+                />
+              )}
           </div>
         </div>
       )}
