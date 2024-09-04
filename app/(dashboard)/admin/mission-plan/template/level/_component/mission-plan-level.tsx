@@ -12,10 +12,10 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 
 interface Props {
   handleClick: () => void;
-  handleDefaultClick: () => void;
+  handleMainClick: () => void;
 }
 
-const MissionPlanLevel = ({ handleClick, handleDefaultClick }: Props) => {
+const MissionPlanLevel = ({ handleClick, handleMainClick }: Props) => {
   const user = useAppSelector(selectUser);
   const { data: missionPlanTemplateData, isLoading } =
     useGetMissionPlanTemplatesQuery({});
@@ -39,7 +39,7 @@ const MissionPlanLevel = ({ handleClick, handleDefaultClick }: Props) => {
 
   const defaultTemplate = (
     <div
-      onClick={handleDefaultClick}
+      onClick={handleMainClick}
       className=" h-[199px]  border border-custom-gray group hover:border-primary transition-all duration-300 bg-custom-light-gray-100 cursor-pointer flex flex-col justify-center"
     >
       <div className="flex flex-col ml-[2rem]">
