@@ -17,6 +17,7 @@ import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionP
 import { Button } from "@/components/ui/button";
 import EndFYModal from "../_modal/end-fy-modal";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { Item } from "@radix-ui/react-dropdown-menu";
 
 const FiscalYearInfo = () => {
   const [endFY, setExtendSubmission] = useState<boolean>(false);
@@ -24,6 +25,7 @@ const FiscalYearInfo = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+  console.log(active_fy_info, "active");
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -140,7 +142,28 @@ const FiscalYearInfo = () => {
             </p>
           </div>
         </div>
+        <div className="grid grid-cols-10 gap-5 mt-4 max-w-4xl">
+          {/* Review Type */}
+          <div className="col-span-4 space-y-2">
+            <h4 className="text-[var(--text-color4)] font-light text-sm">
+              Review Type
+            </h4>
+            <div className="inline-flex">
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] capitalize min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.review_period}
+              </p>
+              {/* Edit button */}
+              <button
+                disabled={active_fy_info?.status !== "active"}
+                className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize ml-6 place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
       <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
         <h3 className="text-sm font-normal ">2. Mission and Vision</h3>
         <div className="space-y-7 mt-4 max-w-4xl">
@@ -162,8 +185,15 @@ const FiscalYearInfo = () => {
               {active_fy_info?.vision}
             </p>
           </div>
+          <button
+            disabled={active_fy_info?.status !== "active"}
+            className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+          >
+            Edit
+          </button>
         </div>
       </div>
+
       <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
         <h3 className="text-sm font-normal ">3. Strategic Pillars</h3>
         <div className="mt-4 max-w-lg">
@@ -180,8 +210,156 @@ const FiscalYearInfo = () => {
               </div>
             )
           )}
+          <button
+            disabled={active_fy_info?.status !== "active"}
+            className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+          >
+            Edit
+          </button>
         </div>
       </div>
+
+      <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
+        <h3 className="text-sm font-normal ">4. Timelines and Reminders</h3>
+        <div className="mt-4 max-w-lg">
+          <p className="text-sm font-normal my-4">Mission Creation Duration</p>
+          <div className="mb-6 w-full grid grid-cols-2 gap-5">
+            {/* Start Period */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                Start Period
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.start_date}
+              </p>
+            </div>
+            {/* End Period */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                End Period
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.end_date}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 max-w-lg">
+          <p className="text-sm font-normal my-4">Mission Approval Duration</p>
+          <div className="mb-6 w-full grid grid-cols-2 gap-5">
+            {/* Start Period */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                Start Period
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.start_date}
+              </p>
+            </div>
+            {/* End Period */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                End Period
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.end_date}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 max-w-lg">
+          <p className="text-sm font-normal my-4">FY Start Reminder</p>
+          <div className="mb-6 w-full grid gap-5">
+            {/*  Reminder Type */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                Reminder Type
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.start_date}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 max-w-lg">
+          <p className="text-sm font-normal my-4">FY Start Reminder</p>
+          <div className="mb-6 w-full grid gap-5">
+            {/*  Reminder Type */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                Reminder Type
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.start_date}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 max-w-lg">
+          <p className="text-sm font-normal my-4">
+            Mission Plan Setup Reminder
+          </p>
+          <div className="mb-6 w-full grid gap-5">
+            {/*  Reminder Type */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                Reminder Type
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.start_date}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-4 max-w-lg">
+          <p className="text-sm font-normal my-4">
+            Mission Plan Approval Reminder
+          </p>
+          <div className="mb-6 w-full grid gap-5">
+            {/*  Reminder Type */}
+            <div className="space-y-2">
+              <h4 className="text-[var(--text-color4)] font-light text-sm">
+                Reminder Type
+              </h4>
+              <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
+                {active_fy_info?.start_date}
+              </p>
+            </div>
+          </div>
+        </div>
+        <button
+          disabled={active_fy_info?.status !== "active"}
+          className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+        >
+          Edit
+        </button>
+      </div>
+
+      <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
+        <h3 className="text-sm font-normal ">5. Approval Flow</h3>
+        <div className="my-5 max-w-lg flex gap-x-7">
+          {dummyApprovalFlow.map((item) => (
+            <div className="flex " key={item?.title}>
+              <div className="">
+                <p className="text-[var(--text-color4)] font-medium text-sm">
+                  {item.title}
+                </p>
+                <p className="text-[var(--text-color)] font-light text-[10px]">
+                  Level {item.level}
+                </p>
+              </div>
+              <div className=""></div>
+            </div>
+          ))}
+        </div>
+        <button
+          disabled={active_fy_info?.status !== "active"}
+          className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+        >
+          Edit
+        </button>
+      </div>
+
       <FYExtendModal
         show={endFY}
         handleClose={() => setExtendSubmission(false)}
@@ -284,3 +462,10 @@ const FiscalYearInfo = () => {
 };
 
 export default FiscalYearInfo;
+
+const dummyApprovalFlow = [
+  { title: "Entry Level", level: 0, approval_level: "2 level approval" },
+  { title: "Intermediate Level", level: 0, approval_level: "2 level approval" },
+  { title: "C-Level", level: 0, approval_level: "2 level approval" },
+  { title: "CEO", level: 0, approval_level: "2 level approval" },
+];
