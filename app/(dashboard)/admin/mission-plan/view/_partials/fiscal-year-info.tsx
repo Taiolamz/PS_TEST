@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import EndFYModal from "../_modal/end-fy-modal";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import { Item } from "@radix-ui/react-dropdown-menu";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const FiscalYearInfo = () => {
   const [endFY, setExtendSubmission] = useState<boolean>(false);
@@ -219,7 +220,7 @@ const FiscalYearInfo = () => {
         </div>
       </div>
 
-      <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
+      <div className="capitalize border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
         <h3 className="text-sm font-normal ">4. Timelines and Reminders</h3>
         <div className="mt-4 max-w-lg">
           <p className="text-sm font-normal my-4">Mission Creation Duration</p>
@@ -230,7 +231,7 @@ const FiscalYearInfo = () => {
                 Start Period
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.start_date}
+                {active_fy_info?.creation_start_date}
               </p>
             </div>
             {/* End Period */}
@@ -239,7 +240,7 @@ const FiscalYearInfo = () => {
                 End Period
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.end_date}
+                {active_fy_info?.creation_end_date}
               </p>
             </div>
           </div>
@@ -253,7 +254,7 @@ const FiscalYearInfo = () => {
                 Start Period
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.start_date}
+                {active_fy_info?.approval_start_date}
               </p>
             </div>
             {/* End Period */}
@@ -262,7 +263,7 @@ const FiscalYearInfo = () => {
                 End Period
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.end_date}
+                {active_fy_info?.approval_end_date}
               </p>
             </div>
           </div>
@@ -276,7 +277,7 @@ const FiscalYearInfo = () => {
                 Reminder Type
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.start_date}
+                {active_fy_info?.setup_reminder}
               </p>
             </div>
           </div>
@@ -290,7 +291,7 @@ const FiscalYearInfo = () => {
                 Reminder Type
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.start_date}
+                {active_fy_info?.setup_reminder}
               </p>
             </div>
           </div>
@@ -306,7 +307,7 @@ const FiscalYearInfo = () => {
                 Reminder Type
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.start_date}
+                {active_fy_info?.setup_reminder}
               </p>
             </div>
           </div>
@@ -322,7 +323,7 @@ const FiscalYearInfo = () => {
                 Reminder Type
               </h4>
               <p className="border-[1.5px] rounded-[5px] border-[var(--input-border-[1.5px])] min-w-52 place-content-center text-sm font-normal px-4 py-2">
-                {active_fy_info?.start_date}
+                {active_fy_info?.approval_reminder}
               </p>
             </div>
           </div>
@@ -335,20 +336,24 @@ const FiscalYearInfo = () => {
         </button>
       </div>
 
-      <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7">
+      <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7 overflow-x-hidden">
         <h3 className="text-sm font-normal ">5. Approval Flow</h3>
-        <div className="my-5 max-w-lg flex gap-x-7">
+        <div className="my-5 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
           {dummyApprovalFlow.map((item) => (
-            <div className="flex " key={item?.title}>
+            <div className="flex gap-x-2.5" key={item?.title}>
               <div className="">
-                <p className="text-[var(--text-color4)] font-medium text-sm">
+                <p className="text-[var(--text-color4)] font-medium text-sm text-nowrap">
                   {item.title}
                 </p>
-                <p className="text-[var(--text-color)] font-light text-[10px]">
+                <p className="text-[var(--text-color)] font-light text-[10px] text-nowrap">
                   Level {item.level}
                 </p>
               </div>
-              <div className=""></div>
+              <div className="">
+                <div className="block text-[10px] text-[var(--primary-color)] bg-[var(--primary-accent-color)] px-[5px] py-[5.5px] rounded-full text-nowrap">
+                  {item.approval_level}
+                </div>
+              </div>
             </div>
           ))}
         </div>
