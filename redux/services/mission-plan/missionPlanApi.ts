@@ -63,6 +63,13 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    createApprovalFlow: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/organization/approval-flow/create`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
     createSpecifiedTask: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/specified-task`,
@@ -177,4 +184,5 @@ export const {
   useLazyGetMySpecifiedTaskQuery,
   useCreateTimelineAndReminderMutation,
   useDeleteSpecifiedTaskMutation,
+  useCreateApprovalFlowMutation,
 } = missionPlanApi;
