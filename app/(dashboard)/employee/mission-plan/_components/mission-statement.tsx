@@ -15,7 +15,7 @@ type Props = {
   setShowTextArea: (e: boolean) => void;
   data?: MissionStatementType;
   approvables?: [];
-  setApprovalTypeId: (e: string) => void;
+  setApprovalTypeId?: (e: string) => void;
   loading: boolean;
 };
 const MissionStatement = ({
@@ -37,6 +37,7 @@ const MissionStatement = ({
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [status, setStatus] = useState<string>("");
+  const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
 
   const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
     initialComments: comments?.comment,
@@ -47,6 +48,8 @@ const MissionStatement = ({
     setActionType,
     setIsSuccess,
     approvableTypeId,
+    itemsToApprove,
+    setItemsToApprove,
   });
 
   useEffect(() => {
@@ -59,7 +62,7 @@ const MissionStatement = ({
     setStatus(status);
   }, [data]);
 
-  console.log("miss",status)
+  // console.log("itemsToApprove", data?.approvables?.length);
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -87,10 +90,40 @@ const MissionStatement = ({
                   className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                   onClick={() => {
                     setShowTextArea(true);
+                    setItemsToApprove((prevItems) => {
+                      const itemExists = prevItems.some(
+                        (item) => item.id === approvableTypeId
+                      );
+
+                      if (itemExists) {
+                        return prevItems.map((item) =>
+                          item.id === approvableTypeId
+                            ? {
+                                ...item,
+                                status: "rejected",
+                                comments: comments?.comment,
+                              } // Update the existing item
+                            : item
+                        );
+                      }
+
+                      return [
+                        ...prevItems,
+                        {
+                          id: approvableTypeId,
+                          status: "rejected",
+                          comments: comments?.comment,
+                        },
+                      ];
+                    });
+
                     handleReject();
                   }}
                   loading={isLoading && actionType === "rejected"}
-                  disabled={isLoading && actionType === "rejected"}
+                  disabled={
+                    (isLoading && actionType === "rejected") ||
+                    approvables?.length === 0
+                  }
                 >
                   Reject
                 </Button>
@@ -98,6 +131,7 @@ const MissionStatement = ({
                   onClick={() => handleApprove()}
                   loading={isLoading && actionType === "approved"}
                   disabled={isLoading && actionType === "approved"}
+                  className="hidden"
                 >
                   Approve
                 </Button>

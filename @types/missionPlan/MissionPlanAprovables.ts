@@ -2,6 +2,7 @@ export type MissionStatementType = {
   mission: string;
   id: string;
   status: "pending" | "approved" | "rejected";
+  approvables?: [];
 };
 
 export type MeasureOfSuccessType = {
@@ -50,6 +51,7 @@ export type StrategicIntentType = {
   id: string;
   intent: string;
   status?: string;
+  approvables?: any;
 };
 
 type StrategicPillarsType = {

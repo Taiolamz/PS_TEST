@@ -53,3 +53,9 @@ type approveItems = {
   status: string
   id?: string;
 };
+type itemsApprove = {
+  id?: string;
+  comments?: string[];
+  status?: string
+
+};

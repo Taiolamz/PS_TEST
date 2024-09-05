@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import SpecifiedTasks from "../../_components/specified-task";
-import ImpliedTask from "../../_components/implied-task";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import PresentationView from "./_presentation/presentation-view";
 import StrategicIntent from "../../_components/strategic-intent";
@@ -16,6 +14,8 @@ import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
 import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import Tasks from "../../_components/tasks";
+import { useApproveAllItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
+import { toast } from "sonner";
 
 type StatusObject = { [key: string]: any };
 
@@ -38,22 +38,74 @@ const ApproveMissionPlan = () => {
     });
   const name = data?.data?.staff_member ?? "";
 
-  // console.log("ALL DATA___", data?.data);
+  const [approveAllItems, { isLoading, isSuccess, isError }] =
+    useApproveAllItemsMutation();
 
-  const hasRejectedStatus = (obj: any): boolean => {
-    if (typeof obj === "object" && obj !== null) {
-      for (const key in obj) {
-        if (key === "status" && obj[key] === "rejected") {
-          return true;
-        }
-        if (typeof obj[key] === "object" || Array.isArray(obj[key])) {
-          if (hasRejectedStatus(obj[key])) {
-            return true;
+  useEffect(() => {
+    if (isLoading && !isSuccess) {
+      toast.loading("Processing...");
+      setTimeout(() => {
+        toast.dismiss();
+      }, 1000);
+      return;
+    }
+    if (!isLoading && isSuccess) {
+      toast.success("Approval status updated successfully");
+      return;
+    }
+    if (!isLoading && isError) {
+      toast.error("Approval status updated failed");
+      return;
+    }
+  }, [isLoading, isSuccess, isError]);
+
+  const checkStatuses = (obj: any): boolean => {
+    let hasRejected = false;
+    let allApproved = true;
+    let allPending = true;
+
+    const checkStatus = (item: any): void => {
+      if (typeof item === "object" && item !== null) {
+        for (const key in item) {
+          if (key === "status") {
+            if (item[key] === "rejected") {
+              hasRejected = true;
+            }
+            if (item[key] !== "approved") {
+              allApproved = false;
+            }
+            if (item[key] !== "pending") {
+              allPending = false;
+            }
+          } else if (
+            typeof item[key] === "object" ||
+            Array.isArray(item[key])
+          ) {
+            checkStatus(item[key]);
           }
         }
       }
+    };
+
+    checkStatus(obj);
+
+    // If any status is rejected, return false
+    if (hasRejected) {
+      return true;
     }
-    return false;
+
+    // If all statuses are approved, return false
+    if (allApproved) {
+      return true;
+    }
+
+    // If all statuses are pending, return true
+    if (allPending) {
+      return false;
+    }
+
+    // Return true if the statuses are mixed (i.e., not all approved or rejected)
+    return true;
   };
 
   return (
@@ -79,7 +131,19 @@ const ApproveMissionPlan = () => {
               )}
             </div>
             {!isGettingMissionPlanItems && data?.data !== null && (
-              <Button disabled={hasRejectedStatus(data?.data)}>
+              <Button
+                disabled={
+                  checkStatuses(data?.data) ||
+                  isLoading ||
+                  data?.data?.approvables.length === 0
+                }
+                loading={isLoading}
+                onClick={() =>
+                  approveAllItems({
+                    missionPlan: missionplanid,
+                  })
+                }
+              >
                 Approve All
               </Button>
             )}
@@ -113,16 +177,6 @@ const ApproveMissionPlan = () => {
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
-            {/* <SpecifiedTasks
-              data={data?.data?.specified_tasks ?? []}
-              approvables={data?.data?.approvables ?? []}
-              loading={isGettingMissionPlanItems}
-            />
-            <ImpliedTask
-              data={data?.data?.specified_tasks ?? []}
-              approvables={data?.data?.approvables ?? []}
-              loading={isGettingMissionPlanItems}
-            /> */}
 
             <FreedomConstraint
               showTextArea={freedomConstraintComment.isOpen}

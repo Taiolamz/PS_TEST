@@ -34,6 +34,7 @@ const Tasks = ({ data, approvables, loading }: Props) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [selectedId, setSelectedID] = useState<string>("");
   const [matchingIds, setMatchingIds] = useState<any>([]);
+  const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
 
   const {
     openCommentId,
@@ -50,6 +51,8 @@ const Tasks = ({ data, approvables, loading }: Props) => {
     setActionType,
     setIsSuccess,
     approvableTypeId: selectedId,
+    itemsToApprove,
+    setItemsToApprove,
   });
 
   const [expandedTaskIndex, setExpandedTaskIndex] = useState<number | null>(
@@ -136,6 +139,32 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                             className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                             onClick={() => {
                               setSelectedID(item?.id);
+                              setItemsToApprove((prevItems) => {
+                                const itemExists = prevItems.some(
+                                  (items) => items.id === item.id
+                                );
+
+                                if (itemExists) {
+                                  return prevItems.map((items) =>
+                                    items.id === item.id
+                                      ? {
+                                          ...items,
+                                          status: "rejected",
+                                          comments: comments?.comment,
+                                        } // Update the existing item
+                                      : items
+                                  );
+                                }
+
+                                return [
+                                  ...prevItems,
+                                  {
+                                    id: item.id,
+                                    status: "rejected",
+                                    comments: comments?.comment,
+                                  },
+                                ];
+                              });
                               handleReject(item.id);
                             }}
                             loading={
@@ -144,9 +173,10 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                               selectedId === item?.id
                             }
                             disabled={
-                              isLoading &&
-                              actionType === "rejected" &&
-                              selectedId === item?.id
+                              (isLoading &&
+                                actionType === "rejected" &&
+                                selectedId === item?.id) ||
+                              approvables?.length === 0
                             }
                           >
                             Reject
@@ -166,6 +196,7 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                               actionType === "approved" &&
                               selectedId === item?.id
                             }
+                            className="hidden"
                           >
                             Approve
                           </Button>

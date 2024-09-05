@@ -10,7 +10,17 @@ export const approveItemsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Approvables"],
     }),
+    approveAllItems: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/approve/${payload.missionPlan}/all`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Approvables"],
+    }),
   }),
 });
 
-export const { useApproveMissionPlanItemsMutation } = approveItemsApi;
+export const {
+  useApproveMissionPlanItemsMutation,
+  useApproveAllItemsMutation,
+} = approveItemsApi;

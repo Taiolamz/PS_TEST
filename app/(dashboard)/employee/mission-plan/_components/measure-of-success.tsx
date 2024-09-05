@@ -45,6 +45,7 @@ const MeasureOfSuccess = ({
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [status, setStatus] = useState<string>("");
+  const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
 
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
@@ -71,7 +72,9 @@ const MeasureOfSuccess = ({
     setIsLoading,
     setActionType,
     setIsSuccess,
-    approvableTypeId: matchingIds[0],
+    approvableTypeId: matchingIds,
+    itemsToApprove,
+    setItemsToApprove,
   });
 
   useEffect(() => {
@@ -83,6 +86,7 @@ const MeasureOfSuccess = ({
 
     setStatus(status);
   }, [data]);
+
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -108,16 +112,52 @@ const MeasureOfSuccess = ({
             data?.length !== null &&
             status === "pending" &&
             !isSuccess && (
-              <div className="flex gap-2.5 mr-4">
+              <div className="flex gap-2.5 mx-4 ml-12">
                 <Button
                   variant="outline"
                   className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                   onClick={() => {
                     setShowTextArea(true);
+                    matchingIds.forEach((id: string) => {
+                      setItemsToApprove((prevItems) => {
+                        // Check if an item with the same ID already exists
+                        const itemExists = prevItems.some(
+                          (item) => item.id === id
+                        );
+
+                        // If the item exists, update it; otherwise, add a new one
+                        if (itemExists) {
+                          // Update the existing item if needed
+                          return prevItems.map((item) =>
+                            item.id === id
+                              ? {
+                                  ...item,
+                                  status: "rejected",
+                                  comments: [],
+                                }
+                              : item
+                          );
+                        }
+
+                        // If the item doesn't exist, add the new item
+                        return [
+                          ...prevItems,
+                          {
+                            id: id,
+                            status: "rejected",
+                            comments: [],
+                          },
+                        ];
+                      });
+                    });
+
                     handleReject();
                   }}
                   loading={isLoading && actionType === "rejected"}
-                  disabled={isLoading && actionType === "rejected"}
+                  disabled={
+                    (isLoading && actionType === "rejected") ||
+                    approvables?.length === 0
+                  }
                 >
                   Reject
                 </Button>
@@ -125,6 +165,7 @@ const MeasureOfSuccess = ({
                   onClick={() => handleApprove()}
                   loading={isLoading && actionType === "approved"}
                   disabled={isLoading && actionType === "approved"}
+                  className="hidden"
                 >
                   Approve
                 </Button>

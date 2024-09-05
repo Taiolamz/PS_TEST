@@ -37,6 +37,7 @@ const FreedomConstraint = ({
   const [status, setStatus] = useState<string>("");
   const [selectedId, setSelectedID] = useState<string>("");
   const [matchingIds, setMatchingIds] = useState<any>([]);
+  const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
 
   const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
     initialComments: comments?.comment ?? [],
@@ -47,6 +48,8 @@ const FreedomConstraint = ({
     setActionType,
     setIsSuccess,
     approvableTypeId: selectedId,
+    itemsToApprove,
+    setItemsToApprove,
     // approvableTypeId: approvableTypeId[0],
   });
   // useEffect(() => {
@@ -142,6 +145,38 @@ const FreedomConstraint = ({
                     onClick={() => {
                       setShowTextArea(true);
                       setSelectedID(data[0]?.id);
+                      matchingIds.forEach((id: string) => {
+                        setItemsToApprove((prevItems) => {
+                          // Check if an item with the same ID already exists
+                          const itemExists = prevItems.some(
+                            (item) => item.id === id
+                          );
+
+                          // If the item exists, update it; otherwise, add a new one
+                          if (itemExists) {
+                            // Update the existing item if needed
+                            return prevItems.map((item) =>
+                              item.id === id
+                                ? {
+                                    ...item,
+                                    status: "rejected",
+                                    comments: [],
+                                  }
+                                : item
+                            );
+                          }
+
+                          // If the item doesn't exist, add the new item
+                          return [
+                            ...prevItems,
+                            {
+                              id: id,
+                              status: "rejected",
+                              comments: [],
+                            },
+                          ];
+                        });
+                      });
                       handleReject();
                     }}
                     loading={
@@ -150,9 +185,10 @@ const FreedomConstraint = ({
                       selectedId === data[0]?.id
                     }
                     disabled={
-                      isLoading &&
-                      actionType === "rejected" &&
-                      selectedId === data[0]?.id
+                      (isLoading &&
+                        actionType === "rejected" &&
+                        selectedId === data[0]?.id) ||
+                      approvables?.length === 0
                     }
                   >
                     Reject
@@ -172,6 +208,7 @@ const FreedomConstraint = ({
                       actionType === "approved" &&
                       selectedId === data[0]?.id
                     }
+                    className="hidden"
                   >
                     Approve
                   </Button>
