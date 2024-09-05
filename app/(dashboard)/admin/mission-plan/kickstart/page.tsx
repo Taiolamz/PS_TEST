@@ -3,7 +3,7 @@
 import { PageSidebar } from "@/components/atoms";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CREATE_FY_LINKS } from "./_data";
-import { ApprovalFlow, FinancialYear, MissionVision, StrategicPillar, TimelineAndReminder } from "./_steps";
+import { ApprovalFlow, FinancialYear, FinancialYearPreview, MissionVision, StrategicPillar, TimelineAndReminder } from "./_steps";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import routesPath from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
@@ -31,7 +31,7 @@ export default function Create() {
           title="Create Mission Plan"
           menu_items={CREATE_FY_LINKS}
           slug="ui"
-          // disableClick={hasItems === false}
+          disableClick={hasItems === false}
         />
 
         <aside className="p-5 w-full">
@@ -40,6 +40,7 @@ export default function Create() {
           {ui === "strategic-pillar" && <StrategicPillar />}
           {ui === "timeline-reminder" && <TimelineAndReminder />}
           {ui === "approval-flow" && <ApprovalFlow />}
+          {ui === "preview" && <FinancialYearPreview />}
         </aside>
       </section>
     </DashboardLayout>

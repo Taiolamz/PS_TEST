@@ -2,6 +2,7 @@ import { Dictionary } from "@/@types/dictionary";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import CustomDateInput from "@/components/custom-date-input";
 import { PageLoader } from "@/components/custom-loader";
+import CustomSelect from "@/components/custom-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { resetFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
@@ -54,6 +55,8 @@ const FinancialYearPreview = () => {
       });
     }
   }, [financial_year_info]);
+
+  console.log(financialYearData)
 
   return (
     <div className="w-[60vw] h-full overflow-y-scroll pr-4 customScrollbar">
@@ -114,6 +117,126 @@ const FinancialYearPreview = () => {
                     error=""
                     disabled
                   />
+                </div>
+                <div className="mt-6 w-1/3">
+                  <CustomSelect
+                    label="Review Period"
+                    id=""
+                    options={[
+                      { label: "Monthly", value: "monthly" },
+                      { label: "Quarterly", value: "buarterly" },
+                      { label: "Bi-Annual (twice/year)", value: "bi-annual" },
+                    ]}
+                    selected={financialYearData?.review_period}
+                    setSelected={(selected) => null}
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="bg-[var(--primary-accent-color)] p-1 px-2 flex items-center justify-between gap-5">
+                <span className="text-sm text-[#6E7C87] font-light">
+                  4. Timeline and Reminders
+                </span>
+                <span
+                  className="text-[var(--primary-color)] w-8 h-8 grid place-content-center rounded-full bg-[#0080801A] cursor-pointer"
+                  onClick={() =>
+                    router.push(
+                      `${ADMIN.KICK_START_MISSION_PLAN}?ui=timeline-reminder`
+                    )
+                  }
+                >
+                  <Pencil size={15} color="var(--primary-color)" />
+                </span>
+              </div>
+              <div className="mt-4 border rounded-[5px] p-5 bg-white">
+                <div className=''>
+                <h1>Mission Creation Duration</h1>
+                  <div className="mt-4 w-full flex gap-4 items-center relative">
+                    <CustomDateInput
+                      label='Start Period'
+                      id='creation_start_date'
+                      selected={new Date(financialYearData?.creation_start_date)}
+                      handleChange={(selected) => null}
+                      placeholder='YYYY-MM-DD'
+                      iconClass='top-7'
+                      disabled
+                    />
+                    <CustomDateInput
+                      label='End Period'
+                      id='creation_end_date'
+                      selected={new Date(financialYearData?.creation_end_date)}
+                      handleChange={(selected) => null}
+                      placeholder='YYYY-MM-DD'
+                      iconClass='top-7'
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="mt-8">
+                  <h1>Mission Approval Duration</h1>
+                  <div className="mt-2 w-ful flex gap-4 items-center">
+                    <CustomDateInput
+                      label='Start Period'
+                      id='approval_start_date'
+                      selected={new Date(financialYearData?.approval_start_date)}
+                      handleChange={(selected) => null}
+                      placeholder='YYYY-MM-DD'
+                      iconClass='top-7'
+                      disabled
+                    />
+                    <CustomDateInput
+                      label='End Period'
+                      id='approval_end_date'
+                      selected={new Date(financialYearData?.approval_end_date)}
+                      handleChange={(selected) => null}
+                      placeholder='YYYY-MM-DD'
+                      iconClass='top-7'
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="mt-8 lg:w-[50%]">
+                  <h1>Employee Reminder Interval</h1>
+                  <div className="mt-2 grid grid-cols-1 gap-4 items-center">
+                    <CustomSelect
+                      label="FY Start Reminder"
+                      id="before_start_reminder"
+                      options={[
+                        { label: "Every week before start", value: "weekly" },
+                        { label: "Every 2 weeks before start", value: "two-weeks" },
+                        { label: "Only at start", value: "start" },
+                      ]}
+                      selected={financialYearData?.before_start_reminder}
+                      setSelected={(selected) => null}
+                      disabled
+                    />
+                    <CustomSelect
+                      label="Mission Setup Reminder"
+                      id="setup_reminder"
+                      options={[
+                        { label: "Every week", value: "weekly" },
+                        { label: "Every 2 weeks", value: "two-weeks" },
+                        { label: "Only at start", value: "start" },
+                      ]}
+                      selected={financialYearData?.setup_reminder}
+                      setSelected={(selected) => null}
+                      disabled
+                    />
+                    <CustomSelect
+                      label="Due Date Reminder"
+                      id="approval_reminder"
+                      options={[
+                        { label: "Every week", value: "weekly" },
+                        { label: "Every 2 weeks", value: "two-weeks" },
+                        { label: "Only at start", value: "start" },
+                      ]}
+                      selected={financialYearData?.approval_reminder}
+                      setSelected={(selected) => null}
+                      disabled
+                    />
+                  </div>
                 </div>
               </div>
             </div>

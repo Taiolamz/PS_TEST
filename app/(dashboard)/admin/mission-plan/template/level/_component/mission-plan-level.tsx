@@ -17,8 +17,8 @@ interface Props {
 
 const MissionPlanLevel = ({ handleClick, handleDefaultClick }: Props) => {
   const user = useAppSelector(selectUser);
-  const { data: missionPlanTemplateData, isLoading } =
-    useGetMissionPlanTemplatesQuery({});
+  const { data: missionPlanTemplateData, isLoading }: any =
+    useGetMissionPlanTemplatesQuery({paginate: false});
 
   const createTemplate = (
     <div
@@ -63,7 +63,7 @@ const MissionPlanLevel = ({ handleClick, handleDefaultClick }: Props) => {
           <div className=" mt-5 w-full grid grid-cols-6  gap-7 ">
             {createTemplate}
             {defaultTemplate}
-            {missionPlanTemplateData?.map((chi, idx) => {
+            {missionPlanTemplateData?.data?.templates?.map((chi, idx) => {
               const { name } = chi;
               return (
                 <div

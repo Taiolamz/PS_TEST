@@ -129,7 +129,7 @@ const StrategicPillar = () => {
                     </Formik>
                 </div>
             }
-            {step === 'preview' && <FinancialYearPreview />}
+            {/* {step === 'preview' && <FinancialYearPreview />} */}
         </>
     );
 }

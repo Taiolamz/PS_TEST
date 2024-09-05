@@ -32,9 +32,9 @@ export const missionPlanTemplateApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["MissionPlanTemplates"],
-      transformResponse: (response: {
-        data: { templates: { data: MissionPlanTemplateData[] } };
-      }) => response.data.templates.data,
+      // transformResponse: (response: {
+      //   data: { templates: { data: MissionPlanTemplateData[] } };
+      // }) => response.data.templates.data,
     }),
   }),
 });

@@ -36,6 +36,7 @@ const initialState: Dictionary = {
       approval_reminder: "",
       before_start_reminder: "",
     },
+    order_of_approvals: []
   },
   mission_plan: {
     active_fy_info: null,

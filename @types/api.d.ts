@@ -234,6 +234,7 @@ type QueryParams = {
   page?: number;
   currentPage?: number;
   page?: number;
+  paginate?: boolean;
   next_page_url?: string;
   prev_page_url?: string;
   per_page?: number;

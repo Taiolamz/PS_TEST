@@ -29,5 +29,11 @@ export const CREATE_FY_LINKS = [
         path: '?ui=approval-flow',
         accessor: 'approval-flow'
     },
+    {
+        id: 6,
+        title: 'Preview',
+        path: '?ui=preview',
+        accessor: 'preview'
+    },
 ]
 
