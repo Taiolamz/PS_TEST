@@ -496,7 +496,7 @@ const SpecifiedTask = () => {
                                   value={formik.values.tasks[index].weight}
                                 />
                               </div>
-                              {user?.role === "ceo" && (
+                              {user?.is_head_of_organization && (
                                 <button
                                   type="button"
                                   onClick={() =>
