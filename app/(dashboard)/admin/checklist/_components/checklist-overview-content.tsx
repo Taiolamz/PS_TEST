@@ -3,6 +3,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
 import { DefaultCheckIcon, DefaultRightArrowIcon } from "@/public/assets/icons";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import { useAppSelector } from "@/redux/store";
 import { formatChecklistPercent, processInputAsArray } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
@@ -17,6 +18,9 @@ const ChecklistOverviewContent = () => {
   const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const router = useRouter();
+  const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
   const [isCardOneChecked, setIsCardOneChecked] = useState<boolean>(false);
   const { ADMIN } = routesPath;
 
@@ -94,7 +98,7 @@ const ChecklistOverviewContent = () => {
       // isChecked: checklist?.employee_count < 1 ? false : true,
       path: ADMIN.ADD_EMPLOYEE,
       hide: false,
-      isAllChecked: checklist?.employee_count < 1 ? false : true,
+      isAllChecked: checklist?.employee_exist,
     },
     {
       title: "Set up mission plan",
@@ -173,12 +177,30 @@ const ChecklistOverviewContent = () => {
     // console.log(totalValue);
   };
 
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
+  };
+
+  useEffect(() => {
+    // if (checkUserRole(user?.role as string) === "ADMIN") {
+    //   handleGetChecklist();
+    // }
+    handleGetAuthUser();
+    //  console.log(user);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div
       onClick={() => {
         // getPercentageFunc();
-        // console.log(checklist);
-        // console.log(user?.organization?.hierarchy);
+        console.log(checklist);
+        // console.log(checklistDetails);
+
+        console.log(user?.organization);
         // console.log(getPercentageFunc());
       }}
       className="flex flex-col gap-3 w-[768px]"

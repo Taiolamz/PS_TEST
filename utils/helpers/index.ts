@@ -186,16 +186,45 @@ export const getAvailableTabs = (arg: ARG_TYPES) => {
   return PAGE_TABS.EMPLOYEE;
 };
 
+function normalizeStrings(arr: string[]): string[] {
+  return arr.map((str: string): string => {
+    // Convert to lowercase
+    const lowerStr = str.toLowerCase();
+
+    // Change the entire string based on specific substrings
+    if (lowerStr.includes("subsidia")) {
+      return "subsidiary";
+    }
+    if (lowerStr.includes("depart")) {
+      return "department";
+    }
+    if (lowerStr.includes("branch")) {
+      return "branch";
+    }
+    if (lowerStr.includes("unit")) {
+      return "unit";
+    }
+
+    // If no matching substring is found, return the lowercase string
+    return lowerStr;
+  });
+}
+
+
 export function processInputAsArray(value: any) {
   if (value) {
     if (typeof value === "string") {
+      // console.log(value);
+
       // Split the string by commas and trim any extra spaces around the items
-      return value?.split(",").map((item) => item.trim());
+      // console.log(value?.split(",")?.map((item) => item.trim()));
+
+      return normalizeStrings(value?.split(",")?.map((item) => item.trim()));
     } else if (Array?.isArray(value)) {
       // Return the array as is if it's already an array
       // console.log('here');
 
-      return value;
+      return normalizeStrings(value);
     } else {
       // Handle other types if necessary
       throw new Error("Input must be a string or an array of strings");

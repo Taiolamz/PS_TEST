@@ -325,9 +325,9 @@ const AllEmployeeMissionPlan = () => {
               "Status",
               "Action",
             ]}
-            perPage="10"
-            totalPage="100"
-            currentPage="1"
+            perPage={employeeData?.mission_plans?.meta?.per_page}
+            totalPage={employeeData?.mission_plans?.meta?.total}
+            currentPage={employeeData?.mission_plans?.meta?.current_page}
             onPageChange={(p) => {
               console.log(p);
             }}
@@ -346,7 +346,12 @@ const AllEmployeeMissionPlan = () => {
               { label: "Name", value: "name" },
               { label: "Date Modified", value: "date_modified" },
             ]}
-            onSort={(param) => {
+            onRowClick={() => {
+              console.log(employeeData?.mission_plans?.meta);
+              
+            }}
+            onSort={
+              (param) => {
               if (param?.value?.toLowerCase() === "all") {
                 setSort("");
               }

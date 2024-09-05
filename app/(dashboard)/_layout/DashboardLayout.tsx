@@ -218,7 +218,7 @@ const DashboardLayout = ({
       ],
       // isAllChecked: isCardOneChecked,
       // path: ADMIN.SUBSIDIARY,
-      // link: ADMIN?.CREATE_S,
+      // link: ADMIN?.CREATE_S,  
     },
     {
       title: "Set up employee and roles",
@@ -227,7 +227,7 @@ const DashboardLayout = ({
       // isChecked: checklist?.employee_count < 1 ? false : true,
       path: ADMIN.ADD_EMPLOYEE,
       hide: false,
-      isAllChecked: checklist?.employee_count < 2 ? false : true,
+      isAllChecked: checklist?.employee_exist,
     },
     {
       title: "Set up mission plan",
