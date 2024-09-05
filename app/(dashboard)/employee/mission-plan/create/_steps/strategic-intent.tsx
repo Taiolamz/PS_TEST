@@ -8,7 +8,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import React, { useEffect, useMemo, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
-import * as Yup from "yup"; 
+import * as Yup from "yup";
 import {
   useAddStrategicIntentMutation,
   useLazyGetMyMissionPlanQuery,
@@ -249,7 +249,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                             }
                                             name={`intents.${index}.behaviours.${behaviourIndex}.value`}
                                             placeholder="Input Behaviour"
-                                            className="mr-2 w-full md:w-[12rem] lg:w-[20rem] "
+                                            className="mr-2 w-full md:w-[12rem] lg:w-[20rem] pr-5"
                                             value={
                                               formik.values.intents[index]
                                                 .behaviours[behaviourIndex]
@@ -263,7 +263,7 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
                                               behaviourIndex !== 0 &&
                                               removeBehaviour(behaviourIndex)
                                             }
-                                            className={`text-red-600 absolute left-[180px] md:left-[170px] lg:left-[290px] top-[39px] ${
+                                            className={` text-red-600 absolute left-[187px] md:left-[173px] lg:left-[300px] top-[40px] ${
                                               behaviourIndex === 0 &&
                                               "cursor-default"
                                             }`}
