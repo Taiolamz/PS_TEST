@@ -270,6 +270,13 @@ export const measureColumns = (): ColumnDef<MeasureData>[] => [
       <div className=" capitalize">{row.getValue("target")}</div>
     ),
   },
+  {
+    accessorKey: "actions",
+    header: () => <div className="!border-transparent"></div>,
+    cell: ({ row }) => (
+      <div className=" capitalize">{row.getValue("actions")}</div>
+    ),
+  },
 ];
 
 export const measureOfSuccessPresentationViewColumns =

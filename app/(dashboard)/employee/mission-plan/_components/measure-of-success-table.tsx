@@ -60,15 +60,20 @@ const MeasureOfSuccessTable: React.FC<Props> = ({
               style={
                 isPresentationView ? { backgroundColor: colorWithAlpha } : {}
               }
+              className="!border-b-0"
             >
-              {headerGroup.headers.map((header) => (
+              {headerGroup.headers.map((header, index) => (
                 <TableHead
                   key={header.id}
                   className={`${
                     isPresentationView
                       ? "text-[var(--primary-color)]"
                       : "text-custom-dark-blue"
-                  } font-600 text-xs bg-transparent`}
+                  } font-600 text-xs bg-transparent border border-r-0 border-l-0 border-t-0 ${
+                    index === headerGroup.headers.length - 1
+                      ? "!border-b-0"
+                      : "!border-b-1"
+                  }`}
                 >
                   {header.isPlaceholder
                     ? null

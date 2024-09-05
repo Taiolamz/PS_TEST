@@ -23,7 +23,7 @@ const MissionStatement = ({
   showTextArea,
   data,
   approvables,
-  setApprovalTypeId,
+  // setApprovalTypeId,
   loading,
 }: Props) => {
   const approvableTypeId = data?.id as string;
@@ -61,8 +61,6 @@ const MissionStatement = ({
 
     setStatus(status);
   }, [data]);
-
-  // console.log("itemsToApprove", data?.approvables?.length);
   return (
     <section>
       <div className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] mb-5">
@@ -87,6 +85,7 @@ const MissionStatement = ({
               <div className="flex gap-2.5 mr-4">
                 <Button
                   variant="outline"
+                  size={"sm"}
                   className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                   onClick={() => {
                     setShowTextArea(true);

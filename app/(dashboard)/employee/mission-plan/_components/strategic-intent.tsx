@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Comment from "./comment";
 import { Button } from "@/components/ui/button";
-import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
-import { Formik, useFormik } from "formik";
+// import { useApproveMissionPlanItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
+// import { Formik, useFormik } from "formik";
 import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
-import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
+// import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
-import { findItemById, getStatus } from "@/utils/helpers";
+import { findItemById } from "@/utils/helpers";
 import { EditableLabel } from "@/components/fragment";
 
 type Props = {
@@ -108,6 +108,7 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                       <div className="flex gap-2.5 mr-4">
                         <Button
                           variant="outline"
+                          size={"sm"}
                           className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                           onClick={() => {
                             setSelectedID(item?.id);

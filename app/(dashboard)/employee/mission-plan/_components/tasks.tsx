@@ -18,16 +18,24 @@ type Props = {
   data: SpecifiedTasksType[];
   approvables?: [];
   loading: boolean;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const Tasks = ({ data, approvables, loading }: Props) => {
+const Tasks = ({
+  data,
+  approvables,
+  loading,
+  setShowTextArea,
+  showTextArea,
+}: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
 
-  const approval_type = "specified-task";
+  const approval_type = "implied-task";
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
@@ -130,95 +138,6 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                         </p>
                       </p>
                     </div>
-                    {findItemById(matchingIds ?? [], item?.id)?.status ===
-                      "pending" &&
-                      !isSuccess && (
-                        <div className="flex gap-2.5 items-end">
-                          <Button
-                            variant="outline"
-                            className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                            onClick={() => {
-                              setSelectedID(item?.id);
-                              setItemsToApprove((prevItems) => {
-                                const itemExists = prevItems.some(
-                                  (items) => items.id === item.id
-                                );
-
-                                if (itemExists) {
-                                  return prevItems.map((items) =>
-                                    items.id === item.id
-                                      ? {
-                                          ...items,
-                                          status: "rejected",
-                                          comments: comments?.comment,
-                                        } // Update the existing item
-                                      : items
-                                  );
-                                }
-
-                                return [
-                                  ...prevItems,
-                                  {
-                                    id: item.id,
-                                    status: "rejected",
-                                    comments: comments?.comment,
-                                  },
-                                ];
-                              });
-                              handleReject(item.id);
-                            }}
-                            loading={
-                              isLoading &&
-                              actionType === "rejected" &&
-                              selectedId === item?.id
-                            }
-                            disabled={
-                              (isLoading &&
-                                actionType === "rejected" &&
-                                selectedId === item?.id) ||
-                              approvables?.length === 0
-                            }
-                          >
-                            Reject
-                          </Button>
-                          <Button
-                            onClick={() => {
-                              setSelectedID(item?.id);
-                              handleApprove();
-                            }}
-                            loading={
-                              isLoading &&
-                              actionType === "approved" &&
-                              selectedId === item?.id
-                            }
-                            disabled={
-                              isLoading &&
-                              actionType === "approved" &&
-                              selectedId === item?.id
-                            }
-                            className="hidden"
-                          >
-                            Approve
-                          </Button>
-                        </div>
-                      )}
-                    {!isLoading &&
-                      data?.length !== null &&
-                      findItemById(matchingIds, item?.id)?.status ===
-                        "pending" &&
-                      isSuccess && <EditableLabel status={actionType} />}
-                    {!isLoading &&
-                      data?.length !== null &&
-                      findItemById(matchingIds, item?.id)?.status !==
-                        "pending" &&
-                      !isSuccess && (
-                        <EditableLabel
-                          status={
-                            findItemById(matchingIds, item?.id)?.status ??
-                            "pending"
-                          }
-                        />
-                      )}
                   </div>
 
                   {expandedTaskIndex === index ? (
@@ -358,6 +277,100 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                               </p>
                             </div>
                           </div>
+                          <div>
+                            {findItemById(matchingIds ?? [], impliedTask?.id)
+                              ?.status === "pending" &&
+                              !isSuccess && (
+                                <div className="flex gap-2.5 items-end">
+                                  <Button
+                                    variant="outline"
+                                    className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                                    onClick={() => {
+                                      setShowTextArea(true);
+                                      setSelectedID(impliedTask?.id);
+                                      setItemsToApprove((prevItems) => {
+                                        const itemExists = prevItems.some(
+                                          (items) => items.id === impliedTask.id
+                                        );
+
+                                        if (itemExists) {
+                                          return prevItems.map((items) =>
+                                            items.id === impliedTask.id
+                                              ? {
+                                                  ...items,
+                                                  status: "rejected",
+                                                  comments: comments?.comment,
+                                                } // Update the existing item
+                                              : items
+                                          );
+                                        }
+
+                                        return [
+                                          ...prevItems,
+                                          {
+                                            id: impliedTask.id,
+                                            status: "rejected",
+                                            comments: comments?.comment,
+                                          },
+                                        ];
+                                      });
+                                      handleReject();
+                                    }}
+                                    loading={
+                                      isLoading &&
+                                      actionType === "rejected" &&
+                                      selectedId === impliedTask?.id
+                                    }
+                                    disabled={
+                                      (isLoading &&
+                                        actionType === "rejected" &&
+                                        selectedId === impliedTask?.id) ||
+                                      approvables?.length === 0
+                                    }
+                                  >
+                                    Reject
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      setSelectedID(item?.id);
+                                      handleApprove();
+                                    }}
+                                    loading={
+                                      isLoading &&
+                                      actionType === "approved" &&
+                                      selectedId === item?.id
+                                    }
+                                    disabled={
+                                      isLoading &&
+                                      actionType === "approved" &&
+                                      selectedId === item?.id
+                                    }
+                                    className="hidden"
+                                  >
+                                    Approve
+                                  </Button>
+                                </div>
+                              )}
+                            {!isLoading &&
+                              data?.length !== null &&
+                              findItemById(matchingIds, impliedTask?.id)
+                                ?.status === "pending" &&
+                              isSuccess && (
+                                <EditableLabel status={actionType} />
+                              )}
+                            {!isLoading &&
+                              data?.length !== null &&
+                              findItemById(matchingIds, impliedTask?.id)
+                                ?.status !== "pending" &&
+                              !isSuccess && (
+                                <EditableLabel
+                                  status={
+                                    findItemById(matchingIds, impliedTask?.id)
+                                      ?.status ?? "pending"
+                                  }
+                                />
+                              )}
+                          </div>
                         </div>
                       ))
                     ) : (
@@ -369,6 +382,15 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                 </div>
               )}
             </div>
+            {/* {showTextArea && ( */}
+            <Comment
+              label="freedom & constraints"
+              showTextArea={showTextArea}
+              setShowTextArea={setShowTextArea}
+              comments={comments}
+              formik={FormikApprovalForm}
+            />
+            {/* )} */}
             {/* Deprecated on tasks */}
             {openCommentId === item.id && (
               <Comment

@@ -74,13 +74,12 @@ export const useApproval = ({
     FormikApprovalForm.setFieldValue("actionType", "approved");
     setActionType && setActionType("approved");
     FormikApprovalForm.handleSubmit();
-  
   };
 
   const handleSubmit = async (allComments: string[]) => {
     toast.loading("Processing...");
     setIsLoading && setIsLoading(true);
-   
+
     const updatedItemsToApprove =
       itemsToApprove !== undefined
         ? itemsToApprove.map((item) => ({
@@ -88,32 +87,29 @@ export const useApproval = ({
             comments: allComments,
           }))
         : [];
-        console.log(
-          "updatedItemsToApprove------",
-          updatedItemsToApprove
-        );
+
     const payload = {
       mission_plan_id: missionplanid,
       approval_type: `${approval_type}`,
-      items_to_approved: updatedItemsToApprove,
+      items_to_approve: updatedItemsToApprove,
       // status: FormikApprovalForm.values.actionType,
       // comments: allComments,
       // approvable_id: approvableTypeId ?? "",
     };
-    // try {
-    //   await approveMissionPlanItems(payload).unwrap();
-    //   toast.dismiss();
-    //   setIsLoading && setIsLoading(false);
-    //   setIsSuccess && setIsSuccess(true);
-    //   setItemsToApprove && setItemsToApprove([]);
-    //   toast.success("Approval status updated successfully");
-    // } catch (error) {
-    //   setIsLoading && setIsLoading(false);
-    //   setIsSuccess && setIsSuccess(false);
-    //   setItemsToApprove && setItemsToApprove([]);
-    //   toast.dismiss();
-    //   console.error(error);
-    // }
+    try {
+      await approveMissionPlanItems(payload).unwrap();
+      toast.dismiss();
+      setIsLoading && setIsLoading(false);
+      setIsSuccess && setIsSuccess(true);
+      setItemsToApprove && setItemsToApprove([]);
+      toast.success("Approval status updated successfully");
+    } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setIsSuccess && setIsSuccess(false);
+      setItemsToApprove && setItemsToApprove([]);
+      toast.dismiss();
+      console.error(error);
+    }
   };
 
   return {

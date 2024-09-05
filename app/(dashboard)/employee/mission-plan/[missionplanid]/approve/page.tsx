@@ -17,7 +17,7 @@ import Tasks from "../../_components/tasks";
 import { useApproveAllItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
 import { toast } from "sonner";
 
-type StatusObject = { [key: string]: any };
+// type StatusObject = { [key: string]: any };
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -26,11 +26,12 @@ const ApproveMissionPlan = () => {
   const ui = searchParams.get("ui");
   const params = useParams();
   const missionplanid = params.missionplanid as string;
-  const [approvalTypeId, setApprovalTypeId] = useState("");
+  // const [approvalTypeId, setApprovalTypeId] = useState("");
 
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
+  const specifiedTaskComment = useDisclosure();
 
   const { data, isLoading: isGettingMissionPlanItems } =
     useGetMissionPlanItemsByIdQuery({
@@ -153,7 +154,7 @@ const ApproveMissionPlan = () => {
               showTextArea={missionStatementComment.isOpen}
               setShowTextArea={missionStatementComment.toggle}
               data={data?.data?.mission_statement}
-              setApprovalTypeId={setApprovalTypeId}
+              // setApprovalTypeId={setApprovalTypeId}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
             />
@@ -176,6 +177,8 @@ const ApproveMissionPlan = () => {
               data={data?.data?.specified_tasks ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              showTextArea={specifiedTaskComment.isOpen}
+              setShowTextArea={specifiedTaskComment.toggle}
             />
 
             <FreedomConstraint

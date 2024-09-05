@@ -56,6 +56,71 @@ const MeasureOfSuccess = ({
       status: item.status,
       target: item.target,
       unit: item.unit,
+      actions: (
+        <div className="flex gap-2.5 ml-[40px] items-end justify-end">
+          {!loading &&
+            data?.length !== null &&
+            status === "pending" &&
+            !isSuccess && (
+              <Button
+                variant="outline"
+                size={"sm"}
+                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                onClick={() => {
+                  setShowTextArea(true);
+
+                  setItemsToApprove((prevItems: any) => {
+                    const itemExists = prevItems.some(
+                      (items: itemsApprove) => items.id === item.id
+                    );
+
+                    if (itemExists) {
+                      // If the item exists, update the existing item
+                      return prevItems.map((items: itemsApprove) =>
+                        items.id === item.id
+                          ? {
+                              ...items,
+                              status: "rejected",
+                              comments: commentItem?.comment ?? [], // Update the comments
+                            }
+                          : items
+                      );
+                    }
+
+                    // If the item doesn't exist, add the new item and ensure no duplicates
+                    return [
+                      ...prevItems.filter(
+                        (items: itemsApprove) => items.id !== item.id
+                      ),
+                      {
+                        id: item.id,
+                        status: "rejected",
+                        comments: commentItem?.comment ?? [],
+                      },
+                    ];
+                  });
+
+                  handleReject();
+                }}
+                loading={isLoading && actionType === "rejected"}
+                disabled={
+                  (isLoading && actionType === "rejected") ||
+                  approvables?.length === 0
+                }
+              >
+                Reject
+              </Button>
+            )}
+          {!isLoading &&
+            data?.length !== null &&
+            status === "pending" &&
+            isSuccess && <EditableLabel status={actionType} />}
+          {!isLoading &&
+            data?.length !== null &&
+            status !== "pending" &&
+            !isSuccess && <EditableLabel status={status ?? ""} />}
+        </div>
+      ),
     }));
   };
 
@@ -108,78 +173,6 @@ const MeasureOfSuccess = ({
               </div>
             )}
           </div>
-          {!loading &&
-            data?.length !== null &&
-            status === "pending" &&
-            !isSuccess && (
-              <div className="flex gap-2.5 mx-4 ml-12">
-                <Button
-                  variant="outline"
-                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                  onClick={() => {
-                    setShowTextArea(true);
-                    matchingIds.forEach((id: string) => {
-                      setItemsToApprove((prevItems) => {
-                        // Check if an item with the same ID already exists
-                        const itemExists = prevItems.some(
-                          (item) => item.id === id
-                        );
-
-                        // If the item exists, update it; otherwise, add a new one
-                        if (itemExists) {
-                          // Update the existing item if needed
-                          return prevItems.map((item) =>
-                            item.id === id
-                              ? {
-                                  ...item,
-                                  status: "rejected",
-                                  comments: [],
-                                }
-                              : item
-                          );
-                        }
-
-                        // If the item doesn't exist, add the new item
-                        return [
-                          ...prevItems,
-                          {
-                            id: id,
-                            status: "rejected",
-                            comments: [],
-                          },
-                        ];
-                      });
-                    });
-
-                    handleReject();
-                  }}
-                  loading={isLoading && actionType === "rejected"}
-                  disabled={
-                    (isLoading && actionType === "rejected") ||
-                    approvables?.length === 0
-                  }
-                >
-                  Reject
-                </Button>
-                <Button
-                  onClick={() => handleApprove()}
-                  loading={isLoading && actionType === "approved"}
-                  disabled={isLoading && actionType === "approved"}
-                  className="hidden"
-                >
-                  Approve
-                </Button>
-              </div>
-            )}
-
-          {!isLoading &&
-            data?.length !== null &&
-            status === "pending" &&
-            isSuccess && <EditableLabel status={actionType} />}
-          {!isLoading &&
-            data?.length !== null &&
-            status !== "pending" &&
-            !isSuccess && <EditableLabel status={status ?? ""} />}
         </div>
       </div>
       {/* {showTextArea && ( */}

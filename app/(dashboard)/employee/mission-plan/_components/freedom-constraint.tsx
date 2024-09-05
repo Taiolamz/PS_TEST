@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
-import { findItemById, getStatus } from "@/utils/helpers";
+import { findItemById } from "@/utils/helpers";
 import { EditableLabel } from "@/components/fragment";
 
 type Props = {
@@ -34,7 +34,7 @@ const FreedomConstraint = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [status, setStatus] = useState<string>("");
+  // const [status, setStatus] = useState<string>("");
   const [selectedId, setSelectedID] = useState<string>("");
   const [matchingIds, setMatchingIds] = useState<any>([]);
   const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
@@ -149,14 +149,14 @@ const FreedomConstraint = ({
                         setItemsToApprove((prevItems) => {
                           // Check if an item with the same ID already exists
                           const itemExists = prevItems.some(
-                            (item) => item.id === id
+                            (item) => item.id === data[0]?.id
                           );
 
                           // If the item exists, update it; otherwise, add a new one
                           if (itemExists) {
                             // Update the existing item if needed
                             return prevItems.map((item) =>
-                              item.id === id
+                              item.id === data[0]?.id
                                 ? {
                                     ...item,
                                     status: "rejected",
@@ -170,7 +170,7 @@ const FreedomConstraint = ({
                           return [
                             ...prevItems,
                             {
-                              id: id,
+                              id: data[0]?.id,
                               status: "rejected",
                               comments: [],
                             },
