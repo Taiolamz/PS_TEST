@@ -100,16 +100,17 @@ const MissionPlanTemplate = () => {
     data: missionPlanTemplateData,
     isLoading: isLoadingmissionPlanTemplates,
     isFetching: isFetchingmissionPlanTemplates,
-  } = useGetMissionPlanTemplatesQuery({
+  }: any = useGetMissionPlanTemplatesQuery({
     to: 0,
     total: 0,
     per_page: 50,
     currentPage: 0,
     next_page_url: "",
     prev_page_url: "",
+    paginate: true
   });
 
-  const missionPlanTemplates = missionPlanTemplateData ?? [];
+  const missionPlanTemplates = missionPlanTemplateData?.data?.templates?.data ?? [];
   const { missionPlanColumn, data, openDeleteModal, handleDeleteDialog } =
     MissionPlanColumnData();
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { Dictionary } from '@/@types/dictionary';
 import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
 import { PageLoader } from '@/components/custom-loader';
 import { GraySkeleton } from '@/public/assets/icons';
@@ -15,8 +16,8 @@ import React from 'react';
 const { ADMIN } = routesPath
 
 const ChooseTemplate = () => {
-  const { data: missionPlanTemplateData, isLoading } =
-    useGetMissionPlanTemplatesQuery({ page: 1 });
+  const { data: missionPlanTemplateData, isLoading }: any =
+    useGetMissionPlanTemplatesQuery({ paginate: false });
 
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -57,7 +58,7 @@ const ChooseTemplate = () => {
           ) : (
             <div className=" mt-5 w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6  gap-7 ">
               {createTemplate}
-              {missionPlanTemplateData?.map((chi, idx) => {
+              {missionPlanTemplateData?.data?.templates?.map((chi: Dictionary, idx: number) => {
                 const { name } = chi;
                 return (
                   <div
