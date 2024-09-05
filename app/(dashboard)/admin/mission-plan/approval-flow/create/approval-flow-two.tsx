@@ -31,6 +31,7 @@ interface Prop {
     approvals: string[];
   }[];
   setFieldValue: (field: string, value: any) => void;
+  allRoles: { name: string; value: string }[];
 }
 
 const ApprovalFlowTwo = ({
@@ -39,6 +40,7 @@ const ApprovalFlowTwo = ({
   setOrderValue,
   approvalsArray,
   setFieldValue,
+  allRoles,
 }: Prop) => {
   const [selectedLevels, setSelectedLevels] = useState<SelectedLevels>({});
   const [numLevels, setNumLevels] = useState<NumLevels>({});
@@ -225,7 +227,7 @@ const ApprovalFlowTwo = ({
             content={
               <CustomSelect
                 placeholder="Select..."
-                options={approvals.map((chi) => ({
+                options={allRoles.map((chi) => ({
                   ...chi,
                   label: chi?.name,
                   value: chi?.name,

@@ -52,7 +52,7 @@ const MissionPlanApprovalFlowLevel = () => {
   );
 
   return (
-    <DashboardLayout headerTitle="Mission Plan Template">
+    <DashboardLayout headerTitle="Mission Plan Approval Flow">
       <div className="flex flex-col p-5 w-full">
         <div className="flex gap-3 items-center">
           <p className="text-[16px] font-medium">Approval Flow</p>
