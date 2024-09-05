@@ -9,6 +9,7 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import { Dictionary } from "@/@types/dictionary";
 
 interface Props {
   handleClick: () => void;
@@ -63,7 +64,7 @@ const MissionPlanLevel = ({ handleClick, handleDefaultClick }: Props) => {
           <div className=" mt-5 w-full grid grid-cols-6  gap-7 ">
             {createTemplate}
             {defaultTemplate}
-            {missionPlanTemplateData?.data?.templates?.map((chi, idx) => {
+            {missionPlanTemplateData?.data?.templates?.map((chi: Dictionary, idx: number) => {
               const { name } = chi;
               return (
                 <div

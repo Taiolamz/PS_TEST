@@ -60,7 +60,7 @@ const ApprovalFlow = () => {
 
     // const formik = useFormik()
     const handleFormSubmit = async (values: any) => {
-        const hasEmptyApproval = values?.staff_levels?.map((f: Dictionary) => f.approvals)?.some((f) => f.length === 0)
+        const hasEmptyApproval = values?.staff_levels?.map((f: Dictionary) => f.approvals)?.some((f: Dictionary) => f.length === 0)
         if (hasEmptyApproval) {
             toast.error('Each level must have at least one approval')
             return
@@ -88,7 +88,7 @@ const ApprovalFlow = () => {
             })
             setInitialApprovalFlowData({ staff_levels: LEVELS })
             if (fy_info?.order_of_approvals?.length) {
-                const initialApprovals = fy_info?.order_of_approvals?.map((d) => {
+                const initialApprovals = fy_info?.order_of_approvals?.map((d: Dictionary) => {
                     return {
                         ...d,
                         approval_levels: d?.approvals?.length
