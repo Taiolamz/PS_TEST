@@ -54,7 +54,7 @@ const MissionStatement = ({
               {data?.mission ?? "No Mission Statement"}
             </p>
           )}
-          {!loading && data?.mission !== null && (
+          {!loading && data?.mission !== null && data?.status === "pending" && (
             <div className="flex gap-2.5 mr-4">
               <Button
                 variant="outline"

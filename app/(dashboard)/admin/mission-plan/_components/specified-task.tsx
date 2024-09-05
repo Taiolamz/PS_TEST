@@ -14,9 +14,11 @@ type Props = {
   data: SpecifiedTasksType[];
   approvables?: [];
   loading: boolean;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const SpecifiedTasks = ({ data, approvables, loading }: Props) => {
+const SpecifiedTasks = ({ data, approvables, loading, showTextArea, setShowTextArea }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
@@ -59,9 +61,8 @@ const SpecifiedTasks = ({ data, approvables, loading }: Props) => {
                 Specified Task {index + 1}
               </h2>
               <div className="mt-5 ml-1.5">
-                <h3 className="font-medium">{`- ${item?.task} ${
-                  item?.is_main_effort === 1 ? "(MAIN EFFORT)" : ""
-                }`}</h3>
+                <h3 className="font-medium">{`- ${item?.task} ${item?.is_main_effort === 1 ? "(MAIN EFFORT)" : ""
+                  }`}</h3>
                 <div className="flex justify-between items-end">
                   <div className="ml-3 mb-2.5 flex flex-col gap-[0.3125rem]">
                     <p className="mt-2 font-light">
@@ -102,14 +103,19 @@ const SpecifiedTasks = ({ data, approvables, loading }: Props) => {
                         id="input_weight"
                       />
                     </div>
-                    <Button
-                      variant="outline"
-                      className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                      onClick={() => handleReject(item.id)}
-                    >
-                      Reject
-                    </Button>
-                    <Button onClick={() => handleApprove()}>Approve</Button>
+                    <div className="flex gap-2.5 mr-4">
+                        <Button
+                          variant="outline"
+                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                          onClick={() => {
+                            setShowTextArea(true);
+                            handleReject();
+                          }}
+                        >
+                          Reject
+                        </Button>
+                        <Button onClick={() => handleApprove()}>Approve</Button>
+                      </div>
                   </div>
                 </div>
               </div>
