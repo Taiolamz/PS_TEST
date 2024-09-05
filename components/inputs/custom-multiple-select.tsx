@@ -232,7 +232,7 @@ export const CustomMultipleSelect = React.forwardRef<
               triggerClassName
             )}
           >
-            {selectedValues.length > 0 ? (
+            {selectedValues?.length > 0 ? (
               <div className="flex justify-between items-center w-full">
                 <div className="flex flex-wrap items-center gap-1">
                   {selectedValues.slice(0, maxCount)?.map((value) => {
@@ -307,7 +307,12 @@ export const CustomMultipleSelect = React.forwardRef<
             )}
           </Button>
         </PopoverTrigger>
-        <span className={cn("text-xs text-red-500 hidden", error && "block absolute")}>
+        <span
+          className={cn(
+            "text-xs text-red-500 hidden",
+            error && "block absolute"
+          )}
+        >
           {error && touched && error}
         </span>
 

@@ -154,6 +154,13 @@ export const missionPlanApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    deleteSpecifiedTask: builder.mutation({
+      query: (id) => ({
+        url: `/mission-plan/specified-task/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["MissionPlan"],
+    }),
   }),
 });
 
@@ -176,5 +183,6 @@ export const {
   useGetMySpecifiedTaskQuery,
   useLazyGetMySpecifiedTaskQuery,
   useCreateTimelineAndReminderMutation,
+  useDeleteSpecifiedTaskMutation,
   useCreateApprovalFlowMutation,
 } = missionPlanApi;

@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import React from "react";
 
@@ -7,10 +7,16 @@ const DashboardModal = ({
   children,
   className,
   onOpenChange,
+  title,
 }: DashboardModalType) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={className}>{children}</DialogContent>
+      <DialogContent className={className} title={title}>
+        <DialogTitle className="flex justify-center w-full">
+          {title}
+        </DialogTitle>
+        {children}
+      </DialogContent>
     </Dialog>
   );
 };
