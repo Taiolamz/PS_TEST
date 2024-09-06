@@ -66,7 +66,7 @@ const MissionPlanTemplateLevel = () => {
         onCancel={() => router.back()}
       />
       <MissionPlanLevel
-        handleDefaultClick={() => console.log("route to mission plan")}
+        handleMainClick={() => console.log("route to mission plan")}
         handleClick={handleMissionDialog}
       />
 

@@ -32,6 +32,13 @@ import {
 import { PageLoader } from "@/components/custom-loader";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 import { isValid, parse } from "date-fns";
+import DashboardModal from "@/app/(dashboard)/admin/branches/_components/checklist-dashboard-modal";
+import DeleteSpecifiedTask from "./delete-specified-task";
+import useDisclosure from "@/utils/hooks/useDisclosure";
+import DeleteImpliedTaskModal from "./delete-implied-task";
+import TransferSpecifiedTask from "./transfer-specified-task";
+import ImpliedTaskNotify from "./implied-task-notify";
+import TransferImpliedTaskOrWeight from "./transfer-implied-task";
 
 interface SubItem {
   task: string;
@@ -72,71 +79,8 @@ type ImpliedTaskType = {
   }[];
 };
 
-// const validationSchema = yup.object({
-//   tasks: yup.array().of(
-//     yup.object({
-//       task: yup.string().required("Task is required"),
-//       specified_task_id: yup.string(),
-//       weight: yup.string().required("Weight is required"),
-//       percentage: yup.string().required("Percentage is required"),
-//       start_date: yup
-//         .string()
-//         .required("Start date is required")
-//         .test("valid-date", "Start date must be a valid date", (value) => {
-//           const formattedDate = formatDate(value);
-//           const parsedDate = parse(formattedDate, "yyyy-MM-dd", new Date());
-//           return isValid(parsedDate);
-//         }),
-//       end_date: yup
-//         .string()
-//         .required("End date is required")
-//         .test("valid-date", "End date must be a valid date", (value) => {
-//           const formattedDate = formatDate(value);
-//           const parsedDate = parse(formattedDate, "yyyy-MM-dd", new Date());
-//           return isValid(parsedDate);
-//         })
-//         .test(
-//           "is-greater",
-//           "End date must be after start date",
-//           function (value) {
-//             const { start_date } = this.parent;
-//             const formattedEndDate = formatDate(value);
-//             const formattedStartDate = formatDate(start_date);
-//             const parsedEndDate = parse(
-//               formattedEndDate,
-//               "yyyy-MM-dd",
-//               new Date()
-//             );
-//             const parsedStartDate = parse(
-//               formattedStartDate,
-//               "yyyy-MM-dd",
-//               new Date()
-//             );
-
-//             return (
-//               isValid(parsedEndDate) &&
-//               isValid(parsedStartDate) &&
-//               parsedEndDate > parsedStartDate
-//             );
-//           }
-//         ),
-//       expected_outcomes: yup
-//         .array()
-//         .of(yup.string().required("Expected outcome is required")),
-//       resources: yup
-//         .array()
-//         .of(yup.string().required("Resource ID is required"))
-//         .min(1, "At least one resource is required")
-//         .required("Resource is required"),
-//     })
-//   ),
-// });
-
 const subItemSchema = yup.object().shape({
   task: yup.string().required("Task is required"),
-  // user_id: yup.string().required("User ID is required"),
-  // specified_task_id: yup.string().required("Specified Task ID is required"),
-  // implied_task_id: yup.string().required("Implied Task ID is required"),
   weight: yup
     .number()
     .typeError("Weight must be a number")
@@ -158,30 +102,12 @@ const subItemSchema = yup.object().shape({
     .of(yup.string().required("Resource ID is required"))
     .min(1, "At least one resource is required")
     .required("Resource is required"),
-
-  // expected_outcomes: yup.array()
-  //   .of(yup.string().required("Expected outcome is required"))
-  //   .min(1, "At least one expected outcome is required")
-  //   .required("Expected outcomes are required"),
 });
 
 const taskSchema = yup.object().shape({
   subItems: yup.array().of(subItemSchema).required("Sub-items are required"),
 });
 
-// const taskSchema = yup.object().shape({
-//   subItems: yup
-//     .array()
-//     .of(subItemSchema)
-//     .required("Sub-items are required")
-//     .test("weights-sum", "Total weight must be equal to 100%", function (task) {
-//       const weights = ((task as any).subItems as any[]).map((subItem) => subItem.weight);
-//       const totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
-//       return totalWeight === 100;
-//     }),
-// });
-
-// Define the schema for the entire form
 const validationSchema = yup.object().shape({
   tasks: yup.array().of(taskSchema).required("Tasks are required"),
 });
@@ -203,22 +129,6 @@ const ImpliedTask = () => {
   ] = useLazyGetMyMissionPlanQuery({});
 
   const handleSubmit = async () => {
-    // const payload = {
-    //   ...formik.values,
-    //   mission_plan_id: mission_plan?.data?.mission_plan?.id,
-    //   tasks: formik.values.tasks.map((task) => ({
-    //     task: task.task,
-    //     resources: task.resources,
-    //     specified_task_id: task.specified_task_id || "",
-    //     implied_task_id: task.implied_task_id || "",
-    //     weight: String(task.weight),
-    //     percentage: String(task.percentage),
-    //     start_date: task.start_date,
-    //     end_date: task.end_date,
-    //     expected_outcomes: task.expected_outcomes,
-    //     subItems: [],
-    //   })),
-    // };
     const payload = { ...formik.values };
 
     await createImpliedTask(payload)
@@ -229,7 +139,6 @@ const ImpliedTask = () => {
           setTimeout(() => {
             toast.dismiss();
             router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
-            // router.push(ADMIN);
           }, 2000);
         });
       });
@@ -259,7 +168,6 @@ const ImpliedTask = () => {
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
-        // console.log("testing", payload);
         if (payload?.data?.mission_plan?.specified_tasks?.length > 0) {
           const impliedTasks = payload?.data?.mission_plan?.specified_tasks;
           const mappedTasks = formattedData(impliedTasks);
@@ -354,13 +262,6 @@ const ImpliedTask = () => {
   const errorTasks = formik.errors.tasks as any;
   const touchedTasks = formik.touched.tasks as any;
 
-  console.log(errorTasks, "error check");
-
-  // const [impliedTasks, setImpliedTasks] = useState(formik.values.tasks);
-
-  // console.log(impliedTasks, "state tasks");
-  // console.log(formik.values.tasks, "formik tasks");
-
   const formatImpliedTasks = () => {
     const newData = formik.values.tasks?.map((chi) => {
       return {
@@ -371,32 +272,68 @@ const ImpliedTask = () => {
     return newData;
   };
 
-  // const handleAddMoreImpliedTasks = (index: number) => {
-  //   formik.setFieldValue("tasks", (prevData: any) => {
-  //     const newData = [...prevData];
-  //     const targetItem = newData[index];
-  //     newData[index] = {
-  //       ...targetItem,
-  //       subItems: [
-  //         ...targetItem.subItems,
-  //         {
-  //           task: "",
-  //           user_id: "",
-  //           specified_task_id: "",
-  //           implied_task_id: "",
-  //           weight: "",
-  //           percentage: "",
-  //           start_date: "",
-  //           end_date: "",
-  //           resources: [],
-  //           expected_outcomes: [""],
-  //         },
-  //       ],
-  //     };
-  //     return newData;
-  //   });
-  // };
-  console.log(formik.errors, "formik errors");
+  const {
+    isOpen: openDeleteModal,
+    open: onOpenDeleteModal,
+    close: closeDeleteModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: openDeleteImpliedTask,
+    open: onOpenDeleteImpliedTask,
+    close: closeDeleteImpliedTask,
+  } = useDisclosure();
+
+  const {
+    isOpen: openTransferModal,
+    open: onOpenTransferModal,
+    close: closeTransferModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: openNotifyModal,
+    open: onOpenNotifyModal,
+    close: closeNotifyModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: openTransferImpliedTask,
+    open: onOpenTransferImpliedTask,
+    close: closeTransferImpliedTask,
+  } = useDisclosure();
+
+  const handleNotifyModal = () => {
+    onOpenNotifyModal();
+    if (openNotifyModal) {
+      closeNotifyModal();
+    }
+  };
+  const handleDeleteDialog = () => {
+    onOpenDeleteModal();
+    if (openDeleteModal) {
+      closeDeleteModal();
+    }
+  };
+  const handleTransferImpliedTask = () => {
+    onOpenTransferImpliedTask();
+    if (openTransferImpliedTask) {
+      closeTransferImpliedTask();
+    }
+  };
+
+  const handleDeleteImpliedTaskDialog = () => {
+    onOpenDeleteImpliedTask();
+    if (openDeleteImpliedTask) {
+      closeDeleteImpliedTask();
+    }
+  };
+
+  const handleTransferSpecifiedTask = () => {
+    onOpenTransferModal();
+    if (openTransferModal) {
+      closeTransferModal();
+    }
+  };
 
   const handleAddMoreImpliedTasks = (index: number) => {
     const currentSubItems = formik.values.tasks[index].subItems || [];
@@ -414,88 +351,37 @@ const ImpliedTask = () => {
     };
 
     const updatedSubItems = [...currentSubItems, newSubItem];
-
-    // Update the Formik field value
     formik.setFieldValue(`tasks.${index}.subItems`, updatedSubItems);
   };
 
   const handleDeleteSubItem = (taskIndex: number, subItemIndex: number) => {
-    // Get the current subItems array
     const currentSubItems = formik.values.tasks[taskIndex].subItems || [];
-
-    // Remove the subItem at the given index
     const updatedSubItems = (currentSubItems as any[]).filter(
       (_, index) => index !== subItemIndex
     );
-
-    // Log for debugging
-
-    // Update Formik values
     formik.setFieldValue(`tasks.${taskIndex}.subItems`, updatedSubItems);
   };
-  console.log(formik.values.tasks, "formik");
-  console.log(touchedTasks, "touching things");
-  // const [data, setData] = useState<any[]>([
-  //   {
-  //     name: "hassan",
-  //     id: "2",
-  //     score: 3,
-  //     subItems: [], // Initialize with an empty array for subItems
-  //   },
-  //   {
-  //     name: "taiwo",
-  //     id: "4",
-  //     score: 9,
-  //     subItems: [], // Initialize with an empty array for subItems
-  //   },
-  //   {
-  //     name: "micha",
-  //     id: "9",
-  //     score: 9,
-  //     subItems: [], // Initialize with an empty array for subItems
-  //   },
-  // ]);
 
-  // const handleAddMore = (index: number) => {
-  //   setData((prevData) => {
-  //     // Clone the current data
-  //     const newData = [...prevData];
-  //     // Get the target item
-  //     const targetItem = newData[index];
-
-  //     // Add a new subItem to the target item's subItems array
-  //     newData[index] = {
-  //       ...targetItem,
-  //       subItems: [
-  //         ...targetItem.subItems,
-  //         {
-  //           title: "",
-  //           id: "",
-  //           score: "",
-  //           add_more: "",
-  //         },
-  //       ],
-  //     };
-
-  //     return newData;
-  //   });
-  // };
-
-  // const handleDeleteSubItem = (itemIndex: number, subItemIndex: number) => {
-  //   setData((prevData) => {
-  //     const newData = [...prevData];
-  //     const targetItem = newData[itemIndex];
-
-  //     newData[itemIndex] = {
-  //       ...targetItem,
-  //       subItems: (targetItem.subItems as any[]).filter(
-  //         (_, i) => i !== subItemIndex
-  //       ),
-  //     };
-
-  //     return newData;
-  //   });
-  // };
+  const infoIcon = (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00001C14.6673 4.31811 11.6825 1.33334 8.00065 1.33334C4.31875 1.33334 1.33398 4.31811 1.33398 8.00001C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z"
+        fill="#84919A"
+      />
+      <path
+        d="M8.9215 4.59995C9.38293 4.59995 9.61365 4.914 9.61365 5.27385C9.61365 5.72323 9.21282 6.13887 8.69112 6.13887C8.25414 6.13887 7.99932 5.8806 8.01137 5.4536C8.01137 5.09444 8.31474 4.59995 8.9215 4.59995ZM7.50173 11.487C7.1374 11.487 6.87052 11.2625 7.12535 10.2735L7.54339 8.52007C7.61605 8.23977 7.6281 8.12717 7.54339 8.12717C7.43423 8.12717 6.96178 8.32069 6.68182 8.51181L6.5 8.20878C7.38568 7.45602 8.40462 7.0149 8.84195 7.0149C9.20593 7.0149 9.26654 7.45326 9.08472 8.12717L8.60572 9.97015C8.52101 10.2956 8.55717 10.4078 8.64223 10.4078C8.75139 10.4078 9.10951 10.2728 9.46144 9.99219L9.66806 10.2725C8.80648 11.1496 7.86536 11.487 7.50173 11.487Z"
+        fill="white"
+      />
+    </svg>
+  );
 
   return (
     <>
@@ -505,7 +391,10 @@ const ImpliedTask = () => {
         </div>
       ) : (
         <div className="pr-4">
-          <h2>Implied Task</h2>
+          <div className="flex gap-2">
+            <h2>Set Implied Task</h2>
+            <figure>{infoIcon}</figure>
+          </div>
 
           <form onSubmit={formik.handleSubmit} className="mt-7">
             <FormikProvider value={formik}>
@@ -520,12 +409,18 @@ const ImpliedTask = () => {
                             key={task.implied_task_id}
                             className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative"
                           >
-                            <p
-                              className="text-red-500 text-xs ml-auto cursor-pointer"
-                              onClick={() => remove(index)}
-                            >
-                              Remove Specified task
-                            </p>
+                            <div className="flex justify-between">
+                              <p className="text-[#6E7C87] text-xs font-normal">
+                                {index + 1}. Specified task
+                              </p>
+                              <p
+                                className="text-red-500 text-xs ml-auto cursor-pointer"
+                                // onClick={() => remove(index)}
+                                onClick={onOpenDeleteModal}
+                              >
+                                Remove Specified task
+                              </p>
+                            </div>
                             <CustomAccordion
                               key={task.implied_task_id}
                               triggerClass="border border-custom-divider px-4 py-2 rounded-sm mb-4"
@@ -534,163 +429,20 @@ const ImpliedTask = () => {
                               contentWrapperClass="overflow-visible"
                               title={
                                 <p className="font-medium text-sm text-graySecondary">
-                                  {/* Achieve $1 Billion in Company Revenue for the
-                            Financial year */}
-                                  {/* the title should come from another array */}
                                   {task?.title ||
                                     `${index + 1}. Specified task`}
                                 </p>
                               }
                               content={
                                 <div className="flex flex-col gap-3">
-                                  {/* <div> */}
-                                  {/* <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
-                                      <div>
-                                        <Input
-                                          type="text"
-                                          id={`tasks.${index}.task`}
-                                          label={`Task ${index + 1}`}
-                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                          onBlur={formik.handleBlur}
-                                          onChange={formik.handleChange}
-                                          name={`tasks.${index}.task`}
-                                          placeholder="Input Task"
-                                          className="mr-2 w-full"
-                                          value={
-                                            formik.values.tasks[index].task
-                                          }
-                                        />
-                                      </div>
-                                      <div>
-                                        <Input
-                                          type="number"
-                                          id={`tasks.${index}.weight`}
-                                          label="Input Weight"
-                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                          onBlur={formik.handleBlur}
-                                          onChange={formik.handleChange}
-                                          name={`tasks.${index}.weight`}
-                                          placeholder="Input Weight"
-                                          className="mr-2 w-full"
-                                          value={
-                                            formik.values.tasks[index].weight
-                                          }
-                                        />
-                                        <ErrorMessage
-                                          name={`intents.${index}.behaviours.value`}
-                                          className="text-red-500 text-xs mt-1"
-                                          component={"div"}
-                                        />
-                                      </div>
-                                      <div>
-                                        <Input
-                                          type="number"
-                                          id={`tasks.${index}.percentage`}
-                                          label="Input Percentage"
-                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                          onBlur={formik.handleBlur}
-                                          onChange={formik.handleChange}
-                                          name={`tasks.${index}.percentage`}
-                                          placeholder="Input Percentage"
-                                          className="mr-2 w-full"
-                                          value={
-                                            formik.values.tasks[index]
-                                              .percentage
-                                          }
-                                        />
-                                        <ErrorMessage
-                                          name={`intents.${index}.behaviours.value`}
-                                          className="text-red-500 text-xs mt-1"
-                                          component={"div"}
-                                        />
-                                      </div>
-                                    </div> */}
                                   <>
-                                    <div className="grid lg:grid-cols-3 gap-x-3 mt-2 ">
-                                      {/* <div className="mt-1">
-                                          <CustomMultipleSelect
-                                            randomBadgeColor
-                                            options={formattedEmployeesDrop}
-                                            onValueChange={(values) =>
-                                              formik.setFieldValue(
-                                                `tasks.${index}.resources`,
-                                                values
-                                              )
-                                            }
-                                            label="Select Resources"
-                                            name={`tasks.${index}.resources`}
-                                            defaultValue={
-                                              formik.values.tasks[index]
-                                                .resources
-                                            }
-                                            placeholder="Select Resources"
-                                            badgeClassName={`rounded-[20px] text-[10px] font-normal`}
-                                            triggerClassName={`min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1`}
-                                            placeholderClass={`font-light text-sm text-[#6E7C87] opacity-70`}
-                                            labelClass={`block text-xs text-[#6E7C87] font-normal mt-1 p-0 pb-[9px]`}
-                                            error={
-                                              errorTasks?.[index]?.resources
-                                            }
-                                            touched={
-                                              touchedTasks?.[index]?.resources
-                                            }
-                                            maxCount={6}
-                                            onBlur={() =>
-                                              formik.setFieldTouched(
-                                                `tasks.${index}.resources`,
-                                                true
-                                              )
-                                            }
-                                          />
-                                        </div> */}
-                                      {/* <div className="grid col-span-2 grid-cols-2 gap-3 w-[60%]">
-                                        <CustomDateInput
-                                          id={`tasks.${index}.start_date`}
-                                          label="Start Date"
-                                          selected={
-                                            formik.values.tasks[index]
-                                              .start_date as any
-                                          }
-                                          handleChange={(date) =>
-                                            formik.setFieldValue(
-                                              `tasks.${index}.start_date`,
-                                              formatDate(date)
-                                            )
-                                          }
-                                          error={""}
-                                          className="relative pr-8 w-full"
-                                          iconClass="top-[2.7rem] right-3"
-                                          inputClass=" "
-                                          isRequired
-                                        />
-                                        <CustomDateInput
-                                          id={`tasks.${index}.end_date`}
-                                          label="End Date"
-                                          selected={
-                                            formik.values.tasks[index]
-                                              .end_date as any
-                                          }
-                                          handleChange={(date) =>
-                                            formik.setFieldValue(
-                                              `tasks.${index}.end_date`,
-                                              formatDate(date)
-                                            )
-                                          }
-                                          error={""}
-                                          className="relative pr-8"
-                                          iconClass="top-[2.7rem] right-3"
-                                          isRequired
-                                        />
-                                      </div> */}
-                                    </div>
+                                    <div className="grid lg:grid-cols-3 gap-x-3 mt-2 "></div>
                                   </>
                                   <div className="flex flex-col gap-5">
                                     {task.subItems &&
                                       task.subItems.length > 0 &&
                                       (task.subItems as SubItem[]).map(
                                         (subItem, subIndex) => {
-                                          console.log("SubItem:", subItem);
-
                                           return (
                                             <div key={subIndex} className=" ">
                                               <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
@@ -701,9 +453,6 @@ const ImpliedTask = () => {
                                                     label={`Task ${
                                                       subIndex + 1
                                                     }`}
-                                                    // label={`Subtask ${
-                                                    //   subIndex + 1
-                                                    // }`}
                                                     labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
                                                     onBlur={formik.handleBlur}
                                                     onChange={
@@ -840,12 +589,6 @@ const ImpliedTask = () => {
                                                           formatDate(date)
                                                         )
                                                       }
-                                                      //   <ErrorMessage
-                                                      //   name={`tasks.${index}.subItems.${subIndex}.task`}
-                                                      //   className="text-red-500 text-xs mt-1"
-                                                      //   component={"div"}
-                                                      // />
-                                                      // error={`tasks.${index}.subItems.${subIndex}.start_date`}
                                                       error={
                                                         errorTasks?.[index]
                                                           ?.subItems?.[subIndex]
@@ -861,19 +604,6 @@ const ImpliedTask = () => {
                                                       inputClass=" "
                                                       isRequired
                                                     />
-
-                                                    {/* {touchedTasks?.[index]
-                                                      ?.subItems?.[subIndex]
-                                                      ?.start_date ? (
-                                                      <p className="text-red-500 text-xs mt-1">
-                                                        {
-                                                          errorTasks?.[index]
-                                                            ?.subItems?.[
-                                                            subIndex
-                                                          ]?.start_date
-                                                        }
-                                                      </p>
-                                                    ) : null} */}
                                                   </div>
 
                                                   <div className="flex flex-col gap-1">
@@ -898,7 +628,6 @@ const ImpliedTask = () => {
                                                           true
                                                         )
                                                       }
-                                                      // error={`tasks.${index}.subItems.${subIndex}.end_date`}
                                                       error={
                                                         errorTasks?.[index]
                                                           ?.subItems?.[subIndex]
@@ -913,23 +642,19 @@ const ImpliedTask = () => {
                                                       iconClass="top-[2.7rem] right-3"
                                                       isRequired
                                                     />
-                                                    {/* <p className="text-red-500 text-xs mt-1">
-                                                      {
-                                                        errorTasks?.[index]
-                                                          ?.subItems?.[subIndex]
-                                                          ?.end_date
-                                                      }
-                                                    </p> */}
                                                   </div>
                                                 </div>
                                                 <div
                                                   className="absolute right-0 mr-5 cursor-pointer"
-                                                  onClick={() =>
-                                                    handleDeleteSubItem(
-                                                      index,
-                                                      subIndex
-                                                    )
+                                                  onClick={
+                                                    onOpenDeleteImpliedTask
                                                   }
+                                                  // onClick={() =>
+                                                  //   handleDeleteSubItem(
+                                                  //     index,
+                                                  //     subIndex
+                                                  //   )
+                                                  // }
                                                 >
                                                   <Icon
                                                     name="remove"
@@ -938,18 +663,6 @@ const ImpliedTask = () => {
                                                   />
                                                 </div>
                                               </div>
-                                              {/* <button
-                                                type="button"
-                                                // onClick={() =>
-                                                //   handleDeleteSubItem(
-                                                //     index,
-                                                //     subIndex
-                                                //   )
-                                                // }
-                                                className="mt-2 text-red-500 hover:text-red-700"
-                                              >
-                                                Delete Subitem
-                                              </button> */}
                                             </div>
                                           );
                                         }
@@ -976,18 +689,6 @@ const ImpliedTask = () => {
                                 </div>
                               }
                             />
-
-                            {/* <button
-                              type="button"
-                              onClick={() => remove(index)}
-                              className="text-red-500 hover:text-red-700 absolute -right-6 top-2"
-                            >
-                              <Icon
-                                name="remove"
-                                width={14.28}
-                                height={18.63}
-                              />
-                            </button> */}
                           </div>
                         )
                       )}
@@ -1055,32 +756,80 @@ const ImpliedTask = () => {
               </div>
             </FormikProvider>
           </form>
-          <div>
-            {/* {data.map((item, index) => (
-              <div key={index}>
-                <h3>{item.name}</h3>
-                <p>ID: {item.id}</p>
-                <p>Score: {item.score}</p>
-                <button onClick={() => handleAddMore(index)}>Add More</button>
-                {(item.subItems as any[]).map((subItem, subIndex) => (
-                  <div key={subIndex} style={{ marginLeft: "20px" }}>
-                    <p>Subitem Name: {subItem.name}</p>
-                    <p>Subitem ID: {subItem.id}</p>
-                    <p>Subitem Score: {subItem.score}</p>
-                    <p>Subitem Add More: {subItem.add_more}</p>
-                    <button
-                      onClick={() => handleDeleteSubItem(index, subIndex)}
-                    >
-                      Delete Subitem
-                    </button>
-                  </div>
-                ))}
-              </div>
-            ))} */}
-          </div>
+          <div></div>
           <div className="mt-7"></div>
         </div>
       )}
+
+      {/* delete specified modal */}
+      <DashboardModal
+        className={"w-[600px] max-w-full"}
+        open={openDeleteModal}
+        onOpenChange={handleDeleteDialog}
+      >
+        <DeleteSpecifiedTask
+          onReAssign={() => {
+            handleDeleteDialog();
+            handleTransferSpecifiedTask();
+          }}
+          onDelete={() => console.log("delete specified task")}
+        />
+      </DashboardModal>
+
+      {/* delete implied modal */}
+      <DashboardModal
+        className={"w-[500px] max-w-full"}
+        open={openDeleteImpliedTask}
+        onOpenChange={handleDeleteImpliedTaskDialog}
+      >
+        <DeleteImpliedTaskModal
+          onCancel={handleDeleteImpliedTaskDialog}
+          onDelete={() => {
+            console.log("delete implied task");
+          }}
+        />
+      </DashboardModal>
+
+      {/* transfer specified task modal */}
+      <DashboardModal
+        className={"w-[600px] max-w-full"}
+        open={openTransferModal}
+        onOpenChange={handleTransferSpecifiedTask}
+      >
+        <TransferSpecifiedTask
+          onTaskWeightTransfer={() => {
+            handleTransferSpecifiedTask();
+            handleTransferImpliedTask();
+          }}
+          onTaskTransfer={() => {
+            handleTransferSpecifiedTask();
+            handleTransferImpliedTask();
+          }}
+        />
+      </DashboardModal>
+
+      {/* notify task modal */}
+      <DashboardModal
+        className={"w-[500px] max-w-full"}
+        open={openNotifyModal ? false : true}
+        onOpenChange={handleNotifyModal}
+      >
+        <ImpliedTaskNotify onProceed={handleNotifyModal} />
+      </DashboardModal>
+
+      {/* transfer implied modal */}
+      <DashboardModal
+        className={"w-[950px] max-w-full"}
+        open={openTransferImpliedTask}
+        onOpenChange={handleTransferImpliedTask}
+      >
+        <TransferImpliedTaskOrWeight
+          onProceed={() => {
+            console.log("proceed");
+          }}
+          onCancel={handleTransferImpliedTask}
+        />
+      </DashboardModal>
     </>
   );
 };
