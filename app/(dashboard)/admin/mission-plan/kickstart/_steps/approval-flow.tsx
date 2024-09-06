@@ -51,6 +51,7 @@ const ApprovalFlow = () => {
         const getApprovalLevels = (data: []) => {
             const mappedApprovals = data.map((d: Dictionary) => {
                 return {
+                    ...d,
                     title: d?.title,
                     approvals: d?.approvals
                 }
@@ -66,8 +67,8 @@ const ApprovalFlow = () => {
             return
         }
         const APPROVALS = getApprovalLevels(values?.staff_levels)
+        
         dispatch(updateFinancialYearDetails({ slug: "order_of_approvals", data: APPROVALS?.order_of_approvals }))
-        // console.log(APPROVALS)
         createApprovalFlow(APPROVALS)
         .unwrap()
         .then(() => {
@@ -76,6 +77,8 @@ const ApprovalFlow = () => {
         })
     }
 
+    
+
     useEffect(() => {
         if (organization?.staff_levels) {
             let STAFF_LEVELS = typeof (organization?.staff_levels) === 'string' ? JSON.parse(organization?.staff_levels) : organization?.staff_levels
@@ -83,7 +86,8 @@ const ApprovalFlow = () => {
                 return {
                     title: item.name,
                     approvals: [],
-                    approval_levels: 0
+                    approval_levels: 0,
+                    level: item.level
                 }
             })
             setInitialApprovalFlowData({ staff_levels: LEVELS })
@@ -95,11 +99,12 @@ const ApprovalFlow = () => {
                     }
                 })
                 let approvals_flow = {staff_levels: initialApprovals}
-                // console.log(approvals_flow)
+                console.log(approvals_flow)
                 setInitialApprovalFlowData(approvals_flow)
             }
         }
     }, [organization, fy_info?.order_of_approvals])
+
 
     // useEffect(() => {
     //     // dispatch(updateFinancialYearDetails({ slug: "order_of_approvals", data: getApprovalLevels(approvals?.staff_levels) }))
