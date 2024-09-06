@@ -15,13 +15,31 @@ export const missionStatementSchema = yup.object().shape({
 export const measureSuccessSchema = yup.object().shape({
   // mission_plan_id: yup.string().required("Mission Plan ID is required"),
   // strategic_intent_id: yup.string().required("Strategic Intent ID is required"),
-  measures: yup.array().of(
-    yup.object().shape({
-      measure: yup.string().required("Measure of success is required"),
-      unit: yup.string().required("Unit is required"),
-      target: yup.string().required("Target is required"),
-    })
-  ),
+  measures: yup
+    .array()
+    .of(
+      yup.object().shape({
+        measure: yup.string().required("Measure of success is required"),
+        unit: yup.string().required("Unit is required"),
+        target: yup.string().required("Target is required"),
+        weight: yup
+          .number()
+          .typeError("Weight must be a number")
+          .required("Weight is required")
+          .max(100, "Weight must not be greater than 100"),
+      })
+    )
+    .test(
+      "weights-sum",
+      "The sum of all weights must be equal to 100",
+      function (measures) {
+        const totalWeight = measures?.reduce(
+          (sum: any, measures: { weight: any }) => sum + (measures.weight || 0),
+          0
+        );
+        if (totalWeight) return totalWeight === 100;
+      }
+    ),
 });
 
 export const commentSchema = yup.object().shape({
@@ -197,10 +215,16 @@ export const specifiedTaskSchema = (endDate: any, startDate: any) => {
 
 export const timelineReminderSchema = (endDate?: any, startDate?: any) => {
   return yup.object().shape({
-    creation_start_date: yup.string().required('submission start period is required'),
-    creation_end_date: yup.string().required('submission end period is required'),
-    approval_start_date: yup.string().required('approval start period is required'),
-    approval_end_date: yup.string().required('approval end period is required'),
+    creation_start_date: yup
+      .string()
+      .required("submission start period is required"),
+    creation_end_date: yup
+      .string()
+      .required("submission end period is required"),
+    approval_start_date: yup
+      .string()
+      .required("approval start period is required"),
+    approval_end_date: yup.string().required("approval end period is required"),
     setup_reminder: yup.string(),
     approval_reminder: yup.string(),
     before_start_reminder: yup.string(),

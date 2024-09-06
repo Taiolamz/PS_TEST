@@ -108,7 +108,7 @@ const MeasureofSuccess = () => {
           measure: measure.measure || "",
           unit: measure.unit || "",
           target: measure.target || "",
-          weight: measure.weight || "",
+          weight: Number(measure.weight) || "",
         })
       );
     setInitialValues(measuresOfSuccess);
@@ -142,6 +142,14 @@ const MeasureofSuccess = () => {
   });
 
   const errorAllSuccess = formik.errors.measures as any;
+
+  useEffect(() => {
+    if (formik.errors.measures && typeof formik.errors.measures === "string") {
+      {
+        toast.error(formik.errors.measures);
+      }
+    }
+  }, [formik.errors]);
 
   useEffect(() => {
     dispatch(
