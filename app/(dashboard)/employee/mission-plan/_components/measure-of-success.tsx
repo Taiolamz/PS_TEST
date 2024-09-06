@@ -11,7 +11,7 @@ import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
 import useGetComments from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
-import { getStatus } from "@/utils/helpers";
+import { findItemById, getStatus } from "@/utils/helpers";
 import { EditableLabel } from "@/components/fragment";
 
 type Props = {
@@ -50,14 +50,14 @@ const MeasureOfSuccess = ({
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
   ): MeasureOfSuccessType[] => {
-    return mappedData.map((item) => ({
+    return mappedData.map((item, index) => ({
       id: item.id,
       measure: item.measure,
       status: item.status,
       target: item.target,
       unit: item.unit,
       actions: (
-        <div className="flex gap-2.5 ml-[40px] items-end justify-end">
+        <div className="flex gap-2.5 ml-[40px] items-end justify-end" key={index}>
           {!loading &&
             data?.length !== null &&
             status === "pending" &&
@@ -113,11 +113,12 @@ const MeasureOfSuccess = ({
             )}
           {!isLoading &&
             data?.length !== null &&
-            status === "pending" &&
+            findItemById(matchingIds ?? [], item?.id as string)
+            ?.status  === "pending" &&
             isSuccess && <EditableLabel status={actionType} />}
           {!isLoading &&
             data?.length !== null &&
-            status !== "pending" &&
+            findItemById(matchingIds ?? [], item?.id as string)?.status !== "pending" &&
             !isSuccess && <EditableLabel status={status ?? ""} />}
         </div>
       ),
