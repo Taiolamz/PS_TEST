@@ -19,7 +19,7 @@ const FinancialYearUpdate = () => {
     const [createFinancialYear, { isLoading }] = useCreateFinancialYearMutation()
     const { fy_info: { financial_year }, mission_plan } = useAppSelector((state) => state.mission_plan)
 
-    console.log(mission_plan?.active_fy_info)
+    // console.log(mission_plan?.active_fy_info)
 
     const location = usePathname()
     const router = useRouter()
