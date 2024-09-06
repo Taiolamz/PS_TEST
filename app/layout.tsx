@@ -4,6 +4,7 @@ import { Inter, Lexend } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import AppProvider from "@/redux/provider";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 const lex = Lexend({
@@ -33,6 +34,7 @@ export default function RootLayout({
       </head>
       <body className={` ${lex.variable}`}>
         <AppProvider>
+          <NextTopLoader color="var(--primary-color)" showSpinner={false} />
           {children}
         </AppProvider>
         <Toaster position="top-right" richColors closeButton />

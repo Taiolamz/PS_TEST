@@ -73,6 +73,13 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["OrganizationFiscalYear"],
     }),
+    getDownlineMissionPlan: builder.query({
+      query: (fiscalYear) => ({
+        url: `/mission-plan/downliners/${fiscalYear}`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: any[] }) => response.data,
+    }),
   }),
 });
 
@@ -84,4 +91,5 @@ export const {
   useExtendFinancialYearMutation,
   useExtendSubmissionMutation,
   useEndFinancialYearMutation,
+  useGetDownlineMissionPlanQuery,
 } = allmissionPlanApi;
