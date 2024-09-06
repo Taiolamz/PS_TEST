@@ -31,7 +31,7 @@ const PageSidebar = ({
 
   return (
     <aside className="h-full bg-white border-r min-w-[201px] overflow-hidden global_sticky_class">
-      <h3 className="text-[#6E7C87] p-4">{title}</h3>
+      <h3 className="text-[#6E7C87] p-4 capitalize">{title}</h3>
       {menu_items?.map(({ id, title, path, accessor }) => (
         <span
           key={id}
