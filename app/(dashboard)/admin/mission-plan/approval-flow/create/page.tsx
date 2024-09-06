@@ -25,20 +25,34 @@ const AddApprovalFlow = () => {
     openCancelModal,
     handleCancelDialog,
     isCreatingMissionFlow,
-    reviewers,
+    // reviewers,
     level,
+    organization,
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
   const { data: rolesData, isLoading: isLoadingroles } =
     useGetAllApproverListQuery();
+  const { data: allRolesData, isLoading: isLoadingAllRoles } =
+    useGetAllRolesQuery({});
   const formatRolesData = (roles: string[]) => {
     return roles?.map((role) => ({
       name: role,
       value: role,
     }));
   };
-  const roles = formatRolesData(rolesData as string[]) ?? [];
 
+  const formatAllRoles = (newRoles: any[]) => {
+    const newData = newRoles?.map((chi) => {
+      return {
+        name: chi?.name,
+        value: chi?.id,
+      };
+    });
+    return newData;
+  };
+  const roles = formatRolesData(rolesData as string[]) ?? [];
+  const allRoles = formatAllRoles(allRolesData?.data) ?? [];
+  console.log(formik.values.order_of_approvals, "checkings");
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
       <ReusableStepListBox
@@ -78,6 +92,8 @@ const AddApprovalFlow = () => {
             // approvals={reviewers}
             approvalsArray={formik.values.order_of_approvals}
             setOrderValue={formik.setFieldValue}
+            allRoles={allRoles}
+            hodVal={formik.values.head_of_organization}
           />
         </form>
       </div>

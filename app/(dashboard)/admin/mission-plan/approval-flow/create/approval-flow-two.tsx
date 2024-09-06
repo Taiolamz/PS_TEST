@@ -31,6 +31,8 @@ interface Prop {
     approvals: string[];
   }[];
   setFieldValue: (field: string, value: any) => void;
+  allRoles: { name: string; value: string }[];
+  hodVal?: any;
 }
 
 const ApprovalFlowTwo = ({
@@ -39,8 +41,11 @@ const ApprovalFlowTwo = ({
   setOrderValue,
   approvalsArray,
   setFieldValue,
+  allRoles,
+  hodVal,
 }: Prop) => {
   const [selectedLevels, setSelectedLevels] = useState<SelectedLevels>({});
+
   const [numLevels, setNumLevels] = useState<NumLevels>({});
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
 
@@ -65,6 +70,21 @@ const ApprovalFlowTwo = ({
       return updatedSelectedLevels;
     });
   };
+  console.log(selectedLevels, "selected levels");
+
+  // const handleNumLevelsChange = (index: number, value: number) => {
+  //   setNumLevels((prevNumLevels) => {
+  //     const updatedNumLevels = {
+  //       ...prevNumLevels,
+  //       [index]: value,
+  //     };
+
+  //     const updatedApprovals = convertObjectToArray(selectedLevels, index);
+  //     setFieldValue(`order_of_approvals[${index}].approvals`, updatedApprovals);
+
+  //     return updatedNumLevels;
+  //   });
+  // };
 
   const handleNumLevelsChange = (index: number, value: number) => {
     setNumLevels((prevNumLevels) => {
@@ -72,8 +92,22 @@ const ApprovalFlowTwo = ({
         ...prevNumLevels,
         [index]: value,
       };
+      const updatedSelectedLevels = Object.keys(selectedLevels)
+        .filter((key) => {
+          const [currentIdx, level] = key.split("-").map(Number);
+          return currentIdx !== index || level <= value;
+        })
+        .reduce((acc, key) => {
+          acc[key] = selectedLevels[key];
+          return acc;
+        }, {} as Record<string, string>);
 
-      const updatedApprovals = convertObjectToArray(selectedLevels, index);
+      setSelectedLevels(updatedSelectedLevels);
+
+      const updatedApprovals = convertObjectToArray(
+        updatedSelectedLevels,
+        index
+      );
       setFieldValue(`order_of_approvals[${index}].approvals`, updatedApprovals);
 
       return updatedNumLevels;
@@ -90,45 +124,31 @@ const ApprovalFlowTwo = ({
       .map(([, value]) => value);
   };
 
-  const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
-    useGetGradeLevelsQuery({});
-  const gradeLevels = gradeLevelData ?? [];
+  // const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
+  //   useGetGradeLevelsQuery({});
+  // const gradeLevels = gradeLevelData ?? [];
 
-  const mappedData = (items: any[]) => {
-    return items.map((item) => ({
-      title: item.name,
-      approvals: [],
-    }));
-  };
+  // const mappedData = (items: any[]) => {
+  //   return items.map((item) => ({
+  //     title: item.name,
+  //     approvals: [],
+  //   }));
+  // };
 
-  const handleSelectChangeForHeadOfOrganization = (value: string) => {
-    setSelectedLevels((prevSelectedLevels) => {
-      const updatedSelectedLevels = {
-        ...prevSelectedLevels,
-        "head-of-organization": value,
-      };
-      setFieldValue(`order_of_approvals.head_of_organization`, value);
+  // useEffect(() => {
+  //   if (gradeLevels.length > 0) {
+  //     const newMappedData = mappedData(gradeLevels);
+  //     setFieldValue("order_of_approvals", newMappedData);
+  //   }
+  // }, [gradeLevels]);
 
-      return updatedSelectedLevels;
-    });
-  };
-
-  useEffect(() => {
-    if (gradeLevels.length > 0) {
-      const newMappedData = mappedData(gradeLevels);
-      setFieldValue("order_of_approvals", newMappedData);
-    }
-  }, [gradeLevels]);
+  console.log(approvalsArray, "approvals array");
 
   return (
     <div className="flex flex-col gap-5">
-      {isLoadingGradeLevel ? (
-        <div className="absolute inset-0 flex justify-center items-center">
-          <PageLoader />
-        </div>
-      ) : gradeLevels?.length > 0 ? (
+      {approvalsArray?.length > 0 ? (
         <>
-          {approvalsArray.map((chi, idx) => (
+          {approvalsArray?.map((chi, idx) => (
             <CustomAccordion
               key={idx}
               className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
@@ -150,59 +170,62 @@ const ApprovalFlowTwo = ({
                     }
                     className="w-[150px]"
                   />
-                  <div className="flex flex-col gap-10 mt-6">
+                  <div className="flex flex-col ">
                     {numLevels[idx] > 0 && (
-                      <>
+                      <div className="flex flex-col gap-10 mt-10">
                         {Array.from({ length: numLevels[idx] }, (_, i) => (
                           <div key={i}>
-                            <CustomSelect
-                              label={`${generateLabel(
-                                i
-                              )}. Who should have approval power for Level ${
-                                i + 1
-                              }`}
-                              placeholder="Select..."
-                              options={approvals.map((chi) => ({
-                                ...chi,
-                                label: chi?.name,
-                                value: chi?.name,
-                              }))}
-                              selected={selectedLevels[`${idx}-${i + 1}`] || ""}
-                              setSelected={(value) =>
-                                handleSelectChangeForLevel(idx, i + 1, value)
-                              }
-                              labelClass={labelClassName}
-                              className="w-[226px]"
-                            />
+                            {i + 1 < numLevels[idx] && (
+                              <CustomSelect
+                                label={`${generateLabel(
+                                  i
+                                )}. Who should have approval power for Level ${
+                                  i + 1
+                                }`}
+                                placeholder="Select..."
+                                options={approvals.map((chi) => ({
+                                  ...chi,
+                                  label: chi?.name,
+                                  value: chi?.name,
+                                }))}
+                                selected={
+                                  selectedLevels[`${idx}-${i + 1}`] || ""
+                                }
+                                setSelected={(value) =>
+                                  handleSelectChangeForLevel(idx, i + 1, value)
+                                }
+                                labelClass={labelClassName}
+                                className="w-[226px]"
+                              />
+                            )}
                           </div>
                         ))}
-                        <div>
-                          <CustomSelect
-                            label={`${generateLabel(
-                              numLevels[idx]
-                            )}. Who has the final approval flow`}
-                            placeholder="Select..."
-                            options={approvals.map((chi) => ({
-                              ...chi,
-                              label: chi?.name,
-                              value: chi?.name,
-                            }))}
-                            selected={
-                              selectedLevels[`${idx}-${numLevels[idx] + 1}`] ||
-                              ""
-                            }
-                            setSelected={(value) =>
-                              handleSelectChangeForLevel(
-                                idx,
-                                numLevels[idx] + 1,
-                                value
-                              )
-                            }
-                            labelClass={labelClassName}
-                            className="w-[226px]"
-                          />
-                        </div>
-                      </>
+
+                        <CustomSelect
+                          label={`${generateLabel(
+                            numLevels[idx] - 1
+                          )}. Who has the final approval flow`}
+                          placeholder="Select..."
+                          options={approvals.map((chi) => ({
+                            ...chi,
+                            label: chi?.name,
+                            value: chi?.name,
+                          }))}
+                          selected={
+                            selectedLevels[`${idx}-${numLevels[idx]}`] || ""
+                          }
+                          setSelected={(value) =>
+                            handleSelectChangeForLevel(
+                              idx,
+                              numLevels[idx],
+                              value
+                            )
+                          }
+                          labelClass={labelClassName}
+                          className="w-[226px]"
+                          mainClass="-mt-10"
+                        />
+                      </div>
                     )}
                   </div>
                 </>
@@ -225,13 +248,13 @@ const ApprovalFlowTwo = ({
             content={
               <CustomSelect
                 placeholder="Select..."
-                options={approvals.map((chi) => ({
+                options={allRoles.map((chi) => ({
                   ...chi,
                   label: chi?.name,
                   value: chi?.name,
                 }))}
-                selected={selectedLevels["head-of-organization"] || ""}
-                setSelected={handleSelectChangeForHeadOfOrganization}
+                selected={hodVal}
+                setSelected={(e) => setFieldValue("head_of_organization", e)}
                 labelClass={labelClassName}
                 className="w-[226px]"
               />
