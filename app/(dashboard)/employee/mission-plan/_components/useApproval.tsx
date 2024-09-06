@@ -12,6 +12,12 @@ type Props = {
   initialActionType: string;
   missionplanid: string;
   approval_type?: string;
+  setIsLoading?: (value: boolean) => void;
+  setIsSuccess?: (value: boolean) => void;
+  setActionType?: (value: string) => void;
+  setItemsToApprove?: (value: itemsApprove[]) => void;
+  approvableTypeId?: string;
+  itemsToApprove?: itemsApprove[];
 };
 
 export const useApproval = ({
@@ -19,13 +25,21 @@ export const useApproval = ({
   initialActionType,
   missionplanid,
   approval_type,
+  setIsLoading,
+  setActionType,
+  setIsSuccess,
+  approvableTypeId,
+  itemsToApprove,
+  setItemsToApprove,
 }: Props) => {
   const { primaryColorHexValue } = useContext(ActionContext);
   const colorWithAlpha = primaryColorHexValue
     ? addAlphaToHex(primaryColorHexValue, 0.05)
     : "";
   const [openCommentId, setOpenCommentId] = useState<string | null>(null);
-  const [approvalTimeout, setApprovalTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [approvalTimeout, setApprovalTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
   const [approveMissionPlanItems] = useApproveMissionPlanItemsMutation();
 
   const FormikApprovalForm = useFormik({
@@ -52,59 +66,47 @@ export const useApproval = ({
 
   const handleReject = (id?: string) => {
     FormikApprovalForm.setFieldValue("actionType", "rejected");
+    setActionType && setActionType("rejected");
     toggleComment(id as string);
   };
 
   const handleApprove = () => {
-    const timeoutId = setTimeout(() => {
-      FormikApprovalForm.setFieldValue("actionType", "approved");
-      FormikApprovalForm.handleSubmit();
-    }, 5000);
-    setApprovalTimeout(timeoutId);
-    toast(
-      <div className="flex gap-5 items-center">
-        <div className="flex-1">
-          <p className="text-primary text-base font-semibold">Approval</p>
-          <p className="text-gray-400 text-sm">This item is about to be approved</p>
-        </div>
-        <button
-          onClick={() => {
-            clearTimeout(timeoutId);
-            setApprovalTimeout(null);
-            toast.dismiss();
-          }}
-          className="text-primary py-1 px-3 rounded-lg bg-primary-foreground"
-          style={{
-            backgroundColor: colorWithAlpha,
-          }}
-        >
-          Cancel
-        </button>
-      </div>, {
-      onAutoClose() {
-        if (approvalTimeout) {
-          clearTimeout(approvalTimeout);
-        }
-      },
-      closeButton: false,
-      duration: 5000,
-    },
-    )
+    FormikApprovalForm.setFieldValue("actionType", "approved");
+    setActionType && setActionType("approved");
+    FormikApprovalForm.handleSubmit();
   };
 
   const handleSubmit = async (allComments: string[]) => {
     toast.loading("Processing...");
+    setIsLoading && setIsLoading(true);
+
+    const updatedItemsToApprove =
+      itemsToApprove !== undefined
+        ? itemsToApprove.map((item) => ({
+            ...item,
+            comments: allComments,
+          }))
+        : [];
+
     const payload = {
       mission_plan_id: missionplanid,
       approval_type: `${approval_type}`,
-      status: FormikApprovalForm.values.actionType,
-      comments: allComments,
+      items_to_approve: updatedItemsToApprove,
+      // status: FormikApprovalForm.values.actionType,
+      // comments: allComments,
+      // approvable_id: approvableTypeId ?? "",
     };
     try {
       await approveMissionPlanItems(payload).unwrap();
       toast.dismiss();
+      setIsLoading && setIsLoading(false);
+      setIsSuccess && setIsSuccess(true);
+      setItemsToApprove && setItemsToApprove([]);
       toast.success("Approval status updated successfully");
     } catch (error) {
+      setIsLoading && setIsLoading(false);
+      setIsSuccess && setIsSuccess(false);
+      setItemsToApprove && setItemsToApprove([]);
       toast.dismiss();
       console.error(error);
     }

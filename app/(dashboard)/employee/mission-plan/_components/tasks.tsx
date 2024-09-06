@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Comment from "./comment";
 import { formatToReadableDateShort } from "@/utils/helpers/date-formatter";
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
@@ -11,21 +11,38 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
 import CommentsIcon from "@/public/assets/icons/comments";
 import DrawerComment from "./drawer-comment";
+import { findItemById } from "@/utils/helpers";
+import { EditableLabel } from "@/components/fragment";
 
 type Props = {
   data: SpecifiedTasksType[];
   approvables?: [];
   loading: boolean;
+  showTextArea: boolean;
+  setShowTextArea: (e: boolean) => void;
 };
 
-const Tasks = ({ data, approvables, loading }: Props) => {
+const Tasks = ({
+  data,
+  approvables,
+  loading,
+  setShowTextArea,
+  showTextArea,
+}: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
 
-  const approval_type = "specified-task";
+  const approval_type = "implied-task";
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [selectedId, setSelectedID] = useState<string>("");
+  const [matchingIds, setMatchingIds] = useState<any>([]);
+  const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
 
   const {
     openCommentId,
@@ -38,6 +55,12 @@ const Tasks = ({ data, approvables, loading }: Props) => {
     initialActionType,
     missionplanid,
     approval_type,
+    setIsLoading,
+    setActionType,
+    setIsSuccess,
+    approvableTypeId: selectedId,
+    itemsToApprove,
+    setItemsToApprove,
   });
 
   const [expandedTaskIndex, setExpandedTaskIndex] = useState<number | null>(
@@ -56,6 +79,21 @@ const Tasks = ({ data, approvables, loading }: Props) => {
   // State to handle drawer state and id
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [drawerUserId, setDrawerUserId] = useState<string>("");
+
+  useEffect(() => {
+    const matchingIds: any =
+      approvables !== undefined &&
+      approvables
+        .filter((item: approveItems) => item.approvable_type === approval_type)
+        .map((item: approveItems) => {
+          return {
+            approvable_id: item.approvable_id,
+            status: item.status,
+          };
+        });
+    setMatchingIds(matchingIds);
+  }, [data]);
+
   return (
     <div className="flex flex-col gap-10">
       {loading && (
@@ -77,7 +115,7 @@ const Tasks = ({ data, approvables, loading }: Props) => {
               <div className="flex justify-between items-center mb-[1.4375rem] text-[var(--primary-color)] text-sm">
                 <h4>Specified Task {index + 1}</h4>
                 <div className="flex justify-between items-end gap-[20px]">
-                  <div className="flex gap-[3.125rem] items-center">
+                  <div className="flex gap-[3.125rem] items-end">
                     <div className="flex gap-[8px] items-center hidden">
                       <CommentsIcon />
                       <p className="flex gap-1 items-center text-xs cursor-pointer">
@@ -100,29 +138,17 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                         </p>
                       </p>
                     </div>
-                    {data[0]?.status === "pending" && (
-                      <div className="flex gap-2.5 items-end">
-                        <Button
-                          variant="outline"
-                          className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                          onClick={() => handleReject(item.id)}
-                        >
-                          Reject
-                        </Button>
-                        <Button onClick={() => handleApprove()}>Approve</Button>
-                      </div>
-                    )}
                   </div>
 
                   {expandedTaskIndex === index ? (
-                    <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full border-[#1E1E1E]  shadow-sm">
+                    <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full border-[#1E1E1E]  shadow-sm">
                       <ChevronUp
                         className="text-[var(--primary-color)] cursor-pointer"
                         onClick={() => toggleShowMore(index)}
                       />
                     </div>
                   ) : (
-                    <div className="flex items-center justify-center w-10 h-10 bg-white rounded-full border-[#1E1E1E]  shadow-sm">
+                    <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full border-[#1E1E1E]  shadow-sm">
                       <ChevronDown
                         className="text-[var(--primary-color)] cursor-pointer"
                         onClick={() => toggleShowMore(index)}
@@ -251,6 +277,100 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                               </p>
                             </div>
                           </div>
+                          <div>
+                            {findItemById(matchingIds ?? [], impliedTask?.id)
+                              ?.status === "pending" &&
+                              !isSuccess && (
+                                <div className="flex gap-2.5 items-end">
+                                  <Button
+                                    variant="outline"
+                                    className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                                    onClick={() => {
+                                      setShowTextArea(true);
+                                      setSelectedID(impliedTask?.id);
+                                      setItemsToApprove((prevItems) => {
+                                        const itemExists = prevItems.some(
+                                          (items) => items.id === impliedTask.id
+                                        );
+
+                                        if (itemExists) {
+                                          return prevItems.map((items) =>
+                                            items.id === impliedTask.id
+                                              ? {
+                                                  ...items,
+                                                  status: "rejected",
+                                                  comments: comments?.comment,
+                                                } // Update the existing item
+                                              : items
+                                          );
+                                        }
+
+                                        return [
+                                          ...prevItems,
+                                          {
+                                            id: impliedTask.id,
+                                            status: "rejected",
+                                            comments: comments?.comment,
+                                          },
+                                        ];
+                                      });
+                                      handleReject();
+                                    }}
+                                    loading={
+                                      isLoading &&
+                                      actionType === "rejected" &&
+                                      selectedId === impliedTask?.id
+                                    }
+                                    disabled={
+                                      (isLoading &&
+                                        actionType === "rejected" &&
+                                        selectedId === impliedTask?.id) ||
+                                      approvables?.length === 0
+                                    }
+                                  >
+                                    Reject
+                                  </Button>
+                                  <Button
+                                    onClick={() => {
+                                      setSelectedID(item?.id);
+                                      handleApprove();
+                                    }}
+                                    loading={
+                                      isLoading &&
+                                      actionType === "approved" &&
+                                      selectedId === item?.id
+                                    }
+                                    disabled={
+                                      isLoading &&
+                                      actionType === "approved" &&
+                                      selectedId === item?.id
+                                    }
+                                    className="hidden"
+                                  >
+                                    Approve
+                                  </Button>
+                                </div>
+                              )}
+                            {!isLoading &&
+                              data?.length !== null &&
+                              findItemById(matchingIds, impliedTask?.id)
+                                ?.status === "pending" &&
+                              isSuccess && (
+                                <EditableLabel status={actionType} />
+                              )}
+                            {!isLoading &&
+                              data?.length !== null &&
+                              findItemById(matchingIds, impliedTask?.id)
+                                ?.status !== "pending" &&
+                              !isSuccess && (
+                                <EditableLabel
+                                  status={
+                                    findItemById(matchingIds, impliedTask?.id)
+                                      ?.status ?? "pending"
+                                  }
+                                />
+                              )}
+                          </div>
                         </div>
                       ))
                     ) : (
@@ -262,6 +382,15 @@ const Tasks = ({ data, approvables, loading }: Props) => {
                 </div>
               )}
             </div>
+            {/* {showTextArea && ( */}
+            <Comment
+              label="freedom & constraints"
+              showTextArea={showTextArea}
+              setShowTextArea={setShowTextArea}
+              comments={comments}
+              formik={FormikApprovalForm}
+            />
+            {/* )} */}
             {/* Deprecated on tasks */}
             {openCommentId === item.id && (
               <Comment

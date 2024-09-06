@@ -13,6 +13,7 @@ import Link from "next/link";
 import routesPath from "@/utils/routes";
 import MissionItemsLineManager from "@/components/fragment/mission-items-line-manager";
 import SpecifiedTasksDropDown from "../../_components/specified-task-dropdown";
+import { usePathname } from "next/navigation";
 
 const { EMPLOYEE } = routesPath;
 
@@ -22,6 +23,7 @@ interface PreviewProps {
 }
 
 const Preview = ({ data, type }: PreviewProps) => {
+  const location = usePathname();
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -168,7 +170,7 @@ const Preview = ({ data, type }: PreviewProps) => {
           }),
       };
     });
-
+  // employee/mission-plan/01j6w7bg225j579xvc3v8pbcw3/approve?ui=presentation&step=1
   return (
     <div className="flex flex-col gap-[12px]">
       {type !== "lineManagerPreview" && (
@@ -180,7 +182,11 @@ const Preview = ({ data, type }: PreviewProps) => {
             <Link href="#">History</Link>
           </div>
           <div className={`${btn}`}>
-            <Link href="#">Presentation Mode</Link>
+            <Link
+              href={`/employee/mission-plan/${data?.id}/approve?ui=presentation&step=1`}
+            >
+              Presentation Mode
+            </Link>
           </div>
 
           <div className={`${btn}`}>

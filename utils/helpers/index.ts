@@ -340,3 +340,47 @@ export const isObjectEmpty = (obj: {}) => {
     return Object.keys(obj).length === 0;
   }
 };
+
+// GET MISSION ITEMS STATUS FROM APPROVABLE TYPES THAT MATCH THE APPROVABLE_ID AND TYPE
+type ApprovablesType = {
+  approvable_id: string;
+  approvable_type: string;
+  status: string;
+};
+
+export const getStatus = (
+  items: ApprovablesType[] | undefined,
+  approvable_type: string,
+  approvable_id: string
+): string | undefined => {
+  if (!Array.isArray(items)) {
+    // console.error('Items should be a defined array.');
+    return "pending";
+  }
+
+  const matchedItem = items.find(
+    (item: ApprovablesType) =>
+      item.approvable_type === approvable_type &&
+      item.approvable_id === approvable_id
+  );
+
+  return matchedItem?.status ?? "pending";
+};
+
+// Reusable function to find an item by ID
+export const findItemById = (
+  items: approveItems[],
+  searchId: string
+): approveItems | undefined => {
+  if (items.length === 0) {
+    // Return an object with status "pending" if items array is empty
+    return { status: "pending" };
+  }
+
+  const foundItem = items.find(
+    (item: approveItems) => item.approvable_id === searchId
+  );
+  return foundItem;
+};
+
+//END OF GET MISSION ITEMS STATUS FROM APPROVABLE TYPES THAT MATCH THE APPROVABLE_ID AND TYPE
