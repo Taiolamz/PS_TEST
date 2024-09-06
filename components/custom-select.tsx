@@ -14,6 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 // import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 
 type CustomSelectType = {
+  mainClass?: string;
   options: Record<string, any>[];
   id?: string | number;
   selected: string;
@@ -45,11 +46,12 @@ export default function CustomSelect({
   error,
   isRequired,
   placeholder,
+  mainClass,
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   return (
-    <div className="mt-1">
+    <div className={`mt-1 ${mainClass}`}>
       {label && (
         <label
           htmlFor={label}
