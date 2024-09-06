@@ -10,7 +10,7 @@ import ReusableDrawer from "./drawer";
 import MissionSingleItem from "./mission-single-item";
 import SpecifiedMission from "./specified-mission";
 import SpecifiedTasks from "./specified-task";
-
+import TableLoader from "./table-loader";
 
 export {
   EmptyState,
@@ -23,4 +23,5 @@ export {
   MissionSingleItem,
   SpecifiedMission,
   SpecifiedTasks,
+  TableLoader,
 };
