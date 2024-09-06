@@ -32,6 +32,7 @@ const routesPath = {
     MISSION_PLAN_APPROVAL_FLOW_LEVEL: `/${admin_auth}/mission-plan/approval-flow/level`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
+    FINANCIAL_YEAR_UPDATE: `/${admin_auth}/mission-plan/update`,
     KICK_START_MISSION_PLAN_SELECT_TEMPLATE: `/${admin_auth}/mission-plan/kickstart/template`,
     APPROVE_REJECT_MISSION_PLAN: (id: string) =>
       `/${admin_auth}/mission-plan/${id}/approve`,
