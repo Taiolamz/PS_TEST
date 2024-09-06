@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useMissionApprovalFlow } from "../../../checklist/_hooks/useMissionApprovalFlow";
 import Routes from "@/lib/routes/routes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -12,6 +12,7 @@ import CancelModal from "../../template/_components/cancel-modal";
 import ApprovalFlowTwo from "./approval-flow-two";
 import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { useGetAllApproverListQuery } from "@/redux/services/employee/employeeApi";
+import { Input } from "@/components/ui/input";
 
 const { ADMIN } = routesPath;
 
@@ -28,34 +29,15 @@ const AddApprovalFlow = () => {
     level,
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
-  // const location = usePathname();
-  // const searchParams = useSearchParams();
-  // const ui = searchParams.get("ui");
-
-  // const handleProceed = () => {
-  //   // if (ui === "approval-flow-step-two") {
-  //   router.push(ADMIN.CHECKLIST);
-  //   // } else {
-  //   // router.push(`${location}?ui=approval-flow-step-two`);
-  //   // }
-  // };
-
   const { data: rolesData, isLoading: isLoadingroles } =
     useGetAllApproverListQuery();
-  console.log(rolesData, "roles data");
-  // const roles = rolesData?.data ?? [];
   const formatRolesData = (roles: string[]) => {
     return roles?.map((role) => ({
       name: role,
       value: role,
     }));
   };
-  console.log(formatRolesData(rolesData as string[]), "new roles data");
   const roles = formatRolesData(rolesData as string[]) ?? [];
-  // const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
-  //   {}
-  // );
-  // const roles = rolesData?.data ?? [];
 
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
@@ -64,36 +46,31 @@ const AddApprovalFlow = () => {
         activeStep="2"
         totalStep="2"
         title="Mission Plan Flow"
-        // onSave={handleProceed}
         onSave={formik.handleSubmit}
         onCancel={handleCancelDialog}
-        // btnDisabled={!formik.values.order_of_approvals}
         loading={isCreatingMissionFlow}
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
-        <form
-          className="mt-5 w-full"
-          // onSubmit={formik.handleSubmit}
-          autoComplete="off"
-        >
-          <div className="flex flex-col gap-4 mb-10">
-            <p className="font-medium text-sm">Approval Flow</p>
-            <p className="text-sm font-normal text-custom-gray-scale-400">
+        <form className="mt-5 w-full" autoComplete="off">
+          <div className="flex flex-col gap-4 mb-5">
+            {/* <p className="font-medium text-sm">Approval Flow</p> */}
+            <Input
+              label="Approval Title"
+              type="text"
+              placeholder="FY 2024 Approval Flow"
+              id="title"
+              name="title"
+              className="w-[425px]"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              isRequired
+            />
+            <p className="text-sm font-normal mt-5 text-custom-gray-scale-400">
               Arrange how you want your mission plan approval flow should
               process
             </p>
           </div>
-          {/* {ui === "approval-flow-step-one" ? (
-            <ApprovalFlowOne
-              levelOption={level}
-              approvals={reviewers}
-              selectedReviewer={formik.values.reviewers}
-              setSelectedReviewer={(value) =>
-                formik.setFieldValue("reviewers", value)
-              }
-            />
-          ) : null} */}
-          {/* {ui === "approval-flow-step-two" ? ( */}
+
           <ApprovalFlowTwo
             setFieldValue={formik.setFieldValue}
             options={level}
@@ -102,7 +79,6 @@ const AddApprovalFlow = () => {
             approvalsArray={formik.values.order_of_approvals}
             setOrderValue={formik.setFieldValue}
           />
-          {/* ) : null} */}
         </form>
       </div>
 

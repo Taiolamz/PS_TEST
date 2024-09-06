@@ -78,11 +78,9 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     return array;
   };
 
-  // const formSchema = yup.object().shape({});
   const router = useRouter();
   const user = useAppSelector(selectUser);
   const { organization } = user;
-  // const BranchRoute = ADMIN.BRANCHES;
   const [createMissionFlow, { isLoading: isCreatingMissionFlow }] =
     useCreateMissionFlowMutation();
 
@@ -100,7 +98,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push(ADMIN.CHECKLIST)
+            router.push(ADMIN.CHECKLIST);
             // router.push(BranchRoute);
           }, 2000);
         });
@@ -123,6 +121,8 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     initialValues: {
       // level: "",
       // reviewers: "",
+      head_of_organization: "",
+      title: "",
       order_of_approvals: [{ title: "", approvals: [] }],
     },
     // validationSchema: formSchema,

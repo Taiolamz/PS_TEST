@@ -9,7 +9,7 @@ const DashboardModal = ({
   onOpenChange,
 }: DashboardModalType) => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} >
       <DialogContent className={className}>{children}</DialogContent>
     </Dialog>
   );

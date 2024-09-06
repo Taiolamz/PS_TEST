@@ -29,6 +29,7 @@ const routesPath = {
     VIEW_MISSION_PLAN_TEMPLATE: `/${admin_auth}/mission-plan/template/view-template`,
     MISSION_PLAN_TEMPLATE_LEVEL: `/${admin_auth}/mission-plan/template/level`,
     MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
+    MISSION_PLAN_APPROVAL_FLOW_LEVEL: `/${admin_auth}/mission-plan/approval-flow/level`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     KICK_START_MISSION_PLAN_SELECT_TEMPLATE: `/${admin_auth}/mission-plan/kickstart/template`,

@@ -158,7 +158,7 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
     const payload = new FormData();
     const { logo, head, state, ...rest } = formik.values;
 
-    // Append the rest of the form values
+
     Object.entries(rest).forEach(([key, value]) => {
       payload.append(key, value as string);
     });
