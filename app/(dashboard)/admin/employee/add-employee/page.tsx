@@ -367,7 +367,7 @@ export default function AddEmployee() {
                   placeholder="YYYY/MM/DD"
                   error={""}
                   className="relative"
-                  iconClass="top-[2.7rem]"
+                  iconClass="top-[2rem]"
                   // isRequired
                 />
 
@@ -379,7 +379,7 @@ export default function AddEmployee() {
                     formik.setFieldValue("resumption_date", formatDate(date));
                   }}
                   placeholder="YYYY/MM/DD"
-                  iconClass="top-[2.7rem]"
+                  iconClass="top-[2rem]"
                   error={""}
                   className="relative"
                   // isRequired
