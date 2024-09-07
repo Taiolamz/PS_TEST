@@ -41,10 +41,6 @@ const StrategicPillarUpdate = () => {
     await updateStrategicPillars({ payload: obj, id: FYID })
       .unwrap()
       .then((payload: Dictionary) => {
-        console.log(
-          payload?.data?.organization_mission_plan?.strategic_pillars,
-          "pillars"
-        );
         const newData = {
           ...payload?.data?.organization_mission_plan,
           strategic_pillars:

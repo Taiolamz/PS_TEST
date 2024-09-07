@@ -3,10 +3,13 @@ import { Dictionary } from "@/@types/dictionary";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomSelect from "@/components/custom-select";
 import { Button } from "@/components/ui/button";
-import { updateFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import {
+  updateFinancialYearDetails,
+  updateMissionPlanDetails,
+} from "@/redux/features/mission-plan/missionPlanSlice";
 import {
   useCreateFinancialYearMutation,
-  useCreateTimelineAndReminderMutation,
+  useUpdateFiscalYearMutation,
 } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { removeCharFromString } from "@/utils/helpers";
@@ -24,15 +27,11 @@ import { toast } from "sonner";
 const { ADMIN } = routesPath;
 
 const TimelineAndReminderUpdate = () => {
-  const [createTimelineAndReminder, { isLoading }] =
-    useCreateTimelineAndReminderMutation();
-  //   const {
-  //     fy_info: { timeline_reminder, financial_year },
-  //   } = useAppSelector((state) => state?.mission_plan);
+  const [updateFiscalYear, { isLoading }] = useUpdateFiscalYearMutation();
+
   const { active_fy_info: timeline_reminder } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
-  //   console.log(active_fy_info, "checking financial");
   const FYID = timeline_reminder?.id;
 
   const location = usePathname();
@@ -40,8 +39,6 @@ const TimelineAndReminderUpdate = () => {
   const dispatch = useAppDispatch();
 
   const handleFormSubmit = async (values: Dictionary) => {
-    console.log(values);
-    // return
     const DATE_DIFFERENCE =
       Number(removeCharFromString(values.creation_end_date, "-")) -
       Number(removeCharFromString(values.creation_start_date, "-"));
@@ -49,10 +46,20 @@ const TimelineAndReminderUpdate = () => {
       toast.info("Submission end date must be a future date");
       return;
     }
-    createTimelineAndReminder(values)
+    const obj = {
+      ...values,
+      review_period: timeline_reminder?.review_period,
+    };
+    updateFiscalYear(obj)
       .unwrap()
-      .then(() => {
-        toast.success("Timeline And Reminder Created Successfully");
+      .then((payload: Dictionary) => {
+        dispatch(
+          updateMissionPlanDetails({
+            slug: "active_fy_info",
+            data: payload?.data?.organization_mission_plan,
+          })
+        );
+        toast.success("Timeline And Reminder Updated Successfully");
         // router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=approval-flow`);
         router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${FYID}`);
       });
@@ -77,14 +84,14 @@ const TimelineAndReminderUpdate = () => {
     enableReinitialize: true,
   });
 
-  useEffect(() => {
-    dispatch(
-      updateFinancialYearDetails({
-        slug: "timeline_reminder",
-        data: formik.values,
-      })
-    );
-  }, [formik.values]);
+  //   useEffect(() => {
+  //     dispatch(
+  //       updateFinancialYearDetails({
+  //         slug: "timeline_reminder",
+  //         data: formik.values,
+  //       })
+  //     );
+  //   }, [formik.values]);
 
   return (
     <div className="w-full">

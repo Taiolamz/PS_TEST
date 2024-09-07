@@ -70,9 +70,9 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-    updateTimelineAndReminder: builder.mutation({
-      query: ({ payload, id }) => ({
-        url: `/mission-plan/update/timeline-reminder/${id}`,
+    updateFiscalYear: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/update/${payload?.id}`,
         method: "PATCH",
         body: payload,
       }),
@@ -198,7 +198,7 @@ export const {
   useGetMySpecifiedTaskQuery,
   useLazyGetMySpecifiedTaskQuery,
   useCreateTimelineAndReminderMutation,
-  useUpdateTimelineAndReminderMutation,
+  useUpdateFiscalYearMutation,
   useDeleteSpecifiedTaskMutation,
   useCreateApprovalFlowMutation,
 } = missionPlanApi;
