@@ -19,7 +19,11 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 import { PageLoader } from "@/components/custom-loader";
 
-const Boundaries = () => {
+interface myComponentProps {
+  onNextStep?: () => void;
+}
+
+const Boundaries = ({ onNextStep }: myComponentProps) => {
   const { mission_plan: mission_plan_info } = useAppSelector(
     (state) => state.mission_plan
   );
@@ -60,7 +64,8 @@ const Boundaries = () => {
           toast.success("Freedom and Constraints Created Successfully");
           setTimeout(() => {
             toast.dismiss();
-            router.push(`${location}?ui=boundaries&step=preview`);
+            onNextStep && onNextStep();
+            // router.push(`${location}?ui=boundaries&step=preview`);
           }, 2000);
         });
     },

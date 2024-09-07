@@ -72,7 +72,11 @@ interface DeleteData {
   id?: string;
 }
 
-const SpecifiedTask = () => {
+interface myComponentProps {
+  onNextStep?: () => void
+}
+
+const SpecifiedTask = ({onNextStep}: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -305,7 +309,8 @@ const SpecifiedTask = () => {
           .unwrap()
           .then(() => {
             toast.success("Specified Task Addedd Successfully");
-            router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task`);
+            onNextStep && onNextStep()
+            // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task`);
           });
       }
     } catch (error) {}

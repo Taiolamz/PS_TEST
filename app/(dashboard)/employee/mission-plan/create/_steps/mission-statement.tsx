@@ -17,9 +17,13 @@ import { useEffect } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { toast } from "sonner";
 
-const { ADMIN } = routesPath;
+// const { ADMIN, EMPLOYEE } = routesPath;
 
-const MissionStatement = () => {
+interface myComponentProps {
+  onNextStep?: () => void
+}
+
+const MissionStatement = ({onNextStep}: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -55,7 +59,8 @@ const MissionStatement = () => {
       .unwrap()
       .then((data) => {
         toast.success("Mission Statement Created Successfully");
-        router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=measure-success`);
+        onNextStep && onNextStep()
+        // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=measure-success`);
       });
   };
 
