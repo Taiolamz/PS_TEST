@@ -165,6 +165,16 @@ const MeasureofSuccess = ({onNextStep}: myComponentProps) => {
     );
   }, [formik.values]);
 
+   // check -------------------
+  useEffect(() => {
+    if (
+      !active_fy_info?.template?.success_measures &&
+      Object?.keys(active_fy_info)?.length > 0
+    ) {
+      router?.back();
+    }
+  }, [active_fy_info]);
+
   return (
     <div className="pr-4">
       {isLoadingMissionPlan || isFetchingMissionPlan ? (

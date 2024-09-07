@@ -20,10 +20,10 @@ import { toast } from "sonner";
 // const { ADMIN, EMPLOYEE } = routesPath;
 
 interface myComponentProps {
-  onNextStep?: () => void
+  onNextStep?: () => void;
 }
 
-const MissionStatement = ({onNextStep}: myComponentProps) => {
+const MissionStatement = ({ onNextStep }: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -59,7 +59,7 @@ const MissionStatement = ({onNextStep}: myComponentProps) => {
       .unwrap()
       .then((data) => {
         toast.success("Mission Statement Created Successfully");
-        onNextStep && onNextStep()
+        onNextStep && onNextStep();
         // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=measure-success`);
       });
   };
@@ -98,6 +98,19 @@ const MissionStatement = ({onNextStep}: myComponentProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan]);
+
+  // check -------------------
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
+  useEffect(() => {
+    if (
+      !active_fy_info?.template?.mission_statement &&
+      Object?.keys(active_fy_info)?.length > 0
+    ) {
+      router?.back();
+    }
+  }, [active_fy_info]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="w-full ">

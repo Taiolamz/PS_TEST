@@ -171,6 +171,20 @@ const StrategicIntent = ({
   const errorIntents = formik.errors.intents as any;
   const touchedIntents = formik.touched.intents as any;
 
+
+    // check -------------------
+    const { active_fy_info } = useAppSelector(
+      (state) => state?.mission_plan?.mission_plan
+    );
+    useEffect(() => {
+      if (
+        !active_fy_info?.template?.strategic_intents &&
+        Object?.keys(active_fy_info)?.length > 0
+      ) {
+        router?.back()
+      }
+    }, [active_fy_info]);
+
   return (
     <div>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (

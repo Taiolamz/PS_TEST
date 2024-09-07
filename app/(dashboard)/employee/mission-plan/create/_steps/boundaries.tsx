@@ -96,6 +96,19 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
 
+   // check -------------------
+   const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
+  useEffect(() => {
+    if (
+      !active_fy_info?.template?.boundaries &&
+      Object?.keys(active_fy_info)?.length > 0
+    ) {
+      router?.back();
+    }
+  }, [active_fy_info]);
+
   return (
     <>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (

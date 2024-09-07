@@ -45,7 +45,7 @@ const CreateMissionPlan = () => {
     {
       id: 2,
       title: "Mission Statement",
-      path: "?ui=measure-success",
+      path: "?ui=mission-statement",
       accessor: "mission-statement",
       hide: !active_fy_info?.template?.mission_statement,
       onNextStep: () => {
@@ -76,10 +76,10 @@ const CreateMissionPlan = () => {
       id: 5,
       title: "Specified Task",
       path: "?ui=specified-task",
-      accessor: "specified-intent",
+      accessor: "specified-task",
       hide: !active_fy_info?.template?.specified_tasks,
       onNextStep: () => {
-        getNextLinkVal(`specified-intent`);
+        getNextLinkVal(`specified-task`);
       },
     },
     {
@@ -135,7 +135,7 @@ const CreateMissionPlan = () => {
 
   const getNextLinkVal = (param: string) => {
     const obj = getNextObjectByAccessor(param, getListToUse());
-    console.log(obj);
+    // console.log(obj);
     const path = EMPLOYEE.CREATE_MISSION_PLAN;
     if (obj !== null || obj) {
       const val = obj?.path;
@@ -154,9 +154,9 @@ const CreateMissionPlan = () => {
       // onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
       <section
-        onClick={() => {
-          getNextLinkVal("implied-task");
-        }}
+        // onClick={() => {
+        //   getNextLinkVal("measure-success");
+        // }}
         className="flex h-full overflow-y-scroll"
       >
         <PageSidebar
@@ -207,7 +207,7 @@ const CreateMissionPlan = () => {
               }}
             />
           )}
-          {ui === "specified-intent" && (
+          {ui === "specified-task" && (
             <SpecifiedTask
               onNextStep={() => {
                 getNextLinkVal(ui);
