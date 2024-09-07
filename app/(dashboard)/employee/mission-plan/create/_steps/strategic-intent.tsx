@@ -22,9 +22,13 @@ import { PageLoader } from "@/components/custom-loader";
 
 interface StrategicIntentProps {
   currentMissionPlan?: CurrentMissionPlanData[] | any;
+  onNextStep?: () => void;
 }
 
-const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
+const StrategicIntent = ({
+  currentMissionPlan,
+  onNextStep,
+}: StrategicIntentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -100,7 +104,8 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
     };
     try {
       await addStrategicIntent(transformedIntents).unwrap();
-      router.push(`${location}?ui=specified-intent`);
+      onNextStep && onNextStep();
+      // router.push(`${location}?ui=specified-intent`);
       toast.success("Strategic intent saved successfully");
     } catch (error) {}
   };
@@ -165,6 +170,20 @@ const StrategicIntent = ({ currentMissionPlan }: StrategicIntentProps) => {
 
   const errorIntents = formik.errors.intents as any;
   const touchedIntents = formik.touched.intents as any;
+
+
+    // check -------------------
+    const { active_fy_info } = useAppSelector(
+      (state) => state?.mission_plan?.mission_plan
+    );
+    useEffect(() => {
+      if (
+        !active_fy_info?.template?.strategic_intents &&
+        Object?.keys(active_fy_info)?.length > 0
+      ) {
+        router?.back()
+      }
+    }, [active_fy_info]);
 
   return (
     <div>
