@@ -56,6 +56,13 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    updateStrategicPillars: builder.mutation({
+      query: ({ payload, id }) => ({
+        url: `/mission-plan/update/strategic-pillar/${id}`,
+        method: "PATCH",
+        body: payload,
+      }),
+    }),
     createTimelineAndReminder: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/timeline-reminder`,
@@ -171,6 +178,7 @@ export const {
   useLazyGetMyMissionPlanQuery,
   useCreateMissionAndVisionMutation,
   useCreateStrategicPillarsMutation,
+  useUpdateStrategicPillarsMutation,
   useGetFinancialYearPreviewQuery,
   useSaveFinancialYearMutation,
   useGetOrganizationMissionPlansQuery,
