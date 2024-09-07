@@ -21,7 +21,7 @@ import { Item } from "@radix-ui/react-dropdown-menu";
 import BadgeComponent from "@/components/badge/BadgeComponents";
 import routesPath from "@/utils/routes";
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 const FiscalYearInfo = () => {
   const [endFY, setExtendSubmission] = useState<boolean>(false);
@@ -29,6 +29,9 @@ const FiscalYearInfo = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+
+  
+
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -41,11 +44,11 @@ const FiscalYearInfo = () => {
 
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const router = useRouter()
+  const router = useRouter();
 
   const handleNavigate = (slug: string) => {
-    router.push(`${ADMIN.FINANCIAL_YEAR_UPDATE}?ui=${slug}`)
-  }
+    router.push(`${ADMIN.FINANCIAL_YEAR_UPDATE}?ui=${slug}`);
+  };
 
   const handleSubmit = async () => {
     let value = { fiscal_year_id: id, new_end_date: date.new_end_date };
@@ -164,7 +167,7 @@ const FiscalYearInfo = () => {
               <button
                 disabled={active_fy_info?.status !== "active"}
                 className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize ml-6 place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
-                onClick={() => handleNavigate('financial-year')}
+                onClick={() => handleNavigate("financial-year")}
               >
                 Edit
               </button>
@@ -222,7 +225,7 @@ const FiscalYearInfo = () => {
           <button
             disabled={active_fy_info?.status !== "active"}
             className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
-            onClick={() => handleNavigate('strategic-pillar')}
+            onClick={() => handleNavigate("strategic-pillar")}
           >
             Edit
           </button>
@@ -340,6 +343,7 @@ const FiscalYearInfo = () => {
         <button
           disabled={active_fy_info?.status !== "active"}
           className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+          onClick={() => handleNavigate("timeline-reminder")}
         >
           Edit
         </button>

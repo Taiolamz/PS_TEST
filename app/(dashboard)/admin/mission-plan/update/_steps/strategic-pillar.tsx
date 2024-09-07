@@ -2,7 +2,7 @@ import { Dictionary } from "@/@types/dictionary";
 import Icon from "@/components/icon/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { updateFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useUpdateStrategicPillarsMutation } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
@@ -19,9 +19,7 @@ const StrategicPillarUpdate = () => {
   const {
     active_fy_info: { strategic_pillars, id: FYID },
   } = useAppSelector((state) => state?.mission_plan?.mission_plan);
-  const { active_fy_info } = useAppSelector(
-    (state) => state?.mission_plan?.mission_plan
-  );
+
   const [initialValues, setInitialValues] = useState<{
     pillars: { id: string; title: string }[];
   }>({
@@ -36,23 +34,31 @@ const StrategicPillarUpdate = () => {
   const step = useSearchParams().get("step");
 
   const handleFormSubmit = async (values: Dictionary) => {
-    dispatch(
-      updateFinancialYearDetails({ slug: "strategic_pillars", data: values })
-    );
-
     const pillars = values?.pillars?.map((d: any) => d.title);
     const obj = {
       strategic_pillars: pillars,
-      id: FYID,
     };
-    await updateStrategicPillars(obj)
+    await updateStrategicPillars({ payload: obj, id: FYID })
       .unwrap()
-      .then(() => {
-        toast.success("Strategic Pillars Updated Successfully");
-        // router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=timeline-reminder`);
-        router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${FYID}`);
+      .then((payload: Dictionary) => {
+        console.log(
+          payload?.data?.organization_mission_plan?.strategic_pillars,
+          "pillars"
+        );
+        const newData = {
+          ...payload?.data?.organization_mission_plan,
+          strategic_pillars:
+            payload?.data?.organization_mission_plan?.strategic_pillars,
+        };
 
-        // router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=strategic-pillar&step=preview`)
+        dispatch(
+          updateMissionPlanDetails({
+            slug: "active_fy_info",
+            data: newData,
+          })
+        );
+        toast.success("Strategic Pillars Updated Successfully");
+        router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${FYID}`);
       });
   };
 

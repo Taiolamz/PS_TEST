@@ -6,6 +6,7 @@ import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FinancialYearUpdate, StrategicPillarUpdate } from "./_steps";
 import { CREATE_FY_LINKS } from "./_data";
+import TimelineAndReminderUpdate from "./_steps/timeline-reminder";
 
 const { ADMIN } = routesPath
 
@@ -29,6 +30,7 @@ export default function Create() {
         <aside className="p-5 w-full">
           {ui === "financial-year" && <FinancialYearUpdate />}
           {ui === "strategic-pillar" && <StrategicPillarUpdate />}
+          {ui === "timeline-reminder" && <TimelineAndReminderUpdate />}
         </aside>
       </section>
     </DashboardLayout>

@@ -48,8 +48,6 @@ const AllEmployeeMissionPlan = () => {
   const [departments, setDepartments] = useState<string>("");
   const [units, setUnits] = useState<string>("");
 
-  console.log(active_fy_info, "active state");
-
   //Approval extension
   const [extendSubmission, setExtendSubmission] = useState<boolean>(false);
   const [reopenSubmission, setReopenSubmission] = useState<boolean>(false);
