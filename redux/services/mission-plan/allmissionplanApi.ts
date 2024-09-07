@@ -80,6 +80,13 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: { data: any[] }) => response.data,
     }),
+    getDownlineApprovalMissionPlan: builder.query({
+      query: (fiscalYear) => ({
+        url: `/mission-plan/downliners/${fiscalYear}/pending-approval`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: any[] }) => response.data,
+    }),
   }),
 });
 
@@ -92,4 +99,5 @@ export const {
   useExtendSubmissionMutation,
   useEndFinancialYearMutation,
   useGetDownlineMissionPlanQuery,
+  useGetDownlineApprovalMissionPlanQuery,
 } = allmissionPlanApi;
