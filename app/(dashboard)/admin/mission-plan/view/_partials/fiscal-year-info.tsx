@@ -284,7 +284,7 @@ const FiscalYearInfo = () => {
         {/* <div className="mt-4 max-w-lg">
           <p className="text-sm font-normal my-4">FY Start Reminder</p>
           <div className="mb-6 w-full grid gap-5">
-     
+          
             <div className="space-y-2">
               <h4 className="text-[var(--text-color4)] font-light text-sm">
                 Reminder Type
