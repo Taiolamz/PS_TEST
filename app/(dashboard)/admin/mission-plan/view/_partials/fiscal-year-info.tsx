@@ -30,8 +30,6 @@ const FiscalYearInfo = () => {
     (state) => state?.mission_plan?.mission_plan
   );
 
-  
-
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -200,6 +198,7 @@ const FiscalYearInfo = () => {
           <button
             disabled={active_fy_info?.status !== "active"}
             className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+            onClick={() => handleNavigate("mission-vision")}
           >
             Edit
           </button>
