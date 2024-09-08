@@ -3,8 +3,8 @@ import CustomDateInput from '@/components/custom-date-input';
 import CustomSelect from '@/components/custom-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { updateFinancialYearDetails } from '@/redux/features/mission-plan/missionPlanSlice';
-import { useCreateFinancialYearMutation } from '@/redux/services/mission-plan/missionPlanApi';
+import { updateFinancialYearDetails, updateMissionPlanDetails } from '@/redux/features/mission-plan/missionPlanSlice';
+import { useCreateFinancialYearMutation, useUpdateFiscalYearMutation } from '@/redux/services/mission-plan/missionPlanApi';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { removeCharFromString } from '@/utils/helpers';
 import { formatDate } from '@/utils/helpers/date-formatter';
@@ -16,10 +16,8 @@ import { toast } from 'sonner';
 
 const FinancialYearUpdate = () => {
 
-    const [createFinancialYear, { isLoading }] = useCreateFinancialYearMutation()
+    const [updateFiscalYear, { isLoading }] = useUpdateFiscalYearMutation();
     const { fy_info: { financial_year }, mission_plan } = useAppSelector((state) => state.mission_plan)
-
-    // console.log(mission_plan?.active_fy_info)
 
     const location = usePathname()
     const router = useRouter()
@@ -33,16 +31,21 @@ const FinancialYearUpdate = () => {
             return
         }
         let payload = {
-            ...mission_plan?.active_fy_info,
             ...values
         }
         
-        // createFinancialYear(values)
-        //     .unwrap()
-        //     .then(() => {
-        //         toast.success("Financial Year Created Successfully")
-        //         // router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`)
-        //     })
+        updateFiscalYear(payload)
+            .unwrap()
+            .then((payload) => {
+                toast.success("Financial Year Updated Successfully")
+                dispatch(
+                    updateMissionPlanDetails({
+                      slug: "active_fy_info",
+                      data: payload?.data?.organization_mission_plan,
+                    })
+                  );
+                router.back()
+            })
     }
 
 
@@ -52,7 +55,7 @@ const FinancialYearUpdate = () => {
             start_date: (mission_plan?.active_fy_info?.start_date as string) || "",
             end_date: (mission_plan?.active_fy_info?.end_date as string) || "",
             review_period: (mission_plan?.active_fy_info?.review_period as string) || "",
-            template_id: mission_plan?.active_fy_info?.template_id || ""
+            id: mission_plan?.active_fy_info?.id || ""
         },
         validationSchema: fiscalYearSchema,
         onSubmit: handleFormSubmit,
@@ -119,7 +122,7 @@ const FinancialYearUpdate = () => {
                         id=""
                         options={[
                             {label: "Monthly", value: "monthly"},
-                            {label: "Quarterly", value: "buarterly"},
+                            {label: "Quarterly", value: "quarterly"},
                             {label: "Bi-Annual (twice/year)", value: "bi-annual"},
                         ]}
                         selected={formik.values.review_period}
