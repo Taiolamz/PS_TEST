@@ -74,15 +74,19 @@ export const allmissionPlanApi = baseApi.injectEndpoints({
       invalidatesTags: ["OrganizationFiscalYear"],
     }),
     getDownlineMissionPlan: builder.query({
-      query: (fiscalYear) => ({
-        url: `/mission-plan/downliners/${fiscalYear}`,
+      query: ({ fiscalYear, params }) => ({
+        url: `/mission-plan/downliners/${fiscalYear}${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       transformResponse: (response: { data: any[] }) => response.data,
     }),
     getDownlineApprovalMissionPlan: builder.query({
-      query: (fiscalYear) => ({
-        url: `/mission-plan/downliners/${fiscalYear}/pending-approval`,
+      query: ({ fiscalYear, params }) => ({
+        url: `/mission-plan/downliners/${fiscalYear}/pending-approval${generateQueryString(
+          { ...params }
+        )}`,
         method: "GET",
       }),
       transformResponse: (response: { data: any[] }) => response.data,

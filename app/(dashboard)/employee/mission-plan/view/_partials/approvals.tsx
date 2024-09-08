@@ -25,15 +25,22 @@ export default function Approvals() {
   const router = useRouter();
   const dispatch = useDispatch();
   const id = searchParams.get("id"); //The fiscial year ID
-  const { active_fy_info } = useAppSelector(
-    (state) => state?.mission_plan?.mission_plan
-  );
+  // const { active_fy_info } = useAppSelector(
+  //   (state) => state?.mission_plan?.mission_plan
+  // );
   const { data, isLoading, isFetching } =
     useGetDownlineApprovalMissionPlanQuery<{
       data: { data: any[]; links: any; meta: any };
       isLoading: boolean;
       isFetching?: boolean;
-    }>(id);
+    }>({
+      fiscalYear: id,
+      params: {
+        search: search,
+        filter_by: filter,
+        sort: sort,
+      },
+    });
   // State to handle drawer state and id
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [openApprovalStatus, setOpenApprovalStatus] = useState<boolean>(false);
@@ -66,6 +73,11 @@ export default function Approvals() {
               onPageChange={(p) => {
                 console.log(p);
               }}
+              onSearch={(val) => {
+                setTimeout(() => {
+                  setSearch(val);
+                }, 2000);
+              }}
               filterList={[
                 { value: "in_review", label: "In Review" },
                 { value: "approved", label: "Approved" },
@@ -88,8 +100,8 @@ export default function Approvals() {
                 setSort(param?.value);
               }}
               hideNewBtnOne={true}
-              tableBodyList={FORMAT_TABLE_DATA(allemployeeData)}
-              loading={false}
+              tableBodyList={FORMAT_TABLE_DATA(data?.data)}
+              loading={isFetching}
               handleSearchClick={(param) => {
                 setSearch(param);
               }}
@@ -164,13 +176,13 @@ const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((org: any) => ({
     name: (
       <>
-        <span className="hidden">{org.id}</span>
+        <span className="hidden">{org?.mission_plan_id}</span>
         <p>{org?.name}</p>
       </>
     ),
     designation: org?.designation,
     email: org?.email,
-    created_at: formatDate(org?.created_at),
+    created_at: formatDate(org?.date_submitted),
     status: (
       <BadgeComponent
         text={org?.status}
