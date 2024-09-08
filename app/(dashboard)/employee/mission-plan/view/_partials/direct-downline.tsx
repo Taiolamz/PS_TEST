@@ -13,7 +13,6 @@ import { updateEmployeeDetails } from "@/redux/features/mission-plan/employeeDat
 import routesPath from "@/utils/routes";
 // import { allemployeeData } from "../../_data/all-employee-table-data";
 import { useGetDownlineMissionPlanQuery } from "@/redux/services/mission-plan/allmissionplanApi";
-import { PageLoader } from "@/components/custom-loader";
 
 const { EMPLOYEE } = routesPath;
 
@@ -21,21 +20,26 @@ export default function DirectDownline() {
   const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
   const [sort, setSort] = useState<string>("");
-  const user_hierarchy = useAppSelector(
-    (state) => state?.auth?.user?.organization?.hierarchy
-  );
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
   const id = searchParams.get("id"); //The fiscial year ID
-  const { active_fy_info } = useAppSelector(
-    (state) => state?.mission_plan?.mission_plan
-  );
+  // const { active_fy_info } = useAppSelector(
+  //   (state) => state?.mission_plan?.mission_plan
+  // );
   const { data, isLoading, isFetching } = useGetDownlineMissionPlanQuery<{
     data: { data: any[]; links: any; meta: any };
     isLoading: boolean;
     isFetching?: boolean;
-  }>(id);
+  }>({
+    fiscalYear: id,
+    params: {
+      search: search,
+      filter_by: filter,
+      sort: sort,
+    },
+  });
   // State to handle drawer state and id
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [openApprovalStatus, setOpenApprovalStatus] = useState<boolean>(false);
@@ -67,6 +71,11 @@ export default function DirectDownline() {
               currentPage="1"
               onPageChange={(p) => {
                 console.log(p);
+              }}
+              onSearch={(val) => {
+                setTimeout(() => {
+                  setSearch(val);
+                }, 2000);
               }}
               filterList={[
                 { value: "in_review", label: "In Review" },
