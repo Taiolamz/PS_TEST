@@ -112,9 +112,13 @@ const validationSchema = yup.object().shape({
   tasks: yup.array().of(taskSchema).required("Tasks are required"),
 });
 
-const { ADMIN } = routesPath;
+// const { ADMIN } = routesPath;
 
-const ImpliedTask = () => {
+interface myComponentProps {
+  onNextStep?: () => void;
+}
+
+const ImpliedTask = ({ onNextStep }: myComponentProps) => {
   const [createImpliedTask, { isLoading: isCreatingImpliedTask }] =
     useCreateImpliedTaskMutation();
   const router = useRouter();
@@ -138,7 +142,8 @@ const ImpliedTask = () => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
+            onNextStep && onNextStep();
+            // router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
           }, 2000);
         });
       });

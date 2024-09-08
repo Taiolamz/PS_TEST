@@ -56,10 +56,24 @@ export const missionPlanApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    updateStrategicPillars: builder.mutation({
+      query: ({ payload, id }) => ({
+        url: `/mission-plan/update/strategic-pillar/${id}`,
+        method: "PATCH",
+        body: payload,
+      }),
+    }),
     createTimelineAndReminder: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/timeline-reminder`,
         method: "POST",
+        body: payload,
+      }),
+    }),
+    updateFiscalYear: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/update/${payload?.id}`,
+        method: "PATCH",
         body: payload,
       }),
     }),
@@ -171,6 +185,7 @@ export const {
   useLazyGetMyMissionPlanQuery,
   useCreateMissionAndVisionMutation,
   useCreateStrategicPillarsMutation,
+  useUpdateStrategicPillarsMutation,
   useGetFinancialYearPreviewQuery,
   useSaveFinancialYearMutation,
   useGetOrganizationMissionPlansQuery,
@@ -183,6 +198,7 @@ export const {
   useGetMySpecifiedTaskQuery,
   useLazyGetMySpecifiedTaskQuery,
   useCreateTimelineAndReminderMutation,
+  useUpdateFiscalYearMutation,
   useDeleteSpecifiedTaskMutation,
   useCreateApprovalFlowMutation,
 } = missionPlanApi;

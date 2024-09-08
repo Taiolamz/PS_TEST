@@ -17,9 +17,13 @@ import { useEffect } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { toast } from "sonner";
 
-const { ADMIN } = routesPath;
+// const { ADMIN, EMPLOYEE } = routesPath;
 
-const MissionStatement = () => {
+interface myComponentProps {
+  onNextStep?: () => void;
+}
+
+const MissionStatement = ({ onNextStep }: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -55,7 +59,8 @@ const MissionStatement = () => {
       .unwrap()
       .then((data) => {
         toast.success("Mission Statement Created Successfully");
-        router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=measure-success`);
+        onNextStep && onNextStep();
+        // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=measure-success`);
       });
   };
 
@@ -93,6 +98,19 @@ const MissionStatement = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan]);
+
+  // check -------------------
+  const { active_fy_info } = useAppSelector(
+    (state) => state?.mission_plan?.mission_plan
+  );
+  useEffect(() => {
+    if (
+      !active_fy_info?.template?.mission_statement &&
+      Object?.keys(active_fy_info)?.length > 0
+    ) {
+      router?.back();
+    }
+  }, [active_fy_info]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="w-full ">

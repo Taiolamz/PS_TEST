@@ -4,7 +4,7 @@ import { PageSidebar } from "@/components/atoms";
 import { useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CREATE_MISSION_PLAN_LINKS } from "./_data";
+// import { CREATE_MISSION_PLAN_LINKS } from "./_data";
 import {
   Boundaries,
   ImpliedTask,
@@ -32,16 +32,136 @@ const CreateMissionPlan = () => {
 
   const { line_manager } = user;
 
+  const stepList = [
+    {
+      id: 1,
+      title: "Mission Plan Overview",
+      path: "?ui=overview",
+      accessor: "overview",
+      onNextStep: () => {
+        getNextLinkVal(`overview`);
+      },
+    },
+    {
+      id: 2,
+      title: "Mission Statement",
+      path: "?ui=mission-statement",
+      accessor: "mission-statement",
+      hide: !active_fy_info?.template?.mission_statement,
+      onNextStep: () => {
+        getNextLinkVal(`mission-statement`);
+      },
+    },
+    {
+      id: 3,
+      title: "Measure of Success",
+      path: "?ui=measure-success",
+      accessor: "measure-success",
+      hide: !active_fy_info?.template?.success_measures,
+      onNextStep: () => {
+        getNextLinkVal(`measure-success`);
+      },
+    },
+    {
+      id: 4,
+      title: "Set Strategic Intent",
+      path: "?ui=strategic-intent",
+      accessor: "strategic-intent",
+      hide: !active_fy_info?.template?.strategic_intents,
+      onNextStep: () => {
+        getNextLinkVal(`strategic-intent`);
+      },
+    },
+    {
+      id: 5,
+      title: "Specified Task",
+      path: "?ui=specified-task",
+      accessor: "specified-task",
+      hide: !active_fy_info?.template?.specified_tasks,
+      onNextStep: () => {
+        getNextLinkVal(`specified-task`);
+      },
+    },
+    {
+      id: 6,
+      title: "Implied Task",
+      path: "?ui=implied-task",
+      accessor: "implied-task",
+      hide: !active_fy_info?.template?.implied_tasks,
+      onNextStep: () => {
+        getNextLinkVal(`implied-task`);
+      },
+    },
+    {
+      id: 7,
+      title: "Freedom & Constraints",
+      path: "?ui=boundaries",
+      accessor: "boundaries",
+      hide: !active_fy_info?.template?.boundaries,
+      onNextStep: () => {
+        getNextLinkVal(`boundaries`);
+      },
+    },
+  ];
+
+  const getListToUse = () => {
+    const firstLinkList = stepList?.filter((chi) => !chi?.hide);
+    return firstLinkList;
+  };
+
+  type MenuItem = {
+    id: number;
+    title: string;
+    path: string;
+    accessor: string;
+    onClick?: () => void;
+    hide?: boolean;
+  };
+
+  function getNextObjectByAccessor(
+    accessorValue: string,
+    items: MenuItem[]
+  ): MenuItem | null {
+    const index = items.findIndex((item) => item.accessor === accessorValue);
+
+    // Check if the index is found and there is a next object
+    if (index !== -1 && index < items.length - 1) {
+      return items[index + 1];
+    }
+
+    // Return null if no match is found or there is no next item
+    return null;
+  }
+
+  const getNextLinkVal = (param: string) => {
+    const obj = getNextObjectByAccessor(param, getListToUse());
+    // console.log(obj);
+    const path = EMPLOYEE.CREATE_MISSION_PLAN;
+    if (obj !== null || obj) {
+      const val = obj?.path;
+      router?.push(`${path}${val}`);
+    } else {
+      router?.push(`${path}?ui=boundaries&step=preview`);
+    }
+
+    // return actualPath;
+  };
+
   return (
     <DashboardLayout
       headerTitle={active_fy_info?.title}
       back
       // onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
-      <section className="flex h-full overflow-y-scroll">
+      <section
+        // onClick={() => {
+        //   getNextLinkVal("measure-success");
+        // }}
+        className="flex h-full overflow-y-scroll"
+      >
         <PageSidebar
           title="Create Mission Plan"
-          menu_items={CREATE_MISSION_PLAN_LINKS}
+          menu_items={getListToUse()}
           slug="ui"
         />
         <aside className="p-5 w-full overflow-y-scroll pb-10 scroll-hidden">
@@ -58,17 +178,56 @@ const CreateMissionPlan = () => {
             </>
           )}
 
-          {ui === "overview" && <MissionPlanOverview />}
-          {ui === "mission-statement" && <MissionStatement />}
-          {ui === "measure-success" && <MeasureOfSuccess />}
-          {ui === "strategic-intent" && (
-            <StrategicIntent
-            // currentMissionPlan={currentMissionPlan}
+          {ui === "overview" && (
+            <MissionPlanOverview
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
             />
           )}
-          {ui === "specified-intent" && <SpecifiedTask />}
-          {ui === "implied-task" && <ImpliedTask />}
-          {ui === "boundaries" && <Boundaries />}
+          {ui === "mission-statement" && (
+            <MissionStatement
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
+            />
+          )}
+          {ui === "measure-success" && (
+            <MeasureOfSuccess
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
+            />
+          )}
+          {ui === "strategic-intent" && (
+            <StrategicIntent
+              // currentMissionPlan={currentMissionPlan}
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
+            />
+          )}
+          {ui === "specified-task" && (
+            <SpecifiedTask
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
+            />
+          )}
+          {ui === "implied-task" && (
+            <ImpliedTask
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
+            />
+          )}
+          {ui === "boundaries" && (
+            <Boundaries
+              onNextStep={() => {
+                getNextLinkVal(ui);
+              }}
+            />
+          )}
         </aside>
       </section>
     </DashboardLayout>

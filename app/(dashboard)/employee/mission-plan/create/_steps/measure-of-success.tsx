@@ -36,9 +36,13 @@ import {
 } from "@/redux/services/mission-plan/missionPlanApi";
 import { PageLoader } from "@/components/custom-loader";
 
-const { EMPLOYEE } = routesPath;
+// const { EMPLOYEE } = routesPath;
 
-const MeasureofSuccess = () => {
+interface myComponentProps {
+  onNextStep?: () => void
+}
+
+const MeasureofSuccess = ({onNextStep}: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -94,7 +98,8 @@ const MeasureofSuccess = () => {
   const handleFormSubmit = async () => {
     try {
       await createMeasureOfSuccess(formik.values);
-      router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=strategic-intent`);
+      // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=strategic-intent`);
+      onNextStep && onNextStep()
       toast.success("Measure of Success Created Successfully");
     } catch (error) {}
   };
@@ -159,6 +164,16 @@ const MeasureofSuccess = () => {
       })
     );
   }, [formik.values]);
+
+   // check -------------------
+  useEffect(() => {
+    if (
+      !active_fy_info?.template?.success_measures &&
+      Object?.keys(active_fy_info)?.length > 0
+    ) {
+      router?.back();
+    }
+  }, [active_fy_info]);
 
   return (
     <div className="pr-4">

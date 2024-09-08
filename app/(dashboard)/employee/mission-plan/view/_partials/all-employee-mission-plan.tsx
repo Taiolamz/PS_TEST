@@ -337,8 +337,8 @@ const AllEmployeeMissionPlan = () => {
               { value: "rejected", label: "Rejected" },
             ]}
             onFilterClick={(param) => {
-              if (param?.value?.toLowerCase() === "all") {
-                setFilter("");
+              if (param?.value?.toLowerCase() === "all") { 
+                setFilter("");  
               }
               setFilter(param?.value);
             }}

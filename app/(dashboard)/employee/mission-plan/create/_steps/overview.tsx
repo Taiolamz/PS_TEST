@@ -8,9 +8,13 @@ import { useAppSelector } from "@/redux/store";
 import { Dictionary } from "@/@types/dictionary";
 import { Textarea } from "@/components/ui/textarea";
 
-const { ADMIN } = routesPath;
+// const { ADMIN, EMPLOYEE } = routesPath;
 
-const MissionPlanOverview = () => {
+interface myComponentProps {
+  onNextStep?: () => void;
+}
+
+const MissionPlanOverview = ({ onNextStep }: myComponentProps) => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
@@ -138,8 +142,9 @@ const MissionPlanOverview = () => {
       </div>
       <div className="mt-8 mb-4 flex gap-x-2 items-center">
         <Button
-          onClick={() =>
-            router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=mission-statement`)
+          onClick={
+            () => onNextStep && onNextStep()
+            // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=mission-statement`)
           }
           className={`bg-[var(--primary-color)] py-5 px-2 rounded-sm border text-white min-w-28`}
         >
