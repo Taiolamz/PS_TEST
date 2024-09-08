@@ -5,10 +5,10 @@ import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
-import routesPath from "@/utils/routes";  
+import routesPath from "@/utils/routes";
 import { FiscalYearInfo, MyMissionPlan } from "./_partials";
-import { Dictionary } from "@/@types/dictionary"; 
-import { useDispatch } from "react-redux"; 
+import { Dictionary } from "@/@types/dictionary";
+import { useDispatch } from "react-redux";
 import AllEmployeeMissionPlan from "./_partials/all-employee-mission-plan";
 
 const { ADMIN } = routesPath;
@@ -22,7 +22,7 @@ const SingleMissionPlan = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
-  const user_info: Dictionary = useAppSelector((state) => state?.auth?.user); 
+  const user_info: Dictionary = useAppSelector((state) => state?.auth?.user);
 
   return (
     <DashboardLayout
