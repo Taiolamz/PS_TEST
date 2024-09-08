@@ -220,9 +220,9 @@ const TimelineAndReminderUpdate = () => {
             // className=''
             type="submit"
             loading={isLoading}
-            loadingText="Save & Continue"
+            loadingText="Save Changes"
           >
-            Save & Continue
+            Save Changes
           </Button>
         </div>
       </form>
