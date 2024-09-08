@@ -77,7 +77,7 @@ export default function EndFYModal({
                 disabled={isLoading}
                 loading={isLoading}
                 loadingText="Yes, End Financial Year"
-                className="px-9 rounded bg-[var(--error-color2)]"
+                className="px-9 rounded bg-red-500"
               >
                 Yes, End Financial Year
               </Button>

@@ -61,7 +61,7 @@ const StrategicPillarUpdate = () => {
   return (
     <>
       {step !== "preview" && (
-        <div className="w-[30vw]">
+        <div className="w-[30vw] h-full overflow-y-auto customScrollbar pr-16">
           <h1>Strategic Pillar</h1>
           <Formik
             initialValues={initialValues}
@@ -132,17 +132,6 @@ const StrategicPillarUpdate = () => {
                 </FieldArray>
                 <div className="mt-7 flex gap-4 items-center">
                   <Button
-                    className="border border-[var(--primary-color)] text-[var(--primary-color)] px-10 shadow-none bg-white hover:bg-none"
-                    type="button"
-                    onClick={() =>
-                      router.push(
-                        `${ADMIN.KICK_START_MISSION_PLAN}?ui=mission-vision`
-                      )
-                    }
-                  >
-                    Back
-                  </Button>
-                  <Button
                     className="border"
                     type="submit"
                     disabled={
@@ -152,9 +141,9 @@ const StrategicPillarUpdate = () => {
                       )
                     }
                     loading={isLoading}
-                    loadingText="Save & Continue"
+                    loadingText="Save Changes"
                   >
-                    Save & Continue
+                    Save Changes
                   </Button>
                 </div>
               </Form>
