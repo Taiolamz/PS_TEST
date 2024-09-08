@@ -26,32 +26,109 @@ interface NumLevels {
 interface Prop {
   options: Option[];
   approvals: Dropdown[];
-  // setOrderValue: (field: string, value: any) => void;
+  setOrderValue: (field: string, value: any) => void;
   approvalsArray: {
     title: string;
     approvals: string[];
   }[];
-  setNewFieldValue: (field: string, value: any) => void;
+  setFieldValue: (field: string, value: any) => void;
   allRoles: { name: string; value: string }[];
-  // hodVal?: any;
+  hodVal?: any;
   isLoading: boolean;
 }
 
 const ApprovalFlowTwo = ({
   options,
   approvals,
-  // setOrderValue,
+  setOrderValue,
   approvalsArray,
-  setNewFieldValue,
+  setFieldValue,
   allRoles,
-  // hodVal,
+  hodVal,
   isLoading,
 }: Prop) => {
+  const [selectedLevels, setSelectedLevels] = useState<SelectedLevels>({});
+
   const [numLevels, setNumLevels] = useState<NumLevels>({});
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
 
+  const handleSelectChangeForLevel = (
+    index: number,
+    level: number,
+    value: string
+  ) => {
+    setSelectedLevels((prevSelectedLevels) => {
+      const updatedSelectedLevels = {
+        ...prevSelectedLevels,
+        [`${index}-${level}`]: value,
+      };
+
+      // Update the approvals array based on the selected levels
+      const updatedApprovals = convertObjectToArray(
+        updatedSelectedLevels,
+        index
+      );
+
+      // Set the form value for the specific level
+      setFieldValue(`order_of_approvals[${index}].approvals`, updatedApprovals);
+
+      return updatedSelectedLevels;
+    });
+  };
+
+  // const handleSelectChangeForLevel = (
+  //   index: number,
+  //   level: number,
+  //   value: string
+  // ) => {
+  //   setSelectedLevels((prevSelectedLevels) => {
+  //     const updatedSelectedLevels = {
+  //       ...prevSelectedLevels,
+  //       [`${index}-${level}`]: value,
+  //     };
+
+  //     const updatedApprovals = convertObjectToArray(
+  //       updatedSelectedLevels,
+  //       index
+  //     );
+
+  //     setFieldValue(`order_of_approvals[${index}].approvals`, updatedApprovals);
+
+  //     return updatedSelectedLevels;
+  //   });
+  // };
+
+  // const handleNumLevelsChange = (index: number, value: number) => {
+  //   setNumLevels((prevNumLevels) => ({
+  //     ...prevNumLevels,
+  //     [index]: value,
+  //   }));
+
+  //   // Reset the approvals array in Formik
+  //   setFieldValue(`order_of_approvals[${index}].approvals`, Array(value).fill(""));
+  // };
+  const handleNumLevelsChange = (index: number, value: number) => {
+    setNumLevels((prevNumLevels) => {
+      const updatedNumLevels = {
+        ...prevNumLevels,
+        [index]: value,
+      };
+
+      const updatedApprovals = convertObjectToArray(selectedLevels, index);
+      setFieldValue(`order_of_approvals[${index}].approvals`, updatedApprovals);
+
+      return updatedNumLevels;
+    });
+  };
+
   const generateLabel = (index: number): string => {
     return String.fromCharCode(65 + index);
+  };
+
+  const convertObjectToArray = (obj: SelectedLevels, idx: number): string[] => {
+    return Object.entries(obj)
+      .filter(([key]) => key.startsWith(`${idx}-`))
+      .map(([, value]) => value);
   };
 
   useEffect(() => {
@@ -73,6 +150,8 @@ const ApprovalFlowTwo = ({
     }
   }, [approvalsArray]);
 
+  console.log(approvalsArray, "approvals");
+
   return (
     <>
       {isLoading ? (
@@ -88,37 +167,13 @@ const ApprovalFlowTwo = ({
             })),
             head_of_organization: "",
           }}
-          onSubmit={() => {}}
+          onSubmit={(values) => {
+            console.log("Form values:", values);
+          }}
         >
           {({ values, setFieldValue }) => {
-            console.log(values, "values");
-            const handleNumLevelsChange = (
-              index: number,
-              numLevelsValue: number
-            ) => {
-              setNumLevels((prev) => {
-                const updatedNumLevels = {
-                  ...prev,
-                  [index]: numLevelsValue,
-                };
+            console.log(values, "values"); // This will log the form values on each render
 
-                const newApprovals =
-                  values.order_of_approvals[index]?.approvals?.slice(
-                    0,
-                    numLevelsValue
-                  ) || [];
-                setFieldValue(
-                  `order_of_approvals[${index}].approvals`,
-                  newApprovals
-                );
-                setNewFieldValue(
-                  `order_of_approvals[${index}].approvals`,
-                  newApprovals
-                );
-
-                return updatedNumLevels;
-              });
-            };
             return (
               <Form>
                 <div className="flex flex-col gap-5">
@@ -146,17 +201,9 @@ const ApprovalFlowTwo = ({
                                 placeholder="Select..."
                                 options={options}
                                 selected={numLevels[idx]?.toString() || ""}
-                                setSelected={(value) => {
-                                  handleNumLevelsChange(idx, Number(value));
-                                  setFieldValue(
-                                    `order_of_approvals[${idx}].approvals[${idx}]`,
-                                    ""
-                                  );
-                                  setNewFieldValue(
-                                    `order_of_approvals[${idx}].approvals[${idx}]`,
-                                    ""
-                                  );
-                                }}
+                                setSelected={(value) =>
+                                  handleNumLevelsChange(idx, Number(value))
+                                }
                                 className="w-[150px]"
                               />
                               <div className="flex flex-col">
@@ -182,16 +229,13 @@ const ApprovalFlowTwo = ({
                                                 values.order_of_approvals[idx]
                                                   ?.approvals[i] || ""
                                               }
-                                              setSelected={(value) => {
-                                                setFieldValue(
-                                                  `order_of_approvals[${idx}].approvals[${i}]`,
+                                              setSelected={(value) =>
+                                                handleSelectChangeForLevel(
+                                                  idx,
+                                                  i,
                                                   value
-                                                );
-                                                setNewFieldValue(
-                                                  `order_of_approvals[${idx}].approvals[${i}]`,
-                                                  value
-                                                );
-                                              }}
+                                                )
+                                              }
                                               labelClass={labelClassName}
                                               className="w-[226px]"
                                             />
@@ -213,20 +257,13 @@ const ApprovalFlowTwo = ({
                                         values.order_of_approvals[idx]
                                           ?.approvals[numLevels[idx] - 1] || ""
                                       }
-                                      setSelected={(value) => {
-                                        setFieldValue(
-                                          `order_of_approvals[${idx}].approvals[${
-                                            numLevels[idx] - 1
-                                          }]`,
+                                      setSelected={(value) =>
+                                        handleSelectChangeForLevel(
+                                          idx,
+                                          numLevels[idx] - 1,
                                           value
-                                        );
-                                        setNewFieldValue(
-                                          `order_of_approvals[${idx}].approvals[${
-                                            numLevels[idx] - 1
-                                          }]`,
-                                          value
-                                        );
-                                      }}
+                                        )
+                                      }
                                       labelClass={labelClassName}
                                       className="w-[226px]"
                                       mainClass="!-mt-10"
@@ -260,9 +297,9 @@ const ApprovalFlowTwo = ({
                               value: chi?.name,
                             }))}
                             selected={values.head_of_organization}
-                            setSelected={(e) => {
-                              setFieldValue("head_of_organization", e);
-                            }}
+                            setSelected={(e) =>
+                              setFieldValue("head_of_organization", e)
+                            }
                             labelClass={labelClassName}
                             className="w-[226px]"
                           />
@@ -273,6 +310,7 @@ const ApprovalFlowTwo = ({
                     <p className="font-medium text-lg">No Approval Flow</p>
                   )}
                 </div>
+                {/* <button type="submit">Submit</button> */}
               </Form>
             );
           }}
