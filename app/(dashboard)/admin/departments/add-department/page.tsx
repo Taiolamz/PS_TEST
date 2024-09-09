@@ -161,7 +161,7 @@ const AddDepartment = () => {
                   onChange={formik.handleChange}
                 />
 
-                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                {!processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "subsidiary"
                 ) && (
                   <CustomSelect
@@ -188,7 +188,7 @@ const AddDepartment = () => {
                   />
                 )}
 
-                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                {!processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "branch"
                 ) && (
                   <CustomSelect
