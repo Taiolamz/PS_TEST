@@ -1,54 +1,66 @@
 import { Dictionary } from "@/@types/dictionary";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { updateFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
-import { useCreateMissionAndVisionMutation } from "@/redux/services/mission-plan/missionPlanApi";
+import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { useUpdateFiscalYearMutation } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import { missionVissionSchema } from "@/utils/schema/mission-plan";
 import { useFormik } from "formik";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
 
 const MissionVisionUpdate = () => {
   const {
-    fy_info: {
-      mission_vision: { vision, mission },
-    },
-
-    mission_plan: {
-      active_fy_info: { id: FYID, status },
-    },
-  } = useAppSelector((state) => state?.mission_plan);
+    active_fy_info: { id: FYID, status, vision, mission, review_period },
+  } = useAppSelector((state) => state?.mission_plan?.mission_plan);
 
   const [initialValues, setInitialValues] = useState<{
     mission: string;
     vision: string;
+    id: string;
+    review_period: string;
   }>({
+    id: FYID || "",
+    review_period: review_period || "",
     mission: mission,
     vision: vision || {
       mission: "",
       vision: "",
     },
   });
-  //   const [updateStrategicPillars, { isLoading }] =
-  //     useUpdateStrategicPillarsMutation();
-
+  const [updateFiscalYear, { isLoading }] = useUpdateFiscalYearMutation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const ui = useSearchParams().get("ui");
   const step = useSearchParams().get("step");
 
   const handleFormSubmit = async (values: Dictionary) => {
-    // createMissionAndVision(values)
-    //   .unwrap()
-    //   .then(() => {
-    //     toast.success("Mission and Vision Created Successfully");
-    //     router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=strategic-pillar`);
-    //   });
+    let payload = {
+      ...values,
+    };
+
+    updateFiscalYear(payload)
+      .unwrap()
+      .then(() => {
+        toast.success("Mission and Vision Updated Successfully");
+        router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${FYID}`);
+      });
+
+    const dispatchPayload = {
+      ...payload,
+      status,
+    };
+
+    dispatch(
+      updateMissionPlanDetails({
+        slug: "active_fy_info",
+        data: { ...dispatchPayload },
+      })
+    );
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -56,16 +68,6 @@ const MissionVisionUpdate = () => {
     onSubmit: handleFormSubmit,
     enableReinitialize: true,
   });
-
-  useEffect(() => {
-    dispatch(
-      updateFinancialYearDetails({
-        slug: "mission_vision",
-        data: formik.values,
-      })
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formik.values]);
 
   return (
     <div className="w-[40vw]">
@@ -104,24 +106,15 @@ const MissionVisionUpdate = () => {
         </div>
         <div className="mt-5 flex gap-4 items-center">
           <Button
-            className="border border-primary text-primary px-10 shadow-none bg-white hover:bg-none"
-            type="button"
-            onClick={() =>
-              router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`)
-            }
-          >
-            Back
-          </Button>
-          <Button
             className="border"
             type="submit"
             disabled={
-              //   isLoading ||
+              isLoading ||
               !formik.values.vision ||
               !formik.values.mission ||
               status !== "active"
             }
-            // loading={isLoading}
+            loading={isLoading}
             loadingText="Save Changes"
           >
             Save Changes
