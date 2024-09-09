@@ -29,8 +29,6 @@ const StrategicPillar = () => {
   const step = useSearchParams().get("step");
 
   const handleFormSubmit = (values: Dictionary) => {
-    console.log(values, "values");
-    return;
     dispatch(
       updateFinancialYearDetails({ slug: "strategic_pillars", data: values })
     );
