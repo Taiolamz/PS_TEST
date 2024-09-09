@@ -4,14 +4,18 @@ import React from "react";
 const DeleteSpecifiedTaskModal = ({
   onReAssign,
   onDelete,
+  data,
 }: {
   onReAssign: () => void;
   onDelete: () => void;
+  data: any;
 }) => {
   return (
     <div className="p-3 flex flex-col gap-3">
       <p className="text-[#EC1410] font-medium text-[16px]">
-        Delete Specified Task
+        Delete  {data?.task ? (
+          <span className="text-primary">{`(${data?.task})`}</span>
+        ) : null}{" "} Specified Task
       </p>
       <p className="text-[#5B6871] text-[15px] font-normal">
         You’re about to delete this Specified task. Would you like to re-assign

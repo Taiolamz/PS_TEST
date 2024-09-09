@@ -4,14 +4,21 @@ import React from "react";
 const DeleteImpliedTaskModal = ({
   onCancel,
   onDelete,
+  data,
 }: {
   onCancel: () => void;
   onDelete: () => void;
+  data: any;
 }) => {
+  console.log(data, "data");
   return (
     <div className="p-3 flex flex-col gap-3">
       <p className="text-[#EC1410] font-medium text-[16px]">
-        Delete Implied Task
+        Delete{" "}
+        {data?.task ? (
+          <span className="text-primary">{`(${data?.task})`}</span>
+        ) : null}{" "}
+        Implied Task{" "}
       </p>
       <p className="text-[#5B6871] text-[15px] font-normal">
         You’re about to delete this implied task. Deleting this, would erase all
