@@ -120,9 +120,7 @@ export default function AddEmployee() {
     if (
       processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
     ) {
-      const filtered = obj?.filter(
-        (item: any) => item?.subsidiary_id === SubId
-      );
+      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
       finalMapValue = [
         {
           label: "Select Department",
@@ -138,7 +136,9 @@ export default function AddEmployee() {
     } else if (
       processInputAsArray(user?.organization?.hierarchy)?.includes("subsidiary")
     ) {
-      const filtered = obj?.filter((item: any) => item?.branch_id === BranId);
+      const filtered = obj?.filter(
+        (item: any) => item?.subsidiary_id === SubId
+      );
       finalMapValue = [
         {
           label: "Select Department",
