@@ -285,7 +285,7 @@ const DashboardLayout = ({
       return newList;
     }
   };
-
+  
   const getNextLink = (list: any) => {
     if (list?.length > 0) {
       const newList = list?.filter((chi: any) => !chi?.isChecked);

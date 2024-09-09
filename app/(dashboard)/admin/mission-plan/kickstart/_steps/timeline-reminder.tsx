@@ -19,7 +19,7 @@ const { ADMIN } = routesPath
 
 const TimelineAndReminder = () => {
     const [createTimelineAndReminder, { isLoading }] = useCreateTimelineAndReminderMutation()
-    const { fy_info: { timeline_reminder, financial_year } } = useAppSelector((state) => state.mission_plan)
+    const { fy_info: { timeline_reminder, financial_year }, mission_plan } = useAppSelector((state) => state.mission_plan)
 
     const location = usePathname()
     const router = useRouter()
@@ -27,7 +27,7 @@ const TimelineAndReminder = () => {
 
     const handleFormSubmit = async (values: Dictionary
     ) => {
-        console.log(values)
+        // console.log(values)
         // return
         const DATE_DIFFERENCE = Number(removeCharFromString(values.creation_end_date, "-")) - Number(removeCharFromString(values.creation_start_date, "-"))
         if (DATE_DIFFERENCE <= 0) {
@@ -51,7 +51,8 @@ const TimelineAndReminder = () => {
             approval_end_date: (timeline_reminder?.approval_end_date as string) || "",
             setup_reminder: (timeline_reminder?.setup_reminder as string) || "",
             approval_reminder: (timeline_reminder?.approval_reminder as string) || "",
-            before_start_reminder: (timeline_reminder?.before_start_reminder as string) || ""
+            before_start_reminder: (timeline_reminder?.before_start_reminder as string) || "",
+            fiscal_year_id: (mission_plan?.active_fy_info?.id as string) || "",
         },
         validationSchema: timelineReminderSchema(),
         onSubmit: handleFormSubmit,

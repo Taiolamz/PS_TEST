@@ -52,7 +52,10 @@ const AddApprovalFlow = () => {
   };
   const roles = formatRolesData(rolesData as string[]) ?? [];
   const allRoles = formatAllRoles(allRolesData?.data) ?? [];
-  console.log(formik.values.order_of_approvals, "checkings");
+  const isBtnDisabled = !(formik.values.order_of_approvals as any[]).some(
+    (chi) => chi.approvals.length > 0
+  );
+
   return (
     <DashboardLayout headerTitle="Mission Plan Flow">
       <ReusableStepListBox
@@ -63,6 +66,7 @@ const AddApprovalFlow = () => {
         onSave={formik.handleSubmit}
         onCancel={handleCancelDialog}
         loading={isCreatingMissionFlow}
+        btnDisabled={isBtnDisabled}
       />
       <div className="" style={{ padding: "0rem 2rem", marginTop: "1.5rem" }}>
         <form className="mt-5 w-full" autoComplete="off">
@@ -86,14 +90,15 @@ const AddApprovalFlow = () => {
           </div>
 
           <ApprovalFlowTwo
-            setFieldValue={formik.setFieldValue}
+            setNewFieldValue={formik.setFieldValue}
             options={level}
             approvals={roles}
             // approvals={reviewers}
+            isLoading={isLoadingAllRoles}
             approvalsArray={formik.values.order_of_approvals}
-            setOrderValue={formik.setFieldValue}
+            // setOrderValue={formik.setFieldValue}
             allRoles={allRoles}
-            hodVal={formik.values.head_of_organization}
+            // hodVal={formik.values.head_of_organization}
           />
         </form>
       </div>
