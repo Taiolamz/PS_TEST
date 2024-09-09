@@ -36,7 +36,7 @@ const initialState: Dictionary = {
       approval_reminder: "",
       before_start_reminder: "",
     },
-    order_of_approvals: []
+    order_of_approvals: [],
   },
   mission_plan: {
     active_fy_info: null,
@@ -66,7 +66,10 @@ const missionPlanSlice = createSlice({
       action: PayloadAction<{ slug: string; data: any }>
     ) => {
       const { slug, data } = action.payload;
-      state.mission_plan[slug] = data;
+      state.mission_plan[slug] = {
+        ...state.mission_plan[slug],
+        ...data,
+      };
     },
     resetMissionPlanDetails: (state) => {
       Object.assign(state.mission_plan, initialState.mission_plan);
