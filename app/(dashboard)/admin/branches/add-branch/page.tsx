@@ -111,7 +111,7 @@ const AddBranch = () => {
                 onChange={formik.handleChange}
                 isRequired
               />
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+              {!processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "subsidiary"
               ) && (
                 <CustomSelect
@@ -136,7 +136,7 @@ const AddBranch = () => {
                   // labelClass={labelClassName}
                 />
               )}
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
+              {!processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "subsidiary"
               ) && (
                 <CustomSelect
