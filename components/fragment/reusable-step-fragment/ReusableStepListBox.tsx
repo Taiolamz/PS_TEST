@@ -10,6 +10,7 @@ import React from "react";
 import style from "./ReusableStepListBox.module.css";
 
 interface myComponentProps {
+  btnType?: "submit" | "reset" | "button";
   activeStep?: string;
   totalStep?: string;
   back?: boolean;
@@ -55,6 +56,7 @@ const ReusableStepListBox = ({
   btnClass,
   btnDisabled,
   fixed,
+  btnType,
 }: myComponentProps) => {
   const router = useRouter();
   const { checklist } = useAppSelector((state) => state.auth);
@@ -83,15 +85,16 @@ const ReusableStepListBox = ({
       {title && <p className={style.title}>{title}</p>}
       {/* title here  */}
       {/* step info here  */}
-      {!hideStep  && formatChecklistPercent(checklist?.completion_percent) !== 100 && (
-        <>
-          <div className={style?.step_box}>
-            <p className={style?.step}>{`Step ${activeStep || ""}  of ${
-              totalStep || ""
-            }`}</p>
-          </div>
-        </>
-      )}
+      {!hideStep &&
+        formatChecklistPercent(checklist?.completion_percent) !== 100 && (
+          <>
+            <div className={style?.step_box}>
+              <p className={style?.step}>{`Step ${activeStep || ""}  of ${
+                totalStep || ""
+              }`}</p>
+            </div>
+          </>
+        )}
       {/* step info end here */}
 
       {/* btn box start */}
@@ -113,6 +116,7 @@ const ReusableStepListBox = ({
           onClick={() => {
             onSave && onSave();
           }}
+          type={btnType}
           className={`${btnClass}  font-light ${
             btnDisabled || loading
               ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
