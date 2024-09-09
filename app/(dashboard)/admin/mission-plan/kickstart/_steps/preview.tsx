@@ -61,6 +61,8 @@ const FinancialYearPreview = () => {
     }
   }, [financial_year_info]);
 
+  // console.log(financialYearData)
+
 
   return (
     <div className="w-[60vw] h-full overflow-y-scroll pr-4 customScrollbar">
