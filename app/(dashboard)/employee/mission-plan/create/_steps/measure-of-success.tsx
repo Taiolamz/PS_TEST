@@ -39,10 +39,10 @@ import { PageLoader } from "@/components/custom-loader";
 // const { EMPLOYEE } = routesPath;
 
 interface myComponentProps {
-  onNextStep?: () => void
+  onNextStep?: () => void;
 }
 
-const MeasureofSuccess = ({onNextStep}: myComponentProps) => {
+const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -72,7 +72,7 @@ const MeasureofSuccess = ({onNextStep}: myComponentProps) => {
       .then((payload) => {});
   };
 
-  const [createMeasureOfSuccess, { isLoading, isSuccess }] =
+  const [createMeasureOfSuccess, { isLoading, isSuccess, isError }] =
     useCreateMeasureOfSuccessMutation();
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
@@ -94,13 +94,14 @@ const MeasureofSuccess = ({onNextStep}: myComponentProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan]);
-
   const handleFormSubmit = async () => {
     try {
       await createMeasureOfSuccess(formik.values);
       // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=strategic-intent`);
-      onNextStep && onNextStep()
-      toast.success("Measure of Success Created Successfully");
+      if (!isError) {
+        onNextStep && onNextStep();
+        toast.success("Measure of Success Created Successfully");
+      }
     } catch (error) {}
   };
 
@@ -165,7 +166,7 @@ const MeasureofSuccess = ({onNextStep}: myComponentProps) => {
     );
   }, [formik.values]);
 
-   // check -------------------
+  // check -------------------
   useEffect(() => {
     if (
       !active_fy_info?.template?.success_measures &&
