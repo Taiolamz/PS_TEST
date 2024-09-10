@@ -79,6 +79,7 @@ interface MultiSelectProps
   labelClass?: string;
   error?: string;
   touched?: boolean;
+  isRequired?: boolean;
 }
 
 type BadgeColor = "purple" | "danger" | "success" | "pending";
@@ -108,6 +109,7 @@ export const CustomMultipleSelect = React.forwardRef<
       error,
       name,
       touched,
+      isRequired,
       ...props
     },
     ref
@@ -212,8 +214,19 @@ export const CustomMultipleSelect = React.forwardRef<
         onOpenChange={setIsPopoverOpen}
         modal={modalPopover}
       >
-        <label htmlFor="label" className={cn(labelClass)}>
+        <label
+          htmlFor="label"
+          className={cn(
+            "block relative text-xs  text-[#6E7C87] font-normal pb-2",
+            labelClass
+          )}
+        >
           {label}
+          {isRequired && (
+            <span className="inline-block text-red-400 text-lg pl-1 absolute bottom-1">
+              *
+            </span>
+          )}{" "}
         </label>
         <PopoverTrigger asChild ref={divRef}>
           <Button
