@@ -63,35 +63,12 @@ const ApprovalFlowUpdate = () => {
 
   // const formik = useFormik()
   const handleFormSubmit = async (values: any) => {
-    const hasEmptyApproval = values?.staff_levels
-      ?.map((f: Dictionary) => f.approvals)
-      ?.some((f: Dictionary) => f.length === 0);
-    if (hasEmptyApproval) {
-      toast.error("Each level must have at least one approval");
-      return;
-    }
-    const APPROVALS = getApprovalLevels(values?.staff_levels);
-
-    dispatch(
-      updateFinancialYearDetails({
-        slug: "order_of_approvals",
-        data: APPROVALS?.order_of_approvals,
-      })
-    );
-    createApprovalFlow(APPROVALS)
-      .unwrap()
-      .then(() => {
-        toast.success("Approval flow updated successfully");
-        router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=preview`);
-      });
+    console.log(values);
   };
 
   useEffect(() => {
     if (organization?.staff_levels) {
-      let STAFF_LEVELS =
-        typeof organization?.staff_levels === "string"
-          ? JSON.parse(organization?.staff_levels)
-          : organization?.staff_levels;
+      let STAFF_LEVELS = organization?.staff_levels;
       const LEVELS = STAFF_LEVELS?.map((item: any) => {
         return {
           title: item.name,
@@ -101,8 +78,9 @@ const ApprovalFlowUpdate = () => {
         };
       });
       setInitialApprovalFlowData({ staff_levels: LEVELS });
-      if (fy_info?.order_of_approvals?.length) {
-        const initialApprovals = fy_info?.order_of_approvals?.map(
+
+      if (organization?.approval_flows?.length) {
+        const initialApprovals = organization?.approval_flows?.map(
           (d: Dictionary) => {
             return {
               ...d,
@@ -111,26 +89,10 @@ const ApprovalFlowUpdate = () => {
           }
         );
         let approvals_flow = { staff_levels: initialApprovals };
-        console.log(approvals_flow);
         setInitialApprovalFlowData(approvals_flow);
       }
     }
   }, [organization, fy_info?.order_of_approvals]);
-
-  // useEffect(() => {
-  //     // dispatch(updateFinancialYearDetails({ slug: "order_of_approvals", data: getApprovalLevels(approvals?.staff_levels) }))
-  //     if (fy_info?.order_of_approvals?.length) {
-  //         const initialApprovals = fy_info?.order_of_approvals?.map((d) => {
-  //             return {
-  //                 ...d,
-  //                 approval_levels: d?.approvals?.length
-  //             }
-  //         })
-  //         let approvals_flow = {staff_levels: initialApprovals}
-  //         console.log(approvals_flow)
-  //         setInitialApprovalFlowData(approvals_flow)
-  //     }
-  // }, [fy_info?.order_of_approvals])
 
   return (
     <section className="w-full h-full overflow-y-auto pb-20 customScrollbar">

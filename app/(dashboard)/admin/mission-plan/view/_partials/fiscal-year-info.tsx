@@ -18,6 +18,7 @@ import {
   ReactElement,
   ReactNode,
   ReactPortal,
+  useEffect,
   useState,
 } from "react";
 import EndFYModal from "../_modal/end-fy-modal";
@@ -28,14 +29,44 @@ const { ADMIN } = routesPath;
 
 const FiscalYearInfo = () => {
   const [endFY, setExtendSubmission] = useState<boolean>(false);
+  const [approvalFlowData, setApprovalFlowData] = useState<any>();
+
   const [showSuccessExtendModal, setShowExtendSuccessModal] = useState(false);
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+  const { organization }: any = useAppSelector((state) => state.auth.user);
 
-  const { data: approvalFlowData } = useGetAllMissionPlanFlowQuery<any>();
+  useEffect(() => {
+    if (organization?.staff_levels) {
+      let STAFF_LEVELS = organization?.staff_levels;
+      const LEVELS = STAFF_LEVELS?.map((item: any) => {
+        return {
+          title: item.name,
+          approvals: [],
+          approval_levels: 0,
+          level: item.level,
+        };
+      });
+      setApprovalFlowData({ staff_levels: LEVELS });
 
-  console.log(approvalFlowData?.data?.approval_flows);
+      if (organization?.approval_flows?.length) {
+        const initialApprovals = organization?.approval_flows?.map(
+          (d: Dictionary, idx: string | number) => {
+            return {
+              ...d,
+              approval_levels: d?.approvals?.length,
+              level: LEVELS[idx]?.level,
+            };
+          }
+        );
+
+        setApprovalFlowData([...initialApprovals]);
+      }
+    }
+  }, [organization]);
+
+  // const { data: approvalFlowData } = useGetAllMissionPlanFlowQuery<any>();
 
   const isBeforeFiscalYearStart = isBefore(
     new Date(),
@@ -366,15 +397,16 @@ const FiscalYearInfo = () => {
       <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7 overflow-x-hidden">
         <h3 className="text-sm font-normal ">5. Approval Flow</h3>
         <div className="my-5 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
-          {approvalFlowData?.data?.approval_flows?.map(
+          {approvalFlowData?.map(
             (item: {
+              level: any;
               title: any;
-              level: string | number;
-              approval_level: string | number;
+              approval_levels: string | number;
+              approvals: any[];
             }) => (
               <div className="flex gap-x-2.5" key={item?.title}>
                 <div className="">
-                  <p className="text-[var(--text-color4)] font-medium text-sm text-nowrap">
+                  <p className="text-[var(--text-color4)] font-medium text-sm text-nowrap capitalize">
                     {item.title}
                   </p>
                   <p className="text-[var(--text-color)] font-light text-[10px] text-nowrap">
@@ -383,7 +415,7 @@ const FiscalYearInfo = () => {
                 </div>
                 <div className="">
                   <div className="block text-[10px] text-[var(--primary-color)] bg-[var(--primary-accent-color)] px-[5px] py-[5.5px] rounded-full text-nowrap">
-                    {item.approval_level}
+                    {item.approvals.length} level approval
                   </div>
                 </div>
               </div>
