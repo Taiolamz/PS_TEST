@@ -203,7 +203,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
   );
 
   const { user } = useAppSelector((state) => state.auth);
-  console.log(user, "user details");
 
   const missionPlanData =
     mission_plan?.data?.mission_plan?.specified_tasks ?? [];
@@ -620,7 +619,8 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                             <p className="text-[#6E7C87] text-xs font-normal">
                               {index + 1}. Specified Task
                             </p>
-                            {user?.role === "ceo" || (user as any)?.is_line_manager ? (
+                            {user?.role === "ceo" ||
+                            (user as any)?.is_line_manager ? (
                               <p
                                 className="text-red-500 text-xs ml-auto cursor-pointer"
                                 onClick={() => {
