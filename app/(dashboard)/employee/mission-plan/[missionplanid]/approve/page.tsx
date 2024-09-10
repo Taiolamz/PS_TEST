@@ -46,9 +46,9 @@ const ApproveMissionPlan = () => {
   useEffect(() => {
     if (isLoading && !isSuccess) {
       toast.loading("Processing...");
+      setLoadingApprove(true)
       setTimeout(() => {
         toast.dismiss();
-        setLoadingApprove(true)
       }, 3000);
       return;
     }
@@ -145,7 +145,7 @@ const ApproveMissionPlan = () => {
                   isLoading ||
                   data?.data?.approvables.length === 0
                 }
-                loading={isLoading}
+                loading={loadingApprove}
                 onClick={() =>
                   approveAllItems({
                     missionPlan: missionplanid,
