@@ -11,9 +11,18 @@ import { formatDate } from "@/utils/helpers/date-formatter";
 import routesPath from "@/utils/routes";
 import { isBefore, parseISO } from "date-fns";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import {
+  AwaitedReactNode,
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useState,
+} from "react";
 import EndFYModal from "../_modal/end-fy-modal";
 import FYExtendModal from "../_modal/fy-extend-modal";
+import { useGetAllMissionPlanFlowQuery } from "@/redux/services/mission-plan/missionPlanApprovalFlow";
 
 const { ADMIN } = routesPath;
 
@@ -23,6 +32,10 @@ const FiscalYearInfo = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+
+  const { data: approvalFlowData } = useGetAllMissionPlanFlowQuery<any>();
+
+  console.log(approvalFlowData?.data?.approval_flows);
 
   const isBeforeFiscalYearStart = isBefore(
     new Date(),
@@ -353,27 +366,34 @@ const FiscalYearInfo = () => {
       <div className="border bg-white rounded-[5px] border-[var(--input-border-[1.5px])] px-8 py-7 overflow-x-hidden">
         <h3 className="text-sm font-normal ">5. Approval Flow</h3>
         <div className="my-5 w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
-          {dummyApprovalFlow.map((item) => (
-            <div className="flex gap-x-2.5" key={item?.title}>
-              <div className="">
-                <p className="text-[var(--text-color4)] font-medium text-sm text-nowrap">
-                  {item.title}
-                </p>
-                <p className="text-[var(--text-color)] font-light text-[10px] text-nowrap">
-                  Level {item.level}
-                </p>
-              </div>
-              <div className="">
-                <div className="block text-[10px] text-[var(--primary-color)] bg-[var(--primary-accent-color)] px-[5px] py-[5.5px] rounded-full text-nowrap">
-                  {item.approval_level}
+          {approvalFlowData?.data?.approval_flows?.map(
+            (item: {
+              title: any;
+              level: string | number;
+              approval_level: string | number;
+            }) => (
+              <div className="flex gap-x-2.5" key={item?.title}>
+                <div className="">
+                  <p className="text-[var(--text-color4)] font-medium text-sm text-nowrap">
+                    {item.title}
+                  </p>
+                  <p className="text-[var(--text-color)] font-light text-[10px] text-nowrap">
+                    Level {item.level}
+                  </p>
+                </div>
+                <div className="">
+                  <div className="block text-[10px] text-[var(--primary-color)] bg-[var(--primary-accent-color)] px-[5px] py-[5.5px] rounded-full text-nowrap">
+                    {item.approval_level}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
         <button
           disabled={active_fy_info?.status !== "active"}
           className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
+          onClick={() => handleNavigate("approval-flow")}
         >
           Edit
         </button>

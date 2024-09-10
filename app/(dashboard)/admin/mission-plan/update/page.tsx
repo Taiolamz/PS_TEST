@@ -5,6 +5,7 @@ import { PageSidebar } from "@/components/atoms";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
+  ApprovalFlowUpdate,
   FinancialYearUpdate,
   MissionVisionUpdate,
   StrategicPillarUpdate,
@@ -34,6 +35,7 @@ export default function Create() {
           {ui === "strategic-pillar" && <StrategicPillarUpdate />}
           {ui === "timeline-reminder" && <TimelineAndReminderUpdate />}
           {ui === "mission-vision" && <MissionVisionUpdate />}
+          {ui === "approval-flow" && <ApprovalFlowUpdate />}
         </aside>
       </section>
     </DashboardLayout>
