@@ -213,12 +213,12 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
   const handleSubmit = async () => {
     // console.log({ ...formik.values }, "initial values");
-    if (!isWeightValid) {
-      toast.error(
-        `Implied Task Weight must sum up to the specified task weight for (${taskName}) `
-      );
-      return;
-    }
+    // if (!isWeightValid) {
+    //   toast.error(
+    //     `Implied Task Weight must sum up to the specified task weight for (${taskName}) `
+    //   );
+    //   return;
+    // }
     const obj = {
       mission_plan_id: formik?.values?.mission_plan_id,
       tasks: formik?.values?.tasks.flatMap((task) => {
@@ -228,13 +228,13 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
           task: impliedTask.task,
           weight: impliedTask.weight,
           implied_task_id: impliedTask.implied_task_id,
-          resources: impliedTask.resources.map((resource: any) => resource.id),
-          // resources: impliedTask.resources.map(
-          //   (resource: any, idx: number) => ({
-          //     id: resource.id,
-          //     percentage: impliedTask.percentage[idx],
-          //   })
-          // ),
+          // resources: impliedTask.resources.map((resource: any) => resource.id),
+          resources: impliedTask.resources.map(
+            (resource: any, idx: number) => ({
+              staff_member_id: resource.id,
+              percentage: impliedTask.percentage[idx],
+            })
+          ),
           specified_task_id: task.specified_task_id,
         }));
       }),
@@ -289,12 +289,15 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
         user_id: "",
         implied_task_id: impliedTask?.id || "",
         weight: impliedTask.weight || "",
-        percentage: impliedTask?.percentage || [],
+        // percentage: impliedTask?.percentage || [],
+        percentage:
+          (impliedTask?.resources as any[])?.map((chi) => chi.percentage) || [],
         start_date: impliedTask?.start_date || "",
         end_date: impliedTask?.end_date || "",
         resources: (impliedTask?.resources as any[])?.map((chi) => ({
           id: chi?.staff_member_id || "",
           name: chi?.name || "",
+          percentage: chi?.percentage || "",
         })),
         expected_outcomes: [""],
       })),
@@ -581,7 +584,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
     const updatedPercentages = currentPercentages.filter(
       (_: any, idx: number) =>
-        !removedResourceIds.includes(currentResources[idx].id)
+        !removedResourceIds.includes(currentResources[idx]?.id)
     );
 
     formik.setFieldValue(
@@ -1007,15 +1010,15 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                           />
                         </div>
                       ))}
-
-                    {/* <button
+                    {/* 
+                    <button
                       type="button"
                       onClick={() =>
                         push({
                           task: "",
                           user_id: "",
                           specified_task_id: "",
-                          implied_task_id: uuidv4(),
+                          implied_task_id: "", //uuidv4()
                           weight: "",
                           percentage: "",
                           start_date: "",
