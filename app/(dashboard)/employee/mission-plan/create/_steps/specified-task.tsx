@@ -73,10 +73,10 @@ interface DeleteData {
 }
 
 interface myComponentProps {
-  onNextStep?: () => void
+  onNextStep?: () => void;
 }
 
-const SpecifiedTask = ({onNextStep}: myComponentProps) => {
+const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
   const router = useRouter();
   const location = usePathname();
   const dispatch = useAppDispatch();
@@ -214,11 +214,12 @@ const SpecifiedTask = ({onNextStep}: myComponentProps) => {
 
   // This sets the intial saved values
   useEffect(() => {
-    if (mission_plan_info?.mission_plan?.specified_tasks.length > 0) {
+    if (mission_plan_info?.mission_plan?.specified_tasks?.length > 0) {
       const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
         (task: any) => ({
           id: task.id || uuidv4(),
           task: task.task,
+          implied_task_id: task?.line_manager_implied_task?.id,
           weight: Number(task.weight),
           strategic_pillars: mappedStrategicPillars
             .filter((itemA: { id: any }) =>
@@ -245,6 +246,7 @@ const SpecifiedTask = ({onNextStep}: myComponentProps) => {
       const tasks = mySpecifiedTasks?.data?.map((task: any, idx: any) => ({
         id: uuidRef.current,
         task: task?.task,
+        implied_task_id: task?.id,
         start_date: task?.start_date,
         end_date: task?.end_date,
       }));
@@ -257,7 +259,6 @@ const SpecifiedTask = ({onNextStep}: myComponentProps) => {
     mission_plan_info,
     mySpecifiedTasks,
   ]);
-
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
     if (initialValues?.length > 0) {
@@ -309,7 +310,7 @@ const SpecifiedTask = ({onNextStep}: myComponentProps) => {
           .unwrap()
           .then(() => {
             toast.success("Specified Task Addedd Successfully");
-            onNextStep && onNextStep()
+            onNextStep && onNextStep();
             // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task`);
           });
       }
