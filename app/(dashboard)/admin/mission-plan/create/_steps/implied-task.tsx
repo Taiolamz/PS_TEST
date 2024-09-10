@@ -183,13 +183,10 @@ const ImpliedTask = () => {
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
-        // console.log("testing", payload);
         if (payload?.data?.mission_plan?.specified_tasks?.length > 0) {
           const impliedTasks = payload?.data?.mission_plan?.specified_tasks;
           const mappedTasks = formattedData(impliedTasks);
           formik.setFieldValue("tasks", mappedTasks);
-          console.log(impliedTasks, "implied tasks");
-          console.log(mappedTasks, "mapped tasks");
         }
       });
   };
@@ -258,8 +255,6 @@ const ImpliedTask = () => {
     enableReinitialize: true,
   });
 
-  console.log(formik.errors, "errors");
-
   useEffect(() => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
@@ -300,7 +295,8 @@ const ImpliedTask = () => {
                                   {/* Achieve $1 Billion in Company Revenue for the
                             Financial year */}
                                   {/* the title should come from another array */}
-                                  {task?.title || `${index + 1}. Specified task`}
+                                  {task?.title ||
+                                    `${index + 1}. Specified task`}
                                 </p>
                               }
                               content={
