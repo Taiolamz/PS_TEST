@@ -20,6 +20,7 @@ type Props = {
   data: MeasureOfSuccessType[];
   approvables?: [];
   loading: boolean;
+  approveLoading: boolean;
 };
 
 const MeasureOfSuccess = ({
@@ -28,6 +29,7 @@ const MeasureOfSuccess = ({
   data,
   approvables,
   loading,
+  approveLoading,
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -35,17 +37,40 @@ const MeasureOfSuccess = ({
   const measureColumnData = useMemo(() => measureColumns(), []);
   const commentItem = useGetComments({ approvables, approvableTypeId });
   const approval_type = "success-measure";
-  const matchingIds: any =
-    approvables !== undefined &&
-    approvables
-      .filter((item: approveItems) => item.approvable_type === approval_type)
-      .map((item: approveItems) => item.approvable_id);
+  const [matchingIds, setMatchingIds] = useState<any>([]);
+  // const matchingIds: any =
+  //   approvables !== undefined &&
+  //   approvables
+  //     .filter((item: approveItems) => item.approvable_type === approval_type)
+  //     .map((item: approveItems) => {
+  //       return {
+  //         approvable_id: item.approvable_id,
+  //         status: item.status,
+  //       };
+  //     });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [status, setStatus] = useState<string>("");
   const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
+  const [selectedId, setSelectedID] = useState<string>("");
+
+  console.log("matchingIds success", matchingIds);
+
+  useEffect(() => {
+    const matchingIds: any =
+      approvables !== undefined &&
+      approvables
+        .filter((item: approveItems) => item.approvable_type === approval_type)
+        .map((item: approveItems) => {
+          return {
+            approvable_id: item.approvable_id,
+            status: item.status,
+          };
+        });
+    setMatchingIds(matchingIds);
+  }, [data]);
 
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
@@ -57,18 +82,25 @@ const MeasureOfSuccess = ({
       target: item.target,
       unit: item.unit,
       actions: (
-        <div className="flex gap-2.5 ml-[40px] items-end justify-end" key={index}>
+        <div
+          className="flex gap-2.5 ml-[40px] items-end justify-end"
+          key={index}
+        >
           {!loading &&
             data?.length !== null &&
-            status === "pending" &&
-            !isSuccess && (
+            findItemById(matchingIds ?? [], item?.id as string)?.status ===
+              "pending" &&
+            findItemById(matchingIds ?? [], item?.id as string)?.status !==
+              "rejected" &&
+            findItemById(matchingIds ?? [], item?.id as string)?.status !==
+              "approved" && (
               <Button
                 variant="outline"
                 size={"sm"}
                 className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                 onClick={() => {
                   setShowTextArea(true);
-
+                  setSelectedID(item.id as string);
                   setItemsToApprove((prevItems: any) => {
                     const itemExists = prevItems.some(
                       (items: itemsApprove) => items.id === item.id
@@ -102,24 +134,47 @@ const MeasureOfSuccess = ({
 
                   handleReject();
                 }}
-                loading={isLoading && actionType === "rejected"}
+                loading={
+                  isLoading &&
+                  actionType === "rejected" &&
+                  findItemById(matchingIds ?? [], item?.id as string)
+                    ?.approvable_id === selectedId
+                }
                 disabled={
-                  (isLoading && actionType === "rejected") ||
-                  approvables?.length === 0
+                  (isLoading &&
+                    actionType === "rejected" &&
+                    findItemById(matchingIds ?? [], item?.id as string)
+                      ?.approvable_id === selectedId) ||
+                  approvables?.length === 0 ||
+                  approveLoading
                 }
               >
                 Reject
               </Button>
             )}
-          {!isLoading &&
+          {/* {!loading &&
             data?.length !== null &&
+            findItemById(matchingIds ?? [], item?.id as string)?.status ===
+              "pending" &&
+            isSuccess && <EditableLabel status={actionType} />} */}
+          {!loading &&
+            !isLoading &&
+            data?.length !== null &&
+            findItemById(matchingIds ?? [], item?.id as string)?.status ===
+              "pending" &&
             findItemById(matchingIds ?? [], item?.id as string)
-            ?.status  === "pending" &&
+              ?.approvable_id === selectedId &&
             isSuccess && <EditableLabel status={actionType} />}
-          {!isLoading &&
+          {!loading &&
             data?.length !== null &&
-            findItemById(matchingIds ?? [], item?.id as string)?.status !== "pending" &&
-            !isSuccess && <EditableLabel status={status ?? ""} />}
+            findItemById(matchingIds ?? [], item?.id as string)?.status !==
+              "pending" && (
+              <EditableLabel
+                status={`${
+                  findItemById(matchingIds ?? [], item?.id as string)?.status
+                }`}
+              />
+            )}
         </div>
       ),
     }));
@@ -141,6 +196,7 @@ const MeasureOfSuccess = ({
     approvableTypeId: matchingIds,
     itemsToApprove,
     setItemsToApprove,
+    setSelectedID,
   });
 
   useEffect(() => {
