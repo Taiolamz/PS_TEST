@@ -9,7 +9,26 @@ export const impliedTaskApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
+    deleteImpliedTask: builder.mutation({
+      query: (id) => ({
+        url: `/mission-plan/implied-task/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["MissionPlan"],
+    }),
+    reAssignImpliedTask: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan/implied-task/reassign`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlan"],
+    }),
   }),
 });
 
-export const { useCreateImpliedTaskMutation } = impliedTaskApi;
+export const {
+  useCreateImpliedTaskMutation,
+  useDeleteImpliedTaskMutation,
+  useReAssignImpliedTaskMutation,
+} = impliedTaskApi;
