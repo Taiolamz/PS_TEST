@@ -197,10 +197,10 @@ const ChecklistOverviewContent = () => {
     <div
       onClick={() => {
         // getPercentageFunc();
-        console.log(checklist);
+        // console.log(checklist);
         // console.log(checklistDetails);
 
-        console.log(user?.organization);
+        // console.log(user?.organization);
         // console.log(getPercentageFunc());
       }}
       className="flex flex-col gap-3 w-[768px]"
@@ -242,18 +242,21 @@ const ChecklistOverviewContent = () => {
                   !items &&
                   path &&
                   !isAllChecked &&
-                  idx === 1
+                  idx === 1 &&  !checklist?.employee_exist
                 ) {
                   router?.push(ADMIN.ADD_EMPLOYEE);
+                  return;
                 }
                 if (
-                  Number(checklist?.employee_count) > 1 &&
+                  checklist?.employee_exist &&
                   getNextLink(getListToUse(checklistDetails[0]?.items))
                     ?.length < 1 &&
                   !isAllChecked &&
                   Number(items?.length) > 0 &&
                   idx === 2
                 ) {
+                  // console.log("o");
+                  
                   router?.push(getNextLink(getListToUse(items))[0]?.link);
                   return;
                 }
