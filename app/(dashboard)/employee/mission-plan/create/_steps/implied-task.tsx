@@ -213,12 +213,12 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
   const handleSubmit = async () => {
     // console.log({ ...formik.values }, "initial values");
-    // if (!isWeightValid) {
-    //   toast.error(
-    //     `Implied Task Weight must sum up to the specified task weight for (${taskName}) `
-    //   );
-    //   return;
-    // }
+    if (!isWeightValid) {
+      toast.error(
+        `Implied Task Weight must sum up to the specified task weight for (${taskName}) `
+      );
+      return;
+    }
     const obj = {
       mission_plan_id: formik?.values?.mission_plan_id,
       tasks: formik?.values?.tasks.flatMap((task) => {
