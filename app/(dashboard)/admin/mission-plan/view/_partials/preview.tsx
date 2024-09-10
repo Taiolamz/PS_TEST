@@ -210,7 +210,7 @@ const Preview = ({ data }: dataProp) => {
           <Link href="#">History</Link>
         </div>
         <div className={`${btn}`}>
-          <Link href="#">Presentation Mode</Link>
+          <Link   href={`/admin/mission-plan/${data?.id}/approve?ui=presentation&step=1`}>Presentation Mode</Link>
         </div>
 
         <div className={`${btn}`}>
