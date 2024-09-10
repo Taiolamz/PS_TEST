@@ -28,6 +28,7 @@ const AddApprovalFlow = () => {
     // reviewers,
     level,
     organization,
+    isLoadingGradeLevel,
   } = useMissionApprovalFlow({ cancelPath: cancelRoute });
 
   const { data: rolesData, isLoading: isLoadingroles } =
@@ -94,7 +95,7 @@ const AddApprovalFlow = () => {
             options={level}
             approvals={roles}
             // approvals={reviewers}
-            isLoading={isLoadingAllRoles}
+            isLoading={isLoadingGradeLevel}
             approvalsArray={formik.values.order_of_approvals}
             // setOrderValue={formik.setFieldValue}
             allRoles={allRoles}
