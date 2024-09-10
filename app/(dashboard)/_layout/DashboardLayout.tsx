@@ -266,7 +266,7 @@ const DashboardLayout = ({
         return;
       }
     }
-    if (!checklist?.employee_count) {
+    if (!checklist?.employee_exist) {
       router.push(ADMIN.ADD_EMPLOYEE);
       return;
     }
