@@ -239,7 +239,7 @@ const ApprovalFlowTwo = ({
                         />
                       ))}
 
-                      <CustomAccordion
+                      {/* <CustomAccordion
                         key={"head-of-organization-mission-plan"}
                         className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
                         title={
@@ -267,7 +267,7 @@ const ApprovalFlowTwo = ({
                             className="w-[226px]"
                           />
                         }
-                      />
+                      /> */}
                     </>
                   ) : (
                     <p className="font-medium text-lg">No Approval Flow</p>

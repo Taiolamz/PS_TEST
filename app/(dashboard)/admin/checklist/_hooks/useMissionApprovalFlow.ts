@@ -8,6 +8,7 @@ import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import routesPath from "@/utils/routes";
 import { useCreateMissionFlowMutation } from "@/redux/services/checklist/missionFlowApi";
+import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelApi";
 
 type Prop = {
   cancelPath: string;
@@ -70,6 +71,10 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const [createMissionFlow, { isLoading: isCreatingMissionFlow }] =
     useCreateMissionFlowMutation();
 
+  const { data: gradeLevelData, isLoading: isLoadingGradeLevel } =
+    useGetGradeLevelsQuery({});
+  const gradeLevels = gradeLevelData ?? [];
+
   const handleSubmit = async () => {
     const newApprovals = [...formik.values.order_of_approvals];
     newApprovals.push({
@@ -103,14 +108,26 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
 
-  const handleFormatOrderOfApprovals = () => {
-    const order_of_approvals = (
-      (organization as any)?.approval_flows as any[]
-    )?.map((flow) => ({
-      title: flow.title,
-      approvals: flow.approvals,
+  // console.log(gradeLevels, "grade levels");
+
+  // const handleFormatOrderOfApprovals = () => {
+  //   const order_of_approvals = (
+  //     (organization as any)?.approval_flows as any[]
+  //   )?.map((flow) => ({
+  //     title: flow.title,
+  //     approvals: flow.approvals,
+  //   }));
+  //   return order_of_approvals;
+  // };
+
+  // const
+
+  const handleFormatGradeLevel = () => {
+    const newData = gradeLevels?.map((chi) => ({
+      title: chi?.name || "",
+      approvals: [],
     }));
-    return order_of_approvals;
+    return newData;
   };
 
   const formik = useFormik<any>({
@@ -121,17 +138,25 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     //   order_of_approvals: handleFormatOrderOfApprovals(),
     //   // order_of_approvals: [{ title: "", approvals: [] }],
     // },
+
     initialValues: {
-      order_of_approvals:
-        (organization as any)?.approval_flows?.map((chi:any) => ({
-          title: chi.title,
-          approvals: chi?.approvals || [], 
-        })) || [], 
+      order_of_approvals: handleFormatGradeLevel(),
       head_of_organization: "",
     },
+    enableReinitialize: true,
+    // initialValues: {
+    //   order_of_approvals:
+    //     (organization as any)?.approval_flows?.map((chi: any) => ({
+    //       title: chi.title,
+    //       approvals: chi?.approvals || [],
+    //     })) || [],
+    //   head_of_organization: "",
+    // },
     // validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
+
+  // console.log(formik.values.order_of_approvals, "order of approvals");
 
   const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
     value: i.toString(),
@@ -167,5 +192,6 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     isCreatingMissionFlow,
     ui,
     organization,
+    isLoadingGradeLevel,
   };
 };
