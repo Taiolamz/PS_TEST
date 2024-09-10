@@ -1,3 +1,4 @@
+import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import React from "react";
 
@@ -5,12 +6,13 @@ const DeleteImpliedTaskModal = ({
   onCancel,
   onDelete,
   data,
+  isLoading,
 }: {
   onCancel: () => void;
   onDelete: () => void;
   data: any;
+  isLoading?: boolean;
 }) => {
-  console.log(data, "data");
   return (
     <div className="p-3 flex flex-col gap-3">
       <p className="text-[#EC1410] font-medium text-[16px]">
@@ -32,8 +34,17 @@ const DeleteImpliedTaskModal = ({
         >
           No
         </Button>
-        <Button className="!bg-[#EC1410]" onClick={onDelete}>
-          Yes, Delete
+        <Button
+          // className="!bg-[#EC1410]"
+          className={`font-light ${
+            isLoading
+              ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
+              : "!bg-[#EC1410]"
+          } `}
+          onClick={onDelete}
+          disabled={isLoading}
+        >
+          {isLoading ? <ManceLoader /> : "Yes, Delete"}
         </Button>
       </div>
     </div>
