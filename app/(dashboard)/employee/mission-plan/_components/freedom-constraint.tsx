@@ -15,7 +15,7 @@ type Props = {
   data: BoundariesType[];
   approvables?: [];
   loading: boolean;
-  approveLoading: boolean;
+  approveLoading?: boolean;
 };
 
 const FreedomConstraint = ({

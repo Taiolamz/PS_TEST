@@ -17,7 +17,7 @@ type Props = {
   approvables?: [];
   setApprovalTypeId?: (e: string) => void;
   loading: boolean;
-  approveLoading: boolean;
+  approveLoading?: boolean;
 };
 const MissionStatement = ({
   setShowTextArea,

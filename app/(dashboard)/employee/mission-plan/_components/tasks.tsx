@@ -20,7 +20,7 @@ type Props = {
   loading: boolean;
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
-  approveLoading: boolean
+  approveLoading?: boolean
 };
 
 const Tasks = ({

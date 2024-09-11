@@ -20,7 +20,7 @@ type Props = {
   data: MeasureOfSuccessType[];
   approvables?: [];
   loading: boolean;
-  approveLoading: boolean;
+  approveLoading?: boolean;
 };
 
 const MeasureOfSuccess = ({

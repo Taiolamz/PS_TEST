@@ -16,7 +16,7 @@ type Props = {
   data: StrategicIntentType[];
   approvables?: [];
   loading: boolean;
-  approveLoading: boolean;
+  approveLoading?: boolean;
 };
 
 const StrategicIntent = ({
