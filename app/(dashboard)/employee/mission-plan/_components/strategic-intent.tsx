@@ -16,9 +16,15 @@ type Props = {
   data: StrategicIntentType[];
   approvables?: [];
   loading: boolean;
+  approveLoading?: boolean;
 };
 
-const StrategicIntent = ({ data, approvables, loading }: Props) => {
+const StrategicIntent = ({
+  data,
+  approvables,
+  loading,
+  approveLoading,
+}: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
@@ -64,8 +70,9 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
     approvableTypeId: selectedId,
     itemsToApprove,
     setItemsToApprove,
+    setSelectedID,
   });
-
+  // console.log("matchingIds strategic", matchingIds);
   return (
     <div className="flex flex-col gap-10">
       {loading && (
@@ -104,7 +111,10 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                     data?.length !== null &&
                     findItemById(matchingIds ?? [], item?.id)?.status ===
                       "pending" &&
-                    !isSuccess && (
+                    findItemById(matchingIds ?? [], item?.id)?.status !==
+                      "rejected" &&
+                    findItemById(matchingIds ?? [], item?.id)?.status !==
+                      "approved" && (
                       <div className="flex gap-2.5 mr-4">
                         <Button
                           variant="outline"
@@ -143,13 +153,18 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                           loading={
                             isLoading &&
                             actionType === "rejected" &&
-                            selectedId === item?.id
+                            selectedId ===
+                              findItemById(
+                                matchingIds ?? [],
+                                item?.id as string
+                              )?.approvable_id
                           }
                           disabled={
                             (isLoading &&
                               actionType === "rejected" &&
                               selectedId === item?.id) ||
-                            approvables?.length === 0
+                            approvables?.length === 0 ||
+                            approveLoading
                           }
                         >
                           Reject
@@ -162,12 +177,17 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                           loading={
                             isLoading &&
                             actionType === "approved" &&
-                            selectedId === item?.id
+                            findItemById(matchingIds ?? [], item?.id as string)
+                              ?.approvable_id === selectedId
                           }
                           disabled={
-                            isLoading &&
-                            actionType === "approved" &&
-                            selectedId === item?.id
+                            (isLoading &&
+                              actionType === "approved" &&
+                              findItemById(
+                                matchingIds ?? [],
+                                item?.id as string
+                              )?.approvable_id === selectedId) ||
+                            approveLoading
                           }
                           className="hidden"
                         >
@@ -175,14 +195,22 @@ const StrategicIntent = ({ data, approvables, loading }: Props) => {
                         </Button>
                       </div>
                     )}
-                  {!isLoading &&
+                  {/* {!loading &&
                     data?.length !== null &&
                     findItemById(matchingIds, item?.id)?.status === "pending" &&
-                    isSuccess && <EditableLabel status={actionType} />}
-                  {!isLoading &&
+                    isSuccess && <EditableLabel status={actionType} />} */}
+                  {!loading &&
+                    !isLoading &&
                     data?.length !== null &&
-                    findItemById(matchingIds, item?.id)?.status !== "pending" &&
-                    !isSuccess && (
+                    findItemById(matchingIds, item?.id)?.status ===
+                      "rejected" &&
+                    findItemById(matchingIds ?? [], item?.id as string)
+                      ?.approvable_id === selectedId &&
+                    isSuccess && <EditableLabel status={actionType} />}
+                  {!loading &&
+                    data?.length !== null &&
+                    findItemById(matchingIds, item?.id)?.status !==
+                      "pending" && (
                       <EditableLabel
                         status={
                           findItemById(matchingIds, item?.id)?.status ??

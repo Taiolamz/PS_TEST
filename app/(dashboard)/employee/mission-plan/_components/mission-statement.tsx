@@ -17,6 +17,7 @@ type Props = {
   approvables?: [];
   setApprovalTypeId?: (e: string) => void;
   loading: boolean;
+  approveLoading?: boolean;
 };
 const MissionStatement = ({
   setShowTextArea,
@@ -25,6 +26,7 @@ const MissionStatement = ({
   approvables,
   // setApprovalTypeId,
   loading,
+  approveLoading,
 }: Props) => {
   const approvableTypeId = data?.id as string;
   const params = useParams();
@@ -121,7 +123,7 @@ const MissionStatement = ({
                   loading={isLoading && actionType === "rejected"}
                   disabled={
                     (isLoading && actionType === "rejected") ||
-                    approvables?.length === 0
+                    approvables?.length === 0 || approveLoading
                   }
                 >
                   Reject
@@ -136,14 +138,13 @@ const MissionStatement = ({
                 </Button>
               </div>
             )}
-          {!isLoading &&
-            data?.mission !== null &&
+          {!loading &&
+            data?.mission.length !== 0 &&
             status === "pending" &&
             isSuccess && <EditableLabel status={actionType} />}
-          {!isLoading &&
-            data?.mission !== null &&
-            status !== "pending" &&
-            !isSuccess && <EditableLabel status={status ?? ""} />}
+          {!loading && data?.mission.length !== 0 && status !== "pending" && (
+            <EditableLabel status={status ?? ""} />
+          )}
         </div>
       </div>
       {/* {showTextArea && ( */}

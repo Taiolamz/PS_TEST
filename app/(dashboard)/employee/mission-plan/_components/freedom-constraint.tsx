@@ -15,6 +15,7 @@ type Props = {
   data: BoundariesType[];
   approvables?: [];
   loading: boolean;
+  approveLoading?: boolean;
 };
 
 const FreedomConstraint = ({
@@ -23,6 +24,7 @@ const FreedomConstraint = ({
   data,
   approvables,
   loading,
+  approveLoading,
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -188,7 +190,8 @@ const FreedomConstraint = ({
                       (isLoading &&
                         actionType === "rejected" &&
                         selectedId === data[0]?.id) ||
-                      approvables?.length === 0
+                      approvables?.length === 0 ||
+                      approveLoading
                     }
                   >
                     Reject
@@ -214,14 +217,13 @@ const FreedomConstraint = ({
                   </Button>
                 </div>
               )}
-            {!isLoading &&
+            {!loading &&
               data?.length !== null &&
               findItemById(matchingIds, data[0]?.id)?.status === "pending" &&
               isSuccess && <EditableLabel status={actionType} />}
-            {!isLoading &&
+            {!loading &&
               data?.length !== null &&
-              findItemById(matchingIds, data[0]?.id)?.status !== "pending" &&
-              !isSuccess && (
+              findItemById(matchingIds, data[0]?.id)?.status !== "pending" && (
                 <EditableLabel
                   status={
                     findItemById(matchingIds, data[0]?.id)?.status ?? "pending"
