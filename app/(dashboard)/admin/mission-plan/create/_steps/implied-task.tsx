@@ -677,6 +677,7 @@ import DeleteImpliedTaskModal from "./delete-implied-task";
 import TransferSpecifiedTask from "./transfer-specified-task";
 import ImpliedTaskNotify from "./implied-task-notify";
 import TransferImpliedTaskOrWeight from "./transfer-implied-task";
+import routesPath from "@/utils/routes";
 
 interface SubItem {
   task: string;
@@ -854,6 +855,8 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
   const [isWeightValid, setIsWeightValid] = useState(true);
   const [taskName, setTaskName] = useState("");
 
+  const { ADMIN } = routesPath;
+
   const handleSubmit = async () => {
     // console.log({ ...formik.values }, "initial values");
     if (!isWeightValid) {
@@ -892,6 +895,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
           setTimeout(() => {
             toast.dismiss();
             onNextStep && onNextStep();
+            router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
             // router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
           }, 2000);
         });
