@@ -71,11 +71,12 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const gradeLevels = gradeLevelData ?? [];
 
   const handleSubmit = async () => {
+    // const newApprovals = [...formik.values.order_of_approvals];
+    // newApprovals.push({
+    //   // title: "Organization Head",
+    //   // approvals: [formik.values.head_of_organization],
+    // });
     const newApprovals = [...formik.values.order_of_approvals];
-    newApprovals.push({
-      title: "Organization Head",
-      approvals: [formik.values.head_of_organization],
-    });
 
     const payload = {
       // order_of_approvals: formik.values.order_of_approvals,
@@ -114,7 +115,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const formik = useFormik<any>({
     initialValues: {
       order_of_approvals: handleFormatGradeLevel(),
-      head_of_organization: "",
+      // head_of_organization: "",
     },
     enableReinitialize: true,
     // validationSchema: formSchema,
