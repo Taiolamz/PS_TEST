@@ -582,7 +582,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
       updatedResources
     );
 
-    const updatedPercentages = currentPercentages.filter(
+    const updatedPercentages = currentPercentages?.filter(
       (_: any, idx: number) =>
         !removedResourceIds.includes(currentResources[idx]?.id)
     );

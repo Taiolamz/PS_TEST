@@ -1224,16 +1224,16 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
       `tasks.${index}.implied_tasks.${subIndex}.resources`,
       updatedResources
     );
-
-    const updatedPercentages = currentPercentages.filter(
-      (_: any, idx: number) =>
-        !removedResourceIds.includes(currentResources[idx]?.id)
-    );
-
-    formik.setFieldValue(
-      `tasks.${index}.implied_tasks.${subIndex}.percentage`,
-      updatedPercentages
-    );
+    if (currentPercentages) {
+      const updatedPercentages = currentPercentages?.filter(
+        (_: any, idx: number) =>
+          !removedResourceIds.includes(currentResources[idx]?.id)
+      );
+      formik.setFieldValue(
+        `tasks.${index}.implied_tasks.${subIndex}.percentage`,
+        updatedPercentages
+      );
+    }
   };
 
   return (

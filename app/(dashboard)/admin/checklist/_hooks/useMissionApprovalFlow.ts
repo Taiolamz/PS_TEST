@@ -63,6 +63,8 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
 
   const { organization } = user;
 
+  // console.log(organization, "organization");
+
   const [createMissionFlow, { isLoading: isCreatingMissionFlow }] =
     useCreateMissionFlowMutation();
 
@@ -93,7 +95,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            // router.push(ADMIN.CHECKLIST);
+            router.push(ADMIN.CHECKLIST);
             // router.push(BranchRoute);
           }, 2000);
         });
@@ -103,11 +105,21 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
-
+  const approvalArray = (organization as any)?.approval_flows
+    ? (organization as any)?.approval_flows
+    : gradeLevels;
+  //     initialValues: {
+  //   order_of_approvals:
+  //     (organization as any)?.approval_flows?.map((chi: any) => ({
+  //       title: chi.title,
+  //       approvals: chi?.approvals || [],
+  //     })) || [],
+  //   head_of_organization: "",
+  // },
   const handleFormatGradeLevel = () => {
-    const newData = gradeLevels?.map((chi) => ({
-      title: chi?.name || "",
-      approvals: [],
+    const newData = approvalArray?.map((chi: any) => ({
+      title: chi?.name || chi?.title || "",
+      approvals: chi?.approvals || [],
     }));
     return newData;
   };
