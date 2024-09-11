@@ -72,7 +72,7 @@ const StrategicIntent = ({
     setItemsToApprove,
     setSelectedID,
   });
-  console.log("matchingIds strategic", matchingIds);
+  // console.log("matchingIds strategic", matchingIds);
   return (
     <div className="flex flex-col gap-10">
       {loading && (

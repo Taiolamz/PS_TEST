@@ -56,7 +56,7 @@ const MeasureOfSuccess = ({
   const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
   const [selectedId, setSelectedID] = useState<string>("");
 
-  console.log("matchingIds success", matchingIds);
+  // console.log("matchingIds success", matchingIds);
 
   useEffect(() => {
     const matchingIds: any =
