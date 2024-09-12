@@ -37,7 +37,7 @@ const MultipleComment = ({
   setComments,
   id,
 }: Props) => {
-  console.log("comments", comments);
+  // console.log("comments", comments);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [newComment, setNewComment] = useState<string>("");
   const { primaryColorHexValue } = useContext(ActionContext);
@@ -83,7 +83,7 @@ const MultipleComment = ({
         <div className="flex gap-3.5 items-center">
           <p
             className="flex gap-2.5 items-center text-[#6E7C87] text-sm cursor-pointer"
-            onClick={handleAddComment}
+            // onClick={handleAddComment}
           >
             <PlusIcon width={24} height={24} /> Add comment
           </p>

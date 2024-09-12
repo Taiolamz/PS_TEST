@@ -106,7 +106,7 @@ const Tasks = ({
     }
   }, [commentItem]);
 
-  // console.log("data", data);
+  // console.log("isSuccess", isSuccess);
   
   return (
     <div className="flex flex-col gap-10">
@@ -364,7 +364,7 @@ const Tasks = ({
                                     <Button
                                       size="sm"
                                       onClick={() => {
-                                        setShowTextArea(false);
+                                        // setShowTextArea(false);
                                         toggleComment("")
                                         setSelectedID(
                                           impliedTask?.id as string

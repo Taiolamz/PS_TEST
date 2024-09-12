@@ -20,8 +20,8 @@ type Props = {
   approveLoading?: boolean;
 };
 const MissionStatement = ({
-  setShowTextArea,
-  showTextArea,
+  // setShowTextArea,
+  // showTextArea,
   data,
   approvables,
   // setApprovalTypeId,
@@ -34,7 +34,7 @@ const MissionStatement = ({
   const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
   const approval_type = "mission-statement";
-
+  const [showTextArea, setShowTextArea] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -90,7 +90,7 @@ const MissionStatement = ({
                   size={"sm"}
                   className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                   onClick={() => {
-                    setShowTextArea(true);
+                    setShowTextArea(!showTextArea);
                     setItemsToApprove((prevItems) => {
                       const itemExists = prevItems.some(
                         (item) => item.id === approvableTypeId

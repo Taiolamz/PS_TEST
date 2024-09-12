@@ -19,8 +19,8 @@ type Props = {
 };
 
 const FreedomConstraint = ({
-  setShowTextArea,
-  showTextArea,
+  // setShowTextArea,
+  // showTextArea,
   data,
   approvables,
   loading,
@@ -32,7 +32,7 @@ const FreedomConstraint = ({
   const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
   const approval_type = "boundary";
-
+  const [showTextArea, setShowTextArea] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -77,6 +77,7 @@ const FreedomConstraint = ({
     setMatchingIds(matchingIds);
   }, [data]);
 
+  
   return (
     <section>
       {loading && (
@@ -146,7 +147,7 @@ const FreedomConstraint = ({
                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                     size="sm"
                     onClick={() => {
-                      setShowTextArea(true);
+                      setShowTextArea(!showTextArea);
                       setSelectedID(data[0]?.id);
                       matchingIds.forEach((id: string) => {
                         setItemsToApprove((prevItems) => {

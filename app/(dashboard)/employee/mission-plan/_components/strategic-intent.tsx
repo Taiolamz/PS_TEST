@@ -182,6 +182,7 @@ const StrategicIntent = ({
                         <Button
                           size={"sm"}
                           onClick={() => {
+                            toggleComment("")
                             setSelectedID(item?.id);
                             setItemsToApprove((prevItems) => {
                               const itemExists = prevItems.some(

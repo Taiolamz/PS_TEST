@@ -5,7 +5,7 @@ import {
   measuresData,
 } from "@/utils/data/dashboard/missionplan/dummy";
 import { Button } from "@/components/ui/button";
-import Comment from "./comment";
+// import Comment from "./comment";
 import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
@@ -103,7 +103,7 @@ const MeasureOfSuccess = ({
                     const filteredComments = commentItem.find(
                       (comment) => comment.id === item.id
                     );
-                    setShowTextArea(true);
+                    setShowTextArea(!showTextArea);
                     setSelectedID(item.id as string);
                     setItemsToApprove((prevItems: any) => {
                       const itemExists = prevItems.some(
