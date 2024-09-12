@@ -123,16 +123,51 @@ const MissionStatement = ({
                   loading={isLoading && actionType === "rejected"}
                   disabled={
                     (isLoading && actionType === "rejected") ||
-                    approvables?.length === 0 || approveLoading
+                    approvables?.length === 0 ||
+                    approveLoading
                   }
                 >
                   Reject
                 </Button>
                 <Button
-                  onClick={() => handleApprove()}
+                  size={"sm"}
+                  onClick={() => {
+                    setShowTextArea(true);
+                    setItemsToApprove((prevItems) => {
+                      const itemExists = prevItems.some(
+                        (item) => item.id === approvableTypeId
+                      );
+
+                      if (itemExists) {
+                        return prevItems.map((item) =>
+                          item.id === approvableTypeId
+                            ? {
+                                ...item,
+                                status: "approved",
+                                // comments: comments?.comment,
+                              } // Update the existing item
+                            : item
+                        );
+                      }
+
+                      return [
+                        ...prevItems,
+                        {
+                          id: approvableTypeId,
+                          status: "approved",
+                          // comments: comments?.comment,
+                        },
+                      ];
+                    });
+
+                    handleApprove();
+                  }}
                   loading={isLoading && actionType === "approved"}
-                  disabled={isLoading && actionType === "approved"}
-                  className="hidden"
+                  disabled={
+                    (isLoading && actionType === "approved") ||
+                    approvables?.length === 0 ||
+                    approveLoading
+                  }
                 >
                   Approve
                 </Button>

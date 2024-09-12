@@ -86,7 +86,11 @@ export const useApproval = ({
       itemsToApprove !== undefined
         ? itemsToApprove.map((item) => ({
             ...item,
-            comments: allComments,
+            // comments: allComments,
+            // Add the comments key only if actionType is "rejected"
+            ...(FormikApprovalForm?.values?.actionType === "rejected" && {
+              comments: allComments,
+            }),
           }))
         : [];
 

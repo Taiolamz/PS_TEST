@@ -271,6 +271,13 @@ export const measureColumns = (): ColumnDef<MeasureData>[] => [
     ),
   },
   {
+    accessorKey: "weight",
+    header: () => <div className="text-left">Weight</div>,
+    cell: ({ row }) => (
+      <div className=" capitalize">{row.getValue("weight")}</div>
+    ),
+  },
+  {
     accessorKey: "actions",
     header: () => <div className="!border-transparent"></div>,
     cell: ({ row }) => (

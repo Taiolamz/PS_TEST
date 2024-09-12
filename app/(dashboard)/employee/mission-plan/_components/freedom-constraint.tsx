@@ -144,6 +144,7 @@ const FreedomConstraint = ({
                   <Button
                     variant="outline"
                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                    size="sm"
                     onClick={() => {
                       setShowTextArea(true);
                       setSelectedID(data[0]?.id);
@@ -197,8 +198,42 @@ const FreedomConstraint = ({
                     Reject
                   </Button>
                   <Button
+                    size="sm"
                     onClick={() => {
+                      setShowTextArea(false);
                       setSelectedID(data[0]?.id);
+                      matchingIds.forEach((id: string) => {
+                        setItemsToApprove((prevItems) => {
+                          // Check if an item with the same ID already exists
+                          const itemExists = prevItems.some(
+                            (item) => item.id === data[0]?.id
+                          );
+
+                          // If the item exists, update it; otherwise, add a new one
+                          if (itemExists) {
+                            // Update the existing item if needed
+                            return prevItems.map((item) =>
+                              item.id === data[0]?.id
+                                ? {
+                                    ...item,
+                                    status: "approved",
+                                    comments: [],
+                                  }
+                                : item
+                            );
+                          }
+
+                          // If the item doesn't exist, add the new item
+                          return [
+                            ...prevItems,
+                            {
+                              id: data[0]?.id,
+                              status: "approved",
+                              comments: [],
+                            },
+                          ];
+                        });
+                      });
                       handleApprove();
                     }}
                     loading={
@@ -207,14 +242,16 @@ const FreedomConstraint = ({
                       selectedId === data[0]?.id
                     }
                     disabled={
-                      isLoading &&
-                      actionType === "approved" &&
-                      selectedId === data[0]?.id
+                      (isLoading &&
+                        actionType === "approved" &&
+                        selectedId === data[0]?.id) ||
+                      approvables?.length === 0 ||
+                      approveLoading
                     }
-                    className="hidden"
                   >
                     Approve
                   </Button>
+             
                 </div>
               )}
             {!loading &&

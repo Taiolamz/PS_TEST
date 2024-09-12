@@ -7,10 +7,12 @@ import { StrategicIntentType } from "@/@types/missionPlan/MissionPlanAprovables"
 import { useParams } from "next/navigation";
 // import { ApprovalItemsSchema } from "@/utils/schema/mission-plan";
 import { useApproval } from "./useApproval";
-import useGetComments from "./useGetComments.hook";
+import useGetComments, { CommentType } from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
 import { findItemById } from "@/utils/helpers";
 import { EditableLabel } from "@/components/fragment";
+import useGetAllComments from "./useGetAllComments.hook";
+import MultipleComment from "./multipleComments";
 
 type Props = {
   data: StrategicIntentType[];
@@ -28,11 +30,11 @@ const StrategicIntent = ({
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
-  const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
 
   const approval_type = "strategic-intent";
-
+  const commentItem = useGetAllComments({ approvables, approval_type });
+  const [allComments, setAllComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -53,6 +55,12 @@ const StrategicIntent = ({
     setMatchingIds(matchingIds);
   }, [data]);
 
+  useEffect(() => {
+    if (commentItem.length !== 0) {
+      setAllComments(commentItem);
+    }
+  }, [commentItem]);
+
   const {
     openCommentId,
     toggleComment,
@@ -60,7 +68,7 @@ const StrategicIntent = ({
     handleApprove,
     FormikApprovalForm,
   } = useApproval({
-    initialComments: comments?.comment ?? [],
+    initialComments: [],
     initialActionType,
     missionplanid,
     approval_type,
@@ -121,6 +129,9 @@ const StrategicIntent = ({
                           size={"sm"}
                           className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                           onClick={() => {
+                            const filteredComments = commentItem.find(
+                              (comment) => comment.id === item.id
+                            );
                             setSelectedID(item?.id);
                             setItemsToApprove((prevItems) => {
                               const itemExists = prevItems.some(
@@ -133,7 +144,8 @@ const StrategicIntent = ({
                                     ? {
                                         ...items,
                                         status: "rejected",
-                                        comments: comments?.comment,
+                                        comments:
+                                          filteredComments?.comment ?? [],
                                       } // Update the existing item
                                     : items
                                 );
@@ -144,7 +156,7 @@ const StrategicIntent = ({
                                 {
                                   id: item.id,
                                   status: "rejected",
-                                  comments: comments?.comment,
+                                  comments: filteredComments?.comment ?? [],
                                 },
                               ];
                             });
@@ -160,9 +172,7 @@ const StrategicIntent = ({
                               )?.approvable_id
                           }
                           disabled={
-                            (isLoading &&
-                              actionType === "rejected" &&
-                              selectedId === item?.id) ||
+                            (isLoading && selectedId === item?.id) ||
                             approvables?.length === 0 ||
                             approveLoading
                           }
@@ -170,26 +180,51 @@ const StrategicIntent = ({
                           Reject
                         </Button>
                         <Button
+                          size={"sm"}
                           onClick={() => {
                             setSelectedID(item?.id);
+                            setItemsToApprove((prevItems) => {
+                              const itemExists = prevItems.some(
+                                (items) => items.id === item.id
+                              );
+
+                              if (itemExists) {
+                                return prevItems.map((items) =>
+                                  items.id === item.id
+                                    ? {
+                                        ...items,
+                                        status: "approved",
+                                        comments: [],
+                                      } // Update the existing item
+                                    : items
+                                );
+                              }
+
+                              return [
+                                ...prevItems,
+                                {
+                                  id: item.id,
+                                  status: "approved",
+                                  comments: [],
+                                },
+                              ];
+                            });
                             handleApprove();
                           }}
                           loading={
                             isLoading &&
                             actionType === "approved" &&
-                            findItemById(matchingIds ?? [], item?.id as string)
-                              ?.approvable_id === selectedId
-                          }
-                          disabled={
-                            (isLoading &&
-                              actionType === "approved" &&
+                            selectedId ===
                               findItemById(
                                 matchingIds ?? [],
                                 item?.id as string
-                              )?.approvable_id === selectedId) ||
+                              )?.approvable_id
+                          }
+                          disabled={
+                            (isLoading && selectedId === item?.id) ||
+                            approvables?.length === 0 ||
                             approveLoading
                           }
-                          className="hidden"
                         >
                           Approve
                         </Button>
@@ -221,12 +256,14 @@ const StrategicIntent = ({
                 </div>
               </div>
             </div>
-            <Comment
+            <MultipleComment
               label="Strategic intent"
               showTextArea={openCommentId === item.id}
               setShowTextArea={() => toggleComment(item.id)}
-              comments={comments}
+              comments={allComments.filter((comment) => comment.id === item.id)}
+              setComments={setAllComments}
               formik={FormikApprovalForm}
+              id={item?.id}
             />
           </section>
         ))}

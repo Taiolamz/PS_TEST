@@ -9,10 +9,12 @@ import Comment from "./comment";
 import { MeasureOfSuccessType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
-import useGetComments from "./useGetComments.hook";
+import useGetComments, { CommentType } from "./useGetComments.hook";
 import { Loader2 } from "lucide-react";
 import { findItemById, getStatus } from "@/utils/helpers";
 import { EditableLabel } from "@/components/fragment";
+import useGetAllComments from "./useGetAllComments.hook";
+import MultipleComment from "./multipleComments";
 
 type Props = {
   showTextArea: boolean;
@@ -35,19 +37,10 @@ const MeasureOfSuccess = ({
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   const measureColumnData = useMemo(() => measureColumns(), []);
-  const commentItem = useGetComments({ approvables, approvableTypeId });
   const approval_type = "success-measure";
+  const commentItem = useGetAllComments({ approvables, approval_type });
   const [matchingIds, setMatchingIds] = useState<any>([]);
-  // const matchingIds: any =
-  //   approvables !== undefined &&
-  //   approvables
-  //     .filter((item: approveItems) => item.approvable_type === approval_type)
-  //     .map((item: approveItems) => {
-  //       return {
-  //         approvable_id: item.approvable_id,
-  //         status: item.status,
-  //       };
-  //     });
+  const [allComments, setAllComments] = useState<CommentType[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
@@ -56,7 +49,7 @@ const MeasureOfSuccess = ({
   const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
   const [selectedId, setSelectedID] = useState<string>("");
 
-  // console.log("matchingIds success", matchingIds);
+  console.log("commentItem", commentItem);
 
   useEffect(() => {
     const matchingIds: any =
@@ -72,6 +65,12 @@ const MeasureOfSuccess = ({
     setMatchingIds(matchingIds);
   }, [data]);
 
+  useEffect(() => {
+    if (commentItem.length !== 0) {
+      setAllComments(commentItem);
+    }
+  }, [commentItem]);
+
   const transformedMeasureOfSuccessRows = (
     mappedData: MeasureOfSuccessType[]
   ): MeasureOfSuccessType[] => {
@@ -81,6 +80,7 @@ const MeasureOfSuccess = ({
       status: item.status,
       target: item.target,
       unit: item.unit,
+      weight: `${Math.round(parseInt(item?.weight))}%`,
       actions: (
         <div
           className="flex gap-2.5 ml-[40px] items-end justify-end"
@@ -94,63 +94,123 @@ const MeasureOfSuccess = ({
               "rejected" &&
             findItemById(matchingIds ?? [], item?.id as string)?.status !==
               "approved" && (
-              <Button
-                variant="outline"
-                size={"sm"}
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  setSelectedID(item.id as string);
-                  setItemsToApprove((prevItems: any) => {
-                    const itemExists = prevItems.some(
-                      (items: itemsApprove) => items.id === item.id
+              <div className="flex gap-2.5 mr-4">
+                <Button
+                  variant="outline"
+                  size={"sm"}
+                  className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                  onClick={() => {
+                    const filteredComments = commentItem.find(
+                      (comment) => comment.id === item.id
                     );
-
-                    if (itemExists) {
-                      // If the item exists, update the existing item
-                      return prevItems.map((items: itemsApprove) =>
-                        items.id === item.id
-                          ? {
-                              ...items,
-                              status: "rejected",
-                              comments: commentItem?.comment ?? [], // Update the comments
-                            }
-                          : items
+                    setShowTextArea(true);
+                    setSelectedID(item.id as string);
+                    setItemsToApprove((prevItems: any) => {
+                      const itemExists = prevItems.some(
+                        (items: itemsApprove) => items.id === item.id
                       );
-                    }
 
-                    // If the item doesn't exist, add the new item and ensure no duplicates
-                    return [
-                      ...prevItems.filter(
-                        (items: itemsApprove) => items.id !== item.id
-                      ),
-                      {
-                        id: item.id,
-                        status: "rejected",
-                        comments: commentItem?.comment ?? [],
-                      },
-                    ];
-                  });
+                      if (itemExists) {
+                        // If the item exists, update the existing item
+                        return prevItems.map((items: itemsApprove) =>
+                          items.id === item.id
+                            ? {
+                                ...items,
+                                status: "rejected",
+                                comments: filteredComments?.comment ?? [], // Update the comments
+                              }
+                            : items
+                        );
+                      }
 
-                  handleReject();
-                }}
-                loading={
-                  isLoading &&
-                  actionType === "rejected" &&
-                  findItemById(matchingIds ?? [], item?.id as string)
-                    ?.approvable_id === selectedId
-                }
-                disabled={
-                  (isLoading &&
+                      // If the item doesn't exist, add the new item and ensure no duplicates
+                      return [
+                        ...prevItems.filter(
+                          (items: itemsApprove) => items.id !== item.id
+                        ),
+                        {
+                          id: item.id,
+                          status: "rejected",
+                          comments: filteredComments?.comment ?? [],
+                        },
+                      ];
+                    });
+
+                    handleReject();
+                  }}
+                  loading={
+                    isLoading &&
                     actionType === "rejected" &&
                     findItemById(matchingIds ?? [], item?.id as string)
-                      ?.approvable_id === selectedId) ||
-                  approvables?.length === 0 ||
-                  approveLoading
-                }
-              >
-                Reject
-              </Button>
+                      ?.approvable_id === selectedId
+                  }
+                  disabled={
+                    (isLoading &&
+                      actionType === "rejected" &&
+                      findItemById(matchingIds ?? [], item?.id as string)
+                        ?.approvable_id === selectedId) ||
+                    approvables?.length === 0 ||
+                    approveLoading
+                  }
+                >
+                  Reject
+                </Button>
+                <Button
+                  size={"sm"}
+                  onClick={() => {
+                    setShowTextArea(true);
+                    setSelectedID(item.id as string);
+                    setItemsToApprove((prevItems: any) => {
+                      const itemExists = prevItems.some(
+                        (items: itemsApprove) => items.id === item.id
+                      );
+
+                      if (itemExists) {
+                        // If the item exists, update the existing item
+                        return prevItems.map((items: itemsApprove) =>
+                          items.id === item.id
+                            ? {
+                                ...items,
+                                status: "approved",
+                                comments: [], // Update the comments
+                              }
+                            : items
+                        );
+                      }
+
+                      // If the item doesn't exist, add the new item and ensure no duplicates
+                      return [
+                        ...prevItems.filter(
+                          (items: itemsApprove) => items.id !== item.id
+                        ),
+                        {
+                          id: item.id,
+                          status: "approved",
+                          comments: [],
+                        },
+                      ];
+                    });
+
+                    handleApprove();
+                  }}
+                  loading={
+                    isLoading &&
+                    actionType === "approved" &&
+                    findItemById(matchingIds ?? [], item?.id as string)
+                      ?.approvable_id === selectedId
+                  }
+                  disabled={
+                    (isLoading &&
+                      actionType === "approved" &&
+                      findItemById(matchingIds ?? [], item?.id as string)
+                        ?.approvable_id === selectedId) ||
+                    approvables?.length === 0 ||
+                    approveLoading
+                  }
+                >
+                  Approve
+                </Button>
+              </div>
             )}
           {/* {!loading &&
             data?.length !== null &&
@@ -186,7 +246,7 @@ const MeasureOfSuccess = ({
   const initialActionType = "";
 
   const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
-    initialComments: commentItem?.comment ?? [],
+    initialComments: [],
     initialActionType,
     missionplanid,
     approval_type,
@@ -233,12 +293,14 @@ const MeasureOfSuccess = ({
         </div>
       </div>
       {/* {showTextArea && ( */}
-      <Comment
+      <MultipleComment
         label="measure of success"
         showTextArea={showTextArea}
         setShowTextArea={setShowTextArea}
-        comments={commentItem}
+        comments={allComments}
+        setComments={setAllComments}
         formik={FormikApprovalForm}
+        id={selectedId}
       />
       {/* )} */}
     </section>
