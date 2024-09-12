@@ -71,6 +71,7 @@ const ApproveMissionPlan = () => {
     let hasRejected = false;
     let allApproved = true;
     let allPending = true;
+    let hasPendingOrApprovedOnly = true;
 
     const checkStatus = (item: any): void => {
       if (typeof item === "object" && item !== null) {
@@ -85,6 +86,9 @@ const ApproveMissionPlan = () => {
             if (item[key] !== "pending") {
               allPending = false;
             }
+            if (item[key] !== "approved" && item[key] !== "pending") {
+              hasPendingOrApprovedOnly = false;
+            }
           } else if (
             typeof item[key] === "object" ||
             Array.isArray(item[key])
@@ -97,20 +101,25 @@ const ApproveMissionPlan = () => {
 
     checkStatus(obj);
 
-    // If any status is rejected, return false
+    // If any status is rejected, return true
     if (hasRejected) {
       return true;
     }
 
-    // If all statuses are approved, return false
+    // If all statuses are approved, return true
     if (allApproved) {
       return true;
     }
 
-    // If all statuses are pending, return true
+    // If all statuses are pending, return false
     if (allPending) {
       return false;
     }
+
+    // Return true if it only contains "pending" and "approved" without "rejected"
+  if (hasPendingOrApprovedOnly) {
+    return false;
+  }
 
     // Return true if the statuses are mixed (i.e., not all approved or rejected)
     return true;

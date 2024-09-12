@@ -122,9 +122,7 @@ const MissionStatement = ({
                   }}
                   loading={isLoading && actionType === "rejected"}
                   disabled={
-                    (isLoading && actionType === "rejected") ||
-                    approvables?.length === 0 ||
-                    approveLoading
+                    isLoading || approvables?.length === 0 || approveLoading
                   }
                 >
                   Reject
@@ -132,7 +130,7 @@ const MissionStatement = ({
                 <Button
                   size={"sm"}
                   onClick={() => {
-                    setShowTextArea(true);
+                    setShowTextArea(false);
                     setItemsToApprove((prevItems) => {
                       const itemExists = prevItems.some(
                         (item) => item.id === approvableTypeId
@@ -144,7 +142,7 @@ const MissionStatement = ({
                             ? {
                                 ...item,
                                 status: "approved",
-                                // comments: comments?.comment,
+                                comments: [],
                               } // Update the existing item
                             : item
                         );
@@ -164,9 +162,7 @@ const MissionStatement = ({
                   }}
                   loading={isLoading && actionType === "approved"}
                   disabled={
-                    (isLoading && actionType === "approved") ||
-                    approvables?.length === 0 ||
-                    approveLoading
+                    isLoading || approvables?.length === 0 || approveLoading
                   }
                 >
                   Approve

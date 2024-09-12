@@ -35,8 +35,9 @@ const MultipleComment = ({
   showTextArea,
   setShowTextArea,
   setComments,
-  id
+  id,
 }: Props) => {
+  console.log("comments", comments);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [newComment, setNewComment] = useState<string>("");
   const { primaryColorHexValue } = useContext(ActionContext);
@@ -61,25 +62,7 @@ const MultipleComment = ({
     setShowTextArea(true);
   };
 
-  const handleSubmitComment = () => {
-    // Find the specific comment object by its ID and update the comment array
-    const updatedComments = comments.map((comment) =>
-      comment.id === id
-        ? {
-            ...comment,
-            comment: [...(comment.comment || []), newComment], // Append the new comment
-          }
-        : comment
-    );
-
-    setComments(updatedComments);
-    // Reset the textarea and hide it after submission
-    setNewComment("");
-    setShowTextArea(false);
-
-    // Formik submission if necessary (adjust based on your form handling)
-    formik?.handleSubmit();
-  };
+ 
 
   return (
     <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] bg-[#F6F8F9]">
@@ -135,15 +118,22 @@ const MultipleComment = ({
               <BsArrowUpCircleFill
                 color="text-primary"
                 className="text-[var(--primary-color)] cursor-pointer"
-                onClick={() => handleSubmitComment()} // Submit new comment for the current comment section
+                onClick={() => {
+                  formik?.handleSubmit();
+                  setShowTextArea(false);
+                }}
               />
             </div>
             <Textarea
               placeholder="Input Comment"
               id="newComment"
               name="newComment"
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
+              // value={newComment}
+              // onChange={(e) => setNewComment(e.target.value)}
+              value={formik?.values.newComment}
+              onChange={formik?.handleChange}
+              touched={formik?.touched.newComment}
+              error={formik?.errors.newComment}
               rows={3}
               className="bg-white border-0 focus:border-0 focus-visible:ring-0 text-sm"
             />

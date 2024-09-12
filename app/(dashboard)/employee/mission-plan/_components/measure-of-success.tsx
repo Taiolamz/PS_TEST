@@ -26,8 +26,8 @@ type Props = {
 };
 
 const MeasureOfSuccess = ({
-  setShowTextArea,
-  showTextArea,
+  // setShowTextArea,
+  // showTextArea,
   data,
   approvables,
   loading,
@@ -41,7 +41,7 @@ const MeasureOfSuccess = ({
   const commentItem = useGetAllComments({ approvables, approval_type });
   const [matchingIds, setMatchingIds] = useState<any>([]);
   const [allComments, setAllComments] = useState<CommentType[]>([]);
-
+  const [showTextArea, setShowTextArea] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -49,7 +49,7 @@ const MeasureOfSuccess = ({
   const [itemsToApprove, setItemsToApprove] = useState<itemsApprove[]>([]);
   const [selectedId, setSelectedID] = useState<string>("");
 
-  console.log("commentItem", commentItem);
+  // console.log("commentItem", commentItem);
 
   useEffect(() => {
     const matchingIds: any =
@@ -145,12 +145,7 @@ const MeasureOfSuccess = ({
                       ?.approvable_id === selectedId
                   }
                   disabled={
-                    (isLoading &&
-                      actionType === "rejected" &&
-                      findItemById(matchingIds ?? [], item?.id as string)
-                        ?.approvable_id === selectedId) ||
-                    approvables?.length === 0 ||
-                    approveLoading
+                    isLoading || approvables?.length === 0 || approveLoading
                   }
                 >
                   Reject
@@ -158,7 +153,7 @@ const MeasureOfSuccess = ({
                 <Button
                   size={"sm"}
                   onClick={() => {
-                    setShowTextArea(true);
+                    setShowTextArea(false);
                     setSelectedID(item.id as string);
                     setItemsToApprove((prevItems: any) => {
                       const itemExists = prevItems.some(
@@ -200,12 +195,7 @@ const MeasureOfSuccess = ({
                       ?.approvable_id === selectedId
                   }
                   disabled={
-                    (isLoading &&
-                      actionType === "approved" &&
-                      findItemById(matchingIds ?? [], item?.id as string)
-                        ?.approvable_id === selectedId) ||
-                    approvables?.length === 0 ||
-                    approveLoading
+                    isLoading || approvables?.length === 0 || approveLoading
                   }
                 >
                   Approve

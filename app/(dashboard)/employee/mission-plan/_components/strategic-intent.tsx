@@ -172,7 +172,7 @@ const StrategicIntent = ({
                               )?.approvable_id
                           }
                           disabled={
-                            (isLoading && selectedId === item?.id) ||
+                            isLoading ||
                             approvables?.length === 0 ||
                             approveLoading
                           }
@@ -221,7 +221,7 @@ const StrategicIntent = ({
                               )?.approvable_id
                           }
                           disabled={
-                            (isLoading && selectedId === item?.id) ||
+                            isLoading ||
                             approvables?.length === 0 ||
                             approveLoading
                           }

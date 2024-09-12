@@ -106,6 +106,8 @@ const Tasks = ({
     }
   }, [commentItem]);
 
+  // console.log("data", data);
+  
   return (
     <div className="flex flex-col gap-10">
       {loading && (
@@ -340,7 +342,8 @@ const Tasks = ({
                                             },
                                           ];
                                         });
-                                        handleReject();
+
+                                        handleReject(item.id);
                                       }}
                                       loading={
                                         isLoading &&
@@ -351,11 +354,7 @@ const Tasks = ({
                                         )?.approvable_id === selectedId
                                       }
                                       disabled={
-                                        (isLoading &&
-                                          findItemById(
-                                            matchingIds ?? [],
-                                            impliedTask?.id as string
-                                          )?.approvable_id === selectedId) ||
+                                        isLoading ||
                                         approvables?.length === 0 ||
                                         approveLoading
                                       }
@@ -366,6 +365,7 @@ const Tasks = ({
                                       size="sm"
                                       onClick={() => {
                                         setShowTextArea(false);
+                                        toggleComment("")
                                         setSelectedID(
                                           impliedTask?.id as string
                                         );
@@ -407,11 +407,7 @@ const Tasks = ({
                                         )?.approvable_id === selectedId
                                       }
                                       disabled={
-                                        (isLoading &&
-                                          findItemById(
-                                            matchingIds ?? [],
-                                            impliedTask?.id as string
-                                          )?.approvable_id === selectedId) ||
+                                        isLoading ||
                                         approvables?.length === 0 ||
                                         approveLoading
                                       }
@@ -468,32 +464,22 @@ const Tasks = ({
                 </div>
               )}
             </div>
-            {/* {showTextArea && ( */}
-            {/* <MultipleComment
-              label="freedom & constraints"
-              showTextArea={showTextArea}
-              setShowTextArea={setShowTextArea}
-              comments={allComments}
+
+            {/* Deprecated on tasks */}
+
+            <MultipleComment
+              label="Specified task"
+              showTextArea={openCommentId === item.id}
+              setShowTextArea={() => toggleComment(item.id)}
+              comments={allComments.filter((comment) =>
+                item?.implied_tasks.some(
+                  (task) => task.id === comment.id
+                )
+              )}
               setComments={setAllComments}
               formik={FormikApprovalForm}
               id={selectedId}
-            /> */}
-            {/* )} */}
-            {/* Deprecated on tasks */}
-            {openCommentId === item.id && (
-              <MultipleComment
-                label="Specified task"
-                showTextArea={openCommentId === item.id}
-                setShowTextArea={() => toggleComment(item.id)}
-                comments={allComments.filter(
-                  (comment) => comment.id === item.id
-                )}
-                setComments={setAllComments}
-                formik={FormikApprovalForm}
-                id={selectedId}
-              />
-            )}
-          
+            />
           </section>
         ))}
       {!loading && data?.length === 0 && (
