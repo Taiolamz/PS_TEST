@@ -40,6 +40,7 @@ const MeasureOfSuccess = ({
       status: item.status,
       target: item.target,
       unit: item.unit,
+      weight: `${Math.round(parseInt(item?.weight))}%`,
     }));
   };
 
@@ -48,7 +49,7 @@ const MeasureOfSuccess = ({
 
   const initialActionType = "";
 
-  const { handleReject, handleApprove, FormikApprovalForm} = useApproval({
+  const { handleReject, handleApprove, FormikApprovalForm } = useApproval({
     initialComments: comments?.comment ?? [],
     initialActionType,
     missionplanid,
@@ -77,18 +78,18 @@ const MeasureOfSuccess = ({
             )}
           </div>
           <div className="flex gap-2.5 mr-4">
-              <Button
-                variant="outline"
-                className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                onClick={() => {
-                  setShowTextArea(true);
-                  handleReject();
-                }}
-              >
-                Reject
-              </Button>
-              <Button onClick={() => handleApprove()}>Approve</Button>
-            </div>
+            <Button
+              variant="outline"
+              className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+              onClick={() => {
+                setShowTextArea(true);
+                handleReject();
+              }}
+            >
+              Reject
+            </Button>
+            <Button onClick={() => handleApprove()}>Approve</Button>
+          </div>
         </div>
       </div>
       <Comment
