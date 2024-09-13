@@ -58,11 +58,6 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     return data;
   };
 
-  // const handleFormatArray = (items: Select[]) => {
-  //   const array = items.map((item) => item.label);
-  //   return array;
-  // };
-
   const router = useRouter();
   const user = useAppSelector(selectUser);
 
@@ -108,20 +103,6 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
 
-  // console.log(gradeLevels, "grade levels");
-
-  // const handleFormatOrderOfApprovals = () => {
-  //   const order_of_approvals = (
-  //     (organization as any)?.approval_flows as any[]
-  //   )?.map((flow) => ({
-  //     title: flow.title,
-  //     approvals: flow.approvals,
-  //   }));
-  //   return order_of_approvals;
-  // };
-
-  // const
-
   const handleFormatGradeLevel = () => {
     const newData = gradeLevels?.map((chi) => ({
       title: chi?.name || "",
@@ -131,32 +112,14 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   };
 
   const formik = useFormik<any>({
-    // initialValues: {
-    //   title: "",
-    //   head_of_organization: "",
-    //   // order_of_approvals: [],
-    //   order_of_approvals: handleFormatOrderOfApprovals(),
-    //   // order_of_approvals: [{ title: "", approvals: [] }],
-    // },
-
     initialValues: {
       order_of_approvals: handleFormatGradeLevel(),
       head_of_organization: "",
     },
     enableReinitialize: true,
-    // initialValues: {
-    //   order_of_approvals:
-    //     (organization as any)?.approval_flows?.map((chi: any) => ({
-    //       title: chi.title,
-    //       approvals: chi?.approvals || [],
-    //     })) || [],
-    //   head_of_organization: "",
-    // },
     // validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
-
-  // console.log(formik.values.order_of_approvals, "order of approvals");
 
   const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
     value: i.toString(),
