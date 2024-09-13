@@ -48,7 +48,7 @@ const BulkUploadModal = ({
     3: { name: "Last Name", required: true, key: "last_name" },
     4: { name: "Gender", required: false, key: "gender" },
     5: { name: "Date of Birth", required: false, key: "dob" },
-    6: { name: "Resumption Date", required: true, key: "resumption_date" },
+    6: { name: "Resumption Date", required: false, key: "resumption_date" },
     7: { name: "Work Email", required: true, key: "work_email" },
     8: { name: "Grade Level", required: true, key: "grade_level" },
     9: {

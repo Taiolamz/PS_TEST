@@ -12,9 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 export const departmentColumns = (
-  loading?: boolean
+  loading?: boolean,
+  user?: any
 ): ColumnDef<DepartmentData>[] => [
   {
     id: "select",
@@ -100,7 +103,7 @@ export const departmentColumns = (
   },
   {
     accessorKey: "branch",
-    header: () => <div className="text-right mr-24">Branch</div>,
+    header: () => <div className="text-right mr-24">Branches</div>,
     cell: ({ row }) => {
       const branch = row.getValue("branch") as { name: string };
       return (
@@ -113,6 +116,9 @@ export const departmentColumns = (
         </div>
       );
     },
+    // hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+    //   "branch" ? true : false
+    // )
   },
   // {
   //   accessorKey: "address",

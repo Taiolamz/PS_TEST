@@ -134,13 +134,15 @@ const Departments = () => {
 
   const departments = departmentData ?? [];
 
-  const departmentsColumnData = useMemo(
-    () => departmentColumns(isFetchingDepartments),
-    [isFetchingDepartments]
-  );
+
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
+
+  const departmentsColumnData = useMemo(
+    () => departmentColumns(isFetchingDepartments, user),
+    [isFetchingDepartments]
+  );
 
   const [createBulkDepartments, { isLoading: isCreatingBulkDepartments }] =
     useCreateBulkDepartmentsMutation();
@@ -204,6 +206,10 @@ const Departments = () => {
             onOpenBtnChange={handleBtnDrop}
             newBtnOpen={openNewBtn}
             onManualBtn={handleAddDeparment}
+            // onManualBtn={() => {
+            //   console.log(departments);
+              
+            // }}
           />
         )}
         <DashboardModal
