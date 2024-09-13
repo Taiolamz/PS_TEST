@@ -53,11 +53,12 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
   },
   {
     accessorKey: "head_of_unit",
-    header: "HOU",
+    // header: "Head of Unit",
+    header: () => <div className="text-right">Head of Unit</div>,
     cell: ({ row }) => {
       const head_of_unit = row.getValue("head_of_unit") as ObjType;
       return (
-        <div className="capitalize ">
+        <div className="capitalize text-right">
           {loading ? (
             <Skeleton className="h-4 w-[250px]" />
           ) : (
@@ -128,9 +129,9 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
   },
   // {
   //   accessorKey: "address",
-  //   header: () => <div className="text-left">Address</div>,
+  //   header: () => <div className="text-right">Address</div>,
   //   cell: ({ row }) => (
-  //     <div className="capitalize text-left">
+  //     <div className="capitalize text-right">
   //       {loading ? (
   //         <Skeleton className="h-4 w-[250px]" />
   //       ) : (
@@ -141,28 +142,31 @@ export const unitColumns = (loading?: boolean): ColumnDef<UnitData>[] => [
   // },
   {
     id: "actions",
-    header: "Actions",
+    // header: "Actions",
+    header: () => <div className="text-center">Action</div>,
     enableHiding: false,
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="cursor-pointer">
-            <Image src={ActionIcon} alt="Action icon" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="border rounded-sm"
-            align="end"
-            style={{ width: "170px" }}
-          >
-            <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
+              <Image src={ActionIcon} alt="Action icon" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="border rounded-sm"
+              align="end"
+              style={{ width: "170px" }}
+            >
+              <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },

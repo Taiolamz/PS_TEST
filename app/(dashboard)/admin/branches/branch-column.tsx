@@ -108,11 +108,13 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
   },
   {
     accessorKey: "address",
-    header: () => <div className="text-left">Address</div>,
+    header: () => (
+      <div className="text-right w-[300px]">Address</div>
+    ),
     cell: ({ row }) => (
-      <div className="capitalize text-left">
+      <div className="capitalize text-right w-[300px] truncate">
         {loading ? (
-          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[150px]" />
         ) : (
           row.getValue("address") || "------"
         )}
@@ -121,28 +123,31 @@ export const branchColumns = (loading?: boolean): ColumnDef<BranchData>[] => [
   },
   {
     id: "actions",
-    header: "Actions",
+    // header: "Actions",
+    header: () => <div className="text-center">Action</div>,
     enableHiding: false,
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="cursor-pointer">
-            <Image src={ActionIcon} alt="Action icon" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="border rounded-sm"
-            align="end"
-            style={{ width: "170px" }}
-          >
-            <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
+              <Image src={ActionIcon} alt="Action icon" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="border rounded-sm"
+              align="end"
+              style={{ width: "170px" }}
+            >
+              <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },

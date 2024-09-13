@@ -55,9 +55,9 @@ export const subsidiaryColumns = (
   },
   {
     accessorKey: "country",
-    header: () => <div className="text-right mr-24">Country</div>,
+    header: () => <div className="text-right ">Country</div>,
     cell: ({ row }) => (
-      <div className="capitalize text-right mr-24">
+      <div className="capitalize text-right ">
         {loading ? (
           <Skeleton className="h-4 w-[150px]" />
         ) : (
@@ -68,9 +68,11 @@ export const subsidiaryColumns = (
   },
   {
     accessorKey: "address",
-    header: () => <div className="text-left">Address</div>,
+    header: () => (
+      <div className="text-right w-[300px] ml-[10rem]">Address</div>
+    ),
     cell: ({ row }) => (
-      <div className="capitalize text-left">
+      <div className="capitalize text-right w-[300px] truncate ml-[10rem]">
         {loading ? (
           <Skeleton className="h-4 w-[150px]" />
         ) : (
@@ -81,28 +83,31 @@ export const subsidiaryColumns = (
   },
   {
     id: "actions",
-    header: "Actions",
+    // header: "Actions",
+    header: () => <div className="text-center">Action</div>,
     enableHiding: false,
     cell: ({ row }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="cursor-pointer">
-            <Image src={ActionIcon} alt="Action icon" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="border rounded-sm"
-            align="end"
-            style={{ width: "170px" }}
-          >
-            <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex justify-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="cursor-pointer">
+              <Image src={ActionIcon} alt="Action icon" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="border rounded-sm"
+              align="end"
+              style={{ width: "170px" }}
+            >
+              <DropdownMenuItem className="font-light text-sm cursor-pointer text-custom-gray-scale-400">
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-custom-red font-light cursor-pointer text-sm">
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       );
     },
   },

@@ -38,6 +38,7 @@ export const useRejectEmployeeInvite = () => {
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
+      reason: formik?.values?.reason || formik?.values?.others,
     };
     const id = invitedID;
 
