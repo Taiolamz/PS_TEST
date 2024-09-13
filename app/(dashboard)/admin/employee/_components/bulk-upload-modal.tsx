@@ -62,7 +62,7 @@ const BulkUploadModal = ({
     13: { name: "Unit", required: true, key: "unit" },
     14: { name: "Job Title", required: false, key: "job_title" },
     15: { name: "Phone Number", required: false, key: "phone_number" },
-    16: { name: "Staff Number", required: false, key: "staff_number" },
+    16: { name: "Staff Number", required: false, key: "staff_number" }, 
     17: { name: "Role", required: true, key: "role" },
     18: { name: "New Employee", required: true, key: "new_employee" },
   };

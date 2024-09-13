@@ -1,16 +1,16 @@
-import * as yup from "yup"; 
+import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import useDisclosure from "./useDisclosure";
 import { useFormik } from "formik";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 import { useAppSelector } from "@/redux/store";
-import { selectUser } from "@/redux/features/auth/authSlice"; 
+import { selectUser } from "@/redux/features/auth/authSlice";
 import { useCreateBranchMutation } from "@/redux/services/checklist/branchApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
-import routesPath from "@/utils/routes"; 
+import routesPath from "@/utils/routes";
 import { useContext } from "react";
-import ActionContext from "@/app/(dashboard)/context/ActionContext"; 
-import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi"; 
+import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
@@ -20,7 +20,7 @@ type Prop = {
 type Select = {
   label: string | number;
   value: string | number;
-}; 
+};
 const { ADMIN } = routesPath;
 
 export const useBranch = ({ cancelPath }: Prop) => {
@@ -67,20 +67,18 @@ export const useBranch = ({ cancelPath }: Prop) => {
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const BranchRoute = ADMIN.BRANCHES;
-  const [createBranch, { isLoading: isCreatingBranch }] =
+  const [createBranch, { isLoading: isCreatingBranch, data, error }] =
     useCreateBranchMutation();
 
   const formSchema = yup.object().shape({
-    name: yup.string().min(1, "Name is required").required("Name is required"),
+    name: yup.string().min(3, "Name is required").required("Name is required"),
+    branch_email: yup.string().optional(),
     address: yup
       .string()
-      .min(1, "Address is required")
+      .min(5, "Address is required")
       .required("Address is required"),
-    // country: yup
-    //   .string()
-    //   .oneOf(handleFormatArray(COUNTRIES), "Country is required")
-    //   .required("Country is required"),
-    // state:  yup.string().required(),
+    country: yup.string().required("Country is required"),
+    state: yup.string().required("State is required"),
     // head: yup.string().min(1, "Head of Subsidiary is required").optional(),
     // work_email: yup
     //   .string()
@@ -118,10 +116,10 @@ export const useBranch = ({ cancelPath }: Prop) => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      branch_email: "",
       address: "",
       country: "",
       state: "",
-      // head: "",
       head: {
         name: "",
         email: "",
@@ -132,6 +130,7 @@ export const useBranch = ({ cancelPath }: Prop) => {
         name: "",
         id: "",
       },
+      description: "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,

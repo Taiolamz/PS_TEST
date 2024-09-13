@@ -219,7 +219,7 @@ const AddUnit = () => {
 
                 <Input
                   label="Unit Email"
-                  type="text"
+                  type="email"
                   placeholder="Unit Email"
                   id="unit_email"
                   name="unit_email"

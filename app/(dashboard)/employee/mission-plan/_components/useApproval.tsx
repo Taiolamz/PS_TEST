@@ -15,6 +15,7 @@ type Props = {
   setIsLoading?: (value: boolean) => void;
   setIsSuccess?: (value: boolean) => void;
   setActionType?: (value: string) => void;
+  setSelectedID?: (value: string) => void;
   setItemsToApprove?: (value: itemsApprove[]) => void;
   approvableTypeId?: string;
   itemsToApprove?: itemsApprove[];
@@ -31,6 +32,7 @@ export const useApproval = ({
   approvableTypeId,
   itemsToApprove,
   setItemsToApprove,
+  setSelectedID,
 }: Props) => {
   const { primaryColorHexValue } = useContext(ActionContext);
   const colorWithAlpha = primaryColorHexValue
@@ -99,15 +101,23 @@ export const useApproval = ({
     try {
       await approveMissionPlanItems(payload).unwrap();
       toast.dismiss();
-      setIsLoading && setIsLoading(false);
       setIsSuccess && setIsSuccess(true);
       setItemsToApprove && setItemsToApprove([]);
-      toast.success("Approval status updated successfully");
+
+      setTimeout(() => {
+        setIsLoading && setIsLoading(false);
+        setIsSuccess && setIsSuccess(false);
+        setSelectedID && setSelectedID("");
+        toast.dismiss();
+        toast.success("Approval status updated successfully");
+      }, 13000);
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setIsSuccess && setIsSuccess(false);
       setItemsToApprove && setItemsToApprove([]);
+      setSelectedID && setSelectedID("");
       toast.dismiss();
+
       console.error(error);
     }
   };

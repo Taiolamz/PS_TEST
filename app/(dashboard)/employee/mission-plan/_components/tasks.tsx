@@ -20,6 +20,7 @@ type Props = {
   loading: boolean;
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
+  approveLoading?: boolean
 };
 
 const Tasks = ({
@@ -28,6 +29,7 @@ const Tasks = ({
   loading,
   setShowTextArea,
   showTextArea,
+  approveLoading
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -61,6 +63,7 @@ const Tasks = ({
     approvableTypeId: selectedId,
     itemsToApprove,
     setItemsToApprove,
+    setSelectedID,
   });
 
   const [expandedTaskIndex, setExpandedTaskIndex] = useState<number | null>(
@@ -280,14 +283,17 @@ const Tasks = ({
                           <div>
                             {findItemById(matchingIds ?? [], impliedTask?.id)
                               ?.status === "pending" &&
-                              !isSuccess && (
+                              findItemById(matchingIds ?? [], impliedTask?.id)
+                                ?.status !== "rejected" &&
+                              findItemById(matchingIds ?? [], impliedTask?.id)
+                                ?.status !== "approved" && (
                                 <div className="flex gap-2.5 items-end">
                                   <Button
                                     variant="outline"
                                     className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
                                     onClick={() => {
                                       setShowTextArea(true);
-                                      setSelectedID(impliedTask?.id);
+                                      setSelectedID(impliedTask?.id as string);
                                       setItemsToApprove((prevItems) => {
                                         const itemExists = prevItems.some(
                                           (items) => items.id === impliedTask.id
@@ -319,31 +325,37 @@ const Tasks = ({
                                     loading={
                                       isLoading &&
                                       actionType === "rejected" &&
-                                      selectedId === impliedTask?.id
+                                      findItemById(
+                                        matchingIds ?? [],
+                                        impliedTask?.id as string
+                                      )?.approvable_id === selectedId
                                     }
                                     disabled={
                                       (isLoading &&
                                         actionType === "rejected" &&
-                                        selectedId === impliedTask?.id) ||
-                                      approvables?.length === 0
+                                        findItemById(
+                                          matchingIds ?? [],
+                                          impliedTask?.id as string
+                                        )?.approvable_id === selectedId) ||
+                                      approvables?.length === 0 || approveLoading
                                     }
                                   >
                                     Reject
                                   </Button>
                                   <Button
                                     onClick={() => {
-                                      setSelectedID(item?.id);
+                                      setSelectedID(impliedTask?.id);
                                       handleApprove();
                                     }}
                                     loading={
                                       isLoading &&
                                       actionType === "approved" &&
-                                      selectedId === item?.id
+                                      selectedId === impliedTask?.id
                                     }
                                     disabled={
                                       isLoading &&
                                       actionType === "approved" &&
-                                      selectedId === item?.id
+                                      selectedId === impliedTask?.id
                                     }
                                     className="hidden"
                                   >
@@ -351,18 +363,29 @@ const Tasks = ({
                                   </Button>
                                 </div>
                               )}
-                            {!isLoading &&
-                              data?.length !== null &&
-                              findItemById(matchingIds, impliedTask?.id)
-                                ?.status === "pending" &&
-                              isSuccess && (
-                                <EditableLabel status={actionType} />
-                              )}
-                            {!isLoading &&
+                            {/* {!loading &&
                               data?.length !== null &&
                               findItemById(matchingIds, impliedTask?.id)
                                 ?.status !== "pending" &&
-                              !isSuccess && (
+                              isSuccess && (
+                                <EditableLabel status={actionType} />
+                              )} */}
+                            {!isLoading &&
+                              !loading &&
+                              data?.length !== null &&
+                              findItemById(matchingIds, impliedTask?.id)
+                                ?.status === "pending" &&
+                              findItemById(
+                                matchingIds ?? [],
+                                impliedTask?.id as string
+                              )?.approvable_id === selectedId &&
+                              isSuccess && (
+                                <EditableLabel status={actionType} />
+                              )}
+                            {!loading &&
+                              data?.length !== null &&
+                              findItemById(matchingIds, impliedTask?.id)
+                                ?.status !== "pending" && (
                                 <EditableLabel
                                   status={
                                     findItemById(matchingIds, impliedTask?.id)

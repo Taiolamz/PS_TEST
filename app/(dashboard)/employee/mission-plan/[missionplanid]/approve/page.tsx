@@ -27,13 +27,14 @@ const ApproveMissionPlan = () => {
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   // const [approvalTypeId, setApprovalTypeId] = useState("");
+  const [loadingApprove, setLoadingApprove] = useState<boolean>(false)
 
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
   const specifiedTaskComment = useDisclosure();
 
-  const { data, isLoading: isGettingMissionPlanItems } =
+  const { data, isLoading: isGettingMissionPlanItems,  } =
     useGetMissionPlanItemsByIdQuery({
       missionplanid: missionplanid as string,
     });
@@ -45,17 +46,23 @@ const ApproveMissionPlan = () => {
   useEffect(() => {
     if (isLoading && !isSuccess) {
       toast.loading("Processing...");
+      setLoadingApprove(true)
       setTimeout(() => {
         toast.dismiss();
-      }, 1000);
+      }, 3000);
       return;
     }
     if (!isLoading && isSuccess) {
-      toast.success("Approval status updated successfully");
+      setTimeout(() => {
+        toast.dismiss();
+        toast.success("Approval status updated successfully");
+        setLoadingApprove(false)
+      }, 13000);
       return;
     }
     if (!isLoading && isError) {
       toast.error("Approval status updated failed");
+      setLoadingApprove(false)
       return;
     }
   }, [isLoading, isSuccess, isError]);
@@ -138,7 +145,7 @@ const ApproveMissionPlan = () => {
                   isLoading ||
                   data?.data?.approvables.length === 0
                 }
-                loading={isLoading}
+                loading={loadingApprove}
                 onClick={() =>
                   approveAllItems({
                     missionPlan: missionplanid,
@@ -157,6 +164,8 @@ const ApproveMissionPlan = () => {
               // setApprovalTypeId={setApprovalTypeId}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              approveLoading={loadingApprove}
+         
             />
 
             <MeasureOfSuccess
@@ -165,12 +174,14 @@ const ApproveMissionPlan = () => {
               data={data?.data?.measure_of_success ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              approveLoading={loadingApprove}
             />
 
             <StrategicIntent
               data={data?.data?.strategic_intents ?? []}
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
+              approveLoading={loadingApprove}
             />
 
             <Tasks
@@ -179,6 +190,7 @@ const ApproveMissionPlan = () => {
               loading={isGettingMissionPlanItems}
               showTextArea={specifiedTaskComment.isOpen}
               setShowTextArea={specifiedTaskComment.toggle}
+              approveLoading={loadingApprove}
             />
 
             <FreedomConstraint
@@ -187,6 +199,7 @@ const ApproveMissionPlan = () => {
               data={data?.data?.boundaries ?? []}
               loading={isGettingMissionPlanItems}
               approvables={data?.data?.approvables ?? []}
+              approveLoading={loadingApprove}
             />
           </div>
         </div>
