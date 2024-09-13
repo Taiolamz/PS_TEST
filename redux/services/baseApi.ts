@@ -47,8 +47,7 @@ export const baseQueryInterceptor: BaseQueryFn<
   if (result.error) {
     let res: any = result.error;
     if (res.status === 403) {
-      let message = res.data.error.message;
-      toast.error(message);
+      toast.error(res?.data?.message);
       // api.dispatch(resetAuth());
       // Cookies.remove("token");
       // clearStorageItem();

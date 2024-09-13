@@ -17,6 +17,7 @@ import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/Re
 import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
+import { Textarea } from "@/components/ui/textarea";
 
 const { ADMIN } = routesPath;
 
@@ -89,21 +90,29 @@ const AddBranch = () => {
           module="Branches"
           form={
             <form
-              className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 "
+              className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 mb-14"
               onSubmit={formik.handleSubmit}
               autoComplete="off"
             >
               <Input
-                label="Name"
+                label="Branch Name"
                 type="text"
-                placeholder="Branch name"
+                placeholder="Branch Name"
                 id="name"
                 name="name"
                 onChange={formik.handleChange}
                 isRequired
               />
               <Input
-                label="Address"
+                label="Branch Email"
+                type="email"
+                placeholder="Branch Email"
+                id="branch_email"
+                name="branch_email"
+                onChange={formik.handleChange}
+              />
+              <Input
+                label="Branch Address"
                 type="text"
                 placeholder="Branch address"
                 id="address"
@@ -111,51 +120,51 @@ const AddBranch = () => {
                 onChange={formik.handleChange}
                 isRequired
               />
-              {!processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "subsidiary"
-              ) && (
-                <CustomSelect
-                  label="Country"
-                  isRequired
-                  placeholder="Select country"
-                  options={COUNTRIES_STATES?.map((item) => {
+
+              <CustomSelect
+                label="Branch Country"
+                isRequired
+                placeholder="Select country"
+                options={[
+                  {
+                    label: "Select country",
+                    value: "",
+                  },
+                  ...COUNTRIES_STATES?.map((item) => {
                     return {
                       label: item.name,
                       value: item.name,
                     };
-                  })}
-                  selected={formik.values.country}
-                  setSelected={(value) => {
-                    formik.setFieldValue("country", value);
-                    const countryData = COUNTRIES_STATES?.filter(
-                      (f: Dictionary) => f.name === value
-                    )?.[0];
-                    formik.setFieldValue("state", "");
-                    setSelectedCountryData(countryData);
-                  }}
-                  // labelClass={labelClassName}
-                />
-              )}
-              {!processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "subsidiary"
-              ) && (
-                <CustomSelect
-                  label="State"
-                  isRequired
-                  placeholder="Branch state"
-                  options={selectedCountryData?.stateProvinces?.map(
-                    (item: Dictionary) => {
-                      return {
-                        label: item.name,
-                        value: item.name,
-                      };
-                    }
-                  )}
-                  selected={formik.values.state}
-                  setSelected={(value) => formik.setFieldValue("state", value)}
-                  // labelClass={labelClassName}
-                />
-              )}
+                  }),
+                ]}
+                selected={formik.values.country}
+                setSelected={(value) => {
+                  formik.setFieldValue("country", value);
+                  const countryData = COUNTRIES_STATES?.filter(
+                    (f: Dictionary) => f.name === value
+                  )?.[0];
+                  formik.setFieldValue("state", "");
+                  setSelectedCountryData(countryData);
+                }}
+                // labelClass={labelClassName}
+              />
+
+              <CustomSelect
+                label="Branch State"
+                isRequired
+                placeholder="Branch state"
+                options={selectedCountryData?.stateProvinces?.map(
+                  (item: Dictionary) => {
+                    return {
+                      label: item.name,
+                      value: item.name,
+                    };
+                  }
+                )}
+                selected={formik.values.state}
+                setSelected={(value) => formik.setFieldValue("state", value)}
+                disabled={formik?.values?.country.length === 0}
+              />
 
               <CustomSelect
                 label="Head of Branch"
@@ -175,9 +184,9 @@ const AddBranch = () => {
                 // isRequired
               />
               <Input
-                label="Work Email"
+                label="Head of Branch Email"
                 type="text"
-                placeholder="Work Email"
+                placeholder="Head of Branch"
                 id="work_email"
                 value={formik.values.work_email}
                 name="work_email"
@@ -211,6 +220,18 @@ const AddBranch = () => {
                   labelClass={labelClassName}
                 />
               )}
+              <Textarea
+                label="Branch Description"
+                rows={3}
+                id="description"
+                name="description"
+                placeholder="Description"
+                className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                onChange={formik.handleChange}
+                touched={formik.touched.description}
+                value={formik.values.description}
+                error={formik.errors.description}
+              />
             </form>
           }
         />
