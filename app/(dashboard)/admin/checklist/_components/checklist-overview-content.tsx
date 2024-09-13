@@ -48,7 +48,7 @@ const ChecklistOverviewContent = () => {
       items: [
         {
           isChecked: checklist?.subsidiary_count < 1 ? false : true,
-          label: "Add Subsidiary",
+          label: "Add Subsidiary/ies",
           hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "subsidiary"
           )
@@ -58,7 +58,7 @@ const ChecklistOverviewContent = () => {
         },
         {
           isChecked: checklist?.branch_count < 1 ? false : true,
-          label: "Add Branches",
+          label: "Add Branch/es",
           hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "branch"
           )
@@ -68,7 +68,7 @@ const ChecklistOverviewContent = () => {
         },
         {
           isChecked: checklist?.department_count < 1 ? false : true,
-          label: "Add Department",
+          label: "Add Department(s)",
           link: ADMIN?.CREATE_DEPARTMENT,
           hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "department"
@@ -78,7 +78,7 @@ const ChecklistOverviewContent = () => {
         },
         {
           isChecked: checklist?.unit_count < 1 ? false : true,
-          label: "Add Unit",
+          label: "Add Unit(s)",
           hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
             "unit"
           )
