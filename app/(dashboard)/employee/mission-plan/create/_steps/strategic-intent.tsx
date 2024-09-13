@@ -101,6 +101,10 @@ const StrategicIntent = ({
         })
       ),
       mission_plan_id,
+      fiscal_year_id:
+        mission_plan_info?.mission_plan?.fiscal_year_id ||
+        mission_plan_info?.active_fy_info?.id ||
+        "",
     };
     try {
       await addStrategicIntent(transformedIntents).unwrap();
