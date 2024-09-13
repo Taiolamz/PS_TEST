@@ -5,7 +5,7 @@ import { formatToReadableDateShort } from "@/utils/helpers/date-formatter";
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { useParams } from "next/navigation";
 import { useApproval } from "./useApproval";
-import useGetComments from "./useGetComments.hook";
+import useGetComments, { CommentType } from "./useGetComments.hook";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
@@ -13,6 +13,8 @@ import CommentsIcon from "@/public/assets/icons/comments";
 import DrawerComment from "./drawer-comment";
 import { findItemById } from "@/utils/helpers";
 import { EditableLabel } from "@/components/fragment";
+import useGetAllComments from "./useGetAllComments.hook";
+import MultipleComment from "./multipleComments";
 
 type Props = {
   data: SpecifiedTasksType[];
@@ -20,7 +22,7 @@ type Props = {
   loading: boolean;
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
-  approveLoading?: boolean
+  approveLoading?: boolean;
 };
 
 const Tasks = ({
@@ -29,16 +31,17 @@ const Tasks = ({
   loading,
   setShowTextArea,
   showTextArea,
-  approveLoading
+  approveLoading,
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
   const missionplanid = params.missionplanid as string;
-  const comments = useGetComments({ approvables, approvableTypeId });
+  // const comments = useGetComments({ approvables, approvableTypeId });
   const initialActionType = "";
 
   const approval_type = "implied-task";
-
+  const commentItem = useGetAllComments({ approvables, approval_type });
+  const [allComments, setAllComments] = useState<CommentType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [actionType, setActionType] = useState<string>("");
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -53,7 +56,7 @@ const Tasks = ({
     handleApprove,
     FormikApprovalForm,
   } = useApproval({
-    initialComments: comments?.comment ?? [],
+    initialComments: [],
     initialActionType,
     missionplanid,
     approval_type,
@@ -97,6 +100,14 @@ const Tasks = ({
     setMatchingIds(matchingIds);
   }, [data]);
 
+  useEffect(() => {
+    if (commentItem.length !== 0) {
+      setAllComments(commentItem);
+    }
+  }, [commentItem]);
+
+  // console.log("isSuccess", isSuccess);
+  
   return (
     <div className="flex flex-col gap-10">
       {loading && (
@@ -137,7 +148,7 @@ const Tasks = ({
                             backgroundColor: colorWithAlpha,
                           }}
                         >
-                          {comments?.comment?.length || 0}
+                          {allComments?.length || 0}
                         </p>
                       </p>
                     </div>
@@ -210,190 +221,238 @@ const Tasks = ({
                   <hr className="my-[1.4375rem]" />
 
                   {/* Implied Tasks */}
-                  <div>
+                  <div className="flex flex-col gap-2">
                     {item?.implied_tasks?.length ? (
                       item?.implied_tasks?.map((impliedTask, index) => (
-                        <div
-                          className="flex w-full justify-between gap-10 text-sm"
-                          key={impliedTask?.id}
-                        >
-                          <p className="text-primary text-sm font-medium">
-                            Implied Task {index + 1}
-                          </p>
-                          <div className="grid grid-cols-6 flex-grow">
-                            <div className="col-span-3">
-                              <div className="mb-[2.1875rem]">
-                                <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                  Task title
-                                </p>
-                                <p className="text-[#5A5B5F] font-medium">
-                                  {impliedTask?.task}
-                                </p>
-                              </div>
+                        <div key={impliedTask?.id}>
+                          <div className="flex w-full justify-between gap-10 text-sm">
+                            <p className="text-primary text-sm font-medium">
+                              Implied Task {index + 1}
+                            </p>
+                            <div className="grid grid-cols-6 flex-grow">
+                              <div className="col-span-3">
+                                <div className="mb-[2.1875rem]">
+                                  <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                    Task title
+                                  </p>
+                                  <p className="text-[#5A5B5F] font-medium">
+                                    {impliedTask?.task}
+                                  </p>
+                                </div>
 
-                              {/* Resource */}
-                              <div>
-                                <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                  Resource
-                                </p>
-                                <div className="flex items-center gap-2">
-                                  {impliedTask?.resources?.length
-                                    ? impliedTask?.resources.map((resource) => (
-                                        <p
-                                          className="p-[0.3125rem] text-primary text-xs capitalize rounded-[0.625rem]"
-                                          style={{
-                                            backgroundColor: colorWithAlpha,
-                                          }}
-                                          key={resource?.staff_member_id}
-                                        >
-                                          {resource.name}
-                                        </p>
-                                      ))
-                                    : "no resource assigned."}
+                                {/* Resource */}
+                                <div>
+                                  <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                    Resource
+                                  </p>
+                                  <div className="flex items-center gap-2">
+                                    {impliedTask?.resources?.length
+                                      ? impliedTask?.resources.map(
+                                          (resource) => (
+                                            <p
+                                              className="p-[0.3125rem] text-primary text-xs capitalize rounded-[0.625rem]"
+                                              style={{
+                                                backgroundColor: colorWithAlpha,
+                                              }}
+                                              key={resource?.staff_member_id}
+                                            >
+                                              {resource.name}
+                                            </p>
+                                          )
+                                        )
+                                      : "no resource assigned."}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
 
-                            <div className="col-span-2">
-                              <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                Duration
-                              </p>
-                              <p className="text-[#5A5B5F] font-medium">
-                                {formatToReadableDateShort(
-                                  impliedTask.start_date
-                                )}{" "}
-                                -{" "}
-                                {formatToReadableDateShort(
-                                  impliedTask.start_date
-                                )}
-                              </p>
-                            </div>
+                              <div className="col-span-2">
+                                <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                  Duration
+                                </p>
+                                <p className="text-[#5A5B5F] font-medium">
+                                  {formatToReadableDateShort(
+                                    impliedTask.start_date
+                                  )}{" "}
+                                  -{" "}
+                                  {formatToReadableDateShort(
+                                    impliedTask.start_date
+                                  )}
+                                </p>
+                              </div>
 
-                            <div className="col-span-1">
-                              <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                Weight
-                              </p>
-                              <p className="text-xl text-[#015858] font-medium">
-                                {impliedTask?.weight
-                                  ? impliedTask?.weight
-                                  : "N/A"}
-                              </p>
+                              <div className="col-span-1">
+                                <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                  Weight
+                                </p>
+                                <p className="text-xl text-[#015858] font-medium">
+                                  {impliedTask?.weight
+                                    ? impliedTask?.weight
+                                    : "N/A"}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            {findItemById(matchingIds ?? [], impliedTask?.id)
-                              ?.status === "pending" &&
-                              findItemById(matchingIds ?? [], impliedTask?.id)
-                                ?.status !== "rejected" &&
-                              findItemById(matchingIds ?? [], impliedTask?.id)
-                                ?.status !== "approved" && (
-                                <div className="flex gap-2.5 items-end">
-                                  <Button
-                                    variant="outline"
-                                    className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
-                                    onClick={() => {
-                                      setShowTextArea(true);
-                                      setSelectedID(impliedTask?.id as string);
-                                      setItemsToApprove((prevItems) => {
-                                        const itemExists = prevItems.some(
-                                          (items) => items.id === impliedTask.id
-                                        );
-
-                                        if (itemExists) {
-                                          return prevItems.map((items) =>
-                                            items.id === impliedTask.id
-                                              ? {
-                                                  ...items,
-                                                  status: "rejected",
-                                                  comments: comments?.comment,
-                                                } // Update the existing item
-                                              : items
+                            <div>
+                              {findItemById(matchingIds ?? [], impliedTask?.id)
+                                ?.status === "pending" &&
+                                findItemById(matchingIds ?? [], impliedTask?.id)
+                                  ?.status !== "rejected" &&
+                                findItemById(matchingIds ?? [], impliedTask?.id)
+                                  ?.status !== "approved" && (
+                                  <div className="flex gap-2.5 items-end">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="border-[#FF5855] text-[#FF5855] hover:text-[#FF5855]"
+                                      onClick={() => {
+                                        const filteredComments =
+                                          commentItem.find(
+                                            (comment) => comment.id === item.id
                                           );
-                                        }
+                                        setShowTextArea(true);
+                                        setSelectedID(
+                                          impliedTask?.id as string
+                                        );
+                                        setItemsToApprove((prevItems) => {
+                                          const itemExists = prevItems.some(
+                                            (items) =>
+                                              items.id === impliedTask.id
+                                          );
 
-                                        return [
-                                          ...prevItems,
-                                          {
-                                            id: impliedTask.id,
-                                            status: "rejected",
-                                            comments: comments?.comment,
-                                          },
-                                        ];
-                                      });
-                                      handleReject();
-                                    }}
-                                    loading={
-                                      isLoading &&
-                                      actionType === "rejected" &&
-                                      findItemById(
-                                        matchingIds ?? [],
-                                        impliedTask?.id as string
-                                      )?.approvable_id === selectedId
-                                    }
-                                    disabled={
-                                      (isLoading &&
+                                          if (itemExists) {
+                                            return prevItems.map((items) =>
+                                              items.id === impliedTask.id
+                                                ? {
+                                                    ...items,
+                                                    status: "rejected",
+                                                    comments:
+                                                      filteredComments?.comment ??
+                                                      [],
+                                                  } // Update the existing item
+                                                : items
+                                            );
+                                          }
+
+                                          return [
+                                            ...prevItems,
+                                            {
+                                              id: impliedTask.id,
+                                              status: "rejected",
+                                              comments:
+                                                filteredComments?.comment ?? [],
+                                            },
+                                          ];
+                                        });
+
+                                        handleReject(item.id);
+                                      }}
+                                      loading={
+                                        isLoading &&
                                         actionType === "rejected" &&
                                         findItemById(
                                           matchingIds ?? [],
                                           impliedTask?.id as string
-                                        )?.approvable_id === selectedId) ||
-                                      approvables?.length === 0 || approveLoading
-                                    }
-                                  >
-                                    Reject
-                                  </Button>
-                                  <Button
-                                    onClick={() => {
-                                      setSelectedID(impliedTask?.id);
-                                      handleApprove();
-                                    }}
-                                    loading={
-                                      isLoading &&
-                                      actionType === "approved" &&
-                                      selectedId === impliedTask?.id
-                                    }
-                                    disabled={
-                                      isLoading &&
-                                      actionType === "approved" &&
-                                      selectedId === impliedTask?.id
-                                    }
-                                    className="hidden"
-                                  >
-                                    Approve
-                                  </Button>
-                                </div>
-                              )}
-                            {/* {!loading &&
+                                        )?.approvable_id === selectedId
+                                      }
+                                      disabled={
+                                        isLoading ||
+                                        approvables?.length === 0 ||
+                                        approveLoading
+                                      }
+                                    >
+                                      Reject
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => {
+                                        // setShowTextArea(false);
+                                        toggleComment("")
+                                        setSelectedID(
+                                          impliedTask?.id as string
+                                        );
+                                        setItemsToApprove((prevItems) => {
+                                          const itemExists = prevItems.some(
+                                            (items) =>
+                                              items.id === impliedTask.id
+                                          );
+
+                                          if (itemExists) {
+                                            return prevItems.map((items) =>
+                                              items.id === impliedTask.id
+                                                ? {
+                                                    ...items,
+                                                    status: "approved",
+                                                    comments: [],
+                                                  } // Update the existing item
+                                                : items
+                                            );
+                                          }
+
+                                          return [
+                                            ...prevItems,
+                                            {
+                                              id: impliedTask.id,
+                                              status: "approved",
+                                              comments: [],
+                                            },
+                                          ];
+                                        });
+                                        handleApprove();
+                                      }}
+                                      loading={
+                                        isLoading &&
+                                        actionType === "approved" &&
+                                        findItemById(
+                                          matchingIds ?? [],
+                                          impliedTask?.id as string
+                                        )?.approvable_id === selectedId
+                                      }
+                                      disabled={
+                                        isLoading ||
+                                        approvables?.length === 0 ||
+                                        approveLoading
+                                      }
+                                    >
+                                      Approve
+                                    </Button>
+                                  </div>
+                                )}
+                              {/* {!loading &&
                               data?.length !== null &&
                               findItemById(matchingIds, impliedTask?.id)
                                 ?.status !== "pending" &&
                               isSuccess && (
                                 <EditableLabel status={actionType} />
                               )} */}
-                            {!isLoading &&
-                              !loading &&
-                              data?.length !== null &&
-                              findItemById(matchingIds, impliedTask?.id)
-                                ?.status === "pending" &&
-                              findItemById(
-                                matchingIds ?? [],
-                                impliedTask?.id as string
-                              )?.approvable_id === selectedId &&
-                              isSuccess && (
-                                <EditableLabel status={actionType} />
-                              )}
-                            {!loading &&
-                              data?.length !== null &&
-                              findItemById(matchingIds, impliedTask?.id)
-                                ?.status !== "pending" && (
-                                <EditableLabel
-                                  status={
-                                    findItemById(matchingIds, impliedTask?.id)
-                                      ?.status ?? "pending"
-                                  }
-                                />
-                              )}
+                              {!isLoading &&
+                                !loading &&
+                                data?.length !== null &&
+                                findItemById(matchingIds, impliedTask?.id)
+                                  ?.status === "pending" &&
+                                findItemById(
+                                  matchingIds ?? [],
+                                  impliedTask?.id as string
+                                )?.approvable_id === selectedId &&
+                                isSuccess && (
+                                  <EditableLabel status={actionType} />
+                                )}
+                              {!loading &&
+                                data?.length !== null &&
+                                findItemById(matchingIds, impliedTask?.id)
+                                  ?.status !== "pending" && (
+                                  <EditableLabel
+                                    status={
+                                      findItemById(matchingIds, impliedTask?.id)
+                                        ?.status ?? "pending"
+                                    }
+                                  />
+                                )}
+                            </div>
                           </div>
+                          {index === item?.implied_tasks?.length - 1 ? (
+                            ""
+                          ) : (
+                            <hr className="my-[1.4375rem]" />
+                          )}
                         </div>
                       ))
                     ) : (
@@ -405,25 +464,22 @@ const Tasks = ({
                 </div>
               )}
             </div>
-            {/* {showTextArea && ( */}
-            <Comment
-              label="freedom & constraints"
-              showTextArea={showTextArea}
-              setShowTextArea={setShowTextArea}
-              comments={comments}
-              formik={FormikApprovalForm}
-            />
-            {/* )} */}
+
             {/* Deprecated on tasks */}
-            {openCommentId === item.id && (
-              <Comment
-                label="Specified task"
-                showTextArea={openCommentId === item.id}
-                setShowTextArea={() => toggleComment(item.id)}
-                comments={comments}
-                formik={FormikApprovalForm}
-              />
-            )}
+
+            <MultipleComment
+              label="Specified task"
+              showTextArea={openCommentId === item.id}
+              setShowTextArea={() => toggleComment(item.id)}
+              comments={allComments.filter((comment) =>
+                item?.implied_tasks.some(
+                  (task) => task.id === comment.id
+                )
+              )}
+              setComments={setAllComments}
+              formik={FormikApprovalForm}
+              id={selectedId}
+            />
           </section>
         ))}
       {!loading && data?.length === 0 && (
@@ -439,7 +495,7 @@ const Tasks = ({
         </>
       )}
       <DrawerComment
-        comments={comments}
+        comments={allComments.find((comment) => comment.id === selectedId)}
         show={openDrawer}
         handleClose={() => {
           setDrawerUserId("");

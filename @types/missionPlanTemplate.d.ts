@@ -12,6 +12,7 @@ type measureProp = {
   unit: string;
   target: string;
   id: string;
+  weight: number
 };
 
 type strategicProp = {

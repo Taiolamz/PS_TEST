@@ -54,7 +54,8 @@ export const useApproval = ({
     onSubmit: async (values) => {
       const allComments =
         values.actionType === "rejected"
-          ? [...values.comments, values.newComment]
+          ? // ? [...values.comments, values.newComment]
+            [values.newComment]
           : [...values.comments];
       FormikApprovalForm.setFieldValue("comments", allComments);
       FormikApprovalForm.setFieldValue("newComment", "");
@@ -86,7 +87,15 @@ export const useApproval = ({
       itemsToApprove !== undefined
         ? itemsToApprove.map((item) => ({
             ...item,
-            comments: allComments,
+            // comments: allComments,
+            // Add the comments key only if actionType is "rejected"
+            ...(FormikApprovalForm?.values?.actionType === "rejected"
+              ? {
+                  comments: allComments,
+                }
+              : {
+                  comments: [],
+                }),
           }))
         : [];
 
@@ -98,6 +107,7 @@ export const useApproval = ({
       // comments: allComments,
       // approvable_id: approvableTypeId ?? "",
     };
+
     try {
       await approveMissionPlanItems(payload).unwrap();
       toast.dismiss();
@@ -105,12 +115,12 @@ export const useApproval = ({
       setItemsToApprove && setItemsToApprove([]);
 
       setTimeout(() => {
+        toast.dismiss();
+        toast.success("Approval status updated successfully");
         setIsLoading && setIsLoading(false);
         setIsSuccess && setIsSuccess(false);
         setSelectedID && setSelectedID("");
-        toast.dismiss();
-        toast.success("Approval status updated successfully");
-      }, 13000);
+      }, 15000);
     } catch (error) {
       setIsLoading && setIsLoading(false);
       setIsSuccess && setIsSuccess(false);

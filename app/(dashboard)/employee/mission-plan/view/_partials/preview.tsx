@@ -45,6 +45,7 @@ const Preview = ({ data, type }: PreviewProps) => {
         unit: item?.unit,
         target: item?.target,
         id: item?.id,
+        weight:`${Math.round(item?.weight)}%`,
       };
     });
 

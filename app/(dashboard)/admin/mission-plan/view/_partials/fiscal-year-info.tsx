@@ -270,9 +270,13 @@ const FiscalYearInfo = () => {
             )
           )}
           <button
-            disabled={active_fy_info?.status !== "active"}
+            // disabled={active_fy_info?.status !== "active"}
             className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
             onClick={() => handleNavigate("strategic-pillar")}
+            disabled={
+              active_fy_info?.status !== "active" ||
+              !isBeforeFiscalYearStart
+            }
           >
             Edit
           </button>
@@ -388,7 +392,11 @@ const FiscalYearInfo = () => {
           </div>
         </div>
         <button
-          disabled={active_fy_info?.status !== "active"}
+          // disabled={active_fy_info?.status !== "active"}
+          disabled={
+            active_fy_info?.status !== "active" ||
+            !isBeforeFiscalYearStart
+          }
           className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
           onClick={() => handleNavigate("timeline-reminder")}
         >

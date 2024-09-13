@@ -30,7 +30,7 @@ export default function DrawerComment({
   isLoading: boolean;
 }) {
   const { user } = useAppSelector((state) => state.auth);
-  console.log({ comments });
+  // console.log({ comments });
 
   const [
     allMissionPlanComments,

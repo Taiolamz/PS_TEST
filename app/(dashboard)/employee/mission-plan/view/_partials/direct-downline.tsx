@@ -60,7 +60,7 @@ export default function DirectDownline() {
             <TableWrapper
               tableheaderList={[
                 "Staff Name",
-                "Staff Role",
+                "Job Title",
                 "Email",
                 "Date Submitted",
                 "Approval Status",
@@ -179,8 +179,8 @@ const FORMAT_TABLE_DATA = (obj: any) => {
         <p>{org?.name}</p>
       </>
     ),
-    designation: org?.designation,
-    email: org?.email,
+    designation: org?.designation ?? "Not assigned",
+    email: org?.email ?? "Not assigned",
     created_at: formatDate(org?.date_submitted),
     status: (
       <BadgeComponent

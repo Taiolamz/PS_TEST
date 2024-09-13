@@ -17,7 +17,10 @@ import {
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
 } from "@/redux/services/checklist/subsidiaryApi";
-import { subsidiaryColumns } from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
+import {
+  // subsidiaryColumns,
+  useSubsidiaryColumnData,
+} from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/store";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
@@ -138,10 +141,14 @@ const Subsidiary = () => {
 
   const subsidiaries = subsidiariesData ?? [];
 
+  const { subsidiaryColumns, data, openDeleteModal, handleDeleteDialog } =
+    useSubsidiaryColumnData(isFetchingSubsidiaries);
+
   const subsidiariesColumnData = useMemo(
-    () => subsidiaryColumns(isFetchingSubsidiaries),
+    () => subsidiaryColumns,
     [isFetchingSubsidiaries]
   );
+  // const subsidiaryColumn = useMemo(() => missionPlanColumn, []);
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
