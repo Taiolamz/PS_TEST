@@ -105,7 +105,7 @@ const ApprovalFlowTwo = ({
                 const newApprovals =
                   values.order_of_approvals[index]?.approvals?.slice(
                     0,
-                    numLevelsValue
+                    numLevelsValue + 1
                   ) || [];
                 setFieldValue(
                   `order_of_approvals[${index}].approvals`,

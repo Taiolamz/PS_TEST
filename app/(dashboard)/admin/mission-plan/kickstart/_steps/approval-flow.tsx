@@ -82,12 +82,14 @@ const ApprovalFlow = () => {
     useEffect(() => {
         if (organization?.staff_levels) {
             let STAFF_LEVELS = typeof (organization?.staff_levels) === 'string' ? JSON.parse(organization?.staff_levels) : organization?.staff_levels
-            const LEVELS = STAFF_LEVELS?.map((item: any) => {
+            let APPROVAL_LEVELS = typeof (organization?.approval_flows) === 'string' ? JSON.parse(organization?.approval_flows) : organization?.approval_flows
+            // console.log(APPROVAL_LEVELS)
+            const LEVELS = APPROVAL_LEVELS?.map((item: any, idx: number) => {
                 return {
-                    title: item.name,
-                    approvals: [],
-                    approval_levels: 0,
-                    level: item.level
+                    title: item.title,
+                    approvals: item?.approvals || [],
+                    approval_levels: item?.approvals?.length,
+                    level: STAFF_LEVELS?.[idx]?.level
                 }
             })
             setInitialApprovalFlowData({ staff_levels: LEVELS })
@@ -99,7 +101,7 @@ const ApprovalFlow = () => {
                     }
                 })
                 let approvals_flow = {staff_levels: initialApprovals}
-                console.log(approvals_flow)
+                // console.log(approvals_flow)
                 setInitialApprovalFlowData(approvals_flow)
             }
         }

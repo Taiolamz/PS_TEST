@@ -16,7 +16,7 @@ import {
   useCreateBulkSubsidiariesMutation,
   useGetSubsidiariesQuery,
 } from "@/redux/services/checklist/subsidiaryApi";
-import { subsidiaryColumns } from "./subsidiary-column";
+// import { subsidiaryColumns } from "./subsidiary-column";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
@@ -130,10 +130,12 @@ const Subsidiary = () => {
 
   const subsidiaries = subsidiariesData ?? [];
 
-  const subsidiariesColumnData = useMemo(
-    () => subsidiaryColumns(isFetchingSubsidiaries),
-    [isFetchingSubsidiaries]
-  );
+  const subsidiariesColumnData = {};
+
+  // const subsidiariesColumnData = useMemo(
+  //   () => subsidiaryColumns(isFetchingSubsidiaries),
+  //   [isFetchingSubsidiaries]
+  // );
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
