@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { ActionIcon } from "@/public/assets/icons";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -14,6 +14,8 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDisclosure from "./_hooks/useDisclosure";
+import { processInputAsArray } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
 
 export const useBranchColumnData = (loading?: boolean) => {
   const {
@@ -22,6 +24,7 @@ export const useBranchColumnData = (loading?: boolean) => {
     close: closeDeleteModal,
   } = useDisclosure();
   const [data, setData] = useState({});
+  const { user } = useAppSelector((state) => state.auth);
 
   const handleDeleteDialog = (rowData: BranchData) => {
     setData(rowData);
@@ -70,10 +73,30 @@ export const useBranchColumnData = (loading?: boolean) => {
       ),
     },
     {
-      accessorKey: "subsidiary",
-      header: () => <div className="text-right mr-24">Subsidiary</div>,
+      accessorKey: processInputAsArray(user?.organization?.hierarchy)?.includes(
+        "subsidiary"
+      )
+        ? "subsidiary"
+        : " ",
+      header: () => {
+        if (
+          !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "subsidiary"
+          )
+        ) {
+          return <React.Fragment></React.Fragment>;
+        }
+        return <div className="text-right mr-24">Subsidiary</div>;
+      },
       cell: ({ row }) => {
         const subsidiary = row.getValue("subsidiary") as ObjType;
+        if (
+          !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "subsidiary"
+          )
+        ) {
+          return <React.Fragment></React.Fragment>;
+        }
         return (
           <div className="capitalize text-right mr-24">
             {loading ? (

@@ -13,7 +13,9 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDisclosure from "./_hooks/useDisclosure";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useAppSelector } from "@/redux/store";
+import { processInputAsArray } from "@/utils/helpers";
 
 export const useDepartmentColumnData = (loading?: boolean) => {
   const {
@@ -22,6 +24,7 @@ export const useDepartmentColumnData = (loading?: boolean) => {
     close: closeDeleteModal,
   } = useDisclosure();
   const [data, setData] = useState({});
+  const { user } = useAppSelector((state) => state.auth);
 
   const handleDeleteDialog = (rowData: DepartmentData) => {
     setData(rowData);
@@ -100,10 +103,30 @@ export const useDepartmentColumnData = (loading?: boolean) => {
     //   ),
     // },
     {
-      accessorKey: "subsidiary",
-      header: () => <div className="text-right mr-24">Subsidiary</div>,
+      accessorKey: processInputAsArray(user?.organization?.hierarchy)?.includes(
+        "subsidiary"
+      )
+        ? "subsidiary"
+        : " ",
+      header: () => {
+        if (
+          !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "subsidiary"
+          )
+        ) {
+          return <React.Fragment></React.Fragment>;
+        }
+        return <div className="text-right mr-24">Subsidiary</div>;
+      },
       cell: ({ row }) => {
         const subsidiary = row.getValue("subsidiary") as ObjType;
+        if (
+          !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "subsidiary"
+          )
+        ) {
+          return <React.Fragment></React.Fragment>;
+        }
         return (
           <div className="capitalize text-right mr-24">
             {loading ? (
@@ -116,10 +139,30 @@ export const useDepartmentColumnData = (loading?: boolean) => {
       },
     },
     {
-      accessorKey: "branch",
-      header: () => <div className="text-right mr-24">Branch</div>,
+      accessorKey: processInputAsArray(user?.organization?.hierarchy)?.includes(
+        "branch"
+      )
+        ? "branch"
+        : " ",
+      header: () => {
+        if (
+          !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "branch"
+          )
+        ) {
+          return <React.Fragment></React.Fragment>;
+        }
+        return <div className="text-right mr-24">Branch</div>;
+      },
       cell: ({ row }) => {
         const branch = row.getValue("branch") as { name: string };
+        if (
+          !processInputAsArray(user?.organization?.hierarchy)?.includes(
+            "branch"
+          )
+        ) {
+          return <React.Fragment></React.Fragment>;
+        }
         return (
           <div className="capitalize text-right mr-24">
             {loading ? (
