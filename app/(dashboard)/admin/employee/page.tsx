@@ -9,7 +9,10 @@ import {
   useLazyDownloadEmployeeDataQuery,
   useLazyDownloadEmployeeTemplateQuery,
 } from "@/redux/services/checklist/employeeApi";
-import { employeerolesColumns } from "./employee-role-column";
+import {
+  // employeerolesColumns,
+  useEmployeeRolesColumnData,
+} from "./employee-role-column";
 import useDisclosure from "./_hooks/useDisclosure";
 import { UsersIcon } from "@/public/assets/icons";
 import DashboardTable from "./_components/checklist-dashboard-table";
@@ -161,7 +164,14 @@ const Employee = () => {
 
   const employees = employeeData ?? [];
 
-  const employeesColumnData = useMemo(() => employeerolesColumns, []);
+  // const employeesColumnData = useMemo(() => employeerolesColumns, []);
+  const { employeerolesColumns, data, openDeleteModal, handleDeleteDialog } =
+    useEmployeeRolesColumnData(isFetchingEmployees);
+
+  const employeesColumnData = useMemo(
+    () => employeerolesColumns,
+    [isFetchingEmployees]
+  );
 
   const user = useAppSelector(selectUser);
   const { organization } = user;

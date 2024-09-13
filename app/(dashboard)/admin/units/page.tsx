@@ -9,7 +9,10 @@ import {
   useGetUnitsQuery,
   useLazyDownloadUnitTemplateQuery,
 } from "@/redux/services/checklist/unitApi";
-import { unitColumns } from "./unit-column";
+import {
+  //  unitColumns,
+  useUnitColumnData,
+} from "./unit-column";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
@@ -134,13 +137,18 @@ const Units = () => {
 
   const units = unitsData ?? [];
 
-  const unitsColumnData = useMemo(
-    () => unitColumns(isFetchingUnits),
-    [isFetchingUnits]
-  );
+  // const unitsColumnData = useMemo(
+  //   () => unitColumns(isFetchingUnits),
+  //   [isFetchingUnits]
+  // );
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
+
+  const { unitColumns, data, openDeleteModal, handleDeleteDialog } =
+    useUnitColumnData(isFetchingUnits);
+
+  const unitsColumnData = useMemo(() => unitColumns, [isFetchingUnits]);
 
   const [createBulkUnits, { isLoading: isCreatingBulkUnits }] =
     useCreateBulkUnitsMutation();
