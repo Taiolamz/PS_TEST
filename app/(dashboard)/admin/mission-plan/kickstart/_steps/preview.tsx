@@ -7,6 +7,7 @@ import ModalContainer from "@/components/modal-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { resetFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import {
   useGetFinancialYearPreviewQuery,
   useSaveFinancialYearMutation,
@@ -38,7 +39,17 @@ const FinancialYearPreview = () => {
     saveFinancialYear,
     { isLoading: isSavingFinancialYear, reset: resetSaveFinancialYear },
   ] = useSaveFinancialYearMutation({});
-  // 01j4hsayp0txev624bx0xgda06
+  
+  const [getAuthUserDetails] = useLazyGetAuthUserDetailsQuery(
+    {}
+  );
+
+  // This fuction update user records
+  const handleGetAuthUser = async () => {
+    getAuthUserDetails({})
+      .unwrap()
+      .then(() => {});
+  };
 
   const router = useRouter();
 
@@ -47,6 +58,7 @@ const FinancialYearPreview = () => {
       .unwrap()
       .then(() => {
         dispatch(resetFinancialYearDetails())
+        handleGetAuthUser()
         setShowInfoModal(false)
         setShowSuccessModal(true);
       });

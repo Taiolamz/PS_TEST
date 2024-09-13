@@ -2,7 +2,8 @@ import { Dictionary } from "@/@types/dictionary";
 import { CustomAccordion } from "@/components/custom-accordion";
 import CustomSelect from "@/components/custom-select";
 import { Button } from "@/components/ui/button";
-import { updateFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { updateFinancialYearDetails, updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import { useGetAllApproverListQuery } from "@/redux/services/employee/employeeApi";
 import { useCreateApprovalFlowMutation } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
@@ -44,11 +45,24 @@ const ApprovalFlowUpdate = () => {
 
   const { organization }: any = useAppSelector((state) => state.auth.user);
   const { fy_info } = useAppSelector((state) => state.mission_plan);
+  // console.log(fy_info)
 
   const { data: rolesData, isLoading: isLoadingApprovalroles } =
     useGetAllApproverListQuery();
-  const [createApprovalFlow, { isLoading: isCreatingApprovalFlow }] =
+    
+  const [createApprovalFlow, { isLoading: isUpdatingApprovalFlow }] =
     useCreateApprovalFlowMutation();
+
+    const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
+      {}
+    );
+  
+    // This fuction update user records
+    const handleGetAuthUser = async () => {
+      getAuthUserDetails({})
+        .unwrap()
+        .then(() => {});
+    };
 
   const getApprovalLevels = (data: []) => {
     const mappedApprovals = data.map((d: Dictionary) => {
@@ -63,7 +77,29 @@ const ApprovalFlowUpdate = () => {
 
   // const formik = useFormik()
   const handleFormSubmit = async (values: any) => {
-    console.log(values);
+    
+    const hasEmptyApproval = values?.staff_levels?.map((f: Dictionary) => f.approvals)?.some((f: Dictionary) => f.length === 0)
+    if (hasEmptyApproval) {
+        toast.error('Each level must have at least one approval')
+        return
+    }
+    const APPROVALS = getApprovalLevels(values?.staff_levels)
+    // console.log(APPROVALS);
+    // return
+    createApprovalFlow(APPROVALS)
+    .unwrap()
+    .then((payload) => {
+        toast.success('Approval flow updated successfully')
+        handleGetAuthUser()
+        // console.log(payload)
+        dispatch(
+          updateMissionPlanDetails({
+            slug: "active_fy_info",
+            data: payload?.data,
+          })
+        );
+        router.back()
+    })
   };
 
   useEffect(() => {
@@ -247,10 +283,10 @@ const ApprovalFlowUpdate = () => {
 
                 <div className="mt-5">
                   <Button
-                    disabled={isCreatingApprovalFlow}
+                    disabled={isUpdatingApprovalFlow}
                     className=""
                     type="submit"
-                    loading={isCreatingApprovalFlow}
+                    loading={isUpdatingApprovalFlow}
                     loadingText="Save & Continue"
                   >
                     Save & Continue
