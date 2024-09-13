@@ -67,7 +67,6 @@ const MissionDetailPreview = ({
       });
   };
 
-  console.log(missionData?.specified_tasks);
   return (
     <div className="w-[60vw]">
       <h2 className=" text-[var(--primary-color)] font-[600] text-base">
