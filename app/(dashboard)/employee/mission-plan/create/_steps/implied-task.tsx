@@ -515,26 +515,26 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
     formik.setFieldValue(e.target.name, newWeight);
 
-    const taskWeight = Number(formik.values.tasks[index].weight) || 0;
-    const taskName = formik.values.tasks[index].task;
-    const totalWeight = formik.values.tasks[index].implied_tasks.reduce(
-      (sum: number, item: any, i: number) =>
-        i === subIndex
-          ? sum + (newWeight || 0)
-          : sum + (Number(item.weight) || 0),
-      0
-    );
+    // const taskWeight = Number(formik.values.tasks[index].weight) || 0;
+    // const taskName = formik.values.tasks[index].task;
+    // const totalWeight = formik.values.tasks[index].implied_tasks.reduce(
+    //   (sum: number, item: any, i: number) =>
+    //     i === subIndex
+    //       ? sum + (newWeight || 0)
+    //       : sum + (Number(item.weight) || 0),
+    //   0
+    // );
 
-    if (totalWeight > taskWeight) {
-      formik.setFieldValue(
-        e.target.name,
-        formik.values.tasks[index].implied_tasks[subIndex].weight
-      );
-      toast.error("The total weight exceeds the task weight.");
-    }
+    // if (totalWeight > taskWeight) {
+    //   formik.setFieldValue(
+    //     e.target.name,
+    //     formik.values.tasks[index].implied_tasks[subIndex].weight
+    //   );
+    //   toast.error("The total weight exceeds the task weight.");
+    // }
 
-    setIsWeightValid(totalWeight === taskWeight);
-    setTaskName(taskName);
+    // setIsWeightValid(totalWeight === taskWeight);
+    // setTaskName(taskName);
   };
 
   const handlePercentChange = (
@@ -557,10 +557,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     const currentPercentages =
       formik.values.tasks[index].implied_tasks[subIndex].percentage;
 
-    // const resourceIdToIndexMap = new Map(
-    //   currentResources.map((res: any, idx: number) => [res.id, idx])
-    // );
-
     const newResourceIdSet = new Set(values);
 
     const removedResourceIds = currentResources
@@ -582,15 +578,21 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
       updatedResources
     );
 
-    const updatedPercentages = currentPercentages.filter(
-      (_: any, idx: number) =>
-        !removedResourceIds.includes(currentResources[idx]?.id)
-    );
-
-    formik.setFieldValue(
-      `tasks.${index}.implied_tasks.${subIndex}.percentage`,
-      updatedPercentages
-    );
+    if (values.length === 1) {
+      formik.setFieldValue(
+        `tasks.${index}.implied_tasks.${subIndex}.percentage`,
+        [100]
+      );
+    } else if (currentPercentages) {
+      const updatedPercentages = currentPercentages.filter(
+        (_: any, idx: number) =>
+          !removedResourceIds.includes(currentResources[idx]?.id)
+      );
+      formik.setFieldValue(
+        `tasks.${index}.implied_tasks.${subIndex}.percentage`,
+        updatedPercentages
+      );
+    }
   };
 
   return (
