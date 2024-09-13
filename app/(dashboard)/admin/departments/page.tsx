@@ -14,7 +14,10 @@ import {
 } from "@/redux/services/checklist/departmentApi";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
-import { departmentColumns } from "./department-column";
+import {
+  // departmentColumns,
+  useDepartmentColumnData,
+} from "./department-column";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
@@ -134,15 +137,27 @@ const Departments = () => {
 
   const departments = departmentData ?? [];
 
+  const { departmentColumns, data, openDeleteModal, handleDeleteDialog } =
+    useDepartmentColumnData(isFetchingDepartments);
 
+  const departmentsColumnData = useMemo(
+    () => departmentColumns,
+    [isFetchingDepartments]
+  );
+>>>>>>> bf3d7875a640c4a5168f098455c8b5808e477c8b
+
+  // const departmentsColumnData = useMemo(
+  //   () => departmentColumns(isFetchingDepartments),
+  //   [isFetchingDepartments]
+  // );
+
+  // const departmentsColumnData = useMemo(
+  //   () => departmentColumns(isFetchingDepartments),
+  //   [isFetchingDepartments]
+  // );
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
-
-  const departmentsColumnData = useMemo(
-    () => departmentColumns(isFetchingDepartments, user),
-    [isFetchingDepartments]
-  );
 
   const [createBulkDepartments, { isLoading: isCreatingBulkDepartments }] =
     useCreateBulkDepartmentsMutation();

@@ -57,6 +57,10 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
       const obj = {
         ...values,
         mission_plan_id: mission_plan?.data?.mission_plan?.id,
+        fiscal_year_id:
+        mission_plan_info?.mission_plan?.fiscal_year_id ||
+        mission_plan_info?.active_fy_info?.id ||
+        "",
       };
       await createBoundaries(obj)
         .unwrap()
@@ -96,8 +100,8 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
 
-   // check -------------------
-   const { active_fy_info } = useAppSelector(
+  // check -------------------
+  const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
   useEffect(() => {

@@ -39,15 +39,17 @@ const FiscalYearInfo = () => {
 
   useEffect(() => {
     if (organization?.staff_levels) {
-      let STAFF_LEVELS = organization?.staff_levels;
-      const LEVELS = STAFF_LEVELS?.map((item: any) => {
-        return {
-          title: item.name,
-          approvals: [],
-          approval_levels: 0,
-          level: item.level,
-        };
-      });
+      let STAFF_LEVELS = typeof (organization?.staff_levels) === 'string' ? JSON.parse(organization?.staff_levels) : organization?.staff_levels
+      let APPROVAL_LEVELS = typeof (organization?.approval_flows) === 'string' ? JSON.parse(organization?.approval_flows) : organization?.approval_flows
+      // console.log(active_fy_info)
+      const LEVELS = APPROVAL_LEVELS?.map((item: any, idx: number) => {
+          return {
+              title: item.title,
+              approvals: item?.approvals || [],
+              approval_levels: item?.approvals?.length,
+              level: STAFF_LEVELS?.[idx]?.level
+          }
+      })
       setApprovalFlowData({ staff_levels: LEVELS });
 
       if (organization?.approval_flows?.length) {
@@ -268,9 +270,13 @@ const FiscalYearInfo = () => {
             )
           )}
           <button
-            disabled={active_fy_info?.status !== "active"}
+            // disabled={active_fy_info?.status !== "active"}
             className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
             onClick={() => handleNavigate("strategic-pillar")}
+            disabled={
+              active_fy_info?.status !== "active" ||
+              !isBeforeFiscalYearStart
+            }
           >
             Edit
           </button>
@@ -386,7 +392,11 @@ const FiscalYearInfo = () => {
           </div>
         </div>
         <button
-          disabled={active_fy_info?.status !== "active"}
+          // disabled={active_fy_info?.status !== "active"}
+          disabled={
+            active_fy_info?.status !== "active" ||
+            !isBeforeFiscalYearStart
+          }
           className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
           onClick={() => handleNavigate("timeline-reminder")}
         >

@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { BsArrowUpCircleFill } from "react-icons/bs";
-import { FaX } from "react-icons/fa6";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
@@ -13,43 +12,43 @@ type CommentType = {
   id?: string;
   title?: string;
   author?: string;
-  // text: string;
   comment?: string[];
   date?: string;
   time?: string;
 };
 
 type Props = {
+  comments: CommentType[];
+  formik?: any;
   id?: string;
   name?: string;
   label?: string;
   showTextArea: boolean;
   setShowTextArea: (e: boolean) => void;
-  // comments: string[];
-  comments: CommentType;
-  formik?: any;
+  setComments: (e: any) => void;
 };
 
-const Comment = ({
-  id,
-  name,
+const MultipleComment = ({
+  comments,
+  formik,
   label,
   showTextArea,
   setShowTextArea,
-  comments,
-  formik,
+  setComments,
+  id,
 }: Props) => {
+  // console.log("comments", comments);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [newComment, setNewComment] = useState<string>("");
   const { primaryColorHexValue } = useContext(ActionContext);
   const colorWithAlpha = primaryColorHexValue
     ? addAlphaToHex(primaryColorHexValue, 0.05)
     : "";
 
+  // Handle pagination
   const handleNext = () => {
-    if (comments?.comment?.length && comments?.comment?.length > 0) {
-      if (currentIndex < comments?.comment?.length - (showTextArea ? 1 : 2)) {
-        setCurrentIndex(currentIndex + 1);
-      }
+    if (currentIndex < comments.length - (showTextArea ? 1 : 2)) {
+      setCurrentIndex(currentIndex + 1);
     }
   };
 
@@ -62,6 +61,8 @@ const Comment = ({
   const handleAddComment = () => {
     setShowTextArea(true);
   };
+
+ 
 
   return (
     <section className="rounded-[0.3125rem] border border-[#E5E9EB] p-[1.8125rem] bg-[#F6F8F9]">
@@ -76,7 +77,7 @@ const Comment = ({
               backgroundColor: colorWithAlpha,
             }}
           >
-            {comments?.comment?.length || 0}
+            {comments.length || 0}
           </p>
         </div>
         <div className="flex gap-3.5 items-center">
@@ -86,7 +87,6 @@ const Comment = ({
           >
             <PlusIcon width={24} height={24} /> Add comment
           </p>
-          {/* {comments?.comment?.length && ( */}
           <div className="flex items-center gap-2">
             <MdChevronLeft
               onClick={handlePrev}
@@ -99,17 +99,15 @@ const Comment = ({
               onClick={handleNext}
               size={24}
               className={`border-[0.0938rem] border-[#9AA6AC] text-[#9AA6AC] rounded-sm cursor-pointer ${
-                comments?.comment?.length &&
-                currentIndex >=
-                  comments?.comment?.length - (showTextArea ? 1 : 2)
+                currentIndex >= comments.length - (showTextArea ? 1 : 2)
                   ? "opacity-50 cursor-not-allowed"
                   : ""
               }`}
             />
           </div>
-          {/* )} */}
         </div>
       </div>
+
       <div className="flex gap-3.5">
         {showTextArea && (
           <div className="basis-1/2 p-2 rounded-[0.3125rem] border bg-white border-[var(--primary-color)]">
@@ -117,21 +115,21 @@ const Comment = ({
               <label className="uppercase px-3 py-1 text-[0.625rem]  text-[#6E7C87]">
                 {label}
               </label>
-              <div className="flex items-center gap-1">
-                <BsArrowUpCircleFill
-                  color="text-primary"
-                  className="text-[var(--primary-color)] "
-                  onClick={() => {
-                    formik?.handleSubmit();
-                    setShowTextArea(false);
-                  }}
-                />
-              </div>
+              <BsArrowUpCircleFill
+                color="text-primary"
+                className="text-[var(--primary-color)] cursor-pointer"
+                onClick={() => {
+                  formik?.handleSubmit();
+                  setShowTextArea(false);
+                }}
+              />
             </div>
             <Textarea
+              placeholder="Input Comment"
               id="newComment"
               name="newComment"
-              placeholder="Input Comment"
+              // value={newComment}
+              // onChange={(e) => setNewComment(e.target.value)}
               value={formik?.values.newComment}
               onChange={formik?.handleChange}
               touched={formik?.touched.newComment}
@@ -141,35 +139,35 @@ const Comment = ({
             />
           </div>
         )}
-        {comments?.comment
+
+        {/* Display comments based on current index */}
+        {comments
           ?.slice(currentIndex, currentIndex + (showTextArea ? 1 : 2))
-          .map((item, index) => (
+          .map((comment, index) => (
             <div
-              // key={comments?.id}
-              key={index}
+              key={comment.id || index}
               className="basis-1/2 pt-3 pb-3.5 pr-8 pl-5 border-[#E5E9EB] border bg-white rounded-sm"
             >
               <div className="flex justify-between items-center mb-[0.4375rem]">
                 <div className="flex gap-1.5 items-center">
-                  <h3 className="text-[0.625rem]  text-[#6E7C87] uppercase">
-                    {comments?.title?.replace(/-/g, " ")}
+                  <h3 className="text-[0.625rem] text-[#6E7C87] uppercase">
+                    {comment.title?.replace(/-/g, " ")}
                   </h3>
                   <Badge className="text-[0.5rem] text-[#7E10E5] bg-[#7E10E51A]">
-                    {comments?.author}
+                    {comment.author}
                   </Badge>
                 </div>
                 <HiDotsHorizontal />
               </div>
               <p className="text-xs font-light text-[#162238]">
-                {/* {comments?.text} */}
-                {item}
+                {comment.comment?.join(" ")}
               </p>
               <div className="flex gap-[0.4375rem] justify-end">
                 <p className="font-light text-[0.625rem] text-[#6E7C87] tracking-tighter">
-                  {comments?.date}
+                  {comment.date}
                 </p>
                 <p className="font-light text-[0.625rem] text-[#6E7C87] tracking-tighter">
-                  {comments?.time}
+                  {comment.time}
                 </p>
               </div>
             </div>
@@ -179,4 +177,4 @@ const Comment = ({
   );
 };
 
-export default Comment;
+export default MultipleComment;

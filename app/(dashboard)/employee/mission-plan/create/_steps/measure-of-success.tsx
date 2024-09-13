@@ -53,6 +53,8 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     (state) => state.mission_plan
   );
 
+  // console.log(mission_plan_info)
+
   const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
   const [
@@ -95,14 +97,20 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan]);
   const handleFormSubmit = async () => {
-    try {
-      await createMeasureOfSuccess(formik.values);
-      // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=strategic-intent`);
-      if (!isError) {
-        onNextStep && onNextStep();
-        toast.success("Measure of Success Created Successfully");
-      }
-    } catch (error) {}
+    createMeasureOfSuccess(formik.values)
+    .unwrap()
+    .then(() => {
+      onNextStep && onNextStep();
+      toast.success("Measure of Success Created Successfully");
+    })
+    // try {
+    //   await createMeasureOfSuccess(formik.values);
+    //   // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=strategic-intent`);
+    //   if (!isError) {
+    //     onNextStep && onNextStep();
+    //     toast.success("Measure of Success Created Successfully");
+    //   }
+    // } catch (error) {}
   };
 
   // This sets the intial saved values
@@ -131,6 +139,10 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
   const formik = useFormik({
     initialValues: {
       mission_plan_id: mission_plan_info?.mission_plan?.id || "",
+      fiscal_year_id:
+        mission_plan_info?.mission_plan?.fiscal_year_id ||
+        mission_plan_info?.active_fy_info?.id ||
+        "",
       measures: initialValues || [
         {
           id: "",
@@ -149,13 +161,13 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
 
   const errorAllSuccess = formik.errors.measures as any;
 
-  useEffect(() => {
-    if (formik.errors.measures && typeof formik.errors.measures === "string") {
-      {
-        toast.error(formik.errors.measures);
-      }
-    }
-  }, [formik.errors]);
+  // useEffect(() => {
+  //   if (formik.errors.measures && typeof formik.errors.measures === "string") {
+  //     {
+  //       toast.error(formik.errors.measures);
+  //     }
+  //   }
+  // }, [formik.errors]);
 
   useEffect(() => {
     dispatch(
@@ -353,7 +365,7 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                           </div>
                         )
                       )}
-
+                   {formik.errors.measures && typeof formik.errors.measures === "string" && <span className="text-red-500 text-xs"> {formik?.errors?.measures} </span>}
                     <button
                       type="button"
                       onClick={() =>

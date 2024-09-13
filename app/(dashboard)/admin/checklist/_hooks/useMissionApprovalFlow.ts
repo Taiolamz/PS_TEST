@@ -58,15 +58,12 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     return data;
   };
 
-  // const handleFormatArray = (items: Select[]) => {
-  //   const array = items.map((item) => item.label);
-  //   return array;
-  // };
-
   const router = useRouter();
   const user = useAppSelector(selectUser);
 
   const { organization } = user;
+
+  // console.log(organization, "organization");
 
   const [createMissionFlow, { isLoading: isCreatingMissionFlow }] =
     useCreateMissionFlowMutation();
@@ -76,11 +73,12 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const gradeLevels = gradeLevelData ?? [];
 
   const handleSubmit = async () => {
+    // const newApprovals = [...formik.values.order_of_approvals];
+    // newApprovals.push({
+    //   // title: "Organization Head",
+    //   // approvals: [formik.values.head_of_organization],
+    // });
     const newApprovals = [...formik.values.order_of_approvals];
-    newApprovals.push({
-      title: "Organization Head",
-      approvals: [formik.values.head_of_organization],
-    });
 
     const payload = {
       // order_of_approvals: formik.values.order_of_approvals,
@@ -97,7 +95,7 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            // router.push(ADMIN.CHECKLIST);
+            router.push(ADMIN.CHECKLIST);
             // router.push(BranchRoute);
           }, 2000);
         });
@@ -107,56 +105,34 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
   const location = usePathname();
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
-
-  // console.log(gradeLevels, "grade levels");
-
-  // const handleFormatOrderOfApprovals = () => {
-  //   const order_of_approvals = (
-  //     (organization as any)?.approval_flows as any[]
-  //   )?.map((flow) => ({
-  //     title: flow.title,
-  //     approvals: flow.approvals,
-  //   }));
-  //   return order_of_approvals;
-  // };
-
-  // const
-
+  const approvalArray = (organization as any)?.approval_flows
+    ? (organization as any)?.approval_flows
+    : gradeLevels;
+  //     initialValues: {
+  //   order_of_approvals:
+  //     (organization as any)?.approval_flows?.map((chi: any) => ({
+  //       title: chi.title,
+  //       approvals: chi?.approvals || [],
+  //     })) || [],
+  //   head_of_organization: "",
+  // },
   const handleFormatGradeLevel = () => {
-    const newData = gradeLevels?.map((chi) => ({
-      title: chi?.name || "",
-      approvals: [],
+    const newData = approvalArray?.map((chi: any) => ({
+      title: chi?.name || chi?.title || "",
+      approvals: chi?.approvals || [],
     }));
     return newData;
   };
 
   const formik = useFormik<any>({
-    // initialValues: {
-    //   title: "",
-    //   head_of_organization: "",
-    //   // order_of_approvals: [],
-    //   order_of_approvals: handleFormatOrderOfApprovals(),
-    //   // order_of_approvals: [{ title: "", approvals: [] }],
-    // },
-
     initialValues: {
       order_of_approvals: handleFormatGradeLevel(),
-      head_of_organization: "",
+      // head_of_organization: "",
     },
     enableReinitialize: true,
-    // initialValues: {
-    //   order_of_approvals:
-    //     (organization as any)?.approval_flows?.map((chi: any) => ({
-    //       title: chi.title,
-    //       approvals: chi?.approvals || [],
-    //     })) || [],
-    //   head_of_organization: "",
-    // },
     // validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
-
-  // console.log(formik.values.order_of_approvals, "order of approvals");
 
   const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
     value: i.toString(),

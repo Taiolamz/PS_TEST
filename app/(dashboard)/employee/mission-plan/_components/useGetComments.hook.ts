@@ -41,7 +41,7 @@ const useGetComments = ({
         approvable?.comments?.length > 0
       );
     });
-    console.log({ approvable });
+    // console.log({ approvable });
 
     if (approvable) {
       const { approver, created_at, approvable_type, comments, status } =
