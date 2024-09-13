@@ -90,7 +90,7 @@ const SpecifiedTasksDropDown = ({
                   <h4>Specified Task {index + 1}</h4>
                   <div className="flex justify-between items-end gap-[20px]">
                     <div className="flex gap-[3.125rem] items-center">
-                      <div className="flex gap-[8px] items-center">
+                      {/* <div className="flex gap-[8px] items-center">
                         <CommentsIcon />
                         <p className="flex gap-1 items-center text-xs cursor-pointer">
                           <span
@@ -107,7 +107,7 @@ const SpecifiedTasksDropDown = ({
                             {item?.approval_comment_count}
                           </span>
                         </p>
-                      </div>
+                      </div> */}
                       <div className="flex gap-2.5 items-end">
                         {isEditable ? (
                           <>

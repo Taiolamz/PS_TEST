@@ -25,6 +25,7 @@ import BackIcon from "@/public/assets/icons/BackIcon";
 import { useSubmitPreviewedMissionPlanMutation } from "@/redux/services/mission-plan/missionPlanApi";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import SpecifiedTasksDropDown from "../../_components/specified-task-dropdown";
 
 interface Props {
   missionDetails: any;
@@ -155,16 +156,23 @@ const MissionDetailPreview = ({
             link={`${location}?ui=implied-task`}
             index="5"
           />
-          <MissionWrapper
+          {/* <MissionWrapper
             title="Implied Task"
             status={missionData?.specified_tasks?.[0]?.status}
-          >
-            <MissionItems
+          > */}
+          {/* <MissionItems
               impliedTask={missionData?.specified_tasks?.length > 0}
               specifiedTasksData={missionData?.specified_tasks}
-            />
-            {/* <MissionItems data={impliedTask} /> */}
-          </MissionWrapper>
+            /> */}
+
+          <SpecifiedTasksDropDown
+            data={missionData?.specified_tasks ?? []}
+            approvables={missionData?.specified_tasks?.approvables ?? []}
+            loading={false}
+            bg="bg-white"
+          />
+          {/* <MissionItems data={impliedTask} /> */}
+          {/* </MissionWrapper> */}
         </MissionPlanWrapper>
         <MissionPlanWrapper>
           <MissionHeader

@@ -100,8 +100,8 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
     handleGetMyMissionPlan();
   }, [FISCAL_YEAR_ID]);
 
-   // check -------------------
-   const { active_fy_info } = useAppSelector(
+  // check -------------------
+  const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
   useEffect(() => {
