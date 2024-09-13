@@ -144,7 +144,7 @@ const Departments = () => {
     () => departmentColumns,
     [isFetchingDepartments]
   );
->>>>>>> bf3d7875a640c4a5168f098455c8b5808e477c8b
+// >>>>>>> bf3d7875a640c4a5168f098455c8b5808e477c8b
 
   // const departmentsColumnData = useMemo(
   //   () => departmentColumns(isFetchingDepartments),
