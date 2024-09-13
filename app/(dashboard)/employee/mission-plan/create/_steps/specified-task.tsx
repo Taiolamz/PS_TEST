@@ -295,6 +295,10 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
           strategic_pillars: strategic_pillars,
         })
       ),
+      fiscal_year_id:
+        mission_plan_info?.mission_plan?.fiscal_year_id ||
+        mission_plan_info?.active_fy_info?.id ||
+        "",
     };
 
     // Count how many tasks have is_main_effort set to true or a truthy value
@@ -354,13 +358,13 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
     );
   }, [formik.values]);
 
-  useEffect(() => {
-    if (formik.errors.tasks && typeof formik.errors.tasks === "string") {
-      {
-        toast.error(formik.errors.tasks);
-      }
-    }
-  }, [formik.errors]);
+  // useEffect(() => {
+  //   if (formik.errors.tasks && typeof formik.errors.tasks === "string") {
+  //     {
+  //       toast.error(formik.errors.tasks);
+  //     }
+  //   }
+  // }, [formik.errors]);
 
   const {
     isOpen: openDeleteTaskModal,
@@ -646,6 +650,7 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
                           </div>
                         )
                       )}
+                       {formik.errors.tasks && typeof formik.errors.tasks === "string" && <span className="text-red-500 text-xs"> {formik.errors.tasks} </span>}
                     {line_manager?.id === null && (
                       <button
                         type="button"
