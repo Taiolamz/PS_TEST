@@ -131,7 +131,7 @@ const SignupPage = () => {
 
   return (
     <section className="w-4/6  flex flex-col items-start">
-      <div className="flex items-center mb-4 relative">
+      <div className="flex items-center mb-4 relative mx-auto w-[25rem]">
         {ui !== "organization-information" && (
           <button
             type="button"
@@ -143,11 +143,11 @@ const SignupPage = () => {
             <HiChevronDoubleLeft width={10} height={10} /> Back
           </button>
         )}
-        <h1 className=" text-2xl font-semibold  text-[#162238]">
+        <h1 className=" text-2xl font-semibold  text-[#162238] ">
           Register your account
         </h1>
       </div>
-      <div className="h-[calc(100vh_-_6rem)] w-full pb-10 scroll-hidden overflow-y-auto px-1 ">
+      <div className="h-[calc(100vh_-_6rem)] mx-auto w-[25rem] pb-10 scroll-hidden overflow-y-auto px-1 ">
         <form onSubmit={formik.handleSubmit}>
           {ui === "organization-information" && (
             <OrganizationInformation formik={formik} />
