@@ -6,12 +6,12 @@ export type MissionStatementType = {
 };
 
 export type MeasureOfSuccessType = {
-  id?: string | number;
-  measure?: string;
-  status?: string;
-  target?: string;
-  unit?: string;
-  weight?: string;
+  id: string;
+  measure: string;
+  status: string;
+  target: string;
+  unit: string;
+  weight: string;
 };
 
 export type BoundariesType = {
