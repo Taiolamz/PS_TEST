@@ -167,6 +167,9 @@ const TimelineAndReminder = () => {
               setSelected={(selected) =>
                 formik.setFieldValue("before_start_reminder", selected)
               }
+              touched={formik.touched.before_start_reminder}
+              error={formik.errors.before_start_reminder as string}
+              isRequired
             />
             <CustomSelect
               label="Mission Plan Setup Reminder"
@@ -180,6 +183,9 @@ const TimelineAndReminder = () => {
               setSelected={(selected) =>
                 formik.setFieldValue("setup_reminder", selected)
               }
+              touched={formik.touched.setup_reminder}
+              error={formik.errors.setup_reminder as string}
+              isRequired
             />
             <CustomSelect
               label="Mission Plan Approval Reminder"
@@ -193,6 +199,9 @@ const TimelineAndReminder = () => {
               setSelected={(selected) =>
                 formik.setFieldValue("approval_reminder", selected)
               }
+              touched={formik.touched.approval_reminder}
+              error={formik.errors.approval_reminder as string}
+              isRequired
             />
           </div>
         </div>
