@@ -7,6 +7,7 @@ type Props = {
   loading: boolean;
   setDrawerUserId: (e: string) => void;
   setOpenDrawer: (e: boolean) => void;
+  setComponentType: (e: string) => void;
 };
 
 const SingleStrategicIntent = ({
@@ -14,8 +15,8 @@ const SingleStrategicIntent = ({
   loading,
   setOpenDrawer,
   setDrawerUserId,
+  setComponentType,
 }: Props) => {
-
   return (
     <div className="flex flex-col gap-5 ">
       {loading && (
@@ -71,6 +72,7 @@ const SingleStrategicIntent = ({
                             className="text-[#9AA6AC] text-xs font-normal hover:underline"
                             onClick={() => {
                               setDrawerUserId(item?.id);
+                              setComponentType("strategic-intent");
                               setOpenDrawer(true);
                             }}
                           >

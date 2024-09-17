@@ -18,6 +18,7 @@ type Props = {
   isEditable?: boolean;
   bg?: string;
   setDrawerUserId: (e: string) => void;
+  setComponentType: (e: string) => void;
   setOpenDrawer: (e: boolean) => void;
 };
 
@@ -29,6 +30,7 @@ const SpecifiedTasksDropDown = ({
   bg,
   setDrawerUserId,
   setOpenDrawer,
+  setComponentType
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -266,6 +268,7 @@ const SpecifiedTasksDropDown = ({
                                                   setDrawerUserId(
                                                     impliedTask?.id
                                                   );
+                                                  setComponentType("implied-task")
                                                   setOpenDrawer(true);
                                                 }}
                                               >

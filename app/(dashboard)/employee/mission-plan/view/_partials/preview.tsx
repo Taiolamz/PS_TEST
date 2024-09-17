@@ -15,8 +15,8 @@ import routesPath from "@/utils/routes";
 import MissionItemsLineManager from "@/components/fragment/mission-items-line-manager";
 import SpecifiedTasksDropDown from "../../_components/specified-task-dropdown";
 import { usePathname } from "next/navigation";
-import DrawerComment from "../_side-modal/drawer-comment";
 import SingleStrategicIntent from "../../_components/single-strategic-intent";
+import MissionPlanDrawerComment from "../_side-modal/mission-plan-drawer-comment";
 
 const { EMPLOYEE } = routesPath;
 
@@ -29,6 +29,7 @@ const Preview = ({ data, type }: PreviewProps) => {
   const location = usePathname();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [drawerUserId, setDrawerUserId] = useState<string>("");
+  const [componentType, setComponentType] = useState<string>("");
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] text-sm bg-transparent border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -67,6 +68,7 @@ const Preview = ({ data, type }: PreviewProps) => {
                           className="text-[#9AA6AC] text-xs font-normal hover:underline"
                           onClick={() => {
                             setDrawerUserId(item?.id);
+                            setComponentType("success-measure");
                             setOpenDrawer(true);
                           }}
                         >
@@ -253,6 +255,7 @@ const Preview = ({ data, type }: PreviewProps) => {
                               className="text-[#9AA6AC] text-xs font-normal hover:underline"
                               onClick={() => {
                                 setDrawerUserId(mission_statement?.id);
+                                setComponentType("mission-statement");
                                 setOpenDrawer(true);
                               }}
                             >
@@ -285,6 +288,7 @@ const Preview = ({ data, type }: PreviewProps) => {
           loading={false}
           setOpenDrawer={setOpenDrawer}
           setDrawerUserId={setDrawerUserId}
+          setComponentType={setComponentType}
         />
       )}
       {specified_tasks.length !== 0 && (
@@ -302,7 +306,7 @@ const Preview = ({ data, type }: PreviewProps) => {
               bg="bg-white"
               setOpenDrawer={setOpenDrawer}
               setDrawerUserId={setDrawerUserId}
-              
+              setComponentType={setComponentType}
             />
           )}
         </>
@@ -311,30 +315,66 @@ const Preview = ({ data, type }: PreviewProps) => {
       {boundaries?.length !== 0 && (
         <MissionWrapper
           title="Freedom"
-          status={type !== "lineManagerPreview" ? boundaries[0]?.status : ""}
+          childWidth="w-[100%]"
+          // status={type !== "lineManagerPreview" ? boundaries[0]?.status : ""}
         >
-          <div className="flex flex-col gap-[1rem]">
-            <MissionSingleItem data={FreedomData} />
-            <div>
-              {boundaries[0]?.constraints !== null && (
-                <>
-                  <div className="text-[var(--primary-color)] font-[500] leading-relaxed pb-[11px]">
-                    <h4>Constraints</h4>
+          <div className="flex w-full justify-between">
+            <div className="flex flex-col gap-[1rem]">
+              <MissionSingleItem data={FreedomData} />
+              <div>
+                {boundaries[0]?.constraints !== null && (
+                  <div>
+                    <div className="text-[var(--primary-color)] font-[500] leading-relaxed pb-[11px]">
+                      <h4>Constraints</h4>
+                    </div>
+                    <MissionSingleItem data={ConstraintsData} />
                   </div>
-                  <MissionSingleItem data={ConstraintsData} />
-                </>
-              )}
+                )}
+              </div>
             </div>
+            {type !== "lineManagerPreview" && (
+              <div className="flex gap-2.5 ml-[40px] items-center justify-end">
+                {boundaries[0]?.status !== "" &&
+                  boundaries[0]?.status !== undefined && (
+                    <div className="flex items-center gap-[20px]">
+                      {boundaries[0]?.status === "rejected" &&
+                        boundaries[0]?.approval_comment_count &&
+                        boundaries[0]?.status !== undefined && (
+                          <div className="text-xs cursor-pointer ">
+                            <p className="flex gap-2 items-center">
+                              <span
+                                className="text-[#9AA6AC] text-xs font-normal hover:underline"
+                                onClick={() => {
+                                  setDrawerUserId(boundaries[0]?.id);
+                                  setComponentType("boundary");
+                                  setOpenDrawer(true);
+                                }}
+                              >
+                                View Comments
+                              </span>
+                              <span className="bg-[#D6130F1A]  text-[#D6130F] p-[3px] px-[6px] rounded-full text-xs">
+                                {boundaries[0]?.approval_comment_count}
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      <EditableLabel status={boundaries[0]?.status} />
+                    </div>
+                  )}
+              </div>
+            )}
           </div>
         </MissionWrapper>
       )}
-      <DrawerComment
+      <MissionPlanDrawerComment
         show={openDrawer}
         handleClose={() => {
           setDrawerUserId("");
+          setComponentType("");
           setOpenDrawer(false);
         }}
         userId={drawerUserId}
+        component_type={componentType}
       />
     </div>
   );
