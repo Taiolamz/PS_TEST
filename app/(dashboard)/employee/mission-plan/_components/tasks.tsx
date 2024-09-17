@@ -107,7 +107,7 @@ const Tasks = ({
   }, [commentItem]);
 
   // console.log("isSuccess", isSuccess);
-  
+
   return (
     <div className="flex flex-col gap-10">
       {loading && (
@@ -196,7 +196,9 @@ const Tasks = ({
                       <div className="flex items-center gap-2">
                         <p>Specified Task Weight</p>
                         <p className="text-base fot-bold text-[#015858]">
-                          {item.weight ? item?.weight + "%" : "N/A"}
+                          {item.weight
+                            ? `${Math.round(parseInt(item?.weight))}%`
+                            : "N/A"}
                         </p>
                       </div>
                     </div>
@@ -286,7 +288,7 @@ const Tasks = ({
                                 </p>
                                 <p className="text-xl text-[#015858] font-medium">
                                   {impliedTask?.weight
-                                    ? impliedTask?.weight
+                                    ? `${impliedTask?.weight}%`
                                     : "N/A"}
                                 </p>
                               </div>
@@ -365,7 +367,7 @@ const Tasks = ({
                                       size="sm"
                                       onClick={() => {
                                         // setShowTextArea(false);
-                                        toggleComment("")
+                                        toggleComment("");
                                         setSelectedID(
                                           impliedTask?.id as string
                                         );
@@ -472,9 +474,7 @@ const Tasks = ({
               showTextArea={openCommentId === item.id}
               setShowTextArea={() => toggleComment(item.id)}
               comments={allComments.filter((comment) =>
-                item?.implied_tasks.some(
-                  (task) => task.id === comment.id
-                )
+                item?.implied_tasks.some((task) => task.id === comment.id)
               )}
               setComments={setAllComments}
               formik={FormikApprovalForm}

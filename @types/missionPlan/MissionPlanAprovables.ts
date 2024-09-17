@@ -31,7 +31,7 @@ export type SpecifiedTasksType = {
   is_main_effort?: number;
   implied_tasks: ImpliedTaskType[];
   status?: string;
-  weight?: number;
+  weight?: string;
   approval_comment_count?: number;
 };
 
@@ -39,11 +39,13 @@ export type ImpliedTaskType = {
   id: string;
   task: string;
   expected_outcome: string;
-  weight: string;
+  weight: number;
   percentage: string;
   resources: ResourcesType[];
   start_date: string;
   end_date: string;
+  approval_comment_count?: string;
+  status?: string;
 };
 
 export type StrategicIntentType = {
@@ -52,6 +54,7 @@ export type StrategicIntentType = {
   intent: string;
   status?: string;
   approvables?: any;
+  approval_comment_count?: string;
 };
 
 type StrategicPillarsType = {
