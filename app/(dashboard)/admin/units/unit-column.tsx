@@ -120,7 +120,8 @@ export const useUnitColumnData = (loading?: boolean) => {
       accessorKey: processInputAsArray(user?.organization?.hierarchy)?.includes(
         "department"
       )
-        ? "deparment" : " ",
+        ? "deparment"
+        : " ",
       header: () => {
         if (
           !processInputAsArray(user?.organization?.hierarchy)?.includes(
