@@ -144,7 +144,6 @@ export const missionPlanApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["MissionPlan"],
     }),
     submitPreviewedMissionPlan: builder.mutation({
       query: (payload) => ({
