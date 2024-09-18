@@ -18,7 +18,7 @@ import {
 } from "@/redux/services/mission-plan/impliedTaskApi";
 import { toast } from "sonner";
 // import routesPath from "@/utils/routes";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import {
   useDeleteSpecifiedTaskMutation,
@@ -34,6 +34,7 @@ import DeleteImpliedTaskModal from "./delete-implied-task";
 import TransferSpecifiedTask from "./transfer-specified-task";
 import ImpliedTaskNotify from "./implied-task-notify";
 import TransferImpliedTaskOrWeight from "./transfer-implied-task";
+import routesPath from "@/utils/routes";
 
 interface SubItem {
   task: string;
@@ -208,17 +209,17 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     mission_plan?.data?.mission_plan?.specified_tasks ?? [];
   const missionPlanID = mission_plan?.data?.mission_plan?.id;
 
-  const [isWeightValid, setIsWeightValid] = useState(true);
-  const [taskName, setTaskName] = useState("");
+  // const [isWeightValid, setIsWeightValid] = useState(true);
+  // const [taskName, setTaskName] = useState("");
 
   const handleSubmit = async () => {
     // console.log({ ...formik.values }, "initial values");
-    if (!isWeightValid) {
-      toast.error(
-        `Implied Task Weight must sum up to the specified task weight for (${taskName}) `
-      );
-      return;
-    }
+    // if (!isWeightValid) {
+    //   toast.error(
+    //     `Implied Task Weight must sum up to 100% of the specified task weight for (${taskName}) `
+    //   );
+    //   return;
+    // }
     const obj = {
       mission_plan_id: formik?.values?.mission_plan_id,
       tasks: formik?.values?.tasks.flatMap((task) => {
@@ -308,9 +309,9 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
   const initialValues = {
     mission_plan_id: missionPlanID,
     fiscal_year_id:
-        mission_plan_info?.mission_plan?.fiscal_year_id ||
-        mission_plan_info?.active_fy_info?.id ||
-        "",
+      mission_plan_info?.mission_plan?.fiscal_year_id ||
+      mission_plan_info?.active_fy_info?.id ||
+      "",
     tasks: handleFormatImpliedTask(),
 
     // tasks:
@@ -382,11 +383,11 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     close: closeTransferImpliedTask,
   } = useDisclosure();
 
-  const handleNotifyModal = () => {
-    if (weightNotify) {
-      setWeightNotify(false);
-    }
-  };
+  // const handleNotifyModal = () => {
+  //   if (weightNotify) {
+  //     setWeightNotify(false);
+  //   }
+  // };
   const handleDeleteDialog = () => {
     onOpenDeleteModal();
     if (openDeleteModal) {
@@ -433,26 +434,37 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     formik.setFieldValue(`tasks.${index}.implied_tasks`, updatedimplied_tasks);
   };
 
-  const handleDeleteSpecifiedTask = async (taskIndex?: number, id?: string) => {
-    if (!id) {
-      const updatedTasks = formik.values.tasks.filter(
-        (_, tIndex) => tIndex !== taskIndex
-      );
-      formik.setFieldValue("tasks", updatedTasks);
-      handleDeleteDialog();
-    } else {
-      await deleteSpecifiedTask(id)
-        .unwrap()
-        .then(() => {
-          toast.success(`Specified Task Deleted Successfully`);
-          new Promise(() => {
-            setTimeout(() => {
-              handleDeleteDialog();
-              toast.dismiss();
-            }, 1000);
-          });
-        });
-    }
+  const { EMPLOYEE } = routesPath;
+
+  // const handleDeleteSpecifiedTask = async (taskIndex?: number, id?: string) => {
+  //   if (!id) {
+  //     const updatedTasks = formik.values.tasks.filter(
+  //       (_, tIndex) => tIndex !== taskIndex
+  //     );
+  //     formik.setFieldValue("tasks", updatedTasks);
+  //     handleDeleteDialog();
+  //   } else {
+  //     await deleteSpecifiedTask(id)
+  //       .unwrap()
+  //       .then(() => {
+  //         toast.success(`Specified Task Deleted Successfully`);
+  //         new Promise(() => {
+  //           setTimeout(() => {
+  //             handleDeleteDialog();
+  //             router.push(
+  //               `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task&reassign-specified-task-id=${id}`
+  //             );
+  //             toast.dismiss();
+  //           }, 1000);
+  //         });
+  //       });
+  //   }
+  // };
+
+  const handleDeleteSpecifiedTask = (id?: string, data?: any) => {
+    router.push(
+      `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task&reassign-specified-task-id=${id}&view=delete&specified-task=${data?.task}`
+    );
   };
 
   // const handleDeleteImpliedTask = (
@@ -509,36 +521,45 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     }
   };
 
+  const [weightSumErrors, setWeightSumErrors] = useState<{
+    [key: number]: string;
+  }>({});
+  const isWeightSumValid = Object.values(weightSumErrors).some(
+    (error) => error
+  );
+
   const handleWeightChange = (
     e: ChangeEvent<HTMLInputElement>,
     index: number,
     subIndex: number
   ) => {
     const { value } = e.target;
-    const newWeight = value === "" ? "" : Number(value);
+    let newWeight = value === "" ? "" : Number(value);
+
+    if ((newWeight as number) > 100) {
+      newWeight = 100;
+    }
 
     formik.setFieldValue(e.target.name, newWeight);
 
-    // const taskWeight = Number(formik.values.tasks[index].weight) || 0;
-    // const taskName = formik.values.tasks[index].task;
-    // const totalWeight = formik.values.tasks[index].implied_tasks.reduce(
-    //   (sum: number, item: any, i: number) =>
-    //     i === subIndex
-    //       ? sum + (newWeight || 0)
-    //       : sum + (Number(item.weight) || 0),
-    //   0
-    // );
+    // const specifiedWeight = formik.values.tasks[index].weight;
+    const totalWeight = formik.values.tasks[index].implied_tasks.reduce(
+      (sum: any, item: any, i: number) =>
+        i === subIndex ? sum + newWeight : sum + (Number(item.weight) || 0),
+      0
+    );
 
-    // if (totalWeight > taskWeight) {
-    //   formik.setFieldValue(
-    //     e.target.name,
-    //     formik.values.tasks[index].implied_tasks[subIndex].weight
-    //   );
-    //   toast.error("The total weight exceeds the task weight.");
-    // }
+    let errorMessage = "";
+    if (totalWeight > 100) {
+      errorMessage = `The total weight cannot exceed 100%`;
+    } else if (totalWeight < 100 && totalWeight !== 0) {
+      errorMessage = `The total weight must sum up to 100%`;
+    }
 
-    // setIsWeightValid(totalWeight === taskWeight);
-    // setTaskName(taskName);
+    setWeightSumErrors((prevErrors) => ({
+      ...prevErrors,
+      [index]: errorMessage,
+    }));
   };
 
   const handlePercentChange = (
@@ -599,6 +620,21 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     }
   };
 
+  const searchParams = useSearchParams();
+  const view = searchParams.get("view");
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (view) {
+      setModalOpen(true);
+    }
+  }, [view]);
+
+  const handleNotifyModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       {isLoadingMissionPlan || isFetchingMissionPlan ? (
@@ -638,6 +674,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                                     ...task,
                                   });
                                   onOpenDeleteModal();
+                                  // onOpenTransferModal();
                                 }}
                               >
                                 Remove Specified task
@@ -728,11 +765,19 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                                                   isRequired
                                                   max={100}
                                                 />
-                                                <ErrorMessage
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.weight`}
-                                                  className="text-red-500 text-xs mt-1 absolute"
-                                                  component={"div"}
-                                                />
+                                                <div>
+                                                  {!weightSumErrors[index] ? (
+                                                    <ErrorMessage
+                                                      name={`tasks.${index}.implied_tasks.${subIndex}.weight`}
+                                                      className="text-red-500 text-xs mt-1 absolute"
+                                                      component={"div"}
+                                                    />
+                                                  ) : (
+                                                    <p className="text-red-500 text-xs mt-1 absolute">
+                                                      {weightSumErrors[index]}
+                                                    </p>
+                                                  )}
+                                                </div>
                                               </div>
                                               {/* <div className="relative">
                                                 <Input
@@ -1066,13 +1111,19 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                 <Button
                   type="submit"
                   disabled={
-                    isCreatingImpliedTask || !formik.isValid || !formik.dirty
+                    isCreatingImpliedTask ||
+                    !formik.isValid ||
+                    !formik.dirty ||
+                    isWeightSumValid
                   }
                   loading={isCreatingImpliedTask}
                   loadingText="Save & Continue"
                   className={cn(
                     "w-full",
-                    !formik.isValid || !formik.dirty || isCreatingImpliedTask
+                    !formik.isValid ||
+                      !formik.dirty ||
+                      isCreatingImpliedTask ||
+                      isWeightSumValid
                       ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
                       : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
                   )}
@@ -1102,11 +1153,14 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
           data={childData}
           isLoading={isDeletingSpecifiedTask}
           onDelete={() =>
-            handleDeleteSpecifiedTask(
-              childData.taskIndex,
-              childData?.specified_task_id
-            )
+            handleDeleteSpecifiedTask(childData?.specified_task_id, childData)
           }
+          // onDelete={() =>
+          //   handleDeleteSpecifiedTask(
+          //     childData.taskIndex,
+          //     childData?.specified_task_id
+          //   )
+          // }
         />
       </DashboardModal>
 
@@ -1156,11 +1210,13 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
       {/* notify task modal */}
       <DashboardModal
         className={"w-[500px] max-w-full"}
-        open={weightNotify}
-        // open={openNotifyModal ? false : true}
+        open={isModalOpen}
         onOpenChange={handleNotifyModal}
       >
-        <ImpliedTaskNotify onProceed={handleNotifyModal} />
+        <ImpliedTaskNotify
+          onProceed={handleNotifyModal}
+          taskTitle="Implied tasks"
+        />
       </DashboardModal>
 
       {/* transfer implied modal */}

@@ -24,6 +24,7 @@ import {
 import EndFYModal from "../_modal/end-fy-modal";
 import FYExtendModal from "../_modal/fy-extend-modal";
 import { useGetAllMissionPlanFlowQuery } from "@/redux/services/mission-plan/missionPlanApprovalFlow";
+import { CAN_CREATE_FINANCIAL_YEAR } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
 
@@ -35,7 +36,7 @@ const FiscalYearInfo = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
-  const { organization }: any = useAppSelector((state) => state.auth.user);
+  const { role: user_role, organization }: any = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (organization?.staff_levels) {
@@ -89,6 +90,10 @@ const FiscalYearInfo = () => {
   const id = searchParams.get("id");
   const router = useRouter();
 
+  const HAS_NO_PERMISSION = () => {
+    return !CAN_CREATE_FINANCIAL_YEAR?.includes(user_role)
+  }
+
   const handleNavigate = (slug: string) => {
     router.push(`${ADMIN.FINANCIAL_YEAR_UPDATE}?ui=${slug}`);
   };
@@ -130,20 +135,21 @@ const FiscalYearInfo = () => {
   //Modal for Success End Financial Year
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+
   return (
     <div className="space-y-5 mb-6 px-5 mt-1 text-[var(--text-color3)]">
       {/* Financial Year */}
       <div className="flex gap-[10px] justify-end ">
         <Button
           className={cn(btn, "disabled:opacity-30")}
-          disabled={active_fy_info?.status !== "active"}
+          disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
           onClick={() => setExtendSubmission(true)}
         >
           Extend Financial Year
         </Button>
         <Button
           className={cn(btn, "disabled:opacity-30")}
-          disabled={active_fy_info?.status !== "active"}
+          disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
           onClick={() => {
             setEndFinancialYear(true);
           }}
@@ -210,7 +216,7 @@ const FiscalYearInfo = () => {
               <button
                 disabled={
                   active_fy_info?.status !== "active" ||
-                  !isBeforeFiscalYearStart
+                  !isBeforeFiscalYearStart || HAS_NO_PERMISSION()
                 }
                 className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize ml-6 place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
                 onClick={() => handleNavigate("financial-year")}
@@ -244,7 +250,7 @@ const FiscalYearInfo = () => {
             </p>
           </div>
           <button
-            disabled={active_fy_info?.status !== "active"}
+            disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
             className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
             onClick={() => handleNavigate("mission-vision")}
           >
@@ -275,7 +281,7 @@ const FiscalYearInfo = () => {
             onClick={() => handleNavigate("strategic-pillar")}
             disabled={
               active_fy_info?.status !== "active" ||
-              !isBeforeFiscalYearStart
+              !isBeforeFiscalYearStart || HAS_NO_PERMISSION()
             }
           >
             Edit
@@ -395,7 +401,7 @@ const FiscalYearInfo = () => {
           // disabled={active_fy_info?.status !== "active"}
           disabled={
             active_fy_info?.status !== "active" ||
-            !isBeforeFiscalYearStart
+            !isBeforeFiscalYearStart || HAS_NO_PERMISSION()
           }
           className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
           onClick={() => handleNavigate("timeline-reminder")}
@@ -433,7 +439,7 @@ const FiscalYearInfo = () => {
           )}
         </div>
         <button
-          disabled={active_fy_info?.status !== "active"}
+          disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
           className="border-[1.5px] rounded-[5px] text-[var(--primary-color)] bg-white border-[var(--primary-color)] capitalize place-content-center text-sm font-medium px-4 py-2 hover:bg-[var(--primary-accent-color)] select-none disabled:opacity-30"
           onClick={() => handleNavigate("approval-flow")}
         >

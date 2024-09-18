@@ -225,9 +225,9 @@ export const timelineReminderSchema = (endDate?: any, startDate?: any) => {
       .string()
       .required("approval start period is required"),
     approval_end_date: yup.string().required("approval end period is required"),
-    setup_reminder: yup.string(),
-    approval_reminder: yup.string(),
-    before_start_reminder: yup.string(),
+    setup_reminder: yup.string().required("mission plan setup reminder is required"),
+    approval_reminder: yup.string().required("FY approval reminder is required"),
+    before_start_reminder: yup.string().required("FY start reminder is required"),
   });
 };
 

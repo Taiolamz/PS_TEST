@@ -75,7 +75,7 @@ const MyMissionPlan = () => {
           </div>
         </EmptyState>
       ) : (
-        <Preview data={my_mission_plan?.data?.mission_plan} />
+        <Preview data={my_mission_plan?.data?.mission_plan} handleGetMyMissionPlan={handleGetMyMissionPlan}/>
       )}
     </div>
   );

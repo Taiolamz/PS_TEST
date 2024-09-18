@@ -308,6 +308,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     //             },
     //           ],
     //         },
+    
     //       ],
   };
 
@@ -477,26 +478,26 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
     formik.setFieldValue(e.target.name, newWeight);
 
-    // const taskWeight = Number(formik.values.tasks[index].weight) || 0;
-    // const taskName = formik.values.tasks[index].task;
-    // const totalWeight = formik.values.tasks[index].implied_tasks.reduce(
-    //   (sum: number, item: any, i: number) =>
-    //     i === subIndex
-    //       ? sum + (newWeight || 0)
-    //       : sum + (Number(item.weight) || 0),
-    //   0
-    // );
+    const taskWeight = Number(formik.values.tasks[index].weight) || 0;
+    const taskName = formik.values.tasks[index].task;
+    const totalWeight = formik.values.tasks[index].implied_tasks.reduce(
+      (sum: any, item: any, i: any) =>
+        i === subIndex
+          ? sum + (newWeight || 0)
+          : sum + (Number(item.weight) || 0),
+      0
+    );
 
-    // if (totalWeight > taskWeight) {
-    //   formik.setFieldValue(
-    //     e.target.name,
-    //     formik.values.tasks[index].implied_tasks[subIndex].weight
-    //   );
-    //   toast.error("The total weight exceeds the task weight.");
-    // }
+    if (totalWeight !== taskWeight) {
+      formik.setFieldValue(
+        e.target.name,
+        formik.values.tasks[index].implied_tasks[subIndex].weight
+      );
+      toast.error("The total weight exceeds the task weight.");
+    }
 
-    // setIsWeightValid(totalWeight === taskWeight);
-    // setTaskName(taskName);
+    setIsWeightValid(totalWeight === 100);
+    setTaskName(taskName);
   };
 
   const handlePercentChange = (

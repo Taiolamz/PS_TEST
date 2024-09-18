@@ -8,6 +8,7 @@ export const impliedTaskApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      // invalidatesTags: ["MissionPlan"],
     }),
     deleteImpliedTask: builder.mutation({
       query: (id) => ({
@@ -22,7 +23,7 @@ export const impliedTaskApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["MissionPlan"],
+      // invalidatesTags: ["MissionPlan"],
     }),
   }),
 });

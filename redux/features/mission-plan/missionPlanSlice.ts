@@ -19,12 +19,6 @@ const initialState: Dictionary = {
         {
           pillar: "",
         },
-        {
-          pillar: "",
-        },
-        {
-          pillar: "",
-        },
       ],
     },
     timeline_reminder: {

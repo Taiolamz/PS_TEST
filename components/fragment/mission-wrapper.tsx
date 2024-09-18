@@ -6,16 +6,25 @@ interface missionProp {
   status?: string;
   comment?: string;
   children: any;
+  childWidth?: string;
 }
 
-const MissionWrapper = ({ title, status, comment, children }: missionProp) => {
+const MissionWrapper = ({
+  title,
+  status,
+  comment,
+  children,
+  childWidth,
+}: missionProp) => {
   return (
     <div className="border rounded-[5px] p-[22px] w-full text-sm  bg-white">
       <div className=" text-[var(--primary-color)] text-sm font-[500]">
         <h4>{title}</h4>
       </div>
       <div className="w-full grid pt-[1rem] grid-flow-col grid-cols-1 items-center">
-        <div className="w-[80%]">{children}</div>
+        <div className={`${childWidth !== undefined ? childWidth : "w-[80%]"}`}>
+          {children}
+        </div>
         <div className="capitalize grid-cols-2">
           {status !== "" && status !== undefined && (
             <div className="flex  flex-col items-end gap-[10px]">

@@ -16,7 +16,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { specifiedTaskSchema } from "@/utils/schema/mission-plan";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Dictionary } from "@/@types/dictionary";
@@ -39,6 +39,8 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import DashboardModal from "@/app/(dashboard)/admin/mission-plan/template/_components/checklist-dashboard-modal";
 import DeleteSpecifiedTaskModal from "../_component/delete-specified-task-modal";
 import useDisclosure from "@/utils/hooks/useDisclosure";
+import ImpliedTaskNotify from "./implied-task-notify";
+import { useReAssignImpliedTaskMutation } from "@/redux/services/mission-plan/impliedTaskApi";
 
 const { EMPLOYEE } = routesPath;
 
@@ -177,6 +179,9 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
 
   const [createSpecifiedTask, { isLoading }] = useCreateSpecifiedTaskMutation();
 
+  const [reAssignImpliedTask, { isLoading: isReassigning }] =
+    useReAssignImpliedTaskMutation();
+
   const endDate = new Date(active_fy_info?.end_date);
   const startDate = new Date(active_fy_info?.start_date);
 
@@ -213,10 +218,73 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
   );
 
   // This sets the intial saved values
+  // useEffect(() => {
+  //   if (mission_plan_info?.mission_plan?.specified_tasks?.length > 0) {
+  //     const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
+  //       (task: any) => ({
+  //         id: task.id || uuidv4(),
+  //         task: task.task,
+  //         implied_task_id: task?.line_manager_implied_task?.id,
+  //         weight: Number(task.weight),
+  //         strategic_pillars: mappedStrategicPillars
+  //           .filter((itemA: { id: any }) =>
+  //             task.strategic_pillars.some(
+  //               (itemB: { id: any }) => itemB.id === itemA.id
+  //             )
+  //           )
+  //           .map((item: { id: any }) => item.id),
+  //         success_measures: mappedSuccessMeasures
+  //           ?.filter((itemA: { id: any }) =>
+  //             task.success_measures.some(
+  //               (itemB: { id: any }) => itemB.id === itemA.id
+  //             )
+  //           )
+  //           .map((item: { id: any }) => item.id),
+  //         start_date: task.start_date,
+  //         end_date: task.end_date,
+  //         is_main_effort: task.is_main_effort ? true : false,
+  //       })
+  //     );
+
+  //     setInitialValues(tasks);
+  //   } else {
+  //     const tasks = mySpecifiedTasks?.data?.map((task: any, idx: any) => ({
+  //       id: uuidRef.current,
+  //       task: task?.task,
+  //       implied_task_id: task?.id,
+  //       start_date: task?.start_date,
+  //       end_date: task?.end_date,
+  //     }));
+
+  //     setInitialValues(tasks);
+  //   }
+  // }, [
+  //   mappedStrategicPillars,
+  //   mappedSuccessMeasures,
+  //   mission_plan_info,
+  //   mySpecifiedTasks,
+  // ]);
+
+  const searchParams = useSearchParams();
+  const oldSpecifiedID = searchParams.get("reassign-specified-task-id");
+  const deleteView = searchParams.get("view");
+  const specifiedTaskName = searchParams.get("specified-task");
+
+
+
+  const shouldDeleteSpecifiedTask = deleteView && oldSpecifiedID ? true : false;
+  const shouldReassignSpecifiedTask = oldSpecifiedID && !deleteView;
+
+
+  const { old_specified_task_id, new_specified_task_id } = useAppSelector(
+    (state) => state.specified_task_reassignment
+  );
+
   useEffect(() => {
     if (mission_plan_info?.mission_plan?.specified_tasks?.length > 0) {
-      const tasks = mission_plan_info?.mission_plan?.specified_tasks.map(
-        (task: any) => ({
+      const tasks = mission_plan_info?.mission_plan?.specified_tasks
+        .filter((task: any) => !oldSpecifiedID || task.id !== oldSpecifiedID)
+        .map((task: any) => ({
           id: task.id || uuidv4(),
           task: task.task,
           implied_task_id: task?.line_manager_implied_task?.id,
@@ -238,18 +306,19 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
           start_date: task.start_date,
           end_date: task.end_date,
           is_main_effort: task.is_main_effort ? true : false,
-        })
-      );
+        }));
 
       setInitialValues(tasks);
     } else {
-      const tasks = mySpecifiedTasks?.data?.map((task: any, idx: any) => ({
-        id: uuidRef.current,
-        task: task?.task,
-        implied_task_id: task?.id,
-        start_date: task?.start_date,
-        end_date: task?.end_date,
-      }));
+      const tasks = mySpecifiedTasks?.data
+        ?.filter((task: any) => !oldSpecifiedID || task?.id !== oldSpecifiedID)
+        .map((task: any, idx: any) => ({
+          id: uuidRef.current,
+          task: task?.task,
+          implied_task_id: task?.id,
+          start_date: task?.start_date,
+          end_date: task?.end_date,
+        }));
 
       setInitialValues(tasks);
     }
@@ -259,6 +328,7 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
     mission_plan_info,
     mySpecifiedTasks,
   ]);
+
   // This prevents an infinite loop by memoizing the values
   const initialVals = useMemo(() => {
     if (initialValues?.length > 0) {
@@ -285,40 +355,69 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
   }, [initialValues]);
 
   const handleFormSubmit = async (values: Data) => {
-    const updatedData = {
-      ...values,
-      tasks: values.tasks.map(
-        ({ id, success_measures, strategic_pillars, ...rest }) => ({
-          ...rest,
-          id: id.includes("-") ? "" : id,
-          success_measures: success_measures,
-          strategic_pillars: strategic_pillars,
-        })
-      ),
-      fiscal_year_id:
-        mission_plan_info?.mission_plan?.fiscal_year_id ||
-        mission_plan_info?.active_fy_info?.id ||
-        "",
-    };
-
-    // Count how many tasks have is_main_effort set to true or a truthy value
-    const mainEffortCount = updatedData.tasks.filter(
-      (task: any) => !!task.is_main_effort
-    ).length;
-
-    try {
-      if (mainEffortCount > 1) {
-        toast.error("You can set only one item as main effort.");
-      } else {
-        createSpecifiedTask(updatedData)
-          .unwrap()
-          .then(() => {
-            toast.success("Specified Task Addedd Successfully");
-            onNextStep && onNextStep();
-            // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task`);
+    if (shouldReassignSpecifiedTask) {
+      const obj = {
+        from_specified_task_id: old_specified_task_id || oldSpecifiedID,
+        to_specified_task_id: new_specified_task_id,
+      };
+      await reAssignImpliedTask(obj).unwrap();
+      toast.success("Implied Task Reassigned Successfully");
+      setTimeout(() => {
+        router.push(
+          `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task&view=reassign-implied-task`
+        );
+        toast.dismiss();
+      }, 1000);
+    } else if (shouldDeleteSpecifiedTask) {
+      await deleteSpecifiedTask(oldSpecifiedID)
+        .unwrap()
+        .then(() => {
+          toast.success(`Specified Task Deleted Successfully`);
+          new Promise(() => {
+            setTimeout(() => {
+              router.push(
+                `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task&view=reassign-implied-task`
+              );
+              toast.dismiss();
+            }, 1000);
           });
-      }
-    } catch (error) {}
+        });
+    } else {
+      const updatedData = {
+        ...values,
+        tasks: values.tasks.map(
+          ({ id, success_measures, strategic_pillars, ...rest }) => ({
+            ...rest,
+            id: id.includes("-") ? "" : id,
+            success_measures: success_measures,
+            strategic_pillars: strategic_pillars,
+          })
+        ),
+        fiscal_year_id:
+          mission_plan_info?.mission_plan?.fiscal_year_id ||
+          mission_plan_info?.active_fy_info?.id ||
+          "",
+      };
+
+      // Count how many tasks have is_main_effort set to true or a truthy value
+      const mainEffortCount = updatedData.tasks.filter(
+        (task: any) => !!task.is_main_effort
+      ).length;
+
+      try {
+        if (mainEffortCount > 1) {
+          toast.error("You can set only one item as main effort.");
+        } else {
+          createSpecifiedTask(updatedData)
+            .unwrap()
+            .then(() => {
+              toast.success("Specified Task Addedd Successfully");
+              onNextStep && onNextStep();
+              // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task`);
+            });
+        }
+      } catch (error) {}
+    }
   };
 
   const formik = useFormik<any>({
@@ -390,6 +489,18 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
     closeDeleteTaskModal();
   };
 
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (oldSpecifiedID) {
+      setModalOpen(true);
+    }
+  }, [oldSpecifiedID]);
+
+  const handleNotifyModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div>
       <DashboardModal
@@ -414,6 +525,12 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
               <BsFillInfoCircleFill color="#84919A" />
             </span>
           </div>
+          {shouldDeleteSpecifiedTask ? (
+            <p className="text-red-500 text-sm font-medium mt-1">
+              Reassign your weight to Delete ({specifiedTaskName}) Specified
+              Task
+            </p>
+          ) : null}
           <form onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
               <FieldArray name="tasks">
@@ -427,7 +544,7 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
                         ) => (
                           <div
                             key={task.id}
-                            className="grid gap-y-3 items-center space-x-2 relative mt-5"
+                            className="grid gap-y-3 items-center space-x-2 relative mt-5 "
                           >
                             <h2 className="text-grayText font-semibold text-sm">
                               Task {index + 1}
@@ -650,7 +767,13 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
                           </div>
                         )
                       )}
-                       {formik.errors.tasks && typeof formik.errors.tasks === "string" && <span className="text-red-500 text-xs"> {formik.errors.tasks} </span>}
+                    {formik.errors.tasks &&
+                      typeof formik.errors.tasks === "string" && (
+                        <span className="text-red-500 text-xs">
+                          {" "}
+                          {formik.errors.tasks}{" "}
+                        </span>
+                      )}
                     {line_manager?.id === null && (
                       <button
                         type="button"
@@ -687,20 +810,47 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
                 </Button>
 
                 <Button
-                  disabled={!(formik.isValid && formik.dirty) || isLoading}
+                  disabled={
+                    !(formik.isValid && formik.dirty) ||
+                    isLoading ||
+                    isReassigning ||
+                    isLoadingDeleteSpecifiedTask
+                  }
                   // disabled={!(formik.isValid && formik.dirty) || isLoading}
                   type="submit"
-                  loading={isLoading}
-                  loadingText="Save & Continue"
-                  className={"py-5 px-2"}
+                  loading={
+                    isLoading || isReassigning || isLoadingDeleteSpecifiedTask
+                  }
+                  loadingText={
+                    shouldReassignSpecifiedTask
+                      ? "Reassign Specified Task"
+                      : shouldDeleteSpecifiedTask
+                      ? "es, Delete"
+                      : "Save & Continue"
+                  }
+                  className={`py-5 px-2 ${
+                    shouldDeleteSpecifiedTask ? "!bg-[#EC1410]" : ""
+                  } `}
                 >
-                  Save & Continue
+                  {shouldReassignSpecifiedTask
+                    ? "Reassign Specified Task"
+                    : shouldDeleteSpecifiedTask
+                    ? `Yes, Delete`
+                    : "Save & Continue"}
                 </Button>
               </div>
             </FormikProvider>
           </form>
         </div>
       )}
+      {/* notify task modal */}
+      <DashboardModal
+        className={"w-[500px] max-w-full"}
+        open={isModalOpen}
+        onOpenChange={handleNotifyModal}
+      >
+        <ImpliedTaskNotify onProceed={handleNotifyModal} />
+      </DashboardModal>
     </div>
   );
 };

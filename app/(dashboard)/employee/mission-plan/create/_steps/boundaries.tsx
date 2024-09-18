@@ -167,7 +167,7 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
                                 </span>
                               )}
                             </div>
-                            <div className="text-red-500 text-xs mt-1">
+                            <div className="text-red-500 text-xs absolute mt-1">
                               {formik.touched.constraints &&
                               formik.errors.constraints?.[index]
                                 ? formik.errors.constraints[index]
@@ -202,7 +202,7 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
                   </div>
                   <FieldArray name="freedoms">
                     {({ push, remove }) => (
-                      <div className="max-w-5xl grid grid-cols-2 gap-y-4 items-center gap-x-5 relative">
+                      <div className="max-w-5xl grid grid-cols-2 gap-y-8 items-center gap-x-5 relative">
                         {formik.values.freedoms.map((_, index) => (
                           <div key={index} className="w-full">
                             <div className="relative">
@@ -231,7 +231,7 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
                                 </span>
                               )}
                             </div>
-                            <div className="text-red-500 text-xs mt-1">
+                            <div className="text-red-500 text-xs absolute mt-1">
                               {formik.touched.freedoms &&
                               formik.errors.freedoms?.[index]
                                 ? formik.errors.freedoms[index]

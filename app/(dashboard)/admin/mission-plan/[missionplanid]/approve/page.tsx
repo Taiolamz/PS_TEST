@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
@@ -14,7 +14,7 @@ import MissionStatement from "../../_components/mission-statement";
 import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
-import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useLazyGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 
 const ApproveMissionPlan = () => {
   const router = useRouter();
@@ -34,12 +34,17 @@ const ApproveMissionPlan = () => {
 
   // const { name } = useAppSelector((state) => state?.single_employee);
 
-  const { data, isLoading: isGettingMissionPlanItems } =
-    useGetMissionPlanItemsByIdQuery({
+  const [
+    getMissionPlanItemsById,
+    { data, isLoading: isGettingMissionPlanItems },
+  ] = useLazyGetMissionPlanItemsByIdQuery();
+  const name = data?.data?.staff_member ?? "";
+  
+  useEffect(() => {
+    getMissionPlanItemsById({
       missionplanid: missionplanid as string,
     });
-  const name = data?.data?.staff_member ?? "";
-
+  }, []);
   return (
     <DashboardLayout headerTitle="Approve Mission Plan" back>
       {!ui ? (

@@ -73,10 +73,10 @@ const Boundaries = () => {
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
-        console.log(payload, "payload");
+        // console.log(payload, "payload");
         if (payload?.data?.mission_plan?.boundaries?.length > 0) {
           const boundary = payload?.data?.mission_plan?.boundaries[0];
-          console.log(boundary, "boundaries");
+          // console.log(boundary, "boundaries");
           formik.setValues({
             constraints:
               boundary.constraints.length > 0 ? boundary.constraints : [""],
@@ -118,7 +118,7 @@ const Boundaries = () => {
                     {({ push, remove }) => (
                       <div className="max-w-5xl grid grid-cols-2 gap-y-4 items-center gap-x-5 relative">
                         {formik.values.constraints.map((_, index) => (
-                          <div key={index} className="w-full">
+                          <div key={index} className="w-full relative">
                             <div className="relative">
                               <Input
                                 type="text"
@@ -145,7 +145,7 @@ const Boundaries = () => {
                                 </span>
                               )}
                             </div>
-                            <div className="text-red-500 text-xs mt-1">
+                            <div className="text-red-500 text-xs absolute mt-1">
                               {formik.touched.constraints &&
                               formik.errors.constraints?.[index]
                                 ? formik.errors.constraints[index]
@@ -182,7 +182,7 @@ const Boundaries = () => {
                     {({ push, remove }) => (
                       <div className="max-w-5xl grid grid-cols-2 gap-y-4 items-center gap-x-5 relative">
                         {formik.values.freedoms.map((_, index) => (
-                          <div key={index} className="w-full">
+                          <div key={index} className="w-full relative">
                             <div className="relative">
                               <Input
                                 type="text"
@@ -209,7 +209,7 @@ const Boundaries = () => {
                                 </span>
                               )}
                             </div>
-                            <div className="text-red-500 text-xs mt-1">
+                            <div className="text-red-500 text-xs mt-1 absolute">
                               {formik.touched.freedoms &&
                               formik.errors.freedoms?.[index]
                                 ? formik.errors.freedoms[index]

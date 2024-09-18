@@ -106,6 +106,18 @@ export const PAGE_TABS = {
       accessor: "all-employees",
     },
   ],
+  ADMINS: [
+    {
+      id: 1,
+      title: "Financial Year Details",
+      accessor: "mission-plan",
+    },
+    {
+      id: 2,
+      title: "Organization Mission Plans",
+      accessor: "all-employees",
+    },
+  ],
   MANAGIN_DIRECTOR: [
     {
       id: 1,
@@ -156,12 +168,18 @@ export const PAGE_TABS = {
       title: "Direct Downlines",
       accessor: "downlines",
     },
+    {
+      id: 3,
+      title: "Approvals",
+      accessor: "approvals",
+    },
   ],
 };
 
 // ROLES ALLOWED TO CREATE FINANCIAL YEAR
-export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin"];
+export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin", "strategy-admin"];
 export const SUPER_ADMIN = "super-admin";
+export const ADMINS = ['super-admin', 'strategy-admin' , 'hr-admin'];
 export const MANAGING_DIRECTOR = "ceo";
 
 // GET TABS

@@ -4,7 +4,7 @@ import CustomTab from "@/components/custom-tab";
 import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
-import { getAvailableTabs, SUPER_ADMIN } from "@/utils/helpers";
+import { ADMINS, getAvailableTabs, PAGE_TABS, SUPER_ADMIN } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import { FiscalYearInfo, MyMissionPlan } from "./_partials";
 import { Dictionary } from "@/@types/dictionary";
@@ -38,20 +38,24 @@ const SingleMissionPlan = () => {
         <div className="flex flex-end w-full items-center">
           <div className="w-full">
             <CustomTab
+              options={PAGE_TABS.ADMINS}
+              slug="ui"
+            />
+            {/* <CustomTab
               options={getAvailableTabs({
                 role: user_info?.role as string,
                 isLineManager: user_info?.is_line_manager as boolean,
               })}
               slug="ui"
-            />
+            /> */}
           </div>
         </div>
       </div>
 
       {ui === "mission-plan" && (
         <>
-          {user_info?.role === SUPER_ADMIN && <FiscalYearInfo />}
-          {user_info?.role !== SUPER_ADMIN && <MyMissionPlan />}
+          {ADMINS?.includes(user_info?.role) && <FiscalYearInfo />}
+          {/* {user_info?.role !== SUPER_ADMIN && <MyMissionPlan />} */}
         </>
       )}
 

@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 
-const ImpliedTaskNotify = ({ onProceed }: { onProceed: () => void }) => {
+const ImpliedTaskNotify = ({
+  onProceed,
+  taskTitle,
+}: {
+  onProceed: () => void;
+  taskTitle?: string;
+}) => {
   const attentionIcon = (
     <svg
       width="64"
@@ -30,8 +36,10 @@ const ImpliedTaskNotify = ({ onProceed }: { onProceed: () => void }) => {
         <figure>{attentionIcon}</figure>
         <p>Note!</p>
         <p className="text-[#5B6871] text-[15px] font-normal">
-          Set weight to the newly transfer implied tasks, Weight must add up to
-          100%{" "}
+          Set weight to the newly transfer {taskTitle || "specified tasks"},
+          Weight must add up to 100%{" "}
+          {/* Set weight to the newly transfer implied tasks, Weight must add up to
+          100%{" "} */}
         </p>
         <Button
           variant={"outline"}

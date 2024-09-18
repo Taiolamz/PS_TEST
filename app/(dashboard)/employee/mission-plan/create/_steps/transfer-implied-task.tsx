@@ -1,11 +1,14 @@
 import { ManceLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { setNewSpecifiedTask } from "@/redux/features/mission-plan/specifiedTaskReassignment";
 import { useReAssignImpliedTaskMutation } from "@/redux/services/mission-plan/impliedTaskApi";
+import { useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import * as yup from "yup";
 
@@ -35,31 +38,48 @@ const TransferImpliedTaskOrWeight = ({
 
   const { EMPLOYEE } = routesPath;
 
-  // console.log(data, "data");
   const router = useRouter();
 
-  const handleSubmit = async () => {
+  // const handleSubmit = async () => {
+  //   const obj = {
+  //     specified_task_id: data?.specified_task_id,
+  //     implied_task_id: data?.implied_tasks[0].implied_task_id,
+  //   };
+
+  //   await reAssignImpliedTask(obj).unwrap();
+  //   toast.success("Implied Task Reassigned Successfully");
+
+  //   if (isWeightTransfer) {
+  //     setTimeout(() => {
+  //       router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task`);
+  //       toast.dismiss();
+  //     }, 1000);
+  //   } else {
+  //     setTimeout(() => {
+  //       onCloseModal();
+  //       onWeightNotify(true);
+  //       toast.dismiss();
+  //     }, 1000);
+  //   }
+  // };
+  const dispatch = useDispatch();
+  const [newSpecifiedID, setNewSpecifiedID] = useState("");
+  const { old_specified_task_id, new_specified_task_id } = useAppSelector(
+    (state) => state.specified_task_reassignment
+  );
+
+  const handleSubmit = () => {
     const obj = {
-      specified_task_id: data?.specified_task_id,
-      implied_task_id: data?.implied_tasks[0].implied_task_id,
+      oldSpecifiedId: data?.specified_task_id,
+      newSpecifiedId: newSpecifiedID,
     };
-
-    await reAssignImpliedTask(obj).unwrap();
-    toast.success("Implied Task Reassigned Successfully");
-
-    if (isWeightTransfer) {
-      setTimeout(() => {
-        router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task`);
-        toast.dismiss();
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        onCloseModal();
-        onWeightNotify(true);
-        toast.dismiss();
-      }, 1000);
-    }
+    dispatch(setNewSpecifiedTask(obj));
+    router.push(
+      `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task&reassign-specified-task-id=${data?.specified_task_id}`
+    );
   };
+
+  console.log(old_specified_task_id, new_specified_task_id, "specified id");
 
   const formik = useFormik({
     initialValues: {
@@ -73,9 +93,16 @@ const TransferImpliedTaskOrWeight = ({
     onSubmit: handleSubmit,
   });
 
+  const oldSpecifiedID = data?.specified_task_id;
+
+  const filteredTasks = allSpecifiedTask.filter(
+    (task) => task.specified_task_id !== oldSpecifiedID
+  );
+
   const formatAllSpecifiedTask = () => {
-    const newTasks = allSpecifiedTask?.map((chi) => {
+    const newTasks = filteredTasks.map((chi) => {
       return {
+        ...chi,
         label: chi?.task,
         value: chi?.task,
       };
@@ -143,7 +170,10 @@ const TransferImpliedTaskOrWeight = ({
                 type="radio"
                 name="check_task"
                 value={chi.value}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  setNewSpecifiedID(chi?.specified_task_id);
+                }}
                 checked={formik.values.check_task === chi.value}
                 className="radio-custom"
               />
