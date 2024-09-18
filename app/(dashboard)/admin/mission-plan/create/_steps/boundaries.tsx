@@ -73,10 +73,10 @@ const Boundaries = () => {
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
-        console.log(payload, "payload");
+        // console.log(payload, "payload");
         if (payload?.data?.mission_plan?.boundaries?.length > 0) {
           const boundary = payload?.data?.mission_plan?.boundaries[0];
-          console.log(boundary, "boundaries");
+          // console.log(boundary, "boundaries");
           formik.setValues({
             constraints:
               boundary.constraints.length > 0 ? boundary.constraints : [""],

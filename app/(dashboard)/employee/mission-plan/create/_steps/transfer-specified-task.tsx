@@ -24,13 +24,13 @@ const TransferSpecifiedTask = ({
         transfer your implied task and weight or just your implied task
       </p>
       <div className="flex gap-3 items-center mt-5 justify-end">
-        <Button
+        {/* <Button
           variant="outline"
           className="border-primary text-primary"
           onClick={onTaskWeightTransfer}
         >
           Transfer Implied task & weight
-        </Button>
+        </Button> */}
         <Button className="!bg-primary" onClick={onTaskTransfer}>
           Transfer Implied task
         </Button>
