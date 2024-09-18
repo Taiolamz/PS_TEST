@@ -17,9 +17,9 @@ type Props = {
   loading: boolean;
   isEditable?: boolean;
   bg?: string;
-  setDrawerUserId: (e: string) => void;
-  setComponentType: (e: string) => void;
-  setOpenDrawer: (e: boolean) => void;
+  setDrawerUserId?: (e: string) => void;
+  setComponentType?: (e: string) => void;
+  setOpenDrawer?: (e: boolean) => void;
 };
 
 const SpecifiedTasksDropDown = ({
