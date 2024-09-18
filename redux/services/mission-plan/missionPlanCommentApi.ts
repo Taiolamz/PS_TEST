@@ -25,6 +25,20 @@ export const missionPlanCommentApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getMssionPlanFetchComments: builder.query({
+      query: ({ component_id, component_type }) => ({
+        url: `/comments/fetch-comments?component_id=${component_id}&component_type=${component_type}`,
+        method: "GET",
+      }),
+    }),
+    addMssionPlanCommentOnComponent: builder.mutation({
+      query: (payload) => ({
+        url: `/comments/comment-on-component`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Comments"],
+    }),
   }),
 });
 
@@ -32,4 +46,6 @@ export const {
   useAllMssionPlanCommentsMutation,
   useAddMssionPlanCommentMutation,
   useLazyGetCommentableTypeQuery,
+  useLazyGetMssionPlanFetchCommentsQuery,
+  useAddMssionPlanCommentOnComponentMutation,
 } = missionPlanCommentApi;

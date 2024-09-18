@@ -4,16 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
-  useAddMssionPlanCommentMutation,
-  useAllMssionPlanCommentsMutation,
+  useAddMssionPlanCommentOnComponentMutation,
   useLazyGetCommentableTypeQuery,
+  useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 import { useAppSelector } from "@/redux/store";
 import { returnInitial } from "@/utils/helpers";
 import { formatTimestamp } from "@/utils/helpers/date-formatter";
 import { commentSchema } from "@/utils/schema/mission-plan";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function MissionPlanDrawerComment({
   show,
@@ -27,14 +27,15 @@ export default function MissionPlanDrawerComment({
   component_type?: string;
 }) {
   const { user } = useAppSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [
-    allMissionPlanComments,
+    getMssionPlanFetchComments,
     { isLoading: loadingComment, error: allCommenterror, data: allComment },
-  ] = useAllMssionPlanCommentsMutation();
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
 
-  const [addMissionPlanComments, { isLoading: loadingAddComment }] =
-    useAddMssionPlanCommentMutation();
+  const [addMssionPlanCommentOnComponent, { isLoading: loadingAddComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
 
   const [getCommentableType] = useLazyGetCommentableTypeQuery();
 
@@ -44,7 +45,7 @@ export default function MissionPlanDrawerComment({
     },
     validationSchema: commentSchema,
     onSubmit: (values) => {
-      addMissionPlanComments({
+      addMssionPlanCommentOnComponent({
         ...values,
         component_id: userId,
         component_type,
@@ -52,10 +53,13 @@ export default function MissionPlanDrawerComment({
         .unwrap()
         .then((data) => {
           clearForm();
-          allMissionPlanComments({
+          setIsLoading(true);
+          getMssionPlanFetchComments({
             component_id: userId,
             component_type,
-          });
+          })
+            .unwrap()
+            .then(() => setIsLoading(false));
         })
         .catch((error) => {});
     },
@@ -68,17 +72,22 @@ export default function MissionPlanDrawerComment({
   };
 
   useEffect(() => {
+    setIsLoading(true);
     clearForm();
+
     if (show && userId) {
-      allMissionPlanComments({
+      getMssionPlanFetchComments({
         component_id: userId,
         component_type,
-      });
-      getCommentableType({})
+      })
         .unwrap()
-        .then((data) => {});
+        .then(() => setIsLoading(false));
+
+      // getCommentableType({})
+      //   .unwrap()
+      //   .then((data) => {});
     }
-  }, [userId]);
+  }, [userId, show]);
 
   return (
     <ReusableDrawer
@@ -116,7 +125,7 @@ export default function MissionPlanDrawerComment({
               />
               <Button
                 type="submit"
-                disabled={loadingAddComment || loadingComment}
+                disabled={loadingAddComment || loadingComment || isLoading}
                 loading={loadingAddComment}
                 loadingText="Comment"
                 className={cn(
@@ -139,7 +148,7 @@ export default function MissionPlanDrawerComment({
           <section className="space-y-4 h-[53dvh] grid overflow-y-auto pr-3">
             {allCommenterror ? (
               <></>
-            ) : loadingComment ? (
+            ) : loadingComment || isLoading ? (
               <div className="place-content-center">
                 <PageLoader />
               </div>
