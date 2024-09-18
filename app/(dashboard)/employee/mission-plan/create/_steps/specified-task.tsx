@@ -267,7 +267,15 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
 
   const searchParams = useSearchParams();
   const oldSpecifiedID = searchParams.get("reassign-specified-task-id");
+  const deleteView = searchParams.get("view");
+  const specifiedTaskName = searchParams.get("specified-task");
 
+  console.log(specifiedTaskName, "specified name");
+
+  const shouldDeleteSpecifiedTask = deleteView && oldSpecifiedID ? true : false;
+  const shouldReassignSpecifiedTask = oldSpecifiedID && !deleteView;
+
+  console.log(shouldDeleteSpecifiedTask, shouldReassignSpecifiedTask);
   const { old_specified_task_id, new_specified_task_id } = useAppSelector(
     (state) => state.specified_task_reassignment
   );
@@ -347,7 +355,7 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
   }, [initialValues]);
 
   const handleFormSubmit = async (values: Data) => {
-    if (oldSpecifiedID) {
+    if (shouldReassignSpecifiedTask) {
       const obj = {
         from_specified_task_id: old_specified_task_id || oldSpecifiedID,
         to_specified_task_id: new_specified_task_id,
@@ -360,6 +368,21 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
         );
         toast.dismiss();
       }, 1000);
+    } else if (shouldDeleteSpecifiedTask) {
+      console.log('test')
+      await deleteSpecifiedTask(oldSpecifiedID)
+        .unwrap()
+        .then(() => {
+          toast.success(`Specified Task Deleted Successfully`);
+          new Promise(() => {
+            setTimeout(() => {
+              router.push(
+                `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=implied-task&view=reassign-implied-task`
+              );
+              toast.dismiss();
+            }, 1000);
+          });
+        });
     } else {
       const updatedData = {
         ...values,
@@ -503,6 +526,9 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
               <BsFillInfoCircleFill color="#84919A" />
             </span>
           </div>
+          <p className="text-red-500 text-sm font-medium mt-1">
+            Reassign your weight to Delete ({specifiedTaskName}) Specified Task
+          </p>
           <form onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
               <FieldArray name="tasks">
@@ -785,20 +811,29 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
                   disabled={
                     !(formik.isValid && formik.dirty) ||
                     isLoading ||
-                    isReassigning
+                    isReassigning ||
+                    isLoadingDeleteSpecifiedTask
                   }
                   // disabled={!(formik.isValid && formik.dirty) || isLoading}
                   type="submit"
-                  loading={isLoading || isReassigning}
+                  loading={
+                    isLoading || isReassigning || isLoadingDeleteSpecifiedTask
+                  }
                   loadingText={
-                    oldSpecifiedID
+                    shouldReassignSpecifiedTask
                       ? "Reassign Specified Task"
+                      : shouldDeleteSpecifiedTask
+                      ? "es, Delete"
                       : "Save & Continue"
                   }
-                  className={"py-5 px-2"}
+                  className={`py-5 px-2 ${
+                    shouldDeleteSpecifiedTask ? "!bg-[#EC1410]" : ""
+                  } `}
                 >
-                  {oldSpecifiedID
+                  {shouldReassignSpecifiedTask
                     ? "Reassign Specified Task"
+                    : shouldDeleteSpecifiedTask
+                    ? `Yes, Delete`
                     : "Save & Continue"}
                 </Button>
               </div>

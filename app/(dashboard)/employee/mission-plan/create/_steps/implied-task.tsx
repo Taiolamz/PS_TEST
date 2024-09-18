@@ -34,6 +34,7 @@ import DeleteImpliedTaskModal from "./delete-implied-task";
 import TransferSpecifiedTask from "./transfer-specified-task";
 import ImpliedTaskNotify from "./implied-task-notify";
 import TransferImpliedTaskOrWeight from "./transfer-implied-task";
+import routesPath from "@/utils/routes";
 
 interface SubItem {
   task: string;
@@ -433,26 +434,37 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     formik.setFieldValue(`tasks.${index}.implied_tasks`, updatedimplied_tasks);
   };
 
-  const handleDeleteSpecifiedTask = async (taskIndex?: number, id?: string) => {
-    if (!id) {
-      const updatedTasks = formik.values.tasks.filter(
-        (_, tIndex) => tIndex !== taskIndex
-      );
-      formik.setFieldValue("tasks", updatedTasks);
-      handleDeleteDialog();
-    } else {
-      await deleteSpecifiedTask(id)
-        .unwrap()
-        .then(() => {
-          toast.success(`Specified Task Deleted Successfully`);
-          new Promise(() => {
-            setTimeout(() => {
-              handleDeleteDialog();
-              toast.dismiss();
-            }, 1000);
-          });
-        });
-    }
+  const { EMPLOYEE } = routesPath;
+
+  // const handleDeleteSpecifiedTask = async (taskIndex?: number, id?: string) => {
+  //   if (!id) {
+  //     const updatedTasks = formik.values.tasks.filter(
+  //       (_, tIndex) => tIndex !== taskIndex
+  //     );
+  //     formik.setFieldValue("tasks", updatedTasks);
+  //     handleDeleteDialog();
+  //   } else {
+  //     await deleteSpecifiedTask(id)
+  //       .unwrap()
+  //       .then(() => {
+  //         toast.success(`Specified Task Deleted Successfully`);
+  //         new Promise(() => {
+  //           setTimeout(() => {
+  //             handleDeleteDialog();
+  //             router.push(
+  //               `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task&reassign-specified-task-id=${id}`
+  //             );
+  //             toast.dismiss();
+  //           }, 1000);
+  //         });
+  //       });
+  //   }
+  // };
+
+  const handleDeleteSpecifiedTask = (id?: string, data?: any) => {
+    router.push(
+      `${EMPLOYEE.CREATE_MISSION_PLAN}?ui=specified-task&reassign-specified-task-id=${id}&view=delete&specified-task=${data?.task}`
+    );
   };
 
   // const handleDeleteImpliedTask = (
@@ -661,8 +673,8 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                                     taskIndex: index,
                                     ...task,
                                   });
-                                  // onOpenDeleteModal();
-                                  onOpenTransferModal();
+                                  onOpenDeleteModal();
+                                  // onOpenTransferModal();
                                 }}
                               >
                                 Remove Specified task
@@ -1141,11 +1153,14 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
           data={childData}
           isLoading={isDeletingSpecifiedTask}
           onDelete={() =>
-            handleDeleteSpecifiedTask(
-              childData.taskIndex,
-              childData?.specified_task_id
-            )
+            handleDeleteSpecifiedTask(childData?.specified_task_id, childData)
           }
+          // onDelete={() =>
+          //   handleDeleteSpecifiedTask(
+          //     childData.taskIndex,
+          //     childData?.specified_task_id
+          //   )
+          // }
         />
       </DashboardModal>
 
