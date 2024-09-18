@@ -9,8 +9,6 @@ import useGetComments from "./useGetComments.hook";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { addAlphaToHex } from "@/utils/helpers/add-alpha-to-hex";
-import CommentsIcon from "@/public/assets/icons/comments";
-import DrawerComment from "../view/_side-modal/drawer-comment";
 import { EditableLabel } from "@/components/fragment";
 
 type Props = {
@@ -19,6 +17,9 @@ type Props = {
   loading: boolean;
   isEditable?: boolean;
   bg?: string;
+  setDrawerUserId?: (e: string) => void;
+  setComponentType?: (e: string) => void;
+  setOpenDrawer?: (e: boolean) => void;
 };
 
 const SpecifiedTasksDropDown = ({
@@ -27,6 +28,9 @@ const SpecifiedTasksDropDown = ({
   loading,
   isEditable,
   bg,
+  setDrawerUserId,
+  setOpenDrawer,
+  setComponentType,
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -62,9 +66,6 @@ const SpecifiedTasksDropDown = ({
     setExpandedTaskIndex(expandedTaskIndex === index ? null : index);
   };
 
-  // State to handle drawer state and id
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
-  const [drawerUserId, setDrawerUserId] = useState<string>("");
   return (
     <div className={`flex flex-col gap-10 `}>
       {loading && (
@@ -90,26 +91,8 @@ const SpecifiedTasksDropDown = ({
                   <h4>Specified Task {index + 1}</h4>
                   <div className="flex justify-between items-end gap-[20px]">
                     <div className="flex gap-[3.125rem] items-center">
-                      {/* <div className="flex gap-[8px] items-center">
-                        <CommentsIcon />
-                        <p className="flex gap-1 items-center text-xs cursor-pointer">
-                          <span
-                            className="text-[#9AA6AC] text-xs font-normal  hover:underline hover:text-[var(--primary-color)] "
-                            onClick={() => {
-                              setDrawerUserId(item?.id);
-                              setOpenDrawer(true);
-                            }}
-                          >
-                            Comments
-                          </span>
-
-                          <span className="bg-[#D6130F1A]  text-[#D6130F] p-[3px] px-[6px] rounded-full text-xs">
-                            {item?.approval_comment_count}
-                          </span>
-                        </p>
-                      </div> */}
                       <div className="flex gap-2.5 items-end">
-                        {isEditable ? (
+                        {isEditable && (
                           <>
                             <Button
                               variant="outline"
@@ -122,8 +105,6 @@ const SpecifiedTasksDropDown = ({
                               Approve
                             </Button>
                           </>
-                        ) : (
-                          <EditableLabel status={item?.status ?? ""} />
                         )}
                       </div>
                     </div>
@@ -167,10 +148,13 @@ const SpecifiedTasksDropDown = ({
                             </p>
                           ))}
                         </div>
+
                         <div className="flex items-center gap-2">
                           <p>Specified Task Weight</p>
                           <p className="text-base fot-bold text-[#015858]">
-                            {item.weight ? item?.weight + "%" : "N/A"}
+                            {item.weight
+                              ? `${Math.round(parseInt(item?.weight))}%`
+                              : "N/A"}
                           </p>
                         </div>
                       </div>
@@ -198,75 +182,123 @@ const SpecifiedTasksDropDown = ({
                     <div>
                       {item?.implied_tasks?.length ? (
                         item?.implied_tasks?.map((impliedTask, index) => (
-                          <div
-                            className="flex w-full justify-between gap-10 text-sm"
-                            key={impliedTask?.id}
-                          >
-                            <p className="text-primary text-sm font-medium">
-                              Implied Task {index + 1}
-                            </p>
-                            <div className="grid grid-cols-6 flex-grow">
-                              <div className="col-span-3">
-                                <div className="mb-[2.1875rem]">
-                                  <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                    Task title
-                                  </p>
-                                  <p className="text-[#5A5B5F] font-medium">
-                                    {impliedTask?.task}
-                                  </p>
-                                </div>
+                          <div className="" key={impliedTask?.id}>
+                            <div className="flex w-full justify-between gap-10 text-sm">
+                              <p className="text-primary text-sm font-medium">
+                                Implied Task {index + 1}
+                              </p>
+                              <div className="grid grid-cols-6 flex-grow">
+                                <div className="col-span-3">
+                                  <div className="mb-[2.1875rem]">
+                                    <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                      Task title
+                                    </p>
+                                    <p className="text-[#5A5B5F] font-medium">
+                                      {impliedTask?.task}
+                                    </p>
+                                  </div>
 
-                                {/* Resource */}
-                                <div>
-                                  <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                    Resource
-                                  </p>
-                                  <div className="flex items-center gap-2">
-                                    {impliedTask?.resources?.length
-                                      ? impliedTask?.resources.map(
-                                          (resource) => (
-                                            <p
-                                              className="p-[0.3125rem] text-primary text-xs capitalize rounded-[0.625rem]"
-                                              style={{
-                                                backgroundColor: colorWithAlpha,
-                                              }}
-                                              key={resource?.staff_member_id}
-                                            >
-                                              {resource.name}
-                                            </p>
+                                  {/* Resource */}
+                                  <div>
+                                    <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                      Resource
+                                    </p>
+                                    <div className="flex items-center gap-2">
+                                      {impliedTask?.resources?.length
+                                        ? impliedTask?.resources.map(
+                                            (resource) => (
+                                              <p
+                                                className="p-[0.3125rem] text-primary text-xs capitalize rounded-[0.625rem]"
+                                                style={{
+                                                  backgroundColor:
+                                                    colorWithAlpha,
+                                                }}
+                                                key={resource?.staff_member_id}
+                                              >
+                                                {resource.name}
+                                              </p>
+                                            )
                                           )
-                                        )
-                                      : "no resource assigned."}
+                                        : "no resource assigned."}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
 
-                              <div className="col-span-2">
-                                <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                  Duration
-                                </p>
-                                <p className="text-[#5A5B5F] font-medium">
-                                  {formatToReadableDateShort(
-                                    impliedTask.start_date
-                                  )}{" "}
-                                  -{" "}
-                                  {formatToReadableDateShort(
-                                    impliedTask.start_date
+                                <div className="col-span-2">
+                                  <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                    Duration
+                                  </p>
+                                  <p className="text-[#5A5B5F] font-medium">
+                                    {formatToReadableDateShort(
+                                      impliedTask.start_date
+                                    )}{" "}
+                                    -{" "}
+                                    {formatToReadableDateShort(
+                                      impliedTask.start_date
+                                    )}
+                                  </p>
+                                </div>
+
+                                <div className="col-span-1">
+                                  <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
+                                    Weight
+                                  </p>
+                                  <p className="text-xl text-[#015858] font-medium">
+                                    {impliedTask?.weight
+                                      ? `${impliedTask?.weight}%`
+                                      : "N/A"}
+                                  </p>
+                                </div>
+                              </div>
+                              <div
+                                className="flex gap-2.5 ml-[40px] items-center justify-end"
+                                key={index}
+                              >
+                                {impliedTask?.status !== "" &&
+                                  impliedTask?.status !== undefined && (
+                                    <div className="flex items-end gap-[20px]">
+                                      {impliedTask?.status === "rejected" &&
+                                        impliedTask?.approval_comment_count &&
+                                        impliedTask?.status !== undefined && (
+                                          <div className="text-xs cursor-pointer ">
+                                            <p className="flex gap-2 items-center">
+                                              <span
+                                                className="text-[#9AA6AC] text-xs font-normal hover:underline"
+                                                onClick={() => {
+                                                  setDrawerUserId &&
+                                                    setDrawerUserId(
+                                                      impliedTask?.id
+                                                    );
+                                                  setComponentType &&
+                                                    setComponentType(
+                                                      "implied-task"
+                                                    );
+                                                  setOpenDrawer &&
+                                                    setOpenDrawer(true);
+                                                }}
+                                              >
+                                                View Comments
+                                              </span>
+                                              <span className="bg-[#D6130F1A]  text-[#D6130F] p-[3px] px-[6px] rounded-full text-xs">
+                                                {
+                                                  impliedTask?.approval_comment_count
+                                                }
+                                              </span>
+                                            </p>
+                                          </div>
+                                        )}
+                                      <EditableLabel
+                                        status={impliedTask?.status}
+                                      />
+                                    </div>
                                   )}
-                                </p>
-                              </div>
-
-                              <div className="col-span-1">
-                                <p className="text-[#6E7C87] mb-[0.5625rem] font-medium">
-                                  Weight
-                                </p>
-                                <p className="text-xl text-[#015858] font-medium">
-                                  {impliedTask?.weight
-                                    ? impliedTask?.weight
-                                    : "N/A"}
-                                </p>
                               </div>
                             </div>
+                            {index === item?.implied_tasks?.length - 1 ? (
+                              ""
+                            ) : (
+                              <hr className="my-[1.4375rem]" />
+                            )}
                           </div>
                         ))
                       ) : (
@@ -303,14 +335,6 @@ const SpecifiedTasksDropDown = ({
           </div>
         </>
       )}
-      <DrawerComment
-        show={openDrawer}
-        handleClose={() => {
-          setDrawerUserId("");
-          setOpenDrawer(false);
-        }}
-        userId={drawerUserId}
-      />
     </div>
   );
 };

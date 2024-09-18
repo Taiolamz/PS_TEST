@@ -12,7 +12,9 @@ type measureProp = {
   unit: string;
   target: string;
   id: string;
-  weight: number
+  weight: number;
+  approval_comment_count?: string;
+  status?: string;
 };
 
 type strategicProp = {

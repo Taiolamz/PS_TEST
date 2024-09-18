@@ -28,7 +28,8 @@ export const formatDate = (timestamp: string): string => {
 export const formatTimestamp = (timestamp: string | number | Date) => {
   const date = new Date(timestamp);
   if (isNaN(date.getTime())) {
-    throw new Error("Invalid time");
+    // throw new Error("Invalid time");
+    console.log("error")
   }
   const options: Intl.DateTimeFormatOptions = {
     day: "2-digit",
