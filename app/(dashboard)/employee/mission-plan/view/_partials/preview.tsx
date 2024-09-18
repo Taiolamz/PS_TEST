@@ -23,9 +23,10 @@ const { EMPLOYEE } = routesPath;
 interface PreviewProps {
   data: any;
   type?: string;
+  handleGetMyMissionPlan?: () => void;
 }
 
-const Preview = ({ data, type }: PreviewProps) => {
+const Preview = ({ data, type, handleGetMyMissionPlan }: PreviewProps) => {
   const location = usePathname();
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [drawerUserId, setDrawerUserId] = useState<string>("");
@@ -372,6 +373,7 @@ const Preview = ({ data, type }: PreviewProps) => {
           setDrawerUserId("");
           setComponentType("");
           setOpenDrawer(false);
+          handleGetMyMissionPlan && handleGetMyMissionPlan();
         }}
         userId={drawerUserId}
         component_type={componentType}
