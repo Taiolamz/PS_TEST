@@ -270,12 +270,12 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
   const deleteView = searchParams.get("view");
   const specifiedTaskName = searchParams.get("specified-task");
 
-  console.log(specifiedTaskName, "specified name");
+
 
   const shouldDeleteSpecifiedTask = deleteView && oldSpecifiedID ? true : false;
   const shouldReassignSpecifiedTask = oldSpecifiedID && !deleteView;
 
-  console.log(shouldDeleteSpecifiedTask, shouldReassignSpecifiedTask);
+
   const { old_specified_task_id, new_specified_task_id } = useAppSelector(
     (state) => state.specified_task_reassignment
   );
@@ -369,7 +369,6 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
         toast.dismiss();
       }, 1000);
     } else if (shouldDeleteSpecifiedTask) {
-      console.log('test')
       await deleteSpecifiedTask(oldSpecifiedID)
         .unwrap()
         .then(() => {
@@ -526,9 +525,12 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
               <BsFillInfoCircleFill color="#84919A" />
             </span>
           </div>
-          <p className="text-red-500 text-sm font-medium mt-1">
-            Reassign your weight to Delete ({specifiedTaskName}) Specified Task
-          </p>
+          {shouldDeleteSpecifiedTask ? (
+            <p className="text-red-500 text-sm font-medium mt-1">
+              Reassign your weight to Delete ({specifiedTaskName}) Specified
+              Task
+            </p>
+          ) : null}
           <form onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
               <FieldArray name="tasks">
