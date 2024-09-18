@@ -7,7 +7,7 @@ export const employeeRoleList = ["staff"];
 export const adminRoleList = [
   "hr-admin",
   "strategy-admin",
-  "it-admin",
+  // "it-admin", 
   "compliance",
   "super-admin",
   "user",
