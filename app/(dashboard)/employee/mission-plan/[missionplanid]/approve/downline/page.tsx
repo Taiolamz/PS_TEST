@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "@/utils/hooks/useDisclosure";
-import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useLazyGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import { useAppSelector } from "@/redux/store";
 import PresentationView from "../_presentation/presentation-view";
 import FreedomConstraint from "../../../_components/freedom-constraint";
@@ -29,11 +29,16 @@ const DownlineApproval = () => {
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
 
-  const { data, isLoading: isGettingMissionPlanItems } =
-    useGetMissionPlanItemsByIdQuery({
+  const [
+    getMissionPlanItemsById,
+    { data, isLoading: isGettingMissionPlanItems },
+  ] = useLazyGetMissionPlanItemsByIdQuery();
+
+  useEffect(() => {
+    getMissionPlanItemsById({
       missionplanid: missionplanid as string,
     });
-
+  }, []);
   return (
     <DashboardLayout headerTitle="Mission Plan" back>
       {!ui ? (
