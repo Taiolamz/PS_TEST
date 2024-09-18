@@ -26,6 +26,8 @@ import SubmissionExtendModal from "../_modal/submission-extend-modal";
 import { cn } from "@/lib/utils";
 import ReopenSubmissionModal from "../_modal/reopen-submission-modal";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { CAN_CREATE_FINANCIAL_YEAR } from "@/utils/helpers";
+import { Button } from "@/components/ui/button";
 
 const { ADMIN } = routesPath;
 
@@ -37,6 +39,8 @@ const AllEmployeeMissionPlan = () => {
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+  const { role: user_role }: any = useAppSelector((state) => state.auth.user);
+
   const btn =
     "px-[1rem] py-[4px] text-[var(--primary-color)] bg-white text-sm border border-[var(--primary-color)] text-center rounded-sm font-[500] h-fit cursor-pointer hover:bg-[var(--primary-accent-color)] select-none";
 
@@ -58,6 +62,10 @@ const AllEmployeeMissionPlan = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [openApprovalStatus, setOpenApprovalStatus] = useState<boolean>(false);
   const [drawerUserId, setDrawerUserId] = useState<string>("");
+  
+  const HAS_NO_PERMISSION = () => {
+    return !CAN_CREATE_FINANCIAL_YEAR?.includes(user_role)
+  }
 
   // -------- API Service for Tab == All Employee ------- //
   const {
@@ -272,17 +280,13 @@ const AllEmployeeMissionPlan = () => {
         <div className="pb-5 px-5 mt-1 space-y-5">
           <div className="flex gap-[10px] justify-end">
             {isSafe ? (
-              <button
-                className={cn(
-                  btn,
-                  active_fy_info?.status !== "active" &&
-                    "opacity-30 hover:bg-white"
-                )}
-                disabled={active_fy_info?.status !== "active"}
-                onClick={() => setExtendSubmission(true)}
-              >
-                Extend Submission Period
-              </button>
+              <Button
+              className={cn(btn, "disabled:opacity-30")}
+              disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
+              onClick={() => setExtendSubmission(true)}
+            >
+              Extend Submission Period
+              </Button>
             ) : (
               <button
                 className={cn(
