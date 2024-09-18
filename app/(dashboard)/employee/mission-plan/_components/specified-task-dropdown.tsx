@@ -30,7 +30,7 @@ const SpecifiedTasksDropDown = ({
   bg,
   setDrawerUserId,
   setOpenDrawer,
-  setComponentType
+  setComponentType,
 }: Props) => {
   const approvableTypeId = data?.map((item) => item.id as string);
   const params = useParams();
@@ -265,11 +265,16 @@ const SpecifiedTasksDropDown = ({
                                               <span
                                                 className="text-[#9AA6AC] text-xs font-normal hover:underline"
                                                 onClick={() => {
-                                                  setDrawerUserId(
-                                                    impliedTask?.id
-                                                  );
-                                                  setComponentType("implied-task")
-                                                  setOpenDrawer(true);
+                                                  setDrawerUserId &&
+                                                    setDrawerUserId(
+                                                      impliedTask?.id
+                                                    );
+                                                  setComponentType &&
+                                                    setComponentType(
+                                                      "implied-task"
+                                                    );
+                                                  setOpenDrawer &&
+                                                    setOpenDrawer(true);
                                                 }}
                                               >
                                                 View Comments
