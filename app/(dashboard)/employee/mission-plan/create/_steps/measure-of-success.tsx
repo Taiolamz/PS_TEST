@@ -97,12 +97,30 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan]);
   const handleFormSubmit = async () => {
-    createMeasureOfSuccess(formik.values)
-    .unwrap()
-    .then(() => {
-      onNextStep && onNextStep();
-      toast.success("Measure of Success Created Successfully");
-    })
+    console.log(formik.values, "formik values");
+    // const newForm = formik.values?.map((chi)=>{
+    //   return {
+    //     ...chi,
+
+    //   }
+    // })
+    const obj = {
+      ...formik.values,
+      measures: formik.values.measures?.map((chi) => {
+        return {
+          ...chi,
+          // Ensure target is a number with two decimal places
+          target: chi?.target ? Number(parseFloat(chi.target)) : chi.target,
+        };
+      }),
+    };
+    // return;
+    await createMeasureOfSuccess(obj)
+      .unwrap()
+      .then(() => {
+        onNextStep && onNextStep();
+        toast.success("Measure of Success Created Successfully");
+      });
     // try {
     //   await createMeasureOfSuccess(formik.values);
     //   // router.push(`${EMPLOYEE.CREATE_MISSION_PLAN}?ui=strategic-intent`);
@@ -365,7 +383,13 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                           </div>
                         )
                       )}
-                   {formik.errors.measures && typeof formik.errors.measures === "string" && <span className="text-red-500 text-xs"> {formik?.errors?.measures} </span>}
+                    {formik.errors.measures &&
+                      typeof formik.errors.measures === "string" && (
+                        <span className="text-red-500 text-xs">
+                          {" "}
+                          {formik?.errors?.measures}{" "}
+                        </span>
+                      )}
                     <button
                       type="button"
                       onClick={() =>

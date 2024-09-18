@@ -369,7 +369,7 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
         toast.dismiss();
       }, 1000);
     } else if (shouldDeleteSpecifiedTask) {
-      console.log('test')
+      console.log("test");
       await deleteSpecifiedTask(oldSpecifiedID)
         .unwrap()
         .then(() => {
@@ -526,9 +526,12 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
               <BsFillInfoCircleFill color="#84919A" />
             </span>
           </div>
-          <p className="text-red-500 text-sm font-medium mt-1">
-            Reassign your weight to Delete ({specifiedTaskName}) Specified Task
-          </p>
+          {shouldDeleteSpecifiedTask ? (
+            <p className="text-red-500 text-sm font-medium mt-1">
+              Reassign your weight to Delete ({specifiedTaskName}) Specified
+              Task
+            </p>
+          ) : null}
           <form onSubmit={formik.handleSubmit}>
             <FormikProvider value={formik}>
               <FieldArray name="tasks">
