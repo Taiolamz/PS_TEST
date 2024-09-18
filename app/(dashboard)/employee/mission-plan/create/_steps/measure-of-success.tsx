@@ -97,13 +97,6 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mission_plan, fetchedMissionPlan]);
   const handleFormSubmit = async () => {
-    console.log(formik.values, "formik values");
-    // const newForm = formik.values?.map((chi)=>{
-    //   return {
-    //     ...chi,
-
-    //   }
-    // })
     const obj = {
       ...formik.values,
       measures: formik.values.measures?.map((chi) => {
