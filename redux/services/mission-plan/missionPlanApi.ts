@@ -193,7 +193,7 @@ export const {
   useCreateMeasureOfSuccessMutation,
   useCreateSpecifiedTaskMutation,
   useSubmitPreviewedMissionPlanMutation,
-  useGetMissionPlanItemsByIdQuery,
+  useLazyGetMissionPlanItemsByIdQuery,
   useGetLineManagerMissionPlanQuery,
   useGetMySpecifiedTaskQuery,
   useLazyGetMySpecifiedTaskQuery,

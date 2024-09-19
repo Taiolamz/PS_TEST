@@ -12,7 +12,7 @@ import MissionStatement from "../../_components/mission-statement";
 import FreedomConstraint from "../../_components/freedom-constraint";
 import MeasureOfSuccess from "../../_components/measure-of-success";
 import useDisclosure from "@/utils/hooks/useDisclosure";
-import { useGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
+import { useLazyGetMissionPlanItemsByIdQuery } from "@/redux/services/mission-plan/missionPlanApi";
 import Tasks from "../../_components/tasks";
 import { useApproveAllItemsMutation } from "@/redux/services/mission-plan/approveItemsApi";
 import { toast } from "sonner";
@@ -27,26 +27,32 @@ const ApproveMissionPlan = () => {
   const params = useParams();
   const missionplanid = params.missionplanid as string;
   // const [approvalTypeId, setApprovalTypeId] = useState("");
-  const [loadingApprove, setLoadingApprove] = useState<boolean>(false)
+  const [loadingApprove, setLoadingApprove] = useState<boolean>(false);
 
   const missionStatementComment = useDisclosure();
   const measureOfSuccessComment = useDisclosure();
   const freedomConstraintComment = useDisclosure();
   const specifiedTaskComment = useDisclosure();
 
-  const { data, isLoading: isGettingMissionPlanItems,  } =
-    useGetMissionPlanItemsByIdQuery({
-      missionplanid: missionplanid as string,
-    });
+  const [
+    getMissionPlanItemsById,
+    { data, isLoading: isGettingMissionPlanItems },
+  ] = useLazyGetMissionPlanItemsByIdQuery();
   const name = data?.data?.staff_member ?? "";
 
   const [approveAllItems, { isLoading, isSuccess, isError }] =
     useApproveAllItemsMutation();
 
   useEffect(() => {
+    getMissionPlanItemsById({
+      missionplanid: missionplanid as string,
+    });
+  }, []);
+
+  useEffect(() => {
     if (isLoading && !isSuccess) {
       toast.loading("Processing...");
-      setLoadingApprove(true)
+      setLoadingApprove(true);
       setTimeout(() => {
         toast.dismiss();
       }, 3000);
@@ -56,13 +62,13 @@ const ApproveMissionPlan = () => {
       setTimeout(() => {
         toast.dismiss();
         toast.success("Approval status updated successfully");
-        setLoadingApprove(false)
+        setLoadingApprove(false);
       }, 13000);
       return;
     }
     if (!isLoading && isError) {
       toast.error("Approval status updated failed");
-      setLoadingApprove(false)
+      setLoadingApprove(false);
       return;
     }
   }, [isLoading, isSuccess, isError]);
@@ -117,9 +123,9 @@ const ApproveMissionPlan = () => {
     }
 
     // Return true if it only contains "pending" and "approved" without "rejected"
-  if (hasPendingOrApprovedOnly) {
-    return false;
-  }
+    if (hasPendingOrApprovedOnly) {
+      return false;
+    }
 
     // Return true if the statuses are mixed (i.e., not all approved or rejected)
     return true;
@@ -159,6 +165,12 @@ const ApproveMissionPlan = () => {
                   approveAllItems({
                     missionPlan: missionplanid,
                   })
+                    .unwrap()
+                    .then(() =>
+                      getMissionPlanItemsById({
+                        missionplanid: missionplanid as string,
+                      })
+                    )
                 }
               >
                 Approve All
@@ -174,7 +186,6 @@ const ApproveMissionPlan = () => {
               approvables={data?.data?.approvables ?? []}
               loading={isGettingMissionPlanItems}
               approveLoading={loadingApprove}
-         
             />
 
             <MeasureOfSuccess
