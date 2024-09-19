@@ -1,57 +1,73 @@
-import ConfirmationModal from "@/components/atoms/modals/confirm";
 import MeasureOfSuccessTable from "@/app/(dashboard)/admin/mission-plan/create/_component/measure-of-success-table";
-import {
-  constraints,
-  freedom,
-  impliedTask,
-  specificTask,
-  strategicIntent,
-} from "@/utils/data/mission-plan-template";
-import {
-  measureColumns,
-  measuresData,
-} from "@/utils/data/dashboard/missionplan/dummy";
-import routesPath from "@/utils/routes";
-import { useRouter, usePathname } from "next/navigation";
-import React, { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { PageLoader } from "@/components/custom-loader";
 import {
   MissionHeader,
   MissionItems,
   MissionPlanWrapper,
   MissionWrapper,
 } from "@/components/fragment";
-import BackIcon from "@/public/assets/icons/BackIcon";
-import { useSubmitPreviewedMissionPlanMutation } from "@/redux/services/mission-plan/missionPlanApi";
-import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import BackIcon from "@/public/assets/icons/BackIcon";
+import { useLazyGetMyMissionPlanQuery, useSubmitPreviewedMissionPlanMutation } from "@/redux/services/mission-plan/missionPlanApi";
+import { useAppSelector } from "@/redux/store";
+import {
+  measureColumns
+} from "@/utils/data/dashboard/missionplan/dummy";
+import routesPath from "@/utils/routes";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import SpecifiedTasksDropDown from "../../_components/specified-task-dropdown";
 
-interface Props {
-  missionDetails: any;
-  isFetchingMissionPlan?: boolean;
-}
+const { EMPLOYEE } = routesPath;
 
-const MissionDetailPreview = ({
-  missionDetails,
-  isFetchingMissionPlan,
-}: Props) => {
+const MissionDetailPreview = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const location = usePathname();
 
   const router = useRouter();
   const goBack = () => router.back();
 
-  const { ADMIN } = routesPath;
-  const missionData = missionDetails || [];
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+
+  const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
+
+  const [submitPreviewedMissionPlan, { isLoading: isSubmittingMissionPlan }] =
+    useSubmitPreviewedMissionPlanMutation();
+
+  const [
+    getMyMissionPlan,
+    {
+      data: mission_plan,
+      isLoading: isLoadingMissionPlan,
+      isFetching: isFetchingMissionPlan,
+      isSuccess: fetchedMissionPlan,
+    },
+  ] = useLazyGetMyMissionPlanQuery({});
+
+  // const missionData = missionDetails || [];
+  const missionData = mission_plan?.data?.mission_plan || [];
+
+
+  const handleGetMyMissionPlan = async () => {
+    const payload = { id: FISCAL_YEAR_ID };
+    getMyMissionPlan(payload)
+      .unwrap()
+      .then((payload) => {
+        // console.log(payload, "payload");
+       
+      });
+  };
+
 
   const measureColumnData = useMemo(
     () => measureColumns(),
     [isFetchingMissionPlan]
   );
-
-  const [submitPreviewedMissionPlan, { isLoading: isSubmittingMissionPlan }] =
-    useSubmitPreviewedMissionPlanMutation();
 
   const handleUpload = async () => {
     const payload = { ...missionData };
@@ -67,7 +83,17 @@ const MissionDetailPreview = ({
       });
   };
 
+  useEffect(() => {
+    handleGetMyMissionPlan();
+  }, [FISCAL_YEAR_ID]);
+
   return (
+    isLoadingMissionPlan || isFetchingMissionPlan ? (
+        <div className="h-[75vh] grid place-content-center">
+          <PageLoader />
+        </div>
+      ) : (
+        <> 
     <div className="w-[60vw]">
       <h2 className=" text-[var(--primary-color)] font-[600] text-base">
         Preview Mission Plan Information
@@ -234,11 +260,13 @@ const MissionDetailPreview = ({
         message="Congratulations ! you have successfully submitted your Mission Plan. Click on the button below to continue"
         show={showSuccessModal}
         handleClose={() => setShowSuccessModal(false)}
-        handleClick={() => router.push(ADMIN.MISSION_PLAN)}
+        handleClick={() => router.push(EMPLOYEE.MISSION_PLAN)}
         actionBtnTitle="View Status"
         modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
     </div>
+      </>
+      ) 
   );
 };
 
