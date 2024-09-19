@@ -82,10 +82,10 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
     getMyMissionPlan(payload)
       .unwrap()
       .then((payload) => {
-        console.log(payload, "payload");
+        // console.log(payload, "payload");
         if (payload?.data?.mission_plan?.boundaries?.length > 0) {
           const boundary = payload?.data?.mission_plan?.boundaries[0];
-          console.log(boundary, "boundaries");
+          // console.log(boundary, "boundaries");
           formik.setValues({
             constraints:
               boundary.constraints.length > 0 ? boundary.constraints : [""],
@@ -115,13 +115,13 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
 
   return (
     <>
-      {isLoadingMissionPlan || isFetchingMissionPlan ? (
-        <div className="h-[75vh] grid place-content-center">
-          <PageLoader />
-        </div>
-      ) : (
-        <>
           {step !== "preview" && (
+             isLoadingMissionPlan || isFetchingMissionPlan ? (
+              <div className="h-[75vh] grid place-content-center">
+                <PageLoader />
+              </div>
+            ) : (
+              <>
             <FormikProvider value={formik}>
               <form
                 onSubmit={formik.handleSubmit}
@@ -283,15 +283,12 @@ const Boundaries = ({ onNextStep }: myComponentProps) => {
                 </div>
               </form>
             </FormikProvider>
+              </>
+            )
           )}
           {step === "preview" && (
-            <MissionDetailPreview
-              isFetchingMissionPlan={isFetchingMissionPlan}
-              missionDetails={mission_plan?.data?.mission_plan}
-            />
+            <MissionDetailPreview/>
           )}
-        </>
-      )}
     </>
   );
 };
