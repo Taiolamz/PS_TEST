@@ -102,7 +102,6 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
       measures: formik.values.measures?.map((chi) => {
         return {
           ...chi,
-          // Ensure target is a number with two decimal places
           target: chi?.target ? Number(parseFloat(chi.target)) : chi.target,
         };
       }),
