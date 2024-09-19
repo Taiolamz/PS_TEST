@@ -40,8 +40,8 @@ const BulkUploadModal = ({
   const expectedFormat = {
     0: { name: "name", required: true, key: "name" },
     1: { name: "head_of_department", required: false, key: "head_of_department" },
-    2: { name: "subsidiary", required: true, key: "subsidiary" },
-    3: { name: "branch", required: true, key: "branch" },
+    2: { name: "subsidiary", required: false, key: "subsidiary" },
+    3: { name: "branch", required: false, key: "branch" },
   };
   const tableHeadlist = [
     "Name",
