@@ -1,9 +1,12 @@
 "use client";
 import { ManceLoader } from "@/components/custom-loader";
 import TableWrapper from "@/components/tables/TableWrapper";
- import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { extractNamesFromFormat, replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import {
+  extractNamesFromFormat,
+  replaceEmptyValuesWithPlaceholder,
+} from "@/utils/helpers";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -31,18 +34,18 @@ const BulkUploadModal = ({
     if (file && setFile) {
       setUploadedFile(file.name);
       setFile(file);
-      handleUploadTest(file)
+      handleUploadTest(file);
     } else {
-     !uploadedFile && setUploadedFile(null);
+      !uploadedFile && setUploadedFile(null);
     }
   };
 
   const expectedFormat = {
     0: { name: "name", required: true, key: "name" },
     1: { name: "head_of_unit", required: false, key: "head_of_unit" },
-    2: { name: "subsidiary", required: true, key: "subsidiary" },
-    3: { name: "branch", required: true, key: "branch" },
-    4: { name: "department", required: true, key: "department" },
+    2: { name: "subsidiary", required: false, key: "subsidiary" },
+    3: { name: "branch", required: false, key: "branch" },
+    4: { name: "department", required: false, key: "department" },
   };
   const tableHeadlist = [
     "Name",
@@ -155,8 +158,8 @@ const BulkUploadModal = ({
         </p>
         {btnGroup}
       </div>
-        {/* table start here  */}
-        {tableBodyList?.length > 0 && (
+      {/* table start here  */}
+      {tableBodyList?.length > 0 && (
         <>
           <div className="preview-reusable-box-table">
             {" "}
