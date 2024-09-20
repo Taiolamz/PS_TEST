@@ -2,7 +2,7 @@ export const admin_auth = "admin";
 export const employee_auth = "employee";
 // super-admin,  hr-admin, strategy-admin, it-admin, compliance, staff
 //  employee
-export const employeeRoleList = ["staff"];
+export const employeeRoleList = ["staff",  "ceo", "it-admin"];
 
 export const adminRoleList = [
   "hr-admin",
@@ -10,8 +10,7 @@ export const adminRoleList = [
   // "it-admin", 
   "compliance",
   "super-admin",
-  "user",
-  "ceo",
+  // "user",
 ];
 
 export const specialRoleList = ["super-admin"];
