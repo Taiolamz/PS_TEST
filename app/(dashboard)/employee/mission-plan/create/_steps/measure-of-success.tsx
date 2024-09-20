@@ -53,7 +53,7 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     (state) => state.mission_plan
   );
 
-  // console.log(mission_plan_info)
+ 
 
   const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
@@ -102,7 +102,6 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
       measures: formik.values.measures?.map((chi) => {
         return {
           ...chi,
-          // Ensure target is a number with two decimal places
           target: chi?.target ? Number(parseFloat(chi.target)) : chi.target,
         };
       }),
