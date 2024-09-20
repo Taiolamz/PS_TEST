@@ -18,6 +18,7 @@ type CustomSelectType = {
   options: Record<string, any>[];
   id?: string | number;
   selected: string;
+  selectTwo?: string;
   label?: string;
   labelClass?: string;
   className?: string;
@@ -47,6 +48,7 @@ export default function CustomSelect({
   isRequired,
   placeholder,
   mainClass,
+  selectTwo,
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -85,7 +87,7 @@ export default function CustomSelect({
             onBlur={onBlur}
           >
             {options && options[0]?.label === options[0]?.value
-              ? selected
+              ? selectTwo ? selectTwo : selected
                 ? options?.filter(
                     (option) =>
                       option?.value?.toString().toLowerCase() ===

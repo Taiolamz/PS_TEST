@@ -16,6 +16,7 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import { processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
+import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 
 const { ADMIN } = routesPath;
 
@@ -266,18 +267,39 @@ export default function AddEmployee() {
     {}
   );
   const handleHeadSelectChange = (selectedName: string) => {
-    const selectedEmployee = (employees as AllStaff[]).find(
-      (emp) => emp.name === selectedName
-    );
+    // console.log(selectedName);
+
+    const selectedEmployee = (
+      handleFormatNameLabel(employees) as AllStaff[]
+    ).find((emp: any) => emp.value === selectedName);
+    // console.log(selectedEmployee);
 
     if (selectedEmployee) {
-      formik.setFieldValue("line_manager.name", selectedEmployee.name);
+      formik.setFieldValue("line_manager", selectedEmployee);
       formik.setFieldValue("line_manager_email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
     } else {
       formik.setFieldValue("line_manager.name", "");
       formik.setFieldValue("line_manager_email", "");
       formik.setFieldValue("head.id", "");
+    }
+  };
+  const handleFormatNameLabel = (arr: any) => {
+    if (arr?.length > 0) {
+      const newList = arr?.map((chi: any) => {
+        return {
+          ...chi,
+          // label: `${chi?.name} ( ${
+          //   chi?.name === "Ayomipe Olorunsola"
+          //     ? `stingy girl`
+          //     : trimLongString(chi?.email, 15)
+          // } )`,
+          label: `${chi?.name} ( ${trimLongString(chi?.email, 15)} )`,
+          value: `${chi?.name} ( ${trimLongString(chi?.email, 15)} )`,
+        };
+      });
+      // console.log(newList);
+      return newList;
     }
   };
 
@@ -416,19 +438,24 @@ export default function AddEmployee() {
 
                 <CustomSelect
                   label="Line Manager name"
-                  placeholder="Line Manager name"
-                  options={[
-                    {
-                      label: "Select Line Manager name",
-                      value: "",
-                      name: "",
-                      id: "",
-                    },
-                    ...employees,
-                  ]}
+                  placeholder="Select Line manager"
+                  // options={[
+                  //   {
+                  //     label: "Select Line Manager name",
+                  //     value: "",
+                  //     name: "",
+                  //     id: "",
+                  //   },
+                  //   ...employees as any),
+                  // ]}
+                  options={handleFormatNameLabel(employees)}
                   isRequired
-                  selected={formik.values.line_manager.name}
+                  selected={formik.values.line_manager.label}
                   setSelected={handleHeadSelectChange}
+                  selectTwo={formik.values.line_manager.name}
+                  // setSelected={() => {
+                  //   console.log(handleFormatNameLabel(employees));
+                  // }}
                   labelClass={labelClassName}
                   // isRequired
                 />
