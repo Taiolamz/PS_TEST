@@ -19,7 +19,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
     const newName = e.target.value;
     formik.setFieldValue(`staff_levels.${index}.name`, newName);
   };
-  const totalNum = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+  const totalNum = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 
   const handleStaffLevel = (newValue: number, index: number) => {
     formik.setFieldValue(`staff_levels.${index}.level`, newValue);
@@ -101,26 +101,6 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                                 </div>
                               )}
 
-                            {/* <Field
-                              name={`staff_levels.${index}.level`}
-                              component={CustomSelect}
-                              options={[10, 9, 8, 7, 6, 5, 4, 3, 2, 1].map(
-                                (idx) => {
-                                  return {
-                                    label: `Level ${idx}`,
-                                    value: { idx },
-                                  };
-                                }
-                              )}
-                              selected={
-                                formik.values.staff_levels?.[index]?.level
-                              }
-                              setSelected={(value: any) => {
-                                handleStaffLevel(value, index);
-                              }}
-                              className="inline-flex mt-1 w-[7.9375rem] max-w-[7.9375rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
-                              value={formik.values.staff_levels?.[index]?.level}
-                            /> */}
                             <CustomSelect
                               id={`staff_levels.${index}.level`}
                               options={gradeOptions(index)}
@@ -130,6 +110,7 @@ const GradeLevel = ({ formik }: GradeLevelProps) => {
                               setSelected={(val: any) => {
                                 handleStaffLevel(val, index);
                               }}
+                              emptyStateText="No More level"
                               className="inline-flex mt-1 w-[7.9375rem] max-w-[7.9375rem] px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                             />
 
