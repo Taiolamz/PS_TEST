@@ -53,7 +53,7 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     (state) => state.mission_plan
   );
 
-  // console.log(mission_plan_info)
+ 
 
   const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
