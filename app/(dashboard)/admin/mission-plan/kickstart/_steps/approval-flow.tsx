@@ -23,6 +23,14 @@ type Select = {
     value: string | number;
 };
 
+const levelOptionsDefault: Select[] = Array.from({ length: 11 }, (_, i) => {
+    return {
+        // ...option,
+        value: (i).toString(),
+        label: (i).toString(),
+    }
+});
+
 const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
     value: (i + 1).toString(),
     label: (i + 1).toString(),
@@ -46,38 +54,38 @@ const ApprovalFlow = () => {
 
     const { data: rolesData, isLoading: isLoadingApprovalroles } =
         useGetAllApproverListQuery();
-    const [createApprovalFlow, {isLoading: isCreatingApprovalFlow}] = useCreateApprovalFlowMutation()
+    const [createApprovalFlow, { isLoading: isCreatingApprovalFlow }] = useCreateApprovalFlowMutation()
 
-        const getApprovalLevels = (data: []) => {
-            const mappedApprovals = data.map((d: Dictionary) => {
-                return {
-                    ...d,
-                    title: d?.title,
-                    approvals: d?.approvals
-                }
-            })
-            return {order_of_approvals: mappedApprovals}
-        }
+    const getApprovalLevels = (data: []) => {
+        const mappedApprovals = data.map((d: Dictionary) => {
+            return {
+                ...d,
+                title: d?.title,
+                approvals: d?.approvals
+            }
+        })
+        return { order_of_approvals: mappedApprovals }
+    }
 
     // const formik = useFormik()
     const handleFormSubmit = async (values: any) => {
-        const hasEmptyApproval = values?.staff_levels?.map((f: Dictionary) => f.approvals)?.some((f: Dictionary) => f.length === 0)
+        const hasEmptyApproval = values?.staff_levels?.filter((f: Dictionary) => f.title !== "organization head")?.map((f: Dictionary) => f.approvals)?.some((f: Dictionary) => f.length === 0)
         if (hasEmptyApproval) {
-            toast.error('Each level must have at least one approval')
+            toast.error('Each level must have at least one approval except the organization head')
             return
         }
         const APPROVALS = getApprovalLevels(values?.staff_levels)
-        
+
         dispatch(updateFinancialYearDetails({ slug: "order_of_approvals", data: APPROVALS?.order_of_approvals }))
         createApprovalFlow(APPROVALS)
-        .unwrap()
-        .then(() => {
-            toast.success('Approval flow updated successfully')
-            router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=preview`)
-        })
+            .unwrap()
+            .then(() => {
+                toast.success('Approval flow updated successfully')
+                router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=preview`)
+            })
     }
 
-    
+
 
     useEffect(() => {
         if (organization?.staff_levels) {
@@ -100,7 +108,7 @@ const ApprovalFlow = () => {
                         approval_levels: d?.approvals?.length
                     }
                 })
-                let approvals_flow = {staff_levels: initialApprovals}
+                let approvals_flow = { staff_levels: initialApprovals }
                 // console.log(approvals_flow)
                 setInitialApprovalFlowData(approvals_flow)
             }
@@ -135,7 +143,7 @@ const ApprovalFlow = () => {
                 >
                     {
                         (formik) => {
-                            // console.log(formik.values)
+                            console.log(formik.values)
                             return (
                                 <Form>
                                     <FieldArray
@@ -150,13 +158,13 @@ const ApprovalFlow = () => {
                                                         className="w-full bg-white mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
                                                         title={
                                                             <p className="font-medium text-sm">
-                                                                {idx + 1}. How many levels of approval should be for <span className="text-primary capitalize">{item.title}</span>  before the final approval?
+                                                                {idx + 1}. How many levels of approval should be for <span className="text-primary capitalize">{item.title}</span>?
                                                             </p>
                                                         }
                                                         content={
                                                             <>
                                                                 <CustomSelect
-                                                                    options={levelOptions}
+                                                                    options={formik?.values?.staff_levels?.[idx].title === "organization head" ? levelOptionsDefault : levelOptions}
                                                                     selected={formik?.values?.staff_levels?.[idx].approval_levels ? formik?.values?.staff_levels?.[idx].approval_levels.toString() : ''}
                                                                     setSelected={(value) => {
                                                                         formik.setFieldValue(`staff_levels.${idx}.approvals`, [])
@@ -171,28 +179,29 @@ const ApprovalFlow = () => {
                                                                     >
                                                                         {({ push, remove }: { push: any, remove: any }) => (
                                                                             formik?.values?.staff_levels?.[idx].approval_levels ?
-                                                                    Array.from({ length: formik?.values?.staff_levels?.[idx].approval_levels }, (_, index) => (
-                                                                        <div key={index} className="mb-4">
-                                                                            {index === 0 && <span>Who should be the first approval</span>}
-                                                                            {index > 0 && index < (Number(formik?.values?.staff_levels?.[idx].approval_levels) - 1) && <span>Who should be the next approval</span>}
-                                                                            {Number(formik?.values?.staff_levels?.[idx].approval_levels) > 1 && Number(formik?.values?.staff_levels?.[idx].approval_levels) === index + 1 && <span>Who has the final approval power</span>}
-                                                                            <CustomSelect
-                                                                            key={index}
-                                                                            options={rolesData?.map((item) => {
-                                                                                return {
-                                                                                    label: item,
-                                                                                    value: item
-                                                                                }
-                                                                            }) || []}
-                                                                            selected={formik?.values?.staff_levels?.[idx].approvals?.[index]}
-                                                                            setSelected={(value) => {
-                                                                                formik.setFieldValue(`staff_levels.${idx}.approvals.${index}`, value)
-                                                                            }}
-                                                                            className="w-[15rem]"
-                                                                            placeholder="Select..."
-                                                                        />
-                                                                    </div>
-                                                                )) : ''
+                                                                                Array.from({ length: formik?.values?.staff_levels?.[idx].approval_levels }, (_, index) => (
+                                                                                    <div key={index} className="mb-4">
+                                                                                        {formik?.values?.staff_levels?.[idx].approval_levels == 1 && <span>Who has the final approval power</span>}
+                                                                                        {index === 0 && formik?.values?.staff_levels?.[idx].approval_levels > 1 && <span>Who should be the first approval</span>}
+                                                                                        {index > 0 && index < (Number(formik?.values?.staff_levels?.[idx].approval_levels) - 1) && <span>Who should be the next approval</span>}
+                                                                                        {Number(formik?.values?.staff_levels?.[idx].approval_levels) > 1 && Number(formik?.values?.staff_levels?.[idx].approval_levels) === index + 1 && <span>Who has the final approval power</span>}
+                                                                                        <CustomSelect
+                                                                                            key={index}
+                                                                                            options={rolesData?.map((item) => {
+                                                                                                return {
+                                                                                                    label: item,
+                                                                                                    value: item
+                                                                                                }
+                                                                                            }) || []}
+                                                                                            selected={formik?.values?.staff_levels?.[idx].approvals?.[index]}
+                                                                                            setSelected={(value) => {
+                                                                                                formik.setFieldValue(`staff_levels.${idx}.approvals.${index}`, value)
+                                                                                            }}
+                                                                                            className="w-[15rem]"
+                                                                                            placeholder="Select..."
+                                                                                        />
+                                                                                    </div>
+                                                                                )) : ''
                                                                         )
                                                                         }
                                                                     </FieldArray>
