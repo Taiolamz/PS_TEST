@@ -273,7 +273,7 @@ const SpecifiedTask = ({ onNextStep }: myComponentProps) => {
   const shouldDeleteSpecifiedTask = deleteView && oldSpecifiedID ? true : false;
   const shouldReassignSpecifiedTask = oldSpecifiedID && !deleteView;
 
-  console.log(shouldDeleteSpecifiedTask, shouldReassignSpecifiedTask);
+  
   const { old_specified_task_id, new_specified_task_id } = useAppSelector(
     (state) => state.specified_task_reassignment
   );
