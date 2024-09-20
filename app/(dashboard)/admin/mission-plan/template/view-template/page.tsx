@@ -179,70 +179,28 @@ const ViewMissionPlaTemplate: React.FC = () => {
     handleGetMissionPlanTemplates();
   }, [selectedMissionPlanTemplates]);
 
-  // useEffect(() => {
-  //   const filteredSections = initialSections.filter(
-  //     (section) => section.isSelected
-  //   );
-  //   setSections(filteredSections);
-  // }, [missionPlanTemplates]);
-  // useEffect(() => {
-  //   // Filter the sections that are selected
-  //   const updatedSections = (initialSections as any[])
-  //     .map((section) => {
-  //       // Find the matching template in missionPlanTemplates based on mapTitle
-  //       const match = (missionPlanTemplates as any[]).find(
-  //         (template) => template.mapTitle === section.mapTitle
-  //       );
-
-  //       if (match) {
-  //         // Update the section with the properties from the matching template
-  //         return {
-  //           ...section,
-  //           isSelected: match.isSelected,
-  //           content: match.content,
-  //           displayName: match.displayName,
-  //           isRequired: match.isRequired || section.isRequired, // Preserve initial 'isRequired' if not specified
-  //         };
-  //       }
-  //       return section;
-  //     })
-  //     .filter((section) => section.isSelected) // Filter only selected sections
-  //     .sort(
-  //       (a, b) =>
-  //         missionPlanTemplates.findIndex(
-  //           (template) => template.mapTitle === a.mapTitle
-  //         ) -
-  //         missionPlanTemplates.findIndex(
-  //           (template) => template.mapTitle === b.mapTitle
-  //         )
-  //     );
-
-  //   // Update the sections state with the filtered and sorted sections
-  //   setSections(updatedSections);
-  // }, [missionPlanTemplates, initialSections]);
   useEffect(() => {
-    const updatedSections = initialSections
-      .map((section) => {
-        const match = missionPlanTemplates.find(
-          (template) => template.mapTitle === section.mapTitle
-        );
+    const validIds = new Set(
+      missionPlanTemplates.map((template) => template.id)
+    );
+    const validMapTitles = new Set(
+      missionPlanTemplates.map((template) => template.mapTitle)
+    );
 
-        if (match) {
-          return {
-            ...section,
-            isSelected: match.isSelected,
-          };
-        }
-        return section;
-      })
-      .filter((section) => section.isSelected)
+    const updatedSections = initialSections
+      .filter(
+        (section) =>
+          validIds.has(section.id) || validMapTitles.has(section.mapTitle)
+      )
       .sort(
         (a, b) =>
           missionPlanTemplates.findIndex(
-            (template) => template.mapTitle === a.mapTitle
+            (template) =>
+              template.mapTitle === a.mapTitle || template.id === a.id
           ) -
           missionPlanTemplates.findIndex(
-            (template) => template.mapTitle === b.mapTitle
+            (template) =>
+              template.mapTitle === b.mapTitle || template.id === b.id
           )
       );
 
@@ -547,13 +505,13 @@ const ViewMissionPlaTemplate: React.FC = () => {
                 className={`w-[425px]`}
               />
 
-              <Button
+              {/* <Button
                 variant="outline"
                 className="font-light mt-auto text-primary border-primary hover:bg-transparent hover:text-primary"
                 disabled
               >
                 Edit
-              </Button>
+              </Button> */}
             </div>
             {sections.map((section, index) => (
               <div

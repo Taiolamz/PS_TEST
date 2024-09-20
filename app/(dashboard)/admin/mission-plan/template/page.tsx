@@ -104,13 +104,14 @@ const MissionPlanTemplate = () => {
     to: 0,
     total: 0,
     per_page: 50,
-    currentPage: 0,
+    current_page: 1,
     next_page_url: "",
     prev_page_url: "",
-    paginate: true
+    paginate: true,
   });
 
-  const missionPlanTemplates = missionPlanTemplateData?.data?.templates?.data ?? [];
+  const missionPlanTemplates =
+    missionPlanTemplateData?.data?.templates?.data ?? [];
   const { missionPlanColumn, data, openDeleteModal, handleDeleteDialog } =
     MissionPlanColumnData();
 

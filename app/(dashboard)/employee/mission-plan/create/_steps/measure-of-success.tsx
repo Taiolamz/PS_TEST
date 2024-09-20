@@ -326,7 +326,10 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                                       )
                                     }
                                     className="border p-2 bg-[#F6F8F9]"
-                                    value={formik.values.measures[index].target}
+                                    // value={formik.values.measures[index].target}
+                                    value={parseFloat(
+                                      formik.values.measures[index].target
+                                    ).toFixed(2)}
                                   />
                                   <ErrorMessage
                                     name={`measures.${index}.target`}

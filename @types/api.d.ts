@@ -233,6 +233,7 @@ type RolesData = {};
 type QueryParams = {
   page?: number;
   currentPage?: number;
+  current_page?: number;
   page?: number;
   paginate?: boolean;
   next_page_url?: string;
