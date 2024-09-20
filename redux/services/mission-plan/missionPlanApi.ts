@@ -138,13 +138,30 @@ export const missionPlanApi = baseApi.injectEndpoints({
         }
       },
     }),
+    // createBoundaries: builder.mutation({
+    //   query: (payload) => ({
+    //     url: `/mission-plan/boundary`,
+    //     method: "POST",
+    //     body: payload,
+    //   }),
+    //   invalidatesTags: ["MissionPlan"],
+    // }),
     createBoundaries: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/boundary`,
         method: "POST",
         body: payload,
       }),
+      async onQueryStarted(payload, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          dispatch(baseApi.util.invalidateTags(["MissionPlan"]));
+        } catch (error) {
+          console.error("Error creating boundaries:", error);
+        }
+      },
     }),
+
     submitPreviewedMissionPlan: builder.mutation({
       query: (payload) => ({
         url: `/mission-plan/${payload?.id}/submit`,

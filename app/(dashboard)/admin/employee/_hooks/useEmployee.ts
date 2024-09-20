@@ -151,6 +151,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       ...formik.values,
       organization_id: organization?.id,
       subsidiary_id: formik.values.subsidiary_id.id,
+      line_manager: formik.values?.line_manager?.name,
     };
     await createEmployee(payload)
       .unwrap()
@@ -184,7 +185,9 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
       line_manager: {
         name:"",
         email:"",
-        id:""
+        id:"",
+        value: "",
+        label: "",
       },
       department_id: "",
       branch_id: "",

@@ -18,6 +18,7 @@ type CustomSelectType = {
   options: Record<string, any>[];
   id?: string | number;
   selected: string;
+  selectTwo?: string;
   label?: string;
   labelClass?: string;
   className?: string;
@@ -25,6 +26,7 @@ type CustomSelectType = {
   isRequired?: boolean;
   placeholder?: string;
   canSearch?: boolean;
+  emptyStateText?:string;
   setSelected: (event: any) => void;
   onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
   touched?: any;
@@ -47,6 +49,8 @@ export default function CustomSelect({
   isRequired,
   placeholder,
   mainClass,
+  emptyStateText,
+  selectTwo,
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -85,7 +89,7 @@ export default function CustomSelect({
             onBlur={onBlur}
           >
             {options && options[0]?.label === options[0]?.value
-              ? selected
+              ? selectTwo ? selectTwo : selected
                 ? options?.filter(
                     (option) =>
                       option?.value?.toString().toLowerCase() ===
@@ -117,7 +121,7 @@ export default function CustomSelect({
             {canSearch && (
               <CommandInput placeholder={`Search`} className="h-9" />
             )}
-            <CommandEmpty>No Record Found.</CommandEmpty>
+            <CommandEmpty>{emptyStateText ? emptyStateText : "No Record Found."}</CommandEmpty>
             <CommandGroup
               className="h-56 overflow-y-auto scroll-hidden"
               style={{ overflowY: "auto" }}
