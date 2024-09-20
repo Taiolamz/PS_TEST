@@ -60,7 +60,7 @@ const MissionPlanApprovalFlowLevel = () => {
         </div>
         <div className="mt-5 w-full grid grid-cols-6 gap-7">
           {createTemplate}
-          {defaultTemplate}
+          {/* {defaultTemplate} */}
         </div>
       </div>
     </DashboardLayout>

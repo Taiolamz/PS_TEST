@@ -63,7 +63,7 @@ const MissionPlanLevel = ({ handleClick, handleMainClick }: Props) => {
         ) : (
           <div className=" mt-5 w-full grid grid-cols-6  gap-7 ">
             {createTemplate}
-            {defaultTemplate}
+            {/* {defaultTemplate} */}
             {missionPlanTemplateData?.data?.templates?.map((chi: Dictionary, idx: number) => {
               const { name } = chi;
               return (

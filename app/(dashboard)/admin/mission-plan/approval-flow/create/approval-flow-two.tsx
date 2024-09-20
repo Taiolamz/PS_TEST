@@ -43,7 +43,7 @@ const ApprovalFlowTwo = ({
   // setOrderValue,
   approvalsArray,
   setNewFieldValue,
-  allRoles,
+  // allRoles,
   // hodVal,
   isLoading,
 }: Prop) => {
@@ -73,6 +73,8 @@ const ApprovalFlowTwo = ({
     }
   }, [approvalsArray]);
 
+  const newOptions = options.slice(1);
+
   return (
     <>
       {isLoading ? (
@@ -91,7 +93,7 @@ const ApprovalFlowTwo = ({
           onSubmit={() => {}}
         >
           {({ values, setFieldValue }) => {
-            console.log(values, "values");
+            // console.log(values, "values");
             const handleNumLevelsChange = (
               index: number,
               numLevelsValue: number
@@ -105,8 +107,13 @@ const ApprovalFlowTwo = ({
                 const newApprovals =
                   values.order_of_approvals[index]?.approvals?.slice(
                     0,
-                    numLevelsValue + 1
+                    numLevelsValue
                   ) || [];
+
+                for (let i = newApprovals.length; i < numLevelsValue; i++) {
+                  newApprovals.push("");
+                }
+
                 setFieldValue(
                   `order_of_approvals[${index}].approvals`,
                   newApprovals
@@ -135,16 +142,20 @@ const ApprovalFlowTwo = ({
                               {idx + 1}. How many levels of approval should be
                               for{" "}
                               <span className="text-primary capitalize">
-                                {chi.title}
-                              </span>{" "}
-                              before the final approval?
+                                {chi.title} 
+                              </span>{" "}?
+                              {/* before the final approval? */}
                             </p>
                           }
                           content={
                             <>
                               <CustomSelect
                                 placeholder="Select..."
-                                options={options}
+                                options={
+                                  chi?.title === "Head of Department"
+                                    ? options
+                                    : newOptions
+                                }
                                 selected={numLevels[idx]?.toString() || ""}
                                 setSelected={(value) => {
                                   handleNumLevelsChange(idx, Number(value));
@@ -168,11 +179,17 @@ const ApprovalFlowTwo = ({
                                         <div key={i}>
                                           {i + 1 < numLevels[idx] && (
                                             <CustomSelect
-                                              label={`${generateLabel(
-                                                i
-                                              )}. Who should have approval power for Level ${
-                                                i + 1
-                                              }`}
+                                              label={`${generateLabel(i)}${
+                                                i === 0
+                                                  ? ". Who should be the first approval"
+                                                  : ". Who should be the next approval"
+                                              }
+                                              `}
+                                              // label={`${generateLabel(
+                                              //   i
+                                              // )}. Who should have approval power for Level ${
+                                              //   i + 1
+                                              // }`}
                                               placeholder="Select..."
                                               options={approvals.map((chi) => ({
                                                 label: chi?.name,
@@ -203,7 +220,7 @@ const ApprovalFlowTwo = ({
                                     <CustomSelect
                                       label={`${generateLabel(
                                         numLevels[idx] - 1
-                                      )}. Who has the final approval flow`}
+                                      )}. Who has the final approval power`}
                                       placeholder="Select..."
                                       options={approvals.map((chi) => ({
                                         label: chi?.name,
