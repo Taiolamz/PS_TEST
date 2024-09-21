@@ -222,6 +222,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     // }
     const obj = {
       mission_plan_id: formik?.values?.mission_plan_id,
+      fiscal_year_id: FISCAL_YEAR_ID,
       tasks: formik?.values?.tasks.flatMap((task) => {
         return (task.implied_tasks as any[]).map((impliedTask) => ({
           start_date: impliedTask.start_date,
@@ -310,7 +311,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     mission_plan_id: missionPlanID,
     fiscal_year_id:
       mission_plan_info?.mission_plan?.fiscal_year_id ||
-      mission_plan_info?.active_fy_info?.id ||
+      mission_plan_info?.active_fy_info?.id || FISCAL_YEAR_ID ||
       "",
     tasks: handleFormatImpliedTask(),
 
