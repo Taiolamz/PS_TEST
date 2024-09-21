@@ -42,12 +42,12 @@ const BulkUploadModal = ({
 
   const expectedFormat = {
     0: { name: "name", required: true, key: "name" },
-    1: { name: "head", required: false, key: "head" },
-    2: { name: "state", required: true, key: "state" },
-    3: { name: "address", required: true, key: "address" },
-    4: { name: "country", required: true, key: "country" },
-    5: { name: "work_email", required: false, key: "work_email" },
-    6: { name: "subsidiary", required: false, key: "subsidiary" },
+    5: { name: "head", required: false, key: "head" },
+    1: { name: "state", required: true, key: "state" },
+    2: { name: "address", required: true, key: "address" },
+    3: { name: "country", required: true, key: "country" },
+    6: { name: "work_email", required: false, key: "work_email" },
+    4: { name: "subsidiary", required: false, key: "subsidiary" },
   };
   const tableHeadlist = [
     "Name",

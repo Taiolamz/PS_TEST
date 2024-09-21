@@ -64,7 +64,7 @@ const BulkUploadModal = ({
     15: { name: "Phone Number", required: false, key: "phone_number" },
     16: { name: "Staff Number", required: false, key: "staff_number" }, 
     17: { name: "Role", required: true, key: "role" },
-    18: { name: "New Employee", required: true, key: "new_employee" },
+    18: { name: "New Employee", required: false, key: "new_employee" },
   };
   // const tableHeadlist = [
   //   "Name",
