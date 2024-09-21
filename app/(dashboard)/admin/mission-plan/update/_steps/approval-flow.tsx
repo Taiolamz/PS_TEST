@@ -24,6 +24,14 @@ type Select = {
   value: string | number;
 };
 
+const levelOptionsDefault: Select[] = Array.from({ length: 11 }, (_, i) => {
+  return {
+      // ...option,
+      value: (i).toString(),
+      label: (i).toString(),
+  }
+});
+
 const levelOptions: Select[] = Array.from({ length: 10 }, (_, i) => ({
   value: (i + 1).toString(),
   label: (i + 1).toString(),
@@ -78,9 +86,9 @@ const ApprovalFlowUpdate = () => {
   // const formik = useFormik()
   const handleFormSubmit = async (values: any) => {
     
-    const hasEmptyApproval = values?.staff_levels?.map((f: Dictionary) => f.approvals)?.some((f: Dictionary) => f.length === 0)
+    const hasEmptyApproval = values?.staff_levels?.filter((f: Dictionary) => f.title !== "organization head")?.map((f: Dictionary) => f.approvals)?.some((f: Dictionary) => f.length === 0)
     if (hasEmptyApproval) {
-        toast.error('Each level must have at least one approval')
+        toast.error('Each level must have at least one approval except the organization head')
         return
     }
     const APPROVALS = getApprovalLevels(values?.staff_levels)
@@ -158,14 +166,13 @@ const ApprovalFlowUpdate = () => {
                               for{" "}
                               <span className="text-primary capitalize">
                                 {item.title}
-                              </span>{" "}
-                              before the final approval?
+                              </span>?
                             </p>
                           }
                           content={
                             <>
                               <CustomSelect
-                                options={levelOptions}
+                                options={formik?.values?.staff_levels?.[idx].title === "organization head" ? levelOptionsDefault : levelOptions}
                                 selected={
                                   formik?.values?.staff_levels?.[idx]
                                     .approval_levels
@@ -207,12 +214,8 @@ const ApprovalFlowUpdate = () => {
                                           },
                                           (_, index) => (
                                             <div key={index} className="mb-4">
-                                              {index === 0 && (
-                                                <span>
-                                                  Who should be the first
-                                                  approval
-                                                </span>
-                                              )}
+                                              {formik?.values?.staff_levels?.[idx].approval_levels == 1 && <span>Who has the final approval power</span>}
+                                              {index === 0 && formik?.values?.staff_levels?.[idx].approval_levels > 1 && <span>Who should be the first approval</span>}
                                               {index > 0 &&
                                                 index <
                                                   Number(

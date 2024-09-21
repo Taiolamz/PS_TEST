@@ -443,13 +443,13 @@ const AddMissionPlanTemplate: React.FC = () => {
                 className={`w-[425px]`}
               />
 
-              <Button
+              {/* <Button
                 variant="outline"
                 className="font-light mt-auto text-primary border-primary hover:bg-transparent hover:text-primary"
                 disabled
               >
                 Edit
-              </Button>
+              </Button> */}
             </div>
             {sections.map((section, index) => (
               <div
@@ -457,14 +457,10 @@ const AddMissionPlanTemplate: React.FC = () => {
                 className={`mt-5 border  rounded-lg p-8 ${
                   section.isRequired ? "cursor-not-allowed" : "cursor-pointer"
                 } pb-10 pt-10 bg-white`}
-                // draggable
-                // onDragStart={(e) => handleDragStart(e, index)}
-                // onDrop={(e) => handleDrop(e, index)}
-                // onDragOver={handleDragOver}
-                draggable={!section.isRequired} // Only draggable if isRequired is false
+                draggable={!section.isRequired}
                 onDragStart={(e) =>
                   !section.isRequired && handleDragStart(e, index)
-                } // Conditionally attach the drag event handlers
+                }
                 onDrop={(e) => !section.isRequired && handleDrop(e, index)}
                 onDragOver={
                   section.isRequired ? undefined : (e) => handleDragOver(e)

@@ -6,7 +6,7 @@ import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
 import * as yup from "yup";
@@ -132,6 +132,7 @@ export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
 
     return payload;
   };
+  const location = usePathname();
 
   const MissionPlanTemplateRoute = ADMIN.MISSION_PLAN_TEMPLATE;
   const [
@@ -148,12 +149,12 @@ export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
       router.back();
       return;
     } else if (searchParams.get("qs") === "template") {
-      dispatch(resetFinancialYearDetails())
+      dispatch(resetFinancialYearDetails());
       toast.success("Mission Plan Template Created Successfully");
       router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`);
       return;
     }
-    if (templateID) {
+    if (templateID && location === ADMIN.VIEW_MISSION_PLAN_TEMPLATE) {
       toast.success("Mission Plan Template Updated Successfully");
     } else {
       toast.success("Mission Plan Template Created Successfully");
@@ -163,15 +164,15 @@ export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
       setTimeout(() => {
         toast.dismiss();
         router.push(MissionPlanTemplateRoute);
-        toast.success("Mission Plan Template Created Successfully");
-        if(searchParams.get('qs') === 'kick-start-fy'){
-          router.back()
-          return
+        // toast.success("Mission Plan Template Created Successfully");
+        if (searchParams.get("qs") === "kick-start-fy") {
+          router.back();
+          return;
         }
-        if(searchParams.get('qs') === 'template'){
-          dispatch(resetFinancialYearDetails())
-          router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`)
-          return
+        if (searchParams.get("qs") === "template") {
+          dispatch(resetFinancialYearDetails());
+          router.push(`${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`);
+          return;
         }
       }, 2000);
     });
