@@ -140,14 +140,14 @@ const BulkUploadModal = ({
         </div>
 
         <p className="mt-5 font-light text-sm text-custom-gray-scale-400">
-          download{" "}
-          <span
+          Download{" "}
+          {/* <span
             className="text-primary cursor-pointer"
             onClick={onSampleCsvDownload}
           >
             sample csv
           </span>{" "}
-          and{" "}
+          and{" "} */}
           <span
             className="text-primary cursor-pointer"
             onClick={onSampleExcelDownload}

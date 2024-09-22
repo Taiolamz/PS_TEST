@@ -153,7 +153,13 @@ const HeaderNavBox = ({
   );
 
   const profileList = [
-    { name: "Edit Profile", icon: editIcon, onClick: () => {} },
+    {
+      name: "View Profile",
+      icon: editIcon,
+      onClick: () => {
+        router?.push(routesPath?.PROFILE?.PERSONAL);
+      },
+    },
     {
       name: "Logout",
       icon: logouticon,
@@ -225,9 +231,7 @@ const HeaderNavBox = ({
             </>
           ) : (
             <>
-              <p className={style.title}>
-                {headerTitle || "Welcome ITH Holdings"}
-              </p>
+              <p className={style.title}>{headerTitle || "Welcome "}</p>
             </>
           )}
         </div>
@@ -306,6 +310,7 @@ const HeaderNavBox = ({
                       }}
                       key={idx}
                       className={style.item_row}
+                      style={{ cursor: "pointer" }}
                     >
                       <figure className={style.img_box}>{chi.icon}</figure>
                       <p

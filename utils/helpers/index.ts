@@ -402,3 +402,27 @@ export const findItemById = (
 };
 
 //END OF GET MISSION ITEMS STATUS FROM APPROVABLE TYPES THAT MATCH THE APPROVABLE_ID AND TYPE
+
+
+export function getOrdinalSuffix(num: number): string {
+  const remainderTen = num % 10;
+  const remainderHundred = num % 100;
+
+  // Handle special cases like 11th, 12th, 13th
+  if (remainderHundred >= 11 && remainderHundred <= 13) {
+    return `${num}th`;
+  }
+
+  // Handle general cases like 1st, 2nd, 3rd, etc.
+  switch (remainderTen) {
+    case 1:
+      return `${num}st`;
+    case 2:
+      return `${num}nd`;
+    case 3:
+      return `${num}rd`;
+    default:
+      return `${num}th`;
+  }
+}
+

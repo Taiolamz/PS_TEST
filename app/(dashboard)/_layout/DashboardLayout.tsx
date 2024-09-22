@@ -85,6 +85,8 @@ const DashboardLayout = ({
     //   e.hex
     // );
     const color = user?.organization?.brand_colour || ("" as any);
+    // console.log(color);
+    
     actionCtx?.setPrimaryColorVals(color);
     // console.log(user);
     if (getNextLink(getListToUse(checklistDetails[0]?.items))?.length > 0) {

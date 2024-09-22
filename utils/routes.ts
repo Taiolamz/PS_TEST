@@ -2,12 +2,12 @@ export const admin_auth = "admin";
 export const employee_auth = "employee";
 // super-admin,  hr-admin, strategy-admin, it-admin, compliance, staff
 //  employee
-export const employeeRoleList = ["staff",  "ceo", "it-admin"];
+export const employeeRoleList = ["staff", "ceo", "it-admin"];
 
 export const adminRoleList = [
   "hr-admin",
   "strategy-admin",
-  // "it-admin", 
+  // "it-admin",
   "compliance",
   "super-admin",
   // "user",
@@ -80,6 +80,10 @@ const routesPath = {
   REGISTER: "/register?ui=organization-information",
   FORGOT_PASSWORD: "/forgot-password",
   ONBOARDING: "/onboarding",
+  PROFILE: {
+    WORK: "/profile/work-info",
+    PERSONAL: "/profile/personal-info",
+  },
 };
 
 export const checkListRoutes = [

@@ -177,6 +177,8 @@ export function ActionContextProvider(props?: any) {
 
   function setPrimaryColorsFunc(param: any) {
     setPrimaryColorHexValue(param);
+    // console.log(param);
+
     document.documentElement.style.setProperty(
       "--primary-color",
       param || ("#008080" as string)

@@ -6,7 +6,7 @@ import style from "./styles/SideMenuNavBox.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ActionContext from "../context/ActionContext";
 import { trimLongString } from "./Helper";
-import { processInputAsArray } from "@/utils/helpers";
+import { checkUserRole, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
 
 const logoIcon = (
@@ -193,7 +193,7 @@ const dropIcon = (
 );
 
 const SideMenuNavBox = () => {
-  const { user, checklist } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const router = useRouter();
   const actionCtx = useContext(ActionContext);
@@ -201,14 +201,20 @@ const SideMenuNavBox = () => {
   // console.log(pathname);
 
   const getListToUse = () => {
-    const val = pathname?.includes("/admin")
-      ? sideMenuList
-      : sideMenuEmployeeList;
+    const val =
+      checkUserRole(user?.role as string) === "ADMIN"
+        ? sideMenuList
+        : sideMenuEmployeeList;
     return val;
   };
 
   return (
-    <div className={style?.side_menu_nav_box_index_wrap}>
+    <div
+      // onClick={() => {
+      //   console.log(user);
+      // }}
+      className={style?.side_menu_nav_box_index_wrap}
+    >
       {/* logo box start */}
       <div
         className={`${style?.logo_collapse_box} ${
@@ -241,6 +247,8 @@ const SideMenuNavBox = () => {
             <div className={style?.nav_list_fragment} key={idx}>
               <div
                 onClick={() => {
+                  // console.log(chi);
+
                   chi?.collapseNum === actionCtx.showNavVal
                     ? actionCtx?.setShowNavVal("")
                     : actionCtx?.setShowNavVal(chi?.collapseNum);

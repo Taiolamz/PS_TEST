@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import AppProvider from "@/redux/provider";
 import NextTopLoader from "nextjs-toploader";
+import { ActionContextProvider } from "./(dashboard)/context/ActionContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const lex = Lexend({
@@ -34,8 +35,11 @@ export default function RootLayout({
       </head>
       <body className={` ${lex.variable}`}>
         <AppProvider>
-          <NextTopLoader color="var(--primary-color)" showSpinner={false} />
-          {children}
+          <ActionContextProvider>
+            {" "}
+            <NextTopLoader color="var(--primary-color)" showSpinner={false} />
+            {children}
+          </ActionContextProvider>
         </AppProvider>
         <Toaster position="top-right" richColors closeButton />
       </body>
