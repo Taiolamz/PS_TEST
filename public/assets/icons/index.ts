@@ -42,4 +42,14 @@ export { default as DraggableIcon } from "./DraggableIcon";
 export { default as TrashIcon } from "./TrashIcon.svg";
 export { default as CirclePlusIcon } from "./CirclePlusIcon";
 export { default as EmptyFileIcon } from "./EmptyFileIcon.svg";
+<<<<<<< HEAD
 export { default as WarningIcon } from "./WarningIcon.svg";
+=======
+export { default as SubsidiaryIcon } from "./SubsidiaryIcon.svg";
+export { default as StaffIcon } from "./StaffIcon.svg";
+export { default as BranchesIcon } from "./BranchesIcon.svg";
+export { default as DepartmentIcon } from "./DepartmentIcon.svg";
+export { default as UnitIcon } from "./UnitIcon.svg";
+export { default as InviteStaffIcon } from "./InviteStaffIcon.svg";
+export { default as TeamIcon } from "./TeamIcon.svg";
+>>>>>>> ad8c8e911557ad9045f520814d6ddeb357499d4f
