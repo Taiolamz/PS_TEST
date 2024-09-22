@@ -16,7 +16,13 @@ import {
 ------- */
 
 type CardPropType = {
-  option?: "darkgreen" | "purple" | "blue" | "lightgreen" | "yellow";
+  option?:
+    | "darkgreen"
+    | "purple"
+    | "blue"
+    | "lightgreen"
+    | "yellow"
+    | "default";
   count: string | number;
   onClick?: () => void;
   icon?: string;
@@ -50,6 +56,13 @@ export default function MetricCard({
         bgCss: " bg-[rgb(var(--bg-purple-200)/5%)]",
       };
       break;
+    case "default":
+      optionObject = {
+        borderCss: "hover:ring-2 hover:ring-[var(--primary-color)]",
+        active: "border-2 border-[var(--primary-color)]",
+        bgCss: " bg-[var(--primary-accent-color)]",
+      };
+      break;
     case "blue":
       optionObject = {
         borderCss: "hover:ring-2 hover:ring-[rgb(var(--bg-blue-100))]",
@@ -73,9 +86,9 @@ export default function MetricCard({
       break;
     default:
       optionObject = {
-        borderCss: "hover:ring-2 hover:ring-[rgb(var(--bg-green-200))]",
-        active: "border-2 border-[rgb(var(--bg-green-200))]",
-        bgCss: " bg-[rgb(var(--bg-green-200)/5%)]",
+        borderCss: "hover:ring-2 hover:ring-[var(--primary-color)]",
+        active: "border-2 border-[var(--primary-color)]",
+        bgCss: " bg-[var(--primary-accent-color)]",
       };
       break;
   }
