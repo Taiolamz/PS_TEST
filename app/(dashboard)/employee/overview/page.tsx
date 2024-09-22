@@ -6,7 +6,7 @@ import Routes from "@/lib/routes/routes";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
-import { WarningIcon } from "@/public/assets/icons";
+import { MissionIcon, VisionIcon, WarningIcon } from "@/public/assets/icons";
 import { ArrowRightIcon } from "lucide-react";
 
 const OverView = () => {
@@ -41,9 +41,41 @@ const OverView = () => {
             Main content
           </div>
           <div className="bg-[var(--btn-solid-color)] absolute right-0 w-[360px] h-full z-10 custom-scrollbar px-5 py-8">
-            <section className="custom-shadow rounded w-full px-3 py-6 ">
-              fdfdfdfdfdf
+            {/* Mission and Vision Statement */}
+            <section className="custom-shadow rounded w-full px-3 py-6 space-y-7">
+              <div className="flex space-x-2.5">
+                <Image
+                  src={MissionIcon}
+                  alt="Mission statement icon"
+                  className="size-6"
+                />
+                <div className="space-y-2">
+                  <h4 className="font-medium text-[var(--text-color5)]">
+                    Mission Statement
+                  </h4>
+                  <p className="text-[var(--text-color2)] text-xs">
+                    {user?.organization?.mission}
+                  </p>
+                </div>
+              </div>
+              <div className="flex space-x-2.5">
+                <Image
+                  src={VisionIcon}
+                  alt="Vision statement icon"
+                  className="size-6"
+                />
+                <div className="space-y-2">
+                  <h4 className="font-medium text-[var(--text-color5)]">
+                    Vision Statement
+                  </h4>
+                  <p className="text-[var(--text-color2)] text-xs">
+                    {user?.organization?.vision}
+                  </p>
+                </div>
+              </div>
             </section>
+
+            {/* Todo Action */}
           </div>
         </div>
       </div>

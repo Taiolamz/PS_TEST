@@ -155,8 +155,8 @@ input:-webkit-autofill:hover {
   --text-color: #6e7c87;
   --text-color2: #9aa6ac;
   --text-color3: #162238;
-  --text-color4: #252C32;
   --text-color4: #5a5b5f;
+  --text-color5: #252C32;
   --btn-color: #008080;
   --btn-second: #f8ffff;
   --bg-primary-05: rgba(0, 128, 128, 0.1);
