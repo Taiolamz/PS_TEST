@@ -3,16 +3,16 @@ import { cn } from "@/lib/utils";
 
 type CardPropType = {
   option?: "darkgreen" | "purple" | "blue" | "lightgreen" | "yellow";
-  svg?: ReactNode;
+  icon?: ReactNode;
   onClick?: () => void;
   content?: ReactNode;
   title?: ReactNode;
   isActive?: boolean;
 };
 
-export default function MetricCardOne({
+export default function MetricCard({
   option,
-  svg,
+  icon,
   title,
   content,
   isActive,
@@ -75,7 +75,7 @@ export default function MetricCardOne({
     >
       <div className="flex gap-x-[18px]">
         <div className={cn("size-[62px] grid place-content-center ")}>
-          {svg}
+          {icon}
         </div>
         <div className="capitalize space-y-1.5">
           {title}
