@@ -1,20 +1,35 @@
 import React, { ReactNode } from "react";
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
+
+/* ----- LIST OF AVAILABLE ICONS SVG DOWNLOADED FOR THIS COMPOPNENT
+import {
+  SubsidiaryIcon,
+  BranchesIcon,
+  DepartmentIcon,
+  UnitIcon,
+  StaffIcon,
+  InviteStaffIcon,
+  TeamIcon,
+} from "@/public/assets/icons";
+------- */
 
 type CardPropType = {
   option?: "darkgreen" | "purple" | "blue" | "lightgreen" | "yellow";
-  icon?: ReactNode;
+  count: string | number;
   onClick?: () => void;
-  content?: ReactNode;
-  title?: ReactNode;
+  icon?: string;
+  svg?: ReactNode;
+  title?: string;
   isActive?: boolean;
 };
-
 export default function MetricCard({
   option,
-  icon,
+  count,
   title,
-  content,
+  icon,
+  svg,
   isActive,
   ...props
 }: CardPropType) {
@@ -74,12 +89,22 @@ export default function MetricCard({
       {...props}
     >
       <div className="flex gap-x-[18px]">
-        <div className={cn("size-[62px] grid place-content-center ")}>
-          {icon}
+        <div
+          className={cn(
+            "w-[62px] h-[61px] rounded-lg grid place-content-center ",
+            optionObject.bgCss
+          )}
+        >
+          {icon && <Image src={icon} alt="icon" />}
+          {svg && svg}
         </div>
         <div className="capitalize space-y-1.5">
-          {title}
-          {content}
+          <h5 className=" text-xs font-normal text-[var(--text-color2)]">
+            {title}
+          </h5>
+          <p className="text-3xl font-semibold text-[var(--text-color3)]">
+            {count}
+          </p>
         </div>
       </div>
     </div>
