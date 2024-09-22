@@ -19,7 +19,8 @@ type CardPropType = {
   option?: "darkgreen" | "purple" | "blue" | "lightgreen" | "yellow";
   count: string | number;
   onClick?: () => void;
-  icon?: ReactNode | any;
+  icon?: string;
+  svg?: ReactNode;
   title?: string;
   isActive?: boolean;
 };
@@ -28,6 +29,7 @@ export default function MetricCardOne({
   count,
   title,
   icon,
+  svg,
   isActive,
   ...props
 }: CardPropType) {
@@ -93,7 +95,8 @@ export default function MetricCardOne({
             optionObject.bgCss
           )}
         >
-          <Image src={icon} alt="icon" />
+          {icon && <Image src={icon} alt="icon" />}
+          {svg && svg}
         </div>
         <div className="capitalize space-y-1.5">
           <h5 className=" text-xs font-normal text-[var(--text-color2)]">
