@@ -156,8 +156,8 @@
   font-size: 0.85rem;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap {
-  margin-top: 2.5rem;
-  padding-top: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
   border-top: 0.07rem solid rgb(229, 233, 235);
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap .title {
@@ -165,7 +165,7 @@
   margin-right: auto;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap .list_pos_box {
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));

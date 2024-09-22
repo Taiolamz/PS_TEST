@@ -11,6 +11,11 @@ import MissionSingleItem from "./mission-single-item";
 import SpecifiedMission from "./specified-mission";
 import SpecifiedTasks from "./specified-task";
 import TableLoader from "./table-loader";
+import Legend from './legend/legend';
+import ReusableLabel from './labels/label';
+import { ReusableProgress } from "./progress/reusable-progress";
+import AchievementProgress from './achievement-progress';
+import ReusableSegmentProgress from './progress/segment';
 
 export {
   EmptyState,
@@ -24,4 +29,9 @@ export {
   SpecifiedMission,
   SpecifiedTasks,
   TableLoader,
+  Legend,
+  ReusableLabel,
+  ReusableProgress,
+  AchievementProgress,
+  ReusableSegmentProgress
 };
