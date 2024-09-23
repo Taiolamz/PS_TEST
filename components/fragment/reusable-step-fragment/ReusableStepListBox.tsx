@@ -116,7 +116,7 @@ const ReusableStepListBox = ({
           onClick={() => {
             onSave && onSave();
           }}
-          type={btnType}
+          type={btnType} 
           className={`${btnClass}  font-light ${
             btnDisabled || loading
               ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"

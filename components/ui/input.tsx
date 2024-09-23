@@ -55,25 +55,34 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}{" "}
           </label>
         )}
-        <input
-          type={type}
-          onBlur={handleBlur}
-          onChange={onChange}
-          id={id}
-          name={name}
-          value={value}
+        <form
           autoComplete="off"
-          className={cn(
-            "flex h-9 w-full rounded-sm border border-primary px-3 py-1 text-sm  transition-colors focus-visible:ring-primary placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-[#E5E9EB] placeholder:text-#6E7C87 bg-white",
-            className,
-            error &&
-              touched &&
-              "border-red-500 focus-visible:ring-transparent focus-visible:ring-0"
-          )}
-          ref={ref}
-          {...props}
-          defaultValue={type === "color" ? "var(--primary-color)" : ""}
-        />
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+          action=""
+          style={{ width: "100%" }}
+        >
+          <input
+            type={type}
+            onBlur={handleBlur}
+            onChange={onChange}
+            id={id}
+            name={name}
+            value={value}
+            autoComplete="off"
+            className={cn(
+              "flex h-9 w-full rounded-sm border border-primary px-3 py-1 text-sm  transition-colors focus-visible:ring-primary placeholder:font-light placeholder:text-sm placeholder:text-#6E7C87 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 border-[#E5E9EB] placeholder:text-#6E7C87 bg-white",
+              className,
+              error &&
+                touched &&
+                "border-red-500 focus-visible:ring-transparent focus-visible:ring-0"
+            )}
+            ref={ref}
+            {...props}
+            defaultValue={type === "color" ? "var(--primary-color)" : ""}
+          />
+        </form>
         <span className={cn("text-xs text-red-500 hidden", error && "block")}>
           {error && touched && error}
         </span>

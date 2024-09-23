@@ -15,12 +15,14 @@ import {
 } from "@/utils/helpers";
 import LogoutModal from "./logout-folder/LogoutModal";
 import { sideMenuList } from "./SideMenuList";
+import { notiList } from "./(notification)/noti_junks";
 
 interface myComponentProps {
   headerListTitle?: any;
   headerTitle?: string;
   back?: boolean;
   onBack?: () => void;
+  onNotify?: () => void;
 }
 
 const backIcon = (
@@ -44,6 +46,7 @@ const HeaderNavBox = ({
   headerTitle,
   back,
   onBack,
+  onNotify,
 }: myComponentProps) => {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
@@ -74,7 +77,7 @@ const HeaderNavBox = ({
       height="24"
       fill="none"
       viewBox="0 0 24 24"
-      className={style.img_box}
+      className={style.img}
     >
       <path
         stroke="var(--primary-color)"
@@ -87,6 +90,7 @@ const HeaderNavBox = ({
         y="1"
         fill="#EC1410"
         rx="4.502"
+        style={{ display: "none" }}
       ></rect>
       <path
         fill="#fff"
@@ -153,7 +157,13 @@ const HeaderNavBox = ({
   );
 
   const profileList = [
-    { name: "Edit Profile", icon: editIcon, onClick: () => {} },
+    {
+      name: "View Profile",
+      icon: editIcon,
+      onClick: () => {
+        router?.push(routesPath?.PROFILE?.PERSONAL);
+      },
+    },
     {
       name: "Logout",
       icon: logouticon,
@@ -225,9 +235,7 @@ const HeaderNavBox = ({
             </>
           ) : (
             <>
-              <p className={style.title}>
-                {headerTitle || "Welcome ITH Holdings"}
-              </p>
+              <p className={style.title}>{headerTitle || "Welcome "}</p>
             </>
           )}
         </div>
@@ -243,8 +251,15 @@ const HeaderNavBox = ({
         </div>
         {/* search box end */}
         {/* notification box start */}
-        <div className={style.notification_box}>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={onNotify}
+          className={style.notification_box}
+        >
           <figure className={style.img_box}>{notifyIcon}</figure>
+          <div className={style.red_dot}>
+            <span>{notiList?.length}</span>
+          </div>
         </div>
         {/* notification box end */}
         {/* profile box start */}
@@ -306,6 +321,7 @@ const HeaderNavBox = ({
                       }}
                       key={idx}
                       className={style.item_row}
+                      style={{ cursor: "pointer" }}
                     >
                       <figure className={style.img_box}>{chi.icon}</figure>
                       <p

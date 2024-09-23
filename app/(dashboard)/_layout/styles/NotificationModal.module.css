@@ -1,0 +1,145 @@
+.notification_general_wrapper_index_box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+.notification_general_wrapper_index_box::-webkit-scrollbar {
+  display: none;
+}
+.notification_general_wrapper_index_box .notification_header {
+  padding: 1rem 1rem;
+  background-color: var(--primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notification_general_wrapper_index_box .notification_header .title {
+  color: #ffffff;
+}
+.notification_general_wrapper_index_box .notification_header .close_icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.notification_general_wrapper_index_box .notification_header .close_icon .img_box {
+  width: 100%;
+  height: 100%;
+}
+.notification_general_wrapper_index_box .notification_header .close_icon .img_box .img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+.notification_general_wrapper_index_box .notification_body {
+  flex: 1;
+  overflow-y: scroll;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.notification_general_wrapper_index_box .notification_body::-webkit-scrollbar {
+  display: none;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  background-color: rgb(246, 248, 249);
+  border: 0.1rem solid rgb(229, 233, 235);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box:hover {
+  background-color: #ffffff;
+  border: unset;
+  box-shadow: 0.1rem 0.1rem 8rem 2rem rgba(0, 0, 0, 0.08);
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .view_box_wrap {
+  padding-left: 2rem;
+  max-height: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  transition: all 0.5s linear-bezier(0, 1.05, 0, 1);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  width: 100%;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .view_box_wrap .view_box {
+  padding: 0.4rem 1.5rem;
+  border-radius: 0.4rem;
+  border: 0.1rem solid var(--primary-color);
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .view_box_wrap .view_box .text {
+  font-size: 0.65rem;
+  color: var(--primary-color);
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .view_box_wrap_show {
+  margin-top: 0.8rem;
+  max-height: 10rem;
+  transition: max-height 0.5s linear-bezier(0, 1.05, 0, 1);
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .dot_box {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  background-color: rgb(204, 9, 5);
+  border-radius: 50%;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box .title_text_box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: -0.2rem;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box .title_text_box .title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box .title_text_box .text {
+  font-size: 0.7rem;
+  color: rgb(91, 104, 113);
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box .title_text_box .date {
+  font-size: 0.6rem;
+  color: rgb(91, 104, 113);
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box .icon_round .img_box {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 0.1rem solid var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.notification_general_wrapper_index_box .notification_body .noti_wrap_box .icon_title_text_dot_box .icon_round .img_box .img {
+  width: 80%;
+  height: 80%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}/*# sourceMappingURL=NotificationModal.module.css.map */

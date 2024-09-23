@@ -6,8 +6,109 @@ import style from "./styles/SideMenuNavBox.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ActionContext from "../context/ActionContext";
 import { trimLongString } from "./Helper";
-import { processInputAsArray } from "@/utils/helpers";
+import { checkUserRole, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
+import Image from "next/image";
+
+const logoIconWhite = (
+  <svg
+    className={style?.img}
+    width="114"
+    height="24"
+    viewBox="0 0 114 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M18.4268 19.27L17.7087 18.8547L14.8725 17.2246L10.8874 14.9381L6.90676 17.2246L5.68161 17.9302L4.06603 18.8547L3.34799 19.27V8.1769L10.8874 3.84506L18.4268 8.1769V19.27ZM21.7746 21.1903V7.84643C21.7826 7.36168 21.6582 6.88387 21.4148 6.46391C21.1714 6.04394 20.818 5.69757 20.3924 5.46169L10.8874 0L1.38686 5.46169C0.961987 5.69883 0.609058 6.04536 0.365077 6.46494C0.121095 6.88452 -0.00495323 7.3617 0.000148967 7.84643V23.2222H3.16848L4.98601 22.1772L6.2336 21.4627L9.23589 19.7389L10.8874 18.7877L11.2284 18.9842L15.5456 21.4627L16.7887 22.1772L18.6063 23.2222H21.7746V21.1903Z"
+      fill="#ffffff"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.2289 12.6685L14.1055 14.3253L16.4705 12.9677L17.4534 12.4006L14.8729 10.9179L10.8878 8.62695L6.9072 10.9179L5.68205 11.619L4.32227 12.4006L5.30508 12.9677L7.67011 14.3253L9.23633 13.4232L10.8878 12.472L11.2289 12.6685Z"
+      fill="#ffffff"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M11.3275 10.9191L14.2086 12.5714L16.5692 11.2138L17.5565 10.6467L14.9715 9.16401L10.9864 6.87305L7.00583 9.16401L5.78068 9.86961L4.4209 10.6467L5.4082 11.2138L7.76874 12.5714L9.33496 11.6738L10.9864 10.7226L11.3275 10.9191Z"
+      fill="#ffffff"
+    />
+    <path
+      d="M29.5166 18.4702V4.76911H33.1068L33.1831 7.38608L32.6356 7.48879C32.8242 7.04851 33.0783 6.63901 33.3895 6.27409C33.7013 5.91439 34.0677 5.60549 34.4755 5.3586C34.8966 5.10016 35.349 4.89607 35.8219 4.75125C36.2757 4.60507 36.7495 4.52975 37.2265 4.52796C37.8841 4.51798 38.5376 4.63318 39.1518 4.86736C39.7206 5.08651 40.2229 5.44798 40.6103 5.91682C41.0494 6.47106 41.3688 7.10963 41.5482 7.79247L40.9738 7.74334L41.1578 7.32802C41.385 6.91078 41.6739 6.5299 42.0149 6.19817C42.3663 5.85286 42.7598 5.55279 43.1862 5.30501C43.6104 5.05923 44.0623 4.86436 44.5325 4.72445C44.9791 4.58818 45.4432 4.51747 45.9103 4.51456C46.8491 4.47856 47.7799 4.69779 48.6029 5.1487C49.3333 5.5916 49.8964 6.26186 50.205 7.05561C50.5892 8.0522 50.7707 9.11475 50.7391 10.1817V18.4702H47.0322V10.4318C47.0507 9.90889 46.9621 9.38774 46.7719 8.89999C46.6219 8.53042 46.3579 8.21771 46.018 8.00682C45.6279 7.79521 45.1873 7.69332 44.7435 7.71208C44.3667 7.70731 43.9923 7.77243 43.6395 7.90411C43.3075 8.02579 43.0026 8.21087 42.7419 8.44894C42.5044 8.67722 42.3151 8.95055 42.1855 9.25279C42.0383 9.57249 41.9604 9.91938 41.9566 10.271V18.4702H38.2632V10.3916C38.2766 9.89102 38.1833 9.39333 37.9894 8.93125C37.8305 8.55594 37.5635 8.23585 37.222 8.01129C36.851 7.79575 36.4263 7.68893 35.9969 7.70315C35.6201 7.69838 35.2457 7.7635 34.8929 7.89518C34.5596 8.01426 34.2543 8.19964 33.9954 8.44001C33.7522 8.6745 33.5544 8.95153 33.412 9.25725C33.2688 9.57573 33.1998 9.92226 33.21 10.271V18.4702H29.5166Z"
+      fill="#ffffff"
+    />
+    <path
+      d="M59.3962 18.7303C58.2927 18.7437 57.2118 18.4195 56.2996 17.8014C55.3623 17.157 54.6092 16.2814 54.1141 15.2604C53.5584 14.1154 53.2817 12.8563 53.3063 11.585C53.2806 10.315 53.5622 9.05749 54.1276 7.9186C54.6405 6.89887 55.4145 6.03166 56.3714 5.40435C57.3252 4.79693 58.4391 4.48599 59.5712 4.51118C60.2042 4.50415 60.8339 4.6038 61.4336 4.80593C61.9705 4.99232 62.4713 5.26872 62.9145 5.62317C63.3355 5.96193 63.7004 6.36428 63.9961 6.81554C64.2877 7.25017 64.5003 7.73235 64.6244 8.24014L63.8435 8.11063V4.7702H67.5145V18.4713H63.7717V15.1845L64.6019 15.1041C64.4587 15.5977 64.231 16.063 63.9288 16.4796C63.6054 16.9227 63.213 17.3116 62.7664 17.6317C62.2933 17.9747 61.7715 18.2456 61.2182 18.4356C60.6317 18.6346 60.0158 18.7342 59.3962 18.7303ZM60.4149 15.5462C61.0569 15.5593 61.6893 15.3888 62.2369 15.055C62.7632 14.7169 63.182 14.2367 63.4441 13.6706C63.7497 13.0179 63.9031 12.305 63.8929 11.585C63.9023 10.8766 63.7488 10.1755 63.4441 9.53522C63.1769 8.97231 62.7593 8.49338 62.2369 8.15082C61.6923 7.80875 61.0588 7.63328 60.4149 7.64618C59.7793 7.63216 59.154 7.80793 58.6198 8.15082C58.1007 8.4971 57.6839 8.97503 57.4126 9.53522C57.1038 10.1741 56.9501 10.8762 56.9638 11.585C56.9493 12.3054 57.1029 13.0193 57.4126 13.6706C57.679 14.234 58.0968 14.7131 58.6198 15.055C59.1571 15.3897 59.7811 15.5605 60.4149 15.5462Z"
+      fill="#ffffff"
+    />
+    <path
+      d="M71.1895 18.4707V4.76955H74.7303L74.8335 7.56962L74.102 7.87776C74.3045 7.23902 74.6568 6.65735 75.1297 6.18075C75.6431 5.66025 76.2526 5.24326 76.9248 4.95265C77.6125 4.64904 78.358 4.49671 79.1103 4.50607C80.0227 4.47397 80.9269 4.68849 81.7266 5.12682C82.4471 5.56342 83.0049 6.22192 83.3153 7.00246C83.6955 7.98912 83.8755 9.04098 83.8448 10.0973V18.4707H80.1514V10.3652C80.1686 9.83516 80.0801 9.30698 79.8912 8.81111C79.7391 8.42356 79.4589 8.0991 79.0968 7.89115C78.692 7.68333 78.2349 7.59795 77.7819 7.64553C77.3878 7.6431 76.9961 7.70806 76.6241 7.83756C76.2901 7.96152 75.9848 8.1514 75.7265 8.39579C75.4768 8.63276 75.2742 8.91459 75.1297 9.22643C74.9795 9.54176 74.9028 9.88676 74.9053 10.2357V18.4707H71.2119H71.1895Z"
+      fill="#ffffff"
+    />
+    <path
+      d="M93.3451 18.7293C92.1214 18.7536 90.9146 18.4428 89.8565 17.8308C88.7983 17.2189 87.9295 16.3293 87.345 15.2593C86.7343 14.139 86.4251 12.8806 86.4474 11.6063C86.4288 10.3381 86.7378 9.08634 87.345 7.97111C87.9257 6.89697 88.7933 6.0033 89.8521 5.38865C90.9108 4.774 92.1196 4.46225 93.3451 4.48778C94.5076 4.47362 95.6602 4.7018 96.7288 5.15765C97.6823 5.5532 98.5104 6.19826 99.1253 7.02436L97.0923 9.45823C96.8401 9.11721 96.5375 8.81609 96.1948 8.56506C95.8333 8.29937 95.436 8.08588 95.0145 7.93092C94.5935 7.77644 94.1483 7.69781 93.6996 7.6987C93.0343 7.68432 92.3788 7.85941 91.8103 8.20333C91.264 8.54162 90.8192 9.01976 90.5223 9.58774C90.2074 10.2133 90.0532 10.9069 90.0735 11.6063C90.0596 12.2973 90.225 12.9802 90.5537 13.5891C90.8643 14.1595 91.3171 14.6409 91.8686 14.9869C92.4264 15.3431 93.0773 15.5279 93.74 15.5183C94.1738 15.522 94.6055 15.4572 95.019 15.3263C95.4205 15.19 95.7977 14.991 96.1364 14.7368C96.5016 14.4706 96.8292 14.1566 97.1103 13.8035L99.1163 16.2418C98.4599 17.0271 97.6201 17.6404 96.6705 18.0281C95.624 18.4923 94.4908 18.7313 93.3451 18.7293Z"
+      fill="#ffffff"
+    />
+    <path
+      d="M108.02 18.7295C106.663 18.7674 105.319 18.46 104.115 17.8363C103.034 17.2637 102.133 16.4043 101.513 15.3533C100.873 14.2523 100.549 12.9983 100.575 11.7271C100.562 10.7354 100.738 9.75032 101.095 8.8243C101.423 7.97145 101.919 7.1925 102.554 6.53334C103.187 5.88076 103.952 5.36802 104.798 5.02836C105.685 4.67059 106.636 4.49148 107.593 4.5014C108.487 4.4913 109.372 4.66303 110.196 5.00603C110.979 5.33031 111.684 5.81582 112.265 6.43063C112.856 7.05319 113.314 7.78847 113.611 8.59208C113.913 9.46123 114.041 10.3805 113.988 11.2984V12.4371H102.917L102.32 10.1819H110.937L110.519 10.6508V10.0792C110.492 9.62303 110.336 9.18368 110.071 8.81091C109.811 8.43032 109.457 8.12272 109.043 7.91774C108.605 7.70676 108.125 7.59975 107.638 7.60514C106.964 7.58446 106.296 7.73834 105.7 8.05172C105.168 8.34475 104.744 8.79825 104.488 9.3468C104.192 9.99701 104.05 10.7056 104.071 11.4189C104.052 12.1696 104.236 12.9116 104.605 13.567C104.959 14.1732 105.483 14.6636 106.112 14.9782C106.829 15.331 107.62 15.5043 108.419 15.4828C108.987 15.4896 109.551 15.3943 110.084 15.2015C110.671 14.9607 111.215 14.6274 111.695 14.2145L113.468 16.6752C112.966 17.1243 112.406 17.5043 111.803 17.8051C111.205 18.1002 110.576 18.3293 109.927 18.4883C109.303 18.6451 108.663 18.7261 108.02 18.7295Z"
+      fill="#ffffff"
+    />
+  </svg>
+);
+
+const logoIconCollapseWhite = (
+  <svg
+    className={style?.img}
+    xmlns="http://www.w3.org/2000/svg"
+    width="40"
+    height="40"
+    fill="none"
+    viewBox="0 0 40 40"
+  >
+    <g
+      fillRule="evenodd"
+      clipPath="url(#clip0_13916_169105)"
+      clipRule="evenodd"
+    >
+      <path
+        fill="url(#paint0_linear_13916_169105)"
+        d="M26.216 24.94l-.554-.323-2.188-1.263-3.075-1.773-3.07 1.773-.946.547-1.246.716-.554.322v-8.6l5.816-3.358 5.817 3.358v8.6zm2.583 1.488V16.083a2.076 2.076 0 00-1.067-1.849L20.4 10l-7.33 4.234A2.094 2.094 0 0012 16.084v11.92h2.444l1.403-.81.962-.555 2.316-1.336 1.274-.738.264.153 3.33 1.921.96.554 1.401.81H28.8v-1.575z"
+      ></path>
+      <path
+        fill="#ffffff"
+        d="M20.664 19.823l2.22 1.284 1.824-1.052.758-.44-1.99-1.15L20.4 16.69l-3.07 1.777-.946.543-1.05.606.76.44 1.824 1.052 1.208-.7 1.274-.737.263.153z"
+      ></path>
+      <path
+        fill="#ffffff"
+        d="M20.738 18.465l2.223 1.28 1.821-1.052.762-.44-1.994-1.149-3.075-1.776-3.07 1.776-.946.547-1.049.603.762.44 1.821 1.052 1.208-.696 1.274-.738.263.153z"
+      ></path>
+    </g>
+    <defs>
+      <linearGradient
+        id="paint0_linear_13916_169105"
+        x1="20.399"
+        x2="20.399"
+        y1="7.435"
+        y2="21.591"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#162238"></stop>
+        <stop offset="1" stopColor="#ffffff"></stop>
+      </linearGradient>
+      <clipPath id="clip0_13916_169105">
+        <path
+          fill="#fff"
+          d="M0 0H16.799V18H0z"
+          transform="translate(12 10)"
+        ></path>
+      </clipPath>
+    </defs>
+  </svg>
+);
 
 const logoIcon = (
   <svg
@@ -118,7 +219,7 @@ const collapseIcon = (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_13760_88399)">
+    <g clipPath="url(#clip0_13760_88399)">
       <path
         d="M18.75 7.15458L1.96883 7.15458L3.56152 5.56189L3.20365 5.20402L0.999998 7.40767L3.20365 9.61133L3.56152 9.25346L1.96883 7.66076L18.75 7.66076V7.15458Z"
         fill="var(--primary-color)"
@@ -192,8 +293,38 @@ const dropIcon = (
   </svg>
 );
 
+const defaultLogo = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    width="58"
+    height="58"
+    fill="none"
+    viewBox="0 0 58 58"
+    className={style.img}
+  >
+    <path fill="url(#pattern0_22751_87618)" d="M0 0H58V58H0z"></path>
+    <defs>
+      <pattern
+        id="pattern0_22751_87618"
+        width="1"
+        height="1"
+        patternContentUnits="objectBoundingBox"
+      >
+        <use transform="scale(.0025)" xlinkHref="#image0_22751_87618"></use>
+      </pattern>
+      <image
+        id="image0_22751_87618"
+        width="400"
+        height="400"
+        xlinkHref="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gKgSUNDX1BST0ZJTEUAAQEAAAKQbGNtcwQwAABtbnRyUkdCIFhZWiAH5AABAB8AEwAAABBhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAtkZXNjAAABCAAAADhjcHJ0AAABQAAAAE53dHB0AAABkAAAABRjaGFkAAABpAAAACxyWFlaAAAB0AAAABRiWFlaAAAB5AAAABRnWFlaAAAB+AAAABRyVFJDAAACDAAAACBnVFJDAAACLAAAACBiVFJDAAACTAAAACBjaHJtAAACbAAAACRtbHVjAAAAAAAAAAEAAAAMZW5VUwAAABwAAAAcAHMAUgBHAEIAIABiAHUAaQBsAHQALQBpAG4AAG1sdWMAAAAAAAAAAQAAAAxlblVTAAAAMgAAABwATgBvACAAYwBvAHAAeQByAGkAZwBoAHQALAAgAHUAcwBlACAAZgByAGUAZQBsAHkAAAAAWFlaIAAAAAAAAPbWAAEAAAAA0y1zZjMyAAAAAAABDEoAAAXj///zKgAAB5sAAP2H///7ov///aMAAAPYAADAlFhZWiAAAAAAAABvlAAAOO4AAAOQWFlaIAAAAAAAACSdAAAPgwAAtr5YWVogAAAAAAAAYqUAALeQAAAY3nBhcmEAAAAAAAMAAAACZmYAAPKnAAANWQAAE9AAAApbcGFyYQAAAAAAAwAAAAJmZgAA8qcAAA1ZAAAT0AAACltwYXJhAAAAAAADAAAAAmZmAADypwAADVkAABPQAAAKW2Nocm0AAAAAAAMAAAAAo9cAAFR7AABMzQAAmZoAACZmAAAPXP/bAEMABQMEBAQDBQQEBAUFBQYHDAgHBwcHDwsLCQwRDxISEQ8RERMWHBcTFBoVEREYIRgaHR0fHx8TFyIkIh4kHB4fHv/bAEMBBQUFBwYHDggIDh4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHv/CABEIAZABkAMBIgACEQEDEQH/xAAcAAEBAAIDAQEAAAAAAAAAAAAABwYIAgQFAwH/xAAaAQEBAQEBAQEAAAAAAAAAAAAABQYEAwEC/9oADAMBAAIQAxAAAAGvgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHkfr8+v+TTELXHWcPwZc4PTrEUrHN6ZmMhZAHA5sPwWryVHBsGaGd3rbBLnx+3sDK1gAAAAAAAAAAAAAEQt8Pvz/EGzigKxJ6xD7szGJuAIZc9ftDN6o2McBc4Zc85S9gZCwAAAAAAAAAAAAAAiVtit+fjw2cUBWJPWIfdmYxNwD81+2B180sv4DWyQFzhlzzlL2BkLAAAAAAAAAAAAA4ffnMfPqLWnBq3HLXe6O4hh6flWJPWIfdmYxNwBr1sLrzppfyGskgLlDblnKXsjIWAAAAAAAAAAAAPMhduhuskZZnMad3hsV+wfOM9Rz7HPZ7kzplOJbB/Kxx681vt5D9+fQQKIH5r1sNrxppfzGskgLlDblnKXsjIWAAAAAAAAAAAAPGhtyhuvjho5oH0y3DnL62nIddfXz9C6MDzOBQ7I5vUD8142H1308viNXJAXKG3LOUvZGQsAAAAAAAAAAAAeNDblDdfHDRzQAAH1+T8/c2ziIo/ZsWiGcZ6jmuu9uiFTkDTzAFyhtyzlL2RkLAAAAAAAAAAAAHxl1Xdnhrz8tgcM0k2YvW8m7wh6/gAAAAAABcobcc5S9oZCwAAAAAAAAAAAAABxgOwED0czoDXyAAAAAAAFjjn7O6dikZruMs9kcPQAAAAAAAAAAAAAgd8geim9AbCOA+nzq8/olXG94Twe86d/oW+IPT8gAALnDLnm6XsDI2AAAAAAAAAAAAAEDvkD0U3oDYRwFdkVdhd+XDFW+GLZY9vOL45sPrxsY4W+EABc4Zc83S9gZGwAAAAAAAAAAAAAgd8geim9AbCOArsirsLvy4Yq2Bx122J121EoNVKAGVc/pitzj1qz1HvjLVQAAAAAAAAAAAAEDvkD0U3oDYRwFdkVdhd+XDFWwOOu2xOu2olBqpQC7Qm85qn6QyVcAAAAAAAAAAAAABA75A9FN6A2EcBXZVZs7R90Y+yBx122J121EoNVKAX2B7BZep2BlawAAAAAAAAAAAAACB3yH6Cd4jJ88t8MxzvOeWcpfD7kjsD59A467bFQ/RzfFZtmNbkk+X0vlC7vE9sjdofj9AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf//EACgQAAEDBAICAgICAwAAAAAAAAQCAwUBBiA1AEAwMhAxEjM0kBEhUP/aAAgBAQABBQL+getaUoZMAjcMuN9fFnmrXAFrMj/AbJBiUOuJ9fKllVdjnVPg98+RFCoZcjleFGlFYWjrcVrShJs+Izw2ZOJwhdV355SlS2No63GXKeJNxhdV353b42jrcS/5WMLqu/cG5xtHW4lfycYXVd+4tzjaOtxJ/kYwuq79ybnG0dbi/wDvxhdV2/yR+XzPQzhbxQhIysLR1uL37sYTVdqUcUzHUWv8wp4xjgc2CRylf8/CqUVQyEBI4ZbxTfH2HmF8tJNaRmFeO/txhNV2pvU/IZ5YtQrjQrgxLBCfhxtDiVwccp1tCW0YV45+zGE1Xam9Ti2tbawrgKZ4FMBFeCv0v3xhNV2pvU+AKSME4FcbKuMPsvowr9K9sYTVdqb1PiadcaUFcJLfApYIr5r9V+8YTVdqb1PlClTReA3CO5wqTDaFyhNV2nm0utHW8S1x1txpfUhNV3CB2CEm240vhkcYJ04PU95VKVoYmjZnRt8odcf35HYdH64DNGjcGdS+x3ZHYYtoW4pVKpr5IXVd2R2GNpNopHlBjFUNtvhYZQtfFC6ruyOwxtPVfCk0Uk2CDf5Iw5YafBC6ruyOwxtPVYOUopvwQuq7sjsMbT1WCvXwQuq7sjsMbT1WCvXJqDKdCqCZR6PaqwD3ZHYY2nqsFeuURrO/I7DG09Vgr1yi9d35HYY2nqsFeuQH+ge/I7DBhl59cGIsOPwV640pWtR01QP35HYfAUeWXwG3WUcZZaZRir1+RQySah224rgUWEJ/wZgZ5mRBhDSeAwgY3KUpSmdfp6LObfDt0lzgcKCPylKUp/QL/8QAKhEAAQIFBAEEAgMBAAAAAAAAAQIDAAQFEDIRITAxMxJAQmEgcBNBUVL/2gAIAQMBAT8B/QqlBI1MOT6E47w5OuL62iRcUXNCb6w7ONo+4dnnF9bRT1krPsKjgLyHlvUCQkC9OzPsKj4xeQ8t6l0L07M82tp1srRtCkkd2kPLepdC9OzPNUFELENTjiPuGp5C+9oKUOD/AGHJBJx2iWlFNK1N6l/V6dmeao5i6HloxMN1H/sQh5DnRvUvjenZnmqOY/EHSG51xHe8NTra+9oqKgdNL07M8zzCXe4dkFJx3hSSk6Hhp2Z9hUcRwy75ZVrDEwl3rnqOIvLs/wAqvTDkgtOO8KSRsfxp2Z56jiLyHlsttK+xE5LpaI9P4U7M89RxF5Dy3qXxuhtS8Yp6FBR156jiLyHlvUvjenZH2FRxF6ek+vW9S+N6aO/YVAEpENSbjn1DUihHe8aaXqCFK00huScX9Q3IITlvCUhI0H6F/8QAMREAAAMGAwUHBQEAAAAAAAAAAQIDAAQFBhARITNxEiIwNIETIDEyQENhFCNBUXCR/9oACAECAQE/Af4KRMyhtkoXFneBPCmJ8Gd4G7pYm3haOO6ZXfaAPzUAv4M7Qd5XxtYPlnaBoJYn3haYEiFTIJQ9BL3MDpWP8r1rLyZTKGEazHlE19BL3MDpWP8AK9ay35z9KzHlE14wANIM8kQeLnGwCDEUKcLlG9I/yvWst+Y/Ssx5RdeNLpCime7PMFd1sQCw/DPMEeEsS7wMRRV3NgIgLO8fWJgoF2icWTekgIQKy35j9KzHlF140uZRtaruaK4WUKzzL35RH/WXc1kB+4W1Zb8VOlZjyi68aXMo2vdMUDBYWeYI7rYl3RZ5grwjiAXD4aXUzl2xMH6rMeUXXjOj8q6D9tnaPpHwVCzJqkVC5BvwZjyi6+glwR7U4cGIOIPiezezPsPVcx3/AA48uZptKxF8+kR27XZ2jyKmCmAsRQqgXKN+7MeUTXjy5mm0rMHLBrRF4VRG5DWaDP6j2UwKeIdyY8omvHlzNNpWYOWDWst+50qu8pIWFQbXaPrEOmQCjx5czTaVmDlutZb9zpWY/IT0EuZptKx9YnYgS+N6y37nSsxjgQPQS+cCrGv+meow7oYANx+GeY08LYF3QYREcRrL6xExOBht4M8Rt2RwLvCzxHnhTAm6x1DqDtHG/wDBf//EADgQAAEBBQQHBgUDBQAAAAAAAAECAAMEESASIVFyEzAxQFJzsSNBUGFighAiMnGRFIGQM0KDodH/2gAIAQEABj8C/gHmbm/q6RXCi9pQzsOxiby2kMU9nmYLefWk2ScdSdI9FrhTeWswqA6HEby2lMQ8t42mcvV/UpAJ8A7ZfzHYkbWlCuQn1Lvbt3ylDDuoVzDVaWoJGJYpdTfq8tjEaTRowRdRD5PAH9o7FSqVzDU90izZCiEp7hVD5PAIjNUrmGp7nPWqHyeARH3HSpXMNT3OaofJ4A//AG6CpXMNTzMaofJ4A/8A26VK5hqeZjVD5N8s2hPCdH6mHIty+ZJ72k/cqT5yupVzDUvMaofJvb94gyUlBk1sLVaxmwDyT9Pq2/lgFL0S8Ftd8JEAhphGiVihpuFJfJ/Baw+dqdnzHwJI2rMqlfeqHyb3E5KOxfKA4e5gmLdWfUnY1pw9Sv7fGy8QlQwIa3oSPSFXMEISEpGwCpX3qh8m9xOSq27UUqxDWX4D5P8AtpaTRr4V3ak/eqHyb3E5NTJ0+NnhN4YJinZdniTeGtOXiVjyNRqh8m9xOTV2nS1IViCwEQkPk47C0kPbKuFVx1UPk3uJya6SHtpPCu8NZiUlyrHaGL0P3a7vlCVXmuHyb2p0sTSoSLFUOoPk4bC1h4hSFYEbrD5N9svnSVjzDWoV4XfpVeGOldGzxC8bnD5N/kbwWfITsS8UB+dycug9TpECRT3+ARHNV13KY2sAV6VGC2Q+RsWme/RHNV1qsu0KWcEibSUCCO462GyDfojmq61KeS+YrMy0n7lKvPvYqhHvtW3buVJ8+7Vw2Qb9Ec1XWr3n42VAEYFpuxoF+nZ+GK5B47H9ye7Uw2Qb9Ec1XWr3mlSSJgjUw2Qb9Ec1XWr3mk6mGyDfojmq61e80mtEQ6Ug2hOy2iMM8t5WcuVfUlAB36I5qutXvNJrh+WPAIjmq61e80muH5Y6eARHNV1q/wAhpNbjlp6eARHNV1psOXalq8gyXTz65zNJqkBMlnaDtCQPAIjmq6/HsXRKeI3BgqKWXh4U3BrDp2lAwAqNHYOVL8+5pxT0I9KL2m7dTXxKvPgL60g/OsqScZtNSdCjFX/GtKTpl4raQu1JdCHWq+4gXFpxC0uhhtLT0elViu9pASH8A3//xAArEAABAgQFBAIDAAMAAAAAAAABABEgMVHwIUFQcaFAYYGREDCx0fGAkMH/2gAIAQEAAT8h/wBA5kQAJkoMQRD3XuScru7JYBTJiA9LF3I7Jn9LoYLn9p1shcgh8wEnsFyDAaAJBvEDck4+Yj0j3l1vSC6UERIBZkYIuCBt9/0piLxt5ov88HoBHcwHYARXSgidAu0wAWlFwegC1uQiulBFf6ouD0AWssEV0oITJWmsXB6Bz4tdKCEyVurFwegWPbFdKCEyKvVYse26wGYKO5BiFzCWwZgrd12J5lDdKCEyKulYuG6t+coqFAMB7txe0CLB2Wd0JcLtB95IAAk4PwWHCYIdEiaXscSRU04P812ka0/wTgAd3DAQyFc3+YuG6vmYAph5sS8FFiB7/pNM8+bsR4+X9HVBCXeSgXhA/CwGAEMhXORcN1fMxDAOkVimqoZwHym4LQxkUCCHEczZclFw3V8z9LAyf5iA5i/wExygit70M5cqLhur5n6xcUSZFFc3gfxKaxT3mfzP2U/eLhur5n7dk0kXxRBxQhi/9Cc2hMhLRlnFw3VvenF2K9ERv7R0GJsj0vDdb5DtMiBLLAzRjB393o+G68rGAGIOaHMwi7Auix2w8s7bQLvX0QJxBAZhYJ33i280+40F+/XW+uJ3g5guEU4ViBiNL1b64hEFuzGDLfowYPM1wD+4Jgiexy8y0nVvriu9vk2JcwOCh5OqITQmP5A0fVvriu9oRgiAIOY0fVvriu9oeBo+rfXFd7Q8CMm1xksW3Q49jgHflH1BZCrY9db64rvaHgRiw7G0C31xXe0PAjBg6ArfXFc7Q8CLJCxsZoFvrhGyVk8jKhxDGROUPAiEziGAGawgCzwNAs9fyym+SUEzN/kZnhCQBoouBA1gWYDB5ksCpuPaOAcFxl40ERNwwMAJ8EQHvP4Ru9JBsEJAACQH0A5BMENjuCrpgpG/ig4JjcEkPhAkANDYU/zj/9oADAMBAAIAAwAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAczEcAAIzZUAAAAAAAAAAAAAABYMNcABMMNUAAAAAAAAAAAAAAAEMNcAC8MNUAAAAAAAAAAAAAEBckNcABcMNAAAAAAAAAAAAACCMipKcACIMMAAAAAAAAAAAAACgMMHYAAAIMMAAAAAAAAAAAAACgMMMNEEDkMMAAAAAAAAAAAAADKYgMMMMMEMMAAAAAAAAAAAAAAAAMMMMMMMMNQcAAAAAAAAAAAAAAIMMqskMMMMEAAAAAAAAAAAAAAIMMADOgMMMMAAAAAAAAAAAAAAIMMAAAMMMkIAAAAAAAAAAAAAAIMMAAAMMMQAAAAAAAAAAAAAAAIMM0AAMMN0AAAAAAAAAAAAAAAAusEAAIhmIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/8QAKBEAAQIEBQUBAAMAAAAAAAAAARARACGhwTAxYbHRIEBBgZFRYHBx/9oACAEDAQE/EP5q/YOZYRIplIkxM05g/IIIKlmcSUF2nMSCVpn9gEkvLsHe6y7RUYDIkrS9hUWXaK7my0uMQCM8XILwRYGKbRXc2WkvjCEHxeJOSzXmJFO1y+xNQARPyd9EGpx+SXJ72WkvjUt1MuxBhL2DiBzvbrk9rLSXxqW/SUnESwma8xISdrzBcSfOy0l8YOGzHmJsbPhhvLHqdaS/YAHdTgkAh3lAU5CPGPWlc7NE7kVgiwx6aXHrSu0bIPYRgyZC9Oilx60rtGy3LKVIB2grARLHrSu0bLesoz9OwrSru2TZrespHP8AzsDkB5iYMz9MTKdrl8gADBQhg+donRDNeImxO+CGcsNP6F//xAApEQABAQcBCQEBAQAAAAAAAAABEQAQITFhkfBBMEBRcYGhscHRIGBw/9oACAECAQE/EP69N2FCiaCJZEIBrE2EO7IQDUlYQurD4YIABAkCsIPISMSCqIO02T+oSt9VhsAQUgEgktwEHFMP8L28R6kAJRSX4FNwOHV5D/G9v7H2fgU2xEnRtgC6KoMbMLDAdQVd4Xt/Z+z8ah2xCCJKdEZbqqDtLwyv0SdvisWJLmLj6ycEPGR+dmO1BUEqkE0hN+FzfjUO2wqB6SB83m0/o/oewyWJVpcQfmc341DtsKg/JcFQWXA8iVviMt1VNadlYKcAKAoSSrZ+NQ7Y8JQMwYg5Rk0o+Mx9FmTsDiCv6AAfjUO4RQgnvYjRqAqDOkWGAglIjIbfGq8phUUABkYBvC/0MOjAdQV/OBTb41X9s9uVeKh8iRYIAgxEFVdOn4wKbfGq/tnt8+GrwgECQLxYeElVgVgk9vjVfL5Pb58NXnCqfG4Y1XpKCwKapGL58NXj4pSfG4Dg0WDoWV6CiuZMul5E7/EY6SKS8ctSgpSSr5ZcJyJXlZWWEQubmHZl2S4kr/gv/8QAKhABAAEDAgUFAQEAAwEAAAAAAREAITFRYSBAcYHwMEGRobFQEIDB0eH/2gAIAQEAAT8Q/wCckmv8MQZSiANVrDeQL2+Du0K9re07GHcaErtKEdiH1UB4qETgkNUSd59EoO2Lg6QY+BQLptYg2P8A0pS1ykmwvAbYqOpcQgYXe7/AgliwPrBg3YKAGZzWNjAPVelZg2RRehg+q610otxs7yFAw6rVot0q91l+oSpDvJe6DKXzG1JMrK1agc/wTqYd39gAPTx+1JUqgywRhNruXi8Pp/Ai0Rl8t6eNxSVXLxJ4fT+AAScny/p48lJXcv7eLw+n8Axut6djyUpV9/38Xh9P4AiAzKnHtRfPpY5ej4Lh0pyec3WWACO2eCxD0QQQaiLQ6ZpZA2CR0DK+afSxy/yLuHSvP7830iAGQPUmaXsVwE9fdNWeshamkCXqGnGxRg2Bm7x0oKoJEZE/zCTRg9mvdSpxXf8A6go+euWjs3fPakHsirqC2Tcq5ekLGyYCQ7iduH6VeP1cOlef35xfs0GtdL0juF1jaYviGnKqzKW67DovSo8DhL1Mjv8A63ykB8TT4IM9Q+VuyUcA8cB7Bw/Srw+rw6V5/fnFmHhyadUu5UWeth2ws9yd6IIWzGp2/wCxO1EEEbiYfQDwmvDpXn9+cWYeK/vQ2xNDe22y9FjtFYYUkO6/goydEwIdTI7PD9Nq9TX+8Olef35xZh9J3kymXcow5ghka2+CDrSAFWhbYm3YtCJI2/z7OlLnuuHSvP784sw+jipo3tRIzlSocz9FN+xKsi6X99J8EPWigKoFFgGc5nHvTk68Olef35vf8EQQ0xIJRWXRt2M7VlJKBdmre5Vz2ovyOlef352Np4AXQ5O1PdN78u2DvNOXXaGsMd4eTaq+S8+jkAkgcjW3uYgA+DkTFqtt9GAXCum5z7jkmN4poSkiQlJS5BsGgxbTIVBcN8gEw7mOdeKjmjR6kaToFpvgShGiNxp3qYov6XmtOdeKiYattKS4IE6XfmkLFIOwBgfNKEi3fwhfp3q6poHIbGV807el5rTnXjo4fK3+j1LBANEc0ouXL7d1b4ilmBVrjV7nUk39HzWnOvHRw+VuEGIrpEERoz6HmtOdeOjh8rcL7784s1LijLavFac68dHD5W4X335xDBUY79hrEKy7W6tDhwBQdwERvMV7eQTREDaZ5146OHytwvvvzj6tPzz546OHytwvvvzj8c7OfeKiSYrD4W4X335xFNsS58eKi4aLIhuuA3bUlS7sjPd7wB3nh++/OI9xBpU4A1o1YL6Ij+c+/wCUelBPvFNqhhGDuz2mhmmFSDp7DwUALoBH6zxff/lF5qdb1moc6xCpu7PmgCfMUpu4DsNXHkjxuotuwfwZbnkq0S928JrRmWuijPke8FSglDELbNvmWhhlAIA0D0Ii9yKabIgkLDC+9Hqr/wC9Fny9KzARP9MXxO9Gn2BgDYP4amcP+cf/2Q=="
+      ></image>
+    </defs>
+  </svg>
+);
+
 const SideMenuNavBox = () => {
-  const { user, checklist } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const router = useRouter();
   const actionCtx = useContext(ActionContext);
@@ -201,27 +332,59 @@ const SideMenuNavBox = () => {
   // console.log(pathname);
 
   const getListToUse = () => {
-    const val = pathname?.includes("/admin")
-      ? sideMenuList
-      : sideMenuEmployeeList;
+    const val =
+      checkUserRole(user?.role as string) === "ADMIN"
+        ? sideMenuList
+        : sideMenuEmployeeList;
     return val;
   };
 
   return (
-    <div className={style?.side_menu_nav_box_index_wrap}>
+    <div
+      // onClick={() => {
+      //   console.log(user?.organization?.logo);
+      // }}
+      className={style?.side_menu_nav_box_index_wrap}
+    >
       {/* logo box start */}
       <div
         className={`${style?.logo_collapse_box} ${
           actionCtx?.collapseSideNav && style?.logo_collapse_box_closed
         }`}
       >
-        <figure
+        {/* <figure
           className={`${style.img_box} ${style.logo_box} ${
             actionCtx?.collapseSideNav && style.logo_box_closed
           }`}
         >
-          {actionCtx.collapseSideNav ? logoIconCollapse : logoIcon}
-        </figure>
+          {actionCtx.collapseSideNav organization
+ ? logoIconCollapse : logoIcon}
+        </figure> */}
+        {/* logo name box start */}
+        <div className={style.logo_name_box}>
+          <figure
+            className={`${style.img_box} ${style.logo_box} ${
+              actionCtx?.collapseSideNav && style.logo_box_closed
+            }`}
+          >
+            {/* <Image
+              alt=""
+              src={user?.organization?.logo as any}
+              className={style.img}
+              width={100}
+              height={100}
+              layout="responsive"
+            /> */}
+            {defaultLogo}
+          </figure>
+          {!actionCtx?.collapseSideNav && (
+            <p className={style.name}>
+              {trimLongString(user?.organization?.name, 18) || "---"}
+            </p>
+          )}
+        </div>
+        {/* logo name box end */}
+        {/* logo end */}
         <figure
           onClick={() => {
             actionCtx.setCollapseSideNav && actionCtx.setCollapseSideNav();
@@ -241,6 +404,8 @@ const SideMenuNavBox = () => {
             <div className={style?.nav_list_fragment} key={idx}>
               <div
                 onClick={() => {
+                  // console.log(chi);
+
                   chi?.collapseNum === actionCtx.showNavVal
                     ? actionCtx?.setShowNavVal("")
                     : actionCtx?.setShowNavVal(chi?.collapseNum);
@@ -318,6 +483,98 @@ const SideMenuNavBox = () => {
                     ) {
                       return <React.Fragment key={i}></React.Fragment>;
                     }
+                    // children link start
+                    if (child?.children?.length > 0) {
+                      return (
+                        <div key={i} className={style.nav_link_children_type}>
+                          {/* title link here start */}
+                          <div
+                            className={`${style.nav_link} ${
+                              style.nav_link_title
+                            } ${
+                              pathname === child?.link && style.nav_link_active
+                            } ${
+                              child?.relatedLink?.includes(pathname) &&
+                              style.nav_link_active
+                            }  ${
+                              actionCtx.collapseSideNav && style.nav_link_closed
+                            }`}
+                            onClick={() => {
+                              if (actionCtx?.navChildVal === child?.name) {
+                                actionCtx?.setNavChildVal &&
+                                  actionCtx?.setNavChildVal("");
+                              } else {
+                                actionCtx?.setNavChildVal &&
+                                  actionCtx?.setNavChildVal(child?.name);
+                              }
+                            }}
+                          >
+                            <figure className={style.icon_box}>
+                              {child?.icon}
+                            </figure>
+                            <p className={style.name}>{child?.name}</p>
+                            {actionCtx.collapseSideNav && (
+                              <p className={style.name_closed}>{child?.name}</p>
+                            )}
+                            <div
+                              className={`${style.drop_icon} ${
+                                actionCtx?.navChildVal === child?.name &&
+                                !actionCtx.collapseSideNav &&
+                                style.drop_icon_right
+                              }`}
+                            >
+                              <figure className={style.img_box}>
+                                {dropIcon}
+                              </figure>
+                            </div>
+                          </div>
+                          {/* title link here end */}
+                          {/* collapse child box start */}
+                          <div
+                            className={`${style.children_collapse_box} ${
+                              actionCtx?.navChildVal === child?.name &&
+                              style.children_collapse_box_show
+                            }`}
+                          >
+                            <div className={style.children_list_box}>
+                              {child?.children?.map(
+                                (children: any, index: any) => {
+                                  return (
+                                    <div
+                                      className={`${style?.nav_link} ${
+                                        children?.link === pathname &&
+                                        style?.nav_link_active
+                                      }  ${
+                                        children?.link === pathname &&
+                                        style?.nav_link_active_child
+                                      }  ${
+                                        children?.relatedLink?.includes(pathname) &&
+                                        style?.nav_link_active_child
+                                      } ${
+                                        actionCtx.collapseSideNav &&
+                                        style.nav_link_closed
+                                      }`}
+                                      key={index}
+                                      onClick={() => {
+                                        if (children?.link) {
+                                          router?.push(children?.link);
+                                        }
+                                      }}
+                                    >
+                                      <p className={style.name}>
+                                        {children?.name}
+                                      </p>
+                                    </div>
+                                  );
+                                }
+                              )}
+                            </div>
+                          </div>
+                          {/* collapse child box end */}
+                        </div>
+                      );
+                    }
+                    // children link end
                     return (
                       <div
                         key={i}
@@ -359,25 +616,45 @@ const SideMenuNavBox = () => {
           actionCtx.collapseSideNav && style?.support_wrap_box_closed
         }`}
       >
-        <div className={style.img_title_box}>
-          <div className={style.num_box}>
-            <figure className={style.before}>{borderIcon}</figure>
-            <div className={style.num}>
-              <span>09</span>
+        {actionCtx?.collapseSideNav ? (
+          <div className={style.img_title_box}>
+            <div className={style.num_box}>
+              <figure className={style.before}>{borderIcon}</figure>
+              <div className={style.num}>
+                <span>09</span>
+              </div>
             </div>
+            {/* <p className={style.title}>Request Support</p> */}
           </div>
-          <p className={style.title}>Request Support</p>
-        </div>
-        {/* text start */}
-        <p className={style.text}>
-          Get in touch with one of our experts or visit our <span>FAQ</span>
-        </p>
-        {/* text end */}
-        {/* button start */}
-        <Button className={style?.btn_support} value={`Request`}>
-          Request
-        </Button>
-        {/* button end */}
+        ) : (
+          <>
+            {" "}
+            <figure
+              className={`${style.img_box} ${style.logo_box} ${
+                actionCtx?.collapseSideNav && style.logo_box_closed
+              }`}
+            >
+              {actionCtx.collapseSideNav
+                ? logoIconCollapseWhite
+                : logoIconWhite}
+            </figure>
+            {/* text start */}
+            <p className={style.text}>
+              Get in touch with one of our experts or visit our <span>FAQ</span>
+            </p>
+            {/* text end */}
+            {/* button start */}
+            <Button
+              className={`${style?.btn_support} ${style?.btn_support_outline}`}
+            >
+              Report a Bug
+            </Button>
+            {/* button end */}
+            {/* button start */}
+            {/* <Button className={style?.btn_support}>Suggest a Feature</Button> */}
+            {/* button end */}
+          </>
+        )}
       </div>
       {/* support list box end */}
     </div>
