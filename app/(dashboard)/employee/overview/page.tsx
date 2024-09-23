@@ -6,8 +6,20 @@ import Routes from "@/lib/routes/routes";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
-import { WarningIcon } from "@/public/assets/icons";
+import {
+  AnnouncementIcon,
+  CreateListIcon,
+  HelpIcon,
+  WarningIcon,
+} from "@/public/assets/icons";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ChevronRightIcon } from "lucide-react";
+import {
+  AchievementProgress,
+  Legend,
+  ReusableProgress,
+} from "@/components/fragment";
 
 const OverView = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -39,13 +51,375 @@ const OverView = () => {
         </article>
         {/* Main Content */}
         <div className="flex-1 relative">
-          <div className="h-full px-6 mr-[360px] custom-scrollbar">
+          <div className="h-full pb-10 pl-6 w-[calc(100%-384px)] absolute top-0 left-0 space-y-6 custom-scrollbar">
             {/* Quick access */}
             <section className="mt-9">
               <h3 className="text-[var(--footer-link-color)] font-medium text-lg mb-2.5">
                 Quick Access
               </h3>
-              <div className="bg-white rounded-lg px-[15px] py-[23px]"></div>
+              <section className="bg-white rounded-lg px-[15px] py-[23px] grid gap-3 grid-cols-3">
+                <Link
+                  href={"#"}
+                  className="border border-[var(--input-border2)] px-2.5 py-3.5 rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                >
+                  <Image src={AnnouncementIcon} alt="announcement icon" />
+                  View Announcement
+                </Link>
+                <Link
+                  href={"#"}
+                  className="border border-[var(--input-border2)] px-2.5 py-3.5 rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                >
+                  <Image src={CreateListIcon} alt="create todo icon" />
+                  Create To Do
+                </Link>
+                <Link
+                  href={"#"}
+                  className="border border-[var(--input-border2)] px-2.5 py-3.5 rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                >
+                  <Image src={HelpIcon} alt="help icon" />
+                  Help
+                </Link>
+              </section>
+            </section>
+
+            {/* My mission plan */}
+            <section className="bg-white rounded-[5px] px-5 pt-3 pb-8 space-y-5">
+              {/* Header/Title for card */}
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-base"> My Mission Plan 2023</p>
+                  <span className="text-xs text-[var(--text-color2)]">
+                    March 23 - March 31, 2024
+                  </span>
+                </div>
+                <div className="inline-flex space-x-2 text-xs text-[var(--text-color)]">
+                  <span className="inline-flex items-center gap-x-1.5">
+                    <span className="block bg-[var(--primary-color)] size-1.5 rounded-[1px]" />
+                    Measure of Success
+                  </span>
+                  <span className="inline-flex items-center gap-x-1.5">
+                    <span className="block bg-[var(--primary-accent-color)] size-1.5 rounded-[1px]" />
+                    Task Performance
+                  </span>
+                </div>
+              </div>
+              {/* content */}
+              <main className="w-full space-y-3">
+                <div className="flex gap-x-3 font-medium text-sm text-[var(--text-color5)]">
+                  <div
+                    className={`block bg-[var(--primary-color)] rounded-tl-sm rounded-bl-sm h-6`}
+                    style={{ width: `${50}%` }}
+                  />
+                  {50}%
+                </div>
+                <div className="flex gap-x-3 font-medium text-sm text-[var(--text-color5)]">
+                  <div
+                    className={`block bg-[var(--primary-accent-color)] rounded-tl-sm rounded-bl-sm h-6`}
+                    style={{ width: `${80}%` }}
+                  />
+                  {80}%
+                </div>
+              </main>
+            </section>
+
+            {/* My Team Performance Task Bar */}
+            <section className="bg-white rounded-[5px] px-5 pt-3 pb-8 space-y-5">
+              {/* Header/Title for card */}
+              <div className="flex justify-between items-center">
+                <h4 className="text-base">My Team Performance Task Bar</h4>
+
+                <p className="font-medium">Total Task: 0 </p>
+              </div>
+              {/* content */}
+              <main className="w-full pt-12">
+                {/* Progree bar */}
+                <div className="flex h-1.5 w-full rounded bg-[var(--input-bg)] -space-x-1">
+                  {/* in progress */}
+                  <span
+                    className="block bg-[var(--bg-yellow-400)] h-full rounded"
+                    style={{ width: `${20}%` }}
+                  />
+                  <span
+                    className="block bg-[rgb(var(--bg-green-100))] h-full rounded"
+                    style={{ width: `${25}%` }}
+                  />
+                  <span
+                    className="block bg-[rgb(var(--bg-blue-100))] h-full rounded"
+                    style={{ width: `${30}%` }}
+                  />
+                  <span
+                    className="block bg-[var(--bg-red-100)] h-full rounded"
+                    style={{ width: `${25}%` }}
+                  />
+                </div>
+                {/* data */}
+                <div className="mt-6 flex justify-between items-start text-xs text-[var(--text-color)]">
+                  <div className="inline-flex gap-x-2">
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[var(--bg-yellow-400)] size-1.5 rounded-[1px]" />
+                        In Progress
+                      </div>
+                      <div className="text-center text-sm text-[var(--bg-yellow-400)]">
+                        24
+                      </div>
+                    </span>
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[rgb(var(--bg-green-100))] size-1.5 rounded-[1px]" />
+                        Completed
+                      </div>
+                      <div className="text-center text-sm text-[rgb(var(--bg-green-100))]">
+                        13
+                      </div>
+                    </span>
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[rgb(var(--bg-blue-100))] size-1.5 rounded-[1px]" />
+                        Under Review
+                      </div>
+                      <div className="text-center text-sm text-[rgb(var(--bg-blue-100))]">
+                        17
+                      </div>
+                    </span>
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[var(--bg-red-100)] size-1.5 rounded-[1px]" />
+                        Overdue
+                      </div>
+                      <div className="text-center text-sm text-[var(--bg-red-100)]">
+                        22
+                      </div>
+                    </span>
+                  </div>
+                  {/* Array of Initials */}
+                  <div className="inline-flex -space-x-3.5">
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      BD
+                    </span>
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      OI
+                    </span>
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      AA
+                    </span>
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      CU
+                    </span>
+                  </div>
+                </div>
+              </main>
+            </section>
+
+            {/* My Downline Team Performance Task Bar */}
+            <section className="bg-white rounded-[5px] px-5 pt-3 pb-8 space-y-5">
+              {/* Header/Title for card */}
+              <div className="flex justify-between items-center">
+                <h4 className="text-base">
+                  My Downline Team Performance Task Bar
+                </h4>
+
+                <p className="font-medium">Total Task: 50 </p>
+              </div>
+              {/* content */}
+              <main className="w-full pt-12">
+                {/* Progree bar */}
+                <div className="flex h-1.5 w-full rounded bg-[var(--input-bg)] -space-x-1">
+                  {/* in progress */}
+                  <span
+                    className="block bg-[var(--bg-yellow-400)] h-full rounded"
+                    style={{ width: `${2}%` }}
+                  />
+                  <span
+                    className="block bg-[rgb(var(--bg-green-100))] h-full rounded"
+                    style={{ width: `${2}%` }}
+                  />
+                  <span
+                    className="block bg-[rgb(var(--bg-blue-100))] h-full rounded"
+                    style={{ width: `${2}%` }}
+                  />
+                  <span
+                    className="block bg-[var(--bg-red-100)] h-full rounded"
+                    style={{ width: `${2}%` }}
+                  />
+                </div>
+                {/* data */}
+                <div className="mt-6 flex justify-between items-start text-xs text-[var(--text-color)]">
+                  <div className="inline-flex gap-x-2">
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[var(--bg-yellow-400)] size-1.5 rounded-[1px]" />
+                        In Progress
+                      </div>
+                      <div className="text-center text-sm text-[var(--bg-yellow-400)]">
+                        24
+                      </div>
+                    </span>
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[rgb(var(--bg-green-100))] size-1.5 rounded-[1px]" />
+                        Completed
+                      </div>
+                      <div className="text-center text-sm text-[rgb(var(--bg-green-100))]">
+                        13
+                      </div>
+                    </span>
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[rgb(var(--bg-blue-100))] size-1.5 rounded-[1px]" />
+                        Under Review
+                      </div>
+                      <div className="text-center text-sm text-[rgb(var(--bg-blue-100))]">
+                        17
+                      </div>
+                    </span>
+                    <span className="space-y-2">
+                      <div className="inline-flex items-center gap-x-1.5">
+                        <span className="block bg-[var(--bg-red-100)] size-1.5 rounded-[1px]" />
+                        Overdue
+                      </div>
+                      <div className="text-center text-sm text-[var(--bg-red-100)]">
+                        22
+                      </div>
+                    </span>
+                  </div>
+                  {/* Array of Initials */}
+                  <div className="inline-flex -space-x-3.5">
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      BD
+                    </span>
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      OI
+                    </span>
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      AA
+                    </span>
+                    <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                      CU
+                    </span>
+                  </div>
+                </div>
+              </main>
+            </section>
+
+            {/* Specified task progress */}
+            <section className="bg-white rounded-[5px] px-5 pt-3 pb-8 space-y-5">
+              {/* header */}
+              <header className="flex mb-3 justify-between items-center">
+                <h3 className="">Specified Task Progress</h3>
+                <Link
+                  href={"#"}
+                  className="inline-flex items-center text-[var(--primary-color)] text-[13px] h-fit"
+                >
+                  See all <ChevronRightIcon className="size-4" />
+                </Link>
+              </header>
+              <div className="text-[var(--text-color)] mb-5 inline-flex gap-x-4">
+                <p className="text-sm">
+                  Total Task: <span className="text-black">{20}</span>
+                </p>
+                <div className="inline-flex space-x-2 text-xs text-[var(--text-color)]">
+                  <span className="inline-flex items-center gap-x-1.5">
+                    <span className="block bg-[var(--primary-color)] size-1.5 rounded-[1px]" />
+                    Specified Task
+                  </span>
+                  <span className="inline-flex items-center gap-x-1.5">
+                    <span className="block bg-[var(--primary-accent-color)] size-1.5 rounded-[1px]" />
+                    Implied Task
+                  </span>
+                </div>
+              </div>
+              {/* Content */}
+              <div className="space-y-6">
+                <AchievementProgress
+                  title={
+                    <span className="inline-flex items-center gap-x-2 !text-black mb-3">
+                      Task 1: Complete Hifi Design
+                      <span className="text-xs font-light text-[var(--text-color)]">
+                        10/12/2024
+                      </span>
+                      <Legend
+                        title="In Review"
+                        barWidth={6}
+                        barHeight={6}
+                        color="blue"
+                        rounded
+                      />
+                    </span>
+                  }
+                  color="base"
+                  progress_value={50}
+                  target="Revenue (150,000,000$)"
+                  targetColor="var(--text-color)"
+                  targetClassName="!h-4 pl-2 mt-3 bg-[var(--primary-accent-color)]"
+                />
+
+                <AchievementProgress
+                  title={
+                    <span className="inline-flex items-center gap-x-2 !text-black mb-3">
+                      Task 2: Complete Hifi Design
+                      <span className="text-xs font-light text-[var(--text-color)]">
+                        10/12/2024
+                      </span>
+                      <Legend
+                        title="In Progress"
+                        barWidth={6}
+                        barHeight={6}
+                        color="yellow"
+                        rounded
+                      />
+                    </span>
+                  }
+                  color="base"
+                  progress_value={65}
+                  target="Revenue (150,000,000$)"
+                  targetColor="var(--text-color)"
+                  targetClassName="!h-4 pl-2 mt-3 bg-[var(--primary-accent-color)]"
+                />
+
+                <AchievementProgress
+                  title={
+                    <span className="inline-flex items-center gap-x-2 !text-black mb-3">
+                      Task 3: Complete Hifi Design
+                      <span className="text-xs font-light text-[var(--text-color)]">
+                        10/12/2024
+                      </span>
+                      <Legend
+                        title="Overdue"
+                        barWidth={6}
+                        barHeight={6}
+                        color="red"
+                        rounded
+                      />
+                    </span>
+                  }
+                  color="base"
+                  progress_value={75}
+                  target="Revenue (150,000,000$)"
+                  targetColor="var(--text-color)"
+                  targetClassName="!h-4 pl-2 mt-3 bg-[var(--primary-accent-color)]"
+                />
+              </div>
+            </section>
+
+            {/* Recent Activity */}
+            <section className="mt-9">
+              <header className="flex justify-between items-center">
+                <h3 className="text-[var(--footer-link-color)] font-medium text-lg mb-2.5">
+                  Recent Activity
+                </h3>
+                <Link
+                  href={"#"}
+                  className="inline-flex items-center text-[var(--primary-color)] text-[13px] h-fit"
+                >
+                  See all <ChevronRightIcon className="size-4" />
+                </Link>
+              </header>
+              <section className="bg-white rounded-sm px-[15px] py-4 ">
+                <div className="text-[var(--text-color2)] min-h-28 grid place-content-center text-center w-full">
+                  You have no recent activity
+                </div>
+              </section>
             </section>
           </div>
 

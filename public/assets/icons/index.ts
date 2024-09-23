@@ -52,3 +52,6 @@ export { default as InviteStaffIcon } from "./InviteStaffIcon.svg";
 export { default as TeamIcon } from "./TeamIcon.svg";
 export { default as MissionIcon } from "./MissionIcon.svg";
 export { default as VisionIcon } from "./VisionIcon.svg";
+export { default as AnnouncementIcon } from "./AnnouncementIcon.svg";
+export { default as CreateListIcon } from "./CreateListIcon.svg";
+export { default as HelpIcon } from "./HelpIcon.svg";
