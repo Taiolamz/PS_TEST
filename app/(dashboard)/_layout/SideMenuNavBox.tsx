@@ -341,9 +341,9 @@ const SideMenuNavBox = () => {
 
   return (
     <div
-      onClick={() => {
-        console.log(user?.organization?.logo);
-      }}
+      // onClick={() => {
+      //   console.log(user?.organization?.logo);
+      // }}
       className={style?.side_menu_nav_box_index_wrap}
     >
       {/* logo box start */}
