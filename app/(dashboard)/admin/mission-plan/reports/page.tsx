@@ -1,4 +1,3 @@
-"use client"
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import CustomSelect from "@/components/custom-select";
@@ -11,8 +10,9 @@ import { Filter, FilterX, Undo2 } from "lucide-react";
 import Link from "next/link";
 import SpecifiedTaskChart from "./_charts/specified-task";
 import { ACHIEVEMENT_PROGRESS_DATA, MOS_LABEL_TYPES, PAGE_LEGEND, SPECIFIED_TASK_CHART_LABELS } from "./_data";
+import { Dictionary } from "@/@types/dictionary";
 
-const Reports = () => {
+export default function Reports (){
 
     return (
         <DashboardLayout headerTitle="Business Performance Overview"
@@ -133,8 +133,8 @@ const Reports = () => {
                                 <ReusableLabel title="Total" value="40 Specified Tasks" />
                                 <div className="mt-4 flex flex-col gap-4">
                                     {
-                                        SPECIFIED_TASK_CHART_LABELS?.map(({ title, value, color }: any) => (
-                                            <Legend key={title} title={title} value={value} color={color as any} />
+                                        SPECIFIED_TASK_CHART_LABELS?.map((item: Dictionary) => (
+                                            <Legend key={item?.title} title={item?.title} value={item?.value} color={item?.color as any} />
                                         ))
                                     }
                                 </div>
@@ -158,22 +158,22 @@ const Reports = () => {
                             </div>
                             <div className="border rounded-sm flex gap-4 p-1">
                                 {
-                                    MOS_LABEL_TYPES?.map(({ title, color }: any) => (
-                                        <Legend key={title} title={title} color={color as any} barWidth={20} titleClass="text-xs" />
+                                    MOS_LABEL_TYPES?.map((item: Dictionary) => (
+                                        <Legend key={item?.title} title={item?.title} color={item?.color as any} barWidth={20} titleClass="text-xs" />
                                     ))
                                 }
                             </div>
                         </div>
                         <div className="mt-4 flex flex-col gap-4">
                             {
-                                ACHIEVEMENT_PROGRESS_DATA?.map(({ title, progress, target, targetColor }: any) => (
+                                ACHIEVEMENT_PROGRESS_DATA?.map((item: Dictionary) => (
                                     <AchievementProgress
-                                        key={title}
+                                        key={item?.title}
                                         title="Revenue"
-                                        progress_value={progress}
-                                        color={getProgressColorByValue(progress)}
-                                        target={target}
-                                        targetColor={targetColor}
+                                        progress_value={item?.progress}
+                                        color={getProgressColorByValue(item?.progress)}
+                                        target={item?.target}
+                                        targetColor={item?.targetColor}
                                     />
                                 ))
                             }
@@ -200,8 +200,8 @@ const Reports = () => {
                         <span className="w-fit text-sm text-gray-500">Page Legend</span>
                         <div className="flex gap-8">
                             {
-                                PAGE_LEGEND?.map(({ title, color }: any) => (
-                                    <Legend key={title} title={title} color={color as any} barHeight={4} barWidth={40} titleClass="text-xs" titleColor="default"/>
+                                PAGE_LEGEND?.map((item: Dictionary) => (
+                                    <Legend key={item?.title} title={item?.title} color={item?.color as any} barHeight={4} barWidth={40} titleClass="text-xs" titleColor="default"/>
                                 ))
                             }
                             <div className="w-fit flex items-center gap-2 text-gray-500">
@@ -226,5 +226,3 @@ const Reports = () => {
         </DashboardLayout>
     );
 }
-
-export default Reports;
