@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/redux/store";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import DashboardLayout from "../(dashboard)/_layout/DashboardLayout";
 import style from "./profile/styles/ProfileStylesIndex.module.css";
@@ -10,11 +10,12 @@ import ReuseProfileTabs from "./ReuseProfileTabs";
 import MyDoughnutChart from "./profile/ProgressChart";
 import CountUp from "react-countup";
 import { trimLongString } from "../(dashboard)/_layout/Helper";
-import { returnInitial } from "@/utils/helpers";
+import { checkUserRole, returnInitial } from "@/utils/helpers";
 import Image from "next/image";
 import unknownImg from "./profile/assests/Unknown_person.png";
 import { Button } from "@/components/ui/button";
 import { ManceLoader } from "@/components/custom-loader";
+import routesPath from "@/utils/routes";
 
 interface myComponentProps {
   pageTitle?: string;
@@ -23,6 +24,8 @@ interface myComponentProps {
 
 const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
   const { user } = useAppSelector((state) => state.auth);
+  const pathname = usePathname();
+  const router = useRouter();
   type detailType = {
     profile_img: any;
   };
@@ -77,7 +80,20 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
 
   return (
     <>
-      <DashboardLayout back={false} headerTitle={`Profile`}>
+      <DashboardLayout
+        // back={pathname?.includes("/profile") ? false : true}
+        back={false}
+        onBack={() => {
+          if (document.referrer?.includes("/profile")) {
+            checkUserRole(user?.role as string) === "ADMIN"
+              ? router.push(routesPath?.ADMIN?.OVERVIEW)
+              : router.push(routesPath?.EMPLOYEE?.OVERVIEW);
+          } else {
+            router?.back();
+          }
+        }}
+        headerTitle={`Profile`}
+      >
         <div className={style.reusable_profile_module_index_wrapper}>
           <ReuseProfileTabs />
           {/* content wrapper start */}

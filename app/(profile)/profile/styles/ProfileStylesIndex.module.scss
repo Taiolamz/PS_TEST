@@ -192,7 +192,7 @@
             .title {
               font-size: 0.9rem;
               margin-right: auto;
-            }
+            }  
 
             .list_pos_box {
               margin-top: 1.5rem;
@@ -240,19 +240,21 @@
                   flex-direction: column;
 
                   .name {
-                    font-size: 1rem;
+                    font-size: .9rem;
                     font-weight: 500;
+                    text-transform: capitalize;
                   }
 
                   .role {
-                    font-size: 0.65rem;
+                    font-size: 0.5rem;
                     color: rgba(110, 124, 135, 1);
+                    text-transform: capitalize;
                   }
                 }
 
                 .position {
-                  width: 2.7rem;
-                  height: 2.7rem;
+                  width: 2.4rem;
+                  height: 2.4rem;
                   border-radius: 50%;
                   background-color: var(--primary-color);
                   display: grid;
@@ -260,7 +262,7 @@
 
                   span {
                     color: #ffffff;
-                    font-size: 0.8rem;
+                    font-size: 0.65rem;
                   }
                 }
               }

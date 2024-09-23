@@ -206,16 +206,18 @@
   flex-direction: column;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap .list_pos_box .item_row .name_role_box .name {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
+  text-transform: capitalize;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap .list_pos_box .item_row .name_role_box .role {
-  font-size: 0.65rem;
+  font-size: 0.5rem;
   color: rgb(110, 124, 135);
+  text-transform: capitalize;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap .list_pos_box .item_row .position {
-  width: 2.7rem;
-  height: 2.7rem;
+  width: 2.4rem;
+  height: 2.4rem;
   border-radius: 50%;
   background-color: var(--primary-color);
   display: grid;
@@ -223,7 +225,7 @@
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .approval_flow_box_wrap .list_pos_box .item_row .position span {
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.65rem;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .left_wrapper_box .children_box_wrap .section_box_wrapper_profile .edit_content_box {
   width: 100%;

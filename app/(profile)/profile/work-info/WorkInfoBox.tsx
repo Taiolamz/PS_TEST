@@ -546,7 +546,7 @@ const WorkInfoBox = () => {
                     <span>{getOrdinalSuffix(idx + 1)}</span>
                   </p>
                   <div className={style.name_role_box}>
-                    <p className={style.name}>{chi?.name}</p>
+                    <p className={style.name}>{trimLongString(chi?.name, 20)}</p>
                     <p className={style.role}>line manager</p>
                   </div>
                 </div>
