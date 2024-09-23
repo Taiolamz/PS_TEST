@@ -23,12 +23,11 @@ import {
 
 const OverView = () => {
   const { user } = useAppSelector((state) => state.auth);
-  console.log(user);
   return (
     <DashboardLayout headerTitle={`Welcome ${user?.name?.split(" ")[0]}`}>
       <div className="h-full flex flex-col overflow-y-hidden">
         {/* Employee checklist to complete profile */}
-        <article className="bg-[var(--bg-yellow-300)] pl-6  md:pr-9 py-2.5 flex justify-between items-center w-full">
+        <article className="bg-[var(--bg-yellow-300)] pl-6 md:pr-9 py-2.5 flex justify-between items-center w-full">
           <div className="inline-flex items-center">
             <Image src={WarningIcon} alt="warning icon" />
             <h4 className="text-[var(--text-color3)] font-medium ml-1.5">
@@ -50,7 +49,7 @@ const OverView = () => {
           </Link>
         </article>
         {/* Main Content */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative hidden">
           <div className="h-full pb-10 pl-6 w-[calc(100%-384px)] absolute top-0 left-0 space-y-6 custom-scrollbar">
             {/* Quick access */}
             <section className="mt-9">
