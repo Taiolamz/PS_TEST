@@ -54,8 +54,6 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     (state) => state.mission_plan
   );
 
- 
-
   const FISCAL_YEAR_ID = mission_plan_info?.active_fy_info?.id || "";
 
   const [
@@ -327,10 +325,10 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                                       )
                                     }
                                     className="border p-2 bg-[#F6F8F9]"
-                                    // value={formik.values.measures[index].target}
-                                    value={parseFloat(
-                                      formik.values.measures[index].target
-                                    ).toFixed(2)}
+                                    value={formik.values.measures[index].target}
+                                    // value={formik.values.measures[
+                                    //   index
+                                    // ].target}
                                   />
                                   <ErrorMessage
                                     name={`measures.${index}.target`}
