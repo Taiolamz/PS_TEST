@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { PageLoader } from "@/components/custom-loader";
 import { ReusableDrawer } from "@/components/fragment";
 import { Button } from "@/components/ui/button";

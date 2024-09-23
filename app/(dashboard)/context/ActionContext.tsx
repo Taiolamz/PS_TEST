@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import { useLazyGetChecklistQuery } from "@/redux/services/onboarding/checkListApi";

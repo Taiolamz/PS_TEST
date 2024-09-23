@@ -133,7 +133,7 @@ const Reports = () => {
                                 <ReusableLabel title="Total" value="40 Specified Tasks" />
                                 <div className="mt-4 flex flex-col gap-4">
                                     {
-                                        SPECIFIED_TASK_CHART_LABELS?.map(({ title, value, color }) => (
+                                        SPECIFIED_TASK_CHART_LABELS?.map(({ title, value, color }: any) => (
                                             <Legend key={title} title={title} value={value} color={color as any} />
                                         ))
                                     }
@@ -158,7 +158,7 @@ const Reports = () => {
                             </div>
                             <div className="border rounded-sm flex gap-4 p-1">
                                 {
-                                    MOS_LABEL_TYPES?.map(({ title, color }) => (
+                                    MOS_LABEL_TYPES?.map(({ title, color }: any) => (
                                         <Legend key={title} title={title} color={color as any} barWidth={20} titleClass="text-xs" />
                                     ))
                                 }
@@ -166,7 +166,7 @@ const Reports = () => {
                         </div>
                         <div className="mt-4 flex flex-col gap-4">
                             {
-                                ACHIEVEMENT_PROGRESS_DATA?.map(({ title, progress, target, targetColor }) => (
+                                ACHIEVEMENT_PROGRESS_DATA?.map(({ title, progress, target, targetColor }: any) => (
                                     <AchievementProgress
                                         key={title}
                                         title="Revenue"
@@ -200,7 +200,7 @@ const Reports = () => {
                         <span className="w-fit text-sm text-gray-500">Page Legend</span>
                         <div className="flex gap-8">
                             {
-                                PAGE_LEGEND?.map(({ title, color }) => (
+                                PAGE_LEGEND?.map(({ title, color }: any) => (
                                     <Legend key={title} title={title} color={color as any} barHeight={4} barWidth={40} titleClass="text-xs" titleColor="default"/>
                                 ))
                             }
