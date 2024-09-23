@@ -6,9 +6,15 @@ import style from "./styles/SideMenuNavBox.module.css";
 import { usePathname, useRouter } from "next/navigation";
 import ActionContext from "../context/ActionContext";
 import { trimLongString } from "./Helper";
-import { checkUserRole, processInputAsArray } from "@/utils/helpers";
+import {
+  checkUserRole,
+  processInputAsArray,
+  returnInitial,
+} from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
 import Image from "next/image";
+import ImageFallBack from "@/components/fragment/ImageFallBack";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 
 const logoIconWhite = (
   <svg
@@ -367,6 +373,19 @@ const SideMenuNavBox = () => {
               actionCtx?.collapseSideNav && style.logo_box_closed
             }`}
           >
+            <CheckUrlFragment
+              className={`${style.img_box} ${style.logo_box} ${
+                actionCtx?.collapseSideNav && style.logo_box_closed
+              }`}
+              width={100}
+              height={100}
+              // classNameImg={style.img}
+              url={user?.organization?.logo as any}
+            >
+              <div className={`${style.logo_box} ${style.logo_box_two}`}>
+                <span>{returnInitial(user?.organization?.name as any)}</span>
+              </div>
+            </CheckUrlFragment>
             {/* <Image
               alt=""
               src={user?.organization?.logo as any}
@@ -375,7 +394,7 @@ const SideMenuNavBox = () => {
               height={100}
               layout="responsive"
             /> */}
-            {defaultLogo}
+            {/* {defaultLogo} */}
           </figure>
           {!actionCtx?.collapseSideNav && (
             <p className={style.name}>
@@ -548,8 +567,9 @@ const SideMenuNavBox = () => {
                                         children?.link === pathname &&
                                         style?.nav_link_active_child
                                       }  ${
-                                        children?.relatedLink?.includes(pathname) &&
-                                        style?.nav_link_active_child
+                                        children?.relatedLink?.includes(
+                                          pathname
+                                        ) && style?.nav_link_active_child
                                       } ${
                                         actionCtx.collapseSideNav &&
                                         style.nav_link_closed

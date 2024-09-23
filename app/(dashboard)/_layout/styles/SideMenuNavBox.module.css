@@ -52,6 +52,7 @@
 }
 .side_menu_nav_box_index_wrap .logo_collapse_box .logo_name_box .name {
   text-transform: capitalize;
+  font-size: 0.8rem;
 }
 .side_menu_nav_box_index_wrap .logo_collapse_box .logo_name_box .logo_box {
   width: 4rem;
@@ -62,6 +63,18 @@
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+.side_menu_nav_box_index_wrap .logo_collapse_box .logo_name_box .logo_box_two {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.5rem;
+  display: grid;
+  place-items: center;
+  background-color: rgb(246, 248, 249);
+  border-radius: 50% !important;
+}
+.side_menu_nav_box_index_wrap .logo_collapse_box .logo_name_box .logo_box_two span {
+  font-weight: 600;
 }
 .side_menu_nav_box_index_wrap .logo_collapse_box_closed {
   flex-direction: column;

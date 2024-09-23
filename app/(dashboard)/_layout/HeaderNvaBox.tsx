@@ -16,6 +16,7 @@ import {
 import LogoutModal from "./logout-folder/LogoutModal";
 import { sideMenuList } from "./SideMenuList";
 import { notiList } from "./(notification)/noti_junks";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -273,9 +274,12 @@ const HeaderNavBox = ({
             {/* <figure className={`${style.profile_img_box}`}>
             <Image alt="profile-img" src={unknownImg} className={style.img} />
           </figure> */}
-            <div className={style.avatar_box}>
-              <span>{returnInitial(user?.name as any)}</span>
-            </div>
+            <CheckUrlFragment className={style.avatar_box} url={` ` as any}>
+              <div className={style.avatar_box}>
+                <span>{returnInitial(user?.name as any)}</span>
+              </div>
+            </CheckUrlFragment>
+
             <figure className={style.img_box}>{dropIcon}</figure>
           </div>
           {/* profil drop start */}
@@ -290,9 +294,14 @@ const HeaderNavBox = ({
                   className={style.img}
                 />
               </figure> */}
-                <div className={style.avatar_box}>
-                  <span>{returnInitial(user?.name as any)}</span>
-                </div>
+                <CheckUrlFragment
+                  className={style.avatar_box}
+                  url={'' as any}
+                >
+                  <div className={style.avatar_box}>
+                    <span>{returnInitial(user?.name as any)}</span>
+                  </div>
+                </CheckUrlFragment>
                 <div className={style.name_role_box}>
                   <p className={style.name}>
                     {trimLongString(user?.name, 20) || `Ayeni Kehinde`}
