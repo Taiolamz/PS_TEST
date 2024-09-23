@@ -28,6 +28,8 @@ import { downloadFile } from "@/utils/helpers/file-formatter";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import MetricCard from "@/components/card/metric-card";
+import { SubsidiaryIcon } from "@/public/assets/icons";
 
 const { ADMIN } = routesPath;
 
@@ -35,6 +37,8 @@ const Subsidiary = () => {
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
 
   const {
     isOpen: openProceedModal,
@@ -131,15 +135,16 @@ const Subsidiary = () => {
     isFetching: isFetchingSubsidiaries,
     refetch: refetchSubsidiaries,
   } = useGetSubsidiariesQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
+    page: page,
+    search: search,
+    // to: 0,
+    // total: 0,
+    // per_page: 10,
+    // currentPage: 0,
+    // next_page_url: "",
+    // prev_page_url: "",
   });
-
-  const subsidiaries = subsidiariesData ?? [];
+  const subsidiaries = subsidiariesData?.data?.data ?? [];
 
   const { subsidiaryColumns, data, openDeleteModal, handleDeleteDialog } =
     useSubsidiaryColumnData(isFetchingSubsidiaries);
@@ -206,16 +211,65 @@ const Subsidiary = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            isLoading={isFetchingSubsidiaries}
-            header="Subsidiary"
-            data={subsidiaries}
-            columns={replaceEmptyValuesWithPlaceholder(subsidiariesColumnData)}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            onManualBtn={handleAddSubsidiary}
-          />
+          <>
+            <div className="grid md:grid-cols-4 w-full mt-3 mb-6">
+              <MetricCard
+                count={subsidiariesData?.data?.total ?? 0}
+                option="darkgreen"
+                title="Total Subsidiaries"
+                isActive
+                icon={SubsidiaryIcon}
+              />
+            </div>
+            {/* <DashboardTable
+              isLoading={isFetchingSubsidiaries}
+              header="Subsidiary"
+              data={subsidiaries}
+              columns={replaceEmptyValuesWithPlaceholder(
+                subsidiariesColumnData
+              )}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              onManualBtn={handleAddSubsidiary}
+            /> */}
+            <TableWrapper
+              tableheaderList={["Name", "Country", "Address", "Action"]}
+              perPage={subsidiariesData?.data?.per_page}
+              totalPage={subsidiariesData?.data?.total}
+              currentPage={subsidiariesData?.data?.current_page}
+              onPageChange={(p) => {
+                setPage(p);
+              }}
+              hideNewBtnOne={false}
+              tableBodyList={FORMAT_TABLE_DATA(subsidiaries)}
+              loading={isFetchingSubsidiaries}
+              onSearch={(param) => {
+                setTimeout(() => {
+                  // Delay api call after 3 seconds
+                  setPage(1);
+                  setSearch(param);
+                }, 3000);
+              }}
+              dropDown
+              hideFilter
+              hideSort
+              newBtnBulk
+              dropDownList={[
+                {
+                  label: "View Details",
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    console.log(dataTwo);
+                  },
+                },
+              ]}
+              onManualBtn={handleAddSubsidiary}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              // onPdfChange={}
+              // onCsvChange={}
+            />
+          </>
         )}
         <DashboardModal
           className={"w-[420px]"}
@@ -272,3 +326,16 @@ const Subsidiary = () => {
 };
 
 export default Subsidiary;
+
+const FORMAT_TABLE_DATA = (obj: any) => {
+  return obj?.map((org: any) => ({
+    name: (
+      <>
+        <span className="hidden">{org.id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
+    country: org?.country,
+    address: org?.address,
+  }));
+};

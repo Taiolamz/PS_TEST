@@ -20,14 +20,14 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getSubsidiaries: builder.query<SubsidiaryData[], QueryParams>({
+    getSubsidiaries: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/subsidiary${generateQueryString({ ...params })}`,
         method: "GET",
       }),
       providesTags: ["Subsidiaries"],
-      transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
-        response.data.data,
+      // transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
+      //   response.data.data,
     }),
 
     downloadSubsidiaryTemplate: builder.query({
