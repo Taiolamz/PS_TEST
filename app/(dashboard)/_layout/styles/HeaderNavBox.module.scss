@@ -106,13 +106,31 @@
     place-items: center;
     position: relative;
 
+    .red_dot{
+      position: absolute;
+      top: .1rem;
+      right: .25rem;
+      width: .85rem;
+      height: .85rem;
+      background-color: rgba(236, 20, 16, 1);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+
+      span{
+        font-size: .5rem;
+        font-weight: 600;
+        color: #ffffff;
+      }
+    }
+
     .img_box {
-      width: 85%;
-      height: 85%;
+      width: 90%;
+      height: 90%;
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -60%);
 
       .img {
         width: 100%;
@@ -208,6 +226,8 @@
           display: flex;
           align-items: center;
           gap: 0.25rem;
+          cursor: pointer !important;
+          // background-color: red;
 
           .name {
             color: rgba(90, 91, 95, 1);

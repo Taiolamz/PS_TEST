@@ -2,12 +2,12 @@ export const admin_auth = "admin";
 export const employee_auth = "employee";
 // super-admin,  hr-admin, strategy-admin, it-admin, compliance, staff
 //  employee
-export const employeeRoleList = ["staff",  "ceo", "it-admin"];
+export const employeeRoleList = ["staff", "ceo", "it-admin"];
 
 export const adminRoleList = [
   "hr-admin",
   "strategy-admin",
-  // "it-admin", 
+  // "it-admin",
   "compliance",
   "super-admin",
   // "user",
@@ -29,6 +29,7 @@ const routesPath = {
     MISSION_PLAN_TEMPLATE_LEVEL: `/${admin_auth}/mission-plan/template/level`,
     MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
     MISSION_PLAN_APPROVAL_FLOW_LEVEL: `/${admin_auth}/mission-plan/approval-flow/level`,
+    MISSION_PLAN_REPORT: `/${admin_auth}/mission-plan/reports?ui=organization-report`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     FINANCIAL_YEAR_UPDATE: `/${admin_auth}/mission-plan/update`,
@@ -80,6 +81,10 @@ const routesPath = {
   REGISTER: "/register?ui=organization-information",
   FORGOT_PASSWORD: "/forgot-password",
   ONBOARDING: "/onboarding",
+  PROFILE: {
+    WORK: "/profile/work-info",
+    PERSONAL: "/profile/personal-info",
+  },
 };
 
 export const checkListRoutes = [

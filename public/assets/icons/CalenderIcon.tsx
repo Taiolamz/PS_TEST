@@ -6,7 +6,7 @@ const CalenderIcon = ({ className, strokeClassName }: IconPropType) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_8557_86548)">
+    <g clipPath="url(#clip0_8557_86548)">
       <path
         d="M4 9.69201V19.2327C4 19.7237 4.39797 20.1216 4.88889 20.1216H19.1111C19.602 20.1216 20 19.7237 20 19.2327V9.69201M4 9.69201V6.7883C4 6.29739 4.39797 5.89941 4.88889 5.89941H19.1111C19.602 5.89941 20 6.29739 20 6.7883V9.69201M4 9.69201H20"
         stroke="white"
