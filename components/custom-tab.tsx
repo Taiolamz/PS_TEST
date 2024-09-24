@@ -31,19 +31,29 @@ export default function CustomTab({
 }: CustomTabProps) {
   const router = useRouter();
   const pathname = usePathname();
+
+
   const searchParams = useSearchParams();
 
   const active_slug = searchParams.get(slug ? slug : "ui");
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+  // const createQueryString = useCallback(
+  //   (name: string, value: string) => {
+  //     const params = new URLSearchParams(searchParams.toString());
+  //     params.set(name, value);
 
-      return params.toString();
-    },
-    [searchParams]
-  );
+  //     return params.toString();
+  //   },
+  //   [searchParams]
+  // );
+
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams(); 
+    params.set(name, value); 
+  
+    return params.toString(); 
+  };
+  
 
   useEffect(() => {
     if (!active_slug && !canControl) {
@@ -53,6 +63,8 @@ export default function CustomTab({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+
 
   return (
     <div className="border bg-white rounded-[5px] px-[7px] py-[3px] w-fit space-x-4 text-sm">
@@ -64,11 +76,11 @@ export default function CustomTab({
               router?.push(default_link);
               return;
             }
-            router.push(pathname + "?" + createQueryString(slug, accessor));
+            router.push(pathname.split("?")[0] + "?" + createQueryString(slug, accessor));
           }}
           className={cn(
             "h-8 px-[18px] py-2 text-sm rounded-[5px]",
-            active_slug === accessor
+            active_slug === accessor 
               ? active
               : default_link === pathname
               ? active

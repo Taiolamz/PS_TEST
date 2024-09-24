@@ -23,6 +23,7 @@ const MissionPlanReport = () => {
       case "task_outcome":
         return <TaskOutcome />;
       case "approvals":
+      case "approvals-successs":
         return <Approvals />;
       case "downlines":
         return <Downlines />;
@@ -32,18 +33,20 @@ const MissionPlanReport = () => {
   };
 
   return (
-    <DashboardLayout headerTitle="Welcome Hassan !" >
+    <DashboardLayout headerTitle="Welcome Hassan !">
       <div className="pb-10 overflow-x-hidden">
         <div className="bg-[#F6F8F9] ">
           <p className="text-[#3E4345] pl-8 py-3">
-            Let’s see how well you are hitting your goals!
+            {ui === "approvals"
+              ? "Get all pending approvals done."
+              : " Let’s see how well you are hitting your goals!"}
           </p>
         </div>
         {/* <div className=""> */}
-          <div className="p-5 mt-5">
-            <CustomTab options={REPORT_PAGE_TABS.EMPLOYEE} slug="ui" />
-        {getView()}
-          </div>
+        <div className="p-5 mt-5">
+          <CustomTab options={REPORT_PAGE_TABS.EMPLOYEE} slug="ui" />
+          {getView()}
+        </div>
         {/* </div> */}
       </div>
     </DashboardLayout>
