@@ -91,7 +91,7 @@ export default function CustomDateInput({
       {showIcon && (
         <Calendar
           size={16}
-          className={cn("absolute right-3 top-8 text-isGray400", iconClass)}
+          className={cn("absolute right-3 top-10 text-isGray400", iconClass)}
         />
       )}
       <span className={cn("text-xs text-red-500 hidden", error && "block absolute")}>
