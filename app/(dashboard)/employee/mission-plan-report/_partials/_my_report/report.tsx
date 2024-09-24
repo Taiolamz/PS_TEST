@@ -55,48 +55,48 @@ const MyReport = () => {
   return (
     <div>
       {/* ----- FILTER/SELECT WRAP START------- */}
-   
-        <div className="flex items-center mt-10 justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex gap-2 items-center cursor-pointer">
-              <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
-              <figure>{filterIcon}</figure>
-            </div>
 
-            <div className="flex items-center">
-              <CustomSelect
-                placeholder="FY"
-                options={[]}
-                selected={fiscalYear}
-                setSelected={(e: any) => {
-                  setFiscalYear(e);
-                }}
-                className="w-[80px] text-xs rounded-none rounded-l-[15px]"
-              />
-              <CustomSelect
-                placeholder="Cycle"
-                options={[]}
-                selected={missionCycle}
-                setSelected={(e: any) => {
-                  setMissionCycle(e);
-                }}
-                className="w-[80px] text-xs rounded-none rounded-r-[15px]"
-              />
-            </div>
-
-            <div className="flex gap-2 items-center cursor-pointer ml-2">
-              <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
-              <figure>{undoIcon}</figure>
-            </div>
+      <div className="flex items-center mt-10 justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex gap-2 items-center cursor-pointer">
+            <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
+            <figure>{filterIcon}</figure>
           </div>
 
-          {/* -----EXPORT---- */}
-          <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
-            <figure>{exportIcon}</figure>
-            <p className="text-medium text-xs text-[#6E7C87]">Export</p>
+          <div className="flex items-center">
+            <CustomSelect
+              placeholder="FY"
+              options={[]}
+              selected={fiscalYear}
+              setSelected={(e: any) => {
+                setFiscalYear(e);
+              }}
+              className="w-[150px] text-xs rounded-none rounded-l-[15px]"
+            />
+            <CustomSelect
+              placeholder="Cycle"
+              options={[]}
+              selected={missionCycle}
+              setSelected={(e: any) => {
+                setMissionCycle(e);
+              }}
+              className="w-[150px] text-xs rounded-none rounded-r-[15px]"
+            />
+          </div>
+
+          <div className="flex gap-2 items-center cursor-pointer ml-2">
+            <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
+            <figure>{undoIcon}</figure>
           </div>
         </div>
-    
+
+        {/* -----EXPORT---- */}
+        <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
+          <figure>{exportIcon}</figure>
+          <p className="text-medium text-xs text-[#6E7C87]">Export</p>
+        </div>
+      </div>
+
       {/* ----- FILTER/SELECT WRAP END------- */}
 
       <TeamPerformanceBar />
