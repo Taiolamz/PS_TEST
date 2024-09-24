@@ -16,6 +16,8 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import useDisclosure from "./_hooks/useDisclosure";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import routesPath from "@/utils/routes";
 
 export const useEmployeeRolesColumnData = (loading?: boolean) => {
   const {
@@ -24,7 +26,7 @@ export const useEmployeeRolesColumnData = (loading?: boolean) => {
     close: closeDeleteModal,
   } = useDisclosure();
   const [data, setData] = useState({});
-
+const router = useRouter();
   const handleDeleteDialog = (rowData: EmployeeRolesData) => {
     setData(rowData);
     onOpenDeleteModal();
@@ -153,6 +155,14 @@ export const useEmployeeRolesColumnData = (loading?: boolean) => {
               align="end"
               style={{ width: "170px" }}
             >
+               <DropdownMenuItem
+                className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
+                onClick={() => {
+                  // router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW);
+                }}
+              >
+                View
+              </DropdownMenuItem>
               <DropdownMenuItem
                 className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
                 onClick={() => {

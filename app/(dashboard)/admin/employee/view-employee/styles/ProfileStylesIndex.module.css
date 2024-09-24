@@ -262,7 +262,7 @@
   width: 100%;
 }
 .reusable_profile_module_index_wrapper .content_two_card_wrapper .right_wrapper_box {
-  flex: 0 0 25%;
+  flex: 1;
   display: flex;
   align-items: flex-start;
 }

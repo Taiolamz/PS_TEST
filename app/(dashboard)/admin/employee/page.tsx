@@ -336,7 +336,7 @@ const Employee = () => {
             {/* testing metrics card end */}
             <DashboardTable
               header="Employee"
-              isFilterDrop
+              isFilterDrop={false}
               filterOptions={["pending", "rejected"]}
               filterCheck={(val: string) => {
                 return val === status;
@@ -348,6 +348,7 @@ const Employee = () => {
                   setStatus(value);
                 }
               }}
+              
               data={employees}
               columns={employeesColumnData}
               onBulkUploadBtn={handleBulkUploadDialog}
@@ -357,6 +358,7 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onPdfChange={() => handleImportChange("pdf")}
               onCsvChange={() => handleImportChange("excel")}
+              
             />
 
             {/* <TableWrapper
