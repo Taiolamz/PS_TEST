@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Dictionary } from "@/@types/dictionary";
 import { PageLoader } from "@/components/custom-loader";
 import { Button } from "@/components/ui/button";
