@@ -45,6 +45,7 @@ const routesPath = {
     CHECKLIST: `/${admin_auth}/checklist`,
     SUBSIDIARY: `/${admin_auth}/subsidiary`,
     CREATE_SUBSIDIARY: `/${admin_auth}/subsidiary/add-subsidiary`,
+    EDIT_SUBSIDIARY: (id: string) => `/${admin_auth}/subsidiary/${id}/edit`,
     BRANCH: `/${admin_auth}/branches`,
     CREATE_BRANCH: `/${admin_auth}/branches/add-branch`,
     DEPARTMENT: `/${admin_auth}/departments`,

@@ -9,7 +9,7 @@ import ProceedModal from "./_components/proceed-modal";
 import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
 import routesPath from "@/utils/routes";
 import {
@@ -30,16 +30,25 @@ import TableWrapper from "@/components/tables/TableWrapper";
 import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
 import MetricCard from "@/components/card/metric-card";
 import { SubsidiaryIcon } from "@/public/assets/icons";
+import SubsidiaryDetails from "./_partials/subsidiary-details";
 
 const { ADMIN } = routesPath;
 
 const Subsidiary = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
+  const searchParams = useSearchParams();
+  const ui = searchParams.get("ui");
 
+  React.useEffect(() => {
+    if (typeof ui !== "string") {
+      router.replace(pathname + "?" + "ui=view");
+    }
+  }, []);
   const {
     isOpen: openProceedModal,
     open: onOpenProceeModal,
@@ -137,12 +146,6 @@ const Subsidiary = () => {
   } = useGetSubsidiariesQuery({
     page: page,
     search: search,
-    // to: 0,
-    // total: 0,
-    // per_page: 10,
-    // currentPage: 0,
-    // next_page_url: "",
-    // prev_page_url: "",
   });
   const subsidiaries = subsidiariesData?.data?.data ?? [];
 
@@ -200,28 +203,30 @@ const Subsidiary = () => {
   };
 
   return (
-    <DashboardLayout headerTitle="Subsidiary">
-      <section className="p-5">
-        {subsidiaries?.length < 1 ? (
-          <ReusableEmptyState
-            loading={isLoadingSubsidiaries}
-            textTitle="subsidiaries"
-            btnTitle="subsidiary"
-            href={ADMIN.CREATE_SUBSIDIARY}
-            onBulkUpload={handleBulkUploadDialog}
-          />
-        ) : (
-          <>
-            <div className="grid md:grid-cols-4 w-full mt-3 mb-6">
-              <MetricCard
-                count={subsidiariesData?.data?.total ?? 0}
-                option="darkgreen"
-                title="Total Subsidiaries"
-                isActive
-                icon={SubsidiaryIcon}
+    <>
+      {ui !== "details" ? (
+        <DashboardLayout headerTitle="Subsidiary">
+          <section className="p-5">
+            {subsidiaries?.length < 1 ? (
+              <ReusableEmptyState
+                loading={isLoadingSubsidiaries}
+                textTitle="subsidiaries"
+                btnTitle="subsidiary"
+                href={ADMIN.CREATE_SUBSIDIARY}
+                onBulkUpload={handleBulkUploadDialog}
               />
-            </div>
-            {/* <DashboardTable
+            ) : (
+              <>
+                <div className="grid md:grid-cols-4 w-full mt-3 mb-6 gap-6">
+                  <MetricCard
+                    count={subsidiariesData?.data?.total ?? 0}
+                    option="darkgreen"
+                    title="Total Subsidiaries"
+                    isActive
+                    icon={SubsidiaryIcon}
+                  />
+                </div>
+                {/* <DashboardTable
               isLoading={isFetchingSubsidiaries}
               header="Subsidiary"
               data={subsidiaries}
@@ -233,95 +238,106 @@ const Subsidiary = () => {
               newBtnOpen={openNewBtn}
               onManualBtn={handleAddSubsidiary}
             /> */}
-            <TableWrapper
-              tableheaderList={["Name", "Country", "Address", "Action"]}
-              perPage={subsidiariesData?.data?.per_page}
-              totalPage={subsidiariesData?.data?.total}
-              currentPage={subsidiariesData?.data?.current_page}
-              onPageChange={(p) => {
-                setPage(p);
-              }}
-              hideNewBtnOne={false}
-              tableBodyList={FORMAT_TABLE_DATA(subsidiaries)}
-              loading={isFetchingSubsidiaries}
-              onSearch={(param) => {
-                setTimeout(() => {
-                  // Delay api call after 3 seconds
-                  setPage(1);
-                  setSearch(param);
-                }, 3000);
-              }}
-              dropDown
-              hideFilter
-              hideSort
-              newBtnBulk
-              dropDownList={[
-                {
-                  label: "View Details",
-                  color: "",
-                  onActionClick: (param: any, dataTwo: any) => {
-                    console.log(dataTwo);
-                  },
-                },
-              ]}
-              onManualBtn={handleAddSubsidiary}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              // onPdfChange={}
-              // onCsvChange={}
-            />
-          </>
-        )}
-        <DashboardModal
-          className={"w-[420px]"}
-          open={openCancelModal}
-          onOpenChange={handleCancelDialog}
-        >
-          <CancelModal
-            onProceed={handleProceedCancel}
-            modalTitle="Subsidiary"
-          />
-        </DashboardModal>
+                <TableWrapper
+                  tableheaderList={["Name", "Country", "Address", "Action"]}
+                  perPage={subsidiariesData?.data?.per_page}
+                  totalPage={subsidiariesData?.data?.total}
+                  currentPage={subsidiariesData?.data?.current_page}
+                  onPageChange={(p) => {
+                    setPage(p);
+                  }}
+                  hideNewBtnOne={false}
+                  tableBodyList={FORMAT_TABLE_DATA(subsidiaries)}
+                  loading={isFetchingSubsidiaries}
+                  onSearch={(param) => {
+                    setTimeout(() => {
+                      // Delay api call after 3 seconds
+                      setPage(1);
+                      setSearch(param);
+                    }, 3000);
+                  }}
+                  dropDown
+                  hideFilter
+                  hideSort
+                  newBtnBulk
+                  dropDownList={[
+                    {
+                      label: "View Details",
+                      color: "",
+                      onActionClick: (param: any, dataTwo: any) => {
+                        router.push(
+                          pathname +
+                            "?" +
+                            "ui=details" +
+                            "&" +
+                            "id=" +
+                            dataTwo?.name?.props.children[0].props.children
+                        );
+                      },
+                    },
+                  ]}
+                  onManualBtn={handleAddSubsidiary}
+                  onBulkUploadBtn={handleBulkUploadDialog}
+                  // onPdfChange={}
+                  // onCsvChange={}
+                />
+              </>
+            )}
+            <DashboardModal
+              className={"w-[420px]"}
+              open={openCancelModal}
+              onOpenChange={handleCancelDialog}
+            >
+              <CancelModal
+                onProceed={handleProceedCancel}
+                modalTitle="Subsidiary"
+              />
+            </DashboardModal>
 
-        <DashboardModal
-          open={openProceedModal}
-          onOpenChange={handleProceedDialog}
-        >
-          <ProceedModal onProceed={handleProceed} />
-        </DashboardModal>
+            <DashboardModal
+              open={openProceedModal}
+              onOpenChange={handleProceedDialog}
+            >
+              <ProceedModal onProceed={handleProceed} />
+            </DashboardModal>
 
-        <DashboardModal
-          className={`max-w-max`}
-          open={openBulkUploadModal}
-          onOpenChange={handleBulkUploadDialog}
-        >
-          <BulkUploadModal
-            loading={isCreatingBulkSubsidiaries}
-            onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("csv");
-            }}
-            onSampleExcelDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("xlsx");
-            }}
-            onBulkUpload={handleSubmitBulkUpload}
-            setFile={setBulkFile}
-          />
-        </DashboardModal>
+            <DashboardModal
+              className={`max-w-max`}
+              open={openBulkUploadModal}
+              onOpenChange={handleBulkUploadDialog}
+            >
+              <BulkUploadModal
+                loading={isCreatingBulkSubsidiaries}
+                onCancel={handleBulkUploadDialog}
+                onSampleCsvDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("csv");
+                }}
+                onSampleExcelDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("xlsx");
+                }}
+                onBulkUpload={handleSubmitBulkUpload}
+                setFile={setBulkFile}
+              />
+            </DashboardModal>
 
-        <DashboardModal
-          className={"w-[600px] max-w-full"}
-          open={openBulkRequirementModal}
-          onOpenChange={handleBulkRequirementDialog}
-        >
-          <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload(fileType)}
-            onCancel={handleBulkRequirementDialog}
-          />
-        </DashboardModal>
-      </section>
-    </DashboardLayout>
+            <DashboardModal
+              className={"w-[600px] max-w-full"}
+              open={openBulkRequirementModal}
+              onOpenChange={handleBulkRequirementDialog}
+            >
+              <BulkRequirementModal
+                onTemplateDownload={() => handleTemplateDownload(fileType)}
+                onCancel={handleBulkRequirementDialog}
+              />
+            </DashboardModal>
+          </section>{" "}
+        </DashboardLayout>
+      ) : (
+        <SubsidiaryDetails />
+      )}
+    </>
   );
 };
 
