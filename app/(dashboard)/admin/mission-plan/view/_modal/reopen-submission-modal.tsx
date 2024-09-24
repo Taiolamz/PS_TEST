@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import CustomDateInput from "@/components/custom-date-input";
 import { CustomMultipleSelect } from "@/components/inputs/custom-multiple-select";
 import ReusableModalContainer from "@/components/reusable-modal-container";

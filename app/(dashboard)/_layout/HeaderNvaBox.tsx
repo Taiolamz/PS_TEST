@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,6 +17,7 @@ import {
 import LogoutModal from "./logout-folder/LogoutModal";
 import { sideMenuList } from "./SideMenuList";
 import { notiList } from "./(notification)/noti_junks";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -175,23 +177,23 @@ const HeaderNavBox = ({
     },
   ];
 
-  const [switchRole, setSwitchRole] = useState("");
+  // const [switchRole, setSwitchRole] = useState("");
 
-  useEffect(() => {
-    if (pathname?.includes("/admin")) {
-      setSwitchRole("admin");
-    } else {
-      setSwitchRole("employee");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (pathname?.includes("/admin")) {
+  //     setSwitchRole("admin");
+  //   } else {
+  //     setSwitchRole("employee");
+  //   }
+  // }, []);
 
-  const switchDashboard = () => {
-    if (switchRole === "admin") {
-      router.push(routesPath?.EMPLOYEE?.OVERVIEW);
-    } else {
-      router.push(routesPath?.ADMIN?.OVERVIEW);
-    }
-  };
+  // const switchDashboard = () => {
+  //   if (switchRole === "admin") {
+  //     router.push(routesPath?.EMPLOYEE?.OVERVIEW);
+  //   } else {
+  //     router.push(routesPath?.ADMIN?.OVERVIEW);
+  //   }
+  // };
 
   return (
     <>
@@ -273,9 +275,12 @@ const HeaderNavBox = ({
             {/* <figure className={`${style.profile_img_box}`}>
             <Image alt="profile-img" src={unknownImg} className={style.img} />
           </figure> */}
-            <div className={style.avatar_box}>
-              <span>{returnInitial(user?.name as any)}</span>
-            </div>
+            <CheckUrlFragment className={style.avatar_box} url={` ` as any}>
+              <div className={style.avatar_box}>
+                <span>{returnInitial(user?.name as any)}</span>
+              </div>
+            </CheckUrlFragment>
+
             <figure className={style.img_box}>{dropIcon}</figure>
           </div>
           {/* profil drop start */}
@@ -290,9 +295,14 @@ const HeaderNavBox = ({
                   className={style.img}
                 />
               </figure> */}
-                <div className={style.avatar_box}>
-                  <span>{returnInitial(user?.name as any)}</span>
-                </div>
+                <CheckUrlFragment
+                  className={style.avatar_box}
+                  url={'' as any}
+                >
+                  <div className={style.avatar_box}>
+                    <span>{returnInitial(user?.name as any)}</span>
+                  </div>
+                </CheckUrlFragment>
                 <div className={style.name_role_box}>
                   <p className={style.name}>
                     {trimLongString(user?.name, 20) || `Ayeni Kehinde`}
@@ -320,8 +330,8 @@ const HeaderNavBox = ({
                         chi?.onClick && chi?.onClick();
                       }}
                       key={idx}
-                      className={style.item_row}
-                      style={{ cursor: "pointer" }}
+                      className={style.item_row}  
+                      style={{ cursor: "pointer", borderBottom: "unset" }}
                     >
                       <figure className={style.img_box}>{chi.icon}</figure>
                       <p
@@ -338,7 +348,7 @@ const HeaderNavBox = ({
               </div>
               {/* middle options end */}
               {/* switch start */}
-              {checkUserRole(user?.role as string) === "ADMIN" && (
+              {/* {checkUserRole(user?.role as string) === "ADMIN" && (
                 <div onClick={switchDashboard} className={style.switch_box}>
                   <p className={style.switch}>
                     {switchRole === "employee"
@@ -346,7 +356,7 @@ const HeaderNavBox = ({
                       : `SWITCH TO EMPLOYEE DASHOARD`}
                   </p>
                 </div>
-              )}
+              )} */}
               {/* switch end */}
             </div>
           )}

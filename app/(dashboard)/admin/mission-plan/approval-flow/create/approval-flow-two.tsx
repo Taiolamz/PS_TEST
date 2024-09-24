@@ -142,9 +142,9 @@ const ApprovalFlowTwo = ({
                               {idx + 1}. How many levels of approval should be
                               for{" "}
                               <span className="text-primary capitalize">
-                                {chi.title} 
-                              </span>{" "}?
-                              {/* before the final approval? */}
+                                {chi.title}
+                              </span>{" "}
+                              ?{/* before the final approval? */}
                             </p>
                           }
                           content={
@@ -152,7 +152,7 @@ const ApprovalFlowTwo = ({
                               <CustomSelect
                                 placeholder="Select..."
                                 options={
-                                  chi?.title === "Head of Department"
+                                  chi?.title === "organization head"
                                     ? options
                                     : newOptions
                                 }

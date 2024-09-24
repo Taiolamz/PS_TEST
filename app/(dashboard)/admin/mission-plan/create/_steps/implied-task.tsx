@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import * as yup from "yup";
@@ -88,12 +89,6 @@ const implied_taskschema = yup.object().shape({
     .required("Weight is required")
     .positive("Weight must be a positive number")
     .max(100, "Weight cannot be more than 100"),
-  // percentage: yup
-  //   .number()
-  //   .typeError("Percentage must be a number")
-  //   .required("Percentage is required")
-  //   .min(0, "Percentage cannot be negative")
-  //   .max(100, "Percentage cannot exceed 100"),
   start_date: yup.date().required("Start Date is required"),
   end_date: yup
     .date()
@@ -108,13 +103,8 @@ const implied_taskschema = yup.object().shape({
         (acc: number, curr: number) => acc + (curr || 0),
         0
       );
-      return total === 100; // Check if the total is exactly 100
+      return total === 100;
     }),
-  // resources: yup
-  //   .array()
-  //   .of(yup.string().required("Resource ID is required"))
-  //   .min(1, "At least one resource is required")
-  //   .required("Resource is required"),
 });
 
 const taskSchema = yup.object().shape({
@@ -188,7 +178,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
   const { ADMIN } = routesPath;
 
   const handleSubmit = async () => {
-    // console.log({ ...formik.values }, "initial values");
     if (!isWeightValid) {
       toast.error(
         `Implied Task Weight must sum up to the specified task weight for (${taskName}) `
@@ -204,7 +193,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
           task: impliedTask.task,
           weight: impliedTask.weight,
           implied_task_id: impliedTask.implied_task_id,
-          // resources: impliedTask.resources.map((resource: any) => resource.id),
           resources: impliedTask.resources.map(
             (resource: any, idx: number) => ({
               staff_member_id: resource.id,
@@ -215,8 +203,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
         }));
       }),
     };
-    // console.log(obj, "objective");
-    // return;
     await createImpliedTask(obj)
       .unwrap()
       .then(() => {
@@ -226,7 +212,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
             toast.dismiss();
             onNextStep && onNextStep();
             router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
-            // router.push(`${ADMIN.CREATE_MISSION_PLAN}?ui=boundaries`);
           }, 2000);
         });
       });
@@ -266,7 +251,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
         user_id: "",
         implied_task_id: impliedTask?.id || "",
         weight: impliedTask.weight || "",
-        // percentage: impliedTask?.percentage || [],
         percentage:
           (impliedTask?.resources as any[])?.map((chi) => chi.percentage) || [],
         start_date: impliedTask?.start_date || "",
@@ -285,31 +269,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
   const initialValues = {
     mission_plan_id: missionPlanID,
     tasks: handleFormatImpliedTask(),
-
-    // tasks:
-    //   handleFormatImpliedTask().length > 0
-    //     ? handleFormatImpliedTask()
-    //     : [
-    //         {
-    //           task: "",
-    //           specified_task_id: "",
-    //           implied_tasks: [
-    //             {
-    //               task: "",
-    //               user_id: "",
-    //               implied_task_id: "",
-    //               weight: "",
-    //               // percentage: "",
-    //               start_date: "",
-    //               end_date: "",
-    //               // percentage: [],
-    //               resources: [],
-    //               expected_outcomes: [""],
-    //             },
-    //           ],
-    //         },
-    
-    //       ],
   };
 
   const formik = useFormik({
@@ -325,8 +284,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
   const errorTasks = formik.errors.tasks as any;
   const touchedTasks = formik.touched.tasks as any;
-
-  // console.log(errorTasks, "errors");
 
   const [childData, setChildData] = useState<any>({});
   const [isWeightTransfer, setIsWeightTransfer] = useState(false);
@@ -510,51 +467,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     formik.setFieldValue(e.target.name, sanitizedValue);
   };
 
-  // const handleResourceChange = (
-  //   values: string[],
-  //   index: number,
-  //   subIndex: number
-  // ) => {
-  //   const currentResources =
-  //     formik.values.tasks[index].implied_tasks[subIndex].resources;
-  //   const currentPercentages =
-  //     formik.values.tasks[index].implied_tasks[subIndex].percentage;
-
-  //   // const resourceIdToIndexMap = new Map(
-  //   //   currentResources.map((res: any, idx: number) => [res.id, idx])
-  //   // );
-
-  //   const newResourceIdSet = new Set(values);
-
-  //   const removedResourceIds = currentResources
-  //     .filter((resource: any) => !newResourceIdSet.has(resource.id))
-  //     .map((resource: any) => resource.id);
-
-  //   const updatedResources = values.map((value) => {
-  //     const selectedResource = formattedEmployeesDrop.find(
-  //       (opt) => opt.id === value
-  //     );
-  //     return {
-  //       id: value,
-  //       name: selectedResource?.name || "",
-  //     };
-  //   });
-
-  //   formik.setFieldValue(
-  //     `tasks.${index}.implied_tasks.${subIndex}.resources`,
-  //     updatedResources
-  //   );
-  //   if (currentPercentages) {
-  //     const updatedPercentages = currentPercentages?.filter(
-  //       (_: any, idx: number) =>
-  //         !removedResourceIds.includes(currentResources[idx]?.id)
-  //     );
-  //     formik.setFieldValue(
-  //       `tasks.${index}.implied_tasks.${subIndex}.percentage`,
-  //       updatedPercentages
-  //     );
-  //   }
-  // };
   const handleResourceChange = (
     values: string[],
     index: number,
@@ -738,53 +650,12 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                                                   component={"div"}
                                                 />
                                               </div>
-                                              {/* <div className="relative">
-                                                <Input
-                                                  type="number"
-                                                  id={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
-                                                  label="Input Percentage (%)"
-                                                  labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                                  onBlur={formik.handleBlur}
-                                                  onChange={formik.handleChange}
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
-                                                  placeholder="Input Percentage"
-                                                  className="mr-2 w-full"
-                                                  value={
-                                                    formik.values.tasks[index]
-                                                      .implied_tasks[subIndex]
-                                                      .percentage
-                                                  }
-                                                  isRequired
-                                                />
-                                                <ErrorMessage
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
-                                                  className="text-red-500 text-xs mt-1 absolute"
-                                                  component={"div"}
-                                                />
-                                              </div> */}
+
                                               <div className="mt-1 relative">
                                                 <CustomMultipleSelect
                                                   options={
                                                     formattedEmployeesDrop
                                                   }
-                                                  // onValueChange={(values) =>
-                                                  //   formik.setFieldValue(
-                                                  //     `tasks.${index}.implied_tasks.${subIndex}.resources`,
-                                                  //     values.map((value) => {
-                                                  //       const selectedResource =
-                                                  //         formattedEmployeesDrop.find(
-                                                  //           (opt) =>
-                                                  //             opt.id === value
-                                                  //         );
-                                                  //       return {
-                                                  //         id: value,
-                                                  //         name:
-                                                  //           selectedResource?.name ||
-                                                  //           "",
-                                                  //       };
-                                                  //     })
-                                                  //   )
-                                                  // }
                                                   onValueChange={(values) =>
                                                     handleResourceChange(
                                                       values,
@@ -844,30 +715,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
                                                       })`}
                                                       labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
                                                       onBlur={formik.handleBlur}
-                                                      // onChange={(e) => {
-                                                      //   const { value } =
-                                                      //     e.target;
-                                                      //   if (
-                                                      //     Number(value) <= 100
-                                                      //   ) {
-                                                      //     formik.handleChange(
-                                                      //       e
-                                                      //     );
-                                                      //   }
-                                                      // }}
-                                                      // onChange={(e) => {
-                                                      //   const { value } =
-                                                      //     e.target;
-                                                      //   const sanitizedValue =
-                                                      //     Math.max(
-                                                      //       0,
-                                                      //       Number(value) || 0
-                                                      //     ); // Ensure value is non-negative
-                                                      //   formik.setFieldValue(
-                                                      //     e.target.name,
-                                                      //     sanitizedValue
-                                                      //   ); // Update Formik value
-                                                      // }}
                                                       onChange={(e) =>
                                                         handlePercentChange(
                                                           e,
@@ -1130,7 +977,6 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
               childData.impliedTaskIndex
             )
           }
-          // onDelete={() => handleDeleteImpliedTask(childData?.implied_task_id)}
           isLoading={isDeletingImpliedTask}
         />
       </DashboardModal>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useMemo, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
@@ -24,6 +25,7 @@ import useDisclosure from "./_hooks/useDisclosure";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
@@ -144,7 +146,7 @@ const Departments = () => {
     () => departmentColumns,
     [isFetchingDepartments]
   );
-// >>>>>>> bf3d7875a640c4a5168f098455c8b5808e477c8b
+  // >>>>>>> bf3d7875a640c4a5168f098455c8b5808e477c8b
 
   // const departmentsColumnData = useMemo(
   //   () => departmentColumns(isFetchingDepartments),
@@ -200,6 +202,21 @@ const Departments = () => {
       .catch(() => toast.dismiss());
   };
 
+  const listToTest = [
+    {
+      active: true,
+      title: "Total Departments",
+      type: "department",
+      count: departments?.length,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: false,
+      primaryColor: "",
+    },
+  ];
+
   return (
     <DashboardLayout headerTitle="Department">
       <section className="p-5">
@@ -212,20 +229,25 @@ const Departments = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            isLoading={isFetchingDepartments}
-            header="Department"
-            data={departments}
-            columns={departmentsColumnData}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            onManualBtn={handleAddDeparment}
-            // onManualBtn={() => {
-            //   console.log(departments);
-              
-            // }}
-          />
+          <>
+            {/* testing metrics card start */}
+            <ParentModuleCard list={listToTest} />
+            {/* testing metrics card end */}
+            <DashboardTable
+              isLoading={isFetchingDepartments}
+              header="Department"
+              data={departments}
+              columns={departmentsColumnData}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              onManualBtn={handleAddDeparment}
+              // onManualBtn={() => {
+              //   console.log(departments);
+
+              // }}
+            />
+          </>
         )}
         <DashboardModal
           className={"w-[420px]"}

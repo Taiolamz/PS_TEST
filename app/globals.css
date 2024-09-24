@@ -10,7 +10,6 @@
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
   border-radius: 4px;
 }
@@ -229,7 +228,6 @@ html {
 }
 
 body {
-  -ms-scroll-chaining: none;
   overscroll-behavior: none;
 }
 
@@ -292,7 +290,6 @@ input[type=radio]:checked::before {
 }
 
 .global_sticky_class {
-  position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
   left: 0 !important;
@@ -357,7 +354,6 @@ input[type=radio]:checked::before {
 }
 
 .preview-reusable-box-table table thead tr {
-  position: -webkit-sticky !important;
   position: sticky !important;
   top: 0;
   left: 0;

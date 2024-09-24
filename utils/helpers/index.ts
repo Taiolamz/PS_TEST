@@ -176,10 +176,52 @@ export const PAGE_TABS = {
   ],
 };
 
+export const REPORT_PAGE_TABS = {
+  ADMINS: [
+    {
+      id: 1,
+      title: "Organization Report",
+      accessor: "organization-report",
+    },
+    {
+      id: 2,
+      title: "Outcome/Target Settings",
+      accessor: "set-outcome-target",
+    },
+  ],
+  EMPLOYEE: [
+    {
+      id: 1,
+      title: "My Report",
+      accessor: "my_report",
+    },
+    {
+      id: 2,
+      title: "Measure of Success",
+      accessor: "measure_of_success",
+    },
+    {
+      id: 3,
+      title: "Task Outcome",
+      accessor: "task_outcome",
+    },
+    {
+      id: 4,
+      title: "Approvals",
+      accessor: "approvals",
+    },
+    {
+      id: 5,
+      title: "Downlines",
+      accessor: "downlines",
+    },
+  ],
+};
+
 // ROLES ALLOWED TO CREATE FINANCIAL YEAR
 export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin", "strategy-admin"];
 export const SUPER_ADMIN = "super-admin";
-export const ADMINS = ['super-admin', 'strategy-admin' , 'hr-admin'];
+export const ADMINS = ["super-admin", "strategy-admin", "hr-admin"];
 export const MANAGING_DIRECTOR = "ceo";
 
 // GET TABS
@@ -227,7 +269,6 @@ function normalizeStrings(arr: string[]): string[] {
     return lowerStr;
   });
 }
-
 
 export function processInputAsArray(value: any) {
   if (value) {
@@ -403,6 +444,17 @@ export const findItemById = (
 
 //END OF GET MISSION ITEMS STATUS FROM APPROVABLE TYPES THAT MATCH THE APPROVABLE_ID AND TYPE
 
+export const getProgressColorByValue = (value: number) => {
+  // 0% - 35% => red, 40% - 65% => yellow, 50% - 100% => green
+  switch (true) {
+    case value <= 35:
+      return "red";
+    case value <= 65:
+      return "yellow";
+    default:
+      return "green";
+  }
+};
 
 export function getOrdinalSuffix(num: number): string {
   const remainderTen = num % 10;
@@ -425,4 +477,3 @@ export function getOrdinalSuffix(num: number): string {
       return `${num}th`;
   }
 }
-

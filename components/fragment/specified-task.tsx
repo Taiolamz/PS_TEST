@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 import { SpecifiedTasksType } from "@/@types/missionPlan/MissionPlanAprovables";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useMemo, useState } from "react";
@@ -31,6 +32,7 @@ import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
 import MetricCard from "@/components/card/metric-card";
 import { SubsidiaryIcon } from "@/public/assets/icons";
 import SubsidiaryDetails from "./_partials/subsidiary-details";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
@@ -202,6 +204,21 @@ const Subsidiary = () => {
       .catch(() => toast.dismiss());
   };
 
+  const listToTest = [
+    {
+      active: true,
+      title: "Total Subsidiaries",
+      type: "subsidiary",
+      count: subsidiaries?.length,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: false,
+      primaryColor: "",
+    },
+  ];
+
   return (
     <>
       {ui !== "details" ? (
@@ -217,7 +234,10 @@ const Subsidiary = () => {
               />
             ) : (
               <>
-                <div className="grid md:grid-cols-4 w-full mt-3 mb-6 gap-5">
+                {/* testing metrics card start */}
+                <ParentModuleCard list={listToTest} />
+                {/* testing metrics card end */}
+                {/* <div className="grid md:grid-cols-4 w-full mt-3 mb-6 gap-5">
                   <MetricCard
                     count={subsidiariesData?.data?.total ?? 0}
                     option="darkgreen"
@@ -225,7 +245,7 @@ const Subsidiary = () => {
                     isActive
                     icon={SubsidiaryIcon}
                   />
-                </div>
+                </div> */}
                 {/* <DashboardTable
               isLoading={isFetchingSubsidiaries}
               header="Subsidiary"

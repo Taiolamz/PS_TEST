@@ -193,8 +193,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  border-bottom: 0.08rem solid rgb(229, 233, 235);
-  padding-bottom: 1rem;
 }
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .middle_options_box .item_row {
   display: flex;
