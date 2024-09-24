@@ -177,23 +177,23 @@ const HeaderNavBox = ({
     },
   ];
 
-  const [switchRole, setSwitchRole] = useState("");
+  // const [switchRole, setSwitchRole] = useState("");
 
-  useEffect(() => {
-    if (pathname?.includes("/admin")) {
-      setSwitchRole("admin");
-    } else {
-      setSwitchRole("employee");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (pathname?.includes("/admin")) {
+  //     setSwitchRole("admin");
+  //   } else {
+  //     setSwitchRole("employee");
+  //   }
+  // }, []);
 
-  const switchDashboard = () => {
-    if (switchRole === "admin") {
-      router.push(routesPath?.EMPLOYEE?.OVERVIEW);
-    } else {
-      router.push(routesPath?.ADMIN?.OVERVIEW);
-    }
-  };
+  // const switchDashboard = () => {
+  //   if (switchRole === "admin") {
+  //     router.push(routesPath?.EMPLOYEE?.OVERVIEW);
+  //   } else {
+  //     router.push(routesPath?.ADMIN?.OVERVIEW);
+  //   }
+  // };
 
   return (
     <>
@@ -348,7 +348,7 @@ const HeaderNavBox = ({
               </div>
               {/* middle options end */}
               {/* switch start */}
-              {checkUserRole(user?.role as string) === "ADMIN" && (
+              {/* {checkUserRole(user?.role as string) === "ADMIN" && (
                 <div onClick={switchDashboard} className={style.switch_box}>
                   <p className={style.switch}>
                     {switchRole === "employee"
@@ -356,7 +356,7 @@ const HeaderNavBox = ({
                       : `SWITCH TO EMPLOYEE DASHOARD`}
                   </p>
                 </div>
-              )}
+              )} */}
               {/* switch end */}
             </div>
           )}

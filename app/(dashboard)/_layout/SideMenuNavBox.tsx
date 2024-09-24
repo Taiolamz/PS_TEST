@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { sideMenuList, sideMenuEmployeeList } from "./SideMenuList";
 import style from "./styles/SideMenuNavBox.module.css";
 import { usePathname, useRouter } from "next/navigation";
@@ -12,9 +12,10 @@ import {
   returnInitial,
 } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
-import Image from "next/image";
-import ImageFallBack from "@/components/fragment/ImageFallBack";
+// import Image from "next/image";
+// import ImageFallBack from "@/components/fragment/ImageFallBack";
 import CheckUrlFragment from "@/components/fragment/ImageFallBack";
+import routesPath from "@/utils/routes";
 
 const logoIconWhite = (
   <svg
@@ -329,6 +330,35 @@ const defaultLogo = (
   </svg>
 );
 
+const switchIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="25"
+    height="24"
+    fill="none"
+    viewBox="0 0 25 24"
+    className={style.img}
+  >
+    <mask
+      id="mask0_23016_236123"
+      style={{ maskType: "alpha" }}
+      width="25"
+      height="24"
+      x="0"
+      y="0"
+      maskUnits="userSpaceOnUse"
+    >
+      <path fill="#D9D9D9" d="M0.5 0H24.5V24H0.5z"></path>
+    </mask>
+    <g mask="url(#mask0_23016_236123)">
+      <path
+        fill="var(--primary-color)"
+        d="M12.5 3c1.233 0 2.396.237 3.488.712A9.193 9.193 0 0118.85 5.65a9.192 9.192 0 011.938 2.862A8.646 8.646 0 0121.5 12a8.646 8.646 0 01-.712 3.488 9.192 9.192 0 01-1.938 2.862 9.192 9.192 0 01-2.863 1.938A8.646 8.646 0 0112.5 21a8.542 8.542 0 01-1.975-.225 10.678 10.678 0 01-1.9-.65L10.15 18.6a7.061 7.061 0 002.35.4c1.933 0 3.583-.683 4.95-2.05 1.367-1.367 2.05-3.017 2.05-4.95 0-1.933-.683-3.583-2.05-4.95C16.083 5.683 14.433 5 12.5 5c-1.933 0-3.583.683-4.95 2.05C6.183 8.417 5.5 10.067 5.5 12a7.064 7.064 0 00.4 2.35l-1.5 1.5A8.456 8.456 0 013.5 12c0-1.233.237-2.396.713-3.488A9.193 9.193 0 016.15 5.65a9.193 9.193 0 012.862-1.938A8.646 8.646 0 0112.5 3zm1 13v-3.6L4.9 21l-1.4-1.4 8.6-8.6H8.5V9h7v7h-2z"
+      ></path>
+    </g>
+  </svg>
+);
+
 const SideMenuNavBox = () => {
   const { user } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
@@ -337,12 +367,51 @@ const SideMenuNavBox = () => {
 
   // console.log(pathname);
 
+  const [switchRole, setSwitchRole] = useState("");
   const getListToUse = () => {
-    const val =
-      checkUserRole(user?.role as string) === "ADMIN"
-        ? sideMenuList
-        : sideMenuEmployeeList;
+    const val = switchRole === "admin" ? sideMenuList : sideMenuEmployeeList;
     return val;
+  };
+
+  useEffect(() => {
+    if (!pathname?.includes("/profile")) {
+      if (pathname?.includes("/admin")) {
+        setSwitchRole("admin");
+        localStorage.setItem("dashboard-mode", "admin");
+        return;
+      } else {
+        setSwitchRole("employee");
+        localStorage.setItem("dashboard-mode", "employee");
+        return;
+      }
+    } else {
+      const viewMode = localStorage?.getItem("dashboard-mode");
+      setSwitchRole(viewMode as any);
+    }
+  }, []);
+
+  const switchDashboard = () => {
+    if (pathname?.includes("/profile")) {
+      const viewMode = localStorage?.getItem("dashboard-mode");
+      if (viewMode === "admin") {
+        router.push(routesPath?.EMPLOYEE?.OVERVIEW);
+        localStorage.setItem("dashboard-mode", "employee");
+        // setSwi
+      } else {
+        router.push(routesPath?.ADMIN?.OVERVIEW);
+        localStorage.setItem("dashboard-mode", "admin");
+      }
+      return;
+    } else {
+      if (pathname?.includes("/admin")) {
+        router.push(routesPath?.EMPLOYEE?.OVERVIEW);
+        localStorage.setItem("dashboard-mode", "employee");
+        // setSwi
+      } else {
+        router.push(routesPath?.ADMIN?.OVERVIEW);
+        localStorage.setItem("dashboard-mode", "admin");
+      }
+    }
   };
 
   return (
@@ -386,15 +455,6 @@ const SideMenuNavBox = () => {
                 <span>{returnInitial(user?.organization?.name as any)}</span>
               </div>
             </CheckUrlFragment>
-            {/* <Image
-              alt=""
-              src={user?.organization?.logo as any}
-              className={style.img}
-              width={100}
-              height={100}
-              layout="responsive"
-            /> */}
-            {/* {defaultLogo} */}
           </figure>
           {!actionCtx?.collapseSideNav && (
             <p className={style.name}>
@@ -416,6 +476,29 @@ const SideMenuNavBox = () => {
         </figure>
       </div>
       {/* logo box end */}
+      {/* switch box start */}
+      {checkUserRole(user?.role as string) === "ADMIN" && (
+        <div onClick={switchDashboard} className={style.swtich_box_icon}>
+          <div className={style.icon_box}>
+            <figure
+              className={`${style.img_box} ${
+                actionCtx.collapseSideNav && style.img_box_collapse
+              }`}
+            >
+              {switchIcon}
+            </figure>
+          </div>
+          {!actionCtx.collapseSideNav && (
+            <p className={style.text}>
+              {" "}
+              {switchRole === "employee"
+                ? `SWITCH TO ADMIN MODE`
+                : `SWITCH TO EMPLOYEE MODE`}
+            </p>
+          )}
+        </div>
+      )}
+      {/* switch box end */}
       {/* nav link list box start */}
       <div className={style?.nav_link_list_box}>
         {getListToUse()?.map((chi: any, idx: any) => {

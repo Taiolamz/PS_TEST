@@ -48,9 +48,9 @@ const DashboardLayout = ({
   const pathname = usePathname();
   const router = useRouter();
   const { ADMIN } = routesPath;
-  const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
-    {}
-  );
+  // const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
+  //   {}
+  // );
 
   const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
     {}
