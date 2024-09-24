@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import { useLazyGetChecklistQuery } from "@/redux/services/onboarding/checkListApi";
@@ -15,6 +16,8 @@ import { sideMenuEmployeeList, sideMenuList } from "../_layout/SideMenuList";
 interface contextProps {
   collapseSideNav?: boolean;
   setCollapseSideNav?: (param?: boolean) => void;
+  navChildVal?: string;
+  setNavChildVal?: (param?: string) => void;
   showNavVal?: string;
   setShowNavVal: (param?: string) => void;
   setPrimaryColorVals: (param?: string) => void;
@@ -39,6 +42,8 @@ const ActionContext = createContext<contextProps>({
   listToUse: [],
   setCheckListLength: (param, list) => {},
   primaryColorHexValue: "",
+  navChildVal: '',
+  setNavChildVal: (param?: string) => {},
 });
 
 export function ActionContextProvider(props?: any) {
@@ -177,6 +182,8 @@ export function ActionContextProvider(props?: any) {
 
   function setPrimaryColorsFunc(param: any) {
     setPrimaryColorHexValue(param);
+    // console.log(param);
+
     document.documentElement.style.setProperty(
       "--primary-color",
       param || ("#008080" as string)
@@ -211,6 +218,11 @@ export function ActionContextProvider(props?: any) {
     setListToUse(list);
   };
 
+  const [navChildValue, setNavChildValue] = useState("");
+  const navChildValFunc = (param?: any) => {
+    setNavChildValue(param)
+  }
+
   const contextValue = {
     collapseSideNav: collapseSideval,
     setCollapseSideNav: setCollapseSideNavFunc,
@@ -223,6 +235,8 @@ export function ActionContextProvider(props?: any) {
     setCheckListLength: checkListFunc,
     listToUse: listToUse,
     primaryColorHexValue: primaryColorHexValue, // Expose value
+    navChildVal: navChildValue,
+    setNavChildVal: navChildValFunc,
   };
 
   return (

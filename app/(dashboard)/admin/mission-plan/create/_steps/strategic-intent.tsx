@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Icon from "@/components/icon/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

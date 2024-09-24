@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Dictionary } from "@/@types/dictionary";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import CustomDateInput from "@/components/custom-date-input";

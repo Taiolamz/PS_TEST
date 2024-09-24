@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,12 +16,15 @@ import {
 } from "@/utils/helpers";
 import LogoutModal from "./logout-folder/LogoutModal";
 import { sideMenuList } from "./SideMenuList";
+import { notiList } from "./(notification)/noti_junks";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 
 interface myComponentProps {
   headerListTitle?: any;
   headerTitle?: string;
   back?: boolean;
   onBack?: () => void;
+  onNotify?: () => void;
 }
 
 const backIcon = (
@@ -44,6 +48,7 @@ const HeaderNavBox = ({
   headerTitle,
   back,
   onBack,
+  onNotify,
 }: myComponentProps) => {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
@@ -74,7 +79,7 @@ const HeaderNavBox = ({
       height="24"
       fill="none"
       viewBox="0 0 24 24"
-      className={style.img_box}
+      className={style.img}
     >
       <path
         stroke="var(--primary-color)"
@@ -87,6 +92,7 @@ const HeaderNavBox = ({
         y="1"
         fill="#EC1410"
         rx="4.502"
+        style={{ display: "none" }}
       ></rect>
       <path
         fill="#fff"
@@ -153,7 +159,13 @@ const HeaderNavBox = ({
   );
 
   const profileList = [
-    { name: "Edit Profile", icon: editIcon, onClick: () => {} },
+    {
+      name: "View Profile",
+      icon: editIcon,
+      onClick: () => {
+        router?.push(routesPath?.PROFILE?.PERSONAL);
+      },
+    },
     {
       name: "Logout",
       icon: logouticon,
@@ -225,9 +237,7 @@ const HeaderNavBox = ({
             </>
           ) : (
             <>
-              <p className={style.title}>
-                {headerTitle || "Welcome ITH Holdings"}
-              </p>
+              <p className={style.title}>{headerTitle || "Welcome "}</p>
             </>
           )}
         </div>
@@ -243,8 +253,15 @@ const HeaderNavBox = ({
         </div>
         {/* search box end */}
         {/* notification box start */}
-        <div className={style.notification_box}>
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={onNotify}
+          className={style.notification_box}
+        >
           <figure className={style.img_box}>{notifyIcon}</figure>
+          <div className={style.red_dot}>
+            <span>{notiList?.length}</span>
+          </div>
         </div>
         {/* notification box end */}
         {/* profile box start */}
@@ -258,9 +275,12 @@ const HeaderNavBox = ({
             {/* <figure className={`${style.profile_img_box}`}>
             <Image alt="profile-img" src={unknownImg} className={style.img} />
           </figure> */}
-            <div className={style.avatar_box}>
-              <span>{returnInitial(user?.name as any)}</span>
-            </div>
+            <CheckUrlFragment className={style.avatar_box} url={` ` as any}>
+              <div className={style.avatar_box}>
+                <span>{returnInitial(user?.name as any)}</span>
+              </div>
+            </CheckUrlFragment>
+
             <figure className={style.img_box}>{dropIcon}</figure>
           </div>
           {/* profil drop start */}
@@ -275,9 +295,14 @@ const HeaderNavBox = ({
                   className={style.img}
                 />
               </figure> */}
-                <div className={style.avatar_box}>
-                  <span>{returnInitial(user?.name as any)}</span>
-                </div>
+                <CheckUrlFragment
+                  className={style.avatar_box}
+                  url={'' as any}
+                >
+                  <div className={style.avatar_box}>
+                    <span>{returnInitial(user?.name as any)}</span>
+                  </div>
+                </CheckUrlFragment>
                 <div className={style.name_role_box}>
                   <p className={style.name}>
                     {trimLongString(user?.name, 20) || `Ayeni Kehinde`}
@@ -306,6 +331,7 @@ const HeaderNavBox = ({
                       }}
                       key={idx}
                       className={style.item_row}
+                      style={{ cursor: "pointer" }}
                     >
                       <figure className={style.img_box}>{chi.icon}</figure>
                       <p

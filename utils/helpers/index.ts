@@ -176,6 +176,38 @@ export const PAGE_TABS = {
   ],
 };
 
+export const REPORT_PAGE_TABS = {
+  ADMINS: [
+    {
+      id: 1,
+      title: "Organization Report",
+      accessor: "organization-report",
+    },
+    {
+      id: 2,
+      title: "Outcome/Target Settings",
+      accessor: "set-outcome-target",
+    },
+  ],
+  EMPLOYEE: [
+    {
+      id: 1,
+      title: "My Mission Plan",
+      accessor: "mission-plan",
+    },
+    {
+      id: 2,
+      title: "Direct Downlines",
+      accessor: "downlines",
+    },
+    {
+      id: 3,
+      title: "Approvals",
+      accessor: "approvals",
+    },
+  ],
+};
+
 // ROLES ALLOWED TO CREATE FINANCIAL YEAR
 export const CAN_CREATE_FINANCIAL_YEAR = ["super-admin", "strategy-admin"];
 export const SUPER_ADMIN = "super-admin";
@@ -402,3 +434,39 @@ export const findItemById = (
 };
 
 //END OF GET MISSION ITEMS STATUS FROM APPROVABLE TYPES THAT MATCH THE APPROVABLE_ID AND TYPE
+
+export const getProgressColorByValue = (value: number) => {
+  // 0% - 35% => red, 40% - 65% => yellow, 50% - 100% => green
+  switch (true) {
+      case value <= 35:
+          return "red";
+      case value <= 65:
+          return "yellow";
+      default:
+          return "green";
+  }
+
+}
+
+export function getOrdinalSuffix(num: number): string {
+  const remainderTen = num % 10;
+  const remainderHundred = num % 100;
+
+  // Handle special cases like 11th, 12th, 13th
+  if (remainderHundred >= 11 && remainderHundred <= 13) {
+    return `${num}th`;
+  }
+
+  // Handle general cases like 1st, 2nd, 3rd, etc.
+  switch (remainderTen) {
+    case 1:
+      return `${num}st`;
+    case 2:
+      return `${num}nd`;
+    case 3:
+      return `${num}rd`;
+    default:
+      return `${num}th`;
+  }
+}
+

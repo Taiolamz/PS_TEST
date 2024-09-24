@@ -193,10 +193,12 @@ export const sideMenuIcons = {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.24"
+        className="path-two"
         d="M9.6 20.722h4.8c4 0 5.6-1.6 5.6-5.6v-4.8c0-4-1.6-5.6-5.6-5.6H9.6c-4 0-5.6 1.6-5.6 5.6v4.8c0 4 1.6 5.6 5.6 5.6z"
       ></path>
       <path
         stroke="#3E4345"
+        className="path-two"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.24"
@@ -237,12 +239,14 @@ export const sideMenuIcons = {
         strokeMiterlimit="10"
         strokeWidth="1.031"
         d="M5.375 19.597h13.75"
+        className="path-two"
       ></path>
       <path
         stroke="#5A5B5F"
         strokeLinejoin="round"
         strokeMiterlimit="10"
         strokeWidth="1.031"
+        className="path-two"
         d="M6.028 19.597l.034-8.27c0-.42.2-.818.53-1.08L11.404 6.5a1.383 1.383 0 011.692 0l4.812 3.74c.337.262.53.66.53 1.087v8.27"
       ></path>
       <path
@@ -251,6 +255,7 @@ export const sideMenuIcons = {
         strokeLinejoin="round"
         strokeMiterlimit="10"
         strokeWidth="1.031"
+        className="path-two"
         d="M14.656 12.035H9.844c-.57 0-1.031.46-1.031 1.03v6.532h6.874v-6.531c0-.57-.46-1.031-1.03-1.031zM10.875 15.644v1.031M11.219 9.628h2.062"
       ></path>
     </svg>
@@ -292,6 +297,20 @@ export const sideMenuIcons = {
     </svg>
   ),
   team_management: (
+    // <svg
+    //   width="20"
+    //   height="21"
+    //   viewBox="0 0 20 21"
+    //   fill="none"
+    //   xmlns="http://www.w3.org/2000/svg"
+    //   className="img"
+    // >
+    //   <path
+    //     d="M2.77365 0.468506C1.24921 0.468506 1.00314e-09 1.71782 0 3.24226C1.00314e-09 4.7667 1.24921 6.01591 2.77365 6.01591C3.03313 6.01591 3.28432 5.97887 3.52305 5.91129L4.19741 7.04352C2.6989 8.14937 1.7243 9.92691 1.7243 11.9264C1.7243 15.2688 4.44735 17.9919 7.78982 17.9919C9.52373 17.9919 11.0907 17.2588 12.1975 16.0869L13.2238 16.8614C13.1267 17.143 13.0732 17.4443 13.0732 17.7575C13.0732 19.282 14.3224 20.5313 15.8469 20.5313C17.3713 20.5313 18.6206 19.282 18.6206 17.7575C18.6206 16.2331 17.3713 14.9839 15.8469 14.9839C15.0867 14.9839 14.395 15.2946 13.8925 15.7951L12.9607 15.0918C13.5277 14.1695 13.8552 13.0853 13.8552 11.9264C13.8552 10.9511 13.623 10.0287 13.2116 9.21118L15.5174 7.52176C15.9895 7.89334 16.5832 8.11638 17.2263 8.11638C18.7508 8.11638 20 6.86716 20 5.34272C20 3.81828 18.7508 2.56897 17.2263 2.56897C15.7019 2.56897 14.4526 3.81828 14.4526 5.34272C14.4526 5.77271 14.552 6.18075 14.7289 6.54509L12.534 8.15321C11.4215 6.75752 9.70773 5.86084 7.78982 5.86084C6.89445 5.86084 6.04365 6.05641 5.27762 6.40677L4.62148 5.30511C5.18866 4.79617 5.54731 4.05884 5.54731 3.24226C5.54731 1.71782 4.29809 0.468506 2.77365 0.468506ZM2.77365 1.7224C3.62044 1.7224 4.29341 2.39547 4.29341 3.24226C4.29341 4.08904 3.62044 4.76202 2.77365 4.76202C1.92687 4.76202 1.25389 4.08904 1.25389 3.24226C1.25389 2.39547 1.92687 1.7224 2.77365 1.7224ZM17.2263 3.82287C18.0731 3.82287 18.7461 4.49594 18.7461 5.34272C18.7461 6.18951 18.0731 6.86248 17.2263 6.86248C16.3796 6.86248 15.7065 6.18951 15.7065 5.34272C15.7065 4.49594 16.3796 3.82287 17.2263 3.82287ZM7.78982 7.11473C10.4546 7.11473 12.6013 9.26154 12.6013 11.9264C12.6013 14.5912 10.4546 16.738 7.78982 16.738C5.12501 16.738 2.97819 14.5912 2.97819 11.9264C2.97819 9.26154 5.12501 7.11473 7.78982 7.11473ZM7.74818 8.38107C6.47205 8.36101 5.45796 9.84578 5.97069 11.0226C6.11587 11.3999 6.38513 11.7257 6.72058 11.9498C5.56568 12.4569 4.87966 13.7286 4.89802 14.9628C4.89506 15.2039 4.87237 15.452 5.10364 15.4449C6.82522 15.4099 8.92412 15.4524 10.6459 15.4411C10.8711 14.0711 10.1839 12.5302 8.88482 11.954C9.79536 11.3514 10.0547 9.92903 9.3034 9.09961C8.92775 8.64348 8.34086 8.36491 7.74818 8.38107ZM7.781 9.56746C7.80763 9.56711 7.83459 9.56833 7.86172 9.57119C8.51509 9.60111 8.82357 10.6029 8.23798 10.9539C7.77603 11.2822 6.9865 10.942 7.04022 10.3329C7.04618 9.9314 7.38149 9.57298 7.781 9.56746ZM7.83135 12.9173C8.58001 12.9292 9.21032 13.5587 9.39872 14.248C8.33144 14.2469 7.26415 14.251 6.19688 14.245C6.39361 13.5545 7.006 12.9248 7.75857 12.9181C7.78295 12.9172 7.8072 12.9169 7.83135 12.9173ZM15.8469 16.2378C16.6937 16.2378 17.3667 16.9108 17.3667 17.7575C17.3667 18.6043 16.6937 19.2774 15.8469 19.2774C15.0001 19.2774 14.3271 18.6043 14.3271 17.7575C14.3271 16.9108 15.0001 16.2378 15.8469 16.2378Z"
+    //     fill="#5A5B5F"
+    //   />
+    // </svg>
+
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
@@ -325,12 +344,14 @@ export const sideMenuIcons = {
         x="4"
         y="3"
         maskUnits="userSpaceOnUse"
+        className="path-two"
       >
         <path
           fill="#fff"
           fillRule="evenodd"
           d="M4 3.722h16.715v17.96H4V3.722z"
           clipRule="evenodd"
+          // className="path-two"
         ></path>
       </mask>
       <g mask="url(#mask0_13859_23072)">
@@ -382,6 +403,21 @@ export const sideMenuList: any = [
           routesPath?.ADMIN?.KICK_START_MISSION_PLAN,
           routesPath?.ADMIN?.MAIN_MISSION_PLAN,
         ],
+        children: [
+          {
+            name: "Mission Plan Setup",
+            link: routesPath?.ADMIN?.MISSION_PLAN,
+            relatedLink: ["/admin/mission-plan?ui=mission-plan"],
+          },
+          {
+            name: "Mission Plan Report",
+            link: routesPath?.ADMIN?.MISSION_PLAN_REPORT,
+            relatedLink: [
+              "/admin/mission-plan/reports",
+              routesPath?.ADMIN?.MISSION_PLAN_REPORT,
+            ],
+          },
+        ],
       },
       {
         name: "Performance",
@@ -400,6 +436,14 @@ export const sideMenuList: any = [
         // link: routesPath?.ADMIN?.KPI,
         icon: sideMenuIcons?.kpi,
         relatedLink: [""],
+        children: [
+          { name: "Test Appraisal", link: "" },
+          { name: "Timi Ayeni", link: "" },
+          { name: "Timi Ayeni", link: "" },
+          { name: "Timi Ayeni", link: "" },
+          { name: "Timi Ayeni", link: "" },
+          { name: "Timi Ayeni", link: "" },
+        ],
       },
     ],
   },
@@ -461,6 +505,10 @@ export const sideMenuList: any = [
         link: routesPath?.ADMIN?.TEAM_MANAGEMENT,
         icon: sideMenuIcons?.team_management,
         relatedLink: [""],
+        children: [
+          { name: "Approvals", link: "" },
+          { name: "Roles & Permissions", link: "" },
+        ],
       },
     ],
   },
@@ -508,12 +556,27 @@ export const sideMenuEmployeeList = [
           routesPath?.EMPLOYEE?.MAIN_MISSION_PLAN,
           routesPath?.EMPLOYEE?.LINE_MANAGER_MISSION_PLAN,
         ],
+        children: [
+          {
+            name: "Mission Plan Setup",
+            link: routesPath?.EMPLOYEE?.MISSION_PLAN,
+            relatedLink: ["/employee/mission-plan?ui=mission-plan"],
+          },
+          {
+            name: "Mission Plan Report",
+            link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+            relatedLink: [
+              "/employee/mission-plan/reports",
+              routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+            ],
+          },
+        ],
       },
-      {
-        name: "Mission Plan Report",
-        link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
-        icon: sideMenuIcons?.performance,
-      },
+      // {
+      //   name: "Mission Plan Report",
+      //   link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+      //   icon: sideMenuIcons?.performance,
+      // },
       {
         name: "KPI",
         link: routesPath?.EMPLOYEE?.KPI,

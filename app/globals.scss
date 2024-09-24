@@ -371,3 +371,10 @@ input[type="radio"] {
     }
   }
 }
+
+
+.path-two{
+  stroke: var(--primary-color) !important;
+  fill: unset !important;
+  // display: none !important;
+}

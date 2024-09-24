@@ -91,13 +91,29 @@
   place-items: center;
   position: relative;
 }
+.header_wrap_index_box .notification_box .red_dot {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.25rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  background-color: rgb(236, 20, 16);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.header_wrap_index_box .notification_box .red_dot span {
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: #ffffff;
+}
 .header_wrap_index_box .notification_box .img_box {
-  width: 85%;
-  height: 85%;
+  width: 90%;
+  height: 90%;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -60%);
 }
 .header_wrap_index_box .notification_box .img_box .img {
   width: 100%;
@@ -184,6 +200,7 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  cursor: pointer !important;
 }
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .middle_options_box .item_row .name {
   color: rgb(90, 91, 95);

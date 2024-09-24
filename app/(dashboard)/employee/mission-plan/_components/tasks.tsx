@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 import Comment from "./comment";
