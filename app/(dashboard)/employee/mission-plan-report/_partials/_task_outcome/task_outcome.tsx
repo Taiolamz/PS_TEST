@@ -1,7 +1,7 @@
 import { Progress } from "@/components/ui/progress";
 import TaskOutcomeTable from "./_table/task-outcome-table";
-import ApprovalProgress from "@/components/fragment/progress/progress-bars";
 import { useSearchParams } from "next/navigation";
+import ApprovalProgress from "@/components/fragment/progress/approval-progress";
 
 const data = [
   {
