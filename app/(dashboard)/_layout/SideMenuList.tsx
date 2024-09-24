@@ -556,12 +556,27 @@ export const sideMenuEmployeeList = [
           routesPath?.EMPLOYEE?.MAIN_MISSION_PLAN,
           routesPath?.EMPLOYEE?.LINE_MANAGER_MISSION_PLAN,
         ],
+        children: [
+          {
+            name: "Mission Plan Setup",
+            link: routesPath?.EMPLOYEE?.MISSION_PLAN,
+            relatedLink: ["/employee/mission-plan?ui=mission-plan"],
+          },
+          {
+            name: "Mission Plan Report",
+            link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+            relatedLink: [
+              "/employee/mission-plan/reports",
+              routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+            ],
+          },
+        ],
       },
-      {
-        name: "Mission Plan Report",
-        link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
-        icon: sideMenuIcons?.performance,
-      },
+      // {
+      //   name: "Mission Plan Report",
+      //   link: routesPath?.EMPLOYEE?.MISSION_PLAN_REPORT,
+      //   icon: sideMenuIcons?.performance,
+      // },
       {
         name: "KPI",
         link: routesPath?.EMPLOYEE?.KPI,
