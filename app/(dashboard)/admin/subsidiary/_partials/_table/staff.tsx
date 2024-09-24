@@ -1,7 +1,17 @@
+"use client";
 import TableWrapper from "@/components/tables/TableWrapper";
+import routesPath from "@/utils/routes";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+const { ADMIN } = routesPath;
+
 export default function StaffTable() {
+  const router = useRouter();
+  const handleAddStaff = () => {
+    const path = ADMIN.ADD_EMPLOYEE;
+    router.push(path);
+  };
   return (
     <TableWrapper
       tableheaderList={[
@@ -41,7 +51,7 @@ export default function StaffTable() {
           },
         },
       ]}
-      // onManualBtn={handleAddSubsidiary}
+      onManualBtn={handleAddStaff}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
       // onCsvChange={}

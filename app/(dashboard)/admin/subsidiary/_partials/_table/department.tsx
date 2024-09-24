@@ -1,7 +1,17 @@
+"use client";
 import TableWrapper from "@/components/tables/TableWrapper";
+import routesPath from "@/utils/routes";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+const { ADMIN } = routesPath;
+
 export default function DeptTable() {
+  const router = useRouter();
+  const handleAddDept = () => {
+    const path = ADMIN.CREATE_DEPARTMENT;
+    router.push(path);
+  };
   return (
     <TableWrapper
       tableheaderList={["Department", "HOD", "Subsidiary", "Branch", "Action"]}
@@ -33,7 +43,7 @@ export default function DeptTable() {
           },
         },
       ]}
-      // onManualBtn={handleAddSubsidiary}
+      onManualBtn={handleAddDept}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
       // onCsvChange={}

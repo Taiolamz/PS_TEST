@@ -1,7 +1,18 @@
+"use client";
 import TableWrapper from "@/components/tables/TableWrapper";
+import routesPath from "@/utils/routes";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+const { ADMIN } = routesPath;
+
 export default function UnitTable() {
+  const router = useRouter();
+  const handleAddUnit = () => {
+    const path = ADMIN.CREATE_UNIT;
+    router.push(path);
+  };
+
   return (
     <TableWrapper
       tableheaderList={["Unit Name", "HOU", "Department", "Branch", "Action"]}
@@ -33,7 +44,7 @@ export default function UnitTable() {
           },
         },
       ]}
-      // onManualBtn={handleAddSubsidiary}
+      onManualBtn={handleAddUnit}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
       // onCsvChange={}

@@ -1,7 +1,17 @@
+"use client";
 import TableWrapper from "@/components/tables/TableWrapper";
+import routesPath from "@/utils/routes";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+const { ADMIN } = routesPath;
+
 export default function BranchesTable() {
+  const router = useRouter();
+  const handleAddBranch = () => {
+    const path = ADMIN.CREATE_BRANCH;
+    router.push(path);
+  };
   return (
     <TableWrapper
       tableheaderList={[
@@ -40,7 +50,7 @@ export default function BranchesTable() {
           },
         },
       ]}
-      // onManualBtn={handleAddSubsidiary}
+      onManualBtn={handleAddBranch}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
       // onCsvChange={}
