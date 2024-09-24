@@ -217,7 +217,7 @@ const Subsidiary = () => {
               />
             ) : (
               <>
-                <div className="grid md:grid-cols-4 w-full mt-3 mb-6 gap-6">
+                <div className="grid md:grid-cols-4 w-full mt-3 mb-6 gap-5">
                   <MetricCard
                     count={subsidiariesData?.data?.total ?? 0}
                     option="darkgreen"

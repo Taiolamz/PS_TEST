@@ -18,6 +18,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Subsidiaries"],
     }),
 
     getSubsidiaries: builder.query<any, QueryParams>({
@@ -38,6 +39,14 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+
+    deleteSubsidiaries: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
   }),
 });
 
@@ -46,4 +55,5 @@ export const {
   useCreateBulkSubsidiariesMutation,
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
+  useDeleteSubsidiariesMutation,
 } = subsidiaryApi;
