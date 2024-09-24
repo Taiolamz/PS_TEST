@@ -35,10 +35,11 @@ interface ReusableProgressProps {
   width?: number;
   height?: number;
   borderRadius?: number;
-  color?: "red" | "green" | "yellow" | "purple" | "brown" | "default" | "base";
+  color?: "red" | "green" | "yellow" | "purple" | "brown" | "default";
   valueClass?: string;
   valueColor?: string;
   valuePosition?: POSITION_TYPE;
+  floatValueClass?: string;
 }
 
 const COLORS = {
@@ -48,7 +49,6 @@ const COLORS = {
   purple: "#7E10E5",
   brown: "#835101CC",
   blue: "#0452C8",
-  base: "var(--primary-color)",
   default: "#6E7C87",
 };
 
@@ -63,6 +63,7 @@ const ReusableProgress = ({
   valuePosition,
   width,
   valueColor,
+  floatValueClass = "12px",
 }: ReusableProgressProps) => {
   const VALUE_COLOR = valueColor
     ? valueColor
@@ -88,8 +89,9 @@ const ReusableProgress = ({
           position: "absolute",
           left:
             position === "float-left"
-              ? `${Number(value) - 3}%`
+              ? `${Number(value) - 4}%`
               : `${Number(value) + 1}%`,
+          fontSize: floatValueClass,
         }}
       >
         {value}%

@@ -48,7 +48,7 @@ const AchievementProgress = ({
       </span>
       <ReusableProgress
         value={progress_value}
-        color={color}
+        color={color as any}
         valuePosition="float-right"
         borderRadius={2}
         height={16}
