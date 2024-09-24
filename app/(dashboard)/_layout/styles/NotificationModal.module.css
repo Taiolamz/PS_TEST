@@ -83,7 +83,6 @@
   padding: 0.4rem 1.5rem;
   border-radius: 0.4rem;
   border: 0.1rem solid var(--primary-color);
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
 }

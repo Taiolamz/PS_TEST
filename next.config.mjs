@@ -2,7 +2,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["mance-dev-api.zojapay.com"],
+    domains: ["mance-dev-api.zojapay.com", "media.licdn.com"],
   },
 };
 
