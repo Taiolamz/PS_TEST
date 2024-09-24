@@ -303,6 +303,30 @@ const Employee = () => {
       pending: true,
       primaryColor: "",
     },
+    {
+      active: true,
+      title: "Total Staffs",
+      type: "staff",
+      count: 12,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: false,
+      primaryColor: "",
+    },
+    {
+      // active: true,
+      title: "Invited Staffs",
+      type: "unit",
+      count: 4,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: true,
+      primaryColor: "",
+    },
     
   ];
 
@@ -336,7 +360,7 @@ const Employee = () => {
             {/* testing metrics card end */}
             <DashboardTable
               header="Employee"
-              isFilterDrop
+              isFilterDrop={false}
               filterOptions={["pending", "rejected"]}
               filterCheck={(val: string) => {
                 return val === status;
@@ -348,6 +372,7 @@ const Employee = () => {
                   setStatus(value);
                 }
               }}
+              
               data={employees}
               columns={employeesColumnData}
               onBulkUploadBtn={handleBulkUploadDialog}
@@ -357,6 +382,7 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onPdfChange={() => handleImportChange("pdf")}
               onCsvChange={() => handleImportChange("excel")}
+              
             />
 
             {/* <TableWrapper
