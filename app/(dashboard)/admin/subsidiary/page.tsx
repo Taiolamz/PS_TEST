@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-
 import React, { useMemo, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
-import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";
@@ -18,19 +16,12 @@ import {
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
 } from "@/redux/services/checklist/subsidiaryApi";
-import {
-  // subsidiaryColumns,
-  useSubsidiaryColumnData,
-} from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/store";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
-import MetricCard from "@/components/card/metric-card";
-import { SubsidiaryIcon } from "@/public/assets/icons";
 import SubsidiaryDetails from "./_partials/subsidiary-details";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
@@ -151,17 +142,7 @@ const Subsidiary = () => {
   });
   const subsidiaries = subsidiariesData?.data?.data ?? [];
 
-  const { subsidiaryColumns, data, openDeleteModal, handleDeleteDialog } =
-    useSubsidiaryColumnData(isFetchingSubsidiaries);
-
-  const subsidiariesColumnData = useMemo(
-    () => subsidiaryColumns,
-    [isFetchingSubsidiaries]
-  );
-  // const subsidiaryColumn = useMemo(() => missionPlanColumn, []);
-
-  const user = useAppSelector(selectUser);
-  const { organization } = user;
+  const { organization } = useAppSelector(selectUser);
 
   const [createBulkSubsidiaries, { isLoading: isCreatingBulkSubsidiaries }] =
     useCreateBulkSubsidiariesMutation();
@@ -209,7 +190,7 @@ const Subsidiary = () => {
       active: true,
       title: "Total Subsidiaries",
       type: "subsidiary",
-      count: subsidiaries?.length,
+      count: subsidiariesData?.data?.total ?? 0,
       accentColor: "",
       hide: false,
       icon: "",
@@ -236,16 +217,6 @@ const Subsidiary = () => {
               <>
                 {/* testing metrics card start */}
                 <ParentModuleCard list={listToTest} />
-                {/* testing metrics card end */}
-                {/* <div className="grid md:grid-cols-4 w-full mt-3 mb-6 gap-5">
-                  <MetricCard
-                    count={subsidiariesData?.data?.total ?? 0}
-                    option="darkgreen"
-                    title="Total Subsidiaries"
-                    isActive
-                    icon={SubsidiaryIcon}
-                  />
-                </div> */}
                 {/* <DashboardTable
               isLoading={isFetchingSubsidiaries}
               header="Subsidiary"

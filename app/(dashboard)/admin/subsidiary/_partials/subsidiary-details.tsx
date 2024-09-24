@@ -22,6 +22,7 @@ import {
   StaffTable,
   UnitTable,
 } from "./details-table";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
@@ -50,101 +51,154 @@ export default function SubsidiaryDetails() {
     }
   }, []);
 
+  const listToTest = [
+    {
+      active: view === "branches",
+      title: "Total Branches",
+      type: "branch",
+      count: 0,
+      accentColor: "",
+      hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+        "branch"
+      ),
+      icon: "",
+      onClick: () => {
+        setView("branches");
+      },
+      pending: false,
+      primaryColor: "",
+    },
+    {
+      active: view === "departments",
+      title: "Total Departments",
+      type: "department",
+      count: 0,
+      accentColor: "",
+      hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+        "department"
+      ),
+      icon: "",
+      onClick: () => {
+        setView("departments");
+      },
+      pending: false,
+      primaryColor: "",
+    },
+    {
+      active: view === "units",
+      title: "Total Units",
+      type: "unit",
+      count: 0,
+      accentColor: "",
+      hide: !processInputAsArray(user?.organization?.hierarchy)?.includes(
+        "unit"
+      ),
+      icon: "",
+      onClick: () => {
+        setView("units");
+      },
+      pending: false,
+      primaryColor: "",
+    },
+    {
+      active: view === "staffs",
+      title: "Total Staffs",
+      type: "staff",
+      count: 0,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {
+        setView("staffs");
+      },
+      pending: false,
+      primaryColor: "",
+    },
+  ];
+
   return (
     <DashboardLayout back headerTitle="Subsidiary">
       <section className="p-5">
-        <div className="inline-flex float-right gap-x-3">
-          <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
+        <div className="flex justify-between mb-10">
+          <div className="">
+            <span className="flex items-center gap-8">
+              <img
+                //   src={
+                //     "https://play-lh.googleusercontent.com/bojfiBmqU2A0U4CwGk_KQoxFw5rsLwIc4KSG4FC0vC4y0OtC-sJ4juxKMZF3g2cgeg"
+                //   }
+                src={
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1vmgM8M4YgXQpE3ytknAMwTluWH65ApphN7j83xtVWSU7JKWT8FV7AVarHxIjPmE8ufQ&usqp=CAU"
+                }
+                alt="subsidiary logo"
+                className="size-[100px] rounded-full object-contain border border-[var( --input-border)]"
+              />
+              <h3 className="text-2xl font-medium text-[var(--text-color3)]">
+                Enyata
+              </h3>
+            </span>
+            <div className="inline-flex gap-x-8 text-[var(--text-color)] text-xs mt-5">
+              <span className="space-y-3">
+                <h4>
+                  Head Of Subsidiary:{" "}
+                  <span className="text-[var(--text-color4)] font-medium ml-1">
+                    Bryan Adamu
+                  </span>
+                </h4>
+                <h4>
+                  Subsidiary Email:{" "}
+                  <span className="text-[var(--text-color4)] font-medium ml-1">
+                    zojatech@gmail.com
+                  </span>
+                </h4>
+                <h4>
+                  Head of Subsidiary Email:{" "}
+                  <span className="text-[var(--text-color4)] font-medium ml-1">
+                    Martini@zojatech.com
+                  </span>
+                </h4>
+              </span>
+              <span className="space-y-3">
+                <h4>
+                  Address:{" "}
+                  <span className="text-[var(--text-color4)] font-medium ml-1">
+                    9b, Akin Ogunmade Gbagada
+                  </span>
+                </h4>
+                <h4>
+                  State:{" "}
+                  <span className="text-[var(--text-color4)] font-medium ml-1">
+                    Lagos
+                  </span>
+                </h4>
+                <h4>
+                  Country:{" "}
+                  <span className="text-[var(--text-color4)] font-medium ml-1">
+                    Nigeria
+                  </span>
+                </h4>
+              </span>
+            </div>
+          </div>
+          <div className="inline-flex justify-end gap-x-3">
+            <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
+              <Button
+                variant="outline"
+                className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+              >
+                Edit
+              </Button>
+            </Link>
             <Button
               variant="outline"
-              className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+              onClick={() => setModal(true)}
+              className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
             >
-              Edit
+              Deactivate
             </Button>
-          </Link>
-          <Button
-            variant="outline"
-            onClick={() => setModal(true)}
-            className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
-          >
-            Deactivate
-          </Button>
-        </div>
-        <div className="grid md:grid-cols-4 w-full pt-6 mb-8 gap-4">
-          {processInputAsArray(user?.organization?.hierarchy)?.includes(
-            "branch"
-          ) && (
-            <MetricCard
-              count={0}
-              option="darkgreen"
-              title="Total Branches"
-              isActive={view === "branches"}
-              icon={BranchesIcon}
-              onClick={() => setView("branches")}
-            />
-          )}
-          {processInputAsArray(user?.organization?.hierarchy)?.includes(
-            "department"
-          ) && (
-            <MetricCard
-              count={0}
-              option="blue"
-              title="Total Departments"
-              isActive={view === "departments"}
-              icon={DepartmentIcon}
-              onClick={() => setView("departments")}
-            />
-          )}
-          {processInputAsArray(user?.organization?.hierarchy)?.includes(
-            "unit"
-          ) && (
-            <MetricCard
-              count={0}
-              option="purple"
-              title="Total Units"
-              isActive={view === "units"}
-              icon={UnitIcon}
-              onClick={() => setView("units")}
-            />
-          )}
-          <MetricCard
-            count={0}
-            option="lightgreen"
-            title="Total Staffs"
-            isActive={view === "staffs"}
-            icon={StaffIcon}
-            onClick={() => setView("staffs")}
-          />
-        </div>
-        <div className="inline-flex gap-x-5 text-[var(--text-color)] text-sm mb-8">
-          <span className="space-y-2.5">
-            <h4>
-              Subsidairy Name:{" "}
-              <span className="text-[var(--text-color4)] font-medium">
-                People & Culture
-              </span>
-            </h4>
-            <h4>
-              Address:{" "}
-              <span className="text-[var(--text-color4)] font-medium">
-                People & Culture
-              </span>
-            </h4>
-          </span>
-          <span className="space-y-2.5">
-            <h4>
-              Head of Subsidiary:{" "}
-              <span className="text-[var(--text-color4)] font-medium">
-                Tolu A Tolu
-              </span>
-            </h4>
-            <h4>
-              Head of Subsidiary Email:{" "}
-              <span className="text-[var(--text-color4)] font-medium">
-                toluatolu@zojatech.com
-              </span>
-            </h4>
-          </span>
+          </div>
+        </div>{" "}
+        <div className="block mb-9">
+          <ParentModuleCard list={listToTest} />
         </div>
         <section className="">
           {view === "branches" && <BranchesTable />}
