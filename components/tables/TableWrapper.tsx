@@ -74,6 +74,7 @@ interface myComponentProps {
   defaultBodyList?: any;
   dropDown?: boolean;
   dropDownList?: any;
+  width?: string;
 }
 
 const TableWrapper = ({
@@ -114,6 +115,7 @@ const TableWrapper = ({
   defaultBodyList,
   dropDown,
   dropDownList,
+  width
 }: myComponentProps) => {
   const [showFilter, setShowFilter] = useState<any>(false);
   const [defaultFilterVal, setDefaultFilterVal] = useState<any>({});
@@ -500,7 +502,7 @@ const TableWrapper = ({
                               <DropdownMenuContent
                                 className="border rounded-sm"
                                 align="end"
-                                style={{ width: "170px" }}
+                                style={{ width: width ? width : "170px" }}
                               >
                                 {dropDownList?.length > 0 &&
                                   dropDownList?.map((child: any, idx: any) => {

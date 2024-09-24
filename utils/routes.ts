@@ -53,6 +53,7 @@ const routesPath = {
     UNIT: `/${admin_auth}/units`,
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
+    EMPLOYEE_VIEW: `/${admin_auth}/employee/view-employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
     // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
     PRESENTATION: `/${admin_auth}/mission-plan/2023/approve`,

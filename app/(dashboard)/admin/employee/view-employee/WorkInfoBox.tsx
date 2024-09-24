@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/redux/store";
 import { getOrdinalSuffix, processInputAsArray } from "@/utils/helpers";
 import React, { useState } from "react";
-import style from "../styles/ProfileStylesIndex.module.css";
+import style from "./styles/ProfileStylesIndex.module.css";
 
 const WorkInfoBox = () => {
   const [editState, setEditState] = useState(false);
@@ -35,8 +35,8 @@ const WorkInfoBox = () => {
     { name: "Timi Ayeni", line_manager: true },
     { name: "Timi Ayeni", line_manager: true },
     { name: "Timi Ayeni", line_manager: true },
-    { name: "Timi Ayeni", line_manager: true },
-    { name: "Timi Ayeni", line_manager: false },
+    // { name: "Timi Ayeni", line_manager: true },
+    // { name: "Timi Ayeni", line_manager: false },
   ];
 
   return (
@@ -538,7 +538,7 @@ const WorkInfoBox = () => {
         <div className={style.approval_flow_box_wrap}>
           <p className={style.title}>Approval Flow</p>
           {/* list box start */}
-          <div className={`${style.list_pos_box} ${listManagers?.length < 3 ? style.list_pos_box_small : ""}`}>
+          <div className={`${style.list_pos_box} ${listManagers?.length < 4 ? style.list_pos_box_small : ""}`}>
             {listManagers?.map((chi, idx) => {
               return (
                 <div key={idx} className={style.item_row}>
