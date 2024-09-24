@@ -57,7 +57,7 @@ const AchievementProgress = ({
       />
       <div
         className={cn(
-          "mt-1 bg-[#FCF0FF] text-[10px] font-semibold",
+          "mt-1 text-[10px] font-semibold pl-2 bg-[var(--primary-accent-color)]",
           targetClassName
         )}
         style={{
