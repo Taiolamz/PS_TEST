@@ -330,8 +330,8 @@ const HeaderNavBox = ({
                         chi?.onClick && chi?.onClick();
                       }}
                       key={idx}
-                      className={style.item_row}
-                      style={{ cursor: "pointer" }}
+                      className={style.item_row}  
+                      style={{ cursor: "pointer", borderBottom: "unset" }}
                     >
                       <figure className={style.img_box}>{chi.icon}</figure>
                       <p

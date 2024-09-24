@@ -32,6 +32,9 @@ import TableWrapper from "@/components/tables/TableWrapper";
 import { allemployeeData } from "@/utils/data/dashboard/missionplan";
 import BadgeComponent from "@/components/badge/BadgeComponents";
 import { trimLongString } from "../../_layout/Helper";
+import MetricCard from "@/components/card/metric-card";
+import ModuleCard from "@/components/card/module-cards/ModuleCard";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
@@ -264,6 +267,45 @@ const Employee = () => {
   ];
   // tableBodyList={userData}
 
+  // active={chi?.active}
+  // title={chi?.title}
+  // type={chi?.unit}
+  // count={chi?.count}
+  // accentColor={chi?.accentColor}
+  // hide={chi?.hide}
+  // icon={chi?.icon}
+  // onClick={chi?.onClick}
+  // pending={chi?.pending}
+  // primaryColor={chi?.primaryColor}
+
+  const listToTest = [
+    {
+      active: true,
+      title: "Total Staffs",
+      type: "staff",
+      count: 12,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: false,
+      primaryColor: "",
+    },
+    {
+      // active: true,
+      title: "Invited Staffs",
+      type: "unit",
+      count: 4,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: true,
+      primaryColor: "",
+    },
+    
+  ];
+
   return (
     <DashboardLayout headerTitle="Employee">
       {/* <ReusableStepListBox
@@ -275,6 +317,7 @@ const Employee = () => {
         onSave={handleProceed}
         onCancel={handleCancelDialog}
       /> */}
+
       <section className="p-5">
         {employees?.length < 0 ? (
           <ReusableEmptyState
@@ -288,6 +331,9 @@ const Employee = () => {
           />
         ) : (
           <>
+            {/* testing metrics card start */}
+            <ParentModuleCard list={listToTest} />
+            {/* testing metrics card end */}
             <DashboardTable
               header="Employee"
               isFilterDrop

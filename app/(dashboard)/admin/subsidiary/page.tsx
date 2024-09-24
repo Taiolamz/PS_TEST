@@ -29,6 +29,7 @@ import { downloadFile } from "@/utils/helpers/file-formatter";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
@@ -195,6 +196,21 @@ const Subsidiary = () => {
       .catch(() => toast.dismiss());
   };
 
+  const listToTest = [
+    {
+      active: true,
+      title: "Total Subsidiaries",
+      type: "subsidiary",
+      count: subsidiaries?.length,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: false,
+      primaryColor: "",
+    },
+  ];
+
   return (
     <DashboardLayout headerTitle="Subsidiary">
       <section className="p-5">
@@ -207,16 +223,23 @@ const Subsidiary = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            isLoading={isFetchingSubsidiaries}
-            header="Subsidiary"
-            data={subsidiaries}
-            columns={replaceEmptyValuesWithPlaceholder(subsidiariesColumnData)}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            onManualBtn={handleAddSubsidiary}
-          />
+          <>
+            {/* testing metrics card start */}
+            <ParentModuleCard list={listToTest} />
+            {/* testing metrics card end */}
+            <DashboardTable
+              isLoading={isFetchingSubsidiaries}
+              header="Subsidiary"
+              data={subsidiaries}
+              columns={replaceEmptyValuesWithPlaceholder(
+                subsidiariesColumnData
+              )}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              onManualBtn={handleAddSubsidiary}
+            />
+          </>
         )}
         <DashboardModal
           className={"w-[420px]"}

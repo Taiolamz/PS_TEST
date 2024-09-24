@@ -415,6 +415,7 @@ export const sideMenuList: any = [
             relatedLink: [
               "/admin/mission-plan/reports",
               routesPath?.ADMIN?.MISSION_PLAN_REPORT,
+              "/admin/mission-plan/reports?ui=organization-report"
             ],
           },
         ],

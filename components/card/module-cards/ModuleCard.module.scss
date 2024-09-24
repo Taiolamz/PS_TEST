@@ -1,0 +1,88 @@
+.parent_module_card_metric_index_wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-gap: 1.5rem;
+  justify-content: flex-start;
+}
+
+.module_card_metric_index_wrapper {
+  //   width: 15rem;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+  padding: 1.5rem 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 0.085rem solid rgba(230, 230, 230, 1);
+  position: relative;
+  //   overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: .05rem .05rem 8rem 2rem rgba(0,0,0, .03);
+
+  &:hover {
+    &::after {
+      visibility: visible;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0.085rem solid var(--border-color);
+    border-radius: 0.4rem;
+    // background-color: red;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .icon_box {
+    .img_box {
+      width: 3.1rem;
+      height: 3.1rem;
+      display: grid;
+      place-content: center;
+      background-color: var(--primary-accent-color);
+      border-radius: 0.4rem;
+
+      .img {
+        width: 95%;
+        height: 95%;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .title_count_box {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      color: rgba(154, 166, 172, 1);
+      font-size: 0.8rem;
+      font-weight: 400;
+      text-transform: capitalize;
+    }
+
+    .count {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.module_card_metric_index_wrapper_active {
+  border: unset;
+
+  &:hover {
+    border: unset;
+  }
+
+  &::after {
+    visibility: visible;
+  }
+}
