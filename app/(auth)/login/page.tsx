@@ -60,8 +60,16 @@ export default function Login() {
 
   return (
     <div className="flex flex-col items-start w-4/6 bg-white">
-      <div className="text-left font-semibold text-2xl mb-4 mx-auto w-[25rem]">Welcome Back,</div>
-      <form onSubmit={handleSubmit} className="mt-6 mx-auto w-[25rem]">
+      <div className="text-left font-semibold text-2xl mb-4 mx-auto w-[25rem]">
+        Welcome Back,
+      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+        className="mt-6 mx-auto w-[25rem]"
+      >
         <div className="mb-10 space-y-6">
           <div>
             <Input

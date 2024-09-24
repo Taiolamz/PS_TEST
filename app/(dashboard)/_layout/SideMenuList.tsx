@@ -383,7 +383,7 @@ export const sideMenuList: any = [
         name: "Overview",
         link: routesPath?.ADMIN?.OVERVIEW,
         icon: sideMenuIcons?.dashboard,
-        relatedLink: [""],
+        relatedLink: [routesPath?.ADMIN?.OVERVIEW],
       },
     ],
   },
