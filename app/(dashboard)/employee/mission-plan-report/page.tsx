@@ -23,6 +23,7 @@ const MissionPlanReport = () => {
       case "task_outcome":
         return <TaskOutcome />;
       case "approvals":
+      case "approvals-successs":
         return <Approvals />;
       case "downlines":
         return <Downlines />;

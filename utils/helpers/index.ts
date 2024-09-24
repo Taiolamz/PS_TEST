@@ -208,7 +208,7 @@ export const REPORT_PAGE_TABS = {
     {
       id: 4,
       title: "Approvals",
-      accessor: "approvals",
+      accessor:  "approvals",
     },
     {
       id: 5,
