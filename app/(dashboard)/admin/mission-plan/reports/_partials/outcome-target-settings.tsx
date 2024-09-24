@@ -36,7 +36,7 @@ const OutcomeTargetSettings = () => {
     })
 
     return (
-        <section>
+        <section className="hidden">
             <CardContainer className="mt-6"
                 title="Action Type"
                 subTitle="Select below if you want to accept submissions or allow line manager review and approve"
