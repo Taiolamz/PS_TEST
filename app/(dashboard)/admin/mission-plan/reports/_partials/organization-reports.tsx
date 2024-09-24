@@ -3,8 +3,8 @@ import CustomSelect from "@/components/custom-select";
 import { AchievementProgress, CardContainer, Legend, PercentageLabel, ReusableLabel, ReusableSegmentProgress, SingleExcutiveProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import { getProgressColorByValue } from '@/utils/helpers';
-import { ArrowRight, Filter } from "iconsax-react";
-import { Undo2 } from "lucide-react";
+import { ArrowRight } from "iconsax-react";
+import { Filter, Undo2 } from "lucide-react";
 import { ACHIEVEMENT_PROGRESS_DATA, MOS_LABEL_TYPES, PAGE_LEGEND, SPECIFIED_TASK_CHART_LABELS } from "../_data";
 import SpecifiedTaskChart from "../_charts/specified-task";
 
@@ -14,7 +14,7 @@ const OrganizationReports = () => {
         <CardContainer className="mt-6">
             <div className="flex items-center gap-6">
                 <div className="hidden md:flex items-center w-fit gap-1 text-sm"> <span>Filter</span> <Filter width={18} height={18} /></div>
-                <div className="w-full flex flex-wrap items-center gap-3">
+                <div className="w-full flex flex-wrap items-center gap-">
                     <CustomSelect
                         options={[
                             { label: 'All', value: 'All' },
@@ -23,7 +23,7 @@ const OrganizationReports = () => {
                         placeholder="Select Subsidiary"
                         selected=""
                         setSelected={() => null}
-                        className="w-[11rem]"
+                        className="w-[11rem] lg:rounded-s-xl rounded-e-none border-r-0"
                     />
                     <CustomSelect
                         options={[
@@ -33,7 +33,7 @@ const OrganizationReports = () => {
                         placeholder="Select Branch"
                         selected=""
                         setSelected={() => null}
-                        className="w-[9rem]"
+                        className="w-[9.5rem] rounded-s-none lg:border-r-0"
                     />
                     <CustomSelect
                         options={[
@@ -43,7 +43,7 @@ const OrganizationReports = () => {
                         placeholder="Select Department"
                         selected=""
                         setSelected={() => null}
-                        className="w-[11rem]"
+                        className="w-[11rem] rounded-none lg:border-r-0"
                     />
                     <CustomSelect
                         options={[
@@ -53,7 +53,7 @@ const OrganizationReports = () => {
                         placeholder="Select Unit"
                         selected=""
                         setSelected={() => null}
-                        className="w-[8rem]"
+                        className="w-[9rem] rounded-none lg:border-r-0"
                     />
                     <CustomSelect
                         options={[
@@ -63,7 +63,7 @@ const OrganizationReports = () => {
                         placeholder="Select FY"
                         selected=""
                         setSelected={() => null}
-                        className="w-[8rem]"
+                        className="w-[9rem]  rounded-none lg:border-r-0"
                     />
                     <CustomSelect
                         options={[
@@ -73,9 +73,9 @@ const OrganizationReports = () => {
                         placeholder="Select Cycle"
                         selected=""
                         setSelected={() => null}
-                        className="w-[9rem]"
+                        className="w-[9rem] rounded-s-none lg:rounded-e-xl"
                     />
-                    <div className="flex items-center w-fit gap-1 text-sm text-red-500"> <span>Reset</span> <Undo2 width={18} height={18} /></div>
+                    <div className="pl-3 flex items-center w-fit gap-1 text-sm text-red-500"> <span>Reset</span> <Undo2 width={18} height={18} /></div>
                 </div>
             </div>
             <div className="mt-3 flex justify-end">

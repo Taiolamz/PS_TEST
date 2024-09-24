@@ -23,7 +23,7 @@ export default function Reports (){
     return (
         <DashboardLayout headerTitle="Business Performance Overview"
         >   
-            <div className="p-5 w-full">
+            <div className="p-5 w-full overflow-x-hidden">
                 <CustomTab options={REPORT_PAGE_TABS.ADMINS} slug="ui" />
                 {getView()}
             </div>
