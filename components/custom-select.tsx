@@ -1,4 +1,3 @@
-"use client"
 import { CheckIcon, ChevronDown } from "lucide-react";
 import { useRef, useState } from "react";
 import { cn } from "../lib/utils";
