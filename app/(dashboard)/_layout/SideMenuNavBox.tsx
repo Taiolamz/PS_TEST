@@ -750,7 +750,7 @@ const SideMenuNavBox = () => {
             <Button
               className={`${style?.btn_support} ${style?.btn_support_outline}`}
             >
-              Report a Bug
+             Contact Support
             </Button>
             {/* button end */}
             {/* button start */}

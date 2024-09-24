@@ -25,6 +25,7 @@ import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
@@ -192,6 +193,23 @@ const Units = () => {
       })
       .catch(() => toast.dismiss());
   };
+
+  const listToTest = [
+    {
+      active: true,
+      title: "Total Units",
+      type: "unit",
+      count: units?.length,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {console.log("units");
+      },
+      pending: false,
+      primaryColor: "",
+    },
+  ];
+
   return (
     <DashboardLayout headerTitle="Unit">
       <section className="p-5">
@@ -204,16 +222,21 @@ const Units = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            isLoading={isFetchingUnits}
-            header="Unit"
-            data={units}
-            columns={unitsColumnData}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            onManualBtn={handleAddUnit}
-          />
+          <>
+            {/* testing metrics card start */}
+            <ParentModuleCard list={listToTest} />
+            {/* testing metrics card end */}
+            <DashboardTable
+              isLoading={isFetchingUnits}
+              header="Unit"
+              data={units}
+              columns={unitsColumnData}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              onManualBtn={handleAddUnit}
+            />
+          </>
         )}
         <DashboardModal
           className={"w-[420px]"}

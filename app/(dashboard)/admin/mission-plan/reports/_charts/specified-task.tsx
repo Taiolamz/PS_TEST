@@ -5,7 +5,7 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 const SpecifiedTaskChart = () => {
     const [chartData, setChartData] = useState({
-        series: [20, 35, 40, 5],
+        series: [20, 35, 40, 5],  
         options: {
             chart: {
                 width: '100%',

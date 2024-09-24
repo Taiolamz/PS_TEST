@@ -22,6 +22,7 @@ import {
 import { useBranchColumnData } from "./branch-column";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 // import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
@@ -190,6 +191,21 @@ const Branches = () => {
       .catch(() => toast.dismiss());
   };
 
+  const listToTest = [
+    {
+      active: true,
+      title: "Total Branches",
+      type: "branch",
+      count: 12,
+      accentColor: "",
+      hide: false,
+      icon: "",
+      onClick: () => {},
+      pending: false,
+      primaryColor: "",
+    },
+  ];
+
   return (
     <DashboardLayout headerTitle="Branches">
       <section className="p-5">
@@ -202,16 +218,21 @@ const Branches = () => {
             onBulkUpload={handleBulkUploadDialog}
           />
         ) : (
-          <DashboardTable
-            isLoading={isFetchingBranches}
-            header="Branch"
-            data={branches}
-            columns={branchesColumnData}
-            onBulkUploadBtn={handleBulkUploadDialog}
-            onOpenBtnChange={handleBtnDrop}
-            newBtnOpen={openNewBtn}
-            onManualBtn={handleAddBranch}
-          />
+          <>
+            {/* testing metrics card start */}
+            <ParentModuleCard list={listToTest} />
+            {/* testing metrics card end */}
+            <DashboardTable
+              isLoading={isFetchingBranches}
+              header="Branch"
+              data={branches}
+              columns={branchesColumnData}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onOpenBtnChange={handleBtnDrop}
+              newBtnOpen={openNewBtn}
+              onManualBtn={handleAddBranch}
+            />
+          </>
         )}
         <DashboardModal
           className={"w-[420px]"}
