@@ -49,33 +49,41 @@ const OverView = () => {
           </Link>
         </article>
         {/* Main Content */}
-        <div className="flex-1 relative hidden">
-          <div className="h-full pb-10 pl-6 w-[calc(100%-384px)] absolute top-0 left-0 space-y-6 custom-scrollbar">
+        <div className="flex-1 relative">
+          <div className="h-full pb-10 pl-5 w-[calc(100%-370px)] absolute top-0 left-0 space-y-6 custom-scrollbar">
             {/* Quick access */}
             <section className="mt-9">
               <h3 className="text-[var(--footer-link-color)] font-medium text-lg mb-2.5">
                 Quick Access
               </h3>
-              <section className="bg-white rounded-lg px-[15px] py-[23px] grid gap-3 grid-cols-3">
+              <section className="bg-white rounded-lg px-[15px] py-[23px] grid gap-3 grid-cols-1 md:grid-cols-3">
                 <Link
                   href={"#"}
-                  className="border border-[var(--input-border2)] px-2.5 py-3.5 rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                  className="border border-[var(--input-border2)] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
                 >
-                  <Image src={AnnouncementIcon} alt="announcement icon" />
+                  <Image
+                    className="size-11"
+                    src={AnnouncementIcon}
+                    alt="announcement icon"
+                  />
                   View Announcement
                 </Link>
                 <Link
                   href={"#"}
-                  className="border border-[var(--input-border2)] px-2.5 py-3.5 rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                  className="border border-[var(--input-border2)] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
                 >
-                  <Image src={CreateListIcon} alt="create todo icon" />
+                  <Image
+                    className="size-11"
+                    src={CreateListIcon}
+                    alt="create todo icon"
+                  />
                   Create To Do
                 </Link>
                 <Link
                   href={"#"}
-                  className="border border-[var(--input-border2)] px-2.5 py-3.5 rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                  className="border border-[var(--input-border2)] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
                 >
-                  <Image src={HelpIcon} alt="help icon" />
+                  <Image className="size-11" src={HelpIcon} alt="help icon" />
                   Help
                 </Link>
               </section>
@@ -104,16 +112,16 @@ const OverView = () => {
               </div>
               {/* content */}
               <main className="w-full space-y-3">
-                <div className="flex gap-x-3 font-medium text-sm text-[var(--text-color5)]">
+                <div className="flex gap-x-3 font-medium text-xs text-[var(--text-color5)]">
                   <div
-                    className={`block bg-[var(--primary-color)] rounded-tl-sm rounded-bl-sm h-6`}
+                    className={`block bg-[var(--primary-color)] rounded-tl-sm rounded-bl-sm h-4`}
                     style={{ width: `${50}%` }}
                   />
                   {50}%
                 </div>
-                <div className="flex gap-x-3 font-medium text-sm text-[var(--text-color5)]">
+                <div className="flex gap-x-3 font-medium text-xs text-[var(--text-color5)]">
                   <div
-                    className={`block bg-[var(--primary-accent-color)] rounded-tl-sm rounded-bl-sm h-6`}
+                    className={`block bg-[var(--primary-accent-color)] rounded-tl-sm rounded-bl-sm h-4`}
                     style={{ width: `${80}%` }}
                   />
                   {80}%
@@ -423,7 +431,7 @@ const OverView = () => {
           </div>
 
           {/* Right Side Content --Todo, Mission and Vision-- */}
-          <div className="bg-[var(--btn-solid-color)] absolute top-0 right-0 w-[360px] h-full z-10 custom-scrollbar px-5 py-8 space-y-7">
+          <div className="bg-[var(--btn-solid-color)] absolute top-0 right-0 w-[350px] h-full z-10 custom-scrollbar px-5 py-8 space-y-7">
             {/* Mission and Vision Statement */}
             {(user.organization?.mission || user.organization?.vision) && (
               <section className="custom-shadow rounded w-full px-3 py-6 space-y-7">
@@ -431,7 +439,7 @@ const OverView = () => {
                   <div className="flex space-x-2.5 text-[var(--primary-color)]">
                     {MissionIcon}
                     <div className="space-y-2">
-                      <h4 className="font-medium text-[var(--text-color5)]">
+                      <h4 className="font-medium text-sm text-[var(--text-color5)]">
                         Mission Statement
                       </h4>
                       <p className="text-[var(--text-color2)] text-xs">
@@ -444,7 +452,7 @@ const OverView = () => {
                   <div className="flex space-x-2.5  text-[var(--primary-color)]">
                     {VisionIcon}
                     <div className="space-y-2">
-                      <h4 className="font-medium text-[var(--text-color5)]">
+                      <h4 className="font-medium text-sm text-[var(--text-color5)]">
                         Vision Statement
                       </h4>
                       <p className="text-[var(--text-color2)] text-xs">
@@ -503,8 +511,8 @@ const ArrowRight = (
 
 const TodoIcon = (
   <svg
-    width="24"
-    height="25"
+    width="22"
+    height="23"
     viewBox="0 0 24 25"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -518,8 +526,8 @@ const TodoIcon = (
 
 const MissionIcon = (
   <svg
-    width="23"
-    height="24"
+    width="21"
+    height="22"
     viewBox="0 0 23 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -533,8 +541,8 @@ const MissionIcon = (
 
 const VisionIcon = (
   <svg
-    width="24"
-    height="24"
+    width="22"
+    height="22"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

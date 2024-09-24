@@ -1,16 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-
 import React, { useMemo, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
-import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";
 import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
 import routesPath from "@/utils/routes";
 import {
@@ -18,26 +16,34 @@ import {
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
 } from "@/redux/services/checklist/subsidiaryApi";
-import {
-  // subsidiaryColumns,
-  useSubsidiaryColumnData,
-} from "../checklist/(organizational-structure)/subsidiary/subsidiary-column";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/store";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import SubsidiaryDetails from "./_partials/subsidiary-details";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import { processInputAsArray } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
 
 const Subsidiary = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
+  const searchParams = useSearchParams();
+  const ui = searchParams.get("ui");
+  const { user } = useAppSelector((state) => state.auth);
 
+  React.useEffect(() => {
+    if (typeof ui !== "string") {
+      router.replace(pathname + "?" + "ui=view");
+    }
+  }, []);
   const {
     isOpen: openProceedModal,
     open: onOpenProceeModal,
@@ -133,27 +139,12 @@ const Subsidiary = () => {
     isFetching: isFetchingSubsidiaries,
     refetch: refetchSubsidiaries,
   } = useGetSubsidiariesQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
+    page: page,
+    search: search,
   });
+  const subsidiaries = subsidiariesData?.data?.data ?? [];
 
-  const subsidiaries = subsidiariesData ?? [];
-
-  const { subsidiaryColumns, data, openDeleteModal, handleDeleteDialog } =
-    useSubsidiaryColumnData(isFetchingSubsidiaries);
-
-  const subsidiariesColumnData = useMemo(
-    () => subsidiaryColumns,
-    [isFetchingSubsidiaries]
-  );
-  // const subsidiaryColumn = useMemo(() => missionPlanColumn, []);
-
-  const user = useAppSelector(selectUser);
-  const { organization } = user;
+  const { organization } = useAppSelector(selectUser);
 
   const [createBulkSubsidiaries, { isLoading: isCreatingBulkSubsidiaries }] =
     useCreateBulkSubsidiariesMutation();
@@ -195,13 +186,30 @@ const Subsidiary = () => {
       })
       .catch(() => toast.dismiss());
   };
+  const getTabParam = () => {
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
+    ) {
+      return "branches";
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("department")
+    ) {
+      return "departments";
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("unit")
+    ) {
+      return "units";
+    } else {
+      return "staffs";
+    }
+  };
 
   const listToTest = [
     {
       active: true,
       title: "Total Subsidiaries",
       type: "subsidiary",
-      count: subsidiaries?.length,
+      count: subsidiariesData?.data?.total ?? 0,
       accentColor: "",
       hide: false,
       icon: "",
@@ -212,87 +220,135 @@ const Subsidiary = () => {
   ];
 
   return (
-    <DashboardLayout headerTitle="Subsidiary">
-      <section className="p-5">
-        {subsidiaries?.length < 1 ? (
-          <ReusableEmptyState
-            loading={isLoadingSubsidiaries}
-            textTitle="subsidiaries"
-            btnTitle="subsidiary"
-            href={ADMIN.CREATE_SUBSIDIARY}
-            onBulkUpload={handleBulkUploadDialog}
-          />
-        ) : (
-          <>
-            {/* testing metrics card start */}
-            <ParentModuleCard list={listToTest} />
-            {/* testing metrics card end */}
-            <DashboardTable
-              isLoading={isFetchingSubsidiaries}
-              header="Subsidiary"
-              data={subsidiaries}
-              columns={replaceEmptyValuesWithPlaceholder(
-                subsidiariesColumnData
-              )}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              onOpenBtnChange={handleBtnDrop}
-              newBtnOpen={openNewBtn}
-              onManualBtn={handleAddSubsidiary}
-            />
-          </>
-        )}
-        <DashboardModal
-          className={"w-[420px]"}
-          open={openCancelModal}
-          onOpenChange={handleCancelDialog}
-        >
-          <CancelModal
-            onProceed={handleProceedCancel}
-            modalTitle="Subsidiary"
-          />
-        </DashboardModal>
+    <>
+      {ui !== "details" ? (
+        <DashboardLayout headerTitle="Subsidiary">
+          <section className="p-5">
+            {subsidiaries?.length < 1 ? (
+              <ReusableEmptyState
+                loading={isLoadingSubsidiaries}
+                textTitle="subsidiaries"
+                btnTitle="subsidiary"
+                href={ADMIN.CREATE_SUBSIDIARY}
+                onBulkUpload={handleBulkUploadDialog}
+              />
+            ) : (
+              <>
+                {/* testing metrics card start */}
+                <ParentModuleCard list={listToTest} />
 
-        <DashboardModal
-          open={openProceedModal}
-          onOpenChange={handleProceedDialog}
-        >
-          <ProceedModal onProceed={handleProceed} />
-        </DashboardModal>
+                <TableWrapper
+                  tableheaderList={["Name", "Country", "Address", "Action"]}
+                  perPage={subsidiariesData?.data?.per_page}
+                  totalPage={subsidiariesData?.data?.total}
+                  currentPage={subsidiariesData?.data?.current_page}
+                  onPageChange={(p) => {
+                    setPage(p);
+                  }}
+                  hideNewBtnOne={false}
+                  tableBodyList={FORMAT_TABLE_DATA(subsidiaries)}
+                  loading={isFetchingSubsidiaries}
+                  onSearch={(param) => {
+                    setTimeout(() => {
+                      // Delay api call after 3 seconds
+                      setPage(1);
+                      setSearch(param);
+                    }, 3000);
+                  }}
+                  dropDown
+                  hideFilter
+                  hideSort
+                  newBtnBulk
+                  dropDownList={[
+                    {
+                      label: "View Details",
+                      color: "",
+                      onActionClick: (param: any, dataTwo: any) => {
+                        router.push(
+                          ADMIN.SUBSIDIARY_DETAILS({
+                            id: dataTwo?.name?.props.children[0].props.children,
+                            tab: getTabParam(),
+                          })
+                        );
+                      },
+                    },
+                  ]}
+                  onManualBtn={handleAddSubsidiary}
+                  onBulkUploadBtn={handleBulkUploadDialog}
+                  // onPdfChange={}
+                  // onCsvChange={}
+                />
+              </>
+            )}
+            <DashboardModal
+              className={"w-[420px]"}
+              open={openCancelModal}
+              onOpenChange={handleCancelDialog}
+            >
+              <CancelModal
+                onProceed={handleProceedCancel}
+                modalTitle="Subsidiary"
+              />
+            </DashboardModal>
 
-        <DashboardModal
-          className={`max-w-max`}
-          open={openBulkUploadModal}
-          onOpenChange={handleBulkUploadDialog}
-        >
-          <BulkUploadModal
-            loading={isCreatingBulkSubsidiaries}
-            onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("csv");
-            }}
-            onSampleExcelDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("xlsx");
-            }}
-            onBulkUpload={handleSubmitBulkUpload}
-            setFile={setBulkFile}
-          />
-        </DashboardModal>
+            <DashboardModal
+              open={openProceedModal}
+              onOpenChange={handleProceedDialog}
+            >
+              <ProceedModal onProceed={handleProceed} />
+            </DashboardModal>
 
-        <DashboardModal
-          className={"w-[600px] max-w-full"}
-          open={openBulkRequirementModal}
-          onOpenChange={handleBulkRequirementDialog}
-        >
-          <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload(fileType)}
-            onCancel={handleBulkRequirementDialog}
-          />
-        </DashboardModal>
-      </section>
-    </DashboardLayout>
+            <DashboardModal
+              className={`max-w-max`}
+              open={openBulkUploadModal}
+              onOpenChange={handleBulkUploadDialog}
+            >
+              <BulkUploadModal
+                loading={isCreatingBulkSubsidiaries}
+                onCancel={handleBulkUploadDialog}
+                onSampleCsvDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("csv");
+                }}
+                onSampleExcelDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("xlsx");
+                }}
+                onBulkUpload={handleSubmitBulkUpload}
+                setFile={setBulkFile}
+              />
+            </DashboardModal>
+
+            <DashboardModal
+              className={"w-[600px] max-w-full"}
+              open={openBulkRequirementModal}
+              onOpenChange={handleBulkRequirementDialog}
+            >
+              <BulkRequirementModal
+                onTemplateDownload={() => handleTemplateDownload(fileType)}
+                onCancel={handleBulkRequirementDialog}
+              />
+            </DashboardModal>
+          </section>{" "}
+        </DashboardLayout>
+      ) : (
+        <SubsidiaryDetails />
+      )}
+    </>
   );
 };
 
 export default Subsidiary;
+
+const FORMAT_TABLE_DATA = (obj: any) => {
+  return obj?.map((org: any) => ({
+    name: (
+      <>
+        <span className="hidden">{org.id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
+    country: org?.country,
+    address: org?.address,
+  }));
+};
