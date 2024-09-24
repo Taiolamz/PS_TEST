@@ -24,6 +24,7 @@ import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import TableWrapper from "@/components/tables/TableWrapper";
 import SubsidiaryDetails from "./_partials/subsidiary-details";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import { processInputAsArray } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
 
@@ -36,6 +37,7 @@ const Subsidiary = () => {
   const [search, setSearch] = useState<string>("");
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
+  const { user } = useAppSelector((state) => state.auth);
 
   React.useEffect(() => {
     if (typeof ui !== "string") {
@@ -184,6 +186,23 @@ const Subsidiary = () => {
       })
       .catch(() => toast.dismiss());
   };
+  const getTabParam = () => {
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
+    ) {
+      return "branches";
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("department")
+    ) {
+      return "departments";
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("unit")
+    ) {
+      return "units";
+    } else {
+      return "staffs";
+    }
+  };
 
   const listToTest = [
     {
@@ -217,18 +236,7 @@ const Subsidiary = () => {
               <>
                 {/* testing metrics card start */}
                 <ParentModuleCard list={listToTest} />
-                {/* <DashboardTable
-              isLoading={isFetchingSubsidiaries}
-              header="Subsidiary"
-              data={subsidiaries}
-              columns={replaceEmptyValuesWithPlaceholder(
-                subsidiariesColumnData
-              )}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              onOpenBtnChange={handleBtnDrop}
-              newBtnOpen={openNewBtn}
-              onManualBtn={handleAddSubsidiary}
-            /> */}
+
                 <TableWrapper
                   tableheaderList={["Name", "Country", "Address", "Action"]}
                   perPage={subsidiariesData?.data?.per_page}
@@ -257,12 +265,10 @@ const Subsidiary = () => {
                       color: "",
                       onActionClick: (param: any, dataTwo: any) => {
                         router.push(
-                          pathname +
-                            "?" +
-                            "ui=details" +
-                            "&" +
-                            "id=" +
-                            dataTwo?.name?.props.children[0].props.children
+                          ADMIN.SUBSIDIARY_DETAILS({
+                            id: dataTwo?.name?.props.children[0].props.children,
+                            tab: getTabParam(),
+                          })
                         );
                       },
                     },

@@ -44,6 +44,8 @@ const routesPath = {
     SETTINGS: `/${admin_auth}/settings`,
     CHECKLIST: `/${admin_auth}/checklist`,
     SUBSIDIARY: `/${admin_auth}/subsidiary`,
+    SUBSIDIARY_DETAILS: ({ id, tab }: { id: string; tab?: string }) =>
+      `/${admin_auth}/subsidiary?ui=details&id=${id}&tab=${tab}`,
     CREATE_SUBSIDIARY: `/${admin_auth}/subsidiary/add-subsidiary`,
     EDIT_SUBSIDIARY: (id: string) => `/${admin_auth}/subsidiary/${id}/edit`,
     BRANCH: `/${admin_auth}/branches`,

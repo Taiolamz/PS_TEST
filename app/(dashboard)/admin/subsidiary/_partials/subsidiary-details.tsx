@@ -1,59 +1,32 @@
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import MetricCard from "@/components/card/metric-card";
 import { Button } from "@/components/ui/button";
-import {
-  BranchesIcon,
-  DepartmentIcon,
-  StaffIcon,
-  UnitIcon,
-} from "@/public/assets/icons";
 import React from "react";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ModalContainer from "@/components/modal-container";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useAppSelector } from "@/redux/store";
 import { processInputAsArray } from "@/utils/helpers";
-import {
-  BranchesTable,
-  DeptTable,
-  StaffTable,
-  UnitTable,
-} from "./details-table";
+import { BranchesTable, DeptTable, StaffTable, UnitTable } from "./_table";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 
 const { ADMIN } = routesPath;
 
 export default function SubsidiaryDetails() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [view, setView] = React.useState("");
   const [modal, setModal] = React.useState(false);
   const { user } = useAppSelector((state) => state.auth);
-  const searchParams = useSearchParams();
   const id = searchParams.get("id");
-
-  React.useEffect(() => {
-    if (
-      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
-    ) {
-      setView("branches");
-    } else if (
-      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
-    ) {
-      setView("departments");
-    } else if (
-      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
-    ) {
-      setView("units");
-    } else {
-      setView("staffs");
-    }
-  }, []);
+  const tab = searchParams.get("tab");
 
   const listToTest = [
     {
-      active: view === "branches",
+      active: tab === "branches",
       title: "Total Branches",
       type: "branch",
       count: 0,
@@ -63,13 +36,14 @@ export default function SubsidiaryDetails() {
       ),
       icon: "",
       onClick: () => {
-        setView("branches");
+        id &&
+          router.replace(ADMIN.SUBSIDIARY_DETAILS({ id: id, tab: "branches" }));
       },
       pending: false,
       primaryColor: "",
     },
     {
-      active: view === "departments",
+      active: tab === "departments",
       title: "Total Departments",
       type: "department",
       count: 0,
@@ -79,13 +53,16 @@ export default function SubsidiaryDetails() {
       ),
       icon: "",
       onClick: () => {
-        setView("departments");
+        id &&
+          router.replace(
+            ADMIN.SUBSIDIARY_DETAILS({ id: id, tab: "departments" })
+          );
       },
       pending: false,
       primaryColor: "",
     },
     {
-      active: view === "units",
+      active: tab === "units",
       title: "Total Units",
       type: "unit",
       count: 0,
@@ -95,13 +72,14 @@ export default function SubsidiaryDetails() {
       ),
       icon: "",
       onClick: () => {
-        setView("units");
+        id &&
+          router.replace(ADMIN.SUBSIDIARY_DETAILS({ id: id, tab: "units" }));
       },
       pending: false,
       primaryColor: "",
     },
     {
-      active: view === "staffs",
+      active: tab === "staffs",
       title: "Total Staffs",
       type: "staff",
       count: 0,
@@ -109,7 +87,8 @@ export default function SubsidiaryDetails() {
       hide: false,
       icon: "",
       onClick: () => {
-        setView("staffs");
+        id &&
+          router.replace(ADMIN.SUBSIDIARY_DETAILS({ id: id, tab: "staffs" }));
       },
       pending: false,
       primaryColor: "",
@@ -201,10 +180,10 @@ export default function SubsidiaryDetails() {
           <ParentModuleCard list={listToTest} />
         </div>
         <section className="">
-          {view === "branches" && <BranchesTable />}
-          {view === "departments" && <DeptTable />}
-          {view === "units" && <UnitTable />}
-          {view === "staffs" && <StaffTable />}
+          {tab === "branches" && <BranchesTable />}
+          {tab === "departments" && <DeptTable />}
+          {tab === "units" && <UnitTable />}
+          {tab === "staffs" && <StaffTable />}
         </section>
       </section>
       <ModalContainer
