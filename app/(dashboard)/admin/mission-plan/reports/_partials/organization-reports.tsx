@@ -6,6 +6,7 @@ import { getProgressColorByValue } from '@/utils/helpers';
 import { ArrowRight, Filter } from "iconsax-react";
 import { Undo2 } from "lucide-react";
 import { ACHIEVEMENT_PROGRESS_DATA, MOS_LABEL_TYPES, PAGE_LEGEND, SPECIFIED_TASK_CHART_LABELS } from "../_data";
+import SpecifiedTaskChart from "../_charts/specified-task";
 
 const OrganizationReports = () => {
     return (
@@ -118,7 +119,7 @@ const OrganizationReports = () => {
                             <span className="font-light">Specified Task Activity Breakdown</span>
                             <span className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</span>
                         </div>
-                        {/* <SpecifiedTaskChart /> */}
+                        <SpecifiedTaskChart />
                     </div>
                     <div className="">
                         <ReusableLabel title="Total" value="40 Specified Tasks" />
