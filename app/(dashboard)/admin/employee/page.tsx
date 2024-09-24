@@ -303,30 +303,6 @@ const Employee = () => {
       pending: true,
       primaryColor: "",
     },
-    {
-      active: true,
-      title: "Total Staffs",
-      type: "staff",
-      count: 12,
-      accentColor: "",
-      hide: false,
-      icon: "",
-      onClick: () => {},
-      pending: false,
-      primaryColor: "",
-    },
-    {
-      // active: true,
-      title: "Invited Staffs",
-      type: "unit",
-      count: 4,
-      accentColor: "",
-      hide: false,
-      icon: "",
-      onClick: () => {},
-      pending: true,
-      primaryColor: "",
-    },
     
   ];
 
