@@ -72,6 +72,12 @@ const routesPath = {
     APPROVE_REJECT_MISSION_PLAN: (id: string) =>
       `/${employee_auth}/mission-plan/${id}/approve`,
     MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report`,
+    DOWNLINE_MISSION_PLAN_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/downline-progress`,
+    DOWNLINE_MOS_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/downline-progress/measure-of-success`,
+    DOWNLINE_SPECIFIED_TASK_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/downline-progress/specified-task`,
     KPI: `/${employee_auth}/kpi`,
     MY_TEAM: `/${employee_auth}/my-team`,
     ORGANOGRAM: `/${employee_auth}/organogram`,
