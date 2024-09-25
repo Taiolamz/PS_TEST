@@ -20,7 +20,10 @@ const Downlines = () => {
   return (
     <div className="mt-7">
       {ui === "downlines" && !id && <DownlineTable />}
-      {ui === "downlines" && id && type === "view-progress" && <ViewProgress />}
+      {ui === "downlines" &&
+        id &&
+        type === "view-progress" &&
+        typeof tab !== "string" && <ViewProgress />}
       {ui === "downlines" &&
         id &&
         type === "view-progress" &&
