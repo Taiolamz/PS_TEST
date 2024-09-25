@@ -131,6 +131,7 @@ const MeasureOfSucessProgress = () => {
                   borderRadius={2}
                   hasBackground={false}
                   valueColor={value_color}
+                  progressClass="rounded-[2px]"
                 />
                 <ReusableProgress
                   value={0}

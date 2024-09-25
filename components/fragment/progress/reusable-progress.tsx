@@ -40,6 +40,8 @@ interface ReusableProgressProps {
   valueColor?: string;
   valuePosition?: POSITION_TYPE;
   floatValueClass?: string;
+  noFloatValueClass?: string;
+  progressClass?: string;
 }
 
 const COLORS = {
@@ -64,6 +66,8 @@ const ReusableProgress = ({
   width,
   valueColor,
   floatValueClass = "12px",
+  noFloatValueClass = "12px",
+  progressClass,
 }: ReusableProgressProps) => {
   const VALUE_COLOR = valueColor
     ? valueColor
@@ -77,6 +81,7 @@ const ReusableProgress = ({
         className={cn("w-fit text-sm")}
         style={{
           color: VALUE_COLOR,
+          fontSize: noFloatValueClass,
         }}
       >
         {value}%
@@ -119,7 +124,10 @@ const ReusableProgress = ({
         }}
       >
         <div
-          className={cn("h-full w-full flex-1 transition-all bg-primary")}
+          className={cn(
+            "h-full w-full flex-1 transition-all bg-primary",
+            progressClass
+          )}
           style={{
             transform: `translateX(-${100 - (value || 0)}%)`,
             background: color ? COLORS[color] : COLORS.default,
