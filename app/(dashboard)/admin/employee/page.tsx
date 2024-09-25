@@ -294,7 +294,7 @@ const Employee = () => {
     {
       // active: true,
       title: "Invited Staffs",
-      type: "unit",
+      type: "staff",
       count: 4,
       accentColor: "",
       hide: false,
