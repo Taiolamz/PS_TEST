@@ -18,7 +18,7 @@ const Downlines = () => {
   const tab = searchParams.get("tab");
 
   return (
-    <div className="mt-7">
+    <div className="mt-5">
       {ui === "downlines" && !id && <DownlineTable />}
       {ui === "downlines" &&
         id &&

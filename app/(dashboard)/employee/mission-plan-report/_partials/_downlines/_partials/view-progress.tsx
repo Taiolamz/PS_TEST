@@ -9,7 +9,7 @@ export default function ViewProgress() {
   return (
     <div>
       {/* ----- FILTER/SELECT WRAP START------- */}
-      <div className="flex items-center mt-10 justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex gap-2 items-center cursor-pointer">
             <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
@@ -50,6 +50,21 @@ export default function ViewProgress() {
         </div>
       </div>
       {/* ----- FILTER/SELECT WRAP END------- */}
+
+      {/* ----- USER INFO------- */}
+      <div className="mt-9 inline-flex items-center gap-x-4">
+        <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
+          {"CU"}
+        </div>
+        <div className="space-y-0.5">
+          <p className="">Charles Uwaje</p>
+          <p className="text-[var(--text-color2)] text-sm">
+            cuwaje@zojatech.com
+          </p>
+        </div>
+      </div>
+
+      {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
       <div className="grid lg:grid-cols-12 mt-10 gap-5">
         <MOSCard />
         <SpecifiedTaskCard />
