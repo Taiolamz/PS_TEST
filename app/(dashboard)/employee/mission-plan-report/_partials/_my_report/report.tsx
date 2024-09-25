@@ -5,6 +5,7 @@ import CustomSelect from "@/components/custom-select";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import SpecifiedTaskDetailView from "./_fragment/specified-task-detail-view";
+import MetricTableCard from "@/components/card/metric-table-card";
 
 const MyReport = () => {
   const filterIcon = (
@@ -125,8 +126,6 @@ const MyReport = () => {
 
       {view === "specified_task_detail_view" && (
         <div className="flex flex-col gap-3">
-          <SpecifiedTaskDetailView />
-          <SpecifiedTaskDetailView />
           <SpecifiedTaskDetailView />
         </div>
       )}
