@@ -2,22 +2,20 @@
 import { Progress } from "@/components/ui/progress";
 import TableWrapper from "@/components/tables/TableWrapper";
 import routesPath from "@/utils/routes";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
-const { ADMIN } = routesPath;
+const { EMPLOYEE } = routesPath;
 
 export default function DownlineTable() {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const createDownlineQueryString = React.useCallback(
     ({
       name,
       id,
       type,
-      tab,
     }: {
       name: string;
       id: string;
@@ -29,14 +27,6 @@ export default function DownlineTable() {
       params.set("id", id); // Set the 'id' param
       type === "mos" && params.set("type", "approve-mos");
       type === "task" && params.set("type", "approve-task");
-      type === "view" && params.set("type", "view-progress");
-      type === "view" &&
-        tab === "measure-success" &&
-        params.set("tab", "measure-success");
-      type === "view" &&
-        tab === "specified-task" &&
-        params.set("tab", "specified-task");
-
       return params.toString(); // Return the query string
     },
     []
@@ -67,15 +57,10 @@ export default function DownlineTable() {
           label: "View Progress",
           color: "",
           onActionClick: (param: any, dataTwo: any) => {
-            // console.log(dataTwo?.staff_name?.props?.children[0].props.children);
             router.push(
-              pathname.split("?")[0] +
-                "?" +
-                createDownlineQueryString({
-                  type: "view",
-                  id: dataTwo?.staff_name?.props?.children[0].props.children,
-                  name: "downlines",
-                })
+              EMPLOYEE.DOWNLINE_MISSION_PLAN_REPORT(
+                dataTwo?.staff_name?.props?.children[0].props.children
+              )
             );
           },
         },

@@ -1,44 +1,13 @@
+"use client";
 import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import routesPath from "@/utils/routes";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
-export default function MOSCard() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
 
-  const createDownlineQueryString = React.useCallback(
-    ({
-      name,
-      id,
-      type,
-      tab,
-    }: {
-      name: string;
-      id: string;
-      type: string;
-      tab?: string;
-    }) => {
-      const params = new URLSearchParams();
-      params.set("ui", name); // Set the 'name' param
-      params.set("id", id); // Set the 'id' param
-      type === "mos" && params.set("type", "approve-mos");
-      type === "task" && params.set("type", "approve-task");
-      type === "view" && params.set("type", "view-progress");
-      type === "view" &&
-        tab === "measure-success" &&
-        params.set("tab", "measure-success");
-      type === "view" &&
-        tab === "specified-task" &&
-        params.set("tab", "specified-task");
-
-      return params.toString(); // Return the query string
-    },
-    []
-  );
-
+const { EMPLOYEE } = routesPath;
+export default function MOSCard({ id }: { id: string }) {
   const measureOfSuccessProgressDetails = [
     {
       label: "Revenue",
@@ -81,20 +50,7 @@ export default function MOSCard() {
     <MetricFrame className="flex flex-col gap-4 lg:col-span-5">
       <div className="flex justify-between ">
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
-        <Link
-          href={
-            id
-              ? pathname.split("?")[0] +
-                "?" +
-                createDownlineQueryString({
-                  type: "view",
-                  id: id,
-                  name: "downlines",
-                  tab: "measure-success",
-                })
-              : ""
-          }
-        >
+        <Link href={EMPLOYEE.DOWNLINE_MOS_REPORT(id)}>
           <Button className="flex gap-3 items-center group">
             <p className="font-medium">See Details</p>
             <figure className="group-hover:translate-x-1 transition-all">
