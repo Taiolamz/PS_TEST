@@ -130,6 +130,34 @@ const AddSubsidary = () => {
                 />
 
                 <CustomSelect
+                  label="Subsidiary Country"
+                  isRequired
+                  placeholder="Select country"
+                  options={[
+                    {
+                      label: "Select country",
+                      value: "",
+                    },
+                    ...COUNTRIES_STATES?.map((item) => {
+                      return {
+                        label: item.name,
+                        value: item.name,
+                      };
+                    }),
+                  ]}
+                  selected={formik.values.country}
+                  setSelected={(value) => {
+                    formik.setFieldValue("country", value);
+                    const countryData = COUNTRIES_STATES?.filter(
+                      (f: Dictionary) => f.name === value
+                    )?.[0];
+                    formik.setFieldValue("state", "");
+                    setSelectedCountryData(countryData);
+                  }}
+                  // labelClass={labelClassName}
+                />
+
+                <CustomSelect
                   label="Subsidiary State"
                   isRequired
                   placeholder="Subsidiary state"
