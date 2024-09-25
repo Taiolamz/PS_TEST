@@ -54,6 +54,9 @@ const routesPath = {
     DEPARTMENT: `/${admin_auth}/departments`,
     CREATE_DEPARTMENT: `/${admin_auth}/departments/add-department`,
     UNIT: `/${admin_auth}/units`,
+    UNIT_DETAILS: ({ id, tab }: { id: string; tab: string }) =>
+      `/${admin_auth}/units?ui=details&id=${id}&tab=${tab}`,
+    EDIT_UNIT: (id: string) => `/${admin_auth}/units/${id}/edit`,
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
     EMPLOYEE_VIEW: `/${admin_auth}/employee/view-employee`,

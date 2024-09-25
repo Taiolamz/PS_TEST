@@ -21,14 +21,14 @@ export const unitApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getUnits: builder.query<UnitData[], QueryParams>({
+    getUnits: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/unit${generateQueryString({ ...params })}`,
         method: "GET",
       }),
       providesTags: ["Units"],
-      transformResponse: (response: { data: { data: BranchData[] } }) =>
-        response.data.data,
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
     }),
 
     downloadUnitTemplate: builder.query<any, FileTemplateParam>({

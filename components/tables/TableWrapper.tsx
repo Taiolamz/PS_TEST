@@ -115,7 +115,7 @@ const TableWrapper = ({
   defaultBodyList,
   dropDown,
   dropDownList,
-  width
+  width,
 }: myComponentProps) => {
   const [showFilter, setShowFilter] = useState<any>(false);
   const [defaultFilterVal, setDefaultFilterVal] = useState<any>({});
