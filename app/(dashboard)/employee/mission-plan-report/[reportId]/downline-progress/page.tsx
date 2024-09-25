@@ -15,19 +15,7 @@ export default function ViewDownlineProgress({
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
   return (
-    <DashboardLayout headerTitle="Welcome Hassan!">
-      <div className="flex gap-3.5 bg-[#F6F8F9] items-center py-2 pl-8">
-        <div
-          className="flex gap-2 items-center cursor-pointer group"
-          onClick={() => router.back()}
-        >
-          <figure className="group-hover:-translate-x-1 transition-all duration-300">
-            {backIcon}
-          </figure>
-          <p className="text-xs text-[#6E7C87]">Back</p>
-        </div>
-        <p className="text-[#3E4345] font-semibold text-lsm">My Downlines</p>
-      </div>
+    <DashboardLayout back headerTitle="My Downlines">
       <div className="m-5">
         {/* ----- FILTER/SELECT WRAP START------- */}
         <div className="flex items-center justify-between">
