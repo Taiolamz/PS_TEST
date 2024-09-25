@@ -3,6 +3,8 @@ import MeasureOfSucessProgress from "./_fragment/measure-of-success-progress";
 import SpecifiedTaskProgress from "./_fragment/specified-task-progress";
 import CustomSelect from "@/components/custom-select";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import SpecifiedTaskDetailView from "./_fragment/specified-task-detail-view";
 
 const MyReport = () => {
   const filterIcon = (
@@ -52,6 +54,12 @@ const MyReport = () => {
   );
   const [fiscalYear, setFiscalYear] = useState("");
   const [missionCycle, setMissionCycle] = useState("");
+
+  const searchParams = useSearchParams();
+  const ui = searchParams.get("ui");
+
+  const view = searchParams.get("view");
+
   return (
     <div>
       {/* ----- FILTER/SELECT WRAP START------- */}
@@ -71,7 +79,7 @@ const MyReport = () => {
               setSelected={(e: any) => {
                 setFiscalYear(e);
               }}
-              className="w-[150px] text-xs rounded-none rounded-l-[15px]"
+              className="w-[150px] text-xs rounded-none rounded-l-[5px]"
             />
             <CustomSelect
               placeholder="Cycle"
@@ -80,7 +88,7 @@ const MyReport = () => {
               setSelected={(e: any) => {
                 setMissionCycle(e);
               }}
-              className="w-[150px] text-xs rounded-none rounded-r-[15px]"
+              className="w-[150px] text-xs rounded-none rounded-r-[5px]"
             />
           </div>
 
@@ -98,7 +106,6 @@ const MyReport = () => {
       </div>
 
       {/* ----- FILTER/SELECT WRAP END------- */}
-
       <TeamPerformanceBar />
       <div
         style={{
@@ -108,10 +115,21 @@ const MyReport = () => {
         }}
         className="mt-5"
       >
-        <MeasureOfSucessProgress />
-        {/* <MeasureOfSucessProgress /> */}
-        <SpecifiedTaskProgress />
+        {ui === "my_report" && !view && (
+          <>
+            <MeasureOfSucessProgress />
+            <SpecifiedTaskProgress />
+          </>
+        )}
       </div>
+
+      {view === "specified_task_detail_view" && (
+        <div className="flex flex-col gap-3">
+          <SpecifiedTaskDetailView />
+          <SpecifiedTaskDetailView />
+          <SpecifiedTaskDetailView />
+        </div>
+      )}
     </div>
   );
 };
