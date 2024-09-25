@@ -1,6 +1,6 @@
 import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface MeasureOfSuccess {
   label: string;
@@ -8,40 +8,25 @@ interface MeasureOfSuccess {
   textColor: string;
 }
 
-interface ImpliedTaskDetails {
-  period_cycle: string;
-  expected_outcome: string;
-  achieved_outcome: string;
-  sub_outcomes: {
-    date: string;
-    achieved_outcome: string;
-    expected_outcome: string;
-  }[];
-  percentage_completion: number;
-}
-
 const MetricTableCard = ({
   title,
   onClickViewChallenge,
   onClickComment,
   measureOfSuccessDetails,
-  impliedTaskDetails,
   percentage,
-  num,
-  weight,
   progressValue,
   progressColor,
+  tasks,
 }: {
   title?: string;
   onClickViewChallenge?: () => void;
   onClickComment?: () => void;
   measureOfSuccessDetails: MeasureOfSuccess[];
-  impliedTaskDetails?: ImpliedTaskDetails[];
   percentage?: number;
-  num?: number;
-  weight?: number;
   progressValue: number;
   progressColor?: "red" | "yellow" | "green";
+  //   on integration we'll assign the right types...(coming soon...  ;()  )
+  tasks?: any[];
 }) => {
   const commentIcon = (
     <svg
@@ -126,42 +111,6 @@ const MetricTableCard = ({
     </svg>
   );
 
-  //   const impliedTask = [
-  //     {
-  //       title: "Implied Task",
-  //       task: "Sell and Market Revvex as a user product",
-  //       weight: 50,
-  //     },
-  //     {
-  //       title: "Implied Task",
-  //       task: "Sell and Market Revvex as a user product",
-  //       weight: 50,
-  //     },
-  //     {
-  //       title: "Implied Task",
-  //       task: "Sell and Market Revvex as a user product",
-  //       weight: 50,
-  //     },
-  //   ];
-
-  //   const measureOfSuccessDetails = [
-  //     {
-  //       label: "30 online Campaign",
-  //       bgColor: "#6B51DF1A",
-  //       textColor: "#6B51DF",
-  //     },
-  //     {
-  //       label: "$100,000 Revenue",
-  //       bgColor: "#119C2B1A",
-  //       textColor: "#119C2B",
-  //     },
-  //     {
-  //       label: "$100,000 Revenue",
-  //       bgColor: "#0452C81A",
-  //       textColor: "#0452C8",
-  //     },
-  //   ];
-
   const impliedTaskHead = [
     "Period/Cycle",
     "Expected Outcome",
@@ -170,124 +119,55 @@ const MetricTableCard = ({
     "Percentage Completion",
   ];
 
-  //   const impliedTaskDetails = [
-  //     {
-  //       period_cycle: "Q1",
-  //       expected_outcome: "Sell and Market Revvex as a user product",
-  //       achieved_outcome: "Sell and Market Revvex as a user product",
-  //       sub_outcomes: [
-  //         {
-  //           date: "January",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "February",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "March",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //       ],
-  //       percentage_completion: 30,
-  //     },
-  //     {
-  //       period_cycle: "Q2",
-  //       expected_outcome: "Sell and Market Revvex as a user product",
-  //       achieved_outcome: "Sell and Market Revvex as a user product",
-  //       sub_outcomes: [
-  //         {
-  //           date: "April",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "May",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "June",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //       ],
-  //       percentage_completion: 30,
-  //     },
-  //     {
-  //       period_cycle: "Q3",
-  //       expected_outcome: "Sell and Market Revvex as a user product",
-  //       achieved_outcome: "Sell and Market Revvex as a user product",
-  //       sub_outcomes: [
-  //         {
-  //           date: "July",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "August",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "September",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //       ],
-  //       percentage_completion: 30,
-  //     },
-  //     {
-  //       period_cycle: "Q4",
-  //       expected_outcome: "Sell and Market Revvex as a user product",
-  //       achieved_outcome: "Sell and Market Revvex as a user product",
-  //       sub_outcomes: [
-  //         {
-  //           date: "October",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "November",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //         {
-  //           date: "December",
-  //           achieved_outcome: "Sell and Market Revvex as a user product",
-  //           expected_outcome: "Sell and Market Revvex as a user product",
-  //         },
-  //       ],
-  //       percentage_completion: 30,
-  //     },
-  //   ];
-
   const topBtnBorderClass =
     "border border-[#6E7C87] p-2 px-3 rounded-sm text-[#6E7C87] cursor-pointer font-medium text-sm";
   const rowCenterClass = "flex gap-3 items-center";
 
-  const [showViewDetail, setShowViewDetail] = useState<Record<number, boolean>>(
-    {}
+  const [showViewDetail, setShowViewDetail] = useState(
+    (tasks as any[]).map((task) => task.impliedTasks.map(() => false))
   );
 
-  const toggleViewDetail = (index: number) => {
-    setShowViewDetail((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
+  const toggleViewDetail = (taskIdx: number, impliedTaskIdx: number) => {
+    setShowViewDetail((prevState) =>
+      prevState.map((taskDetails, i) =>
+        i === taskIdx
+          ? (taskDetails as any[]).map((detail, idx) =>
+              idx === impliedTaskIdx ? !detail : detail
+            )
+          : taskDetails
+      )
+    );
+  };
+
+  const [activeTaskIndex, setActiveTaskIndex] = useState(0);
+
+  const [isFirstTask, setIsFirstTask] = useState(true);
+  const [isLastTask, setIsLastTask] = useState(false);
+
+  useEffect(() => {
+    setIsFirstTask(activeTaskIndex === 0);
+    setIsLastTask(activeTaskIndex === (tasks as any[]).length - 1);
+  }, [activeTaskIndex, tasks]);
+
+  const handleNext = () => {
+    if (activeTaskIndex < (tasks as any[]).length - 1) {
+      setActiveTaskIndex(activeTaskIndex + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (activeTaskIndex > 0) {
+      setActiveTaskIndex(activeTaskIndex - 1);
+    }
   };
 
   return (
     <div>
       <MetricFrame
-        className={`mt-5 transition-all duration-300 px-7 customScrollbar ${
+        className={`mt-5 transition-all duration-300 relative px-7 customScrollbar ${
           dropDetail ? "h-[145px] overflow-hidden" : "h-[550px]"
         }`}
       >
-        {/* ------ HEADER WRAP  START---------- */}
         <div className="flex justify-between items-center border-b border-[#E5E9EB] pb-2">
           <p className="text-[#1E1E1E] font-normal text-[17.52px]">{title}</p>
           <div className={`${rowCenterClass} !gap-5`}>
@@ -319,9 +199,7 @@ const MetricTableCard = ({
             </div>
           </div>
         </div>
-        {/* ------ HEADER WRAP  END---------- */}
 
-        {/* -------- MEASURE OF SUCCESS DETAILS WRAP START--------- */}
         <div className="flex flex-col gap-3 mt-4">
           <div className="flex justify-between items-center border-b border-[#E5E9EB] pb-5 pt-4">
             <div className="flex gap-3 items-center">
@@ -353,173 +231,229 @@ const MetricTableCard = ({
             </div>
           </div>
 
-          {/* -------IMPLIED TASK DETAILS WRAP START --------- */}
-          <div
-            className={`mt-2 flex justify-between transition-all duration-300 items-center `}
-          >
-            <div>
-              <p className="text-[#3E4345] font-semibold text-base">
-                {`Implied Task ${num}: ${"Sell and Market Revvex as a user product"} - ${weight}%`}
-              </p>
-            </div>
-
-            {/* -----PREV/NEXT WRAP START */}
-            <div className="flex gap-6 items-center">
-              <div className="flex gap-2 items-center cursor-not-allowed">
-                <div className="bg-[#EEF0F2] rounded-[46.72px] w-[24px] h-[24px] py-[5.84px] px-[7.79px] grid place-items-center">
+          <div className="relative">
+            {/* -----PREV/NEXT BUTTON WRAP START */}
+            <div className="flex gap-6 items-center absolute right-0 mt-4 mr-6">
+              <div
+                className={`flex gap-2 items-center ${
+                  isFirstTask ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+                onClick={handlePrev}
+              >
+                <div
+                  className={`${
+                    isFirstTask ? "bg-[#EEF0F2]" : "bg-primary"
+                  } rounded-[46.72px] transition-all duration-300 w-[24px] h-[24px] py-[5.84px] px-[7.79px] grid place-items-center`}
+                >
                   <figure>{leftAngle}</figure>
                 </div>
-                <p className="text-[#E5E9EB] font-medium text-sm">Prev</p>
+                <p
+                  className={`${
+                    isFirstTask ? "text-[#E5E9EB]" : "text-primary"
+                  } font-medium text-sm`}
+                >
+                  Prev
+                </p>
               </div>
 
-              <div className="flex gap-2 items-center cursor-pointer">
-                <p className="text-primary font-medium text-sm">Next</p>
-                <div className="bg-primary rounded-[46.72px] w-[24px] h-[24px] py-[5.84px] px-[7.79px] grid place-items-center">
+              <div
+                className={`flex gap-2 items-center ${
+                  isLastTask ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
+                onClick={handleNext}
+              >
+                <p
+                  className={`${
+                    isLastTask ? "text-[#E5E9EB]" : "text-primary"
+                  } font-medium text-sm`}
+                >
+                  Next
+                </p>
+                <div
+                  className={`${
+                    isLastTask ? "bg-[#EEF0F2]" : "bg-primary"
+                  } rounded-[46.72px] w-[24px] h-[24px] transition-all duration-300 py-[5.84px] px-[7.79px] grid place-items-center`}
+                >
                   <figure>{rightAngle}</figure>
                 </div>
               </div>
             </div>
-            {/* -----PREV/NEXT WRAP END */}
-          </div>
-          {/* -------IMPLIED TASK DETAILS WRAP END--------- */}
+            {/* -----PREV/NEXT BUTTON WRAP END */}
 
-          {/* --------IMPLIED TASK TABLE WRAP START--------- */}
-          <div className="w-full flex flex-col gap-2 mt-5 ">
-            {/* -------TABLE HEADER-------- */}
-            <table className="w-full table-auto border-collapse">
-              <thead className="border-b">
-                <tr className="grid grid-cols-5 justify-start pb-2">
-                  {impliedTaskHead.map((chi, idx) => (
-                    <th key={idx} className="p-2 text-left font-medium text-sm">
-                      {chi}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-
-              {/* ------TABLE BODY-------*/}
-
-              <tbody>
-                <div className="h-[275px] overflow-auto customScrollbar">
-                  {impliedTaskDetails?.map((chi, idx) => {
-                    const {
-                      period_cycle,
-                      expected_outcome,
-                      achieved_outcome,
-                      sub_outcomes,
-                      percentage_completion,
-                    } = chi;
-                    const isDetailsVisible = showViewDetail[idx] || false;
-                    return (
+            {tasks?.map((task, taskIdx) => {
+              const { title, weight, impliedTasks } = task;
+              return (
+                <div key={taskIdx}>
+                  {taskIdx === activeTaskIndex && (
+                    <>
                       <div
-                        key={idx}
-                        className="last:border-b-0 border-b border-opacity-50"
-                        style={{ borderColor: "rgba(0, 0, 0, 0.03)" }}
+                        className={`mt-2 flex justify-between transition-all duration-300 items-center `}
                       >
-                        <>
-                          <tr
-                            // key={idx}
-                            // className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
-                            //   isDetailsVisible ? "hidden" : ""
-                            // }`}
-
-                            className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
-                              isDetailsVisible
-                                ? "translate-y-[100%] opacity-0"
-                                : "translate-y-0 opacity-100 "
-                            }`}
-                          >
-                            <td className="p-2 py-4 text-[#6E7C87] font-normal text-sm">
-                              {period_cycle}
-                            </td>
-                            <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
-                              {expected_outcome}
-                            </td>
-                            <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
-                              {achieved_outcome}
-                            </td>
-                            <td
-                              onClick={() => toggleViewDetail(idx)}
-                              className="border flex justify-center py-[1px] hover:border-primary hover:text-primary transition-all duration-300  px-5 w-[56px] rounded-[4px] border-[#6E7C8733] text-[#6E7C87] text-[12px] cursor-pointer text-center"
-                            >
-                              View
-                            </td>
-                            <div className="p-2 pl-3">
-                              <ReusableProgress
-                                valuePosition="right"
-                                value={percentage_completion}
-                                height={6.86}
-                                className="w-[44px]"
-                                noFloatValueClass="12px"
-                                valueColor={"#6E7C87"}
-                                color="red"
-                                progressClass="rounded-full"
-                              />
-                            </div>
-                          </tr>
-                        </>
-
-                        <>
-                          <div
-                            className={`flex flex-col gap-8 overflow-auto  relative customScrollbar transition-all duration-300 ease-in-out ${
-                              // isDetailsVisible ? "h-[220px] my-5" : "h-0"
-                              isDetailsVisible ? "h-[220px] my-5 -mt-9" : "h-0"
-                            }`}
-                          >
-                            {sub_outcomes?.map((chi, idx) => {
-                              const {
-                                date,
-                                achieved_outcome,
-                                expected_outcome,
-                              } = chi;
-                              return (
-                                <tr key={idx} className="grid grid-cols-5">
-                                  <td className="text-[#6E7C87] text-sm p-1">
-                                    {date}
-                                  </td>
-                                  <td className="text-[#6E7C87] text-sm p-1 w-[400px]">
-                                    {achieved_outcome}
-                                  </td>
-                                  <td className="text-[#6E7C87] text-sm p-1 w-[500px] pl-[10rem]">
-                                    {expected_outcome}
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                            <figure
-                              onClick={() => toggleViewDetail(idx)}
-                              className="absolute right-0 cursor-pointer"
-                            >
-                              {cancelIcon}
-                            </figure>
-                            <div className="flex justify-end">
-                              <div className="flex gap-4 items-center">
-                                <p className="text-[#015858] font-semibold text-sm">
-                                  {period_cycle}
-                                </p>
-                                <div className="flex gap-1 items-center">
-                                  <p className="text-sm">
-                                    Completion Average :
-                                  </p>
-                                  <p className="text-[#EC1410] text-base font-medium">
-                                    {percentage_completion}%
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </>
+                        <div>
+                          <p className="text-[#3E4345] font-semibold text-base">
+                            {`Implied Task ${
+                              taskIdx + 1
+                            }: ${title} - ${weight}%`}
+                          </p>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </tbody>
-            </table>
-          </div>
+                      <div className="w-full flex flex-col gap-2 mt-8 ">
+                        {/* -------TABLE HEADER-------- */}
+                        <table className="w-full table-auto border-collapse">
+                          <thead className="border-b">
+                            <tr className="grid grid-cols-5 justify-start pb-2">
+                              {impliedTaskHead.map((chi, idx) => (
+                                <th
+                                  key={idx}
+                                  className="p-2 text-left font-medium text-sm"
+                                >
+                                  {chi}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
 
-          {/* --------IMPLIED TASK TABLE WRAP END--------- */}
+                          {/* ------TABLE BODY-------*/}
+
+                          <tbody>
+                            <div className="h-[275px] overflow-auto customScrollbar">
+                              {(impliedTasks as any[])?.map((chi, idx) => {
+                                const {
+                                  period_cycle,
+                                  expected_outcome,
+                                  achieved_outcome,
+                                  sub_outcomes,
+                                  percentage_completion,
+                                } = chi;
+                                // const isDetailsVisible =
+                                const isDetailsVisible =
+                                  showViewDetail[taskIdx]?.[idx] || false;
+                                return (
+                                  <div
+                                    key={idx}
+                                    className="last:border-b-0 border-b border-opacity-50"
+                                    style={{
+                                      borderColor: "rgba(0, 0, 0, 0.03)",
+                                    }}
+                                  >
+                                    <>
+                                      <tr
+                                        // key={idx}
+                                        // className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
+                                        //   isDetailsVisible ? "hidden" : ""
+                                        // }`}
+
+                                        className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
+                                          isDetailsVisible
+                                            ? "translate-y-[100%] opacity-0"
+                                            : "translate-y-0 opacity-100 "
+                                        }`}
+                                      >
+                                        <td className="p-2 py-4 text-[#6E7C87] font-normal text-sm">
+                                          {period_cycle}
+                                        </td>
+                                        <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
+                                          {expected_outcome}
+                                        </td>
+                                        <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
+                                          {achieved_outcome}
+                                        </td>
+                                        <td
+                                          onClick={() =>
+                                            toggleViewDetail(taskIdx, idx)
+                                          }
+                                          className="border flex justify-center py-[1px] hover:border-primary hover:text-primary transition-all duration-300  px-5 w-[56px] rounded-[4px] border-[#6E7C8733] text-[#6E7C87] text-[12px] cursor-pointer text-center"
+                                        >
+                                          View
+                                        </td>
+                                        <div className="p-2 pl-3">
+                                          <ReusableProgress
+                                            valuePosition="right"
+                                            value={percentage_completion}
+                                            height={6.86}
+                                            className="w-[44px]"
+                                            noFloatValueClass="12px"
+                                            valueColor={"#6E7C87"}
+                                            color="red"
+                                            progressClass="rounded-full"
+                                          />
+                                        </div>
+                                      </tr>
+                                    </>
+
+                                    <>
+                                      <div
+                                        className={`flex flex-col gap-8 overflow-auto  relative customScrollbar transition-all duration-300 ease-in-out ${
+                                          // isDetailsVisible ? "h-[220px] my-5" : "h-0"
+                                          isDetailsVisible
+                                            ? "h-[220px] my-5 -mt-9"
+                                            : "h-0"
+                                        }`}
+                                      >
+                                        {(sub_outcomes as any[])?.map(
+                                          (chi, idx) => {
+                                            const {
+                                              date,
+                                              achieved_outcome,
+                                              expected_outcome,
+                                            } = chi;
+                                            return (
+                                              <tr
+                                                key={idx}
+                                                className="grid grid-cols-5"
+                                              >
+                                                <td className="text-[#6E7C87] text-sm p-1">
+                                                  {date}
+                                                </td>
+                                                <td className="text-[#6E7C87] text-sm p-1 w-[400px]">
+                                                  {achieved_outcome}
+                                                </td>
+                                                <td className="text-[#6E7C87] text-sm p-1 w-[500px] pl-[10rem]">
+                                                  {expected_outcome}
+                                                </td>
+                                              </tr>
+                                            );
+                                          }
+                                        )}
+                                        <figure
+                                          onClick={() =>
+                                            toggleViewDetail(taskIdx, idx)
+                                          }
+                                          className="absolute right-0 cursor-pointer"
+                                        >
+                                          {cancelIcon}
+                                        </figure>
+                                        <div className="flex justify-end">
+                                          <div className="flex gap-4 items-center">
+                                            <p className="text-[#015858] font-semibold text-sm">
+                                              {period_cycle}
+                                            </p>
+                                            <div className="flex gap-1 items-center">
+                                              <p className="text-sm">
+                                                Completion Average :
+                                              </p>
+                                              <p className="text-[#EC1410] text-base font-medium">
+                                                {percentage_completion}%
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </tbody>
+                        </table>
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        {/* -------- MEASURE OF SUCCESS DETAILS WRAP END--------- */}
       </MetricFrame>
       <ReusableProgress
         valuePosition="float-left"
