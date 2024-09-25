@@ -80,12 +80,12 @@ const ActualOutcome = () => {
                     </div>
                   )}
                 </FieldArray>
+                <div className="bg-white p-8 rounded-b">
+                  <Button className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none">
+                    Submit Input
+                  </Button>
+                </div>
               </FormikProvider>
-              <div className="bg-white p-8 rounded-b">
-                <Button className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none">
-                  Submit Input
-                </Button>
-              </div>
             </div>
           }
         />
