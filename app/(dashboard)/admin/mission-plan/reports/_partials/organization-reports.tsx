@@ -1,19 +1,25 @@
 import { Dictionary } from "@/@types/dictionary";
 import CustomSelect from "@/components/custom-select";
-import { AchievementProgress, CardContainer, Legend, PercentageLabel, ReusableLabel, ReusableSegmentProgress, SingleExcutiveProgress } from "@/components/fragment";
+import { AchievementProgress, ActionLabel, CardContainer, Legend, PercentageLabel, ReusableLabel, ReusableSegmentProgress, SingleExcutiveProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import { getProgressColorByValue } from '@/utils/helpers';
 import { ArrowRight } from "iconsax-react";
 import { Filter, Undo2 } from "lucide-react";
 import { ACHIEVEMENT_PROGRESS_DATA, MOS_LABEL_TYPES, PAGE_LEGEND, SPECIFIED_TASK_CHART_LABELS } from "../_data";
 import SpecifiedTaskChart from "../_charts/specified-task";
+import Link from "next/link";
+import routesPath from "@/utils/routes";
+import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
+
+const { ADMIN } = routesPath
 
 const OrganizationReports = () => {
     return (
         <div className="w-full">
         <CardContainer className="mt-6">
             <div className="flex items-center gap-6">
-                <div className="hidden md:flex items-center w-fit gap-1 text-sm"> <span>Filter</span> <Filter width={18} height={18} /></div>
+                <ActionLabel label='Filter' icon={filterIcon} iconPosition='right'/>
+               
                 <div className="w-full flex flex-wrap items-center gap-">
                     <CustomSelect
                         options={[
@@ -75,7 +81,7 @@ const OrganizationReports = () => {
                         setSelected={() => null}
                         className="w-[9rem] rounded-s-none lg:rounded-e-xl"
                     />
-                    <div className="pl-3 flex items-center w-fit gap-1 text-sm text-red-500"> <span>Reset</span> <Undo2 width={18} height={18} /></div>
+                     <ActionLabel label='Reset' icon={undoIcon} className='pl-3 text-red-500' iconPosition='right' labelClass='text-red-500'/>
                 </div>
             </div>
             <div className="mt-3 flex justify-end">
@@ -86,10 +92,7 @@ const OrganizationReports = () => {
         </CardContainer>
 
         <div className="mt-6 flex justify-end">
-            <Button
-                className="px-6 text-gray-400 hover:text-gray-500"
-                variant="outline"
-            >Generate Performance Report</Button>
+             <ActionLabel label='Generate Performance Report' icon={exportIcon} iconPosition='left' className='border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] px-6 text-gray-400 hover:text-gray-500' labelClass='text-xs text-[#6E7C87]'/>
         </div>
         <CardContainer className="mt-3 gap-6">
             <div className="flex items-center justify-between">
@@ -117,7 +120,8 @@ const OrganizationReports = () => {
                     <div className="flex">
                         <div className="pt-10 flex flex-col">
                             <span className="font-light">Specified Task Activity Breakdown</span>
-                            <span className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</span>
+                            <Link href={"#"} className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</Link>
+                            {/* ADMIN.ORGANIZATION_MP_SPECIFIED_TASK */}
                         </div>
                         <SpecifiedTaskChart />
                     </div>

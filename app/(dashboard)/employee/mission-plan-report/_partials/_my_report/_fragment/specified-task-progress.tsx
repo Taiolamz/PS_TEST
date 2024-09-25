@@ -1,6 +1,8 @@
 import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import routesPath from "@/utils/routes";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 const SpecifiedTaskProgress = () => {
@@ -86,6 +88,9 @@ const SpecifiedTaskProgress = () => {
     },
   ];
 
+  const router = useRouter();
+  const location = usePathname();
+
   return (
     <MetricFrame className="flex flex-col gap-4 w-full">
       <div className="flex justify-between ">
@@ -97,7 +102,14 @@ const SpecifiedTaskProgress = () => {
             FY 2023, Q1 Progress
           </p>
         </div>
-        <Button className="flex gap-3 items-center group">
+        <Button
+          className="flex gap-3 items-center group"
+          onClick={() =>
+            router.push(
+              `${location}?ui=my_report&view=specified_task_detail_view`
+            )
+          }
+        >
           <p className="font-medium">See Progress Details</p>
           <figure className="group-hover:translate-x-1 transition-all">
             {arrowRight}
@@ -140,13 +152,13 @@ const SpecifiedTaskProgress = () => {
                 <p className="text-[#5A5B5F] font-medium text-sm">{label}</p>
                 <ReusableProgress
                   valuePosition="float-left"
-                 
                   value={progress}
                   height={16}
                   borderRadius={2}
                   valueColor={"white"}
                   color={color as "red"}
                   className="!bg-[#EBF7FF]"
+                  progressClass="rounded-[2px]"
                 />
               </div>
             </div>

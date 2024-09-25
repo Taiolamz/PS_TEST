@@ -96,7 +96,7 @@ export default function MetricCard({
   return (
     <div
       className={cn(
-        "capitalize cursor-pointer transition-all flex items-center duration-300 bg-white h-[121px] w-full pl-[28px] pr-3 py-[26.5px] rounded-lg light-effect-shadow",
+        "capitalize cursor-pointer transition-all flex items-center duration-300 bg-white h-[121px] w-full pl-[28px] pr-3 py-[26.5px] rounded-lg shadow",
         isActive ? optionObject.active : optionObject.borderCss
       )}
       {...props}

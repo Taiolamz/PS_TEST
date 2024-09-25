@@ -242,6 +242,7 @@ type QueryParams = {
   total?: number;
   to?: number;
   status?: string;
+  search?: string;
 };
 
 // unit services

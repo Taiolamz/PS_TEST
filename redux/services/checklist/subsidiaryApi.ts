@@ -18,16 +18,17 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags: ["Subsidiaries"],
     }),
 
-    getSubsidiaries: builder.query<SubsidiaryData[], QueryParams>({
+    getSubsidiaries: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/subsidiary${generateQueryString({ ...params })}`,
         method: "GET",
       }),
       providesTags: ["Subsidiaries"],
-      transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
-        response.data.data,
+      // transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
+      //   response.data.data,
     }),
 
     downloadSubsidiaryTemplate: builder.query({
@@ -38,6 +39,14 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+
+    deleteSubsidiaries: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
   }),
 });
 
@@ -46,4 +55,5 @@ export const {
   useCreateBulkSubsidiariesMutation,
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
+  useDeleteSubsidiariesMutation,
 } = subsidiaryApi;
