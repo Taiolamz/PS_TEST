@@ -249,4 +249,6 @@ type QueryParams = {
 type UnitData = {
   id?: string;
   name: string;
+  meta?: any;
+  data?: [];
 };

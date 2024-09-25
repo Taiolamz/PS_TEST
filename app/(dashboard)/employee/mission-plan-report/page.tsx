@@ -65,6 +65,8 @@ const MissionPlanReport = () => {
           <p className="text-[#3E4345] pl-8 py-3">
             {ui === "approvals"
               ? "Get all pending approvals done."
+              : ui === "downlines"
+              ? " Let’s see how your team are hitting their goals!"
               : " Let’s see how well you are hitting your goals!"}
           </p>
         </div>

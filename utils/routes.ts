@@ -54,6 +54,9 @@ const routesPath = {
     DEPARTMENT: `/${admin_auth}/departments`,
     CREATE_DEPARTMENT: `/${admin_auth}/departments/add-department`,
     UNIT: `/${admin_auth}/units`,
+    UNIT_DETAILS: ({ id, tab }: { id: string; tab: string }) =>
+      `/${admin_auth}/units?ui=details&id=${id}&tab=${tab}`,
+    EDIT_UNIT: (id: string) => `/${admin_auth}/units/${id}/edit`,
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
     EMPLOYEE_VIEW: `/${admin_auth}/employee/view-employee`,
@@ -72,6 +75,12 @@ const routesPath = {
     APPROVE_REJECT_MISSION_PLAN: (id: string) =>
       `/${employee_auth}/mission-plan/${id}/approve`,
     MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report`,
+    DOWNLINE_MISSION_PLAN_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/downline-progress`,
+    DOWNLINE_MOS_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/downline-progress/measure-of-success`,
+    DOWNLINE_SPECIFIED_TASK_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/downline-progress/specified-task`,
     KPI: `/${employee_auth}/kpi`,
     MY_TEAM: `/${employee_auth}/my-team`,
     ORGANOGRAM: `/${employee_auth}/organogram`,
