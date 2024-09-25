@@ -12,7 +12,7 @@ export default function DownlineTable() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const createQueryString = React.useCallback(
+  const createDownlineQueryString = React.useCallback(
     ({
       name,
       id,
@@ -41,6 +41,7 @@ export default function DownlineTable() {
     },
     []
   );
+
   return (
     <TableWrapper
       tableheaderList={[
@@ -70,7 +71,7 @@ export default function DownlineTable() {
             router.push(
               pathname.split("?")[0] +
                 "?" +
-                createQueryString({
+                createDownlineQueryString({
                   type: "view",
                   id: dataTwo?.staff_name?.props?.children[0].props.children,
                   name: "downlines",
@@ -85,7 +86,7 @@ export default function DownlineTable() {
             router.push(
               pathname.split("?")[0] +
                 "?" +
-                createQueryString({
+                createDownlineQueryString({
                   type: "task",
                   id: dataTwo?.staff_name?.props?.children[0].props.children,
                   name: "downlines",
@@ -100,7 +101,7 @@ export default function DownlineTable() {
             router.push(
               pathname.split("?")[0] +
                 "?" +
-                createQueryString({
+                createDownlineQueryString({
                   type: "mos",
                   id: dataTwo?.staff_name?.props?.children[0].props.children,
                   name: "downlines",
