@@ -120,7 +120,8 @@ const OrganizationReports = () => {
                     <div className="flex">
                         <div className="pt-10 flex flex-col">
                             <span className="font-light">Specified Task Activity Breakdown</span>
-                            <Link href={ADMIN.ORGANIZATION_MP_SPECIFIED_TASK} className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</Link>
+                            <Link href={"#"} className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</Link>
+                            {/* ADMIN.ORGANIZATION_MP_SPECIFIED_TASK */}
                         </div>
                         <SpecifiedTaskChart />
                     </div>
