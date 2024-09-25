@@ -2,6 +2,7 @@ import { Progress } from "@/components/ui/progress";
 import TaskOutcomeTable from "./_table/task-outcome-table";
 import { useSearchParams } from "next/navigation";
 import ApprovalProgress from "@/components/fragment/progress/approval-progress";
+import ActualOutcome from "./_components/actual-outcome";
 
 const data = [
   {
@@ -92,7 +93,7 @@ const TaskOutcome = () => {
         <div> Expected Outcome </div>
       )}
       {ui === "task_outcome" && id && type === "actual-outcome" && (
-        <div> Actual Outcome </div>
+        <ActualOutcome />
       )}
     </div>
   );
