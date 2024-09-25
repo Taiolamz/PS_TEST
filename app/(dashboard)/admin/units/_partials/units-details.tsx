@@ -12,11 +12,11 @@ import { processInputAsArray } from "@/utils/helpers";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import useDisclosure from "../_hooks/useDisclosure";
 import TableWrapper from "@/components/tables/TableWrapper";
-import DashboardModal from "./checklist-dashboard-modal";
-import CancelModal from "./cancel-modal";
-import BulkUploadModal from "./bulk-upload-modal";
-import ProceedModal from "./proceed-modal";
-import BulkRequirementModal from "./bulk-requrement-modal";
+import DashboardModal from "../_components/checklist-dashboard-modal";
+import CancelModal from "../_components/cancel-modal";
+import BulkUploadModal from "../_components/bulk-upload-modal";
+import ProceedModal from "../_components/proceed-modal";
+import BulkRequirementModal from "../_components/bulk-requrement-modal";
 import {
   useCreateBulkUnitsMutation,
   useGetUnitsQuery,

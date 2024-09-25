@@ -26,7 +26,7 @@ import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
-import UnitDetails from "./_components/units-details";
+import UnitDetails from "./_partials/units-details";
 import TableWrapper from "@/components/tables/TableWrapper";
 
 const { ADMIN } = routesPath;
