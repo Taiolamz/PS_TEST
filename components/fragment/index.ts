@@ -19,6 +19,8 @@ import ReusableSegmentProgress from './progress/segment';
 import CardContainer from './card-container';
 import PercentageLabel from './labels/percentage';
 import SingleExcutiveProgress from './excutive-progress';
+import ActionLabel from './button/action-label';
+import GridLegend from './legend/grid-legend';
 
 export {
   EmptyState,
@@ -39,5 +41,7 @@ export {
   ReusableSegmentProgress,
   CardContainer,
   PercentageLabel,
-  SingleExcutiveProgress
+  SingleExcutiveProgress,
+  ActionLabel,
+  GridLegend
 };

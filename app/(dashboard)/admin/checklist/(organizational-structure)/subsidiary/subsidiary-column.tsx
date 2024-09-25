@@ -71,7 +71,7 @@ export const useSubsidiaryColumnData = (loading?: boolean) => {
     },
     {
       accessorKey: "country",
-      header: () => <div className="text-right">Country</div>,
+      header: "Country",
       cell: ({ row }) => (
         <div className="capitalize text-right">
           {loading ? (
@@ -84,11 +84,9 @@ export const useSubsidiaryColumnData = (loading?: boolean) => {
     },
     {
       accessorKey: "address",
-      header: () => (
-        <div className="text-right w-[300px] ml-[10rem]">Address</div>
-      ),
+      header: "Address",
       cell: ({ row }) => (
-        <div className="capitalize text-right w-[300px] truncate ml-[10rem]">
+        <div className="capitalize text-nowrap">
           {loading ? (
             <Skeleton className="h-4 w-[150px]" />
           ) : (

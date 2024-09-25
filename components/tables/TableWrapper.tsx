@@ -423,6 +423,16 @@ const TableWrapper = ({
               <TableRow>
                 {" "}
                 {tableheaderList?.map((chi: any, idx: any) => {
+                  if (chi === "Action") {
+                    return (
+                      <TableHead
+                        key={idx}
+                        className="text-custom-dark-blue bg-custom-gray-2 font-normal text-xs text-center capitalize"
+                      >
+                        {chi || ""}
+                      </TableHead>
+                    );
+                  }
                   return (
                     <TableHead
                       key={idx}

@@ -33,10 +33,7 @@ export default function ReusableModalContainer({
             <h3 className="text-[var(--text-color3)] font-medium text-lg">
               {title}
             </h3>
-            <span
-              className="cursor-pointer"
-              onClick={handleClose}
-            >
+            <span className="cursor-pointer" onClick={handleClose}>
               <X width={17} height={17} />
             </span>{" "}
           </div>
