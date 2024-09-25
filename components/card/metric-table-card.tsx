@@ -164,7 +164,7 @@ const MetricTableCard = ({
   return (
     <div>
       <MetricFrame
-        className={`mt-5 transition-all duration-300 relative px-7 customScrollbar ${
+        className={`mt-5 border border-b-0 transition-all duration-300 relative px-7 customScrollbar ${
           dropDetail ? "h-[145px] overflow-hidden" : "h-[550px]"
         }`}
       >
@@ -222,10 +222,10 @@ const MetricTableCard = ({
               </div>
             </div>
             <div className="flex gap-1 items-center">
-              <p className="text-[#3E4345] font-medium text-[19.47px]">
+              <p className="text-[#3E4345] font-medium text-[16px]">
                 Percent completed:{" "}
               </p>
-              <p className="text-[#FFC043] font-medium text-[19.47px]">
+              <p className="text-[#FFC043] font-medium text-[16px]">
                 {percentage}%
               </p>
             </div>
