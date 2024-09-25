@@ -2,7 +2,7 @@ import { Progress } from "@/components/ui/progress";
 import TaskOutcomeTable from "./_table/task-outcome-table";
 import { useSearchParams } from "next/navigation";
 import ApprovalProgress from "@/components/fragment/progress/approval-progress";
-import ActualOutcome from "./_components/actual-outcome";
+import ActualOutcome from "./_partials/actual-outcome";
 
 const data = [
   {
