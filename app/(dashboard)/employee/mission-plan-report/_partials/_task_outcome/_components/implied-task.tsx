@@ -36,7 +36,7 @@ const ImpliedTask = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
               </div>
               <hr className="my-3" />
               {item.task.map((item: any, idx: any) => (
-                <div className="flex">
+                <div key={idx} className="flex">
                   <p className="w-[36%] text-[#9AA6ACCC] text-xs">
                     {item.name}
                   </p>
@@ -100,6 +100,7 @@ const ImpliedTask = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                   {item.downlineExpectations.map((item: any, idx: number) => (
                     <Input
                       label={item.name}
+                      key={idx}
                       id="expected_outcome"
                       name="expected_outcome"
                       value={item.value}

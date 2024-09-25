@@ -69,7 +69,10 @@ const ActualOutcome = () => {
                       {formik.values.implied_task?.length > 0 &&
                         formik.values.implied_task.map(
                           (implied_task: any, index: number) => (
-                            <div className="pt-8 border border-[#E5E9EB] p-8 bg-[#FAFAFA]">
+                            <div
+                              key={index}
+                              className="pt-8 border border-[#E5E9EB] p-8 bg-[#FAFAFA]"
+                            >
                               <ImpliedTask
                                 formik={formik}
                                 impliedTaskData={item.impliedTasks}
