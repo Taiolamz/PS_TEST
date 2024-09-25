@@ -370,6 +370,7 @@ const SpecifiedTaskDetailView = () => {
                     const isDetailsVisible = showViewDetail[idx] || false;
                     return (
                       <div
+                        key={idx}
                         className="last:border-b-0 border-b border-opacity-50"
                         style={{ borderColor: "rgba(0, 0, 0, 0.03)" }}
                       >
@@ -379,7 +380,7 @@ const SpecifiedTaskDetailView = () => {
                             // className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
                             //   isDetailsVisible ? "hidden" : ""
                             // }`}
-                            key={idx}
+
                             className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
                               isDetailsVisible
                                 ? "translate-y-[100%] opacity-0"
