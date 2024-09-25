@@ -98,8 +98,8 @@ export default function SubsidiaryDetails() {
   return (
     <DashboardLayout back headerTitle="Subsidiary">
       <section className="p-5">
-        <div className="flex justify-between mb-10">
-          <div className="">
+        <div className="flex max-lg:flex-col-reverse justify-between mb-10">
+          <div className="w-full">
             <span className="flex items-center gap-8">
               <img
                 //   src={
@@ -115,7 +115,7 @@ export default function SubsidiaryDetails() {
                 Enyata
               </h3>
             </span>
-            <div className="inline-flex gap-x-8 text-[var(--text-color)] text-xs mt-5">
+            <div className="grid lg:grid-cols-2 gap-4 w-full text-[var(--text-color)] text-xs mt-5">
               <span className="space-y-3">
                 <h4>
                   Head Of Subsidiary:{" "}
@@ -175,7 +175,7 @@ export default function SubsidiaryDetails() {
               Deactivate
             </Button>
           </div>
-        </div>{" "}
+        </div>
         <div className="block mb-9">
           <ParentModuleCard list={listToTest} />
         </div>
