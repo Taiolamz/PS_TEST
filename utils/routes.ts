@@ -30,6 +30,7 @@ const routesPath = {
     MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
     MISSION_PLAN_APPROVAL_FLOW_LEVEL: `/${admin_auth}/mission-plan/approval-flow/level`,
     MISSION_PLAN_REPORT: `/${admin_auth}/mission-plan/reports?ui=organization-report`,
+    ORGANIZATION_MP_SPECIFIED_TASK: `/${admin_auth}/mission-plan/reports/specified-task`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     FINANCIAL_YEAR_UPDATE: `/${admin_auth}/mission-plan/update`,

@@ -1,13 +1,4 @@
-import TeamPerformanceBar from "./_fragment/team-performance-bar";
-import MeasureOfSucessProgress from "./_fragment/measure-of-success-progress";
-import SpecifiedTaskProgress from "./_fragment/specified-task-progress";
-import CustomSelect from "@/components/custom-select";
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-import SpecifiedTaskDetailView from "./_fragment/specified-task-detail-view";
-
-const MyReport = () => {
-  const filterIcon = (
+export const filterIcon = (
     <svg
       width="15"
       height="15"
@@ -22,7 +13,7 @@ const MyReport = () => {
     </svg>
   );
 
-  const undoIcon = (
+export  const undoIcon = (
     <svg
       width="16"
       height="15"
@@ -38,7 +29,7 @@ const MyReport = () => {
     </svg>
   );
 
-  const exportIcon = (
+ export const exportIcon = (
     <svg
       width="14"
       height="13"
@@ -52,86 +43,3 @@ const MyReport = () => {
       />
     </svg>
   );
-  const [fiscalYear, setFiscalYear] = useState("");
-  const [missionCycle, setMissionCycle] = useState("");
-
-  const searchParams = useSearchParams();
-  const ui = searchParams.get("ui");
-
-  const view = searchParams.get("view");
-
-  return (
-    <div>
-      {/* ----- FILTER/SELECT WRAP START------- */}
-
-      <div className="flex items-center mt-10 justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex gap-2 items-center cursor-pointer">
-            <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
-            <figure>{filterIcon}</figure>
-          </div>
-
-          <div className="flex items-center">
-            <CustomSelect
-              placeholder="FY"
-              options={[]}
-              selected={fiscalYear}
-              setSelected={(e: any) => {
-                setFiscalYear(e);
-              }}
-              className="w-[150px] text-xs rounded-none rounded-l-[5px]"
-            />
-            <CustomSelect
-              placeholder="Cycle"
-              options={[]}
-              selected={missionCycle}
-              setSelected={(e: any) => {
-                setMissionCycle(e);
-              }}
-              className="w-[150px] text-xs rounded-none rounded-r-[5px]"
-            />
-          </div>
-
-          <div className="flex gap-2 items-center cursor-pointer ml-2">
-            <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
-            <figure>{undoIcon}</figure>
-          </div>
-        </div>
-
-        {/* -----EXPORT---- */}
-        <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
-          <figure>{exportIcon}</figure>
-          <p className="text-medium text-xs text-[#6E7C87]">Export</p>
-        </div>
-      </div>
-
-      {/* ----- FILTER/SELECT WRAP END------- */}
-      <TeamPerformanceBar />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.5fr 2fr",
-          gap: "3rem",
-        }}
-        className="mt-5"
-      >
-        {ui === "my_report" && !view && (
-          <>
-            <MeasureOfSucessProgress />
-            <SpecifiedTaskProgress />
-          </>
-        )}
-      </div>
-
-      {view === "specified_task_detail_view" && (
-        <div className="flex flex-col gap-3">
-          <SpecifiedTaskDetailView />
-          <SpecifiedTaskDetailView />
-          <SpecifiedTaskDetailView />
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default MyReport;
