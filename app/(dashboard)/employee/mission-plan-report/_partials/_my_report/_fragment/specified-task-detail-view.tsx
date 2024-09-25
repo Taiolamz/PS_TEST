@@ -42,98 +42,300 @@ const SpecifiedTaskDetailView = () => {
           textColor: "#0452C8",
         },
       ],
-      impliedTaskDetails: [
+      tasks: [
         {
-          period_cycle: "Q1",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Sell and Market Revvex as a user product",
+          weight: 50,
+          impliedTasks: [
             {
-              date: "January",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "February",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "March",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q2",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach Proposed Audience",
+          weight: 20,
+          impliedTasks: [
             {
-              date: "April",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "May",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "June",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q3",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach New Audience",
+          weight: 30,
+          impliedTasks: [
             {
-              date: "July",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "August",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "September",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
-        },
-        {
-          period_cycle: "Q4",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
-            {
-              date: "October",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "November",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "December",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-          ],
-          percentage_completion: 30,
         },
       ],
     },
@@ -159,98 +361,300 @@ const SpecifiedTaskDetailView = () => {
           textColor: "#0452C8",
         },
       ],
-      impliedTaskDetails: [
+      tasks: [
         {
-          period_cycle: "Q1",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Sell and Market Revvex as a user product",
+          weight: 50,
+          impliedTasks: [
             {
-              date: "January",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "February",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "March",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q2",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach Proposed Audience",
+          weight: 20,
+          impliedTasks: [
             {
-              date: "April",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "May",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "June",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q3",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach New Audience",
+          weight: 30,
+          impliedTasks: [
             {
-              date: "July",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "August",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "September",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
-        },
-        {
-          period_cycle: "Q4",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
-            {
-              date: "October",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "November",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "December",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-          ],
-          percentage_completion: 30,
         },
       ],
     },
@@ -276,121 +680,300 @@ const SpecifiedTaskDetailView = () => {
           textColor: "#0452C8",
         },
       ],
-      impliedTaskDetails: [
+      tasks: [
         {
-          period_cycle: "Q1",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Sell and Market Revvex as a user product",
+          weight: 50,
+          impliedTasks: [
             {
-              date: "January",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "February",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "March",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q2",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach Proposed Audience",
+          weight: 20,
+          impliedTasks: [
             {
-              date: "April",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "May",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "June",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q3",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach New Audience",
+          weight: 30,
+          impliedTasks: [
             {
-              date: "July",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "August",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "September",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
-        },
-        {
-          period_cycle: "Q4",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
-            {
-              date: "October",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "November",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "December",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-          ],
-          percentage_completion: 30,
-        },
-        {
-          period_cycle: "Q4",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
-            {
-              date: "October",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "November",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "December",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-          ],
-          percentage_completion: 30,
         },
       ],
     },
@@ -416,121 +999,300 @@ const SpecifiedTaskDetailView = () => {
           textColor: "#0452C8",
         },
       ],
-      impliedTaskDetails: [
+      tasks: [
         {
-          period_cycle: "Q1",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Sell and Market Revvex as a user product",
+          weight: 50,
+          impliedTasks: [
             {
-              date: "January",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "February",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "March",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q2",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach Proposed Audience",
+          weight: 20,
+          impliedTasks: [
             {
-              date: "April",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "May",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "June",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
         },
         {
-          period_cycle: "Q3",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
+          title: "Create Marketing Campaigns to Reach New Audience",
+          weight: 30,
+          impliedTasks: [
             {
-              date: "July",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q1",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "January",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "February",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "March",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "August",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q2",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "April",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "May",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "June",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
             {
-              date: "September",
-              achieved_outcome: "Sell and Market Revvex as a user product",
+              period_cycle: "Q3",
               expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "July",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "August",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "September",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
+            },
+            {
+              period_cycle: "Q4",
+              expected_outcome: "Sell and Market Revvex as a user product",
+              achieved_outcome: "Sell and Market Revvex as a user product",
+              sub_outcomes: [
+                {
+                  date: "October",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "November",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+                {
+                  date: "December",
+                  achieved_outcome: "Sell and Market Revvex as a user product",
+                  expected_outcome: "Sell and Market Revvex as a user product",
+                },
+              ],
+              percentage_completion: 30,
             },
           ],
-          percentage_completion: 30,
-        },
-        {
-          period_cycle: "Q4",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
-            {
-              date: "October",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "November",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "December",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-          ],
-          percentage_completion: 30,
-        },
-        {
-          period_cycle: "Q4",
-          expected_outcome: "Sell and Market Revvex as a user product",
-          achieved_outcome: "Sell and Market Revvex as a user product",
-          sub_outcomes: [
-            {
-              date: "October",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "November",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-            {
-              date: "December",
-              achieved_outcome: "Sell and Market Revvex as a user product",
-              expected_outcome: "Sell and Market Revvex as a user product",
-            },
-          ],
-          percentage_completion: 30,
         },
       ],
     },
@@ -543,32 +1305,22 @@ const SpecifiedTaskDetailView = () => {
           title,
           weight,
           percentage,
-          impliedTaskDetails,
+          tasks,
           measureOfSuccessDetails,
           color,
         } = chi;
         return (
           <MetricTableCard
             key={idx}
-            num={idx + 1}
             title={title}
-            weight={weight}
             percentage={percentage}
             measureOfSuccessDetails={measureOfSuccessDetails}
-            impliedTaskDetails={impliedTaskDetails}
+            tasks={tasks}
             progressValue={percentage}
             progressColor={color as "red"}
           />
         );
       })}
-      {/* <MetricTableCard
-        measureOfSuccessDetails={measureOfSuccessDetails}
-        impliedTaskDetails={impliedTaskDetails}
-      />
-      <MetricTableCard
-        measureOfSuccessDetails={measureOfSuccessDetails}
-        impliedTaskDetails={impliedTaskDetails}
-      /> */}
     </div>
   );
 };
