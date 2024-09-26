@@ -1,9 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
-// import { allemployeeData } from "../_data/all-employee-table-data";
 import TableWrapper from "@/components/tables/TableWrapper";
 import CustomSelect from "@/components/custom-select";
 import { PageLoader } from "@/components/custom-loader";
@@ -32,13 +31,18 @@ import { Button } from "@/components/ui/button";
 const { ADMIN } = routesPath;
 
 const AllEmployeeMissionPlan = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const id = searchParams.get("id"); //The fiscial year ID
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+
+  //The fiscial year ID
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+  const id = mission_plan_info?.active_fy_info?.id || "";
+
   const { role: user_role }: any = useAppSelector((state) => state.auth.user);
 
   const btn =
@@ -62,10 +66,10 @@ const AllEmployeeMissionPlan = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [openApprovalStatus, setOpenApprovalStatus] = useState<boolean>(false);
   const [drawerUserId, setDrawerUserId] = useState<string>("");
-  
+
   const HAS_NO_PERMISSION = () => {
-    return !CAN_CREATE_FINANCIAL_YEAR?.includes(user_role)
-  }
+    return !CAN_CREATE_FINANCIAL_YEAR?.includes(user_role);
+  };
 
   // -------- API Service for Tab == All Employee ------- //
   const {
@@ -281,11 +285,13 @@ const AllEmployeeMissionPlan = () => {
           <div className="flex gap-[10px] justify-end">
             {isSafe ? (
               <Button
-              className={cn(btn, "disabled:opacity-30")}
-              disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
-              onClick={() => setExtendSubmission(true)}
-            >
-              Extend Submission Period
+                className={cn(btn, "disabled:opacity-30")}
+                disabled={
+                  active_fy_info?.status !== "active" || HAS_NO_PERMISSION()
+                }
+                onClick={() => setExtendSubmission(true)}
+              >
+                Extend Submission Period
               </Button>
             ) : (
               <button

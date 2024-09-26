@@ -17,7 +17,7 @@ const AddMissionPlanTemplate = () => {
   const cancelRoute = Routes.ChecklistRoute.ChecklistOverview();
   const {
     formik,
-    units,
+    // units,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
@@ -149,7 +149,7 @@ const AddMissionPlanTemplate = () => {
                   <CustomSelect
                     label="Unit"
                     placeholder="Select unit"
-                    options={units}
+                    options={[]}
                     selected={formik.values.measure_of_success.unit}
                     setSelected={(value) =>
                       formik.setFieldValue("measure_of_success.unit", value)

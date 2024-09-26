@@ -7,7 +7,7 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import { useCreateMissionPlanTemplateMutation } from "@/redux/services/checklist/missionPlanTemplateApi";
 import Routes from "@/lib/routes/routes";
 import { toast } from "sonner";
-import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
+// import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 
 type Prop = {
   cancelPath: string;
@@ -19,7 +19,7 @@ const units = [
   { label: "unit3", value: "unit3" },
 ];
 const handleFormatArray = (items: SelectFormType) => {
-  const array = items.map((item) => item.label);
+  const array = items?.map((item) => item.label);
   return array;
 };
 
@@ -62,20 +62,20 @@ const formSchema = yup.object({
 });
 
 export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
-  const { data: unitsData, isLoading: isLoadingUnits } = useGetUnitsQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
-  });
+  // const { data: unitsData, isLoading: isLoadingUnits } = useGetUnitsQuery({
+  //   to: 0,
+  //   total: 0,
+  //   per_page: 50,
+  //   currentPage: 0,
+  //   next_page_url: "",
+  //   prev_page_url: "",
+  // });
 
-  const units = unitsData ?? [];
+  // const units = unitsData ?? [];
   const user = useAppSelector(selectUser);
 
   const handleFormatDropdown = (items: UnitData[]) => {
-    const data = items.map((chi) => {
+    const data = items?.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
@@ -161,12 +161,12 @@ export const useMissionPlanTemplate = ({ cancelPath }: Prop) => {
   return {
     formik,
     isCreatingMissionPlanTemplate,
-    isLoadingUnits,
+    // isLoadingUnits,
     handleProceedCancel,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    units: handleFormatDropdown(units),
+    // units: handleFormatDropdown(units),
   };
 };
