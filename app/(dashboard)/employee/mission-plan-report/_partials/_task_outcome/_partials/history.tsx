@@ -28,7 +28,7 @@ const History = () => {
       </div>
       <div className="grid gap-y-3">
         {historyData.map((item, idx) => (
-          <div className="">
+          <div className="" key={idx}>
             <HistoryCard
               key={item?.id}
               month={item?.month}
