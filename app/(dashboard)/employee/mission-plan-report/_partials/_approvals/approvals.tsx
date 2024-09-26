@@ -5,13 +5,16 @@ import { formatDate } from "@/utils/helpers/date-formatter";
 import { useSearchParams } from "next/navigation";
 import ApprovalUI from "./_partials/approval-ui";
 import MeasureOfSuccess from "../_measure_of_success/measure_of_success";
-import ActualOutcomeApproval from "./_partials/actual-outcome-approval";
+import ActualOutcomeApproval from "../../[reportId]/approval-progress/approval-tasks-submission/_partials/actual-outcome-approval";
+import { useCallback } from "react";
 
 const Approvals = () => {
   const searchParams = useSearchParams();
   const ui = searchParams.get("ui");
   const employeeId = searchParams.get("empID");
   const measure = searchParams.get("measure");
+
+  
 
   const {
     data: employeeData,
@@ -30,6 +33,7 @@ const Approvals = () => {
     fiscal_year_id: "01j80dtcr56d3pxts26prs9547",
   });
 
+  
   const FORMAT_TABLE_DATA = (obj: any) => {
     return obj?.map((org: any) => ({
       name: (

@@ -1,4 +1,5 @@
 import TableWrapper from "@/components/tables/TableWrapper";
+import routesPath from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 
 import React, { useCallback } from "react";
@@ -16,19 +17,19 @@ const ApprovalUI = ({
   const pathname = usePathname();
 
   const router = useRouter();
+  const { EMPLOYEE } = routesPath;
 
-  const createQueryString = useCallback(
-    (name: string, id: string, approve: boolean) => {
-      const params = new URLSearchParams();
-      params.set("ui", name); // Set the 'name' param
-      params.set("empID", id); // Set the 'id' param
-      approve ? params.set("measure", "approval-successs") : params.set("measure", "approval-task"); // Set the 'id' param
-    
+  // const createQueryString = useCallback(
+  //   (name: string, id: string, approve: boolean) => {
+  //     const params = new URLSearchParams();
+  //     params.set("ui", name); // Set the 'name' param
+  //     params.set("empID", id); // Set the 'id' param
+  //     approve ? params.set("measure", "approval-successs") : params.set("measure", "approval-task"); // Set the 'id' param
 
-      return params.toString(); // Return the query string
-    },
-    [] // We are not dependent on `searchParams` now, so it's an empty dependency array
-  );
+  //     return params.toString(); // Return the query string
+  //   },
+  //   [] // We are not dependent on `searchParams` now, so it's an empty dependency array
+  // );
 
   return (
     <div className="flex flex-col gap-5">
@@ -64,43 +65,35 @@ const ApprovalUI = ({
         dropDown
         dropDownList={[
           {
-            label: "Approve Task",
+            label: "View Progress",
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
-              //   console.log(
-              //     "dataTwo",
-              //     dataTwo?.name?.props?.children[0].props.children
-              //   );
-
               router.push(
-                pathname.split("?")[0] +
-                  "?" +
-                  createQueryString(
-                    "approvals",
-                    dataTwo?.name?.props?.children[0].props.children,
-                    false
-                  )
+                EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT(
+                  dataTwo?.name?.props?.children[0].props.children
+                )
               );
             },
           },
           {
-            label: "Approve Measure of success",
+            label: "View Measure of Success Submission",
+            color: "",
+            onActionClick: (param: any, dataTwo: any) => {},
+          },
+          {
+            label: "View Tasks Submission",
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
               router.push(
-                pathname.split("?")[0] +
-                  "?" +
-                  createQueryString(
-                    "approvals",
-                    dataTwo?.name?.props?.children[0].props.children,
-                    true
-                  )
+                EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT_TASK_SUBMISSION(
+                  dataTwo?.name?.props?.children[0].props.children
+                )
               );
             },
           },
         ]}
         hideSearchFilterBox
-        width="240px"
+        width="300px"
       />
     </div>
   );

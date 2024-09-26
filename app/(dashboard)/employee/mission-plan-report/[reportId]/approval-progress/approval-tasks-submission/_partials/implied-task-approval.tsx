@@ -53,7 +53,7 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-x-1">
               <DotFilledIcon />{" "}
-              <p className="text-[#1E1E1E] capitalize">{item.title}</p>
+              <p className="capitalize text-[.9rem] font-[500]">{item.title}</p>
             </span>
             <span className="items-center gap-x-1 text-[#5A5B5F] text-sm hidden">
               Percent Completed:
@@ -66,20 +66,16 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
           <div className="mt-7 flex gap-x-3">
             <div className="w-full">
               <div className="flex">
-                <p className="w-[36%] text-[#9AA6ACCC] text-sm">Name of Task</p>
-                <p className="w-[16%] text-[#9AA6ACCC] text-sm">Weight</p>
-                <p className="w-[40%] text-[#9AA6ACCC] text-sm">Resource</p>
+                <p className="w-[36%] font-[400] text-sm">Name of Task</p>
+                <p className="w-[16%] font-[400] text-sm">Weight</p>
+                <p className="w-[40%] font-[400] text-sm">Resource</p>
               </div>
               <hr className="my-3" />
               {item.task.map((item: any, idx: any) => (
                 <div key={idx} className="flex">
-                  <p className="w-[36%] text-[#9AA6ACCC] text-xs">
-                    {item.name}
-                  </p>
-                  <p className="w-[16%] text-[#9AA6ACCC] text-xs">
-                    {item.weight}%
-                  </p>
-                  <p className="w-[40%] text-[#9AA6ACCC] text-xs">
+                  <p className="w-[36%] font-[200] text-xs">{item.name}</p>
+                  <p className="w-[16%] font-[200] text-xs">{item.weight}%</p>
+                  <p className="w-[40%] font-[200] text-xs">
                     {item.resources.join(", ")}
                   </p>
                 </div>
@@ -105,6 +101,7 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                 error={formik.errors.expected}
                 placeholder="Input Expected Outcome"
                 disabled
+                labelColor="text-black text-[.9rem]"
               />
               <Input
                 label="Actual Outcome"
@@ -115,6 +112,7 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                 touched={formik.touched.actual_outcome}
                 error={formik.errors.actual_outcome}
                 placeholder="Input Actual Outcome"
+                labelColor="text-black text-[.9rem]"
               />
               <div>
                 <Input
@@ -126,6 +124,7 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                   touched={formik.touched.percentage_completion}
                   error={formik.errors.percentage_completion}
                   placeholder="Input Percentage"
+                  labelColor="text-black text-[.9rem]"
                 />
               </div>
               <div className="flex gap-4">
@@ -217,6 +216,7 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                     touched={rejectFormik.touched.reason}
                     value={rejectFormik.values.reason}
                     error={rejectFormik.errors.reason}
+                    labelColor="text-black text-[.9rem]"
                   />
                 </div>
                 <div>
