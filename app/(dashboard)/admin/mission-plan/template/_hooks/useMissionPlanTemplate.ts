@@ -2,7 +2,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { resetFinancialYearDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useCreateMissionPlanTemplateMutation } from "@/redux/services/checklist/missionPlanTemplateApi";
-import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
+// import { useGetUnitsQuery } from "@/redux/services/checklist/unitApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import { useFormik } from "formik";
@@ -37,11 +37,11 @@ type SectionKeys =
   | "implied_tasks"
   | "duration";
 
-const units = [
-  { label: "unit1", value: "unit1" },
-  { label: "unit2", value: "unit2" },
-  { label: "unit3", value: "unit3" },
-];
+// const units = [
+//   { label: "unit1", value: "unit1" },
+//   { label: "unit2", value: "unit2" },
+//   { label: "unit3", value: "unit3" },
+// ];
 const handleFormatArray = (items: SelectFormType) => {
   const array = items.map((item) => item.label);
   return array;
@@ -86,17 +86,19 @@ const formSchema = yup.object({
 });
 const { ADMIN } = routesPath;
 export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
-  const { data: unitsData, isLoading: isLoadingUnits } = useGetUnitsQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
-  });
+  // const { data: unitsData, isLoading: isLoadingUnits } = useGetUnitsQuery({
+  //   to: 0,
+  //   total: 0,
+  //   per_page: 50,
+  //   currentPage: 0,
+  //   next_page_url: "",
+  //   prev_page_url: "",
+  // });
   const [sections, setSections] = useState<Section[]>([]);
 
-  const units = unitsData ?? [];
+  // console.log(unitsData, "unit data");
+
+  // const units = unitsData?.data?.data ?? [];
   const user = useAppSelector(selectUser);
   const actionCtx = useContext(ActionContext);
 
@@ -105,7 +107,7 @@ export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
   const dispatch = useAppDispatch();
 
   const handleFormatDropdown = (items: UnitData[]) => {
-    const data = items.map((chi) => {
+    const data = items?.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
@@ -225,13 +227,13 @@ export const useMissionPlanTemplate = ({ cancelPath, templateID }: Prop) => {
   return {
     formik,
     isCreatingMissionPlanTemplate,
-    isLoadingUnits,
+    // isLoadingUnits,
     handleProceedCancel,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,
     handleCancelDialog,
-    units: handleFormatDropdown(units),
+    // units: handleFormatDropdown(units),
     sections,
     setSections,
   };
