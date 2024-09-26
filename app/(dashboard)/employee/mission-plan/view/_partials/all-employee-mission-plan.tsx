@@ -29,10 +29,15 @@ const AllEmployeeMissionPlan = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const id = searchParams.get("id"); //The fiscial year ID
+  const fyid = searchParams.get("id"); //The fiscial year ID
   const { active_fy_info } = useAppSelector(
     (state) => state?.mission_plan?.mission_plan
   );
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+
+  const id = mission_plan_info?.active_fy_info?.id || fyid || "";
 
   // const data = useAppSelector((state) => state?.auth?.user);
   const [search, setSearch] = useState<string>("");
@@ -337,8 +342,8 @@ const AllEmployeeMissionPlan = () => {
               { value: "rejected", label: "Rejected" },
             ]}
             onFilterClick={(param) => {
-              if (param?.value?.toLowerCase() === "all") { 
-                setFilter("");  
+              if (param?.value?.toLowerCase() === "all") {
+                setFilter("");
               }
               setFilter(param?.value);
             }}
@@ -348,10 +353,8 @@ const AllEmployeeMissionPlan = () => {
             ]}
             onRowClick={() => {
               console.log(employeeData?.mission_plans?.meta);
-              
             }}
-            onSort={
-              (param) => {
+            onSort={(param) => {
               if (param?.value?.toLowerCase() === "all") {
                 setSort("");
               }
