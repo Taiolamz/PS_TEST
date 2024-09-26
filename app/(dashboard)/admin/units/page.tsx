@@ -242,7 +242,7 @@ const Units = () => {
   return (
     <>
       {ui !== "details" ? (
-        <DashboardLayout headerTitle="Unit" back>
+        <DashboardLayout headerTitle="Units" back>
           <section className="p-5">
             {units?.length < 1 ? (
               <ReusableEmptyState
