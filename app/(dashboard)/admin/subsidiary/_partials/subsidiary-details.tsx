@@ -96,7 +96,7 @@ export default function SubsidiaryDetails() {
   ];
 
   return (
-    <DashboardLayout back headerTitle="Subsidiary">
+    <DashboardLayout back headerTitle="Subsidiaries">
       <section className="p-5">
         <div className="flex max-lg:flex-col-reverse justify-between mb-10">
           <div className="w-full">
