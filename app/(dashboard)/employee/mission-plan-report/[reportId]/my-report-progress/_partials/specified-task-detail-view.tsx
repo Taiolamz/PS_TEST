@@ -1,24 +1,6 @@
 import MetricTableCard from "@/components/card/metric-table-card";
 
 const SpecifiedTaskDetailView = () => {
-  // const measureOfSuccessDetails = [
-  //   {
-  //     label: "30 online Campaign",
-  //     bgColor: "#6B51DF1A",
-  //     textColor: "#6B51DF",
-  //   },
-  //   {
-  //     label: "$100,000 Revenue",
-  //     bgColor: "#119C2B1A",
-  //     textColor: "#119C2B",
-  //   },
-  //   {
-  //     label: "$100,000 Revenue",
-  //     bgColor: "#0452C81A",
-  //     textColor: "#0452C8",
-  //   },
-  // ];
-
   const specifiedTaskDetails = [
     {
       title: "Achieve Revenue from sales of Zojatech Products",
@@ -1299,7 +1281,7 @@ const SpecifiedTaskDetailView = () => {
   ];
 
   return (
-    <div>
+    <div className="flex flex-col gap-4 mt-5">
       {specifiedTaskDetails.map((chi, idx) => {
         const {
           title,
