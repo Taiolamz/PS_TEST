@@ -33,6 +33,7 @@ interface myComponentProps {
   headerTitle?: string;
   back?: boolean;
   onBack?: () => void;
+  childClass?: string;
 }
 
 const DashboardLayout = ({
@@ -41,6 +42,7 @@ const DashboardLayout = ({
   headerTitle,
   back,
   onBack,
+  childClass,
 }: myComponentProps) => {
   const actionCtx = useContext(ActionContext);
   const [showNotification, setShowNotification] = useState(false);
@@ -372,7 +374,7 @@ const DashboardLayout = ({
                 </div>
               </>
             )}
-          {children}
+          <div className={childClass}>{children}</div>
         </div>
         {/* main content box end */}
       </div>
@@ -382,7 +384,7 @@ const DashboardLayout = ({
         onClose={() => {
           setShowNotification(false);
         }}
-        visible={showNotification }
+        visible={showNotification}
       />
       {/* Notification Modal End */}
     </div>
