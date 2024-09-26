@@ -24,12 +24,8 @@ const SpecifiedTaskProgress = () => {
     },
   ];
   return (
-    <DashboardLayout
-      headerTitle="Specified Task Overview"
-      childClass="px-5 pb-10"
-      back
-    >
-      <div className=" overflow-x-hidden px-5">
+    <DashboardLayout headerTitle="Specified Task Overview" back>
+      <div className=" overflow-x-hidden px-5 pb-10">
         <ReportFilter
           fiscalYearVal={fiscalYear}
           setFiscalYearVal={setFiscalYear}
@@ -38,9 +34,9 @@ const SpecifiedTaskProgress = () => {
           fiscalOptions={options}
           cycleOptions={options}
         />
+        <TeamPerformanceBar dntShowImg />
+        <SpecifiedTaskDetailView />
       </div>
-      <TeamPerformanceBar dntShowImg />
-      <SpecifiedTaskDetailView />
     </DashboardLayout>
   );
 };
