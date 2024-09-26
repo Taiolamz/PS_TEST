@@ -11,6 +11,7 @@ interface Prop {
   className?: string;
   triggerClass?: string;
   contentWrapperClass?: string;
+  headerClassName?: string;
   contentClass?: string;
   title: ReactNode | string;
   content: ReactNode | string;
@@ -27,6 +28,7 @@ export function CustomAccordion({
   contentWrapperClass,
   type,
   defaultValue,
+  headerClassName,
 }: Prop) {
   return (
     <Accordion
@@ -38,6 +40,7 @@ export function CustomAccordion({
       <AccordionItem value="item-1" className="border-b-0">
         <AccordionTrigger
           className={cn("border-b-0 hover:no-underline", triggerClass)}
+          headerClassName={headerClassName}
         >
           {title}
         </AccordionTrigger>
