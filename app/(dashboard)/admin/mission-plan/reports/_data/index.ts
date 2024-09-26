@@ -49,3 +49,34 @@ export const ACHIEVEMENT_PROGRESS_DATA = [
         targetColor: "#6B51DF"
     },
 ]
+
+export const REVIEW_PERIOD_OPTIONS = [
+    {
+        label: "First Week",
+        value: "first_week",
+    },
+    {
+        label: "Second Week",
+        value: "second_week",
+    },
+    {
+        label: "Third Week",
+        value: "third_week",
+    },
+    {
+        label: "Last Week",
+        value: "last_week",
+    },
+    {
+        label: "First And Second Week",
+        value: "first_and_second_week",
+    },
+    {
+        label: "Third And Last Week",
+        value: "third_and_last_week",
+    },
+    {
+        label: "All Through The Month",
+        value: "all_through",
+    },
+]
