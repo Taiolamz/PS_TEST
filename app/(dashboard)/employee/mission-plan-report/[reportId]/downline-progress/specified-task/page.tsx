@@ -13,6 +13,7 @@ export default function SpecifiedTask({
 }: {
   params: { reportId: string };
 }) {
+  // Filter select input dropdown
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
 
@@ -126,16 +127,24 @@ export default function SpecifiedTask({
               tasks,
               measureOfSuccessDetails,
               color,
+              id,
             } = chi;
             return (
               <MetricTableCard
                 key={idx}
+                id={id}
                 title={title}
                 percentage={percentage}
                 measureOfSuccessDetails={measureOfSuccessDetails}
                 tasks={tasks}
                 progressValue={percentage}
                 progressColor={color as "red"}
+                onClickComment={(id) => {
+                  console.log(id, "comment");
+                }}
+                onClickViewChallenge={(id) => {
+                  console.log(id, "challange");
+                }}
               />
             );
           })}
@@ -204,6 +213,7 @@ const profileImages = [
 
 const specifiedTaskDetails = [
   {
+    id: "123456789st",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 67,
@@ -227,6 +237,7 @@ const specifiedTaskDetails = [
     ],
     tasks: [
       {
+        id: "12deuwwwwfie",
         title: "Sell and Market Revvex as a user product",
         weight: 50,
         impliedTasks: [
@@ -523,6 +534,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789nd",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 48,
@@ -842,6 +854,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789rd",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 80,
@@ -1161,6 +1174,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789rth",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 48,
