@@ -2,7 +2,7 @@ import { CustomAccordion } from "@/components/custom-accordion";
 import React from "react";
 import ImpliedTask from "./implied-task";
 import { FieldArray, FormikProvider, useFormik } from "formik";
-import { data } from "../_data/_data";
+import { data } from "../_data/data";
 import { Button } from "@/components/ui/button";
 
 const ActualOutcome = () => {
