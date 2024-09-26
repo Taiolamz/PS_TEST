@@ -4,7 +4,7 @@ import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
 import React from "react";
 
-const TeamPerformanceBar = () => {
+const TeamPerformanceBar = ({ dntShowImg }: { dntShowImg?: boolean }) => {
   const segments = [
     {
       percentage: 30,
@@ -96,18 +96,20 @@ const TeamPerformanceBar = () => {
             })}
           </div>
           {/* ------PROFILE IMAGE DISPLAY -------- */}
-          <div className="flex">
-            {profileImages.map((chi, idx) => (
-              <Image
-                width={35}
-                height={35}
-                className="w-[35px] h-[35px] rounded-full border-[#ffff] border-2 -ml-4"
-                key={idx}
-                src={chi}
-                alt="profile image"
-              />
-            ))}
-          </div>
+          {!dntShowImg ? (
+            <div className="flex">
+              {profileImages.map((chi, idx) => (
+                <Image
+                  width={35}
+                  height={35}
+                  className="w-[35px] h-[35px] rounded-full border-[#ffff] border-2 -ml-4"
+                  key={idx}
+                  src={chi}
+                  alt="profile image"
+                />
+              ))}
+            </div>
+          ) : null}
           {/* ------PROFILE IMAGE DISPLAY -------- */}
         </div>
       </div>
