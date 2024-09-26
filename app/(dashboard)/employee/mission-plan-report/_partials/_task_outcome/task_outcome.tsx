@@ -3,6 +3,8 @@ import TaskOutcomeTable from "./_table/task-outcome-table";
 import { useSearchParams } from "next/navigation";
 import ApprovalProgress from "@/components/fragment/progress/approval-progress";
 import ActualOutcome from "./_partials/actual-outcome";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const data = [
   {
@@ -82,12 +84,17 @@ const TaskOutcome = () => {
   };
 
   return (
-    <div className="mt-11">
+    <div className="mt-5">
       {ui === "task_outcome" && !id && (
-        <TaskOutcomeTable
-          FORMAT_TABLE_DATA={FORMAT_TABLE_DATA}
-          outcomeData={data}
-        />
+        <div className="">
+          <Button className="[box-shadow:0px_10px_20px_-6px_rgba(78,115,248,0.08)] border rounded-sm bg-[#EEF0F2] text-[#9AA6AC]">
+            Set January Actual Outcomes
+          </Button>
+          <TaskOutcomeTable
+            FORMAT_TABLE_DATA={FORMAT_TABLE_DATA}
+            outcomeData={data}
+          />
+        </div>
       )}
       {ui === "task_outcome" && id && type === "expected-outcome" && (
         <div> Expected Outcome </div>
