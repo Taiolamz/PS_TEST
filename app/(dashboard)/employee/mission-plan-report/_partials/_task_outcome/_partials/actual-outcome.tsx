@@ -1,11 +1,14 @@
 import { CustomAccordion } from "@/components/custom-accordion";
-import React from "react";
+import React, { useState } from "react";
 import ImpliedTask from "./implied-task";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { data } from "../_data/data";
 import { Button } from "@/components/ui/button";
+import { ReusableDrawer } from "@/components/fragment";
+import History from "./history";
 
 const ActualOutcome = () => {
+  const [showHistory, setShowHistory] = useState(false);
   const handleFormSubmit = () => {};
 
   const formik = useFormik({
@@ -27,6 +30,18 @@ const ActualOutcome = () => {
 
   return (
     <div>
+      <ReusableDrawer
+        title="Outcome History"
+        show={showHistory}
+        handleClose={() => setShowHistory(false)}
+        closeOnClickOutside={false}
+        headerClass={"bg-primary lg:mx-0 p-5"}
+        titleClass={"text-white"}
+      >
+        <div className="py-4 px-[18px]">
+          <History />
+        </div>
+      </ReusableDrawer>
       {data?.map((item, idx) => (
         <CustomAccordion
           key={idx}
@@ -76,6 +91,7 @@ const ActualOutcome = () => {
                               <ImpliedTask
                                 formik={formik}
                                 impliedTaskData={item.impliedTasks}
+                                setShowHistory={setShowHistory}
                               />
                             </div>
                           )

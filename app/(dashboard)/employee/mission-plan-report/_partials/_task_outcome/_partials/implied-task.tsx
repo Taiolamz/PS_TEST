@@ -7,9 +7,14 @@ import React from "react";
 interface ImpliedTaskProps {
   formik?: any;
   impliedTaskData?: any[];
+  setShowHistory: (item: any) => void;
 }
 
-const ImpliedTask = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
+const ImpliedTask = ({
+  formik,
+  impliedTaskData,
+  setShowHistory,
+}: ImpliedTaskProps) => {
   return (
     <div className="grid gap-y-10">
       {impliedTaskData?.map((item, idx) => (
@@ -49,7 +54,10 @@ const ImpliedTask = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                 </div>
               ))}
               <div className="flex gap-x-3 mt-8">
-                <Button className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none">
+                <Button
+                  onClick={() => setShowHistory(true)}
+                  className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                >
                   View History
                 </Button>
                 <Button className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none">
