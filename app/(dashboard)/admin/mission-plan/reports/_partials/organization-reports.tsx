@@ -129,7 +129,7 @@ const OrganizationReports = () => {
                         <div className="mt-4 flex flex-col gap-4">
                             {
                                 SPECIFIED_TASK_CHART_LABELS?.map((item: Dictionary) => (
-                                    <Legend key={item?.title} title={item?.title} value={item?.value} color={item?.color as any} />
+                                    <Legend key={item?.title} title={item?.title} value={`: ${item?.value}`} color={item?.color as any} />
                                 ))
                             }
                         </div>
