@@ -1,4 +1,5 @@
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
 
 interface ReusableDrawerProps {
@@ -8,7 +9,9 @@ interface ReusableDrawerProps {
   title?: string;
   handleClose?: () => void;
   width?: number;
-  
+  headerClass?: string;
+  titleClass?: string;
+  childrenContainerClass?: string;
 }
 
 export default function ReusableDrawer({
@@ -17,6 +20,9 @@ export default function ReusableDrawer({
   children,
   handleClose,
   width,
+  headerClass,
+  titleClass,
+  childrenContainerClass,
   closeOnClickOutside = true,
 }: ReusableDrawerProps) {
   return (
@@ -28,8 +34,15 @@ export default function ReusableDrawer({
             closeOnClickOutside && handleClose && handleClose()
           }
         >
-          <div  className="pt-4 flex justify-between items-center relative lg:mx-5">
-            <SheetTitle className="text-sm font-normal text-black">
+          <div
+            className={cn(
+              "pt-4 flex justify-between items-center relative lg:mx-5",
+              headerClass
+            )}
+          >
+            <SheetTitle
+              className={cn("text-sm font-normal text-black", titleClass)}
+            >
               {title}
             </SheetTitle>
             <span
@@ -39,7 +52,9 @@ export default function ReusableDrawer({
               <X className="h-3 w-3" />
             </span>
           </div>
-          <section className="py-4">{children}</section>
+          <section className={cn("py-4", childrenContainerClass)}>
+            {children}
+          </section>
         </SheetContent>
       </Sheet>
     </>
