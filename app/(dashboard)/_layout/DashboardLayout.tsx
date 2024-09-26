@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 // import ActionContext from "../context/ActionContext";
 import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
 import { useLazyGetChecklistQuery } from "@/redux/services/onboarding/checkListApi";
@@ -24,7 +24,6 @@ import ActionContext from "../context/ActionContext";
 import SideMenuNavBox from "./SideMenuNavBox";
 import HeaderNavBox from "./HeaderNvaBox";
 import { Button } from "@/components/ui/button";
-import NotificationModal from "./(notification)/NotificationModal";
 // import { checklistDetails } from "../admin/checklist/checklist-steps";
 
 interface myComponentProps {
@@ -33,7 +32,6 @@ interface myComponentProps {
   headerTitle?: string;
   back?: boolean;
   onBack?: () => void;
-  childClass?: string;
 }
 
 const DashboardLayout = ({
@@ -42,17 +40,15 @@ const DashboardLayout = ({
   headerTitle,
   back,
   onBack,
-  childClass,
 }: myComponentProps) => {
   const actionCtx = useContext(ActionContext);
-  const [showNotification, setShowNotification] = useState(false);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const router = useRouter();
   const { ADMIN } = routesPath;
-  // const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
-  //   {}
-  // );
+  const { data: rolesData, isLoading: isLoadingroles } = useGetAllRolesQuery(
+    {}
+  );
 
   const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
     {}
@@ -89,8 +85,6 @@ const DashboardLayout = ({
     //   e.hex
     // );
     const color = user?.organization?.brand_colour || ("" as any);
-    // console.log(color);
-
     actionCtx?.setPrimaryColorVals(color);
     // console.log(user);
     if (getNextLink(getListToUse(checklistDetails[0]?.items))?.length > 0) {
@@ -224,7 +218,7 @@ const DashboardLayout = ({
       ],
       // isAllChecked: isCardOneChecked,
       // path: ADMIN.SUBSIDIARY,
-      // link: ADMIN?.CREATE_S,
+      // link: ADMIN?.CREATE_S,  
     },
     {
       title: "Set up employee and roles",
@@ -272,7 +266,7 @@ const DashboardLayout = ({
         return;
       }
     }
-    if (!checklist?.employee_exist) {
+    if (checklist?.employee_count < 2) {
       router.push(ADMIN.ADD_EMPLOYEE);
       return;
     }
@@ -326,9 +320,6 @@ const DashboardLayout = ({
         {/* header nav box start */}
         <div className={style?.header_nav_box}>
           <HeaderNavBox
-            onNotify={() => {
-              setShowNotification(true);
-            }}
             headerListTitle={headerListTitle}
             headerTitle={headerTitle}
             back={back}
@@ -374,19 +365,11 @@ const DashboardLayout = ({
                 </div>
               </>
             )}
-          <div className={childClass}>{children}</div>
+          {children}
         </div>
         {/* main content box end */}
       </div>
       {/* header nav and content bar end */}
-      {/* Notification Modal start */}
-      <NotificationModal
-        onClose={() => {
-          setShowNotification(false);
-        }}
-        visible={showNotification}
-      />
-      {/* Notification Modal End */}
     </div>
   );
 };
