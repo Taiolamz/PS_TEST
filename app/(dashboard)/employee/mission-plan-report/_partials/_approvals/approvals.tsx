@@ -3,7 +3,7 @@ import { useGetAllOrganizationEmployeeMissionPlanQuery } from "@/redux/services/
 import { formatDate } from "@/utils/helpers/date-formatter";
 
 import { useSearchParams } from "next/navigation";
-import ApprovalUI from "../../_component/approval-ui";
+import ApprovalUI from "./_partials/approval-ui";
 import MeasureOfSuccess from "../_measure_of_success/measure_of_success";
 import ActualOutcomeApproval from "./_partials/actual-outcome-approval";
 
