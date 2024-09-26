@@ -6,9 +6,12 @@ import { data } from "../_data/data";
 import { Button } from "@/components/ui/button";
 import { ReusableDrawer } from "@/components/fragment";
 import History from "./history";
+import CommentCard from "../../../_component/comment-card";
+import Comment from "./comment";
 
 const ActualOutcome = () => {
   const [showHistory, setShowHistory] = useState(false);
+  const [showComment, setShowComment] = useState(false);
   const handleFormSubmit = () => {};
 
   const formik = useFormik({
@@ -40,6 +43,19 @@ const ActualOutcome = () => {
       >
         <div className="py-4 px-[18px]">
           <History />
+        </div>
+      </ReusableDrawer>
+      <ReusableDrawer
+        title="Outcome History"
+        show={showComment}
+        handleClose={() => setShowComment(false)}
+        closeOnClickOutside={false}
+        headerClass={"bg-primary lg:mx-0 p-5"}
+        titleClass={"text-white"}
+        childrenContainerClass="py-0"
+      >
+        <div className="">
+          <Comment />
         </div>
       </ReusableDrawer>
       {data?.map((item, idx) => (
@@ -92,6 +108,7 @@ const ActualOutcome = () => {
                                 formik={formik}
                                 impliedTaskData={item.impliedTasks}
                                 setShowHistory={setShowHistory}
+                                setShowComment={setShowComment}
                               />
                             </div>
                           )

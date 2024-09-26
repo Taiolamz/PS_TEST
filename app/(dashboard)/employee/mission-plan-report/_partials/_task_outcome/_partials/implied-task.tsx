@@ -8,12 +8,14 @@ interface ImpliedTaskProps {
   formik?: any;
   impliedTaskData?: any[];
   setShowHistory: (item: any) => void;
+  setShowComment: (item: any) => void;
 }
 
 const ImpliedTask = ({
   formik,
   impliedTaskData,
   setShowHistory,
+  setShowComment,
 }: ImpliedTaskProps) => {
   return (
     <div className="grid gap-y-10">
@@ -60,7 +62,10 @@ const ImpliedTask = ({
                 >
                   View History
                 </Button>
-                <Button className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none">
+                <Button
+                  onClick={() => setShowComment(true)}
+                  className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                >
                   Comments
                   <CommentsIcon />
                 </Button>
