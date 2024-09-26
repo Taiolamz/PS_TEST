@@ -5,6 +5,7 @@ import { formatDate } from "@/utils/helpers/date-formatter";
 import { useSearchParams } from "next/navigation";
 import ApprovalUI from "../../_component/approval-ui";
 import MeasureOfSuccess from "../_measure_of_success/measure_of_success";
+import ActualOutcomeApproval from "./_partials/actual-outcome-approval";
 
 const Approvals = () => {
   const searchParams = useSearchParams();
@@ -64,10 +65,14 @@ const Approvals = () => {
           employeeData={employeeData}
         />
       );
-    } else if (ui === "approvals" && employeeId) {
-      return <div>Approve Task</div>;
     } else if (
-      measure === "approvals-successs" &&
+      ui === "approvals" &&
+      employeeId &&
+      measure === "approval-task"
+    ) {
+      return <ActualOutcomeApproval />;
+    } else if (
+      measure === "approval-successs" &&
       employeeId &&
       ui === "approvals"
     ) {

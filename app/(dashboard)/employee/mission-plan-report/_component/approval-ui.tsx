@@ -22,7 +22,8 @@ const ApprovalUI = ({
       const params = new URLSearchParams();
       params.set("ui", name); // Set the 'name' param
       params.set("empID", id); // Set the 'id' param
-      approve && params.set("measure", "approval-status"); // Set the 'id' param
+      approve ? params.set("measure", "approval-successs") : params.set("measure", "approval-task"); // Set the 'id' param
+    
 
       return params.toString(); // Return the query string
     },
