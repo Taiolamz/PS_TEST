@@ -24,10 +24,12 @@ export default function DirectDownline() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const id = searchParams.get("id"); //The fiscial year ID
-  // const { active_fy_info } = useAppSelector(
-  //   (state) => state?.mission_plan?.mission_plan
-  // );
+  //The fiscial year ID
+  const { mission_plan: mission_plan_info } = useAppSelector(
+    (state) => state.mission_plan
+  );
+  const id = mission_plan_info?.active_fy_info?.id || "";
+
   const { data, isLoading, isFetching } = useGetDownlineMissionPlanQuery<{
     data: { data: any[]; links: any; meta: any };
     isLoading: boolean;
