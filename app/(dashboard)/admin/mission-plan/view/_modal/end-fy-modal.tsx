@@ -22,6 +22,7 @@ export default function EndFYModal({
   const [endFinancialYear, { isLoading, data: updatedData }] =
     useEndFinancialYearMutation();
   const handleConfirm = () => {
+    console.log(fy_id)
     try {
       endFinancialYear({ fiscal_year_id: fy_id })
         .unwrap()
