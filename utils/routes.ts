@@ -74,7 +74,7 @@ const routesPath = {
     MISSION_PLAN_TEMPLATE: `/${employee_auth}/mission-plan/template`,
     APPROVE_REJECT_MISSION_PLAN: (id: string) =>
       `/${employee_auth}/mission-plan/${id}/approve`,
-    MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report`,
+    MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report?ui=my_report`,
     DOWNLINE_MISSION_PLAN_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/downline-progress`,
     DOWNLINE_MOS_REPORT: (id: string) =>
