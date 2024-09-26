@@ -135,6 +135,7 @@ const FiscalYearInfo = () => {
   //Modal for Success End Financial Year
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  // console.log(active_fy_info?.id)
 
   return (
     <div className="space-y-5 mb-6 px-5 mt-1 text-[var(--text-color3)]">
@@ -455,6 +456,7 @@ const FiscalYearInfo = () => {
         loading={isLoading}
         disabled={!date?.new_end_date}
       >
+
         <form className="p-10">
           <div className="flex text-custom-gray-scale-300">
             <div className="">
@@ -531,7 +533,7 @@ const FiscalYearInfo = () => {
         show={endFinancialYear}
         setSuccessModal={setShowSuccessModal}
         handleClose={() => setEndFinancialYear(false)}
-        fy_id={id ?? ""}
+        fy_id={active_fy_info?.id ?? ""}
       />
       {/* Confirm Modal for End of FY */}
       <ConfirmationModal
