@@ -40,7 +40,7 @@ const AddMissionPlanTemplate: React.FC = () => {
   const cancelRoute = ADMIN.CHECKLIST;
   const {
     formik,
-    units,
+    // units,
     handleProceedCancel,
     openCancelModal,
     handleCancelDialog,
@@ -295,7 +295,7 @@ const AddMissionPlanTemplate: React.FC = () => {
           <CustomSelect
             label="Unit"
             placeholder="Select unit"
-            options={units}
+            options={[]}
             selected={formik.values.success_measures.unit}
             setSelected={(value) =>
               formik.setFieldValue("measure_of_success.unit", value)

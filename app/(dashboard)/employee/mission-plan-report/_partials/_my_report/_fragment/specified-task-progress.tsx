@@ -2,6 +2,7 @@ import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import routesPath from "@/utils/routes";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
@@ -91,6 +92,8 @@ const SpecifiedTaskProgress = () => {
   const router = useRouter();
   const location = usePathname();
 
+  const id = "344ac"; //dummy ID;
+  const { EMPLOYEE } = routesPath;
   return (
     <MetricFrame className="flex flex-col gap-4 w-full">
       <div className="flex justify-between ">
@@ -102,19 +105,21 @@ const SpecifiedTaskProgress = () => {
             FY 2023, Q1 Progress
           </p>
         </div>
-        <Button
-          className="flex gap-3 items-center group"
-          onClick={() =>
-            router.push(
-              `${location}?ui=my_report&view=specified_task_detail_view`
-            )
-          }
-        >
-          <p className="font-medium">See Progress Details</p>
-          <figure className="group-hover:translate-x-1 transition-all">
-            {arrowRight}
-          </figure>
-        </Button>
+        <Link href={EMPLOYEE.MY_REPORT_SPECIFIED_TASK_REPORT(id)}>
+          <Button
+            className="flex gap-3 items-center group"
+            onClick={() =>
+              router.push(
+                `${location}?ui=my_report&view=specified_task_detail_view`
+              )
+            }
+          >
+            <p className="font-medium">See Progress Details</p>
+            <figure className="group-hover:translate-x-1 transition-all">
+              {arrowRight}
+            </figure>
+          </Button>
+        </Link>
       </div>
 
       <div className="flex justify-between items-center mt-5 border-b pb-2">

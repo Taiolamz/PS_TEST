@@ -33,6 +33,7 @@ interface myComponentProps {
   headerTitle?: string;
   back?: boolean;
   onBack?: () => void;
+  childClass?: string;
 }
 
 const DashboardLayout = ({
@@ -382,7 +383,7 @@ const DashboardLayout = ({
         onClose={() => {
           setShowNotification(false);
         }}
-        visible={showNotification }
+        visible={showNotification}
       />
       {/* Notification Modal End */}
     </div>

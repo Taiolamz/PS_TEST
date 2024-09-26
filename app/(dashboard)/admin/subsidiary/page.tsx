@@ -222,7 +222,7 @@ const Subsidiary = () => {
   return (
     <>
       {ui !== "details" ? (
-        <DashboardLayout headerTitle="Subsidiary">
+        <DashboardLayout headerTitle="Subsidiaries">
           <section className="p-5">
             {subsidiaries?.length < 1 ? (
               <ReusableEmptyState
