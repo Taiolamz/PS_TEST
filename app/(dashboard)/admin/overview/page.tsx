@@ -156,7 +156,7 @@ const OverView = () => {
             <div className=" absolute inset-0 mt-8 flex px-20 pr-40 justify-between items-center">
               <div>
                 <p className="text-[var(--text-color2)] font-light">
-                  You've no data to display
+                  {"You've no data to display"}
                 </p>
               </div>
               <div>{orgTaskCompletionDisplay}</div>
