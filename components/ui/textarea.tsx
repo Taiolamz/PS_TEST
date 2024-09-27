@@ -15,6 +15,7 @@ export interface TextareaProps
   onChange?: (event: any) => void;
   touched?: boolean;
   error?: string;
+  labelColor?: string;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -32,6 +33,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       touched,
       handleBlur,
       rows,
+      labelColor,
       ...props
     },
     ref
@@ -43,7 +45,9 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           <label
             htmlFor={label}
             className={cn(
-              "block text-xs text-[#6E7C87] font-normal pb-2",
+              `block text-xs   ${
+                labelColor ? labelColor : "text-[#6E7C87]"
+              } font-normal pb-2`,
               labelClass
             )}
           >

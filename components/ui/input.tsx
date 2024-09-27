@@ -14,6 +14,7 @@ export interface InputProps
   touched?: boolean;
   error?: string;
   containerClass?: string;
+  labelColor?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -32,6 +33,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       touched,
       handleBlur,
       containerClass,
+      labelColor,
       ...props
     },
     ref
@@ -42,7 +44,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={label}
             className={cn(
-              "block relative text-xs  text-[#6E7C87] font-normal pb-2",
+              `block relative text-xs  ${
+                labelColor ? labelColor : "text-[#6E7C87]"
+              } font-normal pb-2`,
               labelClass
             )}
           >

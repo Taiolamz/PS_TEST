@@ -83,6 +83,10 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/downline-progress/specified-task`,
     MY_REPORT_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/my-report-progress/specified-task`,
+    APPROVAL_MISSION_PLAN_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/approval-progress`,
+    APPROVAL_MISSION_PLAN_REPORT_TASK_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-tasks-submission`,
     KPI: `/${employee_auth}/kpi`,
     MY_TEAM: `/${employee_auth}/my-team`,
     ORGANOGRAM: `/${employee_auth}/organogram`,
