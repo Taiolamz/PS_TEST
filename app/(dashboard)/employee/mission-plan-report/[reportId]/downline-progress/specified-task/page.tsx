@@ -7,14 +7,23 @@ import CustomSelect from "@/components/custom-select";
 import MetricFrame from "@/components/card/frame";
 import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
+import ChallengeDrawer from "../../../../../../../components/drawer/challenge-drawer";
+import CustomCommentDrawer from "../../../../../../../components/drawer/comment-drawer";
 
 export default function SpecifiedTask({
   params,
 }: {
   params: { reportId: string };
 }) {
+  // Filter select input dropdown
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
+
+  // Open modal for challenge and Comment
+  const [commentModal, setCommentModal] = React.useState(false);
+  const [challengeModal, setChallengeModal] = React.useState(false);
+  // Specified task Id for the modal
+  const [modalId, setModalId] = React.useState("");
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
@@ -126,22 +135,48 @@ export default function SpecifiedTask({
               tasks,
               measureOfSuccessDetails,
               color,
+              id,
             } = chi;
             return (
               <MetricTableCard
                 key={idx}
+                id={id}
                 title={title}
                 percentage={percentage}
                 measureOfSuccessDetails={measureOfSuccessDetails}
                 tasks={tasks}
                 progressValue={percentage}
                 progressColor={color as "red"}
+                onClickComment={(id) => {
+                  id && setModalId(id);
+                  setCommentModal(true);
+                }}
+                onClickViewChallenge={(id) => {
+                  id && setModalId(id);
+                  setChallengeModal(true);
+                }}
               />
             );
           })}
         </div>
         {/*   Specified Task Details Section End */}
       </div>
+      <ChallengeDrawer
+        open={challengeModal}
+        onClose={() => setChallengeModal(false)}
+        id={modalId}
+        data={challengesData}
+      />
+      <CustomCommentDrawer
+        open={commentModal}
+        onClose={() => setCommentModal(false)}
+        id={modalId}
+        handleSubmit={(value) => {
+          // console.log(value, "comment");
+        }}
+        commentType="specified-task"
+        data={allComment}
+      />
     </DashboardLayout>
   );
 }
@@ -204,6 +239,7 @@ const profileImages = [
 
 const specifiedTaskDetails = [
   {
+    id: "123456789st",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 67,
@@ -227,6 +263,7 @@ const specifiedTaskDetails = [
     ],
     tasks: [
       {
+        id: "12deuwwwwfie",
         title: "Sell and Market Revvex as a user product",
         weight: 50,
         impliedTasks: [
@@ -523,6 +560,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789nd",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 48,
@@ -842,6 +880,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789rd",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 80,
@@ -1161,6 +1200,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789rth",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 48,
@@ -1478,5 +1518,63 @@ const specifiedTaskDetails = [
         ],
       },
     ],
+  },
+];
+
+
+const challengesData = [
+  {
+    id: 1,
+    title: "Incomplete Implied Tasks for Q1",
+    priority: "High",
+    priorityColor: "red", // Can be used to set the background of the status label
+    description:
+      "Please look through your implied tasks, not complete. I have informed OED to decline it",
+    recommendation: "remove user from the team",
+  },
+  {
+    id: 2,
+    title: "Incomplete Implied Tasks for Q2",
+    priority: "Mid",
+    priorityColor: "yellow",
+    description: "Please look through your implied tasks, not complete",
+    recommendation: "remove user from the team",
+  },
+  {
+    id: 3,
+    title: "Incomplete Implied Tasks for Q3",
+    priority: "Low",
+    priorityColor: "green",
+    description: "Please look through your implied tasks, not complete",
+    recommendation: "remove user from the team",
+  },
+  {
+    id: 4,
+    title: "Incomplete Implied Tasks for Q4",
+    priority: "High",
+    priorityColor: "red",
+    description: "Please look through your implied tasks, not complete",
+    recommendation: "remove user from the team",
+  },
+];
+
+const allComment = [
+  {
+    id: "34eef",
+    staff_member: { name: "Inioluwa Alake" },
+    created_at: "2024-01-01T14:30:45",
+    comment: "Discuss with your driect LM on this ",
+  },
+  {
+    id: "243423",
+    staff_member: { name: "Adeyinka Balagun" },
+    created_at: "2024-09-22T14:30:45",
+    comment: "Check your specified unit. Its wrong",
+  },
+  {
+    id: "2334gr",
+    staff_member: { name: "Charles Uwaje" },
+    created_at: "2024-09-27T02:30:45",
+    comment: "21 savage is goated take it or leave it",
   },
 ];

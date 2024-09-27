@@ -17,14 +17,16 @@ const MetricTableCard = ({
   progressValue,
   progressColor,
   tasks,
+  id,
 }: {
   title?: string;
-  onClickViewChallenge?: () => void;
-  onClickComment?: () => void;
+  onClickViewChallenge?: (id?: string) => void;
+  onClickComment?: (id?: string) => void;
   measureOfSuccessDetails: MeasureOfSuccess[];
   percentage?: number;
   progressValue: number;
   progressColor?: "red" | "yellow" | "green";
+  id?: string;
   //   on integration we'll assign the right types...(coming soon...  ;()  )
   tasks?: any[];
 }) => {
@@ -40,54 +42,6 @@ const MetricTableCard = ({
         d="M6.62056 12.9555L6.67756 13.3117C6.80053 14.0801 6.80757 15.0111 6.49432 15.9982C6.49555 15.9994 6.49709 16.0008 6.499 16.0023C6.50813 16.0095 6.51992 16.0145 6.53159 16.0161L6.62056 12.9555ZM6.62056 12.9555L6.26322 12.9065C3.26688 12.4951 1.00569 10.0742 1.00569 7.19285C1.00569 4.02979 3.73471 1.41731 7.16258 1.41731H11.3948C14.8226 1.41731 17.5515 4.02978 17.5515 7.19285C17.5515 10.3561 14.8226 12.9689 11.3948 12.9689H10.2846H9.99869L9.8595 13.2186C9.09842 14.5839 7.64778 15.4954 6.5702 16.0088L6.62056 12.9555Z"
         stroke="#6E7C87"
         stroke-width="0.973286"
-      />
-    </svg>
-  );
-
-  const leftAngle = (
-    <svg
-      width="8"
-      height="12"
-      viewBox="0 0 8 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.23864 11.9841L0.398926 6.1444L6.23864 0.304688L7.60124 1.66729L3.12413 6.1444L7.60124 10.6215L6.23864 11.9841Z"
-        fill="white"
-      />
-    </svg>
-  );
-
-  const rightAngle = (
-    <svg
-      width="8"
-      height="12"
-      viewBox="0 0 8 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4.87604 6.1444L0.398926 1.66729L1.76153 0.304688L7.60124 6.1444L1.76153 11.9841L0.398926 10.6215L4.87604 6.1444Z"
-        fill="white"
-      />
-    </svg>
-  );
-
-  const cancelIcon = (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="24" height="24" rx="12" fill="#F4F4F4" />
-      <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
-        d="M12.9429 12.0002L15.8049 9.13818C16.0656 8.87751 16.0656 8.45617 15.8049 8.1955C15.5442 7.93483 15.1229 7.93483 14.8622 8.1955L12.0002 11.0575L9.13818 8.1955C8.87751 7.93483 8.45617 7.93483 8.1955 8.1955C7.93483 8.45617 7.93483 8.87751 8.1955 9.13818L11.0575 12.0002L8.1955 14.8622C7.93483 15.1229 7.93483 15.5442 8.1955 15.8049C8.3255 15.9349 8.49617 16.0002 8.66684 16.0002C8.83751 16.0002 9.00818 15.9349 9.13818 15.8049L12.0002 12.9429L14.8622 15.8049C14.9922 15.9349 15.1629 16.0002 15.3336 16.0002C15.5042 16.0002 15.6749 15.9349 15.8049 15.8049C16.0656 15.5442 16.0656 15.1229 15.8049 14.8622L12.9429 12.0002Z"
-        fill="#EC1410"
       />
     </svg>
   );
@@ -171,12 +125,15 @@ const MetricTableCard = ({
         <div className="flex justify-between items-center border-b border-[#E5E9EB] pb-2">
           <p className="text-[#1E1E1E] font-normal text-[17.52px]">{title}</p>
           <div className={`${rowCenterClass} !gap-5`}>
-            <p className={topBtnBorderClass} onClick={onClickViewChallenge}>
+            <p
+              className={topBtnBorderClass}
+              onClick={() => onClickViewChallenge && onClickViewChallenge(id)}
+            >
               View Challenges
             </p>
             <div
               className={`${topBtnBorderClass} flex gap-2 items-center`}
-              onClick={onClickComment}
+              onClick={() => onClickComment && onClickComment(id)}
             >
               <p>Comments</p>
               <p>{commentIcon}</p>
@@ -290,7 +247,9 @@ const MetricTableCard = ({
                         className={`mt-2 flex justify-between transition-all duration-300 items-center `}
                       >
                         <div>
-                          <p className="text-[#3E4345] font-semibold text-base">
+                          <p
+                            className={"text-[#3E4345] font-semibold text-base"}
+                          >
                             {`Implied Task ${
                               taskIdx + 1
                             }: ${title} - ${weight}%`}
@@ -352,10 +311,10 @@ const MetricTableCard = ({
                                         <td className="p-2 py-4 text-[#6E7C87] font-normal text-sm">
                                           {period_cycle}
                                         </td>
-                                        <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
+                                        <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
                                           {expected_outcome}
                                         </td>
-                                        <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
+                                        <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
                                           {achieved_outcome}
                                         </td>
                                         <td
@@ -470,3 +429,51 @@ const MetricTableCard = ({
 };
 
 export default MetricTableCard;
+
+const leftAngle = (
+  <svg
+    width="8"
+    height="12"
+    viewBox="0 0 8 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6.23864 11.9841L0.398926 6.1444L6.23864 0.304688L7.60124 1.66729L3.12413 6.1444L7.60124 10.6215L6.23864 11.9841Z"
+      fill="white"
+    />
+  </svg>
+);
+
+const rightAngle = (
+  <svg
+    width="8"
+    height="12"
+    viewBox="0 0 8 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4.87604 6.1444L0.398926 1.66729L1.76153 0.304688L7.60124 6.1444L1.76153 11.9841L0.398926 10.6215L4.87604 6.1444Z"
+      fill="white"
+    />
+  </svg>
+);
+
+const cancelIcon = (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect width="24" height="24" rx="12" fill="#F4F4F4" />
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M12.9429 12.0002L15.8049 9.13818C16.0656 8.87751 16.0656 8.45617 15.8049 8.1955C15.5442 7.93483 15.1229 7.93483 14.8622 8.1955L12.0002 11.0575L9.13818 8.1955C8.87751 7.93483 8.45617 7.93483 8.1955 8.1955C7.93483 8.45617 7.93483 8.87751 8.1955 9.13818L11.0575 12.0002L8.1955 14.8622C7.93483 15.1229 7.93483 15.5442 8.1955 15.8049C8.3255 15.9349 8.49617 16.0002 8.66684 16.0002C8.83751 16.0002 9.00818 15.9349 9.13818 15.8049L12.0002 12.9429L14.8622 15.8049C14.9922 15.9349 15.1629 16.0002 15.3336 16.0002C15.5042 16.0002 15.6749 15.9349 15.8049 15.8049C16.0656 15.5442 16.0656 15.1229 15.8049 14.8622L12.9429 12.0002Z"
+      fill="#EC1410"
+    />
+  </svg>
+);

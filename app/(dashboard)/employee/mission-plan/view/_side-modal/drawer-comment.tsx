@@ -71,7 +71,7 @@ export default function DrawerComment({
     if (show && userId) {
       allMissionPlanComments({
         commentable_id: userId,
-        commentable_type: "mission-plan",
+        commentable_type: "mission-statement",
       });
       getCommentableType({})
         .unwrap()

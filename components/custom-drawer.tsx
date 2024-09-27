@@ -2,8 +2,8 @@ import React from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { X } from "lucide-react";
 
-interface CustomDrawer {
-  title: string;
+export interface CustomDrawerProp {
+  title?: string;
   children?: React.ReactNode;
   open: boolean;
   onClose: () => void;
@@ -14,15 +14,15 @@ export default function CustomDrawer({
   children,
   open,
   onClose,
-}: CustomDrawer) {
+}: CustomDrawerProp) {
   return (
     <Sheet open={open}>
       <SheetContent className="w-[380px]">
-        <div className="font-normal mx-6 mt-5 flex justify-between items-center text-[var(--text-color3)]">
-          {title}
+        <div className="font-normal p-5 flex justify-between items-center bg-primary text-[var(--text-color3)]">
+         <span className="text-white"> {title}</span>
           <span
             onClick={onClose}
-            className="size-6 grid place-content-center rounded-full bg-[var(--btn-light-color)]"
+            className="size-6 grid place-content-center rounded-full cursor-pointer bg-[var(--btn-light-color)]"
           >
             <X className="h-4 w-4" />
           </span>

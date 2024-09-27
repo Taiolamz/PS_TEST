@@ -25,6 +25,9 @@ import SideMenuNavBox from "./SideMenuNavBox";
 import HeaderNavBox from "./HeaderNvaBox";
 import { Button } from "@/components/ui/button";
 import NotificationModal from "./(notification)/NotificationModal";
+import { WarningIcon } from "@/public/assets/icons";
+import Image from "next/image";
+
 // import { checklistDetails } from "../admin/checklist/checklist-steps";
 
 interface myComponentProps {
@@ -81,6 +84,26 @@ const DashboardLayout = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  const ArrowRight = (
+    <svg
+      width="24"
+      height="24"
+      className="group-hover:translate-x-1 transition-all ease-linear"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4.5 11.75C4.5 11.4278 4.73949 11.1614 5.05021 11.1193L5.13659 11.1134H17.8684C18.22 11.1134 18.505 11.3985 18.505 11.75C18.505 12.0723 18.2655 12.3387 17.9548 12.3808L17.8684 12.3866H5.13659C4.78501 12.3866 4.5 12.1016 4.5 11.75Z"
+        fill="currentColor"
+      />
+      <path
+        d="M12.2851 7.0877C12.0359 6.83963 12.0351 6.43656 12.2831 6.18742C12.5087 5.96093 12.8623 5.93963 13.1119 6.124L13.1834 6.18548L18.3186 11.2986C18.5458 11.5248 18.5664 11.8797 18.3806 12.1293L18.3186 12.2008L13.1835 17.3147C12.9343 17.5628 12.5313 17.562 12.2832 17.3129C12.0576 17.0864 12.0378 16.7327 12.2233 16.4839L12.285 16.4126L16.967 11.7494L12.2851 7.0877Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
 
   useEffect(() => {
     // document.documentElement.style.setProperty(
@@ -339,36 +362,65 @@ const DashboardLayout = ({
         <div className={style?.main_content_box}>
           {checkListRoutes?.includes(pathname) &&
             formatChecklistPercent(checklist?.completion_percent) !== 100 && (
+              // <>
+              //   <div
+              //     // href={routesPath?.ADMIN.CHECKLIST}
+              //     className="text-primary font-semibold text-sm"
+              //   >
+              //     <div
+              //       style={{
+              //         display: "flex",
+              //         alignItems: "center",
+              //         justifyContent: "space-between",
+              //         width: "100%",
+              //       }}
+              //       className="bg-[#FFFCC2] underline py-2 px-8"
+              //     >
+              //       {" "}
+              //       <p
+              //         onClick={() => {
+              //           router.push(routesPath?.ADMIN.CHECKLIST);
+              //         }}
+              //         className=" font-semibold  "
+              //         style={{ cursor: "pointer" }}
+              //       >
+              //         Setup Checklist...
+              //       </p>
+              //       <Button
+              //         onClick={handleProceedChecklist}
+              //         className={`font-light`}
+              //       >
+              //         Proceed
+              //       </Button>
+              //     </div>
+              //   </div>
+              // </>
               <>
-                <div
-                  // href={routesPath?.ADMIN.CHECKLIST}
-                  className="text-primary font-semibold text-sm"
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      width: "100%",
-                    }}
-                    className="bg-[#FFFCC2] underline py-2 px-8"
-                  >
-                    {" "}
-                    <p
-                      onClick={() => {
-                        router.push(routesPath?.ADMIN.CHECKLIST);
-                      }}
-                      className=" font-semibold  "
-                      style={{ cursor: "pointer" }}
-                    >
-                      Setup Checklist...
-                    </p>
-                    <Button
+                {/* updated feature... */}
+                <div className="relative">
+                  <div className="relative z-20 bg-[var(--bg-yellow-300)] py-2 px-8 flex justify-between items-center">
+                    <div className="flex gap-14 items-center">
+                      <div className="flex gap-2 items-center">
+                        <Image src={WarningIcon} alt="warning icon" />
+                        <p className="text-[#252C32] font-medium text-base">
+                          Complete your checklist
+                        </p>
+                      </div>
+                      <p
+                        className="text-xs text-[#252C32] underline font-light cursor-pointer"
+                        onClick={handleProceedChecklist}
+                      >
+                        finish checklist items to fully access organization
+                        features
+                      </p>
+                    </div>
+                    <div
                       onClick={handleProceedChecklist}
-                      className={`font-light`}
+                      className="font-medium cursor-pointer text-sm text-[var(--primary-color)] inline-flex gap-x-1 items-center group"
                     >
                       Proceed
-                    </Button>
+                      {ArrowRight}
+                    </div>
                   </div>
                 </div>
               </>

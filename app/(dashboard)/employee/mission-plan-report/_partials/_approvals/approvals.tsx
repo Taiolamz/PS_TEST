@@ -1,10 +1,9 @@
 import BadgeComponent from "@/components/badge/BadgeComponents";
 import { useGetAllOrganizationEmployeeMissionPlanQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 import { formatDate } from "@/utils/helpers/date-formatter";
-
 import { useSearchParams } from "next/navigation";
-import ApprovalUI from "../../_component/approval-ui";
-import MeasureOfSuccess from "../_measure_of_success/measure_of_success";
+import ApprovalUI from "./_partials/approval-ui";
+import { useCallback } from "react";
 
 const Approvals = () => {
   const searchParams = useSearchParams();
@@ -64,14 +63,18 @@ const Approvals = () => {
           employeeData={employeeData}
         />
       );
-    } else if (ui === "approvals" && employeeId) {
-      return <div>Approve Task</div>;
     } else if (
-      measure === "approvals-successs" &&
+      ui === "approvals" &&
+      employeeId &&
+      measure === "approval-task"
+    ) {
+      return <></>;
+    } else if (
+      measure === "approval-successs" &&
       employeeId &&
       ui === "approvals"
     ) {
-      return <MeasureOfSuccess />;
+      return <></>;
     }
   };
   return <div className="w-full mt-[30px]">{getView()}</div>;
