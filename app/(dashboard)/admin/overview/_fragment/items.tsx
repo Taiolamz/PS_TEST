@@ -230,3 +230,15 @@ export const sideTodoIcon = (
     />
   </svg>
 );
+
+const executiveMeasureDetails = [
+  {
+    value: 0,
+  },
+  {
+    value: 0,
+  },
+  {
+    value: 0,
+  },
+];
