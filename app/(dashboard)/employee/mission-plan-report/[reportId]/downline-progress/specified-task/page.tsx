@@ -165,6 +165,7 @@ export default function SpecifiedTask({
         open={challengeModal}
         onClose={() => setChallengeModal(false)}
         id={modalId}
+        data={challengesData}
       />
       <CustomCommentDrawer
         open={commentModal}
@@ -1516,5 +1517,42 @@ const specifiedTaskDetails = [
         ],
       },
     ],
+  },
+];
+
+
+const challengesData = [
+  {
+    id: 1,
+    title: "Incomplete Implied Tasks for Q1",
+    priority: "High",
+    priorityColor: "red", // Can be used to set the background of the status label
+    description:
+      "Please look through your implied tasks, not complete. I have informed OED to decline it",
+    recommendation: "remove user from the team",
+  },
+  {
+    id: 2,
+    title: "Incomplete Implied Tasks for Q2",
+    priority: "Mid",
+    priorityColor: "yellow",
+    description: "Please look through your implied tasks, not complete",
+    recommendation: "remove user from the team",
+  },
+  {
+    id: 3,
+    title: "Incomplete Implied Tasks for Q3",
+    priority: "Low",
+    priorityColor: "green",
+    description: "Please look through your implied tasks, not complete",
+    recommendation: "remove user from the team",
+  },
+  {
+    id: 4,
+    title: "Incomplete Implied Tasks for Q4",
+    priority: "High",
+    priorityColor: "red",
+    description: "Please look through your implied tasks, not complete",
+    recommendation: "remove user from the team",
   },
 ];

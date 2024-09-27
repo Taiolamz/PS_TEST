@@ -3,12 +3,15 @@
 import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout'
 import MetricTableCard from '@/components/card/metric-table-card';
 import CustomSelect from '@/components/custom-select';
+import ChallengeDrawer from '@/components/drawer/challenge-drawer';
 import { ActionLabel, CardContainer, GridLegend, ReusableProgress, ReusableSegmentProgress } from '@/components/fragment';
 import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
 import { getProgressColorByValue } from '@/utils/helpers';
 import React from 'react'
+import { CHALLENGES_DATA } from '../_data';
 
 export default function OrganizationSpecifiedTask() {
+  const [challengeModal, setChallengeModal] = React.useState(false);
 
     const segments = [
         {
@@ -1428,11 +1431,17 @@ export default function OrganizationSpecifiedTask() {
                                     tasks={tasks}
                                     progressValue={percentage}
                                     progressColor={color as "red"}
+                                    onClickViewChallenge={() => setChallengeModal(true)}
                                 />
                         );
                     })}
                 </div>
             </section>
+            <ChallengeDrawer
+              open={challengeModal}
+              onClose={() => setChallengeModal(false)}
+              data={CHALLENGES_DATA}
+            />
         </DashboardLayout>
     )
 }
