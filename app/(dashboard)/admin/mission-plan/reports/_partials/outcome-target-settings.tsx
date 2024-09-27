@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useFormik } from "formik";
 import { useMemo, useState } from "react";
 import { REVIEW_PERIOD_OPTIONS } from "../_data";
+import { cn } from "@/lib/utils";
 
 const OutcomeTargetSettings = () => {
     const [submissionOptions, setSubmissionOptions] = useState({
@@ -71,6 +72,18 @@ const OutcomeTargetSettings = () => {
 
     return (
         <section className="">
+            <div className="flex justify-end">
+                <Button
+                    className={cn(
+                        "border border-[var(--primary-color)] text-[var(--primary-color)] hover:text-primary/5 disabled:opacity-30"
+                    )}
+                    variant="outline"
+                    // disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
+                    onClick={() => null}
+                >
+                    Extend Submission Period
+                </Button>
+            </div>
             <CardContainer className="mt-6"
                 title="Expected Outcome and Target Setting Period"
                 subTitle="Select below if you want to accept submissions or allow line manager review and approve submissions of expected outcomes and targets"

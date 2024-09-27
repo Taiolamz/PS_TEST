@@ -136,7 +136,10 @@ export default function CustomCommentDrawer({
                 <PageLoader />
               </div>
             ) : (
-              <div className="space-y-4 place-content-center">
+              <div className={cn(
+                "space-y-4",
+                data?.length === 0 && "place-content-center"
+              )}>
                 {
                   data?.length ?
                     data?.map((item: any) => (
