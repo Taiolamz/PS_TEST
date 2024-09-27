@@ -1,11 +1,8 @@
 import BadgeComponent from "@/components/badge/BadgeComponents";
 import { useGetAllOrganizationEmployeeMissionPlanQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 import { formatDate } from "@/utils/helpers/date-formatter";
-
 import { useSearchParams } from "next/navigation";
 import ApprovalUI from "./_partials/approval-ui";
-import MeasureOfSuccess from "../_measure_of_success/measure_of_success";
-import ActualOutcomeApproval from "../../[reportId]/approval-progress/approval-tasks-submission/_partials/actual-outcome-approval";
 import { useCallback } from "react";
 
 const Approvals = () => {
@@ -13,8 +10,6 @@ const Approvals = () => {
   const ui = searchParams.get("ui");
   const employeeId = searchParams.get("empID");
   const measure = searchParams.get("measure");
-
-  
 
   const {
     data: employeeData,
@@ -33,7 +28,6 @@ const Approvals = () => {
     fiscal_year_id: "01j80dtcr56d3pxts26prs9547",
   });
 
-  
   const FORMAT_TABLE_DATA = (obj: any) => {
     return obj?.map((org: any) => ({
       name: (
@@ -74,13 +68,13 @@ const Approvals = () => {
       employeeId &&
       measure === "approval-task"
     ) {
-      return <ActualOutcomeApproval />;
+      return <></>;
     } else if (
       measure === "approval-successs" &&
       employeeId &&
       ui === "approvals"
     ) {
-      return <MeasureOfSuccess />;
+      return <></>;
     }
   };
   return <div className="w-full mt-[30px]">{getView()}</div>;
