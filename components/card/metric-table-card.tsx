@@ -247,7 +247,9 @@ const MetricTableCard = ({
                         className={`mt-2 flex justify-between transition-all duration-300 items-center `}
                       >
                         <div>
-                          <p className="text-[#3E4345] font-semibold text-base">
+                          <p
+                            className={"text-[#3E4345] font-semibold text-base"}
+                          >
                             {`Implied Task ${
                               taskIdx + 1
                             }: ${title} - ${weight}%`}
