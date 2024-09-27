@@ -294,22 +294,15 @@ const Preview = ({ data, type, handleGetMyMissionPlan }: PreviewProps) => {
       )}
       {specified_tasks.length !== 0 && (
         <>
-          {type === "lineManagerPreview" ? (
-            <MissionItemsLineManager
-              data={specified_tasks}
-              type="specifiedTasks"
-            />
-          ) : (
-            <SpecifiedTasksDropDown
-              data={specified_tasks ?? []}
-              approvables={specified_tasks?.approvables ?? []}
-              loading={false}
-              bg="bg-white"
-              setOpenDrawer={setOpenDrawer}
-              setDrawerUserId={setDrawerUserId}
-              setComponentType={setComponentType}
-            />
-          )}
+          <SpecifiedTasksDropDown
+            data={specified_tasks ?? []}
+            approvables={specified_tasks?.approvables ?? []}
+            loading={false}
+            bg="bg-white"
+            setOpenDrawer={setOpenDrawer}
+            setDrawerUserId={setDrawerUserId}
+            setComponentType={setComponentType}
+          />
         </>
       )}
 
