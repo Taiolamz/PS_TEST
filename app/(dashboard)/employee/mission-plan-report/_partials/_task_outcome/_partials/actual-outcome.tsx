@@ -8,10 +8,12 @@ import { ReusableDrawer } from "@/components/fragment";
 import History from "./history";
 import CommentCard from "../../../_component/comment-card";
 import Comment from "./comment";
+import ReportChallengeModal from "./report-challenge-modal";
 
 const ActualOutcome = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
   const handleFormSubmit = () => {};
 
   const formik = useFormik({
@@ -58,6 +60,11 @@ const ActualOutcome = () => {
           <Comment />
         </div>
       </ReusableDrawer>
+
+      <ReportChallengeModal
+        show={showChallengeModal}
+        handleClose={() => setShowChallengeModal(false)}
+      />
       {data?.map((item, idx) => (
         <CustomAccordion
           key={idx}
@@ -65,25 +72,25 @@ const ActualOutcome = () => {
           headerClassName="bg-white p-5 border border-custom-divider rounded"
           title={
             <div className="flex w-full gap-x-5">
-              <p className="text-[#015858] text-2xl">{idx + 1}.</p>
+              <p className="text-[#015858] text-xl">{idx + 1}.</p>
               <div className="flex justify-between items-center w-[80%]">
                 <div className="w-[60%] text-left grid gap-y-2">
-                  <p className="text-[#9AA6AC80] text-sm font-medium">
+                  <p className="text-[#222222ef] text-sm font-medium">
                     Specified task
                   </p>
-                  <p className="text-[#1E1E1E80] font-medium">{item.title}</p>
-                  <p className="text-[#9AA6AC80] text-sm">
+                  <p className="text-[#222222d2] font-medium">{item.title}</p>
+                  <p className="text-[#222222ef] text-sm">
                     {item.startDate} - {item.endDate}
                   </p>
                 </div>
                 <div>
-                  <p className="text-[#9AA6AC80] text-sm font-medium mb-2">
+                  <p className="text-[#222222ef] text-sm font-medium mb-2">
                     Weight
                   </p>
-                  <p className="font-medium text-[#1E1E1E80]">{item.weight}%</p>
+                  <p className="font-medium text-[#222222ef]">{item.weight}%</p>
                 </div>
                 <div>
-                  <p className="text-[#9AA6AC80] text-sm font-medium mb-2">
+                  <p className="text-[#222222ef] text-sm font-medium mb-2">
                     Status
                   </p>
                   <p className="font-medium text-[#FFC043]">{item.status}</p>
@@ -102,13 +109,14 @@ const ActualOutcome = () => {
                           (implied_task: any, index: number) => (
                             <div
                               key={index}
-                              className="pt-8 border border-[#E5E9EB] p-8 bg-[#FAFAFA]"
+                              className="pt-8 border border-[#E5E9EB] p-8 bg-white"
                             >
                               <ImpliedTask
                                 formik={formik}
                                 impliedTaskData={item.impliedTasks}
                                 setShowHistory={setShowHistory}
                                 setShowComment={setShowComment}
+                                setShowChallengeModal={setShowChallengeModal}
                               />
                             </div>
                           )

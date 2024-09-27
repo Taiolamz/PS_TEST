@@ -3,12 +3,15 @@ import { Input } from "@/components/ui/input";
 import CommentsIcon from "@/public/assets/icons/comments";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import React from "react";
+import { MdOutlineAttachment } from "react-icons/md";
+import Icon from "react-multi-date-picker/components/icon";
 
 interface ImpliedTaskProps {
   formik?: any;
   impliedTaskData?: any[];
   setShowHistory: (item: any) => void;
   setShowComment: (item: any) => void;
+  setShowChallengeModal: (item: any) => void;
 }
 
 const ImpliedTask = ({
@@ -16,6 +19,7 @@ const ImpliedTask = ({
   impliedTaskData,
   setShowHistory,
   setShowComment,
+  setShowChallengeModal,
 }: ImpliedTaskProps) => {
   return (
     <div className="grid gap-y-10">
@@ -26,7 +30,7 @@ const ImpliedTask = ({
               <DotFilledIcon />{" "}
               <p className="text-[#1E1E1E] capitalize">{item.title}</p>
             </span>
-            <span className="flex items-center gap-x-1 text-[#5A5B5F] text-sm">
+            <span className="flex items-center gap-x-1 text-[#1E1E1E] text-sm">
               Percent Completed:
               <p className="text-base font-semibold text-red-500">
                 {" "}
@@ -37,20 +41,20 @@ const ImpliedTask = ({
           <div className="mt-7 flex gap-x-3">
             <div className="w-full">
               <div className="flex">
-                <p className="w-[36%] text-[#9AA6ACCC] text-sm">Name of Task</p>
-                <p className="w-[16%] text-[#9AA6ACCC] text-sm">Weight</p>
-                <p className="w-[40%] text-[#9AA6ACCC] text-sm">Resource</p>
+                <p className="w-[36%] text-[#222222ef] text-sm">Name of Task</p>
+                <p className="w-[16%] text-[#222222ef] text-sm">Weight</p>
+                <p className="w-[40%] text-[#222222ef] text-sm">Resource</p>
               </div>
               <hr className="my-3" />
               {item.task.map((item: any, idx: any) => (
                 <div key={idx} className="flex">
-                  <p className="w-[36%] text-[#9AA6ACCC] text-xs">
+                  <p className="w-[36%] text-[#222222da] text-xs">
                     {item.name}
                   </p>
-                  <p className="w-[16%] text-[#9AA6ACCC] text-xs">
+                  <p className="w-[16%] text-[#222222da] text-xs">
                     {item.weight}%
                   </p>
-                  <p className="w-[40%] text-[#9AA6ACCC] text-xs">
+                  <p className="w-[40%] text-[#222222da] text-xs">
                     {item.resources.join(", ")}
                   </p>
                 </div>
@@ -64,7 +68,7 @@ const ImpliedTask = ({
                 </Button>
                 <Button
                   onClick={() => setShowComment(true)}
-                  className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                  className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                 >
                   Comments
                   <CommentsIcon />
@@ -93,7 +97,7 @@ const ImpliedTask = ({
                 error={formik.errors.actual_outcome}
                 placeholder="Input Actual Outcome"
               />
-              <div>
+              <div className="flex flex-wrap items-center gap-x-2">
                 <Input
                   label="My Contribution"
                   id="contribution"
@@ -104,6 +108,16 @@ const ImpliedTask = ({
                   error={formik.errors.contribution}
                   placeholder="Input Contribution"
                 />
+                <Button className="flex items-center gap-x-1 mt-6 bg-transparent shadow-none p-0 text-xs">
+                  <p className="text-[var(--primary-color)]">Attach</p>
+                  <MdOutlineAttachment color="var(--primary-color)" size={18} />
+                </Button>
+                <Button
+                  onClick={() => setShowChallengeModal(true)}
+                  className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
+                >
+                  Report Challenge
+                </Button>
               </div>
               <div className="">
                 <p className="block relative text-xs  text-[#6E7C87] font-normal pb-2">
