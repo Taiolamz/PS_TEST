@@ -55,15 +55,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}{" "}
           </label>
         )}
-        <form
-          autoComplete="off"
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-          action=""
-          style={{ width: "100%" }}
-        >
-          <input
+         <input
             type={type}
             onBlur={handleBlur}
             onChange={onChange}
@@ -82,7 +74,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
             defaultValue={type === "color" ? "var(--primary-color)" : ""}
           />
-        </form>
+        {/* <form
+          autoComplete="off"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+          action=""
+          style={{ width: "100%" }}
+        >
+         
+        </form> */}
         <span className={cn("text-xs text-red-500 hidden", error && "block")}>
           {error && touched && error}
         </span>

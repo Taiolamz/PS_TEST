@@ -1,3 +1,5 @@
+import avatar from "@/public/svgs/avatar.svg";
+
 export const data = [
   {
     id: 1,
@@ -153,5 +155,75 @@ export const data = [
         ],
       },
     ],
+  },
+];
+
+export const historyData = [
+  {
+    id: 1,
+    month: "January",
+    status: "approved",
+    title: "Measure of Success Title",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+  {
+    id: 2,
+    month: "February",
+    status: "approved",
+    title: "Revenue",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+  {
+    id: 3,
+    month: "March",
+    status: "approved",
+    title: "Revenue",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+  {
+    id: 4,
+    month: "April",
+    status: "approved",
+    title: "Revenue",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+];
+
+export const commentData = [
+  {
+    id: 1,
+    name: "Seyi Ajayi",
+    date: "06-06-2022,  2mins",
+    comment: "Please look through your implied tasks, not complete",
+    img: avatar,
+  },
+  {
+    id: 2,
+    name: "Seyi Ajayi",
+    date: "06-06-2022,  2mins",
+    comment: "Please look through your implied tasks, not complete",
+    img: avatar,
+  },
+  {
+    id: 3,
+    name: "Seyi Ajayi",
+    date: "06-06-2022,  2mins",
+    comment: "Please look through your implied tasks, not complete",
+    img: avatar,
+  },
+  {
+    id: 4,
+    name: "Seyi Ajayi",
+    date: "06-06-2022,  2mins",
+    comment: "Please look through your implied tasks, not complete",
+    img: avatar,
   },
 ];

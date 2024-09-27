@@ -293,7 +293,7 @@ const ViewMissionPlaTemplate: React.FC = () => {
               )
             }
             className="relative"
-            iconClass="cursor-not-allowed"
+            iconClass="cursor-not-allowed top-7"
             inputClass="text-[#d3d3d3] cursor-not-allowed"
             error={""}
             disabled
@@ -310,7 +310,7 @@ const ViewMissionPlaTemplate: React.FC = () => {
             }
             placeholder="sdfsdf"
             error={""}
-            iconClass="cursor-not-allowed"
+            iconClass="cursor-not-allowed top-7"
             className="relative"
             inputClass="text-[#d3d3d3] cursor-not-allowed"
             disabled

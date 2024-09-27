@@ -125,7 +125,7 @@ const MissionItemsLineManager = ({ data, type }: dataProp) => {
                             </div>
                             <div className="flex gap-[5px] items-center mt-2">
                               <p className="font-[400]">Percentage :</p>
-                              <p className="text-sm font-light">{`${percentage}%`}</p>
+                              <p className="text-sm font-light">{percentage ? `${percentage}%` : '---'}</p>
                             </div>
                             <div className="flex gap-[5px] items-center">
                               <p className="font-[400]">Resource :</p>

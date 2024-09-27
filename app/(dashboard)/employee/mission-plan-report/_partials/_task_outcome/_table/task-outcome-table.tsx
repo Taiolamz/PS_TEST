@@ -30,7 +30,7 @@ const TaskOutcomeTable = ({
   );
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 mt-6">
       <TableWrapper
         tableheaderList={[
           "FY Name",
