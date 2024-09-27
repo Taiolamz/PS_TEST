@@ -14,6 +14,8 @@ import { Textarea } from "@/components/ui/textarea";
 interface ImpliedTaskProps {
   formik?: any;
   impliedTaskData?: any[];
+  setShowHistory: (item: any) => void;
+  setShowComment: (item: any) => void;
 }
 const formSchema = yup.object().shape({
   reason: yup
@@ -22,7 +24,12 @@ const formSchema = yup.object().shape({
     .required("reason for rejection is required"),
 });
 
-const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
+const ImpliedTaskApproval = ({
+  formik,
+  impliedTaskData,
+  setShowHistory,
+  setShowComment,
+}: ImpliedTaskProps) => {
   const handleSubmit = () => {
     console.log("djkdj", rejectFormik.values);
   };
@@ -81,10 +88,16 @@ const ImpliedTaskApproval = ({ formik, impliedTaskData }: ImpliedTaskProps) => {
                 </div>
               ))}
               <div className="flex gap-x-3 mt-8">
-                <Button className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none">
+                <Button
+                  className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                  onClick={() => setShowHistory(true)}
+                >
                   View History
                 </Button>
-                <Button className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none">
+                <Button
+                  className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                  onClick={() => setShowComment(true)}
+                >
                   Comments
                   <CommentsIcon />
                 </Button>
