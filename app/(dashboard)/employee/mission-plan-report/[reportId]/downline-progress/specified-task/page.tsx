@@ -175,6 +175,7 @@ export default function SpecifiedTask({
           // console.log(value, "comment");
         }}
         commentType="specified-task"
+        data={allComment}
       />
     </DashboardLayout>
   );
@@ -1554,5 +1555,26 @@ const challengesData = [
     priorityColor: "red",
     description: "Please look through your implied tasks, not complete",
     recommendation: "remove user from the team",
+  },
+];
+
+const allComment = [
+  {
+    id: "34eef",
+    staff_member: { name: "Inioluwa Alake" },
+    created_at: "2024-01-01T14:30:45",
+    comment: "Discuss with your driect LM on this ",
+  },
+  {
+    id: "243423",
+    staff_member: { name: "Adeyinka Balagun" },
+    created_at: "2024-09-22T14:30:45",
+    comment: "Check your specified unit. Its wrong",
+  },
+  {
+    id: "2334gr",
+    staff_member: { name: "Charles Uwaje" },
+    created_at: "2024-09-27T02:30:45",
+    comment: "21 savage is goated take it or leave it",
   },
 ];
