@@ -7,14 +7,23 @@ import CustomSelect from "@/components/custom-select";
 import MetricFrame from "@/components/card/frame";
 import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
+import ChallengeDrawer from "../../../../../../../components/drawer/challenge-drawer";
+import CustomCommentDrawer from "../../../../../../../components/drawer/comment-drawer";
 
 export default function SpecifiedTask({
   params,
 }: {
   params: { reportId: string };
 }) {
+  // Filter select input dropdown
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
+
+  // Open modal for challenge and Comment
+  const [commentModal, setCommentModal] = React.useState(false);
+  const [challengeModal, setChallengeModal] = React.useState(false);
+  // Specified task Id for the modal
+  const [modalId, setModalId] = React.useState("");
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
@@ -126,22 +135,46 @@ export default function SpecifiedTask({
               tasks,
               measureOfSuccessDetails,
               color,
+              id,
             } = chi;
             return (
               <MetricTableCard
                 key={idx}
+                id={id}
                 title={title}
                 percentage={percentage}
                 measureOfSuccessDetails={measureOfSuccessDetails}
                 tasks={tasks}
                 progressValue={percentage}
                 progressColor={color as "red"}
+                onClickComment={(id) => {
+                  id && setModalId(id);
+                  setCommentModal(true);
+                }}
+                onClickViewChallenge={(id) => {
+                  id && setModalId(id);
+                  setChallengeModal(true);
+                }}
               />
             );
           })}
         </div>
         {/*   Specified Task Details Section End */}
       </div>
+      <ChallengeDrawer
+        open={challengeModal}
+        onClose={() => setChallengeModal(false)}
+        id={modalId}
+      />
+      <CustomCommentDrawer
+        open={commentModal}
+        onClose={() => setCommentModal(false)}
+        id={modalId}
+        handleSubmit={(value) => {
+          // console.log(value, "comment");
+        }}
+        commentType="specified-task"
+      />
     </DashboardLayout>
   );
 }
@@ -204,6 +237,7 @@ const profileImages = [
 
 const specifiedTaskDetails = [
   {
+    id: "123456789st",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 67,
@@ -227,6 +261,7 @@ const specifiedTaskDetails = [
     ],
     tasks: [
       {
+        id: "12deuwwwwfie",
         title: "Sell and Market Revvex as a user product",
         weight: 50,
         impliedTasks: [
@@ -523,6 +558,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789nd",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 48,
@@ -842,6 +878,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789rd",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 80,
@@ -1161,6 +1198,7 @@ const specifiedTaskDetails = [
     ],
   },
   {
+    id: "123456789rth",
     title: "Achieve Revenue from sales of Zojatech Products",
     weight: 50,
     percentage: 48,
