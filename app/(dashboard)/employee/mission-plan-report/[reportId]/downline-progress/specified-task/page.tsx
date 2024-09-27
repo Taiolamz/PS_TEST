@@ -7,6 +7,8 @@ import CustomSelect from "@/components/custom-select";
 import MetricFrame from "@/components/card/frame";
 import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
+import ChallengeDrawer from "../../../_component/challenge-drawer";
+import CustomCommentDrawer from "../../../_component/comment-drawer";
 
 export default function SpecifiedTask({
   params,
@@ -16,6 +18,12 @@ export default function SpecifiedTask({
   // Filter select input dropdown
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
+
+  // Open modal for challenge and Comment
+  const [commentModal, setCommentModal] = React.useState(false);
+  const [challengeModal, setChallengeModal] = React.useState(false);
+  // Specified task Id for the modal
+  const [modalId, setModalId] = React.useState("");
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
@@ -140,10 +148,12 @@ export default function SpecifiedTask({
                 progressValue={percentage}
                 progressColor={color as "red"}
                 onClickComment={(id) => {
-                  console.log(id, "comment");
+                  id && setModalId(id);
+                  setCommentModal(true);
                 }}
                 onClickViewChallenge={(id) => {
-                  console.log(id, "challange");
+                  id && setModalId(id);
+                  setChallengeModal(true);
                 }}
               />
             );
@@ -151,6 +161,19 @@ export default function SpecifiedTask({
         </div>
         {/*   Specified Task Details Section End */}
       </div>
+      <ChallengeDrawer
+        open={challengeModal}
+        onClose={() => setChallengeModal(false)}
+        id={modalId}
+      />
+      <CustomCommentDrawer
+        open={commentModal}
+        onClose={() => setCommentModal(false)}
+        id={modalId}
+        handleSubmit={(value) => {
+          console.log(value, "comment");
+        }}
+      />
     </DashboardLayout>
   );
 }

@@ -1,92 +1,57 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { PageLoader } from "@/components/custom-loader";
-import { ReusableDrawer } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import {
-  useAddMssionPlanCommentMutation,
-  useAllMssionPlanCommentsMutation,
-  useLazyGetCommentableTypeQuery,
-} from "@/redux/services/mission-plan/missionPlanCommentApi";
 import { useAppSelector } from "@/redux/store";
 import { returnInitial } from "@/utils/helpers";
 import { formatTimestamp } from "@/utils/helpers/date-formatter";
 import { commentSchema } from "@/utils/schema/mission-plan";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
+import CustomDrawer, { CustomDrawerProp } from "@/components/custom-drawer";
 
-export default function DrawerComment({
-  show,
-  handleClose,
-  userId,
-}: {
-  show: boolean;
-  handleClose: () => void;
-  userId?: string;
-}) {
+interface ChallengeDrawerProp extends CustomDrawerProp {
+  id?: string;
+  loadingAddComment?: boolean;
+  loadingComment?: boolean;
+  error?: any;
+  handleSubmit: (value: { comment: any }) => void;
+}
+
+export default function CustomCommentDrawer({
+  open,
+  onClose,
+  id,
+  loadingComment,
+  loadingAddComment,
+  error,
+  handleSubmit,
+}: ChallengeDrawerProp) {
   const { user } = useAppSelector((state) => state.auth);
-
-  const [
-    allMissionPlanComments,
-    { isLoading: loadingComment, error: allCommenterror, data: allComment },
-  ] = useAllMssionPlanCommentsMutation();
-
-  const [addMissionPlanComments, { isLoading: loadingAddComment }] =
-    useAddMssionPlanCommentMutation();
-
-  const [getCommentableType] = useLazyGetCommentableTypeQuery();
 
   const formik = useFormik({
     initialValues: {
       comment: "",
     },
     validationSchema: commentSchema,
-    onSubmit: (values) => {
-      addMissionPlanComments({
-        ...values,
-        commentable_id: userId,
-        commentable_type: "mission-plan",
-      })
-        .unwrap()
-        .then((data) => {
-          clearForm();
-          allMissionPlanComments({
-            commentable_id: userId,
-            commentable_type: "mission-plan",
-          });
-        })
-        .catch((error) => {});
-    },
+    onSubmit: (value) => handleSubmit(value),
   });
 
-  const clearForm = () => {
-    formik.setValues({ comment: "" });
-    formik.setErrors({ comment: "" });
-    formik.setTouched({});
-  };
-
+  //  Empty form if id changes
   useEffect(() => {
+    const clearForm = () => {
+      formik.setValues({ comment: "" });
+      formik.setErrors({ comment: "" });
+      formik.setTouched({});
+    };
     clearForm();
-    if (show && userId) {
-      allMissionPlanComments({
-        commentable_id: userId,
-        commentable_type: "mission-statement",
-      });
-      getCommentableType({})
-        .unwrap()
-        .then((data) => {});
-    }
-  }, [userId]);
+  }, [id]);
 
   return (
-    <ReusableDrawer
-      title="Comment"
-      show={show}
-      handleClose={handleClose}
-      closeOnClickOutside={false}
-    >
-      <section className="h-[92vh] flex flex-col">
+    <CustomDrawer title="Comments" open={open} onClose={onClose}>
+      <div className="sr-only">This is the id to fetch this challenge {id}</div>
+      <section className="h-[calc(100vh-66px)] grid">
         <form
           onSubmit={formik.handleSubmit}
           className="bg-custom-gray-2 px-6 pt-7 pb-5"
@@ -100,7 +65,6 @@ export default function DrawerComment({
               </div>
             </div>
             <div className="w-full">
-              {/* <textarea name="comment" id="comment"></textarea> */}
               <Textarea
                 rows={3}
                 id="comment"
@@ -121,11 +85,9 @@ export default function DrawerComment({
                 className={cn(
                   "w-full mt-3.5 float-right",
                   !formik.isValid
-                    ? // || isLoadingStrategicIntent
-                      "opacity-50 cursor-not-allowed w-max"
+                    ? "opacity-50 cursor-not-allowed w-max"
                     : "cursor-pointer text-white py-3 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
                 )}
-                // className={`text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] min-w-28`}
               >
                 Comment
               </Button>
@@ -135,14 +97,14 @@ export default function DrawerComment({
 
         <main className="pl-4 pt-3 flex-1 flex flex-col">
           <h3 className="text-sm mb-4">Previous Comments</h3>
-          <section className="space-y-4 h-[53dvh] grid overflow-y-auto pr-3">
-            {allCommenterror ? (
+          <section className="space-y-4 h-[calc(100vh-296px)] grid overflow-y-auto pr-3 pb-3">
+            {error ? (
               <></>
             ) : loadingComment ? (
               <div className="place-content-center">
                 <PageLoader />
               </div>
-            ) : allComment?.data?.length === 0 ? (
+            ) : allComment?.length === 0 ? (
               <div className="text-center place-content-center mt-16">
                 <p className="text-custom-gray-scale-400 font-medium text-sm">
                   No Comments Yet
@@ -150,9 +112,9 @@ export default function DrawerComment({
               </div>
             ) : (
               <div className="space-y-4">
-                {allComment?.data?.map((item: any) => (
+                {allComment?.map((item: any) => (
                   <div
-                    key={item}
+                    key={item?.id}
                     className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
                   >
                     <div className="flex justify-between mb-2">
@@ -183,6 +145,27 @@ export default function DrawerComment({
           </section>
         </main>
       </section>
-    </ReusableDrawer>
+    </CustomDrawer>
   );
 }
+
+const allComment = [
+  {
+    id: "34eef",
+    staff_member: { name: "Inioluwa Alake" },
+    created_at: "2024-01-01T14:30:45",
+    comment: "Discuss with your driect LM on this ",
+  },
+  {
+    id: "243423",
+    staff_member: { name: "Adeyinka Balagun" },
+    created_at: "2024-09-22T14:30:45",
+    comment: "Check your specified unit. Its wrong",
+  },
+  {
+    id: "2334gr",
+    staff_member: { name: "Charles Uwaje" },
+    created_at: "2024-09-27T02:30:45",
+    comment: "21 savage is goated take it or leave it",
+  },
+];

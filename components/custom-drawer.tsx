@@ -2,8 +2,8 @@ import React from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { X } from "lucide-react";
 
-interface CustomDrawer {
-  title: string;
+export interface CustomDrawerProp {
+  title?: string;
   children?: React.ReactNode;
   open: boolean;
   onClose: () => void;
@@ -14,7 +14,7 @@ export default function CustomDrawer({
   children,
   open,
   onClose,
-}: CustomDrawer) {
+}: CustomDrawerProp) {
   return (
     <Sheet open={open}>
       <SheetContent className="w-[380px]">
