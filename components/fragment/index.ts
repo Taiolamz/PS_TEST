@@ -21,6 +21,8 @@ import PercentageLabel from './labels/percentage';
 import SingleExcutiveProgress from './excutive-progress';
 import ActionLabel from './button/action-label';
 import GridLegend from './legend/grid-legend';
+import LottieAnimation from './lottie-animation';
+
 
 export {
   EmptyState,
@@ -43,5 +45,6 @@ export {
   PercentageLabel,
   SingleExcutiveProgress,
   ActionLabel,
-  GridLegend
+  GridLegend,
+  LottieAnimation
 };
