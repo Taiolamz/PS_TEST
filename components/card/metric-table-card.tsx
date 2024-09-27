@@ -247,7 +247,9 @@ const MetricTableCard = ({
                         className={`mt-2 flex justify-between transition-all duration-300 items-center `}
                       >
                         <div>
-                          <p className="text-[#3E4345] font-semibold text-base">
+                          <p
+                            className={"text-[#3E4345] font-semibold text-base"}
+                          >
                             {`Implied Task ${
                               taskIdx + 1
                             }: ${title} - ${weight}%`}
@@ -309,10 +311,10 @@ const MetricTableCard = ({
                                         <td className="p-2 py-4 text-[#6E7C87] font-normal text-sm">
                                           {period_cycle}
                                         </td>
-                                        <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
+                                        <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
                                           {expected_outcome}
                                         </td>
-                                        <td className="p-2 py-4 w-[200px] text-[#6E7C87] font-normal text-sm">
+                                        <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
                                           {achieved_outcome}
                                         </td>
                                         <td

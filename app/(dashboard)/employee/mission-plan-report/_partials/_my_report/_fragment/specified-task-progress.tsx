@@ -115,7 +115,7 @@ const SpecifiedTaskProgress = () => {
             }
           >
             <p className="font-medium">See Progress Details</p>
-            <figure className="group-hover:translate-x-1 transition-all">
+            <figure className="group-hover:translate-x-1 transition-all ease-linear">
               {arrowRight}
             </figure>
           </Button>
