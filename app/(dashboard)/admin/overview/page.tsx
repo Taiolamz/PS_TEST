@@ -51,7 +51,9 @@ const orgTaskCompletionDisplay = (
                 className="w-[25px] h-[10px] rounded-[2px]"
                 style={{ backgroundColor: color }}
               ></span>
-              <p style={{ color: color }} className="text-medium text-sm">{label}</p>
+              <p style={{ color: color }} className="text-medium text-sm">
+                {label}
+              </p>
             </div>
             <p className="text-[#6E7C87] font-light">: {value}</p>
           </div>
@@ -158,6 +160,22 @@ const OverView = () => {
                 </p>
               </div>
               <div>{orgTaskCompletionDisplay}</div>
+            </div>
+          </MetricFrame>
+
+          <MetricFrame>
+            <div className="flex justify-between items-center">
+              <p className="text-[#252C32] font-medium text-base">
+                Top Executive Measures of Success, FY
+              </p>
+              <Link href="#" className="flex gap-2 items-center group">
+                <p className="font-medium text-[13px] text-primary">
+                  See Details
+                </p>
+                <figure className="group-hover:translate-x-1 transition-all ease-linear">
+                  {chevronRight}
+                </figure>
+              </Link>
             </div>
           </MetricFrame>
         </div>
