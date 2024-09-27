@@ -10,25 +10,36 @@ import { commentSchema } from "@/utils/schema/mission-plan";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import CustomDrawer, { CustomDrawerProp } from "@/components/custom-drawer";
+import { Dictionary } from "@/@types/dictionary";
+import { LottieAnimation } from "../fragment";
+import { LottieEmptyState } from "@/lottie";
 
-interface ChallengeDrawerProp extends CustomDrawerProp {
+type COMMENT_DATA_TYPE = {
+  id: number | string,
+  staff_member: Dictionary,
+  created_at: string,
+  comment: string,
+}
+
+interface CommentDrawerProp extends CustomDrawerProp {
   id: string;
   loadingAddComment?: boolean;
   loadingComment?: boolean;
   error?: any;
+  data: COMMENT_DATA_TYPE[],
   handleSubmit: (value: {
     comment: string;
     component_type: string;
     component_id: string;
   }) => void;
   commentType:
-    | "mission-statement"
-    | "boundary"
-    | "strategic-intent"
-    | "specified-task"
-    | "implied-task"
-    | "strategic-pillar"
-    | "success-measure";
+  | "mission-statement"
+  | "boundary"
+  | "strategic-intent"
+  | "specified-task"
+  | "implied-task"
+  | "strategic-pillar"
+  | "success-measure";
 }
 
 export default function CustomCommentDrawer({
@@ -40,7 +51,8 @@ export default function CustomCommentDrawer({
   error,
   commentType,
   handleSubmit,
-}: ChallengeDrawerProp) {
+  data
+}: CommentDrawerProp) {
   const { user } = useAppSelector((state) => state.auth);
 
   const formik = useFormik({
@@ -123,48 +135,52 @@ export default function CustomCommentDrawer({
               <div className="place-content-center">
                 <PageLoader />
               </div>
-            ) : allComment?.length === 0 ? (
-              <div className="text-center place-content-center mt-16">
-                <p className="text-custom-gray-scale-400 font-medium text-sm">
-                  No Comments Yet
-                </p>
-              </div>
             ) : (
-              <div className="space-y-4">
-                {allComment?.map((item: any) => (
-                  <div
-                    key={item?.id}
-                    className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
-                  >
-                    <div className="flex justify-between mb-2">
-                      <div className="flex items-center gap-x-[7px]">
-                        <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
-                          <span className="text-white font-semibold uppercase text-xs">
-                            {returnInitial(item?.staff_member?.name)}
-                          </span>
+              <div className="space-y-4 place-content-center">
+                {
+                  data?.length ?
+                    data?.map((item: any) => (
+                      <div
+                        key={item?.id}
+                        className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
+                      >
+                        <div className="flex justify-between mb-2">
+                          <div className="flex items-center gap-x-[7px]">
+                            <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
+                              <span className="text-white font-semibold uppercase text-xs">
+                                {returnInitial(item?.staff_member?.name)}
+                              </span>
+                            </div>
+                            <div className="space-y-1">
+                              <h3 className="text-sm font-medium text-custom-dark-gray">
+                                {item?.staff_member?.name}
+                              </h3>
+                              <p className="text-[10px] font-light text-custom-gray-scale-400">
+                                {formatTimestamp(item?.created_at)}
+                              </p>
+                            </div>
+                          </div>
+                          <span className="size-1.5 bg-custom-red rounded-full" />
                         </div>
-                        <div className="space-y-1">
-                          <h3 className="text-sm font-medium text-custom-dark-gray">
-                            {item?.staff_member?.name}
-                          </h3>
-                          <p className="text-[10px] font-light text-custom-gray-scale-400">
-                            {formatTimestamp(item?.created_at)}
-                          </p>
+                        <div className="text-[13px] text-custom-ash">
+                          {item?.comment}
                         </div>
                       </div>
-                      <span className="size-1.5 bg-custom-red rounded-full" />
+                    ))
+                    :
+                    <div className="overflow-hidden">
+                      <LottieAnimation
+                        animationData={LottieEmptyState}
+                        height={"8rem"}
+                      />
                     </div>
-                    <div className="text-[13px] text-custom-ash">
-                      {item?.comment}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                }
+          </div>
             )}
-          </section>
-        </main>
       </section>
-    </CustomDrawer>
+    </main>
+      </section >
+    </CustomDrawer >
   );
 }
 
