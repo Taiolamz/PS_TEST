@@ -127,6 +127,7 @@ const FinancialYearPreview = () => {
                     handleChange={() => null}
                     error=""
                     disabled
+                    iconClass='top-7'
                   />
                   <CustomDateInput
                     label="End Period"
@@ -135,6 +136,7 @@ const FinancialYearPreview = () => {
                     handleChange={() => null}
                     error=""
                     disabled
+                    iconClass='top-7'
                   />
                 </div>
                 <div className="mt-6 w-1/3">
@@ -143,7 +145,7 @@ const FinancialYearPreview = () => {
                     id=""
                     options={[
                       { label: "Monthly", value: "monthly" },
-                      { label: "Quarterly", value: "buarterly" },
+                      { label: "Quarterly", value: "quarterly" },
                       { label: "Bi-Annual (twice/year)", value: "bi-annual" },
                     ]}
                     selected={financialYearData?.review_period}
