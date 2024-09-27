@@ -171,8 +171,9 @@ export default function SpecifiedTask({
         onClose={() => setCommentModal(false)}
         id={modalId}
         handleSubmit={(value) => {
-          console.log(value, "comment");
+          // console.log(value, "comment");
         }}
+        commentType="specified-task"
       />
     </DashboardLayout>
   );

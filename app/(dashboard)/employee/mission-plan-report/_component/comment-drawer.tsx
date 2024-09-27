@@ -12,11 +12,23 @@ import React, { useEffect } from "react";
 import CustomDrawer, { CustomDrawerProp } from "@/components/custom-drawer";
 
 interface ChallengeDrawerProp extends CustomDrawerProp {
-  id?: string;
+  id: string;
   loadingAddComment?: boolean;
   loadingComment?: boolean;
   error?: any;
-  handleSubmit: (value: { comment: any }) => void;
+  handleSubmit: (value: {
+    comment: string;
+    component_type: string;
+    component_id: string;
+  }) => void;
+  commentType:
+    | "mission-statement"
+    | "boundary"
+    | "strategic-intent"
+    | "specified-task"
+    | "implied-task"
+    | "strategic-pillar"
+    | "success-measure";
 }
 
 export default function CustomCommentDrawer({
@@ -26,6 +38,7 @@ export default function CustomCommentDrawer({
   loadingComment,
   loadingAddComment,
   error,
+  commentType,
   handleSubmit,
 }: ChallengeDrawerProp) {
   const { user } = useAppSelector((state) => state.auth);
@@ -35,7 +48,13 @@ export default function CustomCommentDrawer({
       comment: "",
     },
     validationSchema: commentSchema,
-    onSubmit: (value) => handleSubmit(value),
+    onSubmit: (value) => {
+      handleSubmit({
+        comment: value.comment,
+        component_type: commentType,
+        component_id: id,
+      });
+    },
   });
 
   //  Empty form if id changes
