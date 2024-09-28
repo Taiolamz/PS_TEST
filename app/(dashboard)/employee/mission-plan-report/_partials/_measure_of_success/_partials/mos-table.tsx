@@ -68,22 +68,6 @@ export default function MOSTable() {
 
   return (
     <div className="mt-2">
-      <Link
-        href={
-          pathname.split("?")[0] +
-          "?" +
-          createDownlineQueryString({
-            type: "task",
-            id: "jan12345achieveid",
-            name: "measure_of_success",
-          })
-        }
-      >
-        <Button className="float-right mb-5 [box-shadow:0px_10px_20px_-6px_rgba(78,115,248,0.08)] border rounded-sm bg-[#EEF0F2] text-[#9AA6AC]">
-          Set January Achievement
-        </Button>
-      </Link>
-
       <TableWrapper
         tableheaderList={[
           "FY Name",
