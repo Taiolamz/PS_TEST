@@ -233,3 +233,42 @@ export const targetdata = [
     ],
   },
 ];
+
+export const fakehistoryData = [
+  {
+    id: 1,
+    month: "January",
+    status: "approved",
+    title: "Measure of Success Title",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+  {
+    id: 2,
+    month: "February",
+    status: "approved",
+    title: "Revenue",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+  {
+    id: 3,
+    month: "March",
+    status: "approved",
+    title: "Revenue",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+  {
+    id: 4,
+    month: "April",
+    status: "approved",
+    title: "Revenue",
+    percentage: "48%",
+    target: "1,000,000,000 $",
+    achievement: "500,000,000 $",
+  },
+];
