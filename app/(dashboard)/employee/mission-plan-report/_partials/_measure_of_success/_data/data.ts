@@ -33,7 +33,7 @@ export const fakeApprovalStep = [
   {
     id: "01j84gm7211j55a3z744nz9ktx",
     step: 1,
-    status: "pending",
+    status: "",
     user: {
       id: "01j82rgdtxghzpy8gy0jpa4cxz",
       name: "Adeyinka Oyekola",
@@ -66,7 +66,7 @@ export const fakeApprovalStep = [
   {
     id: "01j84gmdlfdf5e2ef3kp0v22",
     step: 4,
-    status: "rejected",
+    status: "approved",
     user: {
       id: "01j82sp42s5yjj6f8vaxqdr2wj",
       name: "Isaac Ubani",

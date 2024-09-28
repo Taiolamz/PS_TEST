@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import { fakeTableData } from "../_data/data";
+import { fakeApprovalStep, fakeTableData } from "../_data/data";
 import Link from "next/link";
 import ApprovalDrawer from "@/components/drawer/approval-drawer";
 
@@ -152,7 +152,7 @@ export default function MOSTable() {
       <ApprovalDrawer
         open={open}
         onClose={() => setOpen(false)}
-        data={[]}
+        data={fakeApprovalStep}
         id={fyId}
       />
     </div>
