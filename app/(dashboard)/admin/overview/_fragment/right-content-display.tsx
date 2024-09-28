@@ -11,14 +11,16 @@ const RightContentDisplay = () => {
     className?: string;
   }) => {
     return (
-      <div className={`p-3 py-5 bg-white custom-shadow m-5 ${className}`}>
+      <div
+        className={`p-3 py-5 bg-white custom-shadow m-5 rounded-[2px] ${className}`}
+      >
         {children}
       </div>
     );
   };
 
   return (
-    <div className="h-full w-[391px] overflow-auto pt-10 absolute right-0 bg-[var(--btn-solid-color)] top-0">
+    <div className="h-full fixed w-[391px] overflow-auto pt-20 scroll-hidden  right-0 bg-[var(--btn-solid-color)] top-0">
       {/* top item wrap */}
       <Frame>
         <p className="text-[#252C32] font-medium text-base">Checklist Items</p>

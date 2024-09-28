@@ -397,8 +397,8 @@ const DashboardLayout = ({
               // </>
               <>
                 {/* updated feature... */}
-                <div className="relative">
-                  <div className="relative z-20 bg-[var(--bg-yellow-300)] py-2 px-8 flex justify-between items-center">
+                <div className="fixed w-full z-20 ">
+                  <div className="relative bg-[var(--bg-yellow-300)] py-2 px-8 flex justify-between items-center">
                     <div className="flex gap-14 items-center">
                       <div className="flex gap-2 items-center">
                         <Image src={WarningIcon} alt="warning icon" />

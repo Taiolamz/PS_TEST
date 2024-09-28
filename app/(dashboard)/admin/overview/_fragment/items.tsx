@@ -231,14 +231,20 @@ export const sideTodoIcon = (
   </svg>
 );
 
-const executiveMeasureDetails = [
+export const executiveMosProgress = [
   {
     value: 0,
+    link: "",
+    color: "green",
   },
   {
     value: 0,
+    link: "",
+    color: "green",
   },
   {
     value: 0,
+    link: "",
+    color: "green",
   },
 ];

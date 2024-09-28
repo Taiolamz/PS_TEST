@@ -8,11 +8,13 @@ import RightContentDisplay from "./_fragment/right-content-display";
 import MetricFrame from "@/components/card/frame";
 import {
   chevronRight,
+  executiveMosProgress,
   orgTaskDetails,
   progressRange,
   topAccessItems,
 } from "./_fragment/items";
 import { Button } from "@/components/ui/button";
+import { ReusableProgress } from "@/components/fragment";
 
 const { ADMIN } = routesPath;
 
@@ -66,7 +68,7 @@ const orgTaskCompletionDisplay = (
 const OverView = () => {
   return (
     <DashboardLayout headerTitle="Welcome ITH Holdings">
-      <div className="p-6 overflow-auto h-screen scroll-hidden px-8 w-[calc(100%-391px)]">
+      <div className="p-6 scroll-hidden mt-10 px-8 w-[calc(100%-391px)]">
         <p>Quick Access</p>
 
         <div className="flex flex-col gap-4">
@@ -176,6 +178,40 @@ const OverView = () => {
                   {chevronRight}
                 </figure>
               </Link>
+            </div>
+            {/* progress display */}
+            <div className="flex flex-col gap-4 mt-5">
+              {executiveMosProgress.map((chi, idx) => {
+                const { value, link, color } = chi;
+                return (
+                  <div key={idx}>
+                    <div className="flex justify-between items-end">
+                      <Link
+                        href={link}
+                        className="text-[#9AA6AC] mb-2 border-b text-xs font-medium"
+                      >
+                        Click here to see Details
+                      </Link>
+                      <div className="grid grid-rows-1 gap-1">
+                        <p className="text-[10px] text-[#6E7C87]">
+                          Total Mission Plan Progress
+                        </p>
+                        <p className="text-[#EC1410] font-medium text-2xl text-right">
+                          {value}%
+                        </p>
+                      </div>
+                    </div>
+                    <ReusableProgress
+                      value={2}
+                      height={6}
+                      color={color as "red"}
+                      borderRadius={4}
+                      className="!bg-[#EBF7FF]"
+                      progressClass="rounded-[2px]"
+                    />
+                  </div>
+                );
+              })}
             </div>
           </MetricFrame>
         </div>
