@@ -165,9 +165,17 @@ export default function ApproveMOS() {
         handleSubmit={() => {
           setShowApprove(false);
         }}
+        loading
       />
       {/* Reject MOS target MOdal */}
-      <RejectModal show={showReject} handleClose={() => setShowReject(false)} />
+      <RejectModal
+        show={showReject}
+        handleClose={() => setShowReject(false)}
+        handleSubmit={(val) => {
+          setShowReject(false);
+          console.log(val);
+        }}
+      />
       {/* MOS comment drawer */}
       <CustomCommentDrawer
         open={showComment}
