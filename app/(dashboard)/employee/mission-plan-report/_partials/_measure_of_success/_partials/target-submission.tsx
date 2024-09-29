@@ -245,7 +245,7 @@ export default function TargetSubmission() {
               />
             </div>
             <div className="">
-              <Button className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none">
+              <Button className="text-white w-[120px] text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none">
                 Submit
               </Button>
             </div>

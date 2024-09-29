@@ -4,6 +4,8 @@ import TableWrapper from "@/components/tables/TableWrapper";
 import routesPath from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { formatDate } from "@/utils/helpers/date-formatter";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const { EMPLOYEE } = routesPath;
 
@@ -37,9 +39,9 @@ export default function DownlineTable() {
       tableheaderList={[
         "Staff Name",
         "Job Title",
-        "Work Email",
-        "Measure Completion",
-        "Task Completion",
+        "Email",
+        "Date Submitted",
+        "Approval Status",
         "Action",
       ]}
       TableTitle="Downline Progress"
@@ -65,23 +67,7 @@ export default function DownlineTable() {
           },
         },
         {
-          label: "Approve Task",
-          color: "",
-          onActionClick: (param: any, dataTwo: any) => {
-            router.push(
-              pathname.split("?")[0] +
-                "?" +
-                createDownlineQueryString({
-                  type: "task",
-                  id: dataTwo?.staff_name?.props?.children[0].props.children,
-                  name: "downlines",
-                })
-            );
-          },
-        },
-        {
-          label: "Approve Measure of success",
-          color: "",
+          label: "View Measure of Success Submission",
           onActionClick: (param: any, dataTwo: any) => {
             router.push(
               pathname.split("?")[0] +
@@ -94,8 +80,22 @@ export default function DownlineTable() {
             );
           },
         },
+        {
+          label: "View Task Submission",
+          onActionClick: (param: any, dataTwo: any) => {
+            router.push(
+              pathname.split("?")[0] +
+                "?" +
+                createDownlineQueryString({
+                  type: "task",
+                  id: dataTwo?.staff_name?.props?.children[0].props.children,
+                  name: "downlines",
+                })
+            );
+          },
+        },
       ]}
-      width="195px"
+      width="300px"
       hideSearchFilterBox
     />
   );
@@ -107,32 +107,32 @@ const data = [
     staff_name: "Oluwaseyi Ajayi",
     job_title: "Product Designer",
     work_email: "ony@gmail.com",
-    measure_completion: 72,
-    task_completion: 14,
+    created_at: "2024-09-17T16:46:36.000000Z",
+    status: "pending",
   },
   {
     id: 2,
     staff_name: "Bryan Adamu",
     job_title: "Product Designer",
     work_email: "ony@gmail.com",
-    measure_completion: 90,
-    task_completion: 63,
+    created_at: "2024-09-17T16:46:36.000000Z",
+    status: "approved",
   },
   {
     id: 3,
     staff_name: "Jerome Bell",
     job_title: "Product Designer",
     work_email: "ony@gmail.com",
-    measure_completion: 52,
-    task_completion: 48,
+    created_at: "2024-09-17T16:46:36.000000Z",
+    status: "rejected",
   },
   {
     id: 4,
     staff_name: "Amaka Johnson",
     job_title: "Product Designer",
     work_email: "amaka@gmail.com",
-    measure_completion: 22,
-    task_completion: 55,
+    created_at: "2024-09-17T16:46:36.000000Z",
+    status: "pending",
   },
 ];
 
@@ -146,37 +146,18 @@ const FORMAT_TABLE_DATA = (data: any) => {
     ),
     job_title: item.job_title,
     work_email: item.work_email,
-    measure_completion: (
-      <div className="flex gap-x-1 items-center">
-        <p className="text-[10px]">{item?.measure_completion}%</p>
-        <Progress
-          value={item?.measure_completion}
-          className={`w-[70px] h-1.5 `}
-          indicatorClass={
-            item?.measure_completion >= 70
-              ? "bg-green-500"
-              : item?.measure_completion > 40
-              ? "bg-warning"
-              : "bg-[red]"
-          }
-        />
-      </div>
-    ),
-    task_completion: (
-      <div className="flex gap-x-1 items-center">
-        <p className="text-[10px]">{item?.task_completion}%</p>
-        <Progress
-          value={item?.task_completion}
-          className={`w-[70px] h-1.5 `}
-          indicatorClass={
-            item?.task_completion >= 70
-              ? "bg-green-500"
-              : item?.task_completion > 40
-              ? "bg-warning"
-              : "bg-[red]"
-          }
-        />
-      </div>
+    created_at: formatDate(item?.created_at),
+    status: (
+      <BadgeComponent
+        text={item?.status}
+        color={
+          item?.status?.toLowerCase() === "approved"
+            ? "green"
+            : item?.status?.toLowerCase() === "rejected"
+            ? "red"
+            : "yellow"
+        }
+      />
     ),
   }));
 };

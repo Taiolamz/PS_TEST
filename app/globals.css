@@ -180,6 +180,7 @@ input:-webkit-autofill:hover {
   --bg-yellow-300: #fffcc2;
   --bg-yellow-400: #FFDC5D;
   --bg-red-100: #EC1410;
+  --bg-red-100-op: #EC14101A;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
