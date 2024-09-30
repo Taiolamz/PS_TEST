@@ -101,6 +101,11 @@ export default function ReportChallengeModal({
                           className="grid gap-y-3 items-center space-x-2 relative mt-5 "
                         >
                           <div className="grid gap-y-3">
+                            <p className="text-[#5A5B5F] text-sm">
+                              Challenge {index + 1}
+                            </p>
+                            {index > 0 && <hr />}
+
                             <div className="grid grid-cols-2 gap-x-3">
                               <div className="w-full flex-1">
                                 <Input
