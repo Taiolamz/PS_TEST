@@ -165,7 +165,6 @@ export default function ApproveMOS() {
         handleSubmit={() => {
           setShowApprove(false);
         }}
-        loading
       />
       {/* Reject MOS target MOdal */}
       <RejectModal
