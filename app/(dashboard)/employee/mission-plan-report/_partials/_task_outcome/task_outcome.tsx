@@ -5,6 +5,16 @@ import ApprovalProgress from "@/components/fragment/progress/approval-progress";
 import ActualOutcome from "../../[reportId]/actual-outcome/page";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ReusableDrawer } from "@/components/fragment";
+import { useState } from "react";
+import ApprovalStatus, { ApprovalStep } from "../../_component/approval-status";
+
+const steps: ApprovalStep[] = [
+  { name: "Seyi Ajayi", role: "Managing Director", status: "Yet to Review" },
+  { name: "Seyi Ajayi", role: "Managing Director", status: "In Review" },
+  { name: "Seyi Ajayi", role: "Managing Director", status: "Approved" },
+  { name: "Seyi Ajayi", role: "Managing Director", status: "Approved" },
+];
 
 const data = [
   {
@@ -42,6 +52,8 @@ const TaskOutcome = () => {
   const ui = searchParams.get("ui");
   const id = searchParams.get("id");
   const type = searchParams.get("type");
+
+  const [showApprovalStatus, setShowApprovalStatus] = useState<boolean>(false);
 
   const FORMAT_TABLE_DATA = (data: any) => {
     return data?.map((item: any) => ({
@@ -85,6 +97,17 @@ const TaskOutcome = () => {
 
   return (
     <div className="mt-5">
+      <ReusableDrawer
+        title="Approval Status"
+        show={showApprovalStatus}
+        handleClose={() => setShowApprovalStatus(false)}
+        closeOnClickOutside={false}
+        headerClass={"bg-white lg:mx-0 p-5"}
+        titleClass={"text-dark font-medium"}
+        childrenContainerClass="py-0"
+      >
+        <ApprovalStatus steps={steps} />
+      </ReusableDrawer>
       {ui === "task_outcome" && !id && (
         <div className="">
           <Button className="[box-shadow:0px_10px_20px_-6px_rgba(78,115,248,0.08)] border rounded-sm bg-[#EEF0F2] text-[#9AA6AC]">
@@ -93,6 +116,7 @@ const TaskOutcome = () => {
           <TaskOutcomeTable
             FORMAT_TABLE_DATA={FORMAT_TABLE_DATA}
             outcomeData={data}
+            setShowApprovalStatus={setShowApprovalStatus}
           />
         </div>
       )}

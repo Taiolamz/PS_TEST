@@ -54,7 +54,7 @@ const ActualOutcome = () => {
           </div>
         </ReusableDrawer>
         <ReusableDrawer
-          title="Outcome History"
+          title="Comments"
           show={showComment}
           handleClose={() => setShowComment(false)}
           closeOnClickOutside={false}
