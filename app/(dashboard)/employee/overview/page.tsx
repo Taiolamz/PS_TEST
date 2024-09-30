@@ -27,7 +27,7 @@ const OverView = () => {
     <DashboardLayout headerTitle={`Welcome ${user?.name?.split(" ")[0]}`}>
       <div className="h-full flex flex-col overflow-y-hidden">
         {/* Employee checklist to complete profile */}
-        <article className="bg-[var(--bg-yellow-300)] pl-6 md:pr-9 py-2.5 flex justify-between items-center w-full">
+        <article className="bg-[#fffcc2] pl-6 md:pr-9 py-2.5 flex justify-between items-center w-full">
           <div className="inline-flex items-center">
             <Image src={WarningIcon} alt="warning icon" />
             <h4 className="text-[var(--text-color3)] font-medium ml-1.5">
