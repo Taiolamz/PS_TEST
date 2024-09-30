@@ -95,6 +95,8 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/approval-progress`,
     APPROVAL_MISSION_PLAN_REPORT_TASK_SUBMISSION: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-tasks-submission`,
+    APPROVAL_MISSION_PLAN_REPORT_SUCCESS_MISSION_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-measure-of-success`,
     ACTUAL_OUTCOME: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/actual-outcome`,
     EXPECTED_OUTCOME: (id: string) =>
