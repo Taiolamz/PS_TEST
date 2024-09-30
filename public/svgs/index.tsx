@@ -43,3 +43,18 @@ export  const undoIcon = (
       />
     </svg>
   );
+
+  export const arrowRight = (
+    <svg
+      width="18"
+      height="9"
+      viewBox="0 0 18 9"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M13.8347 8.8457L12.805 7.83096L15.0681 5.56794H0.500977V4.12346H15.0681L12.8197 1.86045L13.8494 0.845703L17.8347 4.8457L13.8347 8.8457Z"
+        fill="white"
+      />
+    </svg>
+  );

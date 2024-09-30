@@ -1,6 +1,8 @@
 import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import routesPath from "@/utils/routes";
+import Link from "next/link";
 import React from "react";
 
 const MeasureOfSucessProgress = () => {
@@ -72,16 +74,21 @@ const MeasureOfSucessProgress = () => {
     },
   ];
 
+  const id = "344ac"; //dummy ID;
+  const { EMPLOYEE } = routesPath;
+
   return (
     <MetricFrame className="flex flex-col gap-4 ">
       <div className="flex justify-between ">
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
-        <Button className="flex gap-3 items-center group">
-          <p className="font-medium">See Details</p>
-          <figure className="group-hover:translate-x-1 transition-all ease-linear">
-            {arrowRight}
-          </figure>
-        </Button>
+        <Link href={EMPLOYEE.MY_REPORT_MEASURE_OF_SUCCESS_REPORT(id)}>
+          <Button className="flex gap-3 items-center group">
+            <p className="font-medium">See Details</p>
+            <figure className="group-hover:translate-x-1 transition-all ease-linear">
+              {arrowRight}
+            </figure>
+          </Button>
+        </Link>
       </div>
 
       <div className="flex gap-2 items-center">

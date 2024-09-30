@@ -144,7 +144,9 @@ const OrganizationReports = () => {
                     <h1>Organization Measure of Success</h1>
                     <PercentageLabel color="yellow" value={52} label="Archieved" />
                 </div>
-                <Button><span>See Details</span> <ArrowRight /> </Button>
+                <Link href={ADMIN.ORGANIZATION_MP_MEASURE_OF_SUCCESS}
+                    className="flex items-center gap-1 bg-[var(--primary-color)] text-white p-2 px-4 text-sm rounded-sm"
+                ><span>See Details</span> <ArrowRight /> </Link>
             </div>
             <div className="my-6">
                 <div className="w-2/3 flex gap-3">
