@@ -8,8 +8,8 @@ import { EditableLabel, ReusableDrawer } from "@/components/fragment";
 import { data } from "./_data/data";
 import { useRouter } from "next/navigation";
 import ImpliedTaskApproval from "./_partials/implied-task-approval";
-import History from "../../../_partials/_task_outcome/_partials/history";
-import Comment from "../../../_partials/_task_outcome/_partials/comment";
+// import History from "../../../_partials/_task_outcome/_partials/history";
+// import Comment from "../../../_partials/_task_outcome/_partials/comment";
 
 export default function ViewApprovalProgress({
   params,
@@ -47,7 +47,7 @@ export default function ViewApprovalProgress({
         titleClass={"text-white"}
       >
         <div className="py-4 px-[18px]">
-          <History />
+          {/* <History /> */}
         </div>
       </ReusableDrawer>
       <ReusableDrawer
@@ -60,7 +60,7 @@ export default function ViewApprovalProgress({
         childrenContainerClass="py-0"
       >
         <div className="">
-          <Comment />
+          {/* <Comment /> */}
         </div>
       </ReusableDrawer>
       <div className="p-[2rem]">

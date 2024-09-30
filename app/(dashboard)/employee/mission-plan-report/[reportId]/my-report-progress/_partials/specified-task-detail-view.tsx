@@ -1,4 +1,8 @@
+import { CHALLENGES_DATA } from "@/app/(dashboard)/admin/mission-plan/reports/_data";
 import MetricTableCard from "@/components/card/metric-table-card";
+import ChallengeDrawer from "@/components/drawer/challenge-drawer";
+import CustomCommentDrawer from "@/components/drawer/comment-drawer";
+import { useState } from "react";
 
 const SpecifiedTaskDetailView = () => {
   const specifiedTaskDetails = [
@@ -1279,6 +1283,8 @@ const SpecifiedTaskDetailView = () => {
       ],
     },
   ];
+  const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [showCommentModal, setShowCommentModal] = useState(false);
 
   return (
     <div className="flex flex-col gap-4 mt-5">
@@ -1300,9 +1306,26 @@ const SpecifiedTaskDetailView = () => {
             tasks={tasks}
             progressValue={percentage}
             progressColor={color as "red"}
+            onClickViewChallenge={() => setShowChallengeModal(true)}
+            onClickComment={() => setShowCommentModal(true)}
           />
         );
       })}
+      <ChallengeDrawer
+        open={showChallengeModal}
+        onClose={() => setShowChallengeModal(false)}
+        data={CHALLENGES_DATA}
+      />
+      <CustomCommentDrawer
+        open={showCommentModal}
+        onClose={() => setShowCommentModal(false)}
+        id={"modalId"}
+        data={[]}
+        handleSubmit={(value) => {
+          // console.log(value, "comment");
+        }}
+        commentType="specified-task"
+      />
     </div>
   );
 };
