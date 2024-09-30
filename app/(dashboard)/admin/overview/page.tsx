@@ -43,8 +43,10 @@ const topAccess = (
 const orgTaskCompletionDisplay = (
   <div>
     <div className="flex gap-2 items-center">
-      <p className="text-[#3E4345] font-medium">Total:</p>
-      <p className="text-[#6E7C87] font-light">{40} Specified Tasks</p>
+      <p className="text-[#3E4345] font-medium">
+        Total:{" "}
+        <span className="text-[#6E7C87] font-light">{40} Specified Tasks</span>
+      </p>
     </div>
 
     <div className="flex flex-col mt-4 gap-4">
@@ -57,14 +59,11 @@ const orgTaskCompletionDisplay = (
                 className="w-[25px] h-[10px] rounded-[2px]"
                 style={{ backgroundColor: color }}
               ></span>
-              <p style={{ color: color }} className="text-medium text-sm">
+              <p style={{ color: color }} className="text-sm">
                 {label}
                 <span className="text-[#6E7C87] font-light">: {value}</span>
               </p>
             </div>
-            {/* <p className="text-[#6E7C87] font-light">
-              : <span className="ml-1">{value}</span>
-            </p> */}
           </div>
         );
       })}
@@ -210,10 +209,10 @@ const OverView = () => {
                 </figure>
               </Link>
             </div>
-            <div className=" absolute inset-0 mt-8 flex   justify-between items-center">
-              {/* {orgTaskEmptyState} */}
-              <SpecifiedTaskChart />
-              <div>{orgTaskCompletionDisplay}</div>
+            {/* {orgTaskEmptyState} */}
+            <div className=" absolute w-full inset-0 mt-8  flex justify-between items-center">
+              <SpecifiedTaskChart width="350" />
+              {orgTaskCompletionDisplay}
             </div>
           </MetricFrame>
 
