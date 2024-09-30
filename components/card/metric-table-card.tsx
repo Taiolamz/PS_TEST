@@ -189,7 +189,11 @@ const MetricTableCard = ({
             </div>
           </div>
 
-          <div className="relative">
+          <div
+            className={`relative w-full transition-opacity duration-500 ${
+              dropDetail ? "opacity-0 h-0" : "opacity-100 h-auto"
+            }`}
+          >
             {/* -----PREV/NEXT BUTTON WRAP START */}
             <div className="flex gap-6 items-center absolute right-0 mt-4 mr-6">
               <div
