@@ -19,7 +19,7 @@ export default function CustomDrawer({
     <Sheet open={open}>
       <SheetContent className="w-[380px]">
         <div className="font-normal p-5 flex justify-between items-center bg-primary text-[var(--text-color3)]">
-         <span className="text-white"> {title}</span>
+          <span className="text-white"> {title}</span>
           <span
             onClick={onClose}
             className="size-6 grid place-content-center rounded-full cursor-pointer bg-[var(--btn-light-color)]"
@@ -27,7 +27,7 @@ export default function CustomDrawer({
             <X className="h-4 w-4" />
           </span>
         </div>
-        <hr className="mt-5 border-[var(--input-border)]" />
+        <hr className="border-[var(--input-border)]" />
         {children}
       </SheetContent>
     </Sheet>
