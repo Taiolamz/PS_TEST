@@ -75,7 +75,7 @@ const MetricTableCard = ({
 
   const sub_outcome_head = ["Month", "Expected Outcome", "Achieved Outcome"];
   const topBtnBorderClass =
-    "border border-[#6E7C87] p-2 px-3 rounded-sm text-[#6E7C87] cursor-pointer font-medium text-sm";
+    "border border-[#6E7C87] p-1 px-3 rounded-sm text-[#6E7C87] cursor-pointer font-medium text-sm";
   const rowCenterClass = "flex gap-3 items-center";
 
   const [showViewDetail, setShowViewDetail] = useState(
