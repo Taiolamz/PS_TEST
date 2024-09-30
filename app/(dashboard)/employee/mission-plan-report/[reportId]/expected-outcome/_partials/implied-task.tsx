@@ -30,14 +30,14 @@ const ImpliedTask = ({
             className={`flex items-center justify-between ${idx > 0 && "mt-7"}`}
           >
             <span className="flex items-center gap-x-1">
-              <DotFilledIcon />{" "}
+              <DotFilledIcon />
               <p className="text-[#1E1E1E] capitalize">{item.title}</p>
             </span>
             <span className="flex gap-x-1">
               Approval Status:
               <p className="text-sm font-semibold text-[#FFC043]">
                 {" "}
-                {item.approvalStatus}{" "}
+                {item.approvalStatus}
               </p>
             </span>
             <span className="flex items-center gap-x-1 text-[#1E1E1E] text-sm">

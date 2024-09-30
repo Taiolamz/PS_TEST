@@ -8,10 +8,12 @@ interface TaskOutcomeTableProps {
   FORMAT_TABLE_DATA: (e: any) => void;
   isFetchingOutcomeData?: boolean;
   outcomeData: any;
+  setShowApprovalStatus?: (item: boolean) => void;
 }
 const TaskOutcomeTable = ({
   FORMAT_TABLE_DATA,
   outcomeData,
+  setShowApprovalStatus = () => null,
 }: TaskOutcomeTableProps) => {
   const pathname = usePathname();
 
@@ -75,7 +77,7 @@ const TaskOutcomeTable = ({
           {
             label: "Approval Status",
             color: "",
-            onActionClick: (param: any, dataTwo: any) => {},
+            onActionClick: () => setShowApprovalStatus(true),
           },
         ]}
         hideSearchFilterBox
