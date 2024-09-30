@@ -94,7 +94,7 @@ const orgTaskEmptyState = (
 const OverView = () => {
   return (
     <DashboardLayout headerTitle="Welcome ITH Holdings">
-      <div className="p-6 scroll-hidden mt-10 px-8 w-[calc(100%-391px)]">
+      <div className="p-6 scroll-hidden mt-6 px-8 w-[calc(100%-391px)]">
         <p>Quick Access</p>
 
         <div className="flex flex-col gap-4">
