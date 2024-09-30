@@ -3,13 +3,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .sidebar-item {
   position: relative;
   transition: all 400ms cubic-bezier(0.77, 0, 0.175, 1);
   cursor: pointer;
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   border-radius: 4px;
 }
 
@@ -18,6 +19,7 @@
     text-wrap: balance;
   }
 }
+
 body {
   --inv: rgba(255, 255, 255, 0.1);
   background: rgb(244, 244, 244);
@@ -124,6 +126,7 @@ input:-webkit-autofill:hover {
     --ring: 142.1 76.2% 36.3%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
@@ -146,6 +149,7 @@ input:-webkit-autofill:hover {
     --ring: 142.4 71.8% 29.2%;
   }
 }
+
 :root {
   --text-color: #6e7c87;
   --text-color2: #9aa6ac;
@@ -165,6 +169,17 @@ input:-webkit-autofill:hover {
   --error-color: #cc0905;
   --input-bg: #f6f8f9;
   --input-border: #e5e9eb;
+  --input-border2: #EEF0F2;
+  --bg-purple-100: #1b2e5e;
+  --bg-purple-200: 126 16 229;
+  --bg-blue-100: 4 82 200;
+  --bg-green-100: 17 156 43;
+  --bg-green-200: 0 128 128;
+  --bg-yellow-100: 255 192 67;
+  --bg-yellow-300: #fffcc2;
+  --bg-yellow-400: #FFDC5D;
+  --bg-red-100: #EC1410;
+  --bg-red-100-op: #EC14101A;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -223,17 +238,19 @@ input[type=radio] {
   width: 1.5rem;
   height: 1.5rem;
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   border: 1px solid #6e7c87;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
   transition: border 0.3s ease;
 }
+
 input[type=radio]:checked {
   border: 1px solid var(--primary-color);
 }
+
 input[type=radio]:checked::before {
   content: "";
   position: absolute;
@@ -256,6 +273,7 @@ input[type=radio]:checked::before {
 .color-picker-input-field {
   padding-left: 0.4rem;
 }
+
 .color-picker-input-field:focus {
   outline: none;
   border: none;
@@ -300,7 +318,9 @@ input[type=radio]:checked::before {
 .rmdp-day.rmdp-selected span:not(.highlight) {
   background-color: var(--primary-color) !important;
 }
+
 @media only screen and (min-width: 48em) {
+
   .date-picker .rmdp-day:not(.rmdp-day-hidden) span:hover,
   .rmdp-day.rmdp-selected span:not(.highlight) {
     background-color: var(--primary-color) !important;
@@ -325,12 +345,15 @@ input[type=radio]:checked::before {
   overflow-y: scroll;
   position: relative;
 }
+
 .preview-reusable-box-table::-webkit-scrollbar {
   display: none;
 }
+
 .preview-reusable-box-table table {
   position: relative;
 }
+
 .preview-reusable-box-table table thead tr {
   position: sticky !important;
   top: 0;
@@ -355,4 +378,6 @@ input[type=radio]:checked::before {
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
   display: none;
-}/*# sourceMappingURL=globals.css.map */
+}
+
+/*# sourceMappingURL=globals.css.map */

@@ -46,9 +46,7 @@ export default function ViewApprovalProgress({
         headerClass={"bg-primary lg:mx-0 p-5"}
         titleClass={"text-white"}
       >
-        <div className="py-4 px-[18px]">
-          {/* <History /> */}
-        </div>
+        <div className="py-4 px-[18px]">{/* <History /> */}</div>
       </ReusableDrawer>
       <ReusableDrawer
         title="Outcome History"
@@ -59,9 +57,7 @@ export default function ViewApprovalProgress({
         titleClass={"text-white"}
         childrenContainerClass="py-0"
       >
-        <div className="">
-          {/* <Comment /> */}
-        </div>
+        <div className="">{/* <Comment /> */}</div>
       </ReusableDrawer>
       <div className="p-[2rem]">
         <h1 className="font-normal pb-[2rem] text-lg">
