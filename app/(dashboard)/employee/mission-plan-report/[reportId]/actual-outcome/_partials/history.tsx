@@ -1,9 +1,9 @@
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import React from "react";
-import { historyData } from "../_data/data";
 import HistoryCard from "../../../_component/history-card";
 import { SearchIcon } from "@/public/assets/icons";
+import { historyData } from "../../../_partials/_task_outcome/_data/data";
 
 const History = () => {
   return (
