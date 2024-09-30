@@ -104,12 +104,10 @@ const RightContentDisplay = () => {
                 <p className="text-green-800 font-medium text-2xl">{value}%</p>
               </div>
               <ReusableProgress
-                style={{ backgroundColor: "red" }}
                 value={value}
                 height={6}
                 color={"green"}
                 borderRadius={4}
-                // style={}
                 className="!bg-[#0080803D]"
                 progressClass="rounded-[2px]"
               />
