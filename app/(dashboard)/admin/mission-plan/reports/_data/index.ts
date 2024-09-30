@@ -116,4 +116,115 @@ export const CHALLENGES_DATA = [
       recommendation: "remove user from the team",
     },
   ];
+
+  export  const MOS_DATA = [
+    {
+      title: "Revenue",
+      fy_target: "150,0000",
+      unit: "$",
+      weight: "20",
+      fy_achieved: "67",
+      amount: "100,234,000",
+      id: 1,
+      percentage: 67,
+      table_details: [
+        {
+          review_period: "Q1",
+          target: "75,000,000",
+          achieved_target: "58,000,000",
+          percentage: 30,
+        },
+        {
+          review_period: "Q2",
+          target: "50,000,000",
+          achieved_target: "45,000,000",
+          percentage: 40,
+        },
+        {
+          review_period: "Q3",
+          target: "20,000,000",
+          achieved_target: "15,000,000",
+          percentage: 60,
+        },
+        {
+          review_period: "Q4",
+          target: "20,000,000",
+          achieved_target: "15,000,000",
+          percentage: 95,
+        },
+      ],
+    },
+    {
+      title: "Revenue",
+      fy_target: "150,0000",
+      unit: "$",
+      weight: "20",
+      fy_achieved: "67",
+      amount: "100,234,000",
+      id: 2,
+      percentage: 67,
+      table_details: [
+        {
+          review_period: "Q1",
+          target: "75,000,000",
+          achieved_target: "58,000,000",
+          percentage: 30,
+        },
+        {
+          review_period: "Q2",
+          target: "50,000,000",
+          achieved_target: "45,000,000",
+          percentage: 40,
+        },
+        {
+          review_period: "Q3",
+          target: "20,000,000",
+          achieved_target: "15,000,000",
+          percentage: 60,
+        },
+        {
+          review_period: "Q4",
+          target: "20,000,000",
+          achieved_target: "15,000,000",
+          percentage: 95,
+        },
+      ],
+    },
+    {
+      title: "Revenue",
+      fy_target: "150,0000",
+      unit: "$",
+      weight: "20",
+      fy_achieved: "67",
+      amount: "100,234,000",
+      id: 3,
+      percentage: 67,
+      table_details: [
+        {
+          review_period: "Q1",
+          target: "75,000,000",
+          achieved_target: "58,000,000",
+          percentage: 30,
+        },
+        {
+          review_period: "Q2",
+          target: "50,000,000",
+          achieved_target: "45,000,000",
+          percentage: 40,
+        },
+        {
+          review_period: "Q3",
+          target: "20,000,000",
+          achieved_target: "15,000,000",
+          percentage: 60,
+        },
+        {
+          review_period: "Q4",
+          target: "20,000,000",
+          achieved_target: "15,000,000",
+          percentage: 95,
+        },
+      ],
+    },
+  ];
   

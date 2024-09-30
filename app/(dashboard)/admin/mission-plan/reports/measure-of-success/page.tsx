@@ -9,8 +9,9 @@ import { ActionLabel, CardContainer } from '@/components/fragment';
 import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
 import { getProgressColorByValue } from '@/utils/helpers';
 import React from 'react';
-import { CHALLENGES_DATA } from '../_data';
+import { CHALLENGES_DATA, MOS_DATA } from '../_data';
 import OrganizationTargetChart from '../_charts/organization-target';
+import MeasureOfSucessMetricTableCard from '@/components/card/mos-table-card';
 
 export default function OrganizationMeasureOfSuccess() {
   const [showChallengeModal, setShowChallengeModal] = React.useState(false);
@@ -1377,33 +1378,37 @@ export default function OrganizationMeasureOfSuccess() {
         </CardContainer>
 
        <OrganizationTargetChart/>
-
-        <h1 className='mt-8 text-gray-600'>Organization Specific Task</h1>
-        <div className="mt-3 relative p-0 pb-8">
-          {specifiedTaskDetails.map((chi, idx) => {
-            const {
-              title,
-              weight,
-              percentage,
-              tasks,
-              measureOfSuccessDetails,
-              color,
-            } = chi;
-            return (
-              <MetricTableCard
-                key={idx}
-                title={title}
-                percentage={percentage}
-                measureOfSuccessDetails={measureOfSuccessDetails}
-                tasks={tasks}
-                progressValue={percentage}
-                progressColor={color as "red"}
-                onClickViewChallenge={() => setShowChallengeModal(true)}
-                onClickComment={() => setShowCommentModal(true)}
-              />
-            );
-          })}
-        </div>
+        
+       {MOS_DATA?.map((item, idx) => {
+          const {
+            title,
+            fy_target,
+            unit,
+            weight,
+            fy_achieved,
+            amount,
+            id,
+            table_details,
+            percentage,
+          } = item;
+          return (
+            <MeasureOfSucessMetricTableCard
+              num={idx + 1}
+              key={id || idx}
+              title={title}
+              fy_target={fy_target}
+              unit={unit}
+              weight={weight}
+              percentage={percentage}
+              fy_achieved={fy_achieved}
+              amount={amount}
+              table_details={table_details}
+              // onClickViewChallenge={() => setShowChallengeModal(true)}
+              // onClickComment={() => setShowCommentModal(true)}
+            />
+          );
+        })}
+        
       </section>
       <ChallengeDrawer
         open={showChallengeModal}
