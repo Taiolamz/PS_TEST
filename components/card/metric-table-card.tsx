@@ -120,7 +120,7 @@ const MetricTableCard = ({
     <div>
       <MetricFrame
         className={`mt-5 border border-b-0 transition-all duration-300 relative px-7 customScrollbar ${
-          dropDetail ? " overflow-hidden" : ""
+          dropDetail ? "h-[145px] overflow-hidden" : "h-[550px]"
         }`}
       >
         <div className="flex justify-between items-center border-b border-[#E5E9EB] pb-2">

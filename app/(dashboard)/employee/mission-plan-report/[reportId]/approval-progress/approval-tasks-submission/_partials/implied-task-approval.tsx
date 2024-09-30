@@ -152,6 +152,11 @@ const ImpliedTaskApproval = ({
               </div>
             </div>
           </div>
+          {idx === impliedTaskData.length - 1 ? (
+            ""
+          ) : (
+            <hr className="mt-[1.4375rem]" />
+          )}
         </div>
       ))}
 
