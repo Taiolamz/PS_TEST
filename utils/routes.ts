@@ -89,6 +89,8 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-tasks-submission`,
     ACTUAL_OUTCOME: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/actual-outcome`,
+    EXPECTED_OUTCOME: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/expected-outcome`,
     KPI: `/${employee_auth}/kpi`,
     MY_TEAM: `/${employee_auth}/my-team`,
     ORGANOGRAM: `/${employee_auth}/organogram`,
