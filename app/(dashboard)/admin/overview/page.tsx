@@ -43,7 +43,7 @@ const topAccess = (
 const orgTaskCompletionDisplay = (
   <div>
     <div className="flex gap-2 items-center">
-      <p className="text-[#3E4345] font-medium">Total :</p>
+      <p className="text-[#3E4345] font-medium">Total:</p>
       <p className="text-[#6E7C87] font-light">{40} Specified Tasks</p>
     </div>
 
@@ -59,11 +59,12 @@ const orgTaskCompletionDisplay = (
               ></span>
               <p style={{ color: color }} className="text-medium text-sm">
                 {label}
+                <span className="text-[#6E7C87] font-light">: {value}</span>
               </p>
             </div>
-            <p className="text-[#6E7C87] font-light">
+            {/* <p className="text-[#6E7C87] font-light">
               : <span className="ml-1">{value}</span>
-            </p>
+            </p> */}
           </div>
         );
       })}
@@ -209,7 +210,7 @@ const OverView = () => {
                 </figure>
               </Link>
             </div>
-            <div className=" absolute inset-0 mt-8 flex  pr-40 justify-between items-center">
+            <div className=" absolute inset-0 mt-8 flex   justify-between items-center">
               {/* {orgTaskEmptyState} */}
               <SpecifiedTaskChart />
               <div>{orgTaskCompletionDisplay}</div>
