@@ -1,16 +1,15 @@
 import CustomSelect from "@/components/custom-select";
 import Icon from "@/components/icon/Icon";
 import ModalContainer from "@/components/modal-container";
-import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle, X } from "lucide-react";
-import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import * as Yup from "yup";
 
 interface ReportChallengeModalProps {
   show: boolean;
@@ -20,6 +19,7 @@ interface ReportChallengeModalProps {
   modalClass?: string;
   handleClick?: () => void;
   content?: React.ReactNode;
+  loading?: boolean;
 }
 
 export default function ReportChallengeModal({
@@ -28,44 +28,34 @@ export default function ReportChallengeModal({
   handleClose,
   content,
   modalClass,
+  loading,
 }: ReportChallengeModalProps) {
-  const uuidRef = useRef(uuidv4());
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deleteData, setDeleteData] = useState<any>();
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
   const handleFormSubmit = () => {};
-
-  const handleDeleteTaskOpen = async (remove: any, index: any, id: any) => {
-    // handleDeleteTaskDialog();
-    setDeleteData({ formikRemove: remove, index: index, id: id });
-  };
 
   const formik = useFormik<any>({
     initialValues: {
-      tasks: [
-        {
-          id: uuidRef.current,
-          title: "",
-          employees: "",
-          description: "",
-          recommendations: "",
-        },
+      challenges: [
+        { title: "", risk_level: "", description: "", recommendations: "" },
       ],
     },
     onSubmit: handleFormSubmit,
-    // validationSchema: specifiedTaskSchema(endDate, startDate),
-    validateOnMount: true,
-    enableReinitialize: true,
+    validationSchema: Yup.object({
+      challenges: Yup.array().of(
+        Yup.object({
+          title: Yup.string(),
+          riskLevel: Yup.string(),
+          description: Yup.string(),
+          recommendations: Yup.string(),
+        })
+      ),
+    }),
+    // validateOnMount: true,
+    // enableReinitialize: true,
   });
+
+  useEffect(() => {
+    formik.resetForm();
+  }, [show]);
 
   return (
     <ModalContainer
@@ -73,147 +63,153 @@ export default function ReportChallengeModal({
       handleClose={handleClose}
       title="Challenges"
       modalClass={cn(
-        "rounded-md bg-white md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[37.5rem] lg:max-w-[37.5rem] pb-0",
+        "rounded-md bg-white md:w-[28.8rem] md:max-w-[30.8rem] lg:w-[482px] lg:max-w-[482px] pb-0",
         modalClass
       )}
       hasCloseButton={false}
     >
-      <div className="px-8 pb-4 h-[60vh] overflow-auto">
-        <div className="flex items-center justify-between">
+      <div className="pb-4 max-h-[84vh] overflow-auto relative">
+        <div className="flex items-center justify-between sticky top-0 bg-white z-40 pb-3 px-8 w-full">
           <h2 className="text-lg">Challenges</h2>
           <div onClick={handleClose} className="cursor-pointer">
             <X color="red" width={17} height={17} />
           </div>
         </div>
-        <form onSubmit={formik.handleSubmit}>
+        <form className="px-8" onSubmit={formik.handleSubmit}>
           <FormikProvider value={formik}>
-            <FieldArray name="tasks">
-              {({ insert, remove, push }) => (
+            <FieldArray
+              name="challenges"
+              render={({ remove, push }) => (
                 <div>
-                  {formik.values.tasks?.length > 0 &&
-                    formik.values.tasks.map(
-                      (
-                        task: { id: React.Key | null | undefined },
-                        index: number
-                      ) => (
-                        <div
-                          key={task.id}
-                          className="grid gap-y-3 items-center space-x-2 relative mt-5 "
-                        >
-                          <div className="grid gap-y-3">
-                            <p className="text-[#5A5B5F] text-sm">
-                              Challenge {index + 1}
-                            </p>
-                            {index > 0 && <hr />}
+                  {formik.values.challenges.map(
+                    (challenge: any, index: number) => (
+                      <div
+                        key={index}
+                        className="grid gap-y-3 items-center space-x-2 relative mt-2"
+                      >
+                        <div className="grid gap-y-3">
+                          {index > 0 && <hr className="mt-2" />}
+                          {index > 0 && (
+                            <div className="flex justify-between items-center">
+                              <p className="text-[#5A5B5F] font-medium text-sm">
+                                Challenge {index + 1}
+                              </p>
 
-                            <div className="grid grid-cols-2 gap-x-3">
-                              <div className="w-full flex-1">
-                                <Input
-                                  type="text"
-                                  id="task"
-                                  name={`tasks.${index}.task`}
-                                  label="Title"
-                                  // disabled={line_manager?.id !== null}
-                                  // error={errorTasks?.[index]?.task}
-                                  // touched={touchedTasks?.[index]?.task}
-                                  onBlur={formik.handleBlur}
-                                  placeholder="Input Task"
-                                  className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                  onChange={
-                                    (e) => {}
-                                    // handleChange(e.target.value, index, "task")
-                                  }
-                                  value={formik.values.tasks[index].task}
-                                />
-                              </div>
-                              <div className="flex-1 w-[100%]">
-                                <CustomSelect
-                                  label="Number of Employees"
-                                  placeholder="Number of Employees"
-                                  options={[
-                                    { value: "high", label: "High" },
-                                    { value: "medium", label: "Medium" },
-                                    { value: "low", label: "Low" },
-                                  ]}
-                                  selected={formik.values.employees_range}
-                                  setSelected={(selected: any) => {
-                                    formik.setFieldValue(
-                                      "employees_range",
-                                      selected
-                                    );
-                                  }}
-                                  labelClass="block relative text-xs  text-[#6E7C87] font-normal pb-3"
-                                  touched={formik.touched.employees_range}
-                                  error={formik.errors.employees_range}
-                                  onBlur={formik.handleBlur}
-                                  canSearch={false}
-                                />
-                              </div>
+                              {index !== 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => remove(index)}
+                                  className="text-red-500 hover:text-red-700 "
+                                >
+                                  <Icon
+                                    name="remove"
+                                    width={14.28}
+                                    height={18.63}
+                                  />
+                                </button>
+                              )}
                             </div>
+                          )}
+
+                          <div className="grid grid-cols-2 gap-x-3">
                             <div className="w-full flex-1">
-                              <Textarea
-                                label="Description Of Challenge"
-                                rows={3}
-                                id="description"
-                                name="description"
-                                placeholder="Enter Description Of Challenge"
-                                className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              <Input
+                                type="text"
+                                id={`challenges.${index}.title`}
+                                name={`challenges.${index}.title`}
+                                placeholder="Input challenge title"
+                                label="Title"
+                                // error={formik.errors.challenges?.[index]?.title}
+                                // touched={formik.touched.challenges?.[index]?.title}
+                                onBlur={formik.handleBlur}
+                                value={formik.values.challenges[index].title}
                                 onChange={formik.handleChange}
-                                // touched={formik.touched.description}
-                                value={formik.values.description}
-                                // error={formik.errors.description}
+                                className="mt-1 block px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm"
                               />
                             </div>
-                            <div className="w-full flex-1">
-                              <Textarea
-                                label="Recommendations"
-                                rows={3}
-                                id="recommendations"
-                                name="recommendations"
-                                placeholder="Enter Recommendations"
-                                className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
-                                onChange={formik.handleChange}
-                                // touched={formik.touched.description}
-                                value={formik.values.description}
-                                // error={formik.errors.description}
+                            <div className="flex-1 w-[100%]">
+                              <CustomSelect
+                                label="Risk Level"
+                                placeholder="Select risk level"
+                                options={[
+                                  { value: "", label: "Select risk level" },
+                                  { value: "high", label: "High" },
+                                  { value: "medium", label: "Medium" },
+                                  { value: "low", label: "Low" },
+                                ]}
+                                // selected={formik.values.employees_range}
+                                setSelected={(selected: any) => {
+                                  formik.setFieldValue(
+                                    `challenges.${index}.risk_level`,
+                                    selected
+                                  );
+                                }}
+                                id={`challenges.${index}.risk_level`}
+                                selected={
+                                  formik.values.challenges[index].risk_level
+                                }
+                                // setSelected={formik.handleChange}
+                                labelClass="block relative text-xs  text-[#6E7C87] font-normal pb-3"
+                                // touched={formik.touched.challenges?.[index]?.risk_level && formik.touched.challenges?.[index]?.risk_level}
+                                // error={
+                                //   formik?.errors?.challenges?.[index]?.risk_level
+                                // }
+                                canSearch={false}
                               />
                             </div>
-                            {index !== 0 && (
-                              <button
-                                type="button"
-                                onClick={() => remove(index)}
-                                className="text-red-500 hover:text-red-700 absolute right-[-4%] md:right-[-4%] top-10"
-                              >
-                                <Icon
-                                  name="remove"
-                                  width={14.28}
-                                  height={18.63}
-                                />
-                              </button>
-                            )}
+                          </div>
+                          <div className="w-full flex-1">
+                            <Textarea
+                              label="Description Of Challenge"
+                              rows={3}
+                              id={`challenges.${index}.description`}
+                              name={`challenges.${index}.description`}
+                              placeholder="Enter Description Of Challenge"
+                              className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              // onChange={formik.handleChange}
+                              // touched={formik.touched.description}
+                              // value={formik.values.description}
+                              // error={formik.errors.description}
+
+                              value={
+                                formik.values.challenges[index].description
+                              } // Accessing value
+                              onChange={formik.handleChange} // Handling onChange event
+                              onBlur={formik.handleBlur} // Handling onBlur event
+                            />
+                          </div>
+                          <div className="w-full flex-1">
+                            <Textarea
+                              label="Recommendations"
+                              rows={3}
+                              placeholder="Enter Recommendations"
+                              className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                              // onChange={formik.handleChange}
+                              // touched={formik.touched.description}
+                              // value={formik.values.description}
+                              // error={formik.errors.description}
+                              id={`challenges.${index}.recommendations`}
+                              name={`challenges.${index}.recommendations`}
+                              value={
+                                formik.values.challenges[index].recommendations
+                              } // Accessing value
+                              onChange={formik.handleChange} // Handling onChange event
+                              onBlur={formik.handleBlur} // Handling onBlur event
+                            />
                           </div>
                         </div>
-                      )
-                    )}
-                  {formik.errors.tasks &&
-                    typeof formik.errors.tasks === "string" && (
-                      <span className="text-red-500 text-xs">
-                        {" "}
-                        {formik.errors.tasks}{" "}
-                      </span>
-                    )}
+                      </div>
+                    )
+                  )}
+
                   <button
                     type="button"
                     onClick={() =>
                       push({
-                        id: uuidv4(),
-                        task: "",
-                        weight: "",
-                        strategic_pillars: [],
-                        success_measures: [],
-                        start_date: "",
-                        end_date: "",
-                        is_main_effort: false,
+                        title: "",
+                        risk_level: "",
+                        description: "",
+                        recommendations: "",
                       })
                     }
                     className="flex items-center gap-2 mt-5 text-[var(--primary-color)] text-sm px-1"
@@ -222,11 +218,11 @@ export default function ReportChallengeModal({
                       style={{ color: "var(--primary-color)" }}
                       size={20}
                     />
-                    Add new specified task
+                    Add new specified challenge
                   </button>
                 </div>
               )}
-            </FieldArray>
+            />
             <div className="mt-8 flex gap-x-2 items-center">
               <Button
                 // disabled={
@@ -236,9 +232,7 @@ export default function ReportChallengeModal({
                 //   isLoadingDeleteSpecifiedTask
                 // }
                 type="submit"
-                // loading={
-                //   isLoading || isReassigning || isLoadingDeleteSpecifiedTask
-                // }
+                loading={loading}
                 loadingText={"Submit"}
               >
                 Submit

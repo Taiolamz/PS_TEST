@@ -9,10 +9,12 @@ import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import HistoryDrawer from "@/components/drawer/history-drawer";
 import { fakehistoryData } from "../../../_partials/_measure_of_success/_data/data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
+import ReportChallengeModal from "../../../_component/report-challenge-modal";
 
 export default function TargetSubmission() {
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [showReportChallenge, setShowReportChallenge] = useState(false);
   const [id, setId] = useState("");
   const handleFormSubmit = () => {};
 
@@ -124,9 +126,18 @@ export default function TargetSubmission() {
                   placeholder="Auto Generated"
                 />
               </div>
-              <div className="">
+              <div className="space-x-5">
                 <Button className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none">
                   Submit
+                </Button>
+                <Button
+                  onClick={() => {
+                    setId("dfdfdfdf12");
+                    setShowReportChallenge(true);
+                  }}
+                  className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
+                >
+                  Report Challenge
                 </Button>
               </div>
             </section>
@@ -222,14 +233,28 @@ export default function TargetSubmission() {
                   placeholder="Auto Generated"
                 />
               </div>
-              <div className="">
-                <Button className="text-white w-[120px] text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none">
+              <div className="space-x-5">
+                <Button className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none">
                   Submit
+                </Button>
+                <Button
+                  onClick={() => {
+                    setId("rererere98");
+                    setShowReportChallenge(true);
+                  }}
+                  className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
+                >
+                  Report Challenge
                 </Button>
               </div>
             </section>
           </main>
         </section>
+
+        <ReportChallengeModal
+          show={showReportChallenge}
+          handleClose={() => setShowReportChallenge(false)}
+        />
 
         <CustomCommentDrawer
           open={showComment}
