@@ -1,13 +1,13 @@
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import React from "react";
-import { commentData, historyData } from "../_data/data";
-import HistoryCard from "../../../_component/history-card";
+import HistoryCard from "./history-card";
 import { SearchIcon } from "@/public/assets/icons";
-import CommentCard from "../../../_component/comment-card";
+import CommentCard from "./comment-card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import avatar from "@/public/svgs/avatar.svg";
+import { commentData } from "../_partials/_task_outcome/_data/data";
 
 const Comment = () => {
   return (

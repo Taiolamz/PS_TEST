@@ -1,8 +1,9 @@
 import TableWrapper from "@/components/tables/TableWrapper";
+import routesPath from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 
 import React, { useCallback } from "react";
-
+const { EMPLOYEE } = routesPath;
 interface TaskOutcomeTableProps {
   FORMAT_TABLE_DATA: (e: any) => void;
   isFetchingOutcomeData?: boolean;
@@ -53,19 +54,10 @@ const TaskOutcomeTable = ({
             label: "January Expected Outcome",
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
-              //   console.log(
-              //     "dataTwo",
-              //     dataTwo?.name?.props?.children[0].props.children
-              //   );
-
               router.push(
-                pathname.split("?")[0] +
-                  "?" +
-                  createQueryString(
-                    "task_outcome",
-                    dataTwo?.name?.props?.children[0].props.children,
-                    "expected"
-                  )
+                EMPLOYEE.EXPECTED_OUTCOME(
+                  dataTwo?.name?.props?.children[0].props.children
+                )
               );
             },
           },
@@ -74,13 +66,9 @@ const TaskOutcomeTable = ({
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
               router.push(
-                pathname.split("?")[0] +
-                  "?" +
-                  createQueryString(
-                    "task_outcome",
-                    dataTwo?.name?.props?.children[0].props.children,
-                    "actual"
-                  )
+                EMPLOYEE.ACTUAL_OUTCOME(
+                  dataTwo?.name?.props?.children[0].props.children
+                )
               );
             },
           },
