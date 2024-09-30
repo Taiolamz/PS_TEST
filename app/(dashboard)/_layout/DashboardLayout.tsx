@@ -397,35 +397,40 @@ const DashboardLayout = ({
               // </>
               <>
                 {/* updated feature... */}
-                <div className="fixed w-full z-20 ">
-                  <div className="relative bg-[var(--bg-yellow-300)] py-2 px-8 flex justify-between items-center">
-                    <div className="flex gap-14 items-center">
-                      <div className="flex gap-2 items-center">
-                        <Image src={WarningIcon} alt="warning icon" />
-                        <p className="text-[#252C32] font-medium text-base">
-                          Complete your checklist
-                        </p>
-                      </div>
-                      <p
-                        className="text-xs text-[#252C32] underline font-light cursor-pointer"
-                        onClick={handleProceedChecklist}
-                      >
-                        finish checklist items to fully access organization
-                        features
+                <div
+                  style={{ backgroundColor: "rgba(255, 252, 194, 0.3)" }}
+                  className="absolute z-20 w-full right-0  bg-[#FFFCC2] py-2 px-8 flex justify-between items-center"
+                >
+                  <div className="flex gap-14 items-center">
+                    <div className="flex gap-2 items-center">
+                      <Image src={WarningIcon} alt="warning icon" />
+                      <p className="text-[#252C32] font-medium text-base">
+                        Complete your checklist
                       </p>
                     </div>
-                    <div
+                    <p
+                      className="text-xs text-[#252C32] underline font-light cursor-pointer"
                       onClick={handleProceedChecklist}
-                      className="font-medium cursor-pointer text-sm text-[var(--primary-color)] inline-flex gap-x-1 items-center group"
                     >
-                      Proceed
-                      {ArrowRight}
-                    </div>
+                      finish checklist items to fully access organization
+                      features
+                    </p>
+                  </div>
+                  <div
+                    onClick={handleProceedChecklist}
+                    className="font-medium cursor-pointer text-sm text-[var(--primary-color)] inline-flex gap-x-1 items-center group"
+                  >
+                    Proceed
+                    {ArrowRight}
                   </div>
                 </div>
               </>
             )}
+          {/* <div className="h-screen"> */}
+          {/* {" "} */}
+          {/* update */}
           {children}
+          {/* </div> */}
         </div>
         {/* main content box end */}
       </div>

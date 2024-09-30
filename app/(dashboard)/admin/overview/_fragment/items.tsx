@@ -1,3 +1,5 @@
+import routesPath from "@/utils/routes";
+
 export const announceIcon = (
   <svg
     width="45"
@@ -119,6 +121,8 @@ export const chevronRight = (
   </svg>
 );
 
+const { ADMIN } = routesPath;
+
 export const topAccessItems = [
   {
     label: (
@@ -137,7 +141,7 @@ export const topAccessItems = [
   },
   {
     label: "Add Staff",
-    link: "",
+    link: ADMIN.EMPLOYEES,
     icon: staffIcon,
   },
 ];
@@ -161,25 +165,25 @@ export const orgTaskDetails = [
   {
     label: "Completed",
     color: "#119C2BE5",
-    value: 0,
+    value: 24,
   },
 
   {
     label: "In Progress",
     color: "#FFC043E5",
-    value: 0,
+    value: 20,
   },
 
   {
     label: "Overdue",
     color: "#EC1410CC",
-    value: 0,
+    value: 10,
   },
 
   {
     label: "Not Started",
     color: "#835101CC",
-    value: 0,
+    value: 4,
   },
 ];
 
@@ -233,18 +237,195 @@ export const sideTodoIcon = (
 
 export const executiveMosProgress = [
   {
-    value: 0,
+    name: "Hassan Lamidi",
+    role: "Head of Engineering (Zojatech)",
+    value: 38,
     link: "",
     color: "green",
   },
   {
-    value: 0,
+    name: "Joseph Oloyede",
+    role: "Head of Subsidiary (ITHorizons Lagos)",
+    value: 45,
     link: "",
-    color: "green",
+    color: "purple",
   },
   {
-    value: 0,
+    name: "Bayo Onanuga",
+    role: "Head of Subsidiary (ITHorizons UK)",
+    value: 42,
     link: "",
-    color: "green",
+    color: "blue",
   },
 ];
+
+export const measureOfSuccessProgressDetails = [
+  {
+    label: "Revenue",
+    progress: 65,
+    value: "$1,000,000,000,000",
+    value_color: "#FFC043",
+    color: "yellow",
+  },
+  {
+    label: "Platinum Customer Acquisition",
+    progress: 40,
+    value: "15",
+    value_color: "#EC1410",
+    color: "red",
+  },
+  {
+    label: "Completed Projects",
+    progress: 73,
+    value: "500",
+    value_color: "#008080",
+    color: "green",
+  },
+  {
+    label: "Product Launch",
+    progress: 73,
+    value: "3",
+    value_color: "#008080",
+    color: "green",
+  },
+  {
+    label: "MVP Adoption",
+    progress: 35,
+    value: "70%",
+    value_color: "#EC1410",
+    color: "red",
+  },
+];
+
+export const recentActivity = [
+  {
+    label: "Announcement",
+    content: "You just sent out an announcement",
+    date: "Today",
+  },
+  {
+    label: "Action Point",
+    content: "You just created an action point",
+    date: "10/12/2024",
+  },
+];
+
+export const activeIcon = (
+  <svg
+    width="6"
+    height="7"
+    viewBox="0 0 6 7"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect y="0.5" width="6" height="6" rx="3" fill="#07A287" />
+  </svg>
+);
+
+const missionIcon = (
+  <svg
+    width="23"
+    height="24"
+    viewBox="0 0 23 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M17.0076 23.9999L15.6153 22.6076L17.7152 20.4742L15.6153 18.3742L17.0076 16.9486L19.1409 19.0819L21.2409 16.9486L22.6666 18.3742L20.5332 20.4742L22.6666 22.6076L21.2409 23.9999L19.1409 21.8999L17.0076 23.9999ZM3.66665 21.9999C4.12998 21.9999 4.52353 21.8379 4.84731 21.5139C5.17131 21.1901 5.33331 20.7966 5.33331 20.3332C5.33331 19.8699 5.17131 19.4763 4.84731 19.1526C4.52353 18.8286 4.12998 18.6666 3.66665 18.6666C3.20332 18.6666 2.80976 18.8286 2.48599 19.1526C2.16199 19.4763 1.99999 19.8699 1.99999 20.3332C1.99999 20.7966 2.16199 21.1901 2.48599 21.5139C2.80976 21.8379 3.20332 21.9999 3.66665 21.9999ZM3.66665 23.9999C2.64954 23.9999 1.78421 23.643 1.07066 22.9292C0.356887 22.2157 0 21.3503 0 20.3332C0 19.3161 0.356887 18.4508 1.07066 17.7372C1.78421 17.0235 2.64954 16.6666 3.66665 16.6666C4.47176 16.6666 5.19609 16.9029 5.83964 17.3756C6.48319 17.8482 6.92208 18.4735 7.1563 19.2512C8.10851 19.0837 8.8974 18.6316 9.52295 17.8949C10.1487 17.158 10.4616 16.3041 10.4616 15.3333V10.1923C10.4616 8.44185 11.0795 6.94874 12.3153 5.71297C13.5513 4.47698 15.0445 3.85898 16.7949 3.85898H18.8152L16.3819 1.42566L17.8076 0L22.6666 4.85898L17.8076 9.71795L16.3819 8.32563L18.8026 5.85897H16.7949C15.5898 5.85897 14.5663 6.27986 13.7243 7.12163C12.8825 7.96363 12.4616 8.98718 12.4616 10.1923V15.3333C12.4616 16.8444 11.9586 18.161 10.9526 19.2832C9.94662 20.4055 8.69485 21.0682 7.1973 21.2716C6.99063 22.0767 6.55863 22.7327 5.9013 23.2395C5.24397 23.7464 4.49909 23.9999 3.66665 23.9999ZM1.39233 8.38462L0 6.9923L2.09999 4.85898L0 2.75899L1.39233 1.33333L3.52565 3.46665L5.62564 1.33333L7.0513 2.75899L4.91798 4.85898L7.0513 6.9923L5.62564 8.38462L3.52565 6.28463L1.39233 8.38462Z"
+      fill="#008080"
+      className="fill-primary"
+    />
+  </svg>
+);
+
+const visionIcon = (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9.55575 15.4808C8.12892 15.3589 6.92958 14.7775 5.95775 13.7365C4.98592 12.6955 4.5 11.45 4.5 10C4.5 8.47217 5.03475 7.17358 6.10425 6.10425C7.17358 5.03475 8.47217 4.5 10 4.5C11.45 4.5 12.6955 4.98433 13.7365 5.953C14.7775 6.9215 15.3589 8.11925 15.4808 9.54625L13.8905 9.075C13.6743 8.175 13.2088 7.4375 12.4938 6.8625C11.7789 6.2875 10.9477 6 10 6C8.9 6 7.95833 6.39167 7.175 7.175C6.39167 7.95833 6 8.9 6 10C6 10.95 6.28908 11.7833 6.86725 12.5C7.44542 13.2167 8.18133 13.6833 9.075 13.9L9.55575 15.4808ZM10.7558 19.4595C10.6298 19.4865 10.5038 19.5 10.378 19.5H10C8.68583 19.5 7.45083 19.2507 6.295 18.752C5.13917 18.2533 4.13375 17.5766 3.27875 16.7218C2.42375 15.8669 1.74692 14.8617 1.24825 13.706C0.749417 12.5503 0.5 11.3156 0.5 10.0017C0.5 8.68775 0.749333 7.45267 1.248 6.2965C1.74667 5.14033 2.42342 4.13467 3.27825 3.2795C4.13308 2.42433 5.13833 1.74725 6.294 1.24825C7.44967 0.749417 8.68442 0.5 9.99825 0.5C11.3123 0.5 12.5473 0.749417 13.7035 1.24825C14.8597 1.74692 15.8653 2.42375 16.7205 3.27875C17.5757 4.13375 18.2528 5.13917 18.7518 6.295C19.2506 7.45083 19.5 8.68583 19.5 10V10.373C19.5 10.4973 19.4865 10.6217 19.4595 10.7463L18 10.3V10C18 7.76667 17.225 5.875 15.675 4.325C14.125 2.775 12.2333 2 10 2C7.76667 2 5.875 2.775 4.325 4.325C2.775 5.875 2 7.76667 2 10C2 12.2333 2.775 14.125 4.325 15.675C5.875 17.225 7.76667 18 10 18H10.3L10.7558 19.4595ZM18.1402 19.6443L13.6058 15.1L12.5193 18.3845L10 10L18.3845 12.5192L15.1 13.6058L19.6443 18.1402L18.1402 19.6443Z"
+      fill="#008080"
+      className="fill-primary"
+    />
+  </svg>
+);
+
+export const missionstatement = [
+  {
+    icon: missionIcon,
+    label: "Mission Statement",
+    content:
+      "The design can be more user centric, try to tweak it a bit and go through the user story  once more",
+  },
+  {
+    icon: visionIcon,
+    label: "Vision Statement",
+    content:
+      "The design can be more user centric, try to tweak it a bit and go through the user story  once more",
+  },
+];
+
+export const missionPlanSubmissionProgress = [
+  {
+    label: "Mission Plan Submission Progress 2023 ",
+    value: 68,
+    start_date: "March 2023",
+    end_date: "March 31, 2024",
+  },
+  {
+    label: "Mission Plan Submission Progress 2023 ",
+    value: 68,
+    start_date: "March 2023",
+    end_date: "March 31, 2024",
+  },
+];
+
+export const todoLists = [
+  {
+    label: "Fil KSS Survey",
+    content:
+      "The design can be more user centric, try to tweak it a bit and go through the user story  once more",
+    date: "10/12/2024",
+    due_date: "10",
+    bgColor: "rgba(17, 156, 43, 0.03)",
+    color: "rgba(17, 156, 43, 1)",
+  },
+  {
+    label: "Fil KSS Survey",
+    content:
+      "The design can be more user centric, try to tweak it a bit and go through the user story  once more",
+    date: "10/12/2024",
+    due_date: "10",
+    bgColor: "rgba(236, 20, 16, 0.03)",
+    color: "rgba(236, 20, 16, 1)",
+  },
+  {
+    label: "Fil KSS Survey",
+    content:
+      "The design can be more user centric, try to tweak it a bit and go through the user story  once more",
+    date: "10/12/2024",
+    due_date: "10",
+    bgColor: "rgba(4, 82, 200, 0.03)",
+    color: "rgba(4, 82, 200, 1)",
+  },
+];
+
+export const ArrowRightIcon = ({ color }: { color?: string }) => (
+  <svg
+    width="7"
+    height="10"
+    viewBox="0 0 7 10"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1.5 9L5.5 5L1.5 1"
+      stroke={color || "#119C2B"}
+      stroke-width="1.5"
+    />
+  </svg>
+);

@@ -318,7 +318,7 @@ const Employee = () => {
         onCancel={handleCancelDialog}
       /> */}
 
-      <section className="p-5">
+      <section className="p-5 mt-5">
         {employees?.length < 0 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
