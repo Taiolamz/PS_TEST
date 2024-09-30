@@ -12,6 +12,7 @@ import React from 'react';
 import { CHALLENGES_DATA, MOS_DATA } from '../_data';
 import OrganizationTargetChart from '../_charts/organization-target';
 import MeasureOfSucessMetricTableCard from '@/components/card/mos-table-card';
+import { Dictionary } from '@/@types/dictionary';
 
 export default function OrganizationMeasureOfSuccess() {
   const [showChallengeModal, setShowChallengeModal] = React.useState(false);
@@ -1379,7 +1380,7 @@ export default function OrganizationMeasureOfSuccess() {
 
        <OrganizationTargetChart/>
         
-       {MOS_DATA?.map((item, idx) => {
+       {MOS_DATA?.map((item: Dictionary, idx: number) => {
           const {
             title,
             fy_target,
