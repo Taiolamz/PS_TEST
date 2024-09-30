@@ -67,12 +67,13 @@ const MetricTableCard = ({
 
   const impliedTaskHead = [
     "Period/Cycle",
-    "Expected Outcome",
-    "Achieved Outcome",
-    "Sub Outcomes",
     "Percentage Completion",
+    "Sub Outcomes",
+    // "Expected Outcome",
+    // "Achieved Outcome",
   ];
 
+  const sub_outcome_head = ["Month", "Expected Outcome", "Achieved Outcome"];
   const topBtnBorderClass =
     "border border-[#6E7C87] p-2 px-3 rounded-sm text-[#6E7C87] cursor-pointer font-medium text-sm";
   const rowCenterClass = "flex gap-3 items-center";
@@ -260,7 +261,7 @@ const MetricTableCard = ({
                         {/* -------TABLE HEADER-------- */}
                         <table className="w-full table-auto border-collapse">
                           <thead className="border-b">
-                            <tr className="grid grid-cols-5 justify-start pb-2">
+                            <tr className="grid grid-cols-3 justify-start pb-2">
                               {impliedTaskHead.map((chi, idx) => (
                                 <th
                                   key={idx}
@@ -279,8 +280,8 @@ const MetricTableCard = ({
                               {(impliedTasks as any[])?.map((chi, idx) => {
                                 const {
                                   period_cycle,
-                                  expected_outcome,
-                                  achieved_outcome,
+                                  // expected_outcome,
+                                  // achieved_outcome,
                                   sub_outcomes,
                                   percentage_completion,
                                 } = chi;
@@ -302,29 +303,17 @@ const MetricTableCard = ({
                                         //   isDetailsVisible ? "hidden" : ""
                                         // }`}
 
-                                        className={`grid grid-cols-5 justify-start items-center transition-all duration-300 transform ${
-                                          isDetailsVisible
-                                            ? "translate-y-[100%] opacity-0"
-                                            : "translate-y-0 opacity-100 "
-                                        }`}
+                                        className="grid grid-cols-3 justify-start items-center transition-all duration-300 transform "
                                       >
                                         <td className="p-2 py-4 text-[#6E7C87] font-normal text-sm">
                                           {period_cycle}
                                         </td>
-                                        <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
+                                        {/* <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
                                           {expected_outcome}
-                                        </td>
-                                        <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
+                                        </td> */}
+                                        {/* <td className="p-2 py-4  text-[#6E7C87] font-normal text-sm">
                                           {achieved_outcome}
-                                        </td>
-                                        <td
-                                          onClick={() =>
-                                            toggleViewDetail(taskIdx, idx)
-                                          }
-                                          className="border flex justify-center py-[1px] hover:border-primary hover:text-primary transition-all duration-300  px-5 w-[56px] rounded-[4px] border-[#6E7C8733] text-[#6E7C87] text-[12px] cursor-pointer text-center"
-                                        >
-                                          View
-                                        </td>
+                                        </td> */}
                                         <div className="p-2 pl-3">
                                           <ReusableProgress
                                             valuePosition="right"
@@ -337,18 +326,40 @@ const MetricTableCard = ({
                                             progressClass="rounded-full"
                                           />
                                         </div>
+                                        <td
+                                          onClick={() =>
+                                            toggleViewDetail(taskIdx, idx)
+                                          }
+                                          className={`border flex justify-center py-[1px] hover:border-primary hover:text-primary transition-all duration-300  px-5 w-[56px] rounded-[4px] border-[#6E7C8733] text-[#6E7C87] text-[12px] cursor-pointer text-center`}
+                                        >
+                                          {isDetailsVisible ? "Close" : "View"}
+                                        </td>
                                       </tr>
                                     </>
 
                                     <>
                                       <div
-                                        className={`flex flex-col gap-8 overflow-auto  relative customScrollbar transition-all duration-300 ease-in-out ${
+                                        className={`flex flex-col gap-8 mt-5 overflow-auto  relative customScrollbar transition-all duration-300 ease-in-out ${
                                           // isDetailsVisible ? "h-[220px] my-5" : "h-0"
                                           isDetailsVisible
                                             ? "h-[220px] my-5 -mt-9"
                                             : "h-0"
                                         }`}
                                       >
+                                        <thead className="border-b">
+                                          <tr className="grid grid-cols-3 justify-start pb-2">
+                                            {sub_outcome_head.map(
+                                              (head, idx) => (
+                                                <th
+                                                  key={idx}
+                                                  className="p-2 text-left font-medium text-sm"
+                                                >
+                                                  {head}
+                                                </th>
+                                              )
+                                            )}
+                                          </tr>
+                                        </thead>
                                         {(sub_outcomes as any[])?.map(
                                           (chi, idx) => {
                                             const {
@@ -359,7 +370,7 @@ const MetricTableCard = ({
                                             return (
                                               <tr
                                                 key={idx}
-                                                className="grid grid-cols-5"
+                                                className="grid grid-cols-3"
                                               >
                                                 <td className="text-[#6E7C87] text-sm p-1">
                                                   {date}
@@ -367,21 +378,21 @@ const MetricTableCard = ({
                                                 <td className="text-[#6E7C87] text-sm p-1 w-[400px]">
                                                   {achieved_outcome}
                                                 </td>
-                                                <td className="text-[#6E7C87] text-sm p-1 w-[500px] pl-[10rem]">
+                                                <td className="text-[#6E7C87] text-sm p-1 w-[500px] ">
                                                   {expected_outcome}
                                                 </td>
                                               </tr>
                                             );
                                           }
                                         )}
-                                        <figure
+                                        {/* <figure
                                           onClick={() =>
                                             toggleViewDetail(taskIdx, idx)
                                           }
                                           className="absolute right-0 cursor-pointer"
                                         >
                                           {cancelIcon}
-                                        </figure>
+                                        </figure> */}
                                         <div className="flex justify-end">
                                           <div className="flex gap-4 items-center">
                                             <p className="text-[#015858] font-semibold text-sm">

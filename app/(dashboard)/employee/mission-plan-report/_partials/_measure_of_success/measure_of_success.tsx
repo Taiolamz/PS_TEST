@@ -1,7 +1,9 @@
+import MOSTable from "./_partials/mos-table";
+
 const MeasureOfSuccess = () => {
   return (
-    <div>
-      <p>MeasureOfSuccess</p>
+    <div className="mt-5">
+      <MOSTable />
     </div>
   );
 };

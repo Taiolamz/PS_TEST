@@ -208,7 +208,7 @@ const Branches = () => {
 
   return (
     <DashboardLayout headerTitle="Branches">
-      <section className="p-5">
+      <section className="p-5 admin/branches">
         {branches?.length < 1 ? (
           <ReusableEmptyState
             loading={isLoadingBranches}

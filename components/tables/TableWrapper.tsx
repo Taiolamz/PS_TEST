@@ -74,6 +74,7 @@ interface myComponentProps {
   defaultBodyList?: any;
   dropDown?: boolean;
   dropDownList?: any;
+  dynamicDropDownList?: (row?: any) => any[];
   width?: string;
 }
 
@@ -115,6 +116,7 @@ const TableWrapper = ({
   defaultBodyList,
   dropDown,
   dropDownList,
+  dynamicDropDownList,
   width,
 }: myComponentProps) => {
   const [showFilter, setShowFilter] = useState<any>(false);
@@ -495,9 +497,11 @@ const TableWrapper = ({
                             <DropdownMenu>
                               <DropdownMenuTrigger
                                 asChild
-                                className="cursor-pointer"
+                                className="cursor-pointer px-2"
                               >
-                                <Image src={ActionIcon} alt="Action icon" />
+                                <span>
+                                  <Image src={ActionIcon} alt="Action icon" />
+                                </span>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent
                                 className="border rounded-sm"
@@ -524,6 +528,29 @@ const TableWrapper = ({
                                       </DropdownMenuItem>
                                     );
                                   })}
+                                {dynamicDropDownList &&
+                                  dynamicDropDownList(item)?.length > 0 &&
+                                  dynamicDropDownList(item)?.map(
+                                    (child: any, idx: any) => {
+                                      return (
+                                        <DropdownMenuItem
+                                          key={idx}
+                                          onClick={() => {
+                                            child?.onActionClick &&
+                                              child?.onActionClick(
+                                                handlePickObjFromDefaultList(
+                                                  rowIndex
+                                                ),
+                                                item
+                                              );
+                                          }}
+                                          className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
+                                        >
+                                          {child?.label}
+                                        </DropdownMenuItem>
+                                      );
+                                    }
+                                  )}
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </div>

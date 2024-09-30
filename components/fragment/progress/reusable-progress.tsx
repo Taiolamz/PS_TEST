@@ -42,6 +42,7 @@ interface ReusableProgressProps {
   floatValueClass?: string;
   noFloatValueClass?: string;
   progressClass?: string;
+  style?: any;
 }
 
 const COLORS = {
@@ -68,6 +69,7 @@ const ReusableProgress = ({
   floatValueClass = "12px",
   noFloatValueClass = "12px",
   progressClass,
+  style,
 }: ReusableProgressProps) => {
   const VALUE_COLOR = valueColor
     ? valueColor
@@ -121,6 +123,7 @@ const ReusableProgress = ({
         style={{
           height,
           borderRadius: `${borderRadius}px`,
+          ...style,
         }}
       >
         <div

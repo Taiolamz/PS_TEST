@@ -1,13 +1,17 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import React from "react";
+import React, { useState } from "react";
 import { CustomAccordion } from "@/components/custom-accordion";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { Button } from "@/components/ui/button";
-import { EditableLabel } from "@/components/fragment";
+import { EditableLabel, ReusableDrawer } from "@/components/fragment";
 import { data } from "./_data/data";
 import { useRouter } from "next/navigation";
 import ImpliedTaskApproval from "./_partials/implied-task-approval";
+import History from "../../../_component/history";
+import Comment from "../../../_component/comment";
+// import History from "../../../_partials/_task_outcome/_partials/history";
+// import Comment from "../../../_partials/_task_outcome/_partials/comment";
 
 export default function ViewApprovalProgress({
   params,
@@ -15,6 +19,8 @@ export default function ViewApprovalProgress({
   params: { reportId: string };
 }) {
   const router = useRouter();
+  const [showHistory, setShowHistory] = useState(false);
+  const [showComment, setShowComment] = useState(false);
   const handleFormSubmit = () => {};
 
   const formik = useFormik({
@@ -34,6 +40,31 @@ export default function ViewApprovalProgress({
   });
   return (
     <DashboardLayout back headerTitle="Approval Tasks Submission">
+      <ReusableDrawer
+        title="Outcome History"
+        show={showHistory}
+        handleClose={() => setShowHistory(false)}
+        closeOnClickOutside={false}
+        headerClass={"bg-primary lg:mx-0 p-5"}
+        titleClass={"text-white"}
+      >
+        <div className="py-4 px-[18px]">
+          <History />
+        </div>
+      </ReusableDrawer>
+      <ReusableDrawer
+        title="Comments"
+        show={showComment}
+        handleClose={() => setShowComment(false)}
+        closeOnClickOutside={false}
+        headerClass={"bg-primary lg:mx-0 p-5"}
+        titleClass={"text-white"}
+        childrenContainerClass="py-0"
+      >
+        <div className="">
+          <Comment />{" "}
+        </div>
+      </ReusableDrawer>
       <div className="p-[2rem]">
         <h1 className="font-normal pb-[2rem] text-lg">
           January Expected Outcome
@@ -81,7 +112,10 @@ export default function ViewApprovalProgress({
                                 <ImpliedTaskApproval
                                   formik={formik}
                                   impliedTaskData={item?.impliedTasks}
+                                  setShowHistory={setShowHistory}
+                                  setShowComment={setShowComment}
                                 />
+                              
                               </div>
                             )
                           )}
