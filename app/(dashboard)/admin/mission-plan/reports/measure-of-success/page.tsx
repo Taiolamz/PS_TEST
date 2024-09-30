@@ -1404,7 +1404,7 @@ export default function OrganizationMeasureOfSuccess() {
               fy_achieved={fy_achieved}
               amount={amount}
               table_details={table_details}
-              // onClickViewChallenge={() => setShowChallengeModal(true)}
+              onClickViewChallenge={() => setShowChallengeModal(true)}
               // onClickComment={() => setShowCommentModal(true)}
             />
           );
