@@ -8,8 +8,10 @@ import { EditableLabel, ReusableDrawer } from "@/components/fragment";
 import { data } from "./_data/data";
 import { useRouter } from "next/navigation";
 import ImpliedTaskApproval from "./_partials/implied-task-approval";
-import History from "../../../_partials/_task_outcome/_partials/history";
-import Comment from "../../../_partials/_task_outcome/_partials/comment";
+import History from "../../../_component/history";
+import Comment from "../../../_component/comment";
+// import History from "../../../_partials/_task_outcome/_partials/history";
+// import Comment from "../../../_partials/_task_outcome/_partials/comment";
 
 export default function ViewApprovalProgress({
   params,
