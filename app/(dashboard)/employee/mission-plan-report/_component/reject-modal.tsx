@@ -1,7 +1,7 @@
 import React from "react";
 import * as Yup from "yup";
 import { cn } from "@/lib/utils";
-import { LoaderCircle, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,12 +55,12 @@ export default function RejectModal({
             touched={formik.touched.message}
           />
 
-          <p className="text-[var(--text-color4)] text-sm text-left">
+          <p className="text-[var(--text-color4)] text-sm text-left select-none">
             You’re about to reject this submission. This action will send a
             notification to the user with your comment. Press the button below
             to proceed?
           </p>
-          <div className="flex items-center justify-end space-x-4">
+          <div className="flex items-center justify-end space-x-4 select-none">
             <Button
               type="button"
               onClick={handleClose}

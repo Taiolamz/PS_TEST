@@ -25,7 +25,7 @@ export default function ApproveModal({
       handleClose={handleClose}
       modalClass="!min-h-[220px] !min-w-[373px] rounded "
     >
-      <div className="absolute top-0 text-right">
+      <div className="absolute top-0 text-right select-none ">
         <div className="  w-full p-4 px-6 ">
           <div className="flex justify-between items-center mt-3 mb-[18px]">
             <h4 className="font-medium">{title ? title : "Approve?"}</h4>
@@ -38,27 +38,27 @@ export default function ApproveModal({
             send this submission to the next approval line, press the button
             below to proceed.  `}
           </p>
-          <Button
-            onClick={handleClose}
-            loading={loading}
-            loadingText="Deactivating"
-            disabled={loading}
-            variant={"outline"}
-            className={cn(
-              "font-light rounded mt-5 border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-[var(--primary-accent-color)]"
-            )}
-          >
-            Review Inputs
-          </Button>
-          <Button
-            loading={loading}
-            loadingText="Deactivating"
-            disabled={loading}
-            onClick={handleSubmit}
-            className={cn("font-light ml-4 rounded mt-5 ")}
-          >
-            Yes, Submit
-          </Button>
+          <div className="flex justify-end items-end space-x-4 mt-5">
+            <Button
+              onClick={handleClose}
+              disabled={loading}
+              variant={"outline"}
+              className={cn(
+                "font-light rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-[var(--primary-accent-color)]"
+              )}
+            >
+              Review Inputs
+            </Button>
+            <Button
+              loading={loading}
+              loadingText="Yes, Submit"
+              disabled={loading}
+              onClick={handleSubmit}
+              className={cn("font-light rounded")}
+            >
+              Yes, Submit
+            </Button>
+          </div>
         </div>
       </div>
     </ModalContainer>
