@@ -8,8 +8,10 @@ import { useFormik } from "formik";
 import { useMemo, useState } from "react";
 import { REVIEW_PERIOD_OPTIONS } from "../_data";
 import { cn } from "@/lib/utils";
+import ExtendSubmissionModal from "./_modals/extend-submission";
 
 const OutcomeTargetSettings = () => {
+    const [showExtendSubmissionModal, setShowExtendSubmissionModal] = useState(false)
     const [submissionOptions, setSubmissionOptions] = useState({
         expected_outcome: [
             { id: 1, title: 'Submission Only', isSelected: false, type: "submission_only" },
@@ -79,7 +81,7 @@ const OutcomeTargetSettings = () => {
                     )}
                     variant="outline"
                     // disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
-                    onClick={() => null}
+                    onClick={() => setShowExtendSubmissionModal(true)}
                 >
                     Extend Submission Period
                 </Button>
@@ -223,6 +225,8 @@ const OutcomeTargetSettings = () => {
                     </form>
                 </div>
             </CardContainer>
+
+            <ExtendSubmissionModal show={showExtendSubmissionModal} handleClose={() => setShowExtendSubmissionModal(false)}/>
         </section>
     );
 }

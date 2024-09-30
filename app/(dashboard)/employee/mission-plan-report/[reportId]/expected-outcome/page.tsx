@@ -55,7 +55,7 @@ const ExpectedOutcome = () => {
           </div>
         </ReusableDrawer>
         <ReusableDrawer
-          title="Outcome History"
+          title="Comments"
           show={showComment}
           handleClose={() => setShowComment(false)}
           closeOnClickOutside={false}
@@ -116,18 +116,22 @@ const ExpectedOutcome = () => {
                         {formik.values.implied_task?.length > 0 &&
                           formik.values.implied_task.map(
                             (implied_task: any, index: number) => (
-                              <div
-                                key={index}
-                                className="pt-8 border border-[#E5E9EB] p-8 bg-white"
-                              >
-                                <ImpliedTask
-                                  formik={formik}
-                                  impliedTaskData={item.impliedTasks}
-                                  setShowHistory={setShowHistory}
-                                  setShowComment={setShowComment}
-                                  setShowChallengeModal={setShowChallengeModal}
-                                />
-                              </div>
+                              <>
+                                <div
+                                  key={index}
+                                  className="pt-8 border border-[#E5E9EB] p-8 bg-white"
+                                >
+                                  <ImpliedTask
+                                    formik={formik}
+                                    impliedTaskData={item.impliedTasks}
+                                    setShowHistory={setShowHistory}
+                                    setShowComment={setShowComment}
+                                    setShowChallengeModal={
+                                      setShowChallengeModal
+                                    }
+                                  />
+                                </div>
+                              </>
                             )
                           )}
                       </div>
