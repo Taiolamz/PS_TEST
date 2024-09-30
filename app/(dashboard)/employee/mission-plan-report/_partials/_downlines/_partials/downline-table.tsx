@@ -1,9 +1,8 @@
 "use client";
-import { Progress } from "@/components/ui/progress";
-import TableWrapper from "@/components/tables/TableWrapper";
-import routesPath from "@/utils/routes";
-import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import routesPath from "@/utils/routes";
+import { useRouter } from "next/navigation";
+import TableWrapper from "@/components/tables/TableWrapper";
 import { formatDate } from "@/utils/helpers/date-formatter";
 import BadgeComponent from "@/components/badge/BadgeComponents";
 
@@ -11,28 +10,6 @@ const { EMPLOYEE } = routesPath;
 
 export default function DownlineTable() {
   const router = useRouter();
-  const pathname = usePathname();
-
-  const createDownlineQueryString = React.useCallback(
-    ({
-      name,
-      id,
-      type,
-    }: {
-      name: string;
-      id: string;
-      type: string;
-      tab?: string;
-    }) => {
-      const params = new URLSearchParams();
-      params.set("ui", name); // Set the 'name' param
-      params.set("id", id); // Set the 'id' param
-      type === "mos" && params.set("type", "approve-mos");
-      type === "task" && params.set("type", "approve-task");
-      return params.toString(); // Return the query string
-    },
-    []
-  );
 
   return (
     <TableWrapper
@@ -70,13 +47,9 @@ export default function DownlineTable() {
           label: "View Measure of Success Submission",
           onActionClick: (param: any, dataTwo: any) => {
             router.push(
-              pathname.split("?")[0] +
-                "?" +
-                createDownlineQueryString({
-                  type: "mos",
-                  id: dataTwo?.staff_name?.props?.children[0].props.children,
-                  name: "downlines",
-                })
+              EMPLOYEE.REVIEW_MOS(
+                dataTwo?.staff_name?.props?.children[0].props.children
+              )
             );
           },
         },
@@ -84,13 +57,9 @@ export default function DownlineTable() {
           label: "View Task Submission",
           onActionClick: (param: any, dataTwo: any) => {
             router.push(
-              pathname.split("?")[0] +
-                "?" +
-                createDownlineQueryString({
-                  type: "task",
-                  id: dataTwo?.staff_name?.props?.children[0].props.children,
-                  name: "downlines",
-                })
+              EMPLOYEE.REVIEW_TASK(
+                dataTwo?.staff_name?.props?.children[0].props.children
+              )
             );
           },
         },

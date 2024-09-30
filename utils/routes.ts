@@ -81,6 +81,14 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/downline-progress/measure-of-success`,
     DOWNLINE_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/downline-progress/specified-task`,
+    REVIEW_MOS: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/review-mos`,
+    REVIEW_TASK: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/review-task`,
+    MOS_TASK_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/target-submission`,
+    MOS_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/report`,
     MY_REPORT_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/my-report-progress/specified-task`,
     APPROVAL_MISSION_PLAN_REPORT: (id: string) =>

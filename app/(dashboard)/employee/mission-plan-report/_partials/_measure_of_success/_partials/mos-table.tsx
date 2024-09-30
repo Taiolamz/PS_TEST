@@ -7,7 +7,9 @@ import React from "react";
 import { fakeApprovalStep, fakeTableData } from "../_data/data";
 import Link from "next/link";
 import ApprovalDrawer from "@/components/drawer/approval-drawer";
+import routesPath from "@/utils/routes";
 
+const { EMPLOYEE } = routesPath;
 export default function MOSTable() {
   const router = useRouter();
   const pathname = usePathname();
@@ -91,13 +93,9 @@ export default function MOSTable() {
                 label: "View My Report",
                 onActionClick: (param: any, dataTwo: any) => {
                   router.push(
-                    pathname.split("?")[0] +
-                      "?" +
-                      createDownlineQueryString({
-                        type: "report",
-                        id: row?.name?.props?.children[0].props.children,
-                        name: "measure_of_success",
-                      })
+                    EMPLOYEE.MOS_REPORT(
+                      row?.name?.props?.children[0].props.children
+                    )
                   );
                 },
               },
@@ -109,13 +107,9 @@ export default function MOSTable() {
                 color: "",
                 onActionClick: (param: any, dataTwo: any) => {
                   router.push(
-                    pathname.split("?")[0] +
-                      "?" +
-                      createDownlineQueryString({
-                        type: "task",
-                        id: row?.name?.props?.children[0].props.children,
-                        name: "measure_of_success",
-                      })
+                    EMPLOYEE.MOS_TASK_SUBMISSION(
+                      row?.name?.props?.children[0].props.children
+                    )
                   );
                 },
               },
