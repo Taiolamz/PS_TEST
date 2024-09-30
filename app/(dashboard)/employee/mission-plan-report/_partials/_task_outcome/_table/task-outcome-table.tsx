@@ -54,19 +54,10 @@ const TaskOutcomeTable = ({
             label: "January Expected Outcome",
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
-              //   console.log(
-              //     "dataTwo",
-              //     dataTwo?.name?.props?.children[0].props.children
-              //   );
-
               router.push(
-                pathname.split("?")[0] +
-                  "?" +
-                  createQueryString(
-                    "task_outcome",
-                    dataTwo?.name?.props?.children[0].props.children,
-                    "expected"
-                  )
+                EMPLOYEE.EXPECTED_OUTCOME(
+                  dataTwo?.name?.props?.children[0].props.children
+                )
               );
             },
           },

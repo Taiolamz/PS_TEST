@@ -30,6 +30,13 @@ const ImpliedTask = ({
               <DotFilledIcon />{" "}
               <p className="text-[#1E1E1E] capitalize">{item.title}</p>
             </span>
+            <span className="flex gap-x-1">
+              Approval Status:
+              <p className="text-sm font-semibold text-[#FFC043]">
+                {" "}
+                {item.approvalStatus}{" "}
+              </p>
+            </span>
             <span className="flex items-center gap-x-1 text-[#1E1E1E] text-sm">
               Percent Completed:
               <p className="text-base font-semibold text-red-500">
@@ -80,12 +87,11 @@ const ImpliedTask = ({
                 label="Jan Expected Outcome (Monthly)"
                 id="expected"
                 name="expected"
-                value={item.expectedOutcome}
+                value={formik.values.expected_outcome}
                 onChange={formik.handleChange}
                 touched={formik.touched.expected}
                 error={formik.errors.expected}
                 placeholder="Input Expected Outcome"
-                disabled
               />
               <Input
                 label="Actual Outcome"
@@ -108,16 +114,6 @@ const ImpliedTask = ({
                   error={formik.errors.contribution}
                   placeholder="Input Contribution"
                 />
-                <Button className="flex items-center gap-x-1 mt-6 bg-transparent shadow-none p-0 text-xs">
-                  <p className="text-[var(--primary-color)]">Attach</p>
-                  <MdOutlineAttachment color="var(--primary-color)" size={18} />
-                </Button>
-                <Button
-                  onClick={() => setShowChallengeModal(true)}
-                  className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
-                >
-                  Report Challenge
-                </Button>
               </div>
               <div className="">
                 <p className="block relative text-xs  text-[#6E7C87] font-normal pb-2">

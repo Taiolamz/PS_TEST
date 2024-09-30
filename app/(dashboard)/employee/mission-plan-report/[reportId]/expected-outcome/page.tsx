@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button";
 import { ReusableDrawer } from "@/components/fragment";
 
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
+
+import ImpliedTask from "./_partials/implied-task";
+import History from "../../_component/history";
 import Comment from "../../_component/comment";
 import ReportChallengeModal from "../../_component/report-challenge-modal";
-import History from "../../_component/history";
-import ImpliedTask from "../../_component/implied-task";
 
-const ActualOutcome = () => {
+const ExpectedOutcome = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
@@ -23,9 +24,9 @@ const ActualOutcome = () => {
       implied_task: [
         {
           expected: "",
+          expected_outcome: "",
           actual_outcome: "",
           contribution: "",
-          expected_outcome: "",
         },
       ],
     },
@@ -36,10 +37,10 @@ const ActualOutcome = () => {
   });
 
   return (
-    <DashboardLayout back headerTitle="Actual Outcome">
+    <DashboardLayout back headerTitle="Expected Outcome">
       <div className="mt-10 px-5">
         <h1 className="text-[#222222b9] mb-5">
-          Set Specified Task Actual Outcomes
+          Set Specified Task Expected Outcomes
         </h1>
         <ReusableDrawer
           title="Outcome History"
@@ -147,4 +148,4 @@ const ActualOutcome = () => {
   );
 };
 
-export default ActualOutcome;
+export default ExpectedOutcome;
