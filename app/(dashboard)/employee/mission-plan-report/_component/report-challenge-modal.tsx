@@ -55,7 +55,7 @@ export default function ReportChallengeModal({
         {
           id: uuidRef.current,
           title: "",
-          employees: "",
+          risk_level: "",
           description: "",
           recommendations: "",
         },
@@ -128,23 +128,23 @@ export default function ReportChallengeModal({
                               </div>
                               <div className="flex-1 w-[100%]">
                                 <CustomSelect
-                                  label="Number of Employees"
-                                  placeholder="Number of Employees"
+                                  label="Risk Level"
+                                  placeholder="Select Risk Level"
                                   options={[
                                     { value: "high", label: "High" },
                                     { value: "medium", label: "Medium" },
                                     { value: "low", label: "Low" },
                                   ]}
-                                  selected={formik.values.employees_range}
+                                  selected={formik.values.risk_level}
                                   setSelected={(selected: any) => {
                                     formik.setFieldValue(
-                                      "employees_range",
+                                      "risk_level",
                                       selected
                                     );
                                   }}
                                   labelClass="block relative text-xs  text-[#6E7C87] font-normal pb-3"
-                                  touched={formik.touched.employees_range}
-                                  error={formik.errors.employees_range}
+                                  touched={formik.touched.risk_level}
+                                  error={formik.errors.risk_level}
                                   onBlur={formik.handleBlur}
                                   canSearch={false}
                                 />
@@ -222,7 +222,7 @@ export default function ReportChallengeModal({
                       style={{ color: "var(--primary-color)" }}
                       size={20}
                     />
-                    Add new specified task
+                    Add Another Challenge
                   </button>
                 </div>
               )}

@@ -25,7 +25,10 @@ const ImpliedTask = ({
     <div className="grid gap-y-10">
       {impliedTaskData?.map((item, idx) => (
         <div key={idx}>
-          <div className="flex items-center justify-between">
+          {idx > 0 && <hr />}
+          <div
+            className={`flex items-center justify-between ${idx > 0 && "mt-7"}`}
+          >
             <span className="flex items-center gap-x-1">
               <DotFilledIcon />{" "}
               <p className="text-[#1E1E1E] capitalize">{item.title}</p>
@@ -47,14 +50,14 @@ const ImpliedTask = ({
           </div>
           <div className="mt-7 flex gap-x-3">
             <div className="w-full">
-              <div className="flex">
+              <div className="flex gap-x-2">
                 <p className="w-[36%] text-[#222222ef] text-sm">Name of Task</p>
                 <p className="w-[16%] text-[#222222ef] text-sm">Weight</p>
                 <p className="w-[40%] text-[#222222ef] text-sm">Resource</p>
               </div>
               <hr className="my-3" />
               {item.task.map((item: any, idx: any) => (
-                <div key={idx} className="flex">
+                <div key={idx} className="flex gap-x-2">
                   <p className="w-[36%] text-[#222222da] text-xs">
                     {item.name}
                   </p>
