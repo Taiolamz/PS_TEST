@@ -7,12 +7,18 @@ import DashboardLayout from "../../_layout/DashboardLayout";
 import RightContentDisplay from "./_fragment/right-content-display";
 import MetricFrame from "@/components/card/frame";
 import {
+  activeIcon,
   chevronRight,
+  executiveMosProgress,
+  measureOfSuccessProgressDetails,
   orgTaskDetails,
   progressRange,
+  recentActivity,
   topAccessItems,
 } from "./_fragment/items";
 import { Button } from "@/components/ui/button";
+import { ReusableProgress } from "@/components/fragment";
+import SpecifiedTaskChart from "../mission-plan/reports/_charts/specified-task";
 
 const { ADMIN } = routesPath;
 
@@ -37,8 +43,8 @@ const topAccess = (
 const orgTaskCompletionDisplay = (
   <div>
     <div className="flex gap-2 items-center">
-      <p className="text-[#3E4345] font-medium">Total : </p>
-      <p className="text-[#6E7C87] font-light">{0} Specified Tasks</p>
+      <p className="text-[#3E4345] font-medium">Total :</p>
+      <p className="text-[#6E7C87] font-light">{40} Specified Tasks</p>
     </div>
 
     <div className="flex flex-col mt-4 gap-4">
@@ -55,7 +61,9 @@ const orgTaskCompletionDisplay = (
                 {label}
               </p>
             </div>
-            <p className="text-[#6E7C87] font-light">: {value}</p>
+            <p className="text-[#6E7C87] font-light">
+              : <span className="ml-1">{value}</span>
+            </p>
           </div>
         );
       })}
@@ -63,10 +71,29 @@ const orgTaskCompletionDisplay = (
   </div>
 );
 
+const mosEmptyState = (
+  <div className="absolute inset-0 mt-8 flex justify-center items-center">
+    <div className="text-center space-y-[15px]">
+      <p className="text-[var(--text-color2)] font-light">
+        You have no data to display
+      </p>
+      <Button className="py-2 px-8">Kickstart financial year</Button>
+    </div>
+  </div>
+);
+
+const orgTaskEmptyState = (
+  <div className="pl-20">
+    <p className="text-[var(--text-color2)] font-light">
+      {"You've no data to display"}
+    </p>
+  </div>
+);
+
 const OverView = () => {
   return (
     <DashboardLayout headerTitle="Welcome ITH Holdings">
-      <div className="p-6 overflow-auto h-screen scroll-hidden px-8 w-[calc(100%-391px)]">
+      <div className="p-6 scroll-hidden mt-10 px-8 w-[calc(100%-391px)]">
         <p>Quick Access</p>
 
         <div className="flex flex-col gap-4">
@@ -76,7 +103,7 @@ const OverView = () => {
           </MetricFrame>
 
           {/* Organization Measure Of Success FY */}
-          <MetricFrame className="mt-3 relative min-h-[461px] overflow-auto">
+          <MetricFrame className="mt-3 !px-6 relative min-h-[461px] overflow-auto">
             <div className="flex justify-between items-center">
               <p className="text-[#252C32] font-medium text-base">
                 Organization Measure Of Success FY
@@ -127,19 +154,48 @@ const OverView = () => {
               </div>
             </div>
 
-            {/* Empty state for mos fy */}
-            <div className="absolute inset-0 mt-8 flex justify-center items-center">
-              <div className="text-center space-y-[15px]">
-                <p className="text-[var(--text-color2)] font-light">
-                  You have no data to display
-                </p>
-                <Button className="py-2 px-8">Kickstart financial year</Button>
+            {/* ------- PROGRESS DETAILS --------- */}
+            {measureOfSuccessProgressDetails?.length > 0 ? (
+              <div className="flex flex-col gap-5 mt-5 overflow-x-hidden">
+                {measureOfSuccessProgressDetails.map((chi, idx) => {
+                  const { label, progress, value, color, value_color } = chi;
+                  return (
+                    <div key={idx}>
+                      <div className="flex flex-col gap-1">
+                        <p className="text-[#5A5B5F] font-medium text-sm">
+                          {label}
+                        </p>
+                        <ReusableProgress
+                          color={color as "red"}
+                          valuePosition="float-right"
+                          value={progress}
+                          height={16}
+                          borderRadius={2}
+                          hasBackground={false}
+                          valueColor={value_color}
+                          progressClass="rounded-[2px]"
+                        />
+                        <ReusableProgress
+                          value={0}
+                          className="!bg-[#EBF7FF]"
+                          borderRadius={2}
+                        />
+                        <p className="text-[#6B51DF] text-xs font-medium">
+                          {value}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </div>
+            ) : (
+              mosEmptyState
+            )}
+            {/* ------- PROGRESS DETAILS --------- */}
           </MetricFrame>
 
           {/* Organization Task Completion, FY */}
-          <MetricFrame className="min-h-[461px] relative flex flex-col overflow-auto">
+          <MetricFrame className="min-h-[461px] !px-6 relative flex flex-col overflow-auto">
             <div className="flex justify-between items-center">
               <p className="text-[#252C32] font-medium text-base">
                 Organization Task Completion, FY
@@ -153,17 +209,14 @@ const OverView = () => {
                 </figure>
               </Link>
             </div>
-            <div className=" absolute inset-0 mt-8 flex px-20 pr-40 justify-between items-center">
-              <div>
-                <p className="text-[var(--text-color2)] font-light">
-                  {"You've no data to display"}
-                </p>
-              </div>
+            <div className=" absolute inset-0 mt-8 flex  pr-40 justify-between items-center">
+              {/* {orgTaskEmptyState} */}
+              <SpecifiedTaskChart />
               <div>{orgTaskCompletionDisplay}</div>
             </div>
           </MetricFrame>
 
-          <MetricFrame>
+          <MetricFrame className="!px-6">
             <div className="flex justify-between items-center">
               <p className="text-[#252C32] font-medium text-base">
                 Top Executive Measures of Success, FY
@@ -177,7 +230,89 @@ const OverView = () => {
                 </figure>
               </Link>
             </div>
+            {/* progress display */}
+            <div className="flex flex-col gap-6 mt-5">
+              {executiveMosProgress.map((chi, idx) => {
+                const { value, link, color, name, role } = chi;
+                return (
+                  <div key={idx}>
+                    <div className="flex justify-between items-end">
+                      <div className="mb-2">
+                        <p className="text-[#5A5B5F] font-light">{name}</p>
+                        <p className="text-[#5A5B5F] font-light text-xs">
+                          {role}
+                        </p>
+                        <Link
+                          href={link}
+                          className={`text-[#9AA6AC] text-primary border-b  border-b-primary text-xs font-medium`}
+                        >
+                          Click here to see Details
+                        </Link>
+                      </div>
+                      <div className="grid grid-rows-1 gap-1">
+                        <p className="text-[10px] text-[#6E7C87]">
+                          Total Mission Plan Progress
+                        </p>
+                        <p className="text-[#EC1410] font-medium text-2xl text-right">
+                          {value}%
+                        </p>
+                      </div>
+                    </div>
+                    <ReusableProgress
+                      value={value}
+                      height={6}
+                      color={color as "red"}
+                      borderRadius={4}
+                      className="!bg-[#EBF7FF]"
+                      progressClass="rounded-[2px]"
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </MetricFrame>
+
+          {/* recent activities wrap */}
+          <div className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <p className="text-[#3E4345] font-medium">Recent Activity</p>
+              <Link href="#" className="flex gap-2 items-center group">
+                <p className="font-medium text-[13px] text-primary">See all</p>
+                <figure className="group-hover:translate-x-1 transition-all ease-linear">
+                  {chevronRight}
+                </figure>
+              </Link>
+            </div>
+            <MetricFrame className="!px-6">
+              <div className="flex flex-col gap-7">
+                {recentActivity.map((chi, idx) => {
+                  const { label, content, date } = chi;
+                  return (
+                    <div
+                      key={idx}
+                      className="flex last:border-b-0 border-b justify-between items-center pb-4"
+                      // style={{
+                      //   borderBottom: "1px solid rgba(229, 233, 235, 1)",
+                      // }}
+                    >
+                      <div className="flex gap-2">
+                        <figure className="mt-2">{activeIcon}</figure>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-[#252C32] font-medium">{label}</p>
+                          <p className="text-xs font-light text-[#6E7C87]">
+                            {content}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-[#6E7C87] font-light text-sm">
+                        {date}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </MetricFrame>
+          </div>
         </div>
       </div>
       <RightContentDisplay />

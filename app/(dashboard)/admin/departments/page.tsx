@@ -219,7 +219,7 @@ const Departments = () => {
 
   return (
     <DashboardLayout headerTitle="Department">
-      <section className="p-5">
+      <section className="p-5 mt-5">
         {departments?.length < 1 ? (
           <ReusableEmptyState
             loading={isLoadingDepartments}

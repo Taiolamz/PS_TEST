@@ -223,7 +223,7 @@ const Subsidiary = () => {
     <>
       {ui !== "details" ? (
         <DashboardLayout headerTitle="Subsidiaries">
-          <section className="p-5">
+          <section className="p-5 mt-6">
             {subsidiaries?.length < 1 ? (
               <ReusableEmptyState
                 loading={isLoadingSubsidiaries}
