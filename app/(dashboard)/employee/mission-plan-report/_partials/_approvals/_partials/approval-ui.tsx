@@ -78,7 +78,13 @@ const ApprovalUI = ({
           {
             label: "View Measure of Success Submission",
             color: "",
-            onActionClick: (param: any, dataTwo: any) => {},
+            onActionClick: (param: any, dataTwo: any) => {
+              router.push(
+                EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT_SUCCESS_MISSION_SUBMISSION(
+                  dataTwo?.name?.props?.children[0].props.children
+                )
+              );
+            },
           },
           {
             label: "View Tasks Submission",
