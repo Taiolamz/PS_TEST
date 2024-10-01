@@ -66,7 +66,7 @@ export const useEditUnit = ({ id }: Prop) => {
   );
 
   const handleDropdown = (
-    items: StateData[] | SubsidiaryData[] | DepartmentData[]
+    items: any[]
   ) => {
     console.log("items", items);
     const data =
@@ -142,7 +142,7 @@ export const useEditUnit = ({ id }: Prop) => {
   const employees = employeesData ?? [];
   const subsidiaries = subsidiariesData?.data?.data ?? [];
   const branches = branchesData ?? [];
-  const departments = departmentData ?? [];
+  const departments = departmentData?.data ?? [];
 
   const employeeDrop = handleDropdown(employees);
   const subsidiaryDrop = handleDropdown(subsidiaries);

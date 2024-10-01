@@ -180,7 +180,7 @@ export const useEmployee = ({ path }: Prop) => {
 
   const subsidiaries = subsidiariesData ?? [];
   const branches = branchesData ?? [];
-  const departments = departmentData ?? [];
+  const departments = departmentData?.data ?? [];
   const units = unitData ?? [];
   const states = statesData ?? [];
 
@@ -200,7 +200,7 @@ export const useEmployee = ({ path }: Prop) => {
     const payload = {
       ...formik.values,
       organization_id: organization?.id,
-      level:"entry-level"
+      level: "entry-level",
     };
     await createEmployee(payload)
       .unwrap()
@@ -239,7 +239,7 @@ export const useEmployee = ({ path }: Prop) => {
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
-  }); 
+  });
 
   const {
     isOpen: openCancelModal,
