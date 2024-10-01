@@ -128,7 +128,7 @@ const Branch = () => {
     prev_page_url: "",
   });
 
-  const departments = departmentData ?? [];
+  const departments = departmentData?.data ?? [];
 
   const departmentsColumnData = useMemo(
     () => departmentColumns(isFetchingDepartments),
@@ -165,77 +165,82 @@ const Branch = () => {
   };
 
   return (
-    <ChecklistLayout
-      onCancel={handleCancelDialog}
-      title="Departments"
-      step={`Step 3 of 4`}
-      className={departments?.length < 1 ? emptyStateClass : ""}
-      btnDisabled={departments?.length < 1}
-      showBtn
-      shouldProceed
-      onProceedBtn={handleProceedDialog}
-    >
-      {departments?.length < 1 ? (
-        <EmptyState
-          loading={isLoadingDepartments}
-          textTitle="Departments"
-          btnTitle="department"
-          href={Routes.ChecklistRoute.AddDepartment()}
-          onBulkUpload={handleBulkUploadDialog}
-        />
-      ) : (
-        <DashboardTable
-          isLoading={isFetchingDepartments}
-          header="Department"
-          data={departments}
-          columns={departmentsColumnData}
-          onBulkUploadBtn={handleBulkUploadDialog}
-          onOpenBtnChange={handleBtnDrop}
-          newBtnOpen={openNewBtn}
-          onManualBtn={handleAddDeparment}
-        />
-      )}
-      <DashboardModal
-        className={"w-[420px]"}
-        open={openCancelModal}
-        onOpenChange={handleCancelDialog}
+    <>
+      <ChecklistLayout
+        onCancel={handleCancelDialog}
+        title="Departments"
+        step={`Step 3 of 4`}
+        className={departments?.length < 1 ? emptyStateClass : ""}
+        btnDisabled={departments?.length < 1}
+        showBtn
+        shouldProceed
+        onProceedBtn={handleProceedDialog}
       >
-        <CancelModal onProceed={handleProceedCancel} modalTitle="Department" />
-      </DashboardModal>
+        {departments?.length < 1 ? (
+          <EmptyState
+            loading={isLoadingDepartments}
+            textTitle="Departments"
+            btnTitle="department"
+            href={Routes.ChecklistRoute.AddDepartment()}
+            onBulkUpload={handleBulkUploadDialog}
+          />
+        ) : (
+          <DashboardTable
+            isLoading={isFetchingDepartments}
+            header="Department"
+            data={departments}
+            columns={departmentsColumnData}
+            onBulkUploadBtn={handleBulkUploadDialog}
+            onOpenBtnChange={handleBtnDrop}
+            newBtnOpen={openNewBtn}
+            onManualBtn={handleAddDeparment}
+          />
+        )}
+        <DashboardModal
+          className={"w-[420px]"}
+          open={openCancelModal}
+          onOpenChange={handleCancelDialog}
+        >
+          <CancelModal
+            onProceed={handleProceedCancel}
+            modalTitle="Department"
+          />
+        </DashboardModal>
 
-      <DashboardModal
-        open={openProceedModal}
-        onOpenChange={handleProceedDialog}
-      >
-        <ProceedModal onProceed={handleProceed} />
-      </DashboardModal>
+        <DashboardModal
+          open={openProceedModal}
+          onOpenChange={handleProceedDialog}
+        >
+          <ProceedModal onProceed={handleProceed} />
+        </DashboardModal>
 
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openBulkUploadModal}
-        onOpenChange={handleBulkUploadDialog}
-      >
-        <BulkUploadModal
-          loading={isCreatingBulkDepartments}
-          onCancel={handleBulkUploadDialog}
-          onSampleCsvDownload={handleBulkRequirementDialog}
-          onSampleExcelDownload={handleBulkRequirementDialog}
-          onBulkUpload={handleSubmitBulkUpload}
-          setFile={setBulkFile}
-        />
-      </DashboardModal>
+        <DashboardModal
+          className={"w-[600px] max-w-full"}
+          open={openBulkUploadModal}
+          onOpenChange={handleBulkUploadDialog}
+        >
+          <BulkUploadModal
+            loading={isCreatingBulkDepartments}
+            onCancel={handleBulkUploadDialog}
+            onSampleCsvDownload={handleBulkRequirementDialog}
+            onSampleExcelDownload={handleBulkRequirementDialog}
+            onBulkUpload={handleSubmitBulkUpload}
+            setFile={setBulkFile}
+          />
+        </DashboardModal>
 
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openBulkRequirementModal}
-        onOpenChange={handleBulkRequirementDialog}
-      >
-        <BulkRequirementModal
-          onTemplateDownload={() => console.log("template download")}
-          onCancel={handleBulkRequirementDialog}
-        />
-      </DashboardModal>
-    </ChecklistLayout>
+        <DashboardModal
+          className={"w-[600px] max-w-full"}
+          open={openBulkRequirementModal}
+          onOpenChange={handleBulkRequirementDialog}
+        >
+          <BulkRequirementModal
+            onTemplateDownload={() => console.log("template download")}
+            onCancel={handleBulkRequirementDialog}
+          />
+        </DashboardModal>
+      </ChecklistLayout>
+    </>
   );
 };
 
