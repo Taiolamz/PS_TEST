@@ -12,8 +12,8 @@ import {
   UnitTable,
 } from "../../subsidiary/_partials/_table";
 import useDisclosure from "../_hooks/useDisclosure";
-import OrgDetailInfo from "@/components/fragment/request-info/detail-info";
-import DeactivateOrgModal from "@/components/fragment/request-info/deactivate-modal";
+import Hierarchy from "@/components/fragment/info/hierachy";
+import DeactivateOrgModal from "@/components/atoms/modals/deactivate-modal";
 
 const { ADMIN } = routesPath;
 
@@ -112,7 +112,7 @@ const DepartmentDetails = () => {
   return (
     <DashboardLayout headerTitle="Departments" back>
       <div className="p-5 ">
-        <OrgDetailInfo
+        <Hierarchy
           onDeactivate={onOpenDeactivateModal}
           editRef={ADMIN.EDIT_DEPARTMENT(id ?? "")}
         />
