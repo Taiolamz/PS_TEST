@@ -165,7 +165,8 @@ const Branch = () => {
   };
 
   return (
-    <ChecklistLayout
+    <>
+    {/* <ChecklistLayout
       onCancel={handleCancelDialog}
       title="Departments"
       step={`Step 3 of 4`}
@@ -235,7 +236,8 @@ const Branch = () => {
           onCancel={handleBulkRequirementDialog}
         />
       </DashboardModal>
-    </ChecklistLayout>
+    </ChecklistLayout> */}
+    </>
   );
 };
 
