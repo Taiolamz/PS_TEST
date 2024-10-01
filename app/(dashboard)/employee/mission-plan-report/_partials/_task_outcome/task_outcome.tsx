@@ -14,10 +14,6 @@ const steps: ApprovalStep[] = [
   { name: "Tinubu Seyi", role: "Managing Director", status: "Approved" },
   { name: "Seyi Ajayi", role: "Managing Director", status: "Approved" },
   { name: "Seyi A. Ajayi", role: "Managing Director", status: "In Review" },
-  { name: "Seyi A. Ajayi", role: "Managing Director", status: "In Review" },
-  { name: "Seyi A. Ajayi", role: "Managing Director", status: "In Review" },
-  { name: "Seyi A. Ajayi", role: "Managing Director", status: "In Review" },
-  { name: "Seyi A. Ajayi", role: "Managing Director", status: "In Review" },
 ];
 
 const data = [
