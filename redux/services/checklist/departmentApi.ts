@@ -20,14 +20,13 @@ export const departmentApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getDepartments: builder.query<DepartmentData[], QueryParams>({
+    getDepartments: builder.query<DepartmentResponse, QueryParams>({
       query: (params) => ({
         url: `/admin/department${generateQueryString({ ...params })}`,
         method: "GET",
       }),
       providesTags: ["Departments"],
-      transformResponse: (response: { data: { data: DepartmentData[] } }) =>
-        response.data.data,
+      transformResponse: (response: { data: DepartmentResponse }) => response.data,
     }),
 
     getSingleDepartment: builder.query<string[], void>({
