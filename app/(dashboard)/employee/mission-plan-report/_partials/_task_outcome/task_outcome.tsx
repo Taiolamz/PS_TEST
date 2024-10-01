@@ -11,9 +11,9 @@ import ApprovalStatus, { ApprovalStep } from "../../_component/approval-status";
 
 const steps: ApprovalStep[] = [
   { name: "Seyi Ajayi", role: "Managing Director", status: "Yet to Review" },
-  { name: "Seyi Ajayi", role: "Managing Director", status: "In Review" },
+  { name: "Tinubu Seyi", role: "Managing Director", status: "Approved" },
   { name: "Seyi Ajayi", role: "Managing Director", status: "Approved" },
-  { name: "Seyi Ajayi", role: "Managing Director", status: "Approved" },
+  { name: "Seyi A. Ajayi", role: "Managing Director", status: "In Review" },
 ];
 
 const data = [

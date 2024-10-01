@@ -1,4 +1,7 @@
+import Image from "next/image";
 import React from "react";
+import noteIcon from "@/public/assets/icons/NoteIcon.svg";
+import noteIconGreen from "@/public/assets/icons/NoteIconGreen.svg";
 
 export interface ApprovalStep {
   name: string;
@@ -7,51 +10,78 @@ export interface ApprovalStep {
 }
 
 const ApprovalStatus: React.FC<{ steps: ApprovalStep[] }> = ({ steps }) => {
+  // Sorting the steps based on their status
+  const sortedSteps = steps.sort((a, b) => {
+    const order = { "Yet to Review": 0, "In Review": 1, Approved: 2 };
+    return order[a.status] - order[b.status];
+  });
+
   const getStatusStyle = (status: ApprovalStep["status"]) => {
     switch (status) {
       case "Yet to Review":
-        return "bg-gray-100 border border-gray-200 text-gray-500";
+        return "bg-[#fafdff] border border-[#D9D9D9] text-gray-500";
       case "In Review":
-        return "border border-[#43BECC] text-[#43BECC]";
+        return "border border-[var(--primary-color)] text-[#43BECC]";
       case "Approved":
-        return "bg-gray-100 border border-gray-200 text-green-500";
+        return "bg-[#fafdff] border border-[#D9D9D9] text-green-500";
       default:
         return "";
     }
   };
 
   return (
-    <div className="max-w-md p-4 bg-white rounded-lg shadow-lg">
-      <h2 className="text-xl font-semibold mb-4">Approval Status</h2>
+    <div className="max-w-md bg-white border-t pt-10 h-[90vh] overflow-auto">
       <div className="relative">
-        {steps.map((step, index) => (
-          <div key={index} className="relative pl-6 mb-6">
+        {sortedSteps.map((step, index) => (
+          <div key={index} className="relative px-5 mb-[70px]">
             {/* Connector Line */}
-            {index !== steps.length - 1 && (
-              <span className="absolute left-0 top-0 h-full w-[1px] bg-gray-300"></span>
+            {index !== sortedSteps.length - 1 && (
+              <span className="absolute left-[188px] -bottom-12 h-6 w-[2px] bg-[#E5E9EB]"></span>
             )}
 
-            {/* Dot */}
-            <span className="absolute left-0 top-1/2 transform -translate-y-1/2 w-3 h-3 rounded-full bg-[#43BECC]"></span>
-
             {/* Card */}
-            <div className={`p-4 rounded-lg ${getStatusStyle(step.status)}`}>
+            <div
+              className={`p-4 rounded-lg relative ${getStatusStyle(
+                step.status
+              )}`}
+            >
+              {/* EDGES STYLE */}
+              <div
+                className={`absolute -top-5 left-1/2 transform -translate-x-1/2 rotate-180 bg-[#fafdff] w-10 h-5 rounded-b-full border-l border-r border-b flex items-center justify-center ${
+                  step.status === "In Review"
+                    ? "border-r-[var(--primary-color)] border-l-[var(--primary-color)] border-b-[var(--primary-color)] hidden"
+                    : "border-b-[#D9D9D9]"
+                }`}
+              >
+                <div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div>
+              </div>
+              <div
+                className={`absolute -bottom-5 left-1/2 transform -translate-x-1/2 bg-[#fafdff] w-10 h-5 rounded-b-full border-l border-r  border-b flex items-center justify-center ${
+                  step.status === "In Review"
+                    ? "border-r-[var(--primary-color)] border-l-[var(--primary-color)] border-b-[var(--primary-color)]"
+                    : "border-b-[#D9D9D9]"
+                }`}
+              >
+                <div
+                  className={` ${
+                    step.status === "In Review" ? "w-2.5 h-2.5" : "w-1.5 h-1.5"
+                  } rounded-full bg-[var(--primary-color)]`}
+                ></div>
+              </div>
+              {/* ******** */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   {/* Icon */}
-                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-[#43BECC]"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M9 12l2 2 4-4m-9 8h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
+                  <Image
+                    src={step.status === "In Review" ? noteIconGreen : noteIcon}
+                    alt=""
+                  />
 
                   <div>
-                    <p className="text-sm font-medium">{step.name}</p>
-                    <p className="text-sm text-gray-400">{step.role}</p>
+                    <p className="text-sm text-[#252C32] font-medium pb-1">
+                      {step.name}
+                    </p>
+                    <p className="text-xs text-[#6E7C87]">{step.role}</p>
                   </div>
                 </div>
 
@@ -59,10 +89,10 @@ const ApprovalStatus: React.FC<{ steps: ApprovalStep[] }> = ({ steps }) => {
                 <p
                   className={`${
                     step.status === "In Review"
-                      ? "text-yellow-500 bg-yellow-100 px-2 py-1 rounded"
+                      ? "text-[#FFC043] bg-[#FFC0430D] px-2 py-1 rounded border border-[#FFC04380] text-xs"
                       : step.status === "Approved"
-                      ? "text-green-500 bg-green-100 px-2 py-1 rounded"
-                      : ""
+                      ? "text-[#119C2B] bg-[#119C2B0D] border border-[#119C2B] px-2 py-1 rounded text-xs"
+                      : "bg-[#9AA6AC0D] border px-2 py-1 rounded border-[#9AA6AC80] text-[#9AA6AC] text-xs"
                   }`}
                 >
                   {step.status}
