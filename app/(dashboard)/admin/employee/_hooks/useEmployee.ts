@@ -92,9 +92,7 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
     {}
   );
 
-  const handleDropdown = (
-    items: StateData[] | SubsidiaryData[] | DepartmentData[] | EmployeeData[]
-  ) => {
+  const handleDropdown = (items: any[]) => {
     const data = items.map((chi) => {
       return {
         ...chi,
@@ -183,9 +181,9 @@ export const useEmployee = ({ path, cancelPath }: Prop) => {
         id: "",
       },
       line_manager: {
-        name:"",
-        email:"",
-        id:"",
+        name: "",
+        email: "",
+        id: "",
         value: "",
         label: "",
       },

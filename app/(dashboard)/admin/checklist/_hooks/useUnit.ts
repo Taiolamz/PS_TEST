@@ -138,7 +138,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
 
   const subsidiaries = subsidiariesData ?? [];
   const branches = branchesData ?? [];
-  const departments = departmentsData ?? [];
+  const departments = departmentsData?.data ?? [];
   const states = statesData ?? [];
 
   const stateDrop = handleDropdown(states);
@@ -225,7 +225,7 @@ export const useUnit = ({ cancelPath }: Prop) => {
     handleCancelDialog,
     headOfBranches,
     headOfUnit,
-    states: handleFormatDropdown(states),
+    states: handleFormatDropdown(states as any),
     subsidiaries: handleFormatDropdown(subsidiaries),
     branches: handleFormatDropdown(branches),
     departments: handleFormatDropdown(departments),
