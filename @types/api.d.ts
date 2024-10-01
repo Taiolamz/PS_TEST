@@ -161,13 +161,62 @@ type RolesData = {
   id: string;
 };
 
+// type DepartmentData = {
+//   id?: string;
+//   name?: string;
+//   branch?: {
+//     id: string;
+//     name: string;
+//   };
+// };
+
+type SUBITEM = {
+  id: string;
+  name: string;
+  work_email: string;
+} | null;
+
 type DepartmentData = {
-  id?: string;
-  name?: string;
-  branch?: {
-    id: string;
-    name: string;
-  };
+  id: string;
+  name: string;
+  head_of_department: SUBITEM;
+  department_email: string | null;
+  description: string | null;
+  organization: { name: string; id: string };
+  branch: SUBITEM;
+  subsidiary: SUBITEM;
+};
+
+type MetaData = {
+  current_page: number;
+  from: number;
+  last_page: number;
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
+};
+
+type DepartmentResponse = {
+  data: DepartmentData[];
+  meta: MetaData;
+};
+
+type Link = {
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
+type MetaData = {
+  current_page: number;
+  from: number;
+  last_page: number;
+  links: Link[];
+  path: string;
+  per_page: number;
+  to: number;
+  total: number;
 };
 
 type MissionPlanTemplateData = {

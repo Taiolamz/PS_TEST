@@ -303,7 +303,6 @@ const Employee = () => {
       pending: true,
       primaryColor: "",
     },
-    
   ];
 
   return (
@@ -318,7 +317,7 @@ const Employee = () => {
         onCancel={handleCancelDialog}
       /> */}
 
-      <section className="p-5 mt-5">
+      <section className="p-5">
         {employees?.length < 0 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
@@ -348,7 +347,6 @@ const Employee = () => {
                   setStatus(value);
                 }
               }}
-              
               data={employees}
               columns={employeesColumnData}
               onBulkUploadBtn={handleBulkUploadDialog}
@@ -358,7 +356,6 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onPdfChange={() => handleImportChange("pdf")}
               onCsvChange={() => handleImportChange("excel")}
-              
             />
 
             {/* <TableWrapper

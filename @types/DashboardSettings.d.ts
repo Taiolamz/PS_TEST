@@ -29,9 +29,9 @@ type EmptyStateType = {
 };
 
 type FormLayoutType = {
-  form: React.ReactNode;
-  module: string;
-  addText: string;
+  form?: React.ReactNode;
+  module?: string;
+  addText?: string;
 };
 
 interface DialogContextType {

@@ -235,7 +235,6 @@ const Units = () => {
       head_of_unit: org?.organization?.name,
       department: org?.deparment?.name,
       branch: org?.branch?.name,
-  
     }));
   };
 
@@ -243,7 +242,7 @@ const Units = () => {
     <>
       {ui !== "details" ? (
         <DashboardLayout headerTitle="Units" back>
-          <section className="p-5 mt-5">
+          <section className="p-5">
             {units?.length < 1 ? (
               <ReusableEmptyState
                 loading={isLoadingUnits}
