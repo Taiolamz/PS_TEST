@@ -108,11 +108,11 @@ const SpecifiedTaskProgress = () => {
         <Link href={EMPLOYEE.MY_REPORT_SPECIFIED_TASK_REPORT(id)}>
           <Button
             className="flex gap-3 items-center group"
-            onClick={() =>
-              router.push(
-                `${location}?ui=my_report&view=specified_task_detail_view`
-              )
-            }
+            // onClick={() =>
+            //   router.push(
+            //     `${location}?ui=my_report&view=specified_task_detail_view`
+            //   )
+            // }
           >
             <p className="font-medium">See Progress Details</p>
             <figure className="group-hover:translate-x-1 transition-all ease-linear">

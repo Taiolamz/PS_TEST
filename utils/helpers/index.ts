@@ -208,7 +208,7 @@ export const REPORT_PAGE_TABS = {
     {
       id: 4,
       title: "Approvals",
-      accessor:  "approvals",
+      accessor: "approvals",
     },
     {
       id: 5,
@@ -478,6 +478,20 @@ export function getOrdinalSuffix(num: number): string {
   }
 }
 
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export const validatePasswordSpecialCharacter = (password: any) => {
   if (password.match(/[!@#$.%^&*_=+-]/g)) {

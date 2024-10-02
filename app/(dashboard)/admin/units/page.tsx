@@ -235,7 +235,6 @@ const Units = () => {
       head_of_unit: org?.organization?.name,
       department: org?.deparment?.name,
       branch: org?.branch?.name,
-  
     }));
   };
 

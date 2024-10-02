@@ -34,7 +34,6 @@
   gap: 0.1rem;
   margin-right: 1rem;
   cursor: pointer;
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
 }
@@ -176,8 +175,7 @@
   background-color: #ffffff;
   border-radius: 0.6rem;
   border: 0.15rem solid rgb(244, 244, 244);
-  -webkit-animation: moveDownSettingDrop 0.5s ease-in-out backwards;
-          animation: moveDownSettingDrop 0.5s ease-in-out backwards;
+  animation: moveDownSettingDrop 0.5s ease-in-out backwards;
   box-shadow: 0.1rem 0.1rem 4rem 0.1rem rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
@@ -245,7 +243,6 @@
      object-fit: contain;
 }
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .switch_box {
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
 }
@@ -287,17 +284,6 @@
 .header_wrap_index_box .profile_wrap_box .drop_profile_box .img_name_box .name_role_box .role {
   font-size: 0.65rem;
   color: rgb(110, 124, 135);
-}
-
-@-webkit-keyframes moveDownSettingDrop {
-  0% {
-    transform: translateY(-5%);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
 }
 
 @keyframes moveDownSettingDrop {

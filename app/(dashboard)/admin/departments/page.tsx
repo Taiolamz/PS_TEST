@@ -20,12 +20,15 @@ import {
   useDepartmentColumnData,
 } from "./department-column";
 import routesPath from "@/utils/routes";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import DepartmentDetails from "./_partials/department-details";
+import TableWrapper from "@/components/tables/TableWrapper";
+import { processInputAsArray } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
 
@@ -33,6 +36,18 @@ const Departments = () => {
   const router = useRouter();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
+  const searchParams = useSearchParams();
+  const ui = searchParams.get("ui");
+  const user = useAppSelector(selectUser);
+  const pathname = usePathname();
+
+  React.useEffect(() => {
+    if (typeof ui !== "string") {
+      router.replace(pathname + "?" + "ui=view");
+    }
+  }, []);
 
   const {
     isOpen: openProceedModal,
@@ -129,27 +144,18 @@ const Departments = () => {
     isFetching: isFetchingDepartments,
     refetch: refetchDepartments,
   } = useGetDepartmentsQuery({
-    to: 0,
-    total: 0,
-    per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
+    page: page,
+    search: search,
   });
 
-  const departments = departmentData ?? [];
+  const departments = departmentData?.data ?? [];
+  const metaData = departmentData?.meta;
 
-  const { departmentColumns, data, openDeleteModal, handleDeleteDialog } =
-    useDepartmentColumnData(isFetchingDepartments);
-
-  const departmentsColumnData = useMemo(
-    () => departmentColumns,
-    [isFetchingDepartments]
-  );
-  // >>>>>>> bf3d7875a640c4a5168f098455c8b5808e477c8b
+  // const { departmentColumns, data, openDeleteModal, handleDeleteDialog } =
+  //   useDepartmentColumnData(isFetchingDepartments);
 
   // const departmentsColumnData = useMemo(
-  //   () => departmentColumns(isFetchingDepartments),
+  //   () => departmentColumns,
   //   [isFetchingDepartments]
   // );
 
@@ -158,7 +164,11 @@ const Departments = () => {
   //   [isFetchingDepartments]
   // );
 
-  const user = useAppSelector(selectUser);
+  // const departmentsColumnData = useMemo(
+  //   () => departmentColumns(isFetchingDepartments),
+  //   [isFetchingDepartments]
+  // );
+
   const { organization } = user;
 
   const [createBulkDepartments, { isLoading: isCreatingBulkDepartments }] =
@@ -202,6 +212,24 @@ const Departments = () => {
       .catch(() => toast.dismiss());
   };
 
+  const getTabParam = () => {
+    if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("branch")
+    ) {
+      return "branches";
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("department")
+    ) {
+      return "departments";
+    } else if (
+      processInputAsArray(user?.organization?.hierarchy)?.includes("unit")
+    ) {
+      return "units";
+    } else {
+      return "staffs";
+    }
+  };
+
   const listToTest = [
     {
       active: true,
@@ -218,89 +246,159 @@ const Departments = () => {
   ];
 
   return (
-    <DashboardLayout headerTitle="Department">
-      <section className="p-5">
-        {departments?.length < 1 ? (
-          <ReusableEmptyState
-            loading={isLoadingDepartments}
-            textTitle="Departments"
-            btnTitle="department"
-            href={ADMIN.CREATE_DEPARTMENT}
-            onBulkUpload={handleBulkUploadDialog}
-          />
-        ) : (
-          <>
-            {/* testing metrics card start */}
-            <ParentModuleCard list={listToTest} />
-            {/* testing metrics card end */}
-            <DashboardTable
-              isLoading={isFetchingDepartments}
-              header="Department"
-              data={departments}
-              columns={departmentsColumnData}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              onOpenBtnChange={handleBtnDrop}
-              newBtnOpen={openNewBtn}
-              onManualBtn={handleAddDeparment}
-              // onManualBtn={() => {
-              //   console.log(departments);
+    <>
+      {ui !== "details" ? (
+        <DashboardLayout headerTitle="Department">
+          <section className="p-5">
+            {departments?.length < 1 ? (
+              <ReusableEmptyState
+                loading={isLoadingDepartments}
+                textTitle="Departments"
+                btnTitle="department"
+                href={ADMIN.CREATE_DEPARTMENT}
+                onBulkUpload={handleBulkUploadDialog}
+              />
+            ) : (
+              <>
+                {/* testing metrics card start */}
+                <ParentModuleCard list={listToTest} />
+                {/* testing metrics card end */}
+                {/* <DashboardTable
+                  isLoading={isFetchingDepartments}
+                  header="Department"
+                  data={departments}
+                  columns={departmentsColumnData}
+                  onBulkUploadBtn={handleBulkUploadDialog}
+                  onOpenBtnChange={handleBtnDrop}
+                  newBtnOpen={openNewBtn}
+                  onManualBtn={handleAddDeparment}
+                  // onManualBtn={() => {
+                  //   console.log(departments);
 
-              // }}
-            />
-          </>
-        )}
-        <DashboardModal
-          className={"w-[420px]"}
-          open={openCancelModal}
-          onOpenChange={handleCancelDialog}
-        >
-          <CancelModal
-            onProceed={handleProceedCancel}
-            modalTitle="Department"
-          />
-        </DashboardModal>
+                  // }}
+                /> */}
+                <TableWrapper
+                  tableheaderList={[
+                    "Department",
+                    "HOD",
+                    "Subsidiary",
+                    "Branch",
+                    "Action",
+                  ]}
+                  addText="New Department"
+                  perPage={metaData?.per_page}
+                  totalPage={metaData?.total}
+                  currentPage={metaData?.current_page}
+                  onPageChange={(p) => {
+                    setPage(p);
+                  }}
+                  hideNewBtnOne={false}
+                  // tableBodyList={FORMAT_TABLE_DATA(subsidiaries)}
+                  tableBodyList={FORMAT_TABLE_DATA(departments)}
+                  loading={isFetchingDepartments}
+                  onSearch={(param) => {
+                    setTimeout(() => {
+                      // Delay api call after 3 seconds
+                      setPage(1);
+                      setSearch(param);
+                    }, 3000);
+                  }}
+                  dropDown
+                  hideFilter
+                  hideSort
+                  newBtnBulk
+                  dropDownList={[
+                    {
+                      label: "View Details",
+                      color: "",
+                      onActionClick: (param: any, dataTwo: any) => {
+                        router.push(
+                          ADMIN.DEPARTMENT_DETAILS({
+                            id: dataTwo?.name?.props.children[0].props.children,
+                            // tab: getTabParam(),
+                            tab: "units",
+                          })
+                        );
+                      },
+                    },
+                  ]}
+                  onManualBtn={handleAddDeparment}
+                  onBulkUploadBtn={handleBulkUploadDialog}
+                  // onPdfChange={}
+                  // onCsvChange={}
+                />
+              </>
+            )}
+            <DashboardModal
+              className={"w-[420px]"}
+              open={openCancelModal}
+              onOpenChange={handleCancelDialog}
+            >
+              <CancelModal
+                onProceed={handleProceedCancel}
+                modalTitle="Department"
+              />
+            </DashboardModal>
 
-        <DashboardModal
-          open={openProceedModal}
-          onOpenChange={handleProceedDialog}
-        >
-          <ProceedModal onProceed={handleProceed} />
-        </DashboardModal>
+            <DashboardModal
+              open={openProceedModal}
+              onOpenChange={handleProceedDialog}
+            >
+              <ProceedModal onProceed={handleProceed} />
+            </DashboardModal>
 
-        <DashboardModal
-          className={`max-w-max`}
-          open={openBulkUploadModal}
-          onOpenChange={handleBulkUploadDialog}
-        >
-          <BulkUploadModal
-            loading={isCreatingBulkDepartments}
-            onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("csv");
-            }}
-            onSampleExcelDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("xlsx");
-            }}
-            onBulkUpload={handleSubmitBulkUpload}
-            setFile={setBulkFile}
-          />
-        </DashboardModal>
+            <DashboardModal
+              className={`max-w-max`}
+              open={openBulkUploadModal}
+              onOpenChange={handleBulkUploadDialog}
+            >
+              <BulkUploadModal
+                loading={isCreatingBulkDepartments}
+                onCancel={handleBulkUploadDialog}
+                onSampleCsvDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("csv");
+                }}
+                onSampleExcelDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("xlsx");
+                }}
+                onBulkUpload={handleSubmitBulkUpload}
+                setFile={setBulkFile}
+              />
+            </DashboardModal>
 
-        <DashboardModal
-          className={"w-[600px] max-w-full"}
-          open={openBulkRequirementModal}
-          onOpenChange={handleBulkRequirementDialog}
-        >
-          <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload(fileType)}
-            onCancel={handleBulkRequirementDialog}
-          />
-        </DashboardModal>
-      </section>
-    </DashboardLayout>
+            <DashboardModal
+              className={"w-[600px] max-w-full"}
+              open={openBulkRequirementModal}
+              onOpenChange={handleBulkRequirementDialog}
+            >
+              <BulkRequirementModal
+                onTemplateDownload={() => handleTemplateDownload(fileType)}
+                onCancel={handleBulkRequirementDialog}
+              />
+            </DashboardModal>
+          </section>
+        </DashboardLayout>
+      ) : (
+        <DepartmentDetails />
+      )}
+    </>
   );
 };
 
 export default Departments;
+
+const FORMAT_TABLE_DATA = (obj: DepartmentData[]) => {
+  return obj?.map((org) => ({
+    name: (
+      <>
+        <span className="hidden">{org.id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
+    head_of_department: org?.head_of_department?.name || "--- ---",
+    subsidiary: org?.subsidiary || "--- ---",
+    branch: org?.branch?.name || "--- ---",
+  }));
+};

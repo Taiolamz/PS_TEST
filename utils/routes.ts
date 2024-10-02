@@ -31,6 +31,7 @@ const routesPath = {
     MISSION_PLAN_APPROVAL_FLOW_LEVEL: `/${admin_auth}/mission-plan/approval-flow/level`,
     MISSION_PLAN_REPORT: `/${admin_auth}/mission-plan/reports?ui=organization-report`,
     ORGANIZATION_MP_SPECIFIED_TASK: `/${admin_auth}/mission-plan/reports/specified-task`,
+    ORGANIZATION_MP_MEASURE_OF_SUCCESS: `/${admin_auth}/mission-plan/reports/measure-of-success`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     FINANCIAL_YEAR_UPDATE: `/${admin_auth}/mission-plan/update`,
@@ -52,6 +53,9 @@ const routesPath = {
     BRANCH: `/${admin_auth}/branches`,
     CREATE_BRANCH: `/${admin_auth}/branches/add-branch`,
     DEPARTMENT: `/${admin_auth}/departments`,
+    DEPARTMENT_DETAILS: ({ id, tab }: { id: string; tab?: string }) =>
+      `/${admin_auth}/departments?ui=details&id=${id}&tab=${tab}`,
+    EDIT_DEPARTMENT: (id: string) => `/${admin_auth}/departments/${id}`,
     CREATE_DEPARTMENT: `/${admin_auth}/departments/add-department`,
     UNIT: `/${admin_auth}/units`,
     UNIT_DETAILS: ({ id, tab }: { id: string; tab: string }) =>
@@ -81,12 +85,24 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/downline-progress/measure-of-success`,
     DOWNLINE_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/downline-progress/specified-task`,
+    REVIEW_MOS: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/review-mos`,
+    REVIEW_TASK: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/review-task`,
+    MOS_TASK_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/target-submission`,
+    MOS_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/report`,
     MY_REPORT_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/my-report-progress/specified-task`,
+    MY_REPORT_MEASURE_OF_SUCCESS_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/my-report-progress/measure-of-success`,
     APPROVAL_MISSION_PLAN_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/approval-progress`,
     APPROVAL_MISSION_PLAN_REPORT_TASK_SUBMISSION: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-tasks-submission`,
+    APPROVAL_MISSION_PLAN_REPORT_SUCCESS_MISSION_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-measure-of-success`,
     ACTUAL_OUTCOME: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/actual-outcome`,
     EXPECTED_OUTCOME: (id: string) =>

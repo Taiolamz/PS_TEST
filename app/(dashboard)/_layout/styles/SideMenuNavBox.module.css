@@ -14,7 +14,6 @@
   cursor: pointer;
   align-self: center;
   margin-top: 1rem;
-  width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
   gap: 0.2rem;
@@ -259,7 +258,6 @@
   border-radius: 0.2rem;
   font-weight: 500;
   width: 2.5rem;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   transform: translateY(-100%) translateX(-50%) scaleY(0);
@@ -347,7 +345,6 @@
   border-radius: 0.2rem;
   font-weight: 500;
   width: 2.5rem;
-  height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
   transform: translateY(-100%) translateX(-50%) scaleY(0);

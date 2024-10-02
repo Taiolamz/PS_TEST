@@ -8,8 +8,10 @@ import { EditableLabel, ReusableDrawer } from "@/components/fragment";
 import { data } from "./_data/data";
 import { useRouter } from "next/navigation";
 import ImpliedTaskApproval from "./_partials/implied-task-approval";
-import History from "../../../_partials/_task_outcome/_partials/history";
-import Comment from "../../../_partials/_task_outcome/_partials/comment";
+import History from "../../../_component/history";
+import Comment from "../../../_component/comment";
+// import History from "../../../_partials/_task_outcome/_partials/history";
+// import Comment from "../../../_partials/_task_outcome/_partials/comment";
 
 export default function ViewApprovalProgress({
   params,
@@ -51,7 +53,7 @@ export default function ViewApprovalProgress({
         </div>
       </ReusableDrawer>
       <ReusableDrawer
-        title="Outcome History"
+        title="Comments"
         show={showComment}
         handleClose={() => setShowComment(false)}
         closeOnClickOutside={false}
@@ -60,7 +62,7 @@ export default function ViewApprovalProgress({
         childrenContainerClass="py-0"
       >
         <div className="">
-          <Comment />
+          <Comment />{" "}
         </div>
       </ReusableDrawer>
       <div className="p-[2rem]">
@@ -113,6 +115,7 @@ export default function ViewApprovalProgress({
                                   setShowHistory={setShowHistory}
                                   setShowComment={setShowComment}
                                 />
+                              
                               </div>
                             )
                           )}

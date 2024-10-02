@@ -64,9 +64,9 @@ interface myComponentProps {
   tableBodyList?: any;
   hidePagination?: boolean;
   onPageChange?: (param?: any) => void;
-  currentPage?: string;
-  totalPage?: string;
-  perPage?: string;
+  currentPage?: string | number;
+  totalPage?: string | number;
+  perPage?: string | number;
   onSort?: (param?: any) => void;
   sortList?: any;
   hideSort?: boolean;
