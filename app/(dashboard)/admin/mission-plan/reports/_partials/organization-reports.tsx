@@ -10,10 +10,13 @@ import SpecifiedTaskChart from "../_charts/specified-task";
 import Link from "next/link";
 import routesPath from "@/utils/routes";
 import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
+import { useRouter } from "next/navigation";
 
 const { ADMIN } = routesPath
 
 const OrganizationReports = () => {
+    const router = useRouter()
+    
     return (
         <div className="w-full">
         <CardContainer className="mt-6">
@@ -120,7 +123,7 @@ const OrganizationReports = () => {
                     <div className="flex">
                         <div className="pt-10 flex flex-col">
                             <span className="font-light">Specified Task Activity Breakdown</span>
-                            <Link href={ADMIN.ORGANIZATION_MP_SPECIFIED_TASK} className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</Link>
+                            <Link href={ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK('ksksbsmdsadoao')} className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</Link>
                         </div>
                         <SpecifiedTaskChart />
                     </div>
@@ -144,7 +147,7 @@ const OrganizationReports = () => {
                     <h1>Organization Measure of Success</h1>
                     <PercentageLabel color="yellow" value={52} label="Archieved" />
                 </div>
-                <Link href={ADMIN.ORGANIZATION_MP_MEASURE_OF_SUCCESS}
+                <Link href={ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS('sjnakdkbkbmam')}
                     className="flex items-center gap-1 bg-[var(--primary-color)] text-white p-2 px-4 text-sm rounded-sm"
                 ><span>See Details</span> <ArrowRight /> </Link>
             </div>
@@ -186,7 +189,8 @@ const OrganizationReports = () => {
                 <SingleExcutiveProgress
                     name="Joseph Oloyede"
                     position="Head of Subsidiary (Zojatech)"
-                    onClick={() => null}
+                    url={ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao')}
+                    // onClick={() => router.push(ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao'))}
                     progress={30}
                 />
             </div>

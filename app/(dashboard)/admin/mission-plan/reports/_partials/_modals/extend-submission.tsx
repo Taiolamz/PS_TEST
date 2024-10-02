@@ -1,7 +1,7 @@
 import CustomSelect from "@/components/custom-select";
 import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
-import { REVIEW_PERIOD_OPTIONS } from "../../_data";
+import { EXTEND_PERIOD_OPTIONS, REVIEW_PERIOD_OPTIONS } from "../../_data";
 import { useFormik } from "formik";
 import { Textarea } from "@/components/ui/textarea";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
@@ -43,7 +43,7 @@ export default function ExtendSubmissionModal({ show, handleClose }: ModalContai
                         <div className="mb-4">
                             <CustomSelect
                                 label="Period"
-                                options={REVIEW_PERIOD_OPTIONS}
+                                options={EXTEND_PERIOD_OPTIONS}
                                 selected={formik.values?.period}
                                 setSelected={(selected) => {
                                     formik.setFieldValue('period', selected)

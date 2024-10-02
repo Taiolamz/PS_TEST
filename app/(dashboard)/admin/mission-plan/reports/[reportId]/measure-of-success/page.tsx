@@ -1,17 +1,20 @@
 "use client"
 
-import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout'
+import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
 import MetricTableCard from '@/components/card/metric-table-card';
 import CustomSelect from '@/components/custom-select';
 import ChallengeDrawer from '@/components/drawer/challenge-drawer';
-import { ActionLabel, CardContainer, GridLegend, ReusableProgress, ReusableSegmentProgress } from '@/components/fragment';
+import CustomCommentDrawer from '@/components/drawer/comment-drawer';
+import { ActionLabel, CardContainer } from '@/components/fragment';
 import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
 import { getProgressColorByValue } from '@/utils/helpers';
-import React from 'react'
-import { CHALLENGES_DATA } from '../_data';
-import CustomCommentDrawer from '@/components/drawer/comment-drawer';
+import React from 'react';
+import { CHALLENGES_DATA, MOS_DATA } from '../../_data';
+import OrganizationTargetChart from '../../_charts/organization-target';
+import MeasureOfSucessMetricTableCard from '@/components/card/mos-table-card';
+import { Dictionary } from '@/@types/dictionary';
 
-export default function OrganizationSpecifiedTask() {
+export default function OrganizationMeasureOfSuccess() {
   const [showChallengeModal, setShowChallengeModal] = React.useState(false);
   const [showCommentModal, setShowCommentModal] = React.useState(false);
 
@@ -1338,11 +1341,11 @@ export default function OrganizationSpecifiedTask() {
 
   return (
     <DashboardLayout
-      headerTitle='Specified Task Overview'
+      headerTitle='Measure of Success Overview'
       back
     >
       <section className='p-5'>
-        <CardContainer>
+        <CardContainer className="mb-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <ActionLabel label='Filter' icon={filterIcon} iconPosition='right' />
@@ -1375,70 +1378,38 @@ export default function OrganizationSpecifiedTask() {
           </div>
         </CardContainer>
 
-        <CardContainer className="mt-10">
-
-          {/* flex flex-col gap-4  */}
-          <div className="flex justify-between items-center">
-            <div className="flex flex-col">
-              <h1>Organization Task Activity</h1>
-              <span className="text-xs text-gray-400 font-light">March 2023 - March 31, 2024</span>
-            </div>
-            <p>Total Tasks: {50}</p>
-          </div>
-
-          {/* -------MULTI PROGRESS BAR------ */}
-          <div className="mt-10">
-            <ReusableSegmentProgress
-              value={100}
-              height={6}
-              segments={segments}
+       <OrganizationTargetChart/>
+        
+       {MOS_DATA?.map((item: Dictionary, idx: number) => {
+          const {
+            title,
+            fy_target,
+            unit,
+            weight,
+            fy_achieved,
+            amount,
+            id,
+            table_details,
+            percentage,
+          } = item;
+          return (
+            <MeasureOfSucessMetricTableCard
+              num={idx + 1}
+              key={id || idx}
+              title={title}
+              fy_target={fy_target}
+              unit={unit}
+              weight={weight}
+              percentage={percentage}
+              fy_achieved={fy_achieved}
+              amount={amount}
+              table_details={table_details}
+              onClickViewChallenge={() => setShowChallengeModal(true)}
+              onClickComment={() => setShowCommentModal(true)}
             />
-            <div className="flex justify-between items-center mt-2">
-              <div className="flex gap-4 items-center mt-5 ">
-                {progressDesc.map((chi, idx) => {
-                  const { label, color, value } = chi;
-                  return (
-                    <GridLegend
-                      key={idx}
-                      color={color as any}
-                      label={label}
-                      value={value}
-                    />
-                  );
-                })}
-              </div>
-
-            </div>
-          </div>
-          {/* -------MULTI PROGRESS BAR------ */}
-        </CardContainer>
-
-        <h1 className='mt-8 text-gray-600'>Organization Specific Task</h1>
-        <div className="mt-3 relative p-0 pb-8">
-          {specifiedTaskDetails.map((chi, idx) => {
-            const {
-              title,
-              weight,
-              percentage,
-              tasks,
-              measureOfSuccessDetails,
-              color,
-            } = chi;
-            return (
-              <MetricTableCard
-                key={idx}
-                title={title}
-                percentage={percentage}
-                measureOfSuccessDetails={measureOfSuccessDetails}
-                tasks={tasks}
-                progressValue={percentage}
-                progressColor={color as "red"}
-                onClickViewChallenge={() => setShowChallengeModal(true)}
-                onClickComment={() => setShowCommentModal(true)}
-              />
-            );
-          })}
-        </div>
+          );
+        })}
+        
       </section>
       <ChallengeDrawer
         open={showChallengeModal}

@@ -81,6 +81,25 @@ export const REVIEW_PERIOD_OPTIONS = [
     },
 ]
 
+export const EXTEND_PERIOD_OPTIONS = [
+  {
+      label: "One More Work Day",
+      value: "one_more_day",
+  },
+  {
+      label: "Two More Work Days",
+      value: "two_more_days",
+  },
+  {
+      label: "Three More Work Days",
+      value: "three_more_days",
+  },
+  {
+      label: "One More Week",
+      value: "one_more_week",
+  },
+]
+
 export const CHALLENGES_DATA = [
     {
       id: 1,
