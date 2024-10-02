@@ -50,8 +50,7 @@ export default function MOSCard({ id }: { id: string }) {
     <MetricFrame className="flex flex-col gap-4 lg:col-span-5">
       <div className="flex justify-between ">
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
-        {/* <Link href={ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS(id)}> */}
-        <Link href={''}>
+        <Link href={ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS(id)}>
           <Button className="flex gap-3 items-center group">
             <p className="font-medium">See Details</p>
             <figure className="group-hover:translate-x-1 transition-all">
