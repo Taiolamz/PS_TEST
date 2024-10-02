@@ -1,11 +1,22 @@
 import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 import CustomDateInput from "@/components/custom-date-input";
 import CustomSelect from "@/components/custom-select";
+import PasswordChecker from "@/components/password-checker";
 import TogglePassword from "@/components/toggle-password";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useChangePasswordMutation } from "@/redux/services/auth/authApi";
 import { useAppSelector } from "@/redux/store";
+import {
+  validatePasswordLength,
+  validatePasswordLowercase,
+  validatePasswordNumber,
+  validatePasswordSpecialCharacter,
+  validatePasswordUpperCase,
+} from "@/utils/helpers";
+import { passwordValidations, passwordValidation as pv } from "@/utils/schema";
 import React, { useState } from "react";
+import { toast } from "sonner";
 import style from "../styles/ProfileStylesIndex.module.css";
 
 const PasswordInfoBox = () => {
@@ -31,6 +42,92 @@ const PasswordInfoBox = () => {
       ></path>
     </svg>
   );
+
+  const [
+    changePassword,
+    {
+      isLoading: loadingProfile,
+      isSuccess: editSuccess,
+      //   reset: onboardingReset,
+    },
+  ] = useChangePasswordMutation();
+
+  const [details, setDetails] = useState({
+    current_password: "",
+    password: "",
+    password_confirmation: "",
+  });
+
+  const [passwordError, setPasswordError] = useState("");
+  const handleChange = (e: any) => {
+    e && e.preventDefault();
+    if (passwordError) {
+      setPasswordError("");
+    }
+    const { name, value } = e.target;
+    const obj = { ...details, [name]: value };
+    setDetails(obj);
+  };
+
+  const getValueFunc = (param?: any) => {
+    if (editState) {
+      return param || "";
+    } else {
+      return "************";
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (details?.password !== details?.password_confirmation) {
+      setPasswordError("Password does not match");
+      return;
+    }
+
+    const obj = { ...details };
+    try {
+      changePassword(obj)
+        .unwrap()
+        .then((payload) => {
+          setEditState(false);
+          toast.success("Password updated Successfully");
+          setTimeout(() => {
+            setDetails({
+              current_password: "",
+              password: "",
+              password_confirmation: "",
+            });
+          }, 300);
+        });
+    } catch (error) {}
+  };
+
+  const checkValidatePassword = () => {
+    let val;
+    if (!validatePasswordLowercase(details?.password)) {
+      val = true;
+      return val;
+    }
+    if (!validatePasswordUpperCase(details?.password)) {
+      val = true;
+      return val;
+    }
+    if (!validatePasswordSpecialCharacter(details?.password)) {
+      val = true;
+      return val;
+    }
+    if (!validatePasswordNumber(details?.password)) {
+      val = true;
+      return val;
+    }
+    if (!validatePasswordLength(details?.password)) {
+      val = true;
+      return val;
+    } else {
+      val = false;
+      return val;
+    }
+  };
+
   return (
     <div
       //   onClick={() => {
@@ -56,11 +153,18 @@ const PasswordInfoBox = () => {
             </div>
             <Button
               onClick={() => {
-                // onSave && onSave();
+                handleSubmit();
               }}
               type={`button`}
               className={` ${style.upload_label} font-light `}
-              //   disabled={!details?.profile_img ? true : false}
+              loading={loadingProfile}
+              disabled={
+                !details?.current_password ||
+                !details?.password ||
+                !details?.password_confirmation ||
+                checkValidatePassword()
+              }
+              loadingText={"Updating"}
             >
               Save Changes
               {/* {loading ? <ManceLoader /> :  "Save"} */}
@@ -90,11 +194,10 @@ const PasswordInfoBox = () => {
                 <Input
                   label="Current Password"
                   id="password cur"
-                  name="password cur"
-                  //   value={values.password}
-                  //   onChange={handleChange}
-                  //   touched={touched.password}
-                  //   error={errors.password}
+                  name="current_password"
+                  disabled={!editState}
+                  value={details?.current_password}
+                  onChange={handleChange}
                   placeholder="Input Password"
                   type={showPassword ? "text" : "password"}
                 />
@@ -108,31 +211,50 @@ const PasswordInfoBox = () => {
                 <Input
                   label="New Password"
                   id="password new"
-                  name="password new"
-                  //   value={values.password}
-                  //   onChange={handleChange}
-                  //   touched={touched.password}
-                  //   error={errors.password}
+                  name="password"
+                  disabled={!editState}
+                  value={details?.password}
+                  onChange={handleChange}
                   placeholder="Input Password"
                   type={showPassword ? "text" : "password"}
+                  error={passwordError}
+                  touched={passwordError ? true : false}
                 />
                 <TogglePassword
                   showPassword={showPassword}
                   setShowPassword={() => setShowPassword(!showPassword)}
                   className="top-9"
                 />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "0%",
+                    width: "100%",
+                  }}
+                  className="mt-6 flex flex-col gap-2"
+                >
+                  {passwordValidations?.map((validation, idx) => (
+                    <PasswordChecker
+                      key={idx}
+                      isValid={pv(details?.password, validation)}
+                      title={validation}
+                    />
+                  ))}
+                </div>
               </div>
               <div className="relative">
                 <Input
                   label="Confirm New Password"
                   id="password cur new"
-                  name="password cur new"
-                  //   value={values.password}
-                  //   onChange={handleChange}
-                  //   touched={touched.password}
-                  //   error={errors.password}
+                  name="password_confirmation"
+                  disabled={!editState}
+                  value={details?.password_confirmation}
+                  onChange={handleChange}
                   placeholder="Input Password"
                   type={showPassword ? "text" : "password"}
+                  error={passwordError}
+                  touched={passwordError ? true : false}
                 />
                 <TogglePassword
                   showPassword={showPassword}
@@ -144,17 +266,17 @@ const PasswordInfoBox = () => {
           </>
         ) : (
           <>
-            <div className={`${style.view_content_box} ${style.view_content_box_two}`}>
-            <div className="relative">
+            <div
+              className={`${style.view_content_box} ${style.view_content_box_two}`}
+            >
+              <div className="relative">
                 <Input
                   label="Current Password"
                   id="password cur"
-                  name="password cur"
-                  disabled
-                  //   value={values.password}
-                  //   onChange={handleChange}
-                  //   touched={touched.password}
-                  //   error={errors.password}
+                  name="current_password"
+                  disabled={!editState}
+                  value={details?.current_password}
+                  onChange={handleChange}
                   placeholder="Input Password"
                   type={showPassword ? "text" : "password"}
                 />
@@ -166,14 +288,12 @@ const PasswordInfoBox = () => {
               </div>
               <div className="relative">
                 <Input
-                  disabled
                   label="New Password"
                   id="password new"
-                  name="password new"
-                  //   value={values.password}
-                  //   onChange={handleChange}
-                  //   touched={touched.password}
-                  //   error={errors.password}
+                  name="password"
+                  disabled={!editState}
+                  value={details?.password}
+                  onChange={handleChange}
                   placeholder="Input Password"
                   type={showPassword ? "text" : "password"}
                 />
@@ -185,14 +305,12 @@ const PasswordInfoBox = () => {
               </div>
               <div className="relative">
                 <Input
-                  disabled
                   label="Confirm New Password"
                   id="password cur new"
-                  name="password cur new"
-                  //   value={values.password}
-                  //   onChange={handleChange}
-                  //   touched={touched.password}
-                  //   error={errors.password}
+                  name="password_confirmation"
+                  disabled={!editState}
+                  value={details?.password_confirmation}
+                  onChange={handleChange}
                   placeholder="Input Password"
                   type={showPassword ? "text" : "password"}
                 />

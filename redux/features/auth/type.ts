@@ -44,4 +44,5 @@ export type Auth = {
   user: User;
   token?: string;
   checklist?: Dictionary;
+  profile?: any;
 };
