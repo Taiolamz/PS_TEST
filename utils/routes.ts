@@ -47,6 +47,10 @@ const routesPath = {
     BRANCHES: `/${admin_auth}/branches`,
     ORGANOGRAM: `/${admin_auth}/organogram`,
     TEAM_MANAGEMENT: `/${admin_auth}/team-management`,
+    APPROVALS: `/${admin_auth}/team-management/approvals`,
+    SINGLE_APPROVAL: (id: string) =>
+      `/${admin_auth}/team-management/approvals/${id}`,
+
     SETTINGS: `/${admin_auth}/settings`,
     CHECKLIST: `/${admin_auth}/checklist`,
     SUBSIDIARY: `/${admin_auth}/subsidiary`,
