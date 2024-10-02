@@ -131,7 +131,7 @@ const DepartmentDetails = () => {
           onModalChange={handleDeactivateModalChange}
           show={openDeactivateModal}
           content={
-            "You’re about to deactivate this Department. The units and staffs under this Department would be inaccessible. Do youstill want to deactivate?"
+            "You’re about to deactivate this Department. The units and staffs under this Department would be inaccessible. Do you still want to deactivate?"
           }
         />
       </div>
