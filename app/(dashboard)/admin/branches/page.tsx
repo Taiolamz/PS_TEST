@@ -1,36 +1,51 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import useDisclosure from "./_hooks/useDisclosure";
+import routesPath from "@/utils/routes";
+
+import { useBranchColumnData } from "./branch-column";
+import { useAppSelector } from "@/redux/store";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { toast } from "sonner";
 import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";
 import BulkUploadModal from "./_components/bulk-upload-modal";
 import BulkRequirementModal from "./_components/bulk-requrement-modal";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import useDisclosure from "./_hooks/useDisclosure";
-import routesPath from "@/utils/routes";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { useAppSelector } from "@/redux/store";
+import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import { downloadFile } from "@/utils/helpers/file-formatter";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import BranchDetails from "./_partials/branches-details";
+import TableWrapper from "@/components/tables/TableWrapper";
 import {
   useCreateBulkBranchesMutation,
   useGetBranchesQuery,
   useLazyDownloadBranchTemplateQuery,
 } from "@/redux/services/checklist/branchApi";
-import { useBranchColumnData } from "./branch-column";
-import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
-import { downloadFile } from "@/utils/helpers/file-formatter";
-import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
-// import { replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import { processInputAsArray } from "@/utils/helpers";
 
 const { ADMIN } = routesPath;
 
 const Branches = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
+
+  const searchParams = useSearchParams();
+  const ui = searchParams.get("ui");
+
+  useEffect(() => {
+    if (typeof ui !== "string") {
+      router.replace(pathname + "?" + "ui=view");
+    }
+  }, []);
 
   const {
     isOpen: openProceedModal,
@@ -91,7 +106,7 @@ const Branches = () => {
   };
 
   const handleProceed = () => {
-    const proceedPath = ADMIN.DEPARTMENT;
+    const proceedPath = ADMIN.EMPLOYEES;
     router.push(proceedPath);
   };
 
@@ -127,35 +142,32 @@ const Branches = () => {
     isFetching: isFetchingBranches,
     refetch: refetchBranches,
   } = useGetBranchesQuery({
-    to: 0,
-    total: 0,
+    // to: 0,
+    // total: 0,
     per_page: 50,
-    currentPage: 0,
-    next_page_url: "",
-    prev_page_url: "",
+    currentPage: page,
+    search: search,
+    // next_page_url: "",
+    // prev_page_url: "",
   });
 
   const branches = branchesData ?? [];
 
-  // const branchesColumnData = useMemo(
-  //   () => branchColumns(isFetchingBranches),
-  //   [isFetchingBranches]
-  // );
+  const user = useAppSelector(selectUser);
+  const { organization } = user;
 
   const { branchColumns, data, openDeleteModal, handleDeleteDialog } =
     useBranchColumnData(isFetchingBranches);
 
   const branchesColumnData = useMemo(() => branchColumns, [isFetchingBranches]);
 
-  const user = useAppSelector(selectUser);
-  const { organization } = user;
-
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
     useCreateBulkBranchesMutation();
-  const [downloadBranchTemplate] = useLazyDownloadBranchTemplateQuery();
+  const [downloadBranchesTemplate] = useLazyDownloadBranchTemplateQuery();
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
+
     const formData = new FormData();
     formData.append("organization_id", organization?.id as string);
     formData.append("file", bulkFile);
@@ -175,9 +187,9 @@ const Branches = () => {
 
   const handleTemplateDownload = async (file: string) => {
     toast.loading("downloading...");
-    downloadBranchTemplate(file)
+    downloadBranchesTemplate(file)
       .unwrap()
-      .then((payload) => {
+      .then((payload: any) => {
         toast.dismiss();
         toast.success("Download completed");
         if (payload) {
@@ -196,7 +208,7 @@ const Branches = () => {
       active: true,
       title: "Total Branches",
       type: "branch",
-      count: 12,
+      count: branches?.data?.branches?.data?.length ?? 0,
       accentColor: "",
       hide: false,
       icon: "",
@@ -206,82 +218,151 @@ const Branches = () => {
     },
   ];
 
+  const FORMAT_TABLE_DATA = (obj: any) => {
+    return obj?.map((org: any) => ({
+      name: (
+        <>
+          <span className="hidden">{org.branch_id}</span>
+          <p>{org?.name}</p>
+        </>
+      ),
+      subsidiary: org?.subsidiary?.name,
+      country: org?.country,
+      state: org?.state,
+      address: org?.address,
+    }));
+  };
+
   return (
-    <DashboardLayout headerTitle="Branches">
-      <section className="p-5">
-        {branches?.length < 1 ? (
-          <ReusableEmptyState
-            loading={isLoadingBranches}
-            textTitle="Branches"
-            btnTitle="branch"
-            href={ADMIN.CREATE_BRANCH}
-            onBulkUpload={handleBulkUploadDialog}
-          />
-        ) : (
-          <>
-            {/* testing metrics card start */}
-            <ParentModuleCard list={listToTest} />
-            {/* testing metrics card end */}
-            <DashboardTable
-              isLoading={isFetchingBranches}
-              header="Branch"
-              data={branches}
-              columns={branchesColumnData}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              onOpenBtnChange={handleBtnDrop}
-              newBtnOpen={openNewBtn}
-              onManualBtn={handleAddBranch}
-            />
-          </>
-        )}
-        <DashboardModal
-          className={"w-[420px]"}
-          open={openCancelModal}
-          onOpenChange={handleCancelDialog}
-        >
-          <CancelModal onProceed={handleProceedCancel} modalTitle="Branch" />
-        </DashboardModal>
+    <>
+      {ui !== "details" ? (
+        <DashboardLayout headerTitle="Branches" back>
+          <section className="p-5">
+            {branches?.length < 1 ? (
+              <ReusableEmptyState
+                loading={isLoadingBranches}
+                textTitle="Branches"
+                btnTitle="branch"
+                href={ADMIN.CREATE_BRANCH}
+                onBulkUpload={handleBulkUploadDialog}
+              />
+            ) : (
+              <>
+                {/* testing metrics card start */}
+                <ParentModuleCard list={listToTest} />
+                {/* testing metrics card end */}
 
-        <DashboardModal
-          open={openProceedModal}
-          onOpenChange={handleProceedDialog}
-        >
-          <ProceedModal onProceed={handleProceed} />
-        </DashboardModal>
+                <TableWrapper
+                  tableheaderList={[
+                    "Name",
+                    processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary") && "Subsidiary",
+                    "Country",
+                    "State",
+                    "Address",
+                    "Action",
+                  ]}
+                  perPage={branches?.data?.branches?.meta?.per_page}
+                  totalPage={branches?.data?.branches?.meta?.total}
+                  currentPage={branches?.data?.branches?.meta?.current_page}
+                  onPageChange={(p) => {
+                    setPage(p);
+                  }}
+                  hideNewBtnOne={false}
+                  tableBodyList={FORMAT_TABLE_DATA(
+                    branches?.data?.branches?.data
+                  )}
+                  loading={isFetchingBranches}
+                  onSearch={(param) => {
+                    setTimeout(() => {
+                      // Delay api call after 3 seconds
+                      setPage(1);
+                      setSearch(param);
+                    }, 3000);
+                  }}
+                  dropDown
+                  hideFilter
+                  hideSort
+                  newBtnBulk
+                  dropDownList={[
+                    {
+                      label: "View Details",
+                      color: "",
+                      onActionClick: (param: any, dataTwo: any) => {
+                        console.log(dataTwo);
+                        router.push(
+                          ADMIN.BRANCH_DETAILS({
+                            id: dataTwo?.name?.props?.children[0]?.props
+                              ?.children,
+                            tab: "departments",
+                          })
+                        );
+                      },
+                    },
+                  ]}
+                  onManualBtn={handleAddBranch}
+                  onBulkUploadBtn={handleBulkUploadDialog}
+                  // onPdfChange={}
+                  // onCsvChange={}
+                />
+              </>
+            )}
+            <DashboardModal
+              className={"w-[420px]"}
+              open={openCancelModal}
+              onOpenChange={handleCancelDialog}
+            >
+              <CancelModal
+                onProceed={handleProceedCancel}
+                modalTitle="Branch"
+              />
+            </DashboardModal>
 
-        <DashboardModal
-          className={`max-w-max`}
-          open={openBulkUploadModal}
-          onOpenChange={handleBulkUploadDialog}
-        >
-          <BulkUploadModal
-            loading={isCreatingBulkBranches}
-            onCancel={handleBulkUploadDialog}
-            onSampleCsvDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("csv");
-            }}
-            onSampleExcelDownload={() => {
-              handleBulkRequirementDialog();
-              setFileType("xlsx");
-            }}
-            onBulkUpload={handleSubmitBulkUpload}
-            setFile={setBulkFile}
-          />
-        </DashboardModal>
+            <DashboardModal
+              open={openProceedModal}
+              onOpenChange={handleProceedDialog}
+            >
+              <ProceedModal onProceed={handleProceed} />
+            </DashboardModal>
 
-        <DashboardModal
-          className={"w-[600px] max-w-full"}
-          open={openBulkRequirementModal}
-          onOpenChange={handleBulkRequirementDialog}
-        >
-          <BulkRequirementModal
-            onTemplateDownload={() => handleTemplateDownload(fileType)}
-            onCancel={handleBulkRequirementDialog}
-          />
-        </DashboardModal>
-      </section>
-    </DashboardLayout>
+            <DashboardModal
+              className={`max-w-max`}
+              open={openBulkUploadModal}
+              onOpenChange={handleBulkUploadDialog}
+            >
+              <BulkUploadModal
+                loading={isCreatingBulkBranches}
+                onCancel={handleBulkUploadDialog}
+                onSampleCsvDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("csv");
+                }}
+                onSampleExcelDownload={() => {
+                  handleBulkRequirementDialog();
+                  setFileType("xlsx");
+                }}
+                onBulkUpload={handleSubmitBulkUpload}
+                setFile={setBulkFile}
+              />
+            </DashboardModal>
+
+            <DashboardModal
+              className={"w-[600px] max-w-full"}
+              open={openBulkRequirementModal}
+              onOpenChange={handleBulkRequirementDialog}
+            >
+              <BulkRequirementModal
+                onTemplateDownload={() => handleTemplateDownload(fileType)}
+                onCancel={handleBulkRequirementDialog}
+              />
+            </DashboardModal>
+          </section>
+        </DashboardLayout>
+      ) : (
+        <BranchDetails />
+      )}
+    </>
   );
 };
 

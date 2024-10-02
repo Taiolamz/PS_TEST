@@ -18,7 +18,7 @@ const EmptyState = ({
   onBtnClick,
 }: EmptyStateType) => {
   return (
-    <div>
+    <>
       {loading ? (
         <PageLoader />
       ) : (
@@ -51,7 +51,7 @@ const EmptyState = ({
           ) : null}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
