@@ -10,7 +10,7 @@ import style from "../styles/ProfileStylesIndex.module.css";
 
 const WorkInfoBox = () => {
   const [editState, setEditState] = useState(false);
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, profile } = useAppSelector((state) => state.auth);
 
   const editIcon = (
     <svg
@@ -41,9 +41,9 @@ const WorkInfoBox = () => {
 
   return (
     <div
-      //   onClick={() => {
-      //     console.log(user);
-      //   }}
+      onClick={() => {
+        console.log(profile?.work_information);
+      }}
       className={style.section_box_wrapper_profile}
     >
       {/* title edit save box start */}
@@ -320,7 +320,7 @@ const WorkInfoBox = () => {
               <CustomDateInput
                 id="date_of_birth_"
                 label="Resumption Date"
-                // selected={new Date(formik.values.date_of_birth)}
+                selected={profile?.work_information?.resumption_date}
                 handleChange={(date) => {
                   //   formik.setFieldValue("date_of_birth", formatDate(date));
                 }}
@@ -337,8 +337,7 @@ const WorkInfoBox = () => {
                 placeholder="Email"
                 id="work email"
                 name="work email"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.personal_information?.work_email}
                 disabled
               />
               <Input
@@ -347,8 +346,7 @@ const WorkInfoBox = () => {
                 placeholder="Line Manger Name"
                 id="Line Manger Name"
                 name="line manager"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.work_information?.line_manager?.name}
                 disabled
               />
               <Input
@@ -357,60 +355,41 @@ const WorkInfoBox = () => {
                 placeholder="Line Manger Email"
                 id="Line Manger Email"
                 name="line manager email"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.work_information?.line_manager?.email}
                 disabled
               />
-              <CustomSelect
+              <Input
                 label="Grade Level"
-                // isRequired
-                placeholder="Select grade level"
-                options={[
-                  {
-                    label: "Select grade level",
-                    value: "",
-                  },
-                ]}
-                selected={`` as any}
-                setSelected={(value) => {}}
-                // labelClass={labelClassName}
+                type="text"
+                placeholder="Line Manger Email"
+                id="Line Manger Email"
+                name="line manager email"
+                value={profile?.work_information?.grade_level}
                 disabled
               />
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "subsidiary"
               ) && (
-                <CustomSelect
+                <Input
                   label="Subsidiary"
-                  // isRequired
-                  placeholder="Select subsidiary"
-                  options={[
-                    {
-                      label: "Select subsidiary",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
+                  type="text"
+                  placeholder="Line Manger Email"
+                  id="Line Manger Email"
+                  name="line manager email"
+                  value={profile?.work_information?.subsidiary}
                   disabled
                 />
               )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "branch"
               ) && (
-                <CustomSelect
+                <Input
                   label="Branch"
-                  // isRequired
-                  placeholder="Select branch"
-                  options={[
-                    {
-                      label: "Select branch",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
+                  type="text"
+                  placeholder="Line Manger Email"
+                  id="Line Manger Email"
+                  name="line manager email"
+                  value={profile?.work_information?.branch}
                   disabled
                 />
               )}
@@ -538,7 +517,11 @@ const WorkInfoBox = () => {
         <div className={style.approval_flow_box_wrap}>
           <p className={style.title}>Approval Flow</p>
           {/* list box start */}
-          <div className={`${style.list_pos_box} ${listManagers?.length < 3 ? style.list_pos_box_small : ""}`}>
+          <div
+            className={`${style.list_pos_box} ${
+              listManagers?.length < 3 ? style.list_pos_box_small : ""
+            }`}
+          >
             {listManagers?.map((chi, idx) => {
               return (
                 <div key={idx} className={style.item_row}>
@@ -546,7 +529,9 @@ const WorkInfoBox = () => {
                     <span>{getOrdinalSuffix(idx + 1)}</span>
                   </p>
                   <div className={style.name_role_box}>
-                    <p className={style.name}>{trimLongString(chi?.name, 20)}</p>
+                    <p className={style.name}>
+                      {trimLongString(chi?.name, 20)}
+                    </p>
                     <p className={style.role}>line manager</p>
                   </div>
                 </div>

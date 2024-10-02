@@ -16,6 +16,12 @@ import unknownImg from "./profile/assests/Unknown_person.png";
 import { Button } from "@/components/ui/button";
 import { ManceLoader } from "@/components/custom-loader";
 import routesPath from "@/utils/routes";
+import {
+  useEditProfileDetailsMutation,
+  useLazyGetProfileDetailsQuery,
+} from "@/redux/services/auth/authApi";
+import { toast } from "sonner";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 
 interface myComponentProps {
   pageTitle?: string;
@@ -23,21 +29,32 @@ interface myComponentProps {
 }
 
 const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, profile } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
   const router = useRouter();
+  const [getProfileDetails] = useLazyGetProfileDetailsQuery({});
+  const [
+    editProfileDetails,
+    {
+      isLoading: loadingProfile,
+      isSuccess: editSuccess,
+      //   reset: onboardingReset,
+    },
+  ] = useEditProfileDetailsMutation();
   type detailType = {
     profile_img: any;
   };
   const [details, setDetails] = useState<detailType>({
     profile_img: "",
   });
+
+  const percentList = profile?.profile_completion?.checklist
   const listToComplete = [
-    { name: "Setup Account", complete: true },
-    { name: "Personal Information", complete: true },
-    { name: "Upload Photo", complete: false },
-    { name: "Contact Information", complete: false },
-    { name: "Work Information", complete: false },
+    { name: "Setup Account", complete: percentList?.setup_account },
+    { name: "Personal Information", complete: percentList?.personal_information },
+    { name: "Upload Photo", complete: percentList?.upload_photo },
+    { name: "Contact Information", complete: percentList?.contact_information },
+    { name: "Work Information", complete: percentList?.work_information },
   ];
 
   const checkIcon = (
@@ -78,6 +95,36 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
     </svg>
   );
 
+  const handleGetProfileDetails = async () => {
+    getProfileDetails({})
+      .unwrap()
+      .then(() => {});
+  };
+
+  const handleSubmit = async () => {
+    // console.log(details);
+    const formDataToSend = new FormData();
+
+    formDataToSend.append("profile_picture", details?.profile_img);
+    formDataToSend.append(
+      "first_name",
+      profile?.personal_information?.first_name
+    );
+    formDataToSend.append(
+      "last_name",
+      profile?.personal_information?.last_name
+    );
+    try {
+      editProfileDetails(formDataToSend)
+        .unwrap()
+        .then((payload) => {
+          handleGetProfileDetails();
+          setDetails({ profile_img: "" });
+          toast.success("Profile picture updated Successfully");
+        });
+    } catch (error) {}
+  };
+
   return (
     <>
       <DashboardLayout
@@ -94,7 +141,12 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
         }}
         headerTitle={`Profile`}
       >
-        <div className={style.reusable_profile_module_index_wrapper}>
+        <div
+          // onClick={() => {
+          //   console.log(profile?.work_information);
+          // }}
+          className={style.reusable_profile_module_index_wrapper}
+        >
           <ReuseProfileTabs />
           {/* content wrapper start */}
           <div className={style.content_two_card_wrapper}>
@@ -103,7 +155,7 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
               {/* top common section start */}
               <div
                 // onClick={() => {
-                //   console.log(user);
+                //   console.log(percentList);
                 // }}
                 className={style.top_section}
               >
@@ -141,9 +193,22 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
                         />
                       </figure>
                     ) : (
-                      <div className={style.avatar_box}>
-                        <span>{returnInitial(user?.name as any)}</span>
-                      </div>
+                      <>
+                        <CheckUrlFragment
+                          className={`${style.avatar_box} ${style.avatar_box_no_bg}`}
+                          url={
+                            profile?.personal_information
+                              ?.profile_picture as any
+                          }
+                          height={100}
+                          width={100}
+                          loadSize={100}
+                        >
+                          <div className={style.avatar_box}>
+                            <span>{returnInitial(user?.name as any)}</span>
+                          </div>
+                        </CheckUrlFragment>
+                      </>
                     )}
                   </div>
                   <div className={style.name_email_box}>
@@ -164,19 +229,34 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
                       <span>Upload Picture</span>
                     </label>
                   ) : (
-                    <>
-                      <Button
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "max-content",
+                      }}
+                    >
+                      <div
                         onClick={() => {
-                          // onSave && onSave();
+                          setDetails({ profile_img: "" });
                         }}
+                        className={style.edit_btn}
+                        style={{ marginRight: "-4rem" }}
+                      >
+                        <p className={style.text}>Clear</p>
+                        {/* <figure>{editIcon}</figure> */}
+                      </div>
+                      <Button
+                        onClick={handleSubmit}
                         type={`button`}
                         className={` ${style.upload_label} font-light `}
                         disabled={!details?.profile_img ? true : false}
+                        loading={loadingProfile}
                       >
                         Save Picture
                         {/* {loading ? <ManceLoader /> :  "Save"} */}
                       </Button>
-                    </>
+                    </div>
                   )}
                 </div>
                 {/* image content btn end */}
@@ -197,9 +277,9 @@ const ProfileReusableLayout = ({ pageTitle, children }: myComponentProps) => {
                 <p className={style?.title}>Complete your Profile</p>
                 <div className={style.progress_box}>
                   <div className={style.percent}>
-                    <CountUp end={40} />%
+                    <CountUp end={profile?.profile_completion?.completion_percentage || 0} />%
                   </div>
-                  <MyDoughnutChart totalVal={40} />
+                  <MyDoughnutChart totalVal={Number(profile?.profile_completion?.completion_percentage) || 0} />
                 </div>
                 {/* progress end here */}
                 {/* list start */}
