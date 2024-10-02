@@ -396,38 +396,26 @@ const WorkInfoBox = () => {
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "department"
               ) && (
-                <CustomSelect
+                <Input
                   label="Department"
-                  // isRequired
-                  placeholder="Select department"
-                  options={[
-                    {
-                      label: "Select department",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
+                  type="text"
+                  placeholder="Line Manger Email"
+                  id="Line Manger Email"
+                  name="line manager email"
+                  value={profile?.work_information?.department}
                   disabled
                 />
               )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "unit"
               ) && (
-                <CustomSelect
+                <Input
                   label="Unit"
-                  // isRequired
-                  placeholder="Select unit"
-                  options={[
-                    {
-                      label: "Select unit",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
+                  type="text"
+                  placeholder="Line Manger Email"
+                  id="Line Manger Email"
+                  name="line manager email"
+                  value={profile?.work_information?.unit}
                   disabled
                 />
               )}
@@ -437,8 +425,7 @@ const WorkInfoBox = () => {
                 placeholder="staff number"
                 id="staff number"
                 name="staff number"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.work_information?.staff_number}
                 disabled
               />
               <Input
@@ -447,8 +434,7 @@ const WorkInfoBox = () => {
                 placeholder="Current Job Title"
                 id="Current Job Title"
                 name="Current Job Title"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.work_information?.designation}
                 disabled
               />
               <Input
@@ -457,8 +443,7 @@ const WorkInfoBox = () => {
                 placeholder="Current Role"
                 id="Current Role"
                 name="Current Role"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.work_information?.role}
                 disabled
               />
               <Input
@@ -467,8 +452,7 @@ const WorkInfoBox = () => {
                 placeholder="Former Job Title"
                 id="Former Job Title"
                 name="Former Job Title"
-                // onChange={formik.handleChange}
-                // isRequired
+                value={profile?.work_information?.previous_designation}
                 disabled
               />
               <div
@@ -484,7 +468,9 @@ const WorkInfoBox = () => {
                 <CustomDateInput
                   id="start_date"
                   label="Start Date"
-                  // selected={new Date(formik.values.date_of_birth)}
+                  selected={
+                    profile?.work_information?.previous_designation?.start_date
+                  }
                   handleChange={(date) => {
                     //   formik.setFieldValue("date_of_birth", formatDate(date));
                   }}
@@ -492,13 +478,14 @@ const WorkInfoBox = () => {
                   error={""}
                   className="relative"
                   iconClass="top-[2rem]"
-                  // isRequired
                   disabled
                 />
                 <CustomDateInput
                   id="start_date"
                   label="End Date"
-                  // selected={new Date(formik.values.date_of_birth)}
+                  selected={
+                    profile?.work_information?.previous_designation?.end_date
+                  }
                   handleChange={(date) => {
                     //   formik.setFieldValue("date_of_birth", formatDate(date));
                   }}
