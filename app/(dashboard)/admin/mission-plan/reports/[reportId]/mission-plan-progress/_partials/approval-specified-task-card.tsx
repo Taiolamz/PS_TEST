@@ -20,8 +20,7 @@ export default function SpecifiedTaskCard({ id }: { id: string }) {
             FY 2023, Q1 Progress
           </p>
         </div>
-        {/* <Link href={ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK(id)}> */}
-        <Link href={""}>
+        <Link href={ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK(id)}>
           <Button className="flex gap-3 items-center group">
             <p className="font-medium">See Progress Details</p>
             <figure className="group-hover:translate-x-1 transition-all">
