@@ -51,7 +51,7 @@ const HeaderNavBox = ({
   onNotify,
 }: myComponentProps) => {
   const router = useRouter();
-  const { user } = useAppSelector((state) => state.auth);
+  const { user, profile } = useAppSelector((state) => state.auth);
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [dropProfile, setDropProfile] = useState<boolean>(false);
   const pathname = usePathname();
@@ -275,11 +275,18 @@ const HeaderNavBox = ({
             {/* <figure className={`${style.profile_img_box}`}>
             <Image alt="profile-img" src={unknownImg} className={style.img} />
           </figure> */}
-            <CheckUrlFragment className={style.avatar_box} url={` ` as any}>
-              <div className={style.avatar_box}>
-                <span>{returnInitial(user?.name as any)}</span>
-              </div>
-            </CheckUrlFragment>
+            <div className={style.avatar_box_wrap}>
+              <CheckUrlFragment
+                url={profile?.personal_information?.profile_picture as any}
+                height={100}
+                width={100}
+                className={`${style.avatar_box} ${style.avatar_box_two}`}
+              >
+                <div className={style.avatar_box}>
+                  <span>{returnInitial(user?.name as any)}</span>
+                </div>
+              </CheckUrlFragment>
+            </div>
 
             <figure className={style.img_box}>{dropIcon}</figure>
           </div>
@@ -295,14 +302,20 @@ const HeaderNavBox = ({
                   className={style.img}
                 />
               </figure> */}
-                <CheckUrlFragment
-                  className={style.avatar_box}
-                  url={'' as any}
-                >
-                  <div className={style.avatar_box}>
-                    <span>{returnInitial(user?.name as any)}</span>
-                  </div>
-                </CheckUrlFragment>
+                <div className={style.avatar_box_wrap}>
+                  {" "}
+                  <CheckUrlFragment
+                    className={`${style.avatar_box} ${style.avatar_box_two}`}
+                    url={profile?.personal_information?.profile_picture as any}
+                    height={100}
+                    width={100}
+                  >
+                    <div className={style.avatar_box}>
+                      <span>{returnInitial(user?.name as any)}</span>
+                    </div>
+                  </CheckUrlFragment>
+                </div>
+
                 <div className={style.name_role_box}>
                   <p className={style.name}>
                     {trimLongString(user?.name, 20) || `Ayeni Kehinde`}
@@ -330,7 +343,7 @@ const HeaderNavBox = ({
                         chi?.onClick && chi?.onClick();
                       }}
                       key={idx}
-                      className={style.item_row}  
+                      className={style.item_row}
                       style={{ cursor: "pointer", borderBottom: "unset" }}
                     >
                       <figure className={style.img_box}>{chi.icon}</figure>

@@ -160,7 +160,7 @@ const OrganizationInformation = ({ formik }: OrganizationInformationProps) => {
         </div>
         <div className="mt-6 flex flex-col gap-2">
           {passwordValidations.map((validation, idx) => (
-            <PasswordChecker
+            <PasswordChecker 
               key={idx}
               isValid={pv(formik.values.password, validation)}
               title={validation}

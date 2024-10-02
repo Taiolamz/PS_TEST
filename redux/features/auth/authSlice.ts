@@ -10,6 +10,7 @@ const initialState: Auth = {
     },
   },
   checklist: {},
+  profile: {},
 };
 
 const authSlice = createSlice({
@@ -26,10 +27,15 @@ const authSlice = createSlice({
     setChecklist: (state, action: PayloadAction<any>) => {
       state.checklist = action.payload;
     },
+    setUserProfile: (state, action: PayloadAction<any>) => {
+      // console.log(action?.payload?.profile);
+
+      state.profile = action.payload.profile;
+    },
   },
 });
 
-export const { setAuthUser, setChecklist } = authSlice.actions;
+export const { setAuthUser, setChecklist, setUserProfile } = authSlice.actions;
 export const resetAuth = authSlice.actions.reset;
 
 export const authSliceReducer = authSlice.reducer;

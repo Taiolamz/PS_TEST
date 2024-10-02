@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 // import ActionContext from "../context/ActionContext";
-import { useLazyGetAuthUserDetailsQuery } from "@/redux/services/auth/authApi";
+import { useLazyGetAuthUserDetailsQuery, useLazyGetProfileDetailsQuery } from "@/redux/services/auth/authApi";
 import { useLazyGetChecklistQuery } from "@/redux/services/onboarding/checkListApi";
 import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { useAppSelector } from "@/redux/store";
@@ -28,7 +28,7 @@ import NotificationModal from "./(notification)/NotificationModal";
 import { WarningIcon } from "@/public/assets/icons";
 import Image from "next/image";
 
-// import { checklistDetails } from "../admin/checklist/checklist-steps";
+// import { checklistDetails } from "../admin/checklist/checklist-steps";useLazyGetProfileDetailsQuery
 
 interface myComponentProps {
   children?: React.ReactNode;
@@ -59,6 +59,9 @@ const DashboardLayout = ({
   const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
     {}
   );
+  const [getProfileDetails] = useLazyGetProfileDetailsQuery(
+    {}
+  );
   const [getChecklist] = useLazyGetChecklistQuery({});
 
   // This fuction update user records
@@ -75,13 +78,19 @@ const DashboardLayout = ({
       .then(() => {});
   };
 
+  const handleGetProfileDetails = async () => {
+    getProfileDetails({})
+      .unwrap()
+      .then(() => {});
+  };
+
   useEffect(() => {
     // if (checkUserRole(user?.role as string) === "ADMIN") {
     //   handleGetChecklist();
     // }
     handleGetChecklist();
     //  console.log(user);
-
+    handleGetProfileDetails()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 

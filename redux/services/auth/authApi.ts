@@ -1,4 +1,8 @@
-import { resetAuth, setAuthUser } from "@/redux/features/auth/authSlice";
+import {
+  resetAuth,
+  setAuthUser,
+  setUserProfile,
+} from "@/redux/features/auth/authSlice";
 import Cookies from "js-cookie";
 import { baseApi } from "../baseApi";
 import { resetMissionPlan } from "@/redux/features/mission-plan/missionPlanSlice";
@@ -169,6 +173,62 @@ export const authApi = baseApi.injectEndpoints({
         }
       },
     }),
+    getProfileDetails: builder.query({
+      query: () => ({
+        url: `/profile`,
+        method: "GET",
+        // credentials: "include" as const
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          // console.log(result);
+
+          const {
+            data: { data },
+          } = result;
+          const key = {
+            profile: data,
+          };
+
+          // console.log(key);
+
+          dispatch(setUserProfile(key));
+        } catch (error: any) {
+          // console.log(error)
+        }
+      },
+    }),
+    editProfileDetails: builder.mutation({
+      query: (payload) => ({
+        url: `/profile`,
+        method: "POST",
+        body: payload,
+        formData: true,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (error: any) {
+          console.log("Error:", error);
+        }
+      },
+    }),
+    changePassword: builder.mutation({
+      query: (payload) => ({
+        url: `/profile/change/password`,
+        method: "PUT",
+        body: payload,
+        formData: false,
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+        } catch (error: any) {
+          console.log("Error:", error);
+        }
+      },
+    }),
   }),
 });
 
@@ -183,4 +243,7 @@ export const {
   useVerifyOTPMutation,
   useResendOTPMutation,
   useLazyGetAuthUserDetailsQuery,
+  useLazyGetProfileDetailsQuery,
+  useEditProfileDetailsMutation,
+  useChangePasswordMutation,
 } = authApi;
