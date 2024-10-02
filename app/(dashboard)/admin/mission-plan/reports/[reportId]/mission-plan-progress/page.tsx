@@ -4,19 +4,18 @@ import CustomSelect from "@/components/custom-select";
 import React from "react";
 import ApprovalSpecifiedTaskCard from "./_partials/approval-specified-task-card";
 import ApprovalMOSCard from "./_partials/approval-mos-card";
-import { useRouter } from "next/navigation";
+import { CardContainer } from "@/components/fragment";
 
 export default function MissionPlanProgress({
   params,
 }: {
   params: { reportId: string };
 }) {
-  const router = useRouter();
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
   return (
-    <DashboardLayout back headerTitle="My Approvals">
-      <div className="m-5">
+    <DashboardLayout back headerTitle="Mission Plan Report Overview">
+      <div className="m-5 overflow-hidden">
         {/* ----- FILTER/SELECT WRAP START------- */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -72,6 +71,11 @@ export default function MissionPlanProgress({
             </p>
           </div>
         </div>
+
+        <CardContainer className="my-5">
+          <h1 className="text-lg">Mission Statement</h1>
+          <p className="mt-1 text-gray-400 font-light text-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam impedit sunt, saepe fuga nesciunt soluta odio non, exercitationem sequi maxime praesentium quisquam molestias magnam. Sit autem labore quia illum eum.</p>
+        </CardContainer>
 
         {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
         <div className="grid lg:grid-cols-12 mt-10 gap-5">

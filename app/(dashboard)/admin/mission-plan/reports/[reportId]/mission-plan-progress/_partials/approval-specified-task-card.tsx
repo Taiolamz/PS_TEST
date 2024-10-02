@@ -6,7 +6,7 @@ import routesPath from "@/utils/routes";
 import Link from "next/link";
 import React from "react";
 
-const { EMPLOYEE } = routesPath;
+const { ADMIN, EMPLOYEE } = routesPath;
 
 export default function SpecifiedTaskCard({ id }: { id: string }) {
   return (
@@ -20,7 +20,8 @@ export default function SpecifiedTaskCard({ id }: { id: string }) {
             FY 2023, Q1 Progress
           </p>
         </div>
-        <Link href={EMPLOYEE.DOWNLINE_SPECIFIED_TASK_REPORT(id)}>
+        {/* <Link href={ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK(id)}> */}
+        <Link href={""}>
           <Button className="flex gap-3 items-center group">
             <p className="font-medium">See Progress Details</p>
             <figure className="group-hover:translate-x-1 transition-all">
