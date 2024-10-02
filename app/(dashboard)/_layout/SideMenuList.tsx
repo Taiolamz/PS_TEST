@@ -507,7 +507,7 @@ export const sideMenuList: any = [
         icon: sideMenuIcons?.team_management,
         relatedLink: [""],
         children: [
-          { name: "Approvals", link: "" },
+          { name: "Approvals", link: routesPath?.ADMIN?.APPROVALS },
           { name: "Roles & Permissions", link: "" },
         ],
       },
