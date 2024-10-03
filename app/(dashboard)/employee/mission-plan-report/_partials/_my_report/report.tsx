@@ -45,7 +45,7 @@ const MyReport = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1.5fr 2fr",
+          gridTemplateColumns: "1.8fr 2fr",
           gap: "3rem",
         }}
         className="mt-5"
