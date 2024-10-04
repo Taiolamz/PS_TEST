@@ -5,12 +5,16 @@ interface RadioButtonLabelProps {
     id?: string | number,
     isActive: boolean,
     label?: string,
-    onClick?: () => void
+    onClick?: () => void,
+    className?: string
 }
 
-const RadioButtonLabel = ({isActive, label, onClick}: RadioButtonLabelProps) => {
+const RadioButtonLabel = ({isActive, label, onClick, className}: RadioButtonLabelProps) => {
     return (
-        <div className='flex items-center gap-2 cursor-pointer'
+        <div className={cn(
+            'flex items-center gap-2 cursor-pointer',
+            className
+        )}
             onClick={onClick}
         >
             <span className={cn(

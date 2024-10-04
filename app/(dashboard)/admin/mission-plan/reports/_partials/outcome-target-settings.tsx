@@ -9,9 +9,11 @@ import { useMemo, useState } from "react";
 import { REVIEW_PERIOD_OPTIONS } from "../_data";
 import { cn } from "@/lib/utils";
 import ExtendSubmissionModal from "./_modals/extend-submission";
+import ReopenSubmissionModal from "./_modals/reopen-submission";
 
 const OutcomeTargetSettings = () => {
     const [showExtendSubmissionModal, setShowExtendSubmissionModal] = useState(false)
+    const [showReopenSubmissionModal, setShowReopenSubmissionModal] = useState(false)
     const [submissionOptions, setSubmissionOptions] = useState({
         expected_outcome: [
             { id: 1, title: 'Submission Only', isSelected: false, type: "submission_only" },
@@ -74,7 +76,17 @@ const OutcomeTargetSettings = () => {
 
     return (
         <section className="">
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
+                <Button
+                    className={cn(
+                        "border border-[var(--primary-color)] text-[var(--primary-color)] hover:text-primary/5 disabled:opacity-30"
+                    )}
+                    variant="outline"
+                    // disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
+                    onClick={() => setShowReopenSubmissionModal(true)}
+                >
+                    Reopen Submission Period
+                </Button>
                 <Button
                     className={cn(
                         "border border-[var(--primary-color)] text-[var(--primary-color)] hover:text-primary/5 disabled:opacity-30"
@@ -227,6 +239,8 @@ const OutcomeTargetSettings = () => {
             </CardContainer>
 
             <ExtendSubmissionModal show={showExtendSubmissionModal} handleClose={() => setShowExtendSubmissionModal(false)}/>
+
+            <ReopenSubmissionModal show={showReopenSubmissionModal} handleClose={() => setShowReopenSubmissionModal(false)}/>
         </section>
     );
 }

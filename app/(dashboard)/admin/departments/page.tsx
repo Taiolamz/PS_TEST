@@ -402,3 +402,17 @@ const Departments = () => {
 };
 
 export default Departments;
+
+const FORMAT_TABLE_DATA = (obj: DepartmentData[]) => {
+  return obj?.map((org) => ({
+    name: (
+      <>
+        <span className="hidden">{org.id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
+    head_of_department: org?.head_of_department?.name || "--- ---",
+    subsidiary: org?.subsidiary || "--- ---",
+    branch: org?.branch?.name || "--- ---",
+  }));
+};
