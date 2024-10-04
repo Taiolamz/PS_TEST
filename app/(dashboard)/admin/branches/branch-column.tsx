@@ -168,15 +168,15 @@ export const useBranchColumnData = (loading?: boolean) => {
                   // Your edit action here
                 }}
               >
-                Edit
+                View Details
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              {/* <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-custom-red font-light cursor-pointer text-sm"
                 onClick={() => handleDeleteDialog(row.original)}
               >
                 Delete
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

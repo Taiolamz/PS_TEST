@@ -20,14 +20,15 @@ export const branchApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getBranches: builder.query<BranchData[], QueryParams>({
+    getBranches: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/branch${generateQueryString({ ...params })}`,
         method: "GET",
       }),
       providesTags: ["Branches"],
-      transformResponse: (response: { data: { data: BranchData[] } }) =>
-        response.data.data,
+      // transformResponse: (response: {
+      //   data: { branches: { data: BranchData[] } };
+      // }) => response?.data?.branches?.data,
     }),
 
     downloadBranchTemplate: builder.query({
