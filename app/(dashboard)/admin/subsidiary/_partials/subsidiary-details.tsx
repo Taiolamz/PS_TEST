@@ -11,6 +11,8 @@ import { useAppSelector } from "@/redux/store";
 import { processInputAsArray } from "@/utils/helpers";
 import { BranchesTable, DeptTable, StaffTable, UnitTable } from "./_table";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import { useGetSubsidiaryByIdQuery, useGetSubsidiaryInBranchQuery, useGetSubsidiaryInDeptQuery } from "@/redux/services/checklist/subsidiaryApi";
+import { PageLoader } from "@/components/custom-loader";
 
 const { ADMIN } = routesPath;
 
@@ -95,24 +97,36 @@ export default function SubsidiaryDetails() {
     },
   ];
 
+        const { data: subDetalsData, isLoading: isLoadingSubDetails } = useGetSubsidiaryByIdQuery(
+   id ?? ""
+  ); 
+
+  const { data: subDetailsBranchData } = useGetSubsidiaryInBranchQuery(
+    {id: id ,params: {page: 1}}
+    ); 
+
+  const { data: subDetailsDepthData } = useGetSubsidiaryInDeptQuery(
+    {id: id ,params: {page: 1}}
+    ); 
+
+console.log(subDetailsDepthData, "dept", subDetailsBranchData, "branch")
   return (
     <DashboardLayout back headerTitle="Subsidiaries">
-      <section className="p-5">
+      {isLoadingSubDetails ? <PageLoader/> :<section className="p-5">
         <div className="flex max-lg:flex-col-reverse justify-between mb-10">
           <div className="w-full">
             <span className="flex items-center gap-8">
-              <img
-                //   src={
-                //     "https://play-lh.googleusercontent.com/bojfiBmqU2A0U4CwGk_KQoxFw5rsLwIc4KSG4FC0vC4y0OtC-sJ4juxKMZF3g2cgeg"
-                //   }
+             {!subDetalsData?.logo ?  <img
                 src={
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1vmgM8M4YgXQpE3ytknAMwTluWH65ApphN7j83xtVWSU7JKWT8FV7AVarHxIjPmE8ufQ&usqp=CAU"
-                }
+                 subDetalsData?.logo
+               }
                 alt="subsidiary logo"
                 className="size-[100px] rounded-full object-contain border border-[var( --input-border)]"
-              />
+                />: <span
+                className="size-[100px] rounded-full place-content-center grid bg-white border border-[var( --input-border)]"
+              >{subIcon}</span>}
               <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-                Enyata
+               {subDetalsData?.name}
               </h3>
             </span>
             <div className="grid lg:grid-cols-2 gap-4 w-full text-[var(--text-color)] text-xs mt-5">
@@ -120,19 +134,19 @@ export default function SubsidiaryDetails() {
                 <h4>
                   Head Of Subsidiary:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-1">
-                    Bryan Adamu
+                    {subDetalsData?.head?.name}
                   </span>
                 </h4>
                 <h4>
                   Subsidiary Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-1">
-                    zojatech@gmail.com
+                   {subDetalsData?.work_email}
                   </span>
                 </h4>
                 <h4>
                   Head of Subsidiary Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-1">
-                    Martini@zojatech.com
+                    {subDetalsData?.hos_email}
                   </span>
                 </h4>
               </span>
@@ -140,19 +154,19 @@ export default function SubsidiaryDetails() {
                 <h4>
                   Address:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-1">
-                    9b, Akin Ogunmade Gbagada
+                    {subDetalsData?.address}
                   </span>
                 </h4>
                 <h4>
                   State:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-1">
-                    Lagos
+                    {subDetalsData?.state}
                   </span>
                 </h4>
                 <h4>
                   Country:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-1">
-                    Nigeria
+                   {subDetalsData?.country}
                   </span>
                 </h4>
               </span>
@@ -185,7 +199,8 @@ export default function SubsidiaryDetails() {
           {tab === "units" && <UnitTable />}
           {tab === "staffs" && <StaffTable />}
         </section>
-      </section>
+      </section>}
+
       <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}
@@ -222,3 +237,22 @@ export default function SubsidiaryDetails() {
     </DashboardLayout>
   );
 }
+
+
+  const subIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="42"
+      height="42"
+      fill="none"
+      viewBox="0 0 42 42"
+    >
+      <path
+        fill={"var(--primary-color)"
+        }
+        fillRule="evenodd"
+        d="M34.542 21a13.542 13.542 0 11-27.084 0 13.542 13.542 0 0127.084 0zm3.125 0a16.667 16.667 0 11-33.334 0 16.667 16.667 0 0133.334 0zM21 25.688a3.125 3.125 0 11-6.25 0 3.125 3.125 0 016.25 0zM13.742 21a6.25 6.25 0 1010.275 5.854 6.25 6.25 0 100-11.708A6.25 6.25 0 1013.742 21zm4.133-1.562a3.125 3.125 0 100-6.25 3.125 3.125 0 000 6.25zm8.334 4.687a3.125 3.125 0 100-6.25 3.125 3.125 0 000 6.25z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  );

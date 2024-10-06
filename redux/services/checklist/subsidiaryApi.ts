@@ -31,6 +31,26 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       //   response.data.data,
     }),
 
+    getSubsidiaryById: builder.query({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries"],
+      transformResponse: (response: any) =>
+        response?.data?.subsidiary,
+    }),
+
+    getSubsidiaryInBranch: builder.query({
+      query: ({id, params}) => ({
+        url: `/admin/subsidiary/subsidiary-entities/branch/${id}/${generateQueryString({ ...params })}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries"],
+      // transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
+      //   response.data.data,
+    }),
+
     downloadSubsidiaryTemplate: builder.query({
       query: (format: string) => ({
         url: `/admin/subsidiary/BulkUpload-template?format=${format}`,
@@ -56,4 +76,6 @@ export const {
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
   useDeleteSubsidiariesMutation,
+  useGetSubsidiaryByIdQuery,
+  useGetSubsidiaryInBranchQuery
 } = subsidiaryApi;
