@@ -37,18 +37,51 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Subsidiaries"],
-      transformResponse: (response: any) =>
-        response?.data?.subsidiary,
+      transformResponse: (response: any) => response?.data?.subsidiary,
     }),
 
     getSubsidiaryInBranch: builder.query({
-      query: ({id, params}) => ({
-        url: `/admin/subsidiary/subsidiary-entities/branch/${id}/${generateQueryString({ ...params })}`,
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/branch/${id}${generateQueryString(
+          { ...params }
+        )}`,
         method: "GET",
       }),
       providesTags: ["Subsidiaries"],
-      // transformResponse: (response: { data: { data: SubsidiaryData[] } }) =>
-      //   response.data.data,
+      transformResponse: (response: any) => response.data.branch,
+    }),
+
+    getSubsidiaryInDept: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/department/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries"],
+      transformResponse: (response: any) => response.data.department,
+    }),
+
+    getSubsidiaryInUnit: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/unit/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries"],
+      transformResponse: (response: any) => response.data.unit,
+    }),
+
+    getSubsidiaryInStaff: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities-staff/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries"],
+      transformResponse: (response: any) => response.data.staff,
     }),
 
     downloadSubsidiaryTemplate: builder.query({
@@ -77,5 +110,8 @@ export const {
   useLazyDownloadSubsidiaryTemplateQuery,
   useDeleteSubsidiariesMutation,
   useGetSubsidiaryByIdQuery,
-  useGetSubsidiaryInBranchQuery
+  useGetSubsidiaryInBranchQuery,
+  useGetSubsidiaryInDeptQuery,
+  useGetSubsidiaryInUnitQuery,
+  useGetSubsidiaryInStaffQuery,
 } = subsidiaryApi;
