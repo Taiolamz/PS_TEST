@@ -63,11 +63,10 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     {}
   );
 
-  const { subDetalsData, isLoadingSubDetails } = useSubsidiaryById(id ?? "");
+  const { subDetalsData } = useSubsidiaryById(id ?? "");
 
   console.log({
     subDetalsData,
-    isLoadingSubDetails,
   });
 
   const handleDropdown = (items: StateData[] | AllStaff[]) => {
@@ -119,7 +118,7 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     }
     payload.append("head", head.id);
     payload.append("state", state);
-    console.log(payload, "payload", id);
+    console.log(formik.values, "payload", id);
     // await createSubsidiary(payload)
     //   .unwrap()
     //   .then(() => {
@@ -136,22 +135,23 @@ export const useEditSubsidiary = ({ id }: Prop) => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
-      address: "",
-      country: "",
-      state: "",
+      name: subDetalsData?.name || "",
+      email: subDetalsData?.work_email || "",
+      address: subDetalsData?.address ?? "",
+      country: subDetalsData?.country || "",
+      state: subDetalsData?.state || "",
       head: {
-        name: "",
-        email: "",
-        id: "",
+        name: subDetalsData?.head?.name || "",
+        email: subDetalsData?.hos_email || "",
+        id: subDetalsData?.head?.id || "",
       },
-      work_email: "",
+      work_email: subDetalsData?.hos_email || "",
       logo: null as File | null,
-      description: "",
+      description: subDetalsData?.description || "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
 
   useEffect(() => {}, []);
