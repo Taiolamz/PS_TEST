@@ -31,6 +31,36 @@ export const branchApi = baseApi.injectEndpoints({
       // }) => response?.data?.branches?.data,
     }),
 
+    getBranchById: builder.query({
+      query: (branchId) => ({
+        url: `/admin/branch/${branchId}`,
+        method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+
+    getBranchDepartment: builder.query({
+      query: (branchId) => ({
+        url: `/admin/branch/branch-department-entites/${branchId}`,
+        method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+    getBranchUnit: builder.query({
+      query: (branchId) => ({
+        url: `/admin/branch/branch-unit-entites/${branchId}`,
+        method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+    getBranchStaff: builder.query({
+      query: (branchId) => ({
+        url: `/admin/branch/branch-staff-entites/${branchId}`,
+        method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+
     downloadBranchTemplate: builder.query({
       query: (format: string) => ({
         url: `/admin/branch/BulkUpload-template?format=${format}`,
@@ -47,4 +77,8 @@ export const {
   useCreateBulkBranchesMutation,
   useGetBranchesQuery,
   useLazyDownloadBranchTemplateQuery,
+  useGetBranchByIdQuery,
+  useGetBranchDepartmentQuery,
+  useGetBranchStaffQuery,
+  useGetBranchUnitQuery,
 } = branchApi;

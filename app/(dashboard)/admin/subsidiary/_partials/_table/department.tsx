@@ -6,7 +6,11 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
-export default function DeptTable() {
+interface DeptTableProps {
+  data?: any[];
+}
+
+export default function DeptTable({ data }: DeptTableProps) {
   const router = useRouter();
   const handleAddDept = () => {
     const path = ADMIN.CREATE_DEPARTMENT;
@@ -18,7 +22,7 @@ export default function DeptTable() {
       hidePagination
       addText="New Department"
       hideNewBtnOne={false}
-      tableBodyList={[]}
+      tableBodyList={data}
       loading={false}
       onSearch={(param) => {
         console.log(param);
