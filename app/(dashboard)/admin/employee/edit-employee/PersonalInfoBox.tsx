@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
 
 const PersonalInfoBox = () => {
-  const [editState, setEditState] = useState(false);
+  const [editState, setEditState] = useState(true);
   const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
 
@@ -47,7 +47,7 @@ const PersonalInfoBox = () => {
             {" "}
             <div
               onClick={() => {
-                setEditState(false);
+                router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW)
               }}
               className={style.edit_btn}
               style={{ marginRight: "1rem" }}
@@ -69,15 +69,15 @@ const PersonalInfoBox = () => {
           </>
         ) : (
           <>
-          {/* {user?.role === "super-admin" &&  <div
+            <div
               onClick={() => {
-                router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
+                // setEditState(true);
               }}
               className={style.edit_btn}
             >
               <p className={style.text}>Edit</p>
               <figure>{editIcon}</figure>
-            </div>} */}
+            </div>
           </>
         )}
       </div>
