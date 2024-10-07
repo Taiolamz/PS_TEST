@@ -33,6 +33,7 @@ import {
   StaffTable,
   UnitTable,
 } from "../../subsidiary/_partials/_table";
+import { PageLoader } from "@/components/custom-loader";
 
 const { ADMIN } = routesPath;
 
@@ -356,85 +357,91 @@ export default function BranchDetails() {
 
   return (
     <DashboardLayout back headerTitle="Human Resource">
-      <section className="p-5">
-        <div className="flex justify-between mb-10">
-          <div className="">
-            <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-              {branchInfo?.name}
-            </h3>
+      {isLoadingBranch ? (
+        <div className="h-full flex items-center justify-center">
+          <PageLoader />
+        </div>
+      ) : (
+        <section className="p-5">
+          <div className="flex justify-between mb-10">
+            <div className="">
+              <h3 className="text-2xl font-medium text-[var(--text-color3)]">
+                {branchInfo?.name}
+              </h3>
 
-            <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
-              <span className="space-y-3">
-                <h4>
-                  Head of Branch:{" "}
-                  <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {branchInfo?.head?.name}
-                  </span>
-                </h4>
-                <h4>
-                  Branch Email:{" "}
-                  <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {branchInfo?.branch_email}
-                  </span>
-                </h4>
-                <h4>
-                  Head of Branch Email:{" "}
-                  <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {branchInfo?.work_email}
-                  </span>
-                </h4>
-              </span>
-              <span className="space-y-3">
-                <h4>
-                  Address:{" "}
-                  <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {branchInfo?.address}
-                  </span>
-                </h4>
-                <h4>
-                  State:{" "}
-                  <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {branchInfo?.state}
-                  </span>
-                </h4>
-                <h4>
-                  Country:{" "}
-                  <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {branchInfo?.country}
-                  </span>
-                </h4>
-              </span>
+              <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
+                <span className="space-y-3">
+                  <h4>
+                    Head of Branch:{" "}
+                    <span className="text-[var(--text-color4)] font-medium ml-2">
+                      {branchInfo?.head?.name}
+                    </span>
+                  </h4>
+                  <h4>
+                    Branch Email:{" "}
+                    <span className="text-[var(--text-color4)] font-medium ml-2">
+                      {branchInfo?.branch_email}
+                    </span>
+                  </h4>
+                  <h4>
+                    Head of Branch Email:{" "}
+                    <span className="text-[var(--text-color4)] font-medium ml-2">
+                      {branchInfo?.work_email}
+                    </span>
+                  </h4>
+                </span>
+                <span className="space-y-3">
+                  <h4>
+                    Address:{" "}
+                    <span className="text-[var(--text-color4)] font-medium ml-2">
+                      {branchInfo?.address}
+                    </span>
+                  </h4>
+                  <h4>
+                    State:{" "}
+                    <span className="text-[var(--text-color4)] font-medium ml-2">
+                      {branchInfo?.state}
+                    </span>
+                  </h4>
+                  <h4>
+                    Country:{" "}
+                    <span className="text-[var(--text-color4)] font-medium ml-2">
+                      {branchInfo?.country}
+                    </span>
+                  </h4>
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="inline-flex justify-end gap-x-3">
-            <Link href={ADMIN.EDIT_BRANCHES(id ?? "")}>
+            <div className="inline-flex justify-end gap-x-3">
+              <Link href={ADMIN.EDIT_BRANCHES(id ?? "")}>
+                <Button
+                  variant="outline"
+                  className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                  size="sm"
+                >
+                  Edit
+                </Button>
+              </Link>
               <Button
                 variant="outline"
-                className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
                 size="sm"
+                onClick={() => setModal(true)}
+                className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
               >
-                Edit
+                Deactivate
               </Button>
-            </Link>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setModal(true)}
-              className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
-            >
-              Deactivate
-            </Button>
+            </div>
+          </div>{" "}
+          <div className="block mb-9">
+            <ParentModuleCard list={listToTest} />
           </div>
-        </div>{" "}
-        <div className="block mb-9">
-          <ParentModuleCard list={listToTest} />
-        </div>
-        <section className="">
-          {tab === "departments" && <DeptTable data={departmentTable} />}
-          {tab === "units" && <UnitTable data={unitTable} />}
-          {tab === "staffs" && <StaffTable data={staffTable} />}
+          <section className="">
+            {tab === "departments" && <DeptTable data={departmentTable} />}
+            {tab === "units" && <UnitTable data={unitTable} />}
+            {tab === "staffs" && <StaffTable data={staffTable} />}
+          </section>
         </section>
-      </section>
+      )}
       <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}
