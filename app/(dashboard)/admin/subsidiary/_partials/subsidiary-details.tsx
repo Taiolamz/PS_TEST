@@ -12,18 +12,20 @@ import { processInputAsArray } from "@/utils/helpers";
 import { BranchesTable, DeptTable, StaffTable, UnitTable } from "./_table";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import {
+  useCloseSubsidiariesMutation,
   useGetSubsidiaryByIdQuery,
   useGetSubsidiaryInBranchQuery,
   useGetSubsidiaryInDeptQuery,
+  useReopenSubsidiaryMutation,
 } from "@/redux/services/checklist/subsidiaryApi";
 import { PageLoader } from "@/components/custom-loader";
 import { useSubsidiaryById } from "../_hooks/useSubsidiaryById";
+import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
 
 export default function SubsidiaryDetails() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [reopen, setReopen] = React.useState(false);
   const [modal, setModal] = React.useState(false);
@@ -43,6 +45,13 @@ export default function SubsidiaryDetails() {
     subDetailsStaffhData,
     isLoadingSubDetailsStaff,
   } = useSubsidiaryById(id ?? "");
+
+  // Reopen Subsidiary
+  const [reopenSubsidiary, { data: reopenData, isLoading: isReopening }] =
+    useReopenSubsidiaryMutation();
+  // Close Subsidiary
+  const [closeSubsidiaries, { data: closeSubData, isLoading: isClosingSub }] =
+    useCloseSubsidiariesMutation();
 
   const listToTest = [
     {
@@ -114,6 +123,28 @@ export default function SubsidiaryDetails() {
       primaryColor: "",
     },
   ];
+  console.log(reopenData, "fff", closeSubData, "closesubdata");
+
+  const handleReopen = () => {
+    reopenSubsidiary(id || "")
+      .unwrap()
+      .then(() => {
+        setReopen(false);
+        toast.success(reopenData?.data?.message);
+      })
+      .catch(() => {});
+  };
+
+  const handleCloseSub = () => {
+    closeSubsidiaries(id || "")
+      .unwrap()
+      .then(() => {
+        router.back();
+        setModal(false);
+        toast.success(closeSubData?.data?.message);
+      })
+      .catch(() => {});
+  };
 
   return (
     <DashboardLayout back headerTitle="Subsidiaries">
@@ -225,7 +256,7 @@ export default function SubsidiaryDetails() {
       <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}
-        modalClass="h-[220px] !w-[540px] rounded "
+        modalClass="h-[220px] !w-[540px] rounded"
         title="Close Subsidairy"
       >
         <div className="absolute top-0 text-right">
@@ -234,24 +265,28 @@ export default function SubsidiaryDetails() {
               <h4 className="text-[var(--bg-red-100)]">
                 Deactivate Subsidairy
               </h4>
-              <X
-                className="size-[18px] cursor-pointer"
-                onClick={() => setModal(false)}
-              />
+              <button disabled={isClosingSub} onClick={() => setModal(false)}>
+                <X className="size-[18px] cursor-pointer" />
+              </button>
             </div>
             <p className="text-[var(--text-color4)] text-sm text-left">
               You’re about to deactivate this Subsidiary. The Departments, units
               and staffs under this Subsidiary would be inaccessible. Do you
               still want to deactivate?
             </p>
-            <Button
-              loading={false}
-              loadingText="Deactivating"
-              disabled={false}
-              className={cn("font-light bg-[var(--bg-red-100)] mt-5 ")}
-            >
-              Yes, Deactivate
-            </Button>
+            <div className="">
+              <Button
+                loading={isClosingSub}
+                loadingText="Deactivating"
+                disabled={isClosingSub}
+                onClick={handleCloseSub}
+                className={cn(
+                  "font-light bg-[var(--bg-red-100)] mt-5 block rounded ml-auto"
+                )}
+              >
+                Yes, Deactivate
+              </Button>
+            </div>
           </div>
         </div>
       </ModalContainer>
@@ -261,7 +296,7 @@ export default function SubsidiaryDetails() {
         show={reopen}
         handleClose={() => setReopen(false)}
         modalClass="h-[190px] !w-[540px] rounded "
-        title="Close Subsidairy"
+        title="Reopen Subsidairy"
       >
         <div className="w-full absolute top-0 text-right">
           <div className="  w-full p-4 px-6 ">
@@ -269,10 +304,9 @@ export default function SubsidiaryDetails() {
               <h4 className="text-[rgb(var(--bg-green-100))]">
                 Reactivate Subsidairy
               </h4>
-              <X
-                className="size-[18px] cursor-pointer"
-                onClick={() => setReopen(false)}
-              />
+              <button disabled={isReopening} onClick={() => setReopen(false)}>
+                <X className="size-[18px] cursor-pointer" />
+              </button>
             </div>
             <p className="text-[var(--text-color4)] text-sm text-left">
               You’re about to activate this Subsidiary. Continue to proceed.
@@ -280,7 +314,7 @@ export default function SubsidiaryDetails() {
             <div className="space-x-3 pt-6 inline-flex items-center">
               <Button
                 variant={"outline"}
-                disabled={false}
+                disabled={isReopening}
                 className={cn(
                   "font-light border-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:bg-white rounded"
                 )}
@@ -289,12 +323,13 @@ export default function SubsidiaryDetails() {
                 Cancel
               </Button>
               <Button
-                loading={false}
+                loading={isReopening}
                 loadingText="Activating"
-                disabled={false}
+                disabled={isReopening}
                 className={cn(
                   "font-light bg-[rgb(var(--bg-green-100))] rounded"
                 )}
+                onClick={handleReopen}
               >
                 Activate
               </Button>

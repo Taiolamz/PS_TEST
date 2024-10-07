@@ -47,7 +47,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         )}`,
         method: "GET",
       }),
-      providesTags: ["Subsidiaries"],
+      providesTags: ["Subsidiaries", "Branches"],
       transformResponse: (response: any) => response.data.branch,
     }),
 
@@ -58,7 +58,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         )}`,
         method: "GET",
       }),
-      providesTags: ["Subsidiaries"],
+      providesTags: ["Subsidiaries", "Departments"],
       transformResponse: (response: any) => response.data.department,
     }),
 
@@ -69,7 +69,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         )}`,
         method: "GET",
       }),
-      providesTags: ["Subsidiaries"],
+      providesTags: ["Subsidiaries", "Units"],
       transformResponse: (response: any) => response.data.unit,
     }),
 
@@ -80,7 +80,7 @@ export const subsidiaryApi = baseApi.injectEndpoints({
         )}`,
         method: "GET",
       }),
-      providesTags: ["Subsidiaries"],
+      providesTags: ["Subsidiaries", "Employees"],
       transformResponse: (response: any) => response.data.staff,
     }),
 
@@ -108,6 +108,14 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Subsidiaries"],
     }),
+
+    closeSubsidiaries: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/close/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
   }),
 });
 
@@ -123,4 +131,5 @@ export const {
   useGetSubsidiaryInUnitQuery,
   useGetSubsidiaryInStaffQuery,
   useReopenSubsidiaryMutation,
+  useCloseSubsidiariesMutation,
 } = subsidiaryApi;
