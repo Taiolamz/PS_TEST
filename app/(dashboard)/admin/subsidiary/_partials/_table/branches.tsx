@@ -89,7 +89,7 @@ const FORMAT_TABLE_DATA = (obj: any) => {
         <p>{org?.name}</p>
       </>
     ),
-    subsidiary: org?.subsidiary?.name,
+    subsidiary: org?.subsidiary?.name || "--- ---",
     country: org?.country || "--- ---",
     state: org?.state || "--- ---",
     address: org?.address || "--- ---",

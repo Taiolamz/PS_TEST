@@ -19,7 +19,6 @@ export default function UnitTable() {
     id: id,
     params: { page, search },
   });
-  console.log(data);
 
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
