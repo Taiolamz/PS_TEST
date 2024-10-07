@@ -32,7 +32,7 @@ const routesPath = {
     MISSION_PLAN_REPORT: `/${admin_auth}/mission-plan/reports?ui=organization-report`,
     MISSION_PLAN_REPORT_PROGRESS: (id: string) =>
       `/${admin_auth}/mission-plan/reports/${id}/mission-plan-progress`,
-    MISSION_PLAN_REPORT_SPECIFIED_TASK:  (id: string) =>
+    MISSION_PLAN_REPORT_SPECIFIED_TASK: (id: string) =>
       `/${admin_auth}/mission-plan/reports/${id}/specified-task`,
     MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS: (id: string) =>
       `/${admin_auth}/mission-plan/reports/${id}/measure-of-success`,
@@ -102,8 +102,12 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/review-task`,
     MOS_TASK_SUBMISSION: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/measure-of-success/target-submission`,
+    // route update
     MOS_REPORT: (id: string) =>
-      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/report`,
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success`,
+    SPECIFIED_TASK_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/specified-task`,
+
     MY_REPORT_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/my-report-progress/specified-task`,
     MY_REPORT_MEASURE_OF_SUCCESS_REPORT: (id: string) =>
