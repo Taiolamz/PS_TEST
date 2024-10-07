@@ -24,13 +24,12 @@ export default function DeptTable() {
     id: id,
     params: { page, search },
   });
-  console.log(data);
+
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
   ) : (
     <TableWrapper
       tableheaderList={["Department", "HOD", "Subsidiary", "Branch", "Action"]}
-      hidePagination
       addText="New Department"
       hideNewBtnOne={false}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}

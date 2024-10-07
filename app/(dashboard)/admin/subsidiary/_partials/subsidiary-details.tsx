@@ -124,7 +124,7 @@ export default function SubsidiaryDetails() {
           <div className="flex max-lg:flex-col-reverse justify-between mb-10">
             <div className="w-full">
               <span className="flex items-center gap-8">
-                {!subDetalsData?.logo ? (
+                {subDetalsData?.logo ? (
                   <img
                     src={subDetalsData?.logo}
                     alt="subsidiary logo"
