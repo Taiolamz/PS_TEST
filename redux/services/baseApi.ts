@@ -124,5 +124,6 @@ export const baseApi = createApi({
     "MissionPlanExtension",
     "Approvables",
     "OrganizationFiscalYear",
+    "MissionPlanReport",
   ],
 });
