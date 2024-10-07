@@ -90,30 +90,27 @@ const RightContentDisplay = () => {
 
       {/* mission plan submission progress */}
       <Frame className="flex flex-col gap-5 px-8 ">
-        {missionPlanSubmissionProgress.map((chi, idx) => {
-          const { label, value, start_date, end_date } = chi;
-          return (
-            <div key={idx} className="flex flex-col gap-2">
-              <div className="flex justify-between items-center">
-                <div className="flex flex-col gap-2  mb-2">
-                  <div>
-                    <p className="text-black">{label}</p>
-                    <p className="text-[#9AA6AC] text-xs font-light mt-2">{`${start_date} - ${end_date}`}</p>
-                  </div>
-                </div>
-                <p className="text-green-800 font-medium text-2xl">{value}%</p>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col gap-2  mb-2">
+              <div>
+                <p className="text-black">
+                  Mission Plan Submission Progress 2023
+                </p>
+                <p className="text-[#9AA6AC] text-xs font-light mt-2">{`March 2023 - March 31, 2024`}</p>
               </div>
-              <ReusableProgress
-                value={value}
-                height={6}
-                color={"green"}
-                borderRadius={4}
-                className="!bg-[#0080803D]"
-                progressClass="rounded-[2px]"
-              />
             </div>
-          );
-        })}
+            <p className="text-green-800 font-medium text-2xl">{68}%</p>
+          </div>
+          <ReusableProgress
+            value={68}
+            height={6}
+            color={"green"}
+            borderRadius={4}
+            className="!bg-[#0080803D]"
+            progressClass="rounded-[2px]"
+          />
+        </div>
       </Frame>
 
       {/* to do list */}

@@ -1,6 +1,9 @@
 import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useGetStaffMeasureOfSuccessQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
 import React from "react";
@@ -76,6 +79,13 @@ const MeasureOfSucessProgress = () => {
 
   const id = "344ac"; //dummy ID;
   const { EMPLOYEE } = routesPath;
+
+  const user = useAppSelector(selectUser);
+
+  const { data, error, isLoading, isFetching, refetch } =
+    useGetStaffMeasureOfSuccessQuery(user?.id);
+
+  console.log(data, "measure data");
 
   return (
     <MetricFrame className="flex flex-col gap-4 ">
