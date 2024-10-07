@@ -91,7 +91,7 @@ const MeasureOfSucessProgress = () => {
     <MetricFrame className="flex flex-col gap-4 ">
       <div className="flex justify-between ">
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
-        <Link href={EMPLOYEE.MY_REPORT_MEASURE_OF_SUCCESS_REPORT(id)}>
+        <Link href={EMPLOYEE.MOS_REPORT(id)}>
           <Button className="flex gap-3 items-center group">
             <p className="font-medium">See Details</p>
             <figure className="group-hover:translate-x-1 transition-all ease-linear">

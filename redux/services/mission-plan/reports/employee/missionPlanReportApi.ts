@@ -9,7 +9,18 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getStaffSpecifiedTask: builder.query({
+      query: (user) => ({
+        url: `/mission-plan-report/specified-tasks/${user}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
-export const { useGetStaffMeasureOfSuccessQuery } = missionPlanReportApi;
+export const {
+  useGetStaffMeasureOfSuccessQuery,
+  useGetStaffSpecifiedTaskQuery,
+} = missionPlanReportApi;
