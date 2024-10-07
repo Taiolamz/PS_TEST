@@ -20,14 +20,8 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
   const actionCtx = useContext(ActionContext);
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
   const router = useRouter();
-  const {
-    formik,
-    countries,
-    states,
-    // stateDrop,
-    employeeDrop,
-    employees,
-  } = useEditSubsidiary({ id: params.subsidiaryId });
+  const { formik, countries, states, employeeDrop, employees } =
+    useEditSubsidiary({ id: params.subsidiaryId });
 
   const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
     {}

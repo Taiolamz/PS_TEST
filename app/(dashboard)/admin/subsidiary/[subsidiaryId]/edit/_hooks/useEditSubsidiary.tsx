@@ -9,10 +9,11 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { COUNTRIES_STATES } from "@/utils/data";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { useSubsidiaryById } from "../../../_hooks/useSubsidiaryById";
 
 type Prop = {
   id: string;
@@ -61,6 +62,13 @@ export const useEditSubsidiary = ({ id }: Prop) => {
   const { data: statesData, isLoading: isLoadingStates } = useGetStatesQuery(
     {}
   );
+
+  const { subDetalsData, isLoadingSubDetails } = useSubsidiaryById(id ?? "");
+
+  console.log({
+    subDetalsData,
+    isLoadingSubDetails,
+  });
 
   const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
@@ -145,6 +153,8 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     validationSchema: formSchema,
     onSubmit: handleSubmit,
   });
+
+  useEffect(() => {}, []);
 
   return {
     formik,

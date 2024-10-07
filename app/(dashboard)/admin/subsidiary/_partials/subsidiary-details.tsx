@@ -123,7 +123,6 @@ export default function SubsidiaryDetails() {
       primaryColor: "",
     },
   ];
-  console.log(reopenData, "fff", closeSubData, "closesubdata");
 
   const handleReopen = () => {
     reopenSubsidiary(id || "")
