@@ -74,6 +74,7 @@ const routesPath = {
     EDIT_BRANCHES: (id: string) => `/${admin_auth}/branches/${id}/edit`,
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
+    EMPLOYEES_INVITED: `/${admin_auth}/employee/invited`,
     EMPLOYEE_VIEW: `/${admin_auth}/employee/view-employee`,
     EMPLOYEE_EDIT: `/${admin_auth}/employee/edit-employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
