@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React from "react"; 
+import React from "react";
 import { ModalButtonClose } from "./modal-button";
 
 const CancelModal = ({ modalTitle, onProceed }: ModalType) => {
@@ -8,7 +8,7 @@ const CancelModal = ({ modalTitle, onProceed }: ModalType) => {
   return (
     <div className="flex flex-col gap-3 ">
       <p className="font-normal text-base text-custom-dark-blue">
-        {` Cancel ${!modalTitle ? "Subsidiary" : modalTitle}`}
+        {` Cancel ${!modalTitle ? "Branch" : modalTitle}`}
       </p>
       <p className="text-custom-gray-scale-400 font-light text-sm ">
         You are about to cancel this action. Are you sure you want to proceed ?

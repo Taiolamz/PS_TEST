@@ -30,8 +30,12 @@ const routesPath = {
     MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow`,
     MISSION_PLAN_APPROVAL_FLOW_LEVEL: `/${admin_auth}/mission-plan/approval-flow/level`,
     MISSION_PLAN_REPORT: `/${admin_auth}/mission-plan/reports?ui=organization-report`,
-    ORGANIZATION_MP_SPECIFIED_TASK: `/${admin_auth}/mission-plan/reports/specified-task`,
-    ORGANIZATION_MP_MEASURE_OF_SUCCESS: `/${admin_auth}/mission-plan/reports/measure-of-success`,
+    MISSION_PLAN_REPORT_PROGRESS: (id: string) =>
+      `/${admin_auth}/mission-plan/reports/${id}/mission-plan-progress`,
+    MISSION_PLAN_REPORT_SPECIFIED_TASK: (id: string) =>
+      `/${admin_auth}/mission-plan/reports/${id}/specified-task`,
+    MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS: (id: string) =>
+      `/${admin_auth}/mission-plan/reports/${id}/measure-of-success`,
     CREATE_MISSION_PLAN_APPROVAL_FLOW: `/${admin_auth}/mission-plan/approval-flow/create`,
     KICK_START_MISSION_PLAN: `/${admin_auth}/mission-plan/kickstart`,
     FINANCIAL_YEAR_UPDATE: `/${admin_auth}/mission-plan/update`,
@@ -43,6 +47,10 @@ const routesPath = {
     BRANCHES: `/${admin_auth}/branches`,
     ORGANOGRAM: `/${admin_auth}/organogram`,
     TEAM_MANAGEMENT: `/${admin_auth}/team-management`,
+    APPROVALS: `/${admin_auth}/team-management/approvals`,
+    SINGLE_APPROVAL: (id: string) =>
+      `/${admin_auth}/team-management/approvals/${id}`,
+
     SETTINGS: `/${admin_auth}/settings`,
     CHECKLIST: `/${admin_auth}/checklist`,
     SUBSIDIARY: `/${admin_auth}/subsidiary`,
@@ -60,7 +68,10 @@ const routesPath = {
     UNIT: `/${admin_auth}/units`,
     UNIT_DETAILS: ({ id, tab }: { id: string; tab: string }) =>
       `/${admin_auth}/units?ui=details&id=${id}&tab=${tab}`,
+    BRANCH_DETAILS: ({ id, tab }: { id: string; tab: string }) =>
+      `/${admin_auth}/branches?ui=details&id=${id}&tab=${tab}`,
     EDIT_UNIT: (id: string) => `/${admin_auth}/units/${id}/edit`,
+    EDIT_BRANCHES: (id: string) => `/${admin_auth}/branches/${id}/edit`,
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
     EMPLOYEE_VIEW: `/${admin_auth}/employee/view-employee`,
@@ -92,8 +103,12 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/review-task`,
     MOS_TASK_SUBMISSION: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/measure-of-success/target-submission`,
+    // route update
     MOS_REPORT: (id: string) =>
-      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/report`,
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success`,
+    SPECIFIED_TASK_REPORT: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/specified-task`,
+
     MY_REPORT_SPECIFIED_TASK_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/my-report-progress/specified-task`,
     MY_REPORT_MEASURE_OF_SUCCESS_REPORT: (id: string) =>

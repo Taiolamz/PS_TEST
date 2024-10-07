@@ -1,10 +1,65 @@
-import { CHALLENGES_DATA } from "@/app/(dashboard)/admin/mission-plan/reports/_data";
-import MetricTableCard from "@/components/card/metric-table-card";
-import ChallengeDrawer from "@/components/drawer/challenge-drawer";
-import CustomCommentDrawer from "@/components/drawer/comment-drawer";
-import { useState } from "react";
+"use client"
 
-const SpecifiedTaskDetailView = () => {
+import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
+import MetricTableCard from '@/components/card/metric-table-card';
+import CustomSelect from '@/components/custom-select';
+import ChallengeDrawer from '@/components/drawer/challenge-drawer';
+import CustomCommentDrawer from '@/components/drawer/comment-drawer';
+import { ActionLabel, CardContainer } from '@/components/fragment';
+import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
+import { getProgressColorByValue } from '@/utils/helpers';
+import React from 'react';
+import { CHALLENGES_DATA, MOS_DATA } from '../../_data';
+import OrganizationTargetChart from '../../_charts/organization-target';
+import MeasureOfSucessMetricTableCard from '@/components/card/mos-table-card';
+import { Dictionary } from '@/@types/dictionary';
+
+export default function OrganizationMeasureOfSuccess() {
+  const [showChallengeModal, setShowChallengeModal] = React.useState(false);
+  const [showCommentModal, setShowCommentModal] = React.useState(false);
+
+  const segments = [
+    {
+      percentage: 30,
+      color: getProgressColorByValue(30),
+    },
+    {
+      percentage: 60,
+      color: "#ffdb57",
+    },
+    {
+      percentage: 90,
+      color: getProgressColorByValue(90),
+    },
+    {
+      percentage: 50,
+      color: "#ffdb57",
+    },
+  ];
+
+  const progressDesc = [
+    {
+      label: "In Progress",
+      color: "yellow",
+      value: 24,
+    },
+    {
+      label: "Completed",
+      color: "green",
+      value: 73,
+    },
+    {
+      label: "Under Review",
+      color: "blue",
+      value: 57,
+    },
+    {
+      label: "Overdue",
+      color: "red",
+      value: 22,
+    },
+  ];
+
   const specifiedTaskDetails = [
     {
       title: "Achieve Revenue from sales of Zojatech Products",
@@ -1283,34 +1338,79 @@ const SpecifiedTaskDetailView = () => {
       ],
     },
   ];
-  const [showChallengeModal, setShowChallengeModal] = useState(false);
-  const [showCommentModal, setShowCommentModal] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4 mt-5">
-      {specifiedTaskDetails.map((chi, idx) => {
-        const {
-          title,
-          weight,
-          percentage,
-          tasks,
-          measureOfSuccessDetails,
-          color,
-        } = chi;
-        return (
-          <MetricTableCard
-            key={idx}
-            title={title}
-            percentage={percentage}
-            measureOfSuccessDetails={measureOfSuccessDetails}
-            tasks={tasks}
-            progressValue={percentage}
-            progressColor={color as "red"}
-            onClickViewChallenge={() => setShowChallengeModal(true)}
-            onClickComment={() => setShowCommentModal(true)}
-          />
-        );
-      })}
+    <DashboardLayout
+      headerTitle='Measure of Success Overview'
+      back
+    >
+      <section className='p-5'>
+        <CardContainer className="mb-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <ActionLabel label='Filter' icon={filterIcon} iconPosition='right' />
+
+              <div className="flex items-center">
+                <CustomSelect
+                  placeholder="FY"
+                  options={[]}
+                  selected={""}
+                  setSelected={(e: any) => {
+                    // setFiscalYear(e);
+                  }}
+                  className="w-[150px] text-xs rounded-none rounded-l-[15px]"
+                />
+                <CustomSelect
+                  placeholder="Cycle"
+                  options={[]}
+                  selected={""}
+                  setSelected={(e: any) => {
+                    // setMissionCycle(e);
+                  }}
+                  className="w-[150px] text-xs rounded-none rounded-r-[15px]"
+                />
+              </div>
+              <ActionLabel label='Reset' icon={undoIcon} className='text-red-500' iconPosition='right' labelClass='text-red-500' />
+            </div>
+
+            {/* -----EXPORT---- */}
+            <ActionLabel label='Export' icon={exportIcon} iconPosition='left' className='border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF]' labelClass='text-xs text-[#6E7C87]' />
+          </div>
+        </CardContainer>
+
+       <OrganizationTargetChart/>
+        
+       {MOS_DATA?.map((item: Dictionary, idx: number) => {
+          const {
+            title,
+            fy_target,
+            unit,
+            weight,
+            fy_achieved,
+            amount,
+            id,
+            table_details,
+            percentage,
+          } = item;
+          return (
+            <MeasureOfSucessMetricTableCard
+              num={idx + 1}
+              key={id || idx}
+              title={title}
+              fy_target={fy_target}
+              unit={unit}
+              weight={weight}
+              percentage={percentage}
+              fy_achieved={fy_achieved}
+              amount={amount}
+              table_details={table_details}
+              onClickViewChallenge={() => setShowChallengeModal(true)}
+              onClickComment={() => setShowCommentModal(true)}
+            />
+          );
+        })}
+        
+      </section>
       <ChallengeDrawer
         open={showChallengeModal}
         onClose={() => setShowChallengeModal(false)}
@@ -1319,15 +1419,13 @@ const SpecifiedTaskDetailView = () => {
       <CustomCommentDrawer
         open={showCommentModal}
         onClose={() => setShowCommentModal(false)}
-        id={"modalId"}
+        id={'modalId'}
         data={[]}
         handleSubmit={(value) => {
           // console.log(value, "comment");
         }}
         commentType="specified-task"
       />
-    </div>
-  );
-};
-
-export default SpecifiedTaskDetailView;
+    </DashboardLayout>
+  )
+}

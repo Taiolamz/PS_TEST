@@ -8,7 +8,7 @@ import { ActionLabel, CardContainer, GridLegend, ReusableProgress, ReusableSegme
 import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
 import { getProgressColorByValue } from '@/utils/helpers';
 import React from 'react'
-import { CHALLENGES_DATA } from '../_data';
+import { CHALLENGES_DATA } from '../../_data';
 import CustomCommentDrawer from '@/components/drawer/comment-drawer';
 
 export default function OrganizationSpecifiedTask() {

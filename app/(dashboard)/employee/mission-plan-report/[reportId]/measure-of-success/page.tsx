@@ -1,15 +1,18 @@
 "use client";
-
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import React, { useState } from "react";
-import ReportFilter from "../../../_partials/_my_report/_fragment/report-filter";
+import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 import MeasureOfSucessMetricTableCard from "@/components/card/mos-table-card";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import { CHALLENGES_DATA } from "@/app/(dashboard)/admin/mission-plan/reports/_data";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import OrganizationTargetChart from "@/app/(dashboard)/admin/mission-plan/reports/_charts/organization-target";
 
-const MeasureOfSuccessProgress = () => {
+export default function MOSReport({
+  params,
+}: {
+  params: { reportId: string };
+}) {
   const [fiscalYear, setFiscalYear] = useState("");
   const [missionCycle, setMissionCycle] = useState("");
 
@@ -140,8 +143,9 @@ const MeasureOfSuccessProgress = () => {
   ];
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
+
   return (
-    <DashboardLayout headerTitle="Measure of success percentage achieved" back>
+    <DashboardLayout back headerTitle="Measure of Success Percentage Achieved">
       <div className="px-5 pb-10 flex flex-col gap-2">
         <ReportFilter
           fiscalYearVal={fiscalYear}
@@ -201,6 +205,4 @@ const MeasureOfSuccessProgress = () => {
       </div>
     </DashboardLayout>
   );
-};
-
-export default MeasureOfSuccessProgress;
+}

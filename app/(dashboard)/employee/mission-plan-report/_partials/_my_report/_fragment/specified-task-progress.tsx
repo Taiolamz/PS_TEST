@@ -1,6 +1,9 @@
 import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import { selectUser } from "@/redux/features/auth/authSlice";
+import { useGetStaffSpecifiedTaskQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -94,6 +97,11 @@ const SpecifiedTaskProgress = () => {
 
   const id = "344ac"; //dummy ID;
   const { EMPLOYEE } = routesPath;
+
+  const user = useAppSelector(selectUser);
+
+  const { data, error, isLoading, isFetching, refetch } =
+    useGetStaffSpecifiedTaskQuery(user?.id);
   return (
     <MetricFrame className="flex flex-col gap-4 w-full">
       <div className="flex justify-between ">
@@ -105,7 +113,7 @@ const SpecifiedTaskProgress = () => {
             FY 2023, Q1 Progress
           </p>
         </div>
-        <Link href={EMPLOYEE.MY_REPORT_SPECIFIED_TASK_REPORT(id)}>
+        <Link href={EMPLOYEE.SPECIFIED_TASK_REPORT(id)}>
           <Button
             className="flex gap-3 items-center group"
             // onClick={() =>

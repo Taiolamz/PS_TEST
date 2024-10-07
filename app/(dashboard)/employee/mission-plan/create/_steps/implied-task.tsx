@@ -312,7 +312,8 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
     mission_plan_id: missionPlanID,
     fiscal_year_id:
       mission_plan_info?.mission_plan?.fiscal_year_id ||
-      mission_plan_info?.active_fy_info?.id || FISCAL_YEAR_ID ||
+      mission_plan_info?.active_fy_info?.id ||
+      FISCAL_YEAR_ID ||
       "",
     tasks: handleFormatImpliedTask(),
 
