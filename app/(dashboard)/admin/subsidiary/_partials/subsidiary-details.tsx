@@ -139,9 +139,9 @@ export default function SubsidiaryDetails() {
     closeSubsidiaries(id || "")
       .unwrap()
       .then(() => {
+        toast.success(closeSubData?.data?.message);
         router.back();
         setModal(false);
-        toast.success(closeSubData?.data?.message);
       })
       .catch(() => {});
   };
