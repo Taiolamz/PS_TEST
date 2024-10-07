@@ -6,7 +6,11 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
-export default function StaffTable() {
+interface StaffTableProps {
+  data?: any[];
+}
+
+export default function StaffTable({ data }: StaffTableProps) {
   const router = useRouter();
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
@@ -26,7 +30,7 @@ export default function StaffTable() {
       hidePagination
       addText="New Staff"
       hideNewBtnOne={false}
-      tableBodyList={[]}
+      tableBodyList={data}
       loading={false}
       onSearch={(param) => {
         console.log(param);

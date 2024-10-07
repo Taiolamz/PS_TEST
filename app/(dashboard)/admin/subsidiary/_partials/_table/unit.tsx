@@ -6,7 +6,11 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
-export default function UnitTable() {
+interface UnitTableProps {
+  data?: any[];
+}
+
+export default function UnitTable({ data }: UnitTableProps) {
   const router = useRouter();
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
@@ -19,7 +23,7 @@ export default function UnitTable() {
       hidePagination
       addText="New Unit"
       hideNewBtnOne={false}
-      tableBodyList={[]}
+      tableBodyList={data}
       loading={false}
       onSearch={(param) => {
         console.log(param);

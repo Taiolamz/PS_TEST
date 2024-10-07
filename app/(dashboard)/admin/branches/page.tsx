@@ -290,7 +290,6 @@ const Branches = () => {
                       label: "View Details",
                       color: "",
                       onActionClick: (param: any, dataTwo: any) => {
-                        console.log(dataTwo);
                         router.push(
                           ADMIN.BRANCH_DETAILS({
                             id: dataTwo?.name?.props?.children[0]?.props
