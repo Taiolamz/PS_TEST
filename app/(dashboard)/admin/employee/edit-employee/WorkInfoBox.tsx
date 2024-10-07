@@ -11,9 +11,9 @@ import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
 
 const WorkInfoBox = () => {
-  const [editState, setEditState] = useState(false);
-  const { user } = useAppSelector((state) => state.auth);
+  const [editState, setEditState] = useState(true);
   const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
 
   const editIcon = (
     <svg
@@ -51,23 +51,45 @@ const WorkInfoBox = () => {
     >
       {/* title edit save box start */}
       <div className={style.title_btn_box}>
-        <p className={style.title}>Address Information</p>
+        <p className={style.title}>Work Information</p>
         {editState ? (
           <>
             {" "}
-           
+            <div
+              onClick={() => {
+                router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW)
+              }}
+              className={style.edit_btn}
+              style={{ marginRight: "1rem" }}
+            >
+              <p className={style.text}>View Mode</p>
+              {/* <figure>{editIcon}</figure> */}
+            </div>
+            <Button
+              onClick={() => {
+                // onSave && onSave();
+              }}
+              type={`button`}
+              className={` ${style.upload_label} font-light `}
+              //   disabled={!details?.profile_img ? true : false}
+            >
+              Save Changes
+              {/* {loading ? <ManceLoader /> :  "Save"} */}
+            </Button>
           </>
         ) : (
           <>
-            {user?.role === "super-admin" &&  <div
-              onClick={() => {
-                router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
-              }}
-              className={style.edit_btn}
-            >
-              <p className={style.text}>Edit</p>
-              <figure>{editIcon}</figure>
-            </div>}
+            {user?.role === "super-admin" && (
+              <div
+                onClick={() => {
+                  setEditState(true);
+                }}
+                className={style.edit_btn}
+              >
+                <p className={style.text}>Edit</p>
+                <figure>{editIcon}</figure>
+              </div>
+            )}
           </>
         )}
       </div>
