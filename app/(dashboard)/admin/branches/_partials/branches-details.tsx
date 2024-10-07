@@ -19,6 +19,7 @@ import ProceedModal from "../_components/proceed-modal";
 import BulkRequirementModal from "../_components/bulk-requrement-modal";
 import {
   useCreateBulkBranchesMutation,
+  useDeleteBranchMutation,
   useGetBranchByIdQuery,
   useGetBranchDepartmentQuery,
   useGetBranchesQuery,
@@ -54,6 +55,9 @@ export default function BranchDetails() {
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
     useCreateBulkBranchesMutation();
   const [downloadBranchesTemplate] = useLazyDownloadBranchTemplateQuery();
+
+  const [deleteBranch, { isLoading: isDeletingdeleteBranch }] =
+    useDeleteBranchMutation();
 
   const {
     data: branchesData,
@@ -224,6 +228,12 @@ export default function BranchDetails() {
     if (openBulkUploadModal) {
       onOpenNewBtnDrop();
     }
+  };
+
+  const handleDeleteBranch = async () => {
+    await deleteBranch(id);
+    setModal(false);
+    router?.back();
   };
 
   const handleBtnDrop = () => {
@@ -462,9 +472,10 @@ export default function BranchDetails() {
               branch would be inaccessible, Do you still want to deactivate?
             </p>
             <Button
-              loading={false}
+              loading={isDeletingdeleteBranch}
               loadingText="Deactivating"
-              disabled={false}
+              disabled={isDeletingdeleteBranch}
+              onClick={handleDeleteBranch}
               className={cn("font-light bg-[var(--bg-red-100)] mt-5 ")}
             >
               Yes, Deactivate

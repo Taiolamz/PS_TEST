@@ -69,6 +69,13 @@ export const branchApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+    deleteBranch: builder.mutation({
+      query: (id) => ({
+        url: `/admin/branch/branches/${id}/close`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Branches"],
+    }),
   }),
 });
 
@@ -81,4 +88,5 @@ export const {
   useGetBranchDepartmentQuery,
   useGetBranchStaffQuery,
   useGetBranchUnitQuery,
+  useDeleteBranchMutation,
 } = branchApi;
