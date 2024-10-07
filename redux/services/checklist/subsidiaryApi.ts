@@ -84,6 +84,14 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       transformResponse: (response: any) => response.data.staff,
     }),
 
+    reopenSubsidiary: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/open/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
+
     downloadSubsidiaryTemplate: builder.query({
       query: (format: string) => ({
         url: `/admin/subsidiary/BulkUpload-template?format=${format}`,
@@ -114,4 +122,5 @@ export const {
   useGetSubsidiaryInDeptQuery,
   useGetSubsidiaryInUnitQuery,
   useGetSubsidiaryInStaffQuery,
+  useReopenSubsidiaryMutation,
 } = subsidiaryApi;

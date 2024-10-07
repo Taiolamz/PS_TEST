@@ -25,7 +25,7 @@ export default function SubsidiaryDetails() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [view, setView] = React.useState("");
+  const [reopen, setReopen] = React.useState(false);
   const [modal, setModal] = React.useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const id = searchParams.get("id");
@@ -183,21 +183,30 @@ export default function SubsidiaryDetails() {
               </div>
             </div>
             <div className="inline-flex justify-end gap-x-3">
-              <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
+              <>
+                <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
+                  <Button
+                    variant="outline"
+                    className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                  >
+                    Edit
+                  </Button>
+                </Link>
                 <Button
                   variant="outline"
-                  className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                  onClick={() => setModal(true)}
+                  className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
                 >
-                  Edit
+                  Deactivate
                 </Button>
-              </Link>
-              <Button
-                variant="outline"
-                onClick={() => setModal(true)}
-                className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
-              >
-                Deactivate
-              </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setReopen(true)}
+                  className="rounded border-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] hover:bg-white"
+                >
+                  Activate
+                </Button>
+              </>
             </div>
           </div>
         )}
@@ -212,6 +221,7 @@ export default function SubsidiaryDetails() {
         </section>
       </section>
 
+      {/* Close Subsidiary */}
       <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}
@@ -242,6 +252,53 @@ export default function SubsidiaryDetails() {
             >
               Yes, Deactivate
             </Button>
+          </div>
+        </div>
+      </ModalContainer>
+
+      {/* Reopen Subsidiary */}
+      <ModalContainer
+        show={reopen}
+        handleClose={() => setReopen(false)}
+        modalClass="h-[190px] !w-[540px] rounded "
+        title="Close Subsidairy"
+      >
+        <div className="w-full absolute top-0 text-right">
+          <div className="  w-full p-4 px-6 ">
+            <div className="flex justify-between items-center w-full mt-3 mb-5">
+              <h4 className="text-[rgb(var(--bg-green-100))]">
+                Reactivate Subsidairy
+              </h4>
+              <X
+                className="size-[18px] cursor-pointer"
+                onClick={() => setReopen(false)}
+              />
+            </div>
+            <p className="text-[var(--text-color4)] text-sm text-left">
+              You’re about to activate this Subsidiary. Continue to proceed.
+            </p>
+            <div className="space-x-3 pt-6 inline-flex items-center">
+              <Button
+                variant={"outline"}
+                disabled={false}
+                className={cn(
+                  "font-light border-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:bg-white rounded"
+                )}
+                onClick={() => setReopen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                loading={false}
+                loadingText="Activating"
+                disabled={false}
+                className={cn(
+                  "font-light bg-[rgb(var(--bg-green-100))] rounded"
+                )}
+              >
+                Activate
+              </Button>
+            </div>
           </div>
         </div>
       </ModalContainer>
