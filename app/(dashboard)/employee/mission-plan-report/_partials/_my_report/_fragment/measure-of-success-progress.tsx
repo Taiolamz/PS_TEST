@@ -2,7 +2,7 @@ import MetricFrame from "@/components/card/frame";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
 import { selectUser } from "@/redux/features/auth/authSlice";
-import { useGetStaffMeasureOfSuccessQuery } from "@/redux/services/mission-plan/mission-plan-report/employee/missionPlanReportApi";
+import { useGetStaffMeasureOfSuccessQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useAppSelector } from "@/redux/store";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
