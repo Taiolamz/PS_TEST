@@ -5,19 +5,20 @@ import { cn } from "@/lib/utils";
 // import { X } from "lucide-react";
 import React from "react";
 
-
 const DeactivateOrgModal = ({
   show,
   onModalChange,
   organization,
   content,
   onDeactivate,
+  isLoading,
 }: {
   show: boolean;
   onModalChange: () => void;
   organization?: string;
   content?: string;
   onDeactivate?: () => void;
+  isLoading?: boolean;
 }) => {
   const cancelIcon = (
     <svg
@@ -67,10 +68,15 @@ const DeactivateOrgModal = ({
         </p>
         <div className="flex justify-end">
           <Button
-            loading={false}
-            loadingText="Deactivating"
-            disabled={false}
-            className={cn("font-light bg-[var(--bg-red-100)] mt-5 ")}
+            loading={isLoading}
+            loadingText="Deactivating..."
+            disabled={isLoading}
+            // className={cn("font-light bg-[var(--bg-red-100)] mt-5 ")}
+            className={` font-light ${
+              isLoading
+                ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
+                : ""
+            } font-light bg-[var(--bg-red-100)] mt-5  `}
             onClick={onDeactivate}
           >
             Yes, Deactivate

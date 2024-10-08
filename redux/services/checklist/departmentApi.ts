@@ -26,18 +26,16 @@ export const departmentApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Departments"],
-      transformResponse: (response: { data: DepartmentResponse }) => response.data,
+      transformResponse: (response: { data: DepartmentResponse }) =>
+        response.data,
     }),
 
-    getSingleDepartment: builder.query<string[], void>({
-      query: (id) => ({
-        url: `/admin/department/${id}`,
-        method: "GET",
-      }),
-      providesTags: ["Departments"],
-      transformResponse: (response: { data: { data: string[] } }) =>
-        response.data.data,
-    }),
+    // getSingleDepartment: builder.query<string, void>({
+    //   query: (id) => ({
+    //     url: `/admin/department`,
+    //     method: "GET",
+    //   }),
+    // }),
 
     downloadDepartmentTemplate: builder.query<any, FileTemplateParam>({
       query: (params) => ({
@@ -49,6 +47,13 @@ export const departmentApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+    deleteDepartment: builder.mutation({
+      query: (id) => ({
+        url: `/admin/department/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Departments"],
+    }),
   }),
 });
 
@@ -57,5 +62,6 @@ export const {
   useCreateBulkDepartmentsMutation,
   useGetDepartmentsQuery,
   useLazyDownloadDepartmentTemplateQuery,
-  useGetSingleDepartmentQuery,
+  // useGetSingleDepartmentQuery,
+  useDeleteDepartmentMutation,
 } = departmentApi;
