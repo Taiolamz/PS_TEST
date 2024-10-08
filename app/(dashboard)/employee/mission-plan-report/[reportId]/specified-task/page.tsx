@@ -7,8 +7,9 @@ import CustomSelect from "@/components/custom-select";
 import MetricFrame from "@/components/card/frame";
 import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
-import ChallengeDrawer from "../../../../../../../components/drawer/challenge-drawer";
-import CustomCommentDrawer from "../../../../../../../components/drawer/comment-drawer";
+import ChallengeDrawer from "@/components/drawer/challenge-drawer";
+import CustomCommentDrawer from "@/components/drawer/comment-drawer";
+
 
 export default function SpecifiedTask({
   params,

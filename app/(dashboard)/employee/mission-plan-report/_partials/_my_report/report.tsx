@@ -1,11 +1,7 @@
 import TeamPerformanceBar from "./_fragment/team-performance-bar";
 import MeasureOfSucessProgress from "./_fragment/measure-of-success-progress";
 import SpecifiedTaskProgress from "./_fragment/specified-task-progress";
-import CustomSelect from "@/components/custom-select";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
-import SpecifiedTaskDetailView from "../../[reportId]/my-report-progress/_partials/specified-task-detail-view";
-import MetricTableCard from "@/components/card/metric-table-card";
 import ReportFilter from "./_fragment/report-filter";
 
 const MyReport = () => {

@@ -8,6 +8,10 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
+interface UnitTableProps {
+  data?: any[];
+}
+
 export default function UnitTable() {
   const router = useRouter();
   const searchParams = useSearchParams();

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useMemo, useState } from "react";
-import DashboardLayout from "../../_layout/DashboardLayout";
+import DashboardLayout from "../../../_layout/DashboardLayout";
 import routesPath from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -13,15 +13,15 @@ import {
 import {
   // employeerolesColumns,
   useEmployeeRolesColumnData,
-} from "./employee-role-column";
-import useDisclosure from "./_hooks/useDisclosure";
+} from "../employee-role-column";
+import useDisclosure from "../_hooks/useDisclosure";
 import { UsersIcon } from "@/public/assets/icons";
-import DashboardTable from "./_components/checklist-dashboard-table";
-import DashboardModal from "./_components/checklist-dashboard-modal";
-import CancelModal from "./_components/cancel-modal";
-import ProceedModal from "./_components/proceed-modal";
-import BulkUploadModal from "./_components/bulk-upload-modal";
-import BulkRequirementModal from "./_components/bulk-requrement-modal";
+import DashboardTable from "../_components/checklist-dashboard-table";
+import DashboardModal from "../_components/checklist-dashboard-modal";
+import CancelModal from "../_components/cancel-modal";
+import ProceedModal from "../_components/proceed-modal";
+import BulkUploadModal from "../_components/bulk-upload-modal";
+import BulkRequirementModal from "../_components/bulk-requrement-modal";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
 import { toast } from "sonner";
@@ -31,7 +31,7 @@ import { downloadFile } from "@/utils/helpers/file-formatter";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { allemployeeData } from "@/utils/data/dashboard/missionplan";
 import BadgeComponent from "@/components/badge/BadgeComponents";
-import { trimLongString } from "../../_layout/Helper";
+import { trimLongString } from "../../../_layout/Helper";
 import MetricCard from "@/components/card/metric-card";
 import ModuleCard from "@/components/card/module-cards/ModuleCard";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
@@ -178,9 +178,8 @@ const Employee = () => {
   );
 
   const user = useAppSelector(selectUser);
-  const pathname = usePathname();
-  const routes = useRouter();
   const { organization } = user;
+  const pathname = usePathname();
   const [createBulkEmployees, { isLoading: isCreatingBulkEmployees }] =
     useCreateBulkEmployeesMutation();
 
@@ -279,31 +278,31 @@ const Employee = () => {
   // onClick={chi?.onClick}
   // pending={chi?.pending}
   // primaryColor={chi?.primaryColor}
-
+  // const router = useRouter()
   const listToTest = [
     {
-      active: pathname === routesPath?.ADMIN?.EMPLOYEES,
+      active: false,
       title: "Total Staffs",
       type: "staff",
       count: 12,
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {},
+      onClick: () => {
+        router.push(routesPath?.ADMIN?.EMPLOYEES);
+      },
       pending: false,
       primaryColor: "",
     },
     {
-      // active: true,
+      active: pathname === routesPath?.ADMIN?.EMPLOYEES_INVITED,
       title: "Invited Staffs",
       type: "staff",
       count: 4,
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {
-        router?.push(routesPath?.ADMIN?.EMPLOYEES_INVITED)
-      },
+      onClick: () => {},
       pending: true,
       primaryColor: "",
     },

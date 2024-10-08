@@ -8,6 +8,10 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
+interface StaffTableProps {
+  data?: any[];
+}
+
 export default function StaffTable() {
   const router = useRouter();
   const searchParams = useSearchParams();

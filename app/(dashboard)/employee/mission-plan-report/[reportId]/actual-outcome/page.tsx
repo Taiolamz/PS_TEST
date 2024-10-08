@@ -78,14 +78,16 @@ const ActualOutcome = () => {
             headerClassName="bg-white p-5 border border-custom-divider rounded"
             title={
               <div className="flex w-full gap-x-5">
-                <p className="text-[#015858] text-xl">{idx + 1}.</p>
+                <p className="text-[#015858] text-lg">{idx + 1}.</p>
                 <div className="flex justify-between items-center w-[80%]">
                   <div className="w-[60%] text-left grid gap-y-2">
                     <p className="text-[#222222ef] text-sm font-medium">
                       Specified task
                     </p>
-                    <p className="text-[#222222d2] font-medium">{item.title}</p>
-                    <p className="text-[#222222ef] text-sm">
+                    <p className="text-[#222222d2] font-medium text-xs">
+                      {item.title}
+                    </p>
+                    <p className="text-[#222222ef] text-xs">
                       {item.startDate} - {item.endDate}
                     </p>
                   </div>
@@ -93,7 +95,7 @@ const ActualOutcome = () => {
                     <p className="text-[#222222ef] text-sm font-medium mb-2">
                       Weight
                     </p>
-                    <p className="font-medium text-[#222222ef]">
+                    <p className="font-medium text-[#222222ef] text-xs">
                       {item.weight}%
                     </p>
                   </div>
@@ -101,7 +103,9 @@ const ActualOutcome = () => {
                     <p className="text-[#222222ef] text-sm font-medium mb-2">
                       Status
                     </p>
-                    <p className="font-medium text-[#FFC043]">{item.status}</p>
+                    <p className="font-medium text-[#FFC043] text-xs">
+                      {item.status}
+                    </p>
                   </div>
                 </div>
               </div>

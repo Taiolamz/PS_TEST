@@ -456,6 +456,28 @@ export const getProgressColorByValue = (value: number) => {
   }
 };
 
+export function convertStringToNumber(value: string) {
+  return parseFloat(value.replace("%", ""));
+}
+
+export function capitalizeFirstLetter(sentence: string) {
+  if (!sentence) return "";
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+}
+
+export function getProgressColor(value: string) {
+  const numericValue = parseFloat(value.replace("%", ""));
+  if (numericValue >= 0 && numericValue <= 45) {
+    return "red";
+  } else if (numericValue > 45 && numericValue <= 65) {
+    return "yellow";
+  } else if (numericValue > 65 && numericValue <= 100) {
+    return "green";
+  } else {
+    return "gray";
+  }
+}
+
 export function getOrdinalSuffix(num: number): string {
   const remainderTen = num % 10;
   const remainderHundred = num % 100;
