@@ -13,6 +13,7 @@ const ReportFilter = ({
   setMissionCycleVal,
   fiscalOptions,
   cycleOptions,
+  loading,
 }: {
   fiscalYearVal: string;
   setFiscalYearVal: (e: any) => void;
@@ -20,6 +21,7 @@ const ReportFilter = ({
   setMissionCycleVal: (e: any) => void;
   fiscalOptions: Options[];
   cycleOptions: Options[];
+  loading?: boolean;
 }) => {
   const filterIcon = (
     <svg
@@ -86,6 +88,7 @@ const ReportFilter = ({
               setFiscalYearVal(e);
             }}
             className="w-[150px] text-xs rounded-none rounded-l-[5px]"
+            loading={loading}
           />
           <CustomSelect
             placeholder="Cycle"
@@ -95,6 +98,7 @@ const ReportFilter = ({
               setMissionCycleVal(e);
             }}
             className="w-[150px] text-xs rounded-none rounded-r-[5px]"
+            loading={loading}
           />
         </div>
 

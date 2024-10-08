@@ -17,10 +17,19 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getMissionPlanReportCycle: builder.query<any, void>({
+      query: () => ({
+        url: "/mission-plan-report/organization-cycle",
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
 export const {
   useGetStaffMeasureOfSuccessQuery,
   useGetStaffSpecifiedTaskQuery,
+  useGetMissionPlanReportCycleQuery,
 } = missionPlanReportApi;
