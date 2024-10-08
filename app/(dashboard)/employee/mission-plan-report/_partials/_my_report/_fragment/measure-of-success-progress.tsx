@@ -199,7 +199,7 @@ const MeasureOfSucessProgress = () => {
             </div>
           );
         })} */}
-            {mosData && mosData?.length > 1 ? (
+            {mosData && mosData?.length > 0 ? (
               mosData?.map((chi, idx) => {
                 const { achieved, measure, target, unit, weight, id } = chi;
                 return (
