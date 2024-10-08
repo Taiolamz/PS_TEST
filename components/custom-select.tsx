@@ -127,16 +127,18 @@ export default function CustomSelect({
             {canSearch && (
               <CommandInput placeholder={`Search`} className="h-9" />
             )}
-            <CommandEmpty>
-              {emptyStateText ? emptyStateText : "No Record Found."}
-            </CommandEmpty>
+            {!loading ? (
+              <CommandEmpty>
+                {emptyStateText ? emptyStateText : "No Record Found."}
+              </CommandEmpty>
+            ) : null}
             <CommandGroup
               className="h-56 overflow-y-auto scroll-hidden"
               style={{ overflowY: "auto" }}
             >
               {loading ? (
                 <div className="flex flex-col justify-center items-center">
-                  <Loader2 className="w-6 h-6 animate-spin mr-1" />
+                  <Loader2 className="w-6 h-6 animate-spin mt-6 mr-1" />
                 </div>
               ) : (
                 <CommandList>
