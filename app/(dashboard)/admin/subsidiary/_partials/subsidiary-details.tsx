@@ -149,7 +149,7 @@ export default function SubsidiaryDetails() {
             closeSubData?.data.message ??
             "subsidiary successfully closed."
         );
-        // router.back();
+        router.back();
         setModal(false);
       })
       .catch((err) => {
