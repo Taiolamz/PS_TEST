@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronDown } from "lucide-react";
+import { CheckIcon, ChevronDown, Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
@@ -11,9 +11,12 @@ import {
   CommandList,
 } from "./ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import Loader from "./molecules/loader";
+import { PageLoader } from "./custom-loader";
 // import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 
 type CustomSelectType = {
+  loading?: boolean;
   mainClass?: string;
   options: Record<string, any>[];
   id?: string | number;
@@ -26,7 +29,7 @@ type CustomSelectType = {
   isRequired?: boolean;
   placeholder?: string;
   canSearch?: boolean;
-  emptyStateText?:string;
+  emptyStateText?: string;
   setSelected: (event: any) => void;
   onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
   touched?: any;
@@ -51,6 +54,7 @@ export default function CustomSelect({
   mainClass,
   emptyStateText,
   selectTwo,
+  loading,
 }: CustomSelectType) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -89,7 +93,9 @@ export default function CustomSelect({
             onBlur={onBlur}
           >
             {options && options[0]?.label === options[0]?.value
-              ? selectTwo ? selectTwo : selected
+              ? selectTwo
+                ? selectTwo
+                : selected
                 ? options?.filter(
                     (option) =>
                       option?.value?.toString().toLowerCase() ===
@@ -121,31 +127,43 @@ export default function CustomSelect({
             {canSearch && (
               <CommandInput placeholder={`Search`} className="h-9" />
             )}
-            <CommandEmpty>{emptyStateText ? emptyStateText : "No Record Found."}</CommandEmpty>
+            {!loading ? (
+              <CommandEmpty>
+                {emptyStateText ? emptyStateText : "No Record Found."}
+              </CommandEmpty>
+            ) : null}
             <CommandGroup
               className="h-56 overflow-y-auto scroll-hidden"
               style={{ overflowY: "auto" }}
             >
-              <CommandList>
-                {options?.map((option) => (
-                  <CommandItem
-                    key={option.value}
-                    value={option.value}
-                    onSelect={(currentValue) => {
-                      setSelected(currentValue);
-                      setOpen(false);
-                    }}
-                  >
-                    {option.label}
-                    <CheckIcon
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        selected === option.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandList>
+              {loading ? (
+                <div className="flex flex-col justify-center items-center">
+                  <Loader2 className="w-6 h-6 animate-spin mt-6 mr-1" />
+                </div>
+              ) : (
+                <CommandList>
+                  {options?.map((option) => (
+                    <CommandItem
+                      key={option.value}
+                      value={option.value}
+                      onSelect={(currentValue) => {
+                        setSelected(currentValue);
+                        setOpen(false);
+                      }}
+                    >
+                      {option.label}
+                      <CheckIcon
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          selected === option.value
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandList>
+              )}
             </CommandGroup>
           </Command>
         </PopoverContent>

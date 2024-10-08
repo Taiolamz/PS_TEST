@@ -457,12 +457,12 @@ export const getProgressColorByValue = (value: number) => {
 };
 
 export function convertStringToNumber(value: string) {
-  return parseFloat(value.replace("%", ""));
+  return parseFloat(value?.replace("%", ""));
 }
 
 export function capitalizeFirstLetter(sentence: string) {
   if (!sentence) return "";
-  return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+  return sentence?.charAt(0).toUpperCase() + sentence?.slice(1);
 }
 
 export function getProgressColor(value: string) {

@@ -98,7 +98,10 @@ const MeasureOfSucessProgress = () => {
   const user = useAppSelector(selectUser);
 
   const { data, isLoading, isFetching } = useGetStaffMeasureOfSuccessQuery(
-    user?.id
+    user?.id,
+    {
+      skip: !user?.id,
+    }
   );
 
   const mosData: MosData[] = data?.data?.measures?.measures_of_success ?? [];

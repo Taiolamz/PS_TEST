@@ -3,6 +3,7 @@ import MeasureOfSucessProgress from "./_fragment/measure-of-success-progress";
 import SpecifiedTaskProgress from "./_fragment/specified-task-progress";
 import { useState } from "react";
 import ReportFilter from "./_fragment/report-filter";
+import { useGetMissionPlanReportCycleQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 const MyReport = () => {
   const [fiscalYear, setFiscalYear] = useState("");
@@ -23,6 +24,18 @@ const MyReport = () => {
     },
   ];
 
+  const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
+
+  const handleFormatCycle = () => {
+    const cycle = (data?.data as any[])?.map((chi) => {
+      return {
+        label: chi,
+        value: chi,
+      };
+    });
+    return cycle;
+  };
+
   return (
     <div>
       {/* ----- FILTER/SELECT WRAP START------- */}
@@ -33,7 +46,8 @@ const MyReport = () => {
         missionCycleVal={missionCycle}
         setMissionCycleVal={setMissionCycle}
         fiscalOptions={options}
-        cycleOptions={options}
+        cycleOptions={handleFormatCycle()}
+        loading={isLoading || isFetching}
       />
 
       {/* ----- FILTER/SELECT WRAP END------- */}

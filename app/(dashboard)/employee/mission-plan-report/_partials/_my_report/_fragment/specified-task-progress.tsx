@@ -52,57 +52,57 @@ const SpecifiedTaskProgress = () => {
     },
   ];
 
-  const specifiedTaskProgressDetails = [
-    {
-      label: "Create a new Process flow for Zojatech",
-      progress: 25,
-      value_color: "#EC1410",
-      color: "red",
-    },
-    {
-      label:
-        "Achieve revenue from selling Zojatech Software Product to the open Market",
-      progress: 5,
-      value_color: "#EC1410",
-      color: "red",
-    },
-    {
-      label: "Onboard 200 new clients on Mance",
-      progress: 35,
-      value_color: "#EC1410",
-      color: "red",
-    },
-    {
-      label: "Get 2 Technology Partners",
-      progress: 40,
-      value_color: "#EC1410",
-      color: "red",
-    },
-    {
-      label: "Onboard 200 new clients on Revvex",
-      progress: 50,
-      value_color: "#FFC043",
-      color: "yellow",
-    },
-    {
-      label: "Onboard 200 new clients on Revvex",
-      progress: 50,
-      value_color: "#FFC043",
-      color: "yellow",
-    },
-    {
-      label: "Achieve 70% OLA Adherence",
-      progress: 10,
-      value_color: "#EC1410",
-      color: "red",
-    },
-    {
-      label: "Achieve 70% OLA Adherence",
-      progress: 5,
-      value_color: "#EC1410",
-      color: "red",
-    },
-  ];
+  // const specifiedTaskProgressDetails = [
+  //   {
+  //     label: "Create a new Process flow for Zojatech",
+  //     progress: 25,
+  //     value_color: "#EC1410",
+  //     color: "red",
+  //   },
+  //   {
+  //     label:
+  //       "Achieve revenue from selling Zojatech Software Product to the open Market",
+  //     progress: 5,
+  //     value_color: "#EC1410",
+  //     color: "red",
+  //   },
+  //   {
+  //     label: "Onboard 200 new clients on Mance",
+  //     progress: 35,
+  //     value_color: "#EC1410",
+  //     color: "red",
+  //   },
+  //   {
+  //     label: "Get 2 Technology Partners",
+  //     progress: 40,
+  //     value_color: "#EC1410",
+  //     color: "red",
+  //   },
+  //   {
+  //     label: "Onboard 200 new clients on Revvex",
+  //     progress: 50,
+  //     value_color: "#FFC043",
+  //     color: "yellow",
+  //   },
+  //   {
+  //     label: "Onboard 200 new clients on Revvex",
+  //     progress: 50,
+  //     value_color: "#FFC043",
+  //     color: "yellow",
+  //   },
+  //   {
+  //     label: "Achieve 70% OLA Adherence",
+  //     progress: 10,
+  //     value_color: "#EC1410",
+  //     color: "red",
+  //   },
+  //   {
+  //     label: "Achieve 70% OLA Adherence",
+  //     progress: 5,
+  //     value_color: "#EC1410",
+  //     color: "red",
+  //   },
+  // ];
 
   // const id = "344ac"; //dummy ID;
   const { EMPLOYEE } = routesPath;
@@ -110,7 +110,9 @@ const SpecifiedTaskProgress = () => {
   const user = useAppSelector(selectUser);
 
   const { data, isLoading, isFetching, refetch } =
-    useGetStaffSpecifiedTaskQuery(user?.id);
+    useGetStaffSpecifiedTaskQuery(user?.id, {
+      skip: !user?.id,
+    });
 
   const specifiedTaskData: SpecifedTaskData[] =
     data?.data?.specified_tasks?.specified_tasks ?? [];
@@ -119,7 +121,6 @@ const SpecifiedTaskProgress = () => {
   const centeredClass =
     "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
 
-  console.log(data, "data check");
   return (
     <MetricFrame className="flex flex-col gap-4 w-full relative">
       <div className="flex justify-between ">
