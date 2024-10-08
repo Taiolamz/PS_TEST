@@ -212,30 +212,38 @@ const SpecifiedTaskProgress = () => {
                 </div>
               );
             })} */}
-            {specifiedTaskData?.map((chi, idx) => {
-              const { id, task, completed } = chi;
-              return (
-                <div key={idx || id}>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-[#5A5B5F] font-medium text-sm">
-                      {capitalizeFirstLetter(task)}
-                    </p>
-                    <ReusableProgress
-                      valuePosition="float-left"
-                      value={convertStringToNumber(completed)}
-                      height={16}
-                      borderRadius={2}
-                      // valueColor={"red"}
-                      color={getProgressColorByValue(
-                        convertStringToNumber(completed)
-                      )}
-                      className="!bg-[#EBF7FF]"
-                      progressClass="rounded-[2px]"
-                    />
+            {specifiedTaskData && specifiedTaskData?.length > 0 ? (
+              specifiedTaskData?.map((chi, idx) => {
+                const { id, task, completed } = chi;
+                return (
+                  <div key={idx || id}>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-[#5A5B5F] font-medium text-sm">
+                        {capitalizeFirstLetter(task)}
+                      </p>
+                      <ReusableProgress
+                        valuePosition="float-left"
+                        value={convertStringToNumber(completed)}
+                        height={16}
+                        borderRadius={2}
+                        // valueColor={"red"}
+                        color={getProgressColorByValue(
+                          convertStringToNumber(completed)
+                        )}
+                        className="!bg-[#EBF7FF]"
+                        progressClass="rounded-[2px]"
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className={centeredClass}>
+                <p className="text-[var(--text-color2)] text-center font-light">
+                  No Specified Task  <br /> progress details
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}
