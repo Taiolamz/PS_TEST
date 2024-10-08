@@ -110,9 +110,11 @@ const TaskOutcome = () => {
       </ReusableDrawer>
       {ui === "task_outcome" && !id && (
         <div className="">
-          <Button className="[box-shadow:0px_10px_20px_-6px_rgba(78,115,248,0.08)] border rounded-sm bg-[#EEF0F2] text-[#9AA6AC]">
-            Set January Actual Outcomes
-          </Button>
+          <div className="flex justify-end">
+            <Button className="rounded-sm bg-[var(--primary-color)] text-xs">
+              Set January Actual Outcomes
+            </Button>
+          </div>
           <TaskOutcomeTable
             FORMAT_TABLE_DATA={FORMAT_TABLE_DATA}
             outcomeData={data}

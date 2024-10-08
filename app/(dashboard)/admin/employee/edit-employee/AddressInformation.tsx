@@ -4,15 +4,12 @@ import CustomSelect from "@/components/custom-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/redux/store";
-import routesPath from "@/utils/routes";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
 
 const AddressInfoBox = () => {
-  const [editState, setEditState] = useState(false);
+  const [editState, setEditState] = useState(true);
   const { user } = useAppSelector((state) => state.auth);
-  const router = useRouter();
 
   const editIcon = (
     <svg
@@ -45,20 +42,19 @@ const AddressInfoBox = () => {
         {editState ? (
           <>
             {" "}
-            
-          </>   
+          
+          </>
         ) : (
           <>
-            {/* <div
+            <div
               onClick={() => {
-                // setEditState(true);
-                router.push(routesPath?.ADMIN.EMPLOYEE_EDIT)
+                setEditState(true);
               }}
               className={style.edit_btn}
             >
               <p className={style.text}>Edit</p>
               <figure>{editIcon}</figure>
-            </div> */}
+            </div>
           </>
         )}
       </div>

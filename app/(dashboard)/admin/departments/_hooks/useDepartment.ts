@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "./useDisclosure";
 import { useFormik } from "formik";
 import { toast } from "sonner";
@@ -8,7 +8,10 @@ import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
-import { useCreateDepartmentMutation } from "@/redux/services/checklist/departmentApi";
+import {
+  useCreateDepartmentMutation,
+  // useGetSingleDepartmentQuery,
+} from "@/redux/services/checklist/departmentApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { useContext } from "react";
@@ -182,6 +185,23 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   const [createDepartment, { isLoading: isCreatingDepartment }] =
     useCreateDepartmentMutation();
 
+  // const { id } = useParams();
+
+  // console.log(id, "department id");
+  // const deptId = "01j9nf64x3bv27c7ssy2r3jm9v";
+
+  // const { data: department, error, isLoading } = useGetSingleDepartmentQuery();
+  // console.log(department, "department data");
+
+  // const {
+  //   data: department,
+  //   error,
+  //   isLoading,
+  // } = useGetSingleDepartmentQuery(deptId!, {
+  //   skip: !deptId,
+  // });
+
+
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,
@@ -189,7 +209,8 @@ export const useDepartment = ({ cancelPath }: Prop) => {
       organization_id: organization?.id,
       head_of_department: formik.values.head_of_department.id,
       subsidiary_id: formik.values.subsidiary_id.id,
-    }; 
+    };
+
     await createDepartment(payload)
       .unwrap()
       .then(() => {

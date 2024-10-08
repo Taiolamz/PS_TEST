@@ -5,16 +5,13 @@ import TogglePassword from "@/components/toggle-password";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/redux/store";
-import routesPath from "@/utils/routes";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
 
 const PasswordInfoBox = () => {
-  const [editState, setEditState] = useState(false);
+  const [editState, setEditState] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
-  const router = useRouter();
 
   const editIcon = (
     <svg
@@ -73,8 +70,7 @@ const PasswordInfoBox = () => {
           <>
             <div
               onClick={() => {
-                // setEditState(true);
-                router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
+                setEditState(true);
               }}
               className={style.edit_btn}
             >

@@ -1,18 +1,35 @@
 "use client";
+import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
+import { useGetSubsidiaryInStaffQuery } from "@/redux/services/checklist/subsidiaryApi";
 import routesPath from "@/utils/routes";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const { ADMIN } = routesPath;
 
+interface StaffTableProps {
+  data?: any[];
+}
+
 export default function StaffTable() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const [page, setPage] = React.useState(1);
+  const [search, setSearch] = React.useState("");
+
+  const { data, isLoading, isFetching } = useGetSubsidiaryInStaffQuery({
+    id: id,
+    params: { page, search },
+  });
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);
   };
-  return (
+  return isLoading ? (
+    <TableLoader rows={8} columns={8} />
+  ) : (
     <TableWrapper
       tableheaderList={[
         "Staff Name",
@@ -23,13 +40,22 @@ export default function StaffTable() {
         "Line Manager",
         "Action",
       ]}
-      hidePagination
+      perPage={data?.meta?.per_page}
+      totalPage={data?.meta?.total}
+      currentPage={data?.meta?.current_page}
+      onPageChange={(p) => {
+        setPage(p);
+      }}
       addText="New Staff"
       hideNewBtnOne={false}
-      tableBodyList={[]}
-      loading={false}
+      tableBodyList={FORMAT_TABLE_DATA(data?.data)}
+      loading={isFetching}
       onSearch={(param) => {
-        console.log(param);
+        setTimeout(() => {
+          // Delay api call after 3 seconds
+          setPage(1);
+          setSearch(param);
+        }, 3000);
       }}
       dropDown
       hideFilter
@@ -58,3 +84,19 @@ export default function StaffTable() {
     />
   );
 }
+
+const FORMAT_TABLE_DATA = (obj: any) => {
+  return obj?.map((org: any) => ({
+    name: (
+      <>
+        <span className="hidden">{org.branch_id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
+    subsidgenderiary: org?.gender || "--- ---",
+    email: org?.email || "--- ---",
+    job_title: org?.job_title || "--- ---",
+    role: org?.role || "--- ---",
+    line_manager_name: org?.line_manager_name || "--- ---",
+  }));
+};

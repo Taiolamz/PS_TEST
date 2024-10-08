@@ -1,9 +1,7 @@
 "use client";
-import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInUnitQuery } from "@/redux/services/checklist/subsidiaryApi";
 import routesPath from "@/utils/routes";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const { ADMIN } = routesPath;
@@ -12,39 +10,23 @@ interface UnitTableProps {
   data?: any[];
 }
 
-export default function UnitTable() {
+export default function UnitTable({ data }: UnitTableProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const [page, setPage] = React.useState(1);
-  const [search, setSearch] = React.useState("");
-
-  const { data, isLoading, isFetching } = useGetSubsidiaryInUnitQuery({
-    id: id,
-    params: { page, search },
-  });
-
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
     router.push(path);
   };
 
-  return isLoading ? (
-    <TableLoader rows={8} columns={8} />
-  ) : (
+  return (
     <TableWrapper
       tableheaderList={["Unit Name", "HOU", "Department", "Branch", "Action"]}
       hidePagination
       addText="New Unit"
       hideNewBtnOne={false}
-      tableBodyList={FORMAT_TABLE_DATA(data?.data)}
-      loading={isFetching}
+      tableBodyList={data}
+      loading={false}
       onSearch={(param) => {
-        setTimeout(() => {
-          // Delay api call after 3 seconds
-          setPage(1);
-          setSearch(param);
-        }, 3000);
+        console.log(param);
       }}
       dropDown
       hideFilter
@@ -73,17 +55,3 @@ export default function UnitTable() {
     />
   );
 }
-
-const FORMAT_TABLE_DATA = (obj: any) => {
-  return obj?.map((org: any) => ({
-    name: (
-      <>
-        <span className="hidden">{org.id}</span>
-        <p>{org?.name}</p>
-      </>
-    ),
-    head_of_unit: org?.head_of_unit?.name ?? "--- ---",
-    department: org?.deparment?.name ?? "--- ---",
-    branch: org?.branch?.name ?? "--- ---",
-  }));
-};
