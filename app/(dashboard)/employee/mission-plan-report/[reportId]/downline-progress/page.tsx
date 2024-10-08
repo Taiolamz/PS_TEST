@@ -5,6 +5,10 @@ import React from "react";
 import SpecifiedTaskCard from "./_partials/specified-task-card";
 import MOSCard from "./_partials/mos-card";
 import { useRouter } from "next/navigation";
+import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
+import { useGetMissionPlanReportCycleQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import MeasureOfSucessProgress from "../../_partials/_my_report/_fragment/measure-of-success-progress";
+import SpecifiedTaskProgress from "../../_partials/_my_report/_fragment/specified-task-progress";
 
 export default function ViewDownlineProgress({
   params,
@@ -14,50 +18,47 @@ export default function ViewDownlineProgress({
   const router = useRouter();
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
+
+  const options = [
+    {
+      label: "Option one",
+      value: "Option one",
+    },
+    {
+      label: "Option two",
+      value: "Option two",
+    },
+    {
+      label: "Option three",
+      value: "Option three",
+    },
+  ];
+
+  const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
+
+  const handleFormatCycle = () => {
+    const cycle = (data?.data as any[])?.map((chi) => {
+      return {
+        label: chi,
+        value: chi,
+      };
+    });
+    return cycle;
+  };
+
   return (
     <DashboardLayout back headerTitle="My Downlines">
       <div className="m-5">
         {/* ----- FILTER/SELECT WRAP START------- */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex gap-2 items-center cursor-pointer">
-              <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
-              <figure>{filterIcon}</figure>
-            </div>
-
-            <div className="flex items-center">
-              <CustomSelect
-                placeholder="FY"
-                options={[]}
-                selected={fiscalYear}
-                setSelected={(e: any) => {
-                  setFiscalYear(e);
-                }}
-                className="w-[150px] text-xs rounded-none rounded-l-[15px]"
-              />
-              <CustomSelect
-                placeholder="Cycle"
-                options={[]}
-                selected={missionCycle}
-                setSelected={(e: any) => {
-                  setMissionCycle(e);
-                }}
-                className="w-[150px] text-xs rounded-none rounded-r-[15px]"
-              />
-            </div>
-
-            <div className="flex gap-2 items-center cursor-pointer ml-2">
-              <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
-              <figure>{undoIcon}</figure>
-            </div>
-          </div>
-
-          {/* -----EXPORT---- */}
-          <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
-            <figure>{exportIcon}</figure>
-            <p className="text-medium text-xs text-[#6E7C87]">Export</p>
-          </div>
-        </div>
+        <ReportFilter
+          fiscalYearVal={fiscalYear}
+          setFiscalYearVal={setFiscalYear}
+          missionCycleVal={missionCycle}
+          setMissionCycleVal={setMissionCycle}
+          fiscalOptions={options}
+          cycleOptions={handleFormatCycle()}
+          loading={isLoading || isFetching}
+        />
         {/* ----- FILTER/SELECT WRAP END------- */}
 
         {/* ----- USER INFO------- */}
@@ -75,8 +76,14 @@ export default function ViewDownlineProgress({
 
         {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
         <div className="grid lg:grid-cols-12 mt-10 gap-5">
-          <MOSCard id={params.reportId} />
-          <SpecifiedTaskCard id={params.reportId} />
+          {/* <MOSCard id={params.reportId} />
+          <SpecifiedTaskCard id={params.reportId} /> */}
+          <div className="col-span-5">
+            <MeasureOfSucessProgress />
+          </div>
+          <div className="col-span-7">
+            <SpecifiedTaskProgress />
+          </div>
         </div>
       </div>
     </DashboardLayout>
