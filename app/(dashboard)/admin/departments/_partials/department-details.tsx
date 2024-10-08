@@ -14,6 +14,8 @@ import {
 import useDisclosure from "../_hooks/useDisclosure";
 import Hierarchy from "@/components/fragment/info/hierachy";
 import DeactivateOrgModal from "@/components/atoms/modals/deactivate-modal";
+import { useDeleteDepartmentMutation } from "@/redux/services/checklist/departmentApi";
+import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
 
@@ -109,6 +111,26 @@ const DepartmentDetails = () => {
     }
   };
 
+  const [deleteDepartment, { isLoading: isDeletingDept }] =
+    useDeleteDepartmentMutation();
+
+  const deptId = searchParams.get("id");
+
+  const handleDeleteDept = async () => {
+    await deleteDepartment(deptId)
+      .unwrap()
+      .then(() => {
+        toast.success(`Department Deactivated Successfully`);
+        new Promise(() => {
+          setTimeout(() => {
+            handleDeactivateModalChange();
+            toast.dismiss();
+            router.push(ADMIN.DEPARTMENT);
+          }, 1000);
+        });
+      });
+  };
+
   return (
     <DashboardLayout headerTitle="Departments" back>
       <div className="p-5 ">
@@ -127,7 +149,8 @@ const DepartmentDetails = () => {
         </section>
         <DeactivateOrgModal
           organization="Department"
-          onDeactivate={() => null}
+          isLoading={isDeletingDept}
+          onDeactivate={handleDeleteDept}
           onModalChange={handleDeactivateModalChange}
           show={openDeactivateModal}
           content={
