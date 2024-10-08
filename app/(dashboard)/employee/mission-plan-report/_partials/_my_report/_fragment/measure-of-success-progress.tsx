@@ -199,40 +199,48 @@ const MeasureOfSucessProgress = () => {
             </div>
           );
         })} */}
-            {mosData?.map((chi, idx) => {
-              const { achieved, measure, target, unit, weight, id } = chi;
-              return (
-                <div key={idx || id}>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-[#5A5B5F] font-medium text-sm">
-                      {capitalizeFirstLetter(measure)}
-                    </p>
-                    <ReusableProgress
-                      color={getProgressColorByValue(
-                        convertStringToNumber(achieved)
-                      )}
-                      // color={color as "red"}
-                      valuePosition="float-right"
-                      value={convertStringToNumber(achieved)}
-                      height={16}
-                      borderRadius={2}
-                      hasBackground={false}
-                      valueColor={getProgressColorByValue(
-                        convertStringToNumber(achieved)
-                      )}
-                      // valueColor={value_color}
-                      progressClass="rounded-[2px]"
-                    />
-                    <ReusableProgress
-                      value={0}
-                      className="!bg-[#EBF7FF]"
-                      borderRadius={2}
-                    />
-                    <p className="text-[#6B51DF] text-xs font-medium">{`${target}${unit}`}</p>
+            {mosData && mosData?.length > 1 ? (
+              mosData?.map((chi, idx) => {
+                const { achieved, measure, target, unit, weight, id } = chi;
+                return (
+                  <div key={idx || id}>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-[#5A5B5F] font-medium text-sm">
+                        {capitalizeFirstLetter(measure)}
+                      </p>
+                      <ReusableProgress
+                        color={getProgressColorByValue(
+                          convertStringToNumber(achieved)
+                        )}
+                        // color={color as "red"}
+                        valuePosition="float-right"
+                        value={convertStringToNumber(achieved)}
+                        height={16}
+                        borderRadius={2}
+                        hasBackground={false}
+                        valueColor={getProgressColorByValue(
+                          convertStringToNumber(achieved)
+                        )}
+                        // valueColor={value_color}
+                        progressClass="rounded-[2px]"
+                      />
+                      <ReusableProgress
+                        value={0}
+                        className="!bg-[#EBF7FF]"
+                        borderRadius={2}
+                      />
+                      <p className="text-[#6B51DF] text-xs font-medium">{`${target}${unit}`}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className={centeredClass}>
+                <p className="text-[var(--text-color2)] text-center font-light">
+                  No Measure of Success <br /> progress details
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}
