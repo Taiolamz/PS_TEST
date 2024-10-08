@@ -26,7 +26,8 @@ export const departmentApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["Departments"],
-      transformResponse: (response: { data: DepartmentResponse }) => response.data,
+      transformResponse: (response: { data: DepartmentResponse }) =>
+        response.data,
     }),
 
     getSingleDepartment: builder.query<string[], void>({
@@ -49,6 +50,13 @@ export const departmentApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+    deleteDepartment: builder.mutation({
+      query: (id) => ({
+        url: `/admin/department/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Departments"],
+    }),
   }),
 });
 
@@ -58,4 +66,5 @@ export const {
   useGetDepartmentsQuery,
   useLazyDownloadDepartmentTemplateQuery,
   useGetSingleDepartmentQuery,
+  useDeleteDepartmentMutation,
 } = departmentApi;
