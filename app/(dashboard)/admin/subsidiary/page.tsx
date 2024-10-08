@@ -25,6 +25,7 @@ import TableWrapper from "@/components/tables/TableWrapper";
 import SubsidiaryDetails from "./_partials/subsidiary-details";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import { processInputAsArray } from "@/utils/helpers";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const { ADMIN } = routesPath;
 
@@ -44,6 +45,7 @@ const Subsidiary = () => {
       router.replace(pathname + "?" + "ui=view");
     }
   }, []);
+
   const {
     isOpen: openProceedModal,
     open: onOpenProceeModal,
@@ -238,7 +240,13 @@ const Subsidiary = () => {
                 <ParentModuleCard list={listToTest} />
 
                 <TableWrapper
-                  tableheaderList={["Name", "Country", "Address", "Action"]}
+                  tableheaderList={[
+                    "Name",
+                    "Country",
+                    "Address",
+                    "Status",
+                    "Action",
+                  ]}
                   perPage={subsidiariesData?.data?.per_page}
                   totalPage={subsidiariesData?.data?.total}
                   currentPage={subsidiariesData?.data?.current_page}
@@ -350,5 +358,11 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     ),
     country: org?.country,
     address: org?.address,
+    status: (
+      <BadgeComponent
+        text={!org?.deleted_at ? "Active" : "Closed"}
+        color={!org?.deleted_at ? "green" : "red"}
+      />
+    ),
   }));
 };

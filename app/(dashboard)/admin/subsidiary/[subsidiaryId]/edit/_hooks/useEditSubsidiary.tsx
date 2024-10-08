@@ -9,10 +9,11 @@ import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { COUNTRIES_STATES } from "@/utils/data";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
+import { useSubsidiaryById } from "../../../_hooks/useSubsidiaryById";
 
 type Prop = {
   id: string;
@@ -62,6 +63,8 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     {}
   );
 
+  const { subDetailsData } = useSubsidiaryById(id ?? "");
+
   const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
       return {
@@ -72,14 +75,12 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     });
     return data;
   };
-  const { data: employeesData, isLoading: isLoadingEmployees } =
-    useGetAllEmployeesQuery();
+
+  const { data: employeesData } = useGetAllEmployeesQuery();
+
   const states = statesData ?? [];
   const employees = employeesData ?? [];
   const employeeDrop = handleDropdown(employees);
-
-  // const { data: orgData } = useGetOrgDetailsQuery();
-  // console.log(orgData, "org-data");
 
   const handleFormatDropdown = (
     items: SubsidiaryData[] | BranchData[] | StateData[] | AllStaff[]
@@ -96,7 +97,6 @@ export const useEditSubsidiary = ({ id }: Prop) => {
 
   const stateDrop = handleDropdown(states);
 
-  const { organization } = user;
   const SubsidiaryRoute = ADMIN.SUBSIDIARY;
 
   const handleSubmit = async () => {
@@ -111,7 +111,7 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     }
     payload.append("head", head.id);
     payload.append("state", state);
-    console.log(payload, "payload", id);
+    console.log(formik.values, "payload", id);
     // await createSubsidiary(payload)
     //   .unwrap()
     //   .then(() => {
@@ -128,22 +128,23 @@ export const useEditSubsidiary = ({ id }: Prop) => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
-      address: "",
-      country: "",
-      state: "",
+      name: subDetailsData?.name || "",
+      email: subDetailsData?.work_email || "",
+      address: subDetailsData?.address ?? "",
+      country: subDetailsData?.country || "",
+      state: subDetailsData?.state || "",
       head: {
-        name: "",
-        email: "",
-        id: "",
+        name: subDetailsData?.head?.name || "",
+        email: subDetailsData?.hos_email || "",
+        id: subDetailsData?.head?.id || "",
       },
-      work_email: "",
-      logo: null as File | null,
-      description: "",
+      work_email: subDetailsData?.hos_email || "",
+      logo: subDetailsData?.logo || (null as File | null),
+      description: subDetailsData?.description || "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
 
   return {

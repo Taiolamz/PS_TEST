@@ -2,7 +2,7 @@
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import Routes from "@/lib/routes/routes";
 import CustomSelect from "@/components/custom-select";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import routesPath from "@/utils/routes";
 import { Input } from "@/components/ui/input";
 import { COUNTRIES_STATES } from "@/utils/data";
@@ -15,23 +15,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEditSubsidiary } from "./_hooks/useEditSubsidiary";
 import FormLayout from "../../_components/form-layout";
 import { Button } from "@/components/ui/button";
+import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
 
 export default function Edit({ params }: { params: { subsidiaryId: string } }) {
+  const router = useRouter();
   const actionCtx = useContext(ActionContext);
   const labelClassName = "block text-xs text-[#6E7C87] font-normal pb-2";
-  const router = useRouter();
-  const {
-    formik,
-    countries,
-    states,
-    // stateDrop,
-    employeeDrop,
-    employees,
-  } = useEditSubsidiary({ id: params.subsidiaryId });
-
   const [selectedCountryData, setSelectedCountryData] = useState<Dictionary>(
     {}
   );
+
+  const { formik, employees } = useEditSubsidiary({ id: params.subsidiaryId });
+
+  // fetching initial value
+  const { subDetailsData } = useSubsidiaryById(params?.subsidiaryId ?? "");
+  // This sets the state dropdown from the initial value of country
+  useEffect(() => {
+    if (subDetailsData?.country) {
+      const countryData = COUNTRIES_STATES?.filter(
+        (f: Dictionary) => f.name === subDetailsData?.country
+      )?.[0];
+      setSelectedCountryData(countryData);
+    }
+  }, [subDetailsData]);
 
   const [logo, setLogo] = useState<File | string>();
   const [logoName, setLogoName] = useState<string | null>(
@@ -92,6 +98,7 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               placeholder="Subsidiary name"
               id="name"
               name="name"
+              value={formik?.values?.name}
               onChange={formik.handleChange}
               isRequired
             />
@@ -101,6 +108,7 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               placeholder="Subsidiary Email Address"
               id="email"
               name="email"
+              value={formik?.values?.email}
               onChange={formik.handleChange}
             />
             <Input
@@ -109,6 +117,7 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               placeholder="Subsidiary address"
               id="address"
               name="address"
+              value={formik?.values?.address}
               onChange={formik.handleChange}
               isRequired
             />
@@ -172,7 +181,6 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               selected={formik.values.head.name}
               setSelected={handleHeadSelectChange}
               labelClass={labelClassName}
-              // isRequired
             />
             <Input
               label="Head of Subsidiary Email"
@@ -182,7 +190,6 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               value={formik.values.work_email}
               name="work_email"
               onChange={formik.handleChange}
-              // isRequired
               disabled
               className="disabled:opacity-100"
             />
@@ -203,6 +210,7 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               name="description"
               placeholder="Description"
               label="Subsidiary Description"
+              value={formik.values.description}
               className=" w-full  block px-4 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm bg-white"
               onChange={formik.handleChange}
             />
