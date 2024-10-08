@@ -1,15 +1,13 @@
-import { Progress } from "@/components/ui/progress";
-import ApprovalProgress from "@/components/fragment/progress/approval-progress";
-import { Button } from "@/components/ui/button";
-import TableWrapper from "@/components/tables/TableWrapper";
-import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import { fakeApprovalStep, fakeTableData } from "../_data/data";
-import Link from "next/link";
-import ApprovalDrawer from "@/components/drawer/approval-drawer";
 import routesPath from "@/utils/routes";
-import { useGetFiscalYearsProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useRouter } from "next/navigation";
+import { fakeApprovalStep } from "../_data/data";
+import { Progress } from "@/components/ui/progress";
 import { TableLoader } from "@/components/fragment";
+import TableWrapper from "@/components/tables/TableWrapper";
+import ApprovalDrawer from "@/components/drawer/approval-drawer";
+import ApprovalProgress from "@/components/fragment/progress/approval-progress";
+import { useGetFiscalYearsProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 const { EMPLOYEE } = routesPath;
 export default function MOSTable() {
@@ -22,7 +20,7 @@ export default function MOSTable() {
     type: "measures",
     page,
   });
-  console.log({ data, isLoading, isFetching });
+
   return (
     <div className="mt-2">
       {isLoading ? (
