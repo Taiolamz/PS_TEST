@@ -21,6 +21,8 @@ import {
 import { PageLoader } from "@/components/custom-loader";
 import { useSubsidiaryById } from "../_hooks/useSubsidiaryById";
 import { toast } from "sonner";
+import Image from "next/image";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const { ADMIN } = routesPath;
 
@@ -34,7 +36,7 @@ export default function SubsidiaryDetails() {
   const tab = searchParams.get("tab");
 
   const {
-    subDetalsData,
+    subDetailsData,
     isLoadingSubDetails,
     subDetailsDepthData,
     isLoadingSubDetailsDept,
@@ -129,7 +131,11 @@ export default function SubsidiaryDetails() {
       .unwrap()
       .then(() => {
         setReopen(false);
-        toast.success(reopenData?.data?.message);
+        toast.success(
+          reopenData?.data?.message ??
+            reopenData?.data?.data?.message ??
+            "Subsidiary successfully reopened."
+        );
       })
       .catch(() => {});
   };
@@ -138,27 +144,60 @@ export default function SubsidiaryDetails() {
     closeSubsidiaries(id || "")
       .unwrap()
       .then(() => {
-        toast.success(closeSubData?.data?.message);
-        router.back();
+        toast.success(
+          closeSubData?.data?.message ??
+            closeSubData?.data.message ??
+            "subsidiary successfully closed."
+        );
+        // router.back();
         setModal(false);
       })
-      .catch(() => {});
+      .catch((err) => {
+        toast.error("Unable to handle your request.");
+      });
   };
 
   return (
     <DashboardLayout back headerTitle="Subsidiaries">
       <section className="p-5">
         {isLoadingSubDetails ? (
-          <PageLoader />
+          <div className="flex max-lg:flex-col-reverse justify-between mb-10">
+            <div className="w-full">
+              <span className="flex items-center gap-8">
+                <Skeleton className=" size-[100px] rounded-full bg-[var(--primary-accent-color)]" />
+                <Skeleton className=" h-[18px] w-[138px] rounded-sm bg-[var(--primary-accent-color)]" />
+              </span>
+              <div className="grid lg:grid-cols-2 gap-4 w-full text-[var(--text-color)] text-xs mt-5">
+                <span className="space-y-3">
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                </span>
+                <span className="space-y-3">
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                </span>
+              </div>
+            </div>
+            <div className="inline-flex justify-end gap-x-3">
+              <>
+                <Skeleton className=" h-[36px] w-[110px] rounded-sm bg-[var(--primary-accent-color)]" />
+                <Skeleton className=" h-[36px] w-[110px] rounded-sm bg-[var(--primary-accent-color)]" />
+              </>
+            </div>
+          </div>
         ) : (
           <div className="flex max-lg:flex-col-reverse justify-between mb-10">
             <div className="w-full">
               <span className="flex items-center gap-8">
-                {subDetalsData?.logo && subDetalsData?.logo?.[0] ? (
-                  <img
-                    src={subDetalsData?.logo}
-                    alt={`${subDetalsData?.name}` + " logo"}
-                    className="size-[100px] rounded-full object-contain border border-[var( --input-border)]"
+                {subDetailsData?.logo && subDetailsData?.logo?.[0] ? (
+                  <Image
+                    src={subDetailsData?.logo}
+                    alt={`${subDetailsData?.name}` + " logo"}
+                    width={100}
+                    height={100}
+                    className="!size-[100px] rounded-full object-contain border border-[var( --input-border)]"
                   />
                 ) : (
                   <span className="size-[100px] rounded-full place-content-center grid bg-white border border-[var( --input-border)]">
@@ -166,7 +205,7 @@ export default function SubsidiaryDetails() {
                   </span>
                 )}
                 <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-                  {subDetalsData?.name}
+                  {subDetailsData?.name}
                 </h3>
               </span>
               <div className="grid lg:grid-cols-2 gap-4 w-full text-[var(--text-color)] text-xs mt-5">
@@ -174,19 +213,19 @@ export default function SubsidiaryDetails() {
                   <h4>
                     Head Of Subsidiary:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-1">
-                      {subDetalsData?.head?.name}
+                      {subDetailsData?.head?.name || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     Subsidiary Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-1">
-                      {subDetalsData?.work_email}
+                      {subDetailsData?.work_email || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     Head of Subsidiary Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-1">
-                      {subDetalsData?.hos_email}
+                      {subDetailsData?.hos_email || "--- ---"}
                     </span>
                   </h4>
                 </span>
@@ -194,41 +233,44 @@ export default function SubsidiaryDetails() {
                   <h4>
                     Address:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-1">
-                      {subDetalsData?.address}
+                      {subDetailsData?.address || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     State:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-1">
-                      {subDetalsData?.state}
+                      {subDetailsData?.state || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     Country:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-1">
-                      {subDetalsData?.country}
+                      {subDetailsData?.country || "--- ---"}
                     </span>
                   </h4>
                 </span>
               </div>
             </div>
             <div className="inline-flex justify-end gap-x-3">
-              <>
-                <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
+              {!subDetailsData?.deleted_at ? (
+                <>
+                  <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
+                    <Button
+                      variant="outline"
+                      className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                    >
+                      Edit
+                    </Button>
+                  </Link>
                   <Button
                     variant="outline"
-                    className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                    onClick={() => setModal(true)}
+                    className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
                   >
-                    Edit
+                    Deactivate
                   </Button>
-                </Link>
-                <Button
-                  variant="outline"
-                  onClick={() => setModal(true)}
-                  className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
-                >
-                  Deactivate
-                </Button>
+                </>
+              ) : (
                 <Button
                   variant="outline"
                   onClick={() => setReopen(true)}
@@ -236,7 +278,7 @@ export default function SubsidiaryDetails() {
                 >
                   Activate
                 </Button>
-              </>
+              )}
             </div>
           </div>
         )}

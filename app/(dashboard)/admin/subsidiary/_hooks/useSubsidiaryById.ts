@@ -7,7 +7,7 @@ import {
 } from "@/redux/services/checklist/subsidiaryApi";
 
 export const useSubsidiaryById = (id: string) => {
-  const { data: subDetalsData, isLoading: isLoadingSubDetails } =
+  const { data: subDetailsData, isLoading: isLoadingSubDetails } =
     useGetSubsidiaryByIdQuery(id ?? "");
 
   const { data: subDetailsBranchData, isLoading: isLoadingSubDetailsBranch } =
@@ -23,7 +23,7 @@ export const useSubsidiaryById = (id: string) => {
     useGetSubsidiaryInStaffQuery({ id: id, params: { page: 1 } });
 
   return {
-    subDetalsData,
+    subDetailsData,
     isLoadingSubDetails,
     subDetailsDepthData,
     isLoadingSubDetailsDept,

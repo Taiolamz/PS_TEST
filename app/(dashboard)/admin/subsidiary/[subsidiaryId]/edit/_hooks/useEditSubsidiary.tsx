@@ -63,11 +63,7 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     {}
   );
 
-  const { subDetalsData } = useSubsidiaryById(id ?? "");
-
-  console.log({
-    subDetalsData,
-  });
+  const { subDetailsData } = useSubsidiaryById(id ?? "");
 
   const handleDropdown = (items: StateData[] | AllStaff[]) => {
     const data = items.map((chi) => {
@@ -79,14 +75,12 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     });
     return data;
   };
-  const { data: employeesData, isLoading: isLoadingEmployees } =
-    useGetAllEmployeesQuery();
+
+  const { data: employeesData } = useGetAllEmployeesQuery();
+
   const states = statesData ?? [];
   const employees = employeesData ?? [];
   const employeeDrop = handleDropdown(employees);
-
-  // const { data: orgData } = useGetOrgDetailsQuery();
-  // console.log(orgData, "org-data");
 
   const handleFormatDropdown = (
     items: SubsidiaryData[] | BranchData[] | StateData[] | AllStaff[]
@@ -103,7 +97,6 @@ export const useEditSubsidiary = ({ id }: Prop) => {
 
   const stateDrop = handleDropdown(states);
 
-  const { organization } = user;
   const SubsidiaryRoute = ADMIN.SUBSIDIARY;
 
   const handleSubmit = async () => {
@@ -135,26 +128,24 @@ export const useEditSubsidiary = ({ id }: Prop) => {
 
   const formik = useFormik({
     initialValues: {
-      name: subDetalsData?.name || "",
-      email: subDetalsData?.work_email || "",
-      address: subDetalsData?.address ?? "",
-      country: subDetalsData?.country || "",
-      state: subDetalsData?.state || "",
+      name: subDetailsData?.name || "",
+      email: subDetailsData?.work_email || "",
+      address: subDetailsData?.address ?? "",
+      country: subDetailsData?.country || "",
+      state: subDetailsData?.state || "",
       head: {
-        name: subDetalsData?.head?.name || "",
-        email: subDetalsData?.hos_email || "",
-        id: subDetalsData?.head?.id || "",
+        name: subDetailsData?.head?.name || "",
+        email: subDetailsData?.hos_email || "",
+        id: subDetailsData?.head?.id || "",
       },
-      work_email: subDetalsData?.hos_email || "",
-      logo: null as File | null,
-      description: subDetalsData?.description || "",
+      work_email: subDetailsData?.hos_email || "",
+      logo: subDetailsData?.logo || (null as File | null),
+      description: subDetailsData?.description || "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
     enableReinitialize: true,
   });
-
-  useEffect(() => {}, []);
 
   return {
     formik,
