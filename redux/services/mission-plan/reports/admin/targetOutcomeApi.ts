@@ -8,18 +8,28 @@ export const targetOutcomeApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload
       }),
+      invalidatesTags: ['TargetOutcomeSettings']
     }),
     setActualOutcomeSubmission: builder.mutation({
       query: (payload) => ({
         url: `/admin/mission-plan-report/settings/achievement`,
         method: "POST",
-        body: payload
+        body: payload,
       }),
+      invalidatesTags: ['TargetOutcomeSettings']
+    }),
+    fetchReportSubmissionSettings: builder.query({
+      query: () => ({
+        url: `/admin/mission-plan-report/settings`,
+        method: "GET",
+      }),
+      providesTags: ['TargetOutcomeSettings']
     }),
   }),
 });
 
 export const {
     useSetExpectedOutcomeSubmissionMutation,
-    useSetActualOutcomeSubmissionMutation
+    useSetActualOutcomeSubmissionMutation,
+    useFetchReportSubmissionSettingsQuery
 } = targetOutcomeApi;
