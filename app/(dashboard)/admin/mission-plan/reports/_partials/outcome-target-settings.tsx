@@ -10,6 +10,8 @@ import { REVIEW_PERIOD_OPTIONS } from "../_data";
 import { cn } from "@/lib/utils";
 import ExtendSubmissionModal from "./_modals/extend-submission";
 import ReopenSubmissionModal from "./_modals/reopen-submission";
+import { useSetActualOutcomeSubmissionMutation, useSetExpectedOutcomeSubmissionMutation } from "@/redux/services/mission-plan/reports/admin/targetOutcomeApi";
+import { toast } from "sonner";
 
 const OutcomeTargetSettings = () => {
     const [showExtendSubmissionModal, setShowExtendSubmissionModal] = useState(false)
@@ -27,6 +29,52 @@ const OutcomeTargetSettings = () => {
     const actionTypes = useMemo(() => submissionOptions,
         [submissionOptions]
     )
+
+    const [setExpectedOutcomeSubmission, { isLoading: isSettingExpectedOutcome }] = useSetExpectedOutcomeSubmissionMutation()
+
+    const [setActualOutcomeSubmission, { isLoading: isSettingActualOutcome }] = useSetActualOutcomeSubmissionMutation()
+
+    const getPayloadData = (data: Dictionary) => {
+        const { action_type, outcome: { submission, submission_approval } } = data
+        const { review_period } = submission
+        const { approval_review_period, submission_review_period } = submission_approval
+
+        return {
+            report_submission_target_approval: action_type === "submission_and_approval",
+            report_submission_target_duration: action_type === "submission_only" ? review_period : submission_review_period,
+            report_submission_target_approval_duration: action_type === "submission_only" ? "" : approval_review_period
+        }
+    }
+
+    const handleSubmitExpectedOutcome = async (values: Dictionary) => {
+        const PAYLOAD = getPayloadData(values)
+        setExpectedOutcomeSubmission(PAYLOAD)
+            .unwrap()
+            .then(() => {
+                toast.success("Expected Outcome and Target Setting Saved")
+            })
+    }
+
+
+    const handleSubmitActualOutcome = async (values: Dictionary) => {
+        const PAYLOAD = getPayloadData(values)
+        const {
+            report_submission_target_approval,
+            report_submission_target_duration,
+            report_submission_target_approval_duration
+        } = PAYLOAD
+
+        const FORMATTED_PAYLOAD = {
+            report_submission_outcome_approval: report_submission_target_approval,
+            report_submission_outcome_duration: report_submission_target_duration,
+            report_submission_outcome_approval_duration: report_submission_target_approval_duration
+          }
+        setActualOutcomeSubmission(FORMATTED_PAYLOAD)
+            .unwrap()
+            .then(() => {
+                toast.success("Actual Outcome and Target Setting Saved")
+            })
+    }
 
     const handleOptionChange = (key: string, id: number) => {
         setSubmissionOptions((prevState: any) => {
@@ -46,7 +94,7 @@ const OutcomeTargetSettings = () => {
 
     const formik = useFormik({
         initialValues: {
-            expect_outcome: {
+            outcome: {
                 submission: {
                     review_period: ""
                 },
@@ -55,21 +103,25 @@ const OutcomeTargetSettings = () => {
                     approval_review_period: "",
                 },
             },
-            actual_outcome: {
-                submission: {
-                    review_period: ""
-                },
-                submission_approval: {
-                    submission_review_period: "",
-                    approval_review_period: "",
-                },
-            },
-            action_type: {
-                expected_outcome: "",
-                actual_outcome: ""
-            }
+            action_type: ""
         },
-        onSubmit: (values) => { }
+        onSubmit: handleSubmitExpectedOutcome
+    })
+
+    const formik_1 = useFormik({
+        initialValues: {
+            outcome: {
+                submission: {
+                    review_period: ""
+                },
+                submission_approval: {
+                    submission_review_period: "",
+                    approval_review_period: "",
+                },
+            },
+            action_type: ""
+        },
+        onSubmit: handleSubmitActualOutcome
     })
 
     // console.log(submissionOptions)
@@ -103,28 +155,28 @@ const OutcomeTargetSettings = () => {
                 subTitle="Select below if you want to accept submissions or allow line manager review and approve submissions of expected outcomes and targets"
             >
                 <div className="mt-7">
-                    <form>
+                    <form onSubmit={formik.handleSubmit}>
                         <div className="w-1/3 flex items-center justify-between">
                             {
                                 actionTypes?.expected_outcome?.map((item: Dictionary, index) => (
                                     <RadioButtonLabel key={item?.id} isActive={item?.isSelected} label={item?.title} onClick={() => {
                                         handleOptionChange("expected_outcome", item.id)
-                                        formik.setFieldValue('action_type.expected_outcome', item?.type)
+                                        formik.setFieldValue('action_type', item?.type)
                                     }} />
                                 ))
                             }
                         </div>
 
-                        {formik.values?.action_type?.expected_outcome === "submission_only" &&
+                        {formik.values?.action_type === "submission_only" &&
                             <div className="mt-8 lg:w-2/5">
                                 <h2 className="text-sm">Set when submission should occur</h2>
                                 <div className="grid grid-cols-2 gap-4">
                                     <CustomSelect
                                         label="Review Period"
                                         options={REVIEW_PERIOD_OPTIONS}
-                                        selected={formik.values?.expect_outcome?.submission?.review_period}
+                                        selected={formik.values?.outcome?.submission?.review_period}
                                         setSelected={(selected) => {
-                                            formik.setFieldValue('expect_outcome.submission.review_period', selected)
+                                            formik.setFieldValue('outcome.submission.review_period', selected)
                                         }}
                                     />
 
@@ -132,16 +184,16 @@ const OutcomeTargetSettings = () => {
                             </div>
                         }
 
-                        {formik.values?.action_type?.expected_outcome === "submission_and_approval" &&
+                        {formik.values?.action_type === "submission_and_approval" &&
                             <div className="mt-8 lg:w-2/5">
                                 <h2 className="text-sm">Set when submission should occur</h2>
                                 <div className="mt-3 grid grid-cols-2 gap-4">
                                     <CustomSelect
                                         label="Review Period"
                                         options={REVIEW_PERIOD_OPTIONS}
-                                        selected={formik.values?.expect_outcome?.submission_approval?.submission_review_period}
+                                        selected={formik.values?.outcome?.submission_approval?.submission_review_period}
                                         setSelected={(selected) => {
-                                            formik.setFieldValue('expect_outcome.submission_approval.submission_review_period', selected)
+                                            formik.setFieldValue('outcome.submission_approval.submission_review_period', selected)
                                         }}
                                     />
                                 </div>
@@ -152,9 +204,9 @@ const OutcomeTargetSettings = () => {
                                         <CustomSelect
                                             label="Review Period"
                                             options={REVIEW_PERIOD_OPTIONS}
-                                            selected={formik.values?.expect_outcome?.submission_approval?.approval_review_period}
+                                            selected={formik.values?.outcome?.submission_approval?.approval_review_period}
                                             setSelected={(selected) => {
-                                                formik.setFieldValue('expect_outcome.submission_approval.approval_review_period', selected)
+                                                formik.setFieldValue('outcome.submission_approval.approval_review_period', selected)
                                             }}
                                         />
 
@@ -163,7 +215,15 @@ const OutcomeTargetSettings = () => {
                             </div>
                         }
 
-                        <Button className="mt-7">Save Preferences</Button>
+                        <Button
+                            className="mt-7"
+                            type="submit"
+                            loading={isSettingExpectedOutcome}
+                            disabled={isSettingExpectedOutcome ||
+                                actionTypes?.expected_outcome?.every((f: Dictionary) => f.isSelected === false)
+                            }
+                            loadingText="Save Preferences"
+                        >Save Preferences</Button>
                     </form>
                 </div>
             </CardContainer>
@@ -173,28 +233,28 @@ const OutcomeTargetSettings = () => {
                 subTitle="Select below if you want to accept submissions or allow line manager review and approve submitting of actual outcomes and achievements"
             >
                 <div className="mt-7">
-                    <form>
+                    <form onSubmit={formik_1.handleSubmit}>
                         <div className="w-1/3 flex items-center justify-between">
                             {
                                 actionTypes?.actual_outcome?.map((item: Dictionary, index) => (
                                     <RadioButtonLabel key={item?.id} isActive={item?.isSelected} label={item?.title} onClick={() => {
                                         handleOptionChange("actual_outcome", item.id)
-                                        formik.setFieldValue('action_type.actual_outcome', item?.type)
+                                        formik_1.setFieldValue('action_type', item?.type)
                                     }} />
                                 ))
                             }
                         </div>
 
-                        {formik.values?.action_type?.actual_outcome === "submission_only" &&
+                        {formik_1.values?.action_type === "submission_only" &&
                             <div className="mt-8 lg:w-2/5">
                                 <h2 className="text-sm">Set when submission should occur</h2>
                                 <div className="grid grid-cols-2 gap-4">
                                     <CustomSelect
                                         label="Review Period"
                                         options={REVIEW_PERIOD_OPTIONS}
-                                        selected={formik.values?.actual_outcome?.submission?.review_period}
+                                        selected={formik_1.values?.outcome?.submission?.review_period}
                                         setSelected={(selected) => {
-                                            formik.setFieldValue('actual_outcome.submission.review_period', selected)
+                                            formik_1.setFieldValue('outcome.submission.review_period', selected)
                                         }}
                                     />
 
@@ -202,16 +262,16 @@ const OutcomeTargetSettings = () => {
                             </div>
                         }
 
-                        {formik.values?.action_type?.actual_outcome === "submission_and_approval" &&
+                        {formik_1.values?.action_type === "submission_and_approval" &&
                             <div className="mt-8 lg:w-2/5">
                                 <h2 className="text-sm">Set when submission should occur</h2>
                                 <div className="mt-3 grid grid-cols-2 gap-4">
                                     <CustomSelect
                                         label="Review Period"
                                         options={REVIEW_PERIOD_OPTIONS}
-                                        selected={formik.values?.actual_outcome?.submission_approval?.submission_review_period}
+                                        selected={formik_1.values?.outcome?.submission_approval?.submission_review_period}
                                         setSelected={(selected) => {
-                                            formik.setFieldValue('actual_outcome.submission_approval.submission_review_period', selected)
+                                            formik_1.setFieldValue('outcome.submission_approval.submission_review_period', selected)
                                         }}
                                     />
                                 </div>
@@ -222,9 +282,9 @@ const OutcomeTargetSettings = () => {
                                         <CustomSelect
                                             label="Review Period"
                                             options={REVIEW_PERIOD_OPTIONS}
-                                            selected={formik.values?.actual_outcome?.submission_approval?.approval_review_period}
+                                            selected={formik_1.values?.outcome?.submission_approval?.approval_review_period}
                                             setSelected={(selected) => {
-                                                formik.setFieldValue('actual_outcome.submission_approval.approval_review_period', selected)
+                                                formik_1.setFieldValue('outcome.submission_approval.approval_review_period', selected)
                                             }}
                                         />
 
@@ -233,14 +293,22 @@ const OutcomeTargetSettings = () => {
                             </div>
                         }
 
-                        <Button className="mt-7">Save Preferences</Button>
+                        <Button
+                            className="mt-7"
+                            type="submit"
+                            loading={isSettingActualOutcome}
+                            disabled={isSettingActualOutcome ||
+                                actionTypes?.actual_outcome?.every((f: Dictionary) => f.isSelected === false)
+                            }
+                            loadingText="Save Preferences"
+                        >Save Preferences</Button>
                     </form>
                 </div>
             </CardContainer>
 
-            <ExtendSubmissionModal show={showExtendSubmissionModal} handleClose={() => setShowExtendSubmissionModal(false)}/>
+            <ExtendSubmissionModal show={showExtendSubmissionModal} handleClose={() => setShowExtendSubmissionModal(false)} />
 
-            <ReopenSubmissionModal show={showReopenSubmissionModal} handleClose={() => setShowReopenSubmissionModal(false)}/>
+            <ReopenSubmissionModal show={showReopenSubmissionModal} handleClose={() => setShowReopenSubmissionModal(false)} />
         </section>
     );
 }
