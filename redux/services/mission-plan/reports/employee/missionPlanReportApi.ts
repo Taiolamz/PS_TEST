@@ -25,6 +25,15 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getFiscalYearsProgress: builder.query({
+      query: (payload: { type: "measures" | "tasks"; page: number }) => ({
+        url: `mission-plan-report/fiscal-years-progress?type=${payload.type}&page=${payload.page}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+      transformResponse: (response: any) => response?.data,
+    }),
   }),
 });
 
@@ -32,4 +41,5 @@ export const {
   useGetStaffMeasureOfSuccessQuery,
   useGetStaffSpecifiedTaskQuery,
   useGetMissionPlanReportCycleQuery,
+  useGetFiscalYearsProgressQuery,
 } = missionPlanReportApi;
