@@ -442,9 +442,9 @@ export default function BranchDetails() {
             <ParentModuleCard list={listToTest} />
           </div>
           <section className="">
-            {tab === "departments" && <DeptTable data={departmentTable} />}
-            {tab === "units" && <UnitTable data={unitTable} />}
-            {tab === "staffs" && <StaffTable data={staffTable} />}
+            {tab === "departments" && <DeptTable />}
+            {tab === "units" && <UnitTable />}
+            {tab === "staffs" && <StaffTable />}
           </section>
         </section>
       )}
