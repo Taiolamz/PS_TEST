@@ -23,13 +23,6 @@ export default function UnitTable() {
     id: id,
     params: { page, search },
   });
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  console.log(data);
->>>>>>> ffd0c745 (rebase to base branch)
-=======
->>>>>>> 882887c5 (rebase to base branch --one)
 
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
@@ -44,18 +37,8 @@ export default function UnitTable() {
       hidePagination
       addText="New Unit"
       hideNewBtnOne={false}
-<<<<<<< HEAD
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
-=======
-<<<<<<< HEAD
-      tableBodyList={data}
-      loading={false}
-=======
-      tableBodyList={FORMAT_TABLE_DATA(data?.data)}
-      loading={isFetching}
->>>>>>> 688a5c80 (added the unit api)
->>>>>>> ffd0c745 (rebase to base branch)
       onSearch={(param) => {
         setTimeout(() => {
           // Delay api call after 3 seconds
