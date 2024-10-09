@@ -5,6 +5,7 @@ import { useGetSubsidiaryInStaffQuery } from "@/redux/services/checklist/subsidi
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
 
 const { ADMIN } = routesPath;
 
@@ -23,10 +24,14 @@ export default function StaffTable() {
     id: id,
     params: { page, search },
   });
+
+  const { subDetailsData } = useSubsidiaryById(id ?? "");
+
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);
   };
+
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
   ) : (
@@ -47,7 +52,8 @@ export default function StaffTable() {
         setPage(p);
       }}
       addText="New Staff"
-      hideNewBtnOne={false}
+      newBtnBulk={!subDetailsData?.deleted_at}
+      hideNewBtnOne={subDetailsData?.deleted_at}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       onSearch={(param) => {
@@ -60,7 +66,6 @@ export default function StaffTable() {
       dropDown
       hideFilter
       hideSort
-      newBtnBulk
       dropDownList={[
         {
           label: "View Details",

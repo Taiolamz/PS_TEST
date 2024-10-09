@@ -106,7 +106,7 @@ const AddSubsidary = () => {
             module="Subsidiary"
             form={
               <form
-                className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 "
+                className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 mb-12"
                 onSubmit={formik.handleSubmit}
                 autoComplete="off"
               >
