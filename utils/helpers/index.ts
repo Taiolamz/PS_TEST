@@ -462,11 +462,11 @@ export function convertStringToNumber(value: string) {
 
 export function capitalizeFirstLetter(sentence: string) {
   if (!sentence) return "";
-  return sentence?.charAt(0).toUpperCase() + sentence?.slice(1);
+  return sentence?.charAt(0)?.toUpperCase() + sentence?.slice(1);
 }
 
 export function getProgressColor(value: string) {
-  const numericValue = parseFloat(value.replace("%", ""));
+  const numericValue = parseFloat(value?.replace("%", ""));
   if (numericValue >= 0 && numericValue <= 45) {
     return "red";
   } else if (numericValue > 45 && numericValue <= 65) {
@@ -516,7 +516,7 @@ export const monthNames = [
 ];
 
 export const validatePasswordSpecialCharacter = (password: any) => {
-  if (password.match(/[!@#$.%^&*_=+-]/g)) {
+  if (password?.match(/[!@#$.%^&*_=+-]/g)) {
     return true;
   } else {
     return false;
@@ -524,7 +524,7 @@ export const validatePasswordSpecialCharacter = (password: any) => {
 };
 
 export const validatePasswordUpperCase = (password: any) => {
-  if (password.match(/[A-Z]+/g)) {
+  if (password?.match(/[A-Z]+/g)) {
     return true;
   } else {
     return false;
@@ -532,7 +532,7 @@ export const validatePasswordUpperCase = (password: any) => {
 };
 
 export const validatePasswordLowercase = (password: any) => {
-  if (password.match(/[a-z]+/g)) {
+  if (password?.match(/[a-z]+/g)) {
     return true;
   } else {
     return false;
@@ -540,7 +540,7 @@ export const validatePasswordLowercase = (password: any) => {
 };
 
 export const validatePasswordLength = (password: any) => {
-  if (password.length > 7) {
+  if (password?.length > 7) {
     return true;
   } else {
     return false;
@@ -548,7 +548,7 @@ export const validatePasswordLength = (password: any) => {
 };
 
 export const validatePasswordNumber = (password: any) => {
-  if (password.match(/[0-9]+/g)) {
+  if (password?.match(/[0-9]+/g)) {
     return true;
   } else {
     return false;

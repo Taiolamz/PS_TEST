@@ -29,11 +29,7 @@ import {
 } from "@/redux/services/checklist/branchApi";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
-import {
-  DeptTable,
-  StaffTable,
-  UnitTable,
-} from "../../subsidiary/_partials/_table";
+import { DeptTable, StaffTable, UnitTable } from "./_table";
 import { PageLoader } from "@/components/custom-loader";
 
 const { ADMIN } = routesPath;

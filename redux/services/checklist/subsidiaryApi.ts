@@ -31,6 +31,67 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       //   response.data.data,
     }),
 
+    getSubsidiaryById: builder.query({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries"],
+      transformResponse: (response: any) => response?.data?.subsidiary,
+    }),
+
+    getSubsidiaryInBranch: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/branch/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries", "Branches"],
+      transformResponse: (response: any) => response.data.branch,
+    }),
+
+    getSubsidiaryInDept: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/department/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries", "Departments"],
+      transformResponse: (response: any) => response.data.department,
+    }),
+
+    getSubsidiaryInUnit: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/unit/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries", "Units"],
+      transformResponse: (response: any) => response.data.unit,
+    }),
+
+    getSubsidiaryInStaff: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities-staff/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+      }),
+      providesTags: ["Subsidiaries", "Employees"],
+      transformResponse: (response: any) => response.data.staff,
+    }),
+
+    reopenSubsidiary: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/open/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
+
     downloadSubsidiaryTemplate: builder.query({
       query: (format: string) => ({
         url: `/admin/subsidiary/BulkUpload-template?format=${format}`,
@@ -47,6 +108,14 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Subsidiaries"],
     }),
+
+    closeSubsidiaries: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/subsidiary/close/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
   }),
 });
 
@@ -56,4 +125,11 @@ export const {
   useGetSubsidiariesQuery,
   useLazyDownloadSubsidiaryTemplateQuery,
   useDeleteSubsidiariesMutation,
+  useGetSubsidiaryByIdQuery,
+  useGetSubsidiaryInBranchQuery,
+  useGetSubsidiaryInDeptQuery,
+  useGetSubsidiaryInUnitQuery,
+  useGetSubsidiaryInStaffQuery,
+  useReopenSubsidiaryMutation,
+  useCloseSubsidiariesMutation,
 } = subsidiaryApi;
