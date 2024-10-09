@@ -23,6 +23,7 @@ export default function StaffTable() {
     id: id,
     params: { page, search },
   });
+  console.log(data);
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);

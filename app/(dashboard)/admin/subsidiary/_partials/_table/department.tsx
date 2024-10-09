@@ -8,9 +8,9 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
-// interface DeptTableProps {
-//   data?: any[];
-// }
+interface DeptTableProps {
+  data?: any[];
+}
 
 export default function DeptTable() {
   const router = useRouter();
