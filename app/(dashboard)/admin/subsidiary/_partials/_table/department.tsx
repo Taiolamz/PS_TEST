@@ -50,13 +50,6 @@ export default function DeptTable() {
           setSearch(param);
         }, 3000);
       }}
-      onSearch={(param) => {
-        setTimeout(() => {
-          // Delay api call after 3 seconds
-          setPage(1);
-          setSearch(param);
-        }, 3000);
-      }}
       dropDown
       hideFilter
       hideSort
