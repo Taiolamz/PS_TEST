@@ -15,7 +15,7 @@ import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
 
-export default function TargetSubmission({
+export default function AchievementSubmission({
   params,
 }: {
   params: {
@@ -50,7 +50,7 @@ export default function TargetSubmission({
     // validateOnBlur: true,
   });
   return (
-    <DashboardLayout back headerTitle="Period Target Submission">
+    <DashboardLayout back headerTitle="Period Achievement Submission">
       {isLoading ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />

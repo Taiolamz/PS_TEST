@@ -98,8 +98,10 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/review-mos`,
     REVIEW_TASK: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/review-task`,
-    MOS_TASK_SUBMISSION: (id: string) =>
+    MOS_TARGET_SUBMISSION: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/measure-of-success/target-submission`,
+    MOS_ACHIEVEMENT_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/achievement-submission`,
     // route update
     MOS_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/measure-of-success`,

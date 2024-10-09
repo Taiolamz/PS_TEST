@@ -37,9 +37,9 @@ export default function MOSTable() {
             "Measure Of Success Achievement",
             "Action",
           ]}
-          perPage={data.fiscal_years.meta.per_page}
-          totalPage={data.fiscal_years.meta.total}
-          currentPage={data.fiscal_years.meta.current_page}
+          perPage={data?.fiscal_years?.meta?.per_page}
+          totalPage={data?.fiscal_years?.meta?.total}
+          currentPage={data?.fiscal_years?.meta?.current_page}
           onPageChange={(p) => {
             setPage(p);
           }}
@@ -48,14 +48,14 @@ export default function MOSTable() {
           loading={isFetching}
           dropDown
           dynamicDropDownList={(row: any) => {
-            if (row?.status.props.children.toLowerCase() !== "active") {
+            if (row?.status?.props?.children?.toLowerCase() !== "active") {
               return [
                 {
                   label: "View My Report",
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(
                       EMPLOYEE.MOS_REPORT(
-                        row?.name?.props?.children[0].props.children
+                        row?.name?.props?.children[0]?.props?.children
                       )
                     );
                   },
@@ -64,12 +64,23 @@ export default function MOSTable() {
             } else {
               return [
                 {
+                  label: `${currentMonth} Achievements`,
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    router.push(
+                      EMPLOYEE.MOS_ACHIEVEMENT_SUBMISSION(
+                        row?.name?.props?.children[0]?.props?.children
+                      )
+                    );
+                  },
+                },
+                {
                   label: `${currentMonth} Targets`,
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(
-                      EMPLOYEE.MOS_TASK_SUBMISSION(
-                        row?.name?.props?.children[0].props.children
+                      EMPLOYEE.MOS_TARGET_SUBMISSION(
+                        row?.name?.props?.children[0]?.props?.children
                       )
                     );
                   },
@@ -79,7 +90,7 @@ export default function MOSTable() {
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
                     setOpen(true);
-                    setFyId(row?.name?.props?.children[0].props.children);
+                    setFyId(row?.name?.props?.children[0]?.props?.children);
                   },
                 },
               ];
@@ -103,7 +114,7 @@ const FORMAT_TABLE_DATA = (data: any) => {
   return data?.map((item: any) => ({
     name: (
       <>
-        <span className="hidden">{item.id}</span>
+        <span className="hidden">{item?.id}</span>
         <p>{item?.name}</p>
       </>
     ),
@@ -128,9 +139,9 @@ const FORMAT_TABLE_DATA = (data: any) => {
           value={Math.round(Number(item?.percentage?.split("%")[0]))}
           className={`w-[150px] h-1.5 `}
           indicatorClass={
-            Math.round(Number(item?.percentage?.split("%")[0])) >= 70
+            Math?.round(Number(item?.percentage?.split("%")[0])) >= 70
               ? "bg-green-500"
-              : Math.round(Number(item?.percentage?.split("%")[0])) > 40
+              : Math?.round(Number(item?.percentage?.split("%")[0])) > 40
               ? "bg-warning"
               : "bg-[red]"
           }

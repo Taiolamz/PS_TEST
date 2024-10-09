@@ -34,6 +34,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       providesTags: ["MissionPlanReport"],
       transformResponse: (response: any) => response?.data,
     }),
+
+    getMOSMeasureofSuccess: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/user-measure-of-success/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -42,4 +50,5 @@ export const {
   useGetStaffSpecifiedTaskQuery,
   useGetMissionPlanReportCycleQuery,
   useGetFiscalYearsProgressQuery,
+  useGetMOSMeasureofSuccessQuery,
 } = missionPlanReportApi;
