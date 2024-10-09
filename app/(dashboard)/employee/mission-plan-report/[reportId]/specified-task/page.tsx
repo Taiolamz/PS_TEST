@@ -3,16 +3,11 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import React from "react";
 import MetricTableCard from "@/components/card/metric-table-card";
 import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
-import CustomSelect from "@/components/custom-select";
 import MetricFrame from "@/components/card/frame";
 import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
-import {
-  useGetMissionPlanReportCycleQuery,
-  useGetOrgFiscalYearQuery,
-} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 
 export default function SpecifiedTask({
@@ -30,59 +25,11 @@ export default function SpecifiedTask({
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
 
-  const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
-  const {
-    data: orgFiscalYearDrop,
-    isLoading: isLoadingOrgFiscalYearDrop,
-    isFetching: isFetchingOrgFiscalYearDrop,
-  } = useGetOrgFiscalYearQuery();
-
-  console.log(orgFiscalYearDrop, "org fiscal year");
-
-  const handleFormatCycle = () => {
-    const cycles = (data?.data?.cycles as any[])?.map((chi) => {
-      return {
-        label: chi,
-        value: chi,
-      };
-    });
-    return cycles;
-  };
-
-  const resetFilter = () => {
-    setFiscalYear("");
-    setMissionCycle("");
-  };
-
-  const options = [
-    {
-      label: "Option one",
-      value: "Option one",
-    },
-    {
-      label: "Option two",
-      value: "Option two",
-    },
-    {
-      label: "Option three",
-      value: "Option three",
-    },
-  ];
-
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
       <div className="m-5 overflow-x-hidden">
         {/* Filter Card Section */}
-        <ReportFilter
-          fiscalYearVal={fiscalYear}
-          setFiscalYearVal={setFiscalYear}
-          missionCycleVal={missionCycle}
-          setMissionCycleVal={setMissionCycle}
-          fiscalOptions={options}
-          cycleOptions={handleFormatCycle()}
-          loading={isLoading || isFetching}
-          onReset={resetFilter}
-        />
+        <ReportFilter />
         {/* Filter Card Section End */}
 
         {/* Team Performance task bar Start */}

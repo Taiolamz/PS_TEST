@@ -7,6 +7,7 @@ import { missionPlanPreviewSliceReducer } from "./mission-plan/missionPlanPrevie
 import { missionPlanTemplateSliceReducer } from "./mission-plan/missionPlanTemplateSlice";
 import { employeeDataSliceReducer } from "./mission-plan/employeeDataSlice";
 import { specifiedTaskReassignmentReducer } from "./mission-plan/specifiedTaskReassignment";
+import { employeeMissionPlanReportFilterReducer } from "./mission-plan/report/employee/employeeMissionPlanReport";
 
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   mission_plan_template: missionPlanTemplateSliceReducer,
   single_employee: employeeDataSliceReducer,
   specified_task_reassignment: specifiedTaskReassignmentReducer,
+  employee_mission_plan_filter: employeeMissionPlanReportFilterReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
