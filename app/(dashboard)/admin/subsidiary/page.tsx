@@ -354,7 +354,7 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     name: (
       <>
         <span className="hidden">{org.id}</span>
-        <p>{org?.name}</p>
+        <p className="capitalize">{org?.name}</p>
       </>
     ),
     country: org?.country,
