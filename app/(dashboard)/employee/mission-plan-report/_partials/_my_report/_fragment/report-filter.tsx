@@ -14,6 +14,7 @@ const ReportFilter = ({
   fiscalOptions,
   cycleOptions,
   loading,
+  onReset,
 }: {
   fiscalYearVal: string;
   setFiscalYearVal: (e: any) => void;
@@ -22,6 +23,7 @@ const ReportFilter = ({
   fiscalOptions: Options[];
   cycleOptions: Options[];
   loading?: boolean;
+  onReset?: () => void;
 }) => {
   const filterIcon = (
     <svg
@@ -102,7 +104,10 @@ const ReportFilter = ({
           />
         </div>
 
-        <div className="flex gap-2 items-center cursor-pointer ml-2">
+        <div
+          className="flex gap-2 items-center cursor-pointer ml-2"
+          onClick={onReset}
+        >
           <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
           <figure>{undoIcon}</figure>
         </div>

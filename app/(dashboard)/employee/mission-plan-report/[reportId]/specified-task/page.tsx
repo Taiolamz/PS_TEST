@@ -9,7 +9,11 @@ import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
-
+import {
+  useGetMissionPlanReportCycleQuery,
+  useGetOrgFiscalYearQuery,
+} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 
 export default function SpecifiedTask({
   params,
@@ -26,50 +30,59 @@ export default function SpecifiedTask({
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
 
+  const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
+  const {
+    data: orgFiscalYearDrop,
+    isLoading: isLoadingOrgFiscalYearDrop,
+    isFetching: isFetchingOrgFiscalYearDrop,
+  } = useGetOrgFiscalYearQuery();
+
+  console.log(orgFiscalYearDrop, "org fiscal year");
+
+  const handleFormatCycle = () => {
+    const cycles = (data?.data?.cycles as any[])?.map((chi) => {
+      return {
+        label: chi,
+        value: chi,
+      };
+    });
+    return cycles;
+  };
+
+  const resetFilter = () => {
+    setFiscalYear("");
+    setMissionCycle("");
+  };
+
+  const options = [
+    {
+      label: "Option one",
+      value: "Option one",
+    },
+    {
+      label: "Option two",
+      value: "Option two",
+    },
+    {
+      label: "Option three",
+      value: "Option three",
+    },
+  ];
+
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
-      <div className="m-5">
+      <div className="m-5 overflow-x-hidden">
         {/* Filter Card Section */}
-        <div className="flex items-center mt-10 justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex gap-2 items-center cursor-pointer">
-              <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
-              <figure>{filterIcon}</figure>
-            </div>
-
-            <div className="flex items-center">
-              <CustomSelect
-                placeholder="FY"
-                options={[]}
-                selected={fiscalYear}
-                setSelected={(e: any) => {
-                  setFiscalYear(e);
-                }}
-                className="w-[150px] text-xs rounded-none rounded-l-[5px]"
-              />
-              <CustomSelect
-                placeholder="Cycle"
-                options={[]}
-                selected={missionCycle}
-                setSelected={(e: any) => {
-                  setMissionCycle(e);
-                }}
-                className="w-[150px] text-xs rounded-none rounded-r-[5px]"
-              />
-            </div>
-
-            <div className="flex gap-2 items-center cursor-pointer ml-2">
-              <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
-              <figure>{undoIcon}</figure>
-            </div>
-          </div>
-
-          {/* -----EXPORT---- */}
-          <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
-            <figure>{exportIcon}</figure>
-            <p className="text-medium text-xs text-[#6E7C87]">Export</p>
-          </div>
-        </div>
+        <ReportFilter
+          fiscalYearVal={fiscalYear}
+          setFiscalYearVal={setFiscalYear}
+          missionCycleVal={missionCycle}
+          setMissionCycleVal={setMissionCycle}
+          fiscalOptions={options}
+          cycleOptions={handleFormatCycle()}
+          loading={isLoading || isFetching}
+          onReset={resetFilter}
+        />
         {/* Filter Card Section End */}
 
         {/* Team Performance task bar Start */}
@@ -1521,7 +1534,6 @@ const specifiedTaskDetails = [
     ],
   },
 ];
-
 
 const challengesData = [
   {

@@ -36,6 +36,11 @@ const MyReport = () => {
     return cycles;
   };
 
+  const resetFilter = () => {
+    setFiscalYear("");
+    setMissionCycle("");
+  };
+
   return (
     <div>
       {/* ----- FILTER/SELECT WRAP START------- */}
@@ -48,6 +53,7 @@ const MyReport = () => {
         fiscalOptions={options}
         cycleOptions={handleFormatCycle()}
         loading={isLoading || isFetching}
+        onReset={resetFilter}
       />
 
       {/* ----- FILTER/SELECT WRAP END------- */}
