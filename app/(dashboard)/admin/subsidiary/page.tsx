@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
@@ -188,6 +188,7 @@ const Subsidiary = () => {
       })
       .catch(() => toast.dismiss());
   };
+
   const getTabParam = () => {
     if (
       processInputAsArray(user?.organization?.hierarchy)?.includes("branch")

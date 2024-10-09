@@ -56,11 +56,11 @@ const AddSubsidary = () => {
 
     if (selectedEmployee) {
       formik.setFieldValue("head.name", selectedEmployee.name);
-      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head.email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
     } else {
       formik.setFieldValue("head.name", "");
-      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("head.email", "");
       formik.setFieldValue("head.id", "");
     }
   };
@@ -116,8 +116,18 @@ const AddSubsidary = () => {
                   placeholder="Subsidiary name"
                   id="name"
                   name="name"
+                  value={formik?.values?.name}
                   onChange={formik.handleChange}
                   isRequired
+                />
+                <Input
+                  label="Subsidiary Email"
+                  type="email"
+                  placeholder="Subsidiary Email Address"
+                  id="work_email"
+                  name="work_email"
+                  value={formik?.values?.work_email}
+                  onChange={formik.handleChange}
                 />
                 <Input
                   label="Subsidiary Address"
@@ -125,6 +135,7 @@ const AddSubsidary = () => {
                   placeholder="Subsidiary address"
                   id="address"
                   name="address"
+                  value={formik?.values?.address}
                   onChange={formik.handleChange}
                   isRequired
                 />
@@ -191,20 +202,20 @@ const AddSubsidary = () => {
                   labelClass={labelClassName}
                   // isRequired
                 />
+
                 <Input
                   label="Head of Subsidiary Email"
                   type="text"
                   placeholder="Work Email"
-                  id="work_email"
-                  value={formik.values.work_email}
-                  name="work_email"
-                  onChange={formik.handleChange}
+                  id="hos_email"
+                  value={formik.values.head.email}
+                  name="hos_email"
                   // isRequired
                   disabled
                   className="disabled:opacity-100"
                 />
                 <LogoUpload
-                  showFootNote={false}
+                  showFootNote={formik.errors.logo ? true : false}
                   handleLogoChange={handleLogoChange}
                   logoName={logoName}
                   setLogo={setLogo}
@@ -220,6 +231,7 @@ const AddSubsidary = () => {
                   name="description"
                   placeholder="Description"
                   label="Subsidiary Description"
+                  value={formik.values.description}
                   className=" w-full  block px-4 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm bg-white"
                   onChange={formik.handleChange}
                 />

@@ -12,6 +12,15 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       invalidatesTags: ["Subsidiaries"],
     }),
 
+    updateSubsidiary: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/subsidiary/update/${payload?.id}`,
+        method: "PUT",
+        body: payload?.data,
+      }),
+      invalidatesTags: ["Subsidiaries"],
+    }),
+
     createBulkSubsidiaries: builder.mutation({
       query: (payload) => ({
         url: `/admin/subsidiary/bulk-upload`,
@@ -132,4 +141,5 @@ export const {
   useGetSubsidiaryInStaffQuery,
   useReopenSubsidiaryMutation,
   useCloseSubsidiariesMutation,
+  useUpdateSubsidiaryMutation,
 } = subsidiaryApi;

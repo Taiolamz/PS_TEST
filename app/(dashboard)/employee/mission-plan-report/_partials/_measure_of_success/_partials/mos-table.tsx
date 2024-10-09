@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import { fakeApprovalStep } from "../_data/data";
@@ -8,6 +8,7 @@ import TableWrapper from "@/components/tables/TableWrapper";
 import ApprovalDrawer from "@/components/drawer/approval-drawer";
 import ApprovalProgress from "@/components/fragment/progress/approval-progress";
 import { useGetFiscalYearsProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 
 const { EMPLOYEE } = routesPath;
 export default function MOSTable() {
@@ -15,6 +16,8 @@ export default function MOSTable() {
   const [fyId, setFyId] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState(1);
+
+  const currentMonth = useMemo(() => getCurrentMonth(), []); //Get the current month name
 
   const { data, isLoading, isFetching } = useGetFiscalYearsProgressQuery({
     type: "measures",
@@ -45,7 +48,7 @@ export default function MOSTable() {
           loading={isFetching}
           dropDown
           dynamicDropDownList={(row: any) => {
-            if (row?.status.props.children.toLowerCase() === "closed") {
+            if (row?.status.props.children.toLowerCase() !== "active") {
               return [
                 {
                   label: "View My Report",
@@ -61,7 +64,7 @@ export default function MOSTable() {
             } else {
               return [
                 {
-                  label: "February Targets",
+                  label: `${currentMonth} Targets`,
                   color: "",
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(

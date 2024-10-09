@@ -118,46 +118,9 @@ export const useSubsidiary = ({ cancelPath }: Prop) => {
   const SubsidiaryRoute = ADMIN.SUBSIDIARY;
   const [createSubsidiary, { isLoading: isCreatingSubsidiary }] =
     useCreateSubsidiaryMutation();
-  // const handleSubmit = async () => {
-  //   const payload = new FormData();
-  //   const { logo } = formik.values;
-
-  //   Object.entries(formik.values).forEach(([key, value]) => {
-  //     if (key === "logo" && logo instanceof File) {
-  //       payload.append(key, logo);
-  //     } else if (key === "head") {
-  //       payload.append(key, formik.values.head.id);
-  //     } else {
-  //       payload.append(key, value as string);
-  //     }
-  //   });
-
-  //   payload.append("city", formik.values.state);
-
-  //   // const payload = {
-  //   //   ...formik.values,
-  //   //   organization_id: organization?.id,
-  //   //   city: formik.values.state,
-  //   //   head: formik.values.head.id,
-  //   // };
-  //   await createSubsidiary(payload)
-  //     .unwrap()
-  //     .then(() => {
-  //       actionCtx?.triggerUpdateChecklist();
-  //       toast.success("Subsidiary Created Successfully");
-  //       router.push(SubsidiaryRoute);
-  //       new Promise(() => {
-  //         setTimeout(() => {
-  //           toast.dismiss();
-  //           // router.push(SubsidiaryRoute);
-  //         }, 2000);
-  //       });
-  //     });
-  // };
   const handleSubmit = async () => {
     const payload = new FormData();
     const { logo, head, state, ...rest } = formik.values;
-
 
     Object.entries(rest).forEach(([key, value]) => {
       payload.append(key, value as string);

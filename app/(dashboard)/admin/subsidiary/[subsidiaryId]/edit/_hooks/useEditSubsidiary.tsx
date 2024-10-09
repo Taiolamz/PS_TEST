@@ -14,6 +14,7 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useSubsidiaryById } from "../../../_hooks/useSubsidiaryById";
+import { useUpdateSubsidiaryMutation } from "@/redux/services/checklist/subsidiaryApi";
 
 type Prop = {
   id: string;
@@ -78,6 +79,9 @@ export const useEditSubsidiary = ({ id }: Prop) => {
 
   const { data: employeesData } = useGetAllEmployeesQuery();
 
+  const [updateSubsidiary, { isLoading: isUpdatingSubsidiary }] =
+    useUpdateSubsidiaryMutation();
+
   const states = statesData ?? [];
   const employees = employeesData ?? [];
   const employeeDrop = handleDropdown(employees);
@@ -111,25 +115,17 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     }
     payload.append("head", head.id);
     payload.append("state", state);
-    console.log(formik.values, "payload", id);
-    // await createSubsidiary(payload)
-    //   .unwrap()
-    //   .then(() => {
-    //     actionCtx?.triggerUpdateChecklist();
-    //     toast.success("Subsidiary Created Successfully");
-    //     router.push(SubsidiaryRoute);
-    //     new Promise(() => {
-    //       setTimeout(() => {
-    //         toast.dismiss();
-    //       }, 2000);
-    //     });
-    //   });
+    updateSubsidiary({ data: payload, id: id })
+      .unwrap()
+      .then(() => {
+        toast.success("Subsidiary Updated Successfully");
+        router.back();
+      });
   };
 
   const formik = useFormik({
     initialValues: {
       name: subDetailsData?.name || "",
-      email: subDetailsData?.work_email || "",
       address: subDetailsData?.address ?? "",
       country: subDetailsData?.country || "",
       state: subDetailsData?.state || "",
@@ -138,8 +134,8 @@ export const useEditSubsidiary = ({ id }: Prop) => {
         email: subDetailsData?.hos_email || "",
         id: subDetailsData?.head?.id || "",
       },
-      work_email: subDetailsData?.hos_email || "",
-      logo: subDetailsData?.logo || (null as File | null),
+      work_email: subDetailsData?.work_email || "",
+      logo: null as File | null,
       description: subDetailsData?.description || "",
     },
     validationSchema: formSchema,
@@ -155,5 +151,6 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     employees: handleFormatDropdown(employees),
     employeeDrop,
     isLoadingStates,
+    isUpdatingSubsidiary,
   };
 };

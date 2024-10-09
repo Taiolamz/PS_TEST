@@ -1,39 +1,35 @@
-import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import { Button } from "@/components/ui/button";
 import React from "react";
-import routesPath from "@/utils/routes";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import ModalContainer from "@/components/modal-container";
+import { toast } from "sonner";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
+import routesPath from "@/utils/routes";
 import { useAppSelector } from "@/redux/store";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { processInputAsArray } from "@/utils/helpers";
+import ModalContainer from "@/components/modal-container";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useSubsidiaryById } from "../_hooks/useSubsidiaryById";
+import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { BranchesTable, DeptTable, StaffTable, UnitTable } from "./_table";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import {
   useCloseSubsidiariesMutation,
-  useGetSubsidiaryByIdQuery,
-  useGetSubsidiaryInBranchQuery,
-  useGetSubsidiaryInDeptQuery,
   useReopenSubsidiaryMutation,
 } from "@/redux/services/checklist/subsidiaryApi";
-import { PageLoader } from "@/components/custom-loader";
-import { useSubsidiaryById } from "../_hooks/useSubsidiaryById";
-import { toast } from "sonner";
-import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const { ADMIN } = routesPath;
 
 export default function SubsidiaryDetails() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [reopen, setReopen] = React.useState(false);
-  const [modal, setModal] = React.useState(false);
-  const { user } = useAppSelector((state) => state.auth);
   const id = searchParams.get("id");
   const tab = searchParams.get("tab");
+  const [modal, setModal] = React.useState(false);
+  const [reopen, setReopen] = React.useState(false);
+  const { user } = useAppSelector((state) => state.auth);
 
   const {
     subDetailsData,
@@ -51,6 +47,7 @@ export default function SubsidiaryDetails() {
   // Reopen Subsidiary
   const [reopenSubsidiary, { data: reopenData, isLoading: isReopening }] =
     useReopenSubsidiaryMutation();
+
   // Close Subsidiary
   const [closeSubsidiaries, { data: closeSubData, isLoading: isClosingSub }] =
     useCloseSubsidiariesMutation();
@@ -153,7 +150,7 @@ export default function SubsidiaryDetails() {
         setModal(false);
       })
       .catch((err) => {
-        toast.error("Unable to handle your request.");
+        // toast.error(err?.data.message || "Unable to handle your request.");
       });
   };
 
