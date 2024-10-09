@@ -28,7 +28,6 @@ export default function DeptTable() {
     id: id,
     params: { page, search },
   });
-
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
   ) : (
