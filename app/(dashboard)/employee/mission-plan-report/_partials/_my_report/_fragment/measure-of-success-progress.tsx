@@ -2,6 +2,7 @@ import MetricFrame from "@/components/card/frame";
 import { PageLoader } from "@/components/custom-loader";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import { FileIcon } from "@/public/assets/icons";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStaffMeasureOfSuccessQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useAppSelector } from "@/redux/store";
@@ -11,6 +12,7 @@ import {
   getProgressColorByValue,
 } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -108,7 +110,7 @@ const MeasureOfSucessProgress = () => {
   const achievedMos = data?.data?.measures?.achieved_total;
 
   const centeredClass =
-    "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
+    "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center";
 
   return (
     <MetricFrame className="flex flex-col gap-4 relative min-h-[700px] ">
@@ -199,40 +201,49 @@ const MeasureOfSucessProgress = () => {
             </div>
           );
         })} */}
-            {mosData?.map((chi, idx) => {
-              const { achieved, measure, target, unit, weight, id } = chi;
-              return (
-                <div key={idx || id}>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-[#5A5B5F] font-medium text-sm">
-                      {capitalizeFirstLetter(measure)}
-                    </p>
-                    <ReusableProgress
-                      color={getProgressColorByValue(
-                        convertStringToNumber(achieved)
-                      )}
-                      // color={color as "red"}
-                      valuePosition="float-right"
-                      value={convertStringToNumber(achieved)}
-                      height={16}
-                      borderRadius={2}
-                      hasBackground={false}
-                      valueColor={getProgressColorByValue(
-                        convertStringToNumber(achieved)
-                      )}
-                      // valueColor={value_color}
-                      progressClass="rounded-[2px]"
-                    />
-                    <ReusableProgress
-                      value={0}
-                      className="!bg-[#EBF7FF]"
-                      borderRadius={2}
-                    />
-                    <p className="text-[#6B51DF] text-xs font-medium">{`${target}${unit}`}</p>
+            {mosData && mosData?.length > 0 ? (
+              mosData?.map((chi, idx) => {
+                const { achieved, measure, target, unit, weight, id } = chi;
+                return (
+                  <div key={idx || id}>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-[#5A5B5F] font-medium text-sm">
+                        {capitalizeFirstLetter(measure)}
+                      </p>
+                      <ReusableProgress
+                        color={getProgressColorByValue(
+                          convertStringToNumber(achieved)
+                        )}
+                        // color={color as "red"}
+                        valuePosition="float-right"
+                        value={convertStringToNumber(achieved)}
+                        height={16}
+                        borderRadius={2}
+                        hasBackground={false}
+                        valueColor={getProgressColorByValue(
+                          convertStringToNumber(achieved)
+                        )}
+                        // valueColor={value_color}
+                        progressClass="rounded-[2px]"
+                      />
+                      <ReusableProgress
+                        value={0}
+                        className="!bg-[#EBF7FF]"
+                        borderRadius={2}
+                      />
+                      <p className="text-[#6B51DF] text-xs font-medium">{`${target}${unit}`}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className={centeredClass}>
+                <Image src={FileIcon} alt="file" />
+                <p className="text-[var(--text-color2)] text-center font-light">
+                  No Record Found.
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}
