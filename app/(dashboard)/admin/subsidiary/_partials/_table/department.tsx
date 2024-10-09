@@ -31,7 +31,6 @@ export default function DeptTable() {
     id: id,
     params: { page, search },
   });
-
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
   ) : (
@@ -47,13 +46,6 @@ export default function DeptTable() {
       currentPage={data?.meta?.current_page}
       onPageChange={(p) => {
         setPage(p);
-      }}
-      onSearch={(param) => {
-        setTimeout(() => {
-          // Delay api call after 3 seconds
-          setPage(1);
-          setSearch(param);
-        }, 3000);
       }}
       dropDown
       hideFilter

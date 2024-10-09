@@ -27,13 +27,13 @@ const MyReport = () => {
   const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
 
   const handleFormatCycle = () => {
-    const cycle = (data?.data as any[])?.map((chi) => {
+    const cycles = (data?.data?.cycles as any[])?.map((chi) => {
       return {
         label: chi,
         value: chi,
       };
     });
-    return cycle;
+    return cycles;
   };
 
   return (

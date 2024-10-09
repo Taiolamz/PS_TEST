@@ -9,9 +9,9 @@ import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
 
 const { ADMIN } = routesPath;
 
-interface StaffTableProps {
-  data?: any[];
-}
+// interface StaffTableProps {
+//   data?: any[];
+// }
 
 export default function StaffTable() {
   const router = useRouter();

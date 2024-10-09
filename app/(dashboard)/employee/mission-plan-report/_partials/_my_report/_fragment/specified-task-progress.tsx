@@ -2,6 +2,7 @@ import MetricFrame from "@/components/card/frame";
 import { PageLoader } from "@/components/custom-loader";
 import { ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import { FileIcon } from "@/public/assets/icons";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStaffSpecifiedTaskQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useAppSelector } from "@/redux/store";
@@ -11,6 +12,7 @@ import {
   getProgressColorByValue,
 } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -119,7 +121,7 @@ const SpecifiedTaskProgress = () => {
   const completedTask = data?.data?.specified_tasks?.completed_total;
 
   const centeredClass =
-    "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2";
+    "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center";
 
   return (
     <MetricFrame className="flex flex-col gap-4 w-full relative min-h-[700px]">
@@ -212,30 +214,39 @@ const SpecifiedTaskProgress = () => {
                 </div>
               );
             })} */}
-            {specifiedTaskData?.map((chi, idx) => {
-              const { id, task, completed } = chi;
-              return (
-                <div key={idx || id}>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-[#5A5B5F] font-medium text-sm">
-                      {capitalizeFirstLetter(task)}
-                    </p>
-                    <ReusableProgress
-                      valuePosition="float-left"
-                      value={convertStringToNumber(completed)}
-                      height={16}
-                      borderRadius={2}
-                      // valueColor={"red"}
-                      color={getProgressColorByValue(
-                        convertStringToNumber(completed)
-                      )}
-                      className="!bg-[#EBF7FF]"
-                      progressClass="rounded-[2px]"
-                    />
+            {specifiedTaskData && specifiedTaskData?.length > 0 ? (
+              specifiedTaskData?.map((chi, idx) => {
+                const { id, task, completed } = chi;
+                return (
+                  <div key={idx || id}>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-[#5A5B5F] font-medium text-sm">
+                        {capitalizeFirstLetter(task)}
+                      </p>
+                      <ReusableProgress
+                        valuePosition="float-left"
+                        value={convertStringToNumber(completed)}
+                        height={16}
+                        borderRadius={2}
+                        // valueColor={"red"}
+                        color={getProgressColorByValue(
+                          convertStringToNumber(completed)
+                        )}
+                        className="!bg-[#EBF7FF]"
+                        progressClass="rounded-[2px]"
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className={centeredClass}>
+                <Image src={FileIcon} alt="file" />
+                <p className="text-[var(--text-color2)] text-center font-light">
+                  No Record Found.
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}
