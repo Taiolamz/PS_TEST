@@ -24,9 +24,12 @@ export default function UnitTable() {
     params: { page, search },
   });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   console.log(data);
 >>>>>>> ffd0c745 (rebase to base branch)
+=======
+>>>>>>> 882887c5 (rebase to base branch --one)
 
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
