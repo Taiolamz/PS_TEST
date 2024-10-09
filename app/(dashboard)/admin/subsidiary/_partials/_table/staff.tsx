@@ -8,9 +8,9 @@ import React from "react";
 
 const { ADMIN } = routesPath;
 
-interface StaffTableProps {
-  data?: any[];
-}
+// interface StaffTableProps {
+//   data?: any[];
+// }
 
 export default function StaffTable() {
   const router = useRouter();
@@ -23,6 +23,7 @@ export default function StaffTable() {
     id: id,
     params: { page, search },
   });
+  console.log(data);
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);
