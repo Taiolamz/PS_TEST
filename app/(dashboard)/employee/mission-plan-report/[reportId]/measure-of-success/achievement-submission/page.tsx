@@ -21,6 +21,7 @@ import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
+import { toast } from "sonner";
 export default function AchievementSubmission({
   params,
 }: {
@@ -39,10 +40,7 @@ export default function AchievementSubmission({
   });
 
   //Add MOS monthly target
-  const [
-    addMOSAchievement,
-    { isLoading: addingTarget, data: tardata, error: errtar },
-  ] = useAddMOSAchievementMutation();
+  const [addMOSAchievement] = useAddMOSAchievementMutation();
 
   // fetch measure of success
   const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
@@ -90,17 +88,15 @@ export default function AchievementSubmission({
     })
       .unwrap()
       .then(() => {
+        toast.success(
+          `${getCurrentMonth()} Achievement Successfully Submitted`
+        );
         setSubmitting(false);
       })
       .catch((err) => {
-        // console.log(err, "error");
         setSubmitting(false);
       });
   };
-
-  console.log({
-    mosData,
-  });
 
   return (
     <DashboardLayout back headerTitle="Period Achievement Submission">
@@ -192,86 +188,102 @@ export default function AchievementSubmission({
                       </Button>
                     </div>
                   </section>
-                  {filteredTarget.length > 1 ? (
+                  {filteredTarget?.length < 1 ? (
                     <div className="border grid gap-y-4 border-[var(--input-border)] place-content-center  text-center h-[342px]  rounded-sm w-full py-5 px-4">
                       <p className="text-[var(--text-color2)] font-xs">
                         You have No Target For {getCurrentMonth()}
                       </p>
                     </div>
                   ) : (
-                    <Formik
-                      initialValues={{
-                        achieved: "",
-                      }}
-                      validationSchema={validationSchema}
-                      onSubmit={(values, { setSubmitting }) =>
-                        handleFormSubmit(values, item.id, setSubmitting)
-                      }
-                    >
-                      {({
-                        values,
-                        handleChange,
-                        handleBlur,
-                        isSubmitting,
-                        errors,
-                        touched,
-                      }) => (
-                        <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
-                          <Input
-                            label={`${getCurrentMonth()?.slice(0, 3)} Target`}
-                            name="target"
-                            id={`target`}
-                            placeholder="Target as set during period start"
-                            disabled
-                          />
-                          <Input
-                            label={`${getCurrentMonth()?.slice(
-                              0,
-                              3
-                            )} Achievement`}
-                            name="achievement"
-                            id={`achievement-${item.id}`}
-                            value={values.achieved}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={errors.achieved}
-                            touched={touched.achieved}
-                            placeholder="Input Achievement"
-                            isRequired
-                          />
-                          <div className="grid lg:grid-cols-2 gap-4">
-                            <Input
-                              label="Total Percentage Achieved"
-                              id="total_percentage"
-                              name="total_percentage"
-                              placeholder="% Auto Calculated"
-                              disabled
-                            />
-                          </div>
-                          <div className="space-x-5">
-                            <Button
-                              loading={isSubmitting}
-                              type="submit"
-                              disabled={isSubmitting}
-                              loadingText="Submit"
-                              className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none"
-                            >
-                              Submit
-                            </Button>
-                            <Button
-                              type="button"
-                              onClick={() => {
-                                setId(item?.id);
-                                setShowReportChallenge(true);
-                              }}
-                              className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
-                            >
-                              Report Challenge
-                            </Button>
-                          </div>
-                        </Form>
-                      )}
-                    </Formik>
+                    filteredTarget?.map((vals: any) => (
+                      <Formik
+                        initialValues={{
+                          achieved: "",
+                        }}
+                        validateOnMount={true}
+                        validationSchema={validationSchema}
+                        onSubmit={(values, { setSubmitting }) =>
+                          handleFormSubmit(values, vals.id, setSubmitting)
+                        }
+                      >
+                        {({
+                          values,
+                          handleChange,
+                          handleBlur,
+                          isSubmitting,
+                          errors,
+                          touched,
+                          setFieldValue,
+                        }) => {
+                          useEffect(() => {
+                            if (vals?.achieved) {
+                              setFieldValue("achieved", vals?.achieved);
+                            }
+                          }, []);
+                          return (
+                            <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
+                              <Input
+                                label={`${getCurrentMonth()?.slice(
+                                  0,
+                                  3
+                                )} Target`}
+                                name="target"
+                                id={`target`}
+                                value={vals?.target}
+                                placeholder="Target as set during period start"
+                                disabled
+                              />
+                              <Input
+                                label={`${getCurrentMonth()?.slice(
+                                  0,
+                                  3
+                                )} Achievement`}
+                                type="number"
+                                name="achieved"
+                                id={`achieved-${vals.id}`}
+                                value={values.achieved}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors?.achieved}
+                                touched={touched.achieved}
+                                placeholder="Input Achievement"
+                                isRequired
+                              />
+                              <div className="grid lg:grid-cols-2 gap-4">
+                                <Input
+                                  label="Total Percentage Achieved"
+                                  id="total_percentage"
+                                  name="total_percentage"
+                                  placeholder="% Auto Calculated"
+                                  disabled
+                                />
+                              </div>
+                              <div className="space-x-5 flex items-end ">
+                                <Button
+                                  loading={isSubmitting}
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  loadingText="Submit"
+                                  className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none"
+                                >
+                                  Submit
+                                </Button>
+                                <Button
+                                  type="button"
+                                  onClick={() => {
+                                    setId(vals?.id);
+                                    setShowReportChallenge(true);
+                                  }}
+                                  className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
+                                >
+                                  Report Challenge
+                                </Button>
+                              </div>
+                            </Form>
+                          );
+                        }}
+                      </Formik>
+                    ))
                   )}
                 </main>
               </section>
@@ -304,109 +316,6 @@ export default function AchievementSubmission({
     </DashboardLayout>
   );
 }
-
-// const dass = {
-//   status: "success",
-//   data: [
-//     {
-//       id: "01j96qxnhg5z6a3qeexjykmtty",
-//       measure: "completion of tsts",
-//       unit: "20",
-//       target: "1.00",
-//       status: "pending",
-//       weight: "20.00",
-//       target_achievements: [
-//         {
-//           id: "01j98nkrqczr7ank9m30fejwfh",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnhg5z6a3qeexjykmtty",
-//           target: "1.00",
-//           achieved: "1.00",
-//           month: "January",
-//           status: "pending",
-//           created_at: "2024-10-03T07:48:18.000000Z",
-//           updated_at: "2024-10-03T07:50:30.000000Z",
-//           achievement_submitted_at: "2024-10-03 07:50:30",
-//           deleted_at: null,
-//         },
-//         {
-//           id: "01j98nstrjepk1gyg50hqpbz7c",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnhg5z6a3qeexjykmtty",
-//           target: "2.00",
-//           achieved: "1.00",
-//           month: "June",
-//           status: "pending",
-//           created_at: "2024-10-03T07:51:36.000000Z",
-//           updated_at: "2024-10-03T07:51:55.000000Z",
-//           achievement_submitted_at: "2024-10-03 07:51:55",
-//           deleted_at: null,
-//         },
-//       ],
-//       fy_completion_percentage: [{ completion_percentage: null }],
-//     },
-//     {
-//       id: "01j96qxnwdf3b1qdyfw2anjha5",
-//       measure: "completion of aut tsts",
-//       unit: "20",
-//       target: "1.00",
-//       status: "pending",
-//       weight: "80.00",
-//       target_achievements: [
-//         {
-//           id: "01j98nc00p6e59ef4che5gn77w",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnwdf3b1qdyfw2anjha5",
-//           target: "1.00",
-//           achieved: "1.00",
-//           month: "January",
-//           status: "pending",
-//           created_at: "2024-10-03T07:44:03.000000Z",
-//           updated_at: "2024-10-03T07:44:50.000000Z",
-//           achievement_submitted_at: "2024-10-03 07:44:50",
-//           deleted_at: null,
-//         },
-//         {
-//           id: "01j9km46a45kne0spz41pyer8y",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnwdf3b1qdyfw2anjha5",
-//           target: "20.00",
-//           achieved: "15.00",
-//           month: "April",
-//           status: "pending",
-//           created_at: "2024-10-07T13:53:58.000000Z",
-//           updated_at: "2024-10-07T13:58:59.000000Z",
-//           achievement_submitted_at: "2024-10-07 13:58:59",
-//           deleted_at: null,
-//         },
-//         {
-//           id: "01j9p2k88jjh2vvvea0zvhe1h7",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnwdf3b1qdyfw2anjha5",
-//           target: "20.00",
-//           achieved: "9.00",
-//           month: "May",
-//           status: "pending",
-//           created_at: "2024-10-08T12:45:20.000000Z",
-//           updated_at: "2024-10-08T12:45:56.000000Z",
-//           achievement_submitted_at: "2024-10-08 12:45:56",
-//           deleted_at: null,
-//         },
-//       ],
-//       fy_completion_percentage: [{ completion_percentage: null }],
-//     },
-//   ],
-// };
 
 const format_history_data = (data: any[]) => {
   return data?.map((item: any) => ({

@@ -218,7 +218,7 @@ export default function TargetSubmission({
                           touched={touched.target}
                           placeholder="Target as set during period start"
                           isRequired
-                          // required
+                          type="number"
                         />
                         <Input
                           label={`${getCurrentMonth()?.slice(
