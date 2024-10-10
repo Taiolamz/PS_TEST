@@ -42,6 +42,13 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+    getOrgFiscalYear: builder.query<any, void>({
+      query: () => ({
+        url: "/mission-plan-report/organization-fiscal-year",
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
 
     getAchievementHistoy: builder.query({
       query: (id) => ({
@@ -89,4 +96,5 @@ export const {
   useLazyGetMOSCommentQuery,
   useAddMOSTargetMutation,
   useAddMOSAchievementMutation,
+  useGetOrgFiscalYearQuery,
 } = missionPlanReportApi;

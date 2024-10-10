@@ -1,14 +1,14 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import React, { useState } from "react";
-import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
+import ReportFilter from "../../../_partials/_my_report/_fragment/report-filter";
 import MeasureOfSucessMetricTableCard from "@/components/card/mos-table-card";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import { CHALLENGES_DATA } from "@/app/(dashboard)/admin/mission-plan/reports/_data";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import OrganizationTargetChart from "@/app/(dashboard)/admin/mission-plan/reports/_charts/organization-target";
 
-export default function MOSReport({
+export default function DownlineMOSReport({
   params,
 }: {
   params: { reportId: string };
