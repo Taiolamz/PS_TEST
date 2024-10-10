@@ -11,6 +11,7 @@ import HistoryDrawer from "@/components/drawer/history-drawer";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReportChallengeModal from "../../../_component/report-challenge-modal";
 import {
+  useAddMOSAchievementMutation,
   useAddMOSTargetMutation,
   useGetMOSMeasureofSuccessQuery,
   useLazyGetAchievementHistoyQuery,
@@ -39,9 +40,9 @@ export default function AchievementSubmission({
 
   //Add MOS monthly target
   const [
-    addMOSTarget,
+    addMOSAchievement,
     { isLoading: addingTarget, data: tardata, error: errtar },
-  ] = useAddMOSTargetMutation();
+  ] = useAddMOSAchievementMutation();
 
   // fetch measure of success
   const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
@@ -83,7 +84,7 @@ export default function AchievementSubmission({
     id: string,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    addMOSTarget({
+    addMOSAchievement({
       target_id: id,
       ...values,
     })
@@ -97,15 +98,9 @@ export default function AchievementSubmission({
       });
   };
 
-  // console.log({
-  //   mosData,
-  //   isLoading,
-  //   loadingHistory,
-  //   historyData,
-  //   loadingComment,
-  //   commentData,
-  //   fetchingComment,
-  // });
+  console.log({
+    mosData,
+  });
 
   return (
     <DashboardLayout back headerTitle="Period Achievement Submission">
@@ -122,147 +117,166 @@ export default function AchievementSubmission({
         </div>
       ) : (
         <div className="m-5 mt-7 space-y-7 pb-9">
-          {mosData?.data?.map((item: any, index: number) => (
-            <section
-              key={item?.id}
-              className="border border-[var(--input-border)] bg-white px-6 py-5"
-            >
-              <header className="lg:flex items-center justify-between">
-                <h3 className="text-black max-lg:inline-block capitalize text-nowrap">
-                  {index + 1} .
-                </h3>
-                <h3 className="inline-flex items-center max-lg:float-right gap-x-1 text-[var(--text-color4)] text-sm">
-                  Approval Status :
-                  <span
-                    className={cn(
-                      "capitalize",
-                      item?.status?.toLowerCase() === "pending"
-                        ? "text-[var(--bg-yellow-400)]"
-                        : item?.status?.toLowerCase() === "approved"
-                        ? "text-[rgb(var(--bg-green-100))]"
-                        : "text-[var(--bg-red-100)]"
-                    )}
-                  >
-                    {item?.status}
-                  </span>
-                </h3>
-                <h3 className="font-medium max-lg:mt-3 items-center gap-x-1 text-[var(--text-color4)]">
-                  Percent Completed:{" "}
-                  <span className="font-semibold text-green-500">{74}%</span>
-                </h3>
-              </header>
-              <main className="mt-7 lg:flex gap-x-3">
-                <section className="w-full mb-6">
-                  <div className="grid grid-cols-9 text-[var(--footer-link-color)] gap-x-1">
-                    <p className=" col-span-4 text-sm">Measure</p>
-                    <p className=" col-span-2 text-sm">Weight</p>
-                    <p className=" col-span-1 text-sm">Unit</p>
-                    <p className=" col-span-2 text-sm">Yearly Target</p>
-
-                    <hr className="my-3 col-span-12" />
-
-                    <p className=" col-span-4 text-xs">{item?.measure}</p>
-                    <p className=" col-span-2 text-xs">{item?.weight}</p>
-                    <p className=" col-span-1 text-xs">{item?.unit}</p>
-                    <p className=" col-span-2 text-xs">{item?.target}</p>
-                  </div>
-                  <div className="flex gap-x-3 mt-8">
-                    <Button
-                      onClick={async () => {
-                        await setShowComment(false);
-                        setShowHistory(true);
-                        setId(item?.id);
-                      }}
-                      className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+          {mosData?.data?.map((item: any, index: number) => {
+            const filteredTarget = item?.target_achievements?.filter(
+              (item: any) =>
+                item?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
+            );
+            return (
+              <section
+                key={item?.id}
+                className="border border-[var(--input-border)] bg-white px-6 py-5"
+              >
+                <header className="lg:flex items-center justify-between">
+                  <h3 className="text-black max-lg:inline-block capitalize text-nowrap">
+                    {index + 1} .
+                  </h3>
+                  <h3 className="inline-flex items-center max-lg:float-right gap-x-1 text-[var(--text-color4)] text-sm">
+                    Approval Status :
+                    <span
+                      className={cn(
+                        "capitalize",
+                        item?.status?.toLowerCase() === "pending"
+                          ? "text-[var(--bg-yellow-400)]"
+                          : item?.status?.toLowerCase() === "approved"
+                          ? "text-[rgb(var(--bg-green-100))]"
+                          : "text-[var(--bg-red-100)]"
+                      )}
                     >
-                      View History
-                    </Button>
-                    <Button
-                      onClick={async () => {
-                        await setShowHistory(false);
-                        setShowComment(true);
-                        setId(item?.id);
+                      {item?.status}
+                    </span>
+                  </h3>
+                  <h3 className="font-medium max-lg:mt-3 items-center gap-x-1 text-[var(--text-color4)]">
+                    Percent Completed:{" "}
+                    <span className="font-semibold text-green-500">{74}%</span>
+                  </h3>
+                </header>
+                <main className="mt-7 lg:flex gap-x-3">
+                  <section className="w-full mb-6">
+                    <div className="grid grid-cols-9 text-[var(--footer-link-color)] gap-x-1">
+                      <p className=" col-span-4 text-sm">Measure</p>
+                      <p className=" col-span-2 text-sm">Weight</p>
+                      <p className=" col-span-1 text-sm">Unit</p>
+                      <p className=" col-span-2 text-sm">Yearly Target</p>
+
+                      <hr className="my-3 col-span-12" />
+
+                      <p className=" col-span-4 text-xs">{item?.measure}</p>
+                      <p className=" col-span-2 text-xs">{item?.weight}</p>
+                      <p className=" col-span-1 text-xs">
+                        {item?.unit?.slice(0, 1)}
+                      </p>
+                      <p className=" col-span-2 text-xs">{item?.target}</p>
+                    </div>
+                    <div className="flex gap-x-3 mt-8">
+                      <Button
+                        onClick={async () => {
+                          await setShowComment(false);
+                          setShowHistory(true);
+                          setId(item?.id);
+                        }}
+                        className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                      >
+                        View History
+                      </Button>
+                      <Button
+                        onClick={async () => {
+                          await setShowHistory(false);
+                          setShowComment(true);
+                          setId(item?.id);
+                        }}
+                        className="text-[var(--footer-link-color)] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                      >
+                        Comments
+                        <CommentsIcon />
+                      </Button>
+                    </div>
+                  </section>
+                  {filteredTarget.length > 1 ? (
+                    <div className="border grid gap-y-4 border-[var(--input-border)] place-content-center  text-center h-[342px]  rounded-sm w-full py-5 px-4">
+                      <p className="text-[var(--text-color2)] font-xs">
+                        You have No Target For {getCurrentMonth()}
+                      </p>
+                    </div>
+                  ) : (
+                    <Formik
+                      initialValues={{
+                        achieved: "",
                       }}
-                      className="text-[var(--footer-link-color)] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                      validationSchema={validationSchema}
+                      onSubmit={(values, { setSubmitting }) =>
+                        handleFormSubmit(values, item.id, setSubmitting)
+                      }
                     >
-                      Comments
-                      <CommentsIcon />
-                    </Button>
-                  </div>
-                </section>
-                <Formik
-                  initialValues={{
-                    achieved: "",
-                  }}
-                  validationSchema={validationSchema}
-                  onSubmit={(values, { setSubmitting }) =>
-                    handleFormSubmit(values, item.id, setSubmitting)
-                  }
-                >
-                  {({
-                    values,
-                    handleChange,
-                    handleBlur,
-                    isSubmitting,
-                    errors,
-                    touched,
-                  }) => (
-                    <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
-                      <Input
-                        label={`${getCurrentMonth()?.slice(0, 3)} Target`}
-                        name="target"
-                        id={`target`}
-                        placeholder="Target as set during period start"
-                        disabled
-                      />
-                      <Input
-                        label={`${getCurrentMonth()?.slice(0, 3)} Achievement`}
-                        name="achievement"
-                        id={`achievement-${item.id}`}
-                        value={values.achieved}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={errors.achieved}
-                        touched={touched.achieved}
-                        placeholder="Input Achievement"
-                        isRequired
-                      />
-                      <div className="grid lg:grid-cols-2 gap-4">
-                        <Input
-                          label="Total Percentage Achieved"
-                          id="total_percentage"
-                          name="total_percentage"
-                          placeholder="% Auto Calculated"
-                          disabled
-                        />
-                      </div>
-                      <div className="space-x-5">
-                        <Button
-                          loading={isSubmitting}
-                          type="submit"
-                          disabled={isSubmitting}
-                          loadingText="Submit"
-                          className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none"
-                        >
-                          Submit
-                        </Button>
-                        <Button
-                          type="button"
-                          onClick={() => {
-                            setId(item?.id);
-                            setShowReportChallenge(true);
-                          }}
-                          className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
-                        >
-                          Report Challenge
-                        </Button>
-                      </div>
-                    </Form>
+                      {({
+                        values,
+                        handleChange,
+                        handleBlur,
+                        isSubmitting,
+                        errors,
+                        touched,
+                      }) => (
+                        <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
+                          <Input
+                            label={`${getCurrentMonth()?.slice(0, 3)} Target`}
+                            name="target"
+                            id={`target`}
+                            placeholder="Target as set during period start"
+                            disabled
+                          />
+                          <Input
+                            label={`${getCurrentMonth()?.slice(
+                              0,
+                              3
+                            )} Achievement`}
+                            name="achievement"
+                            id={`achievement-${item.id}`}
+                            value={values.achieved}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={errors.achieved}
+                            touched={touched.achieved}
+                            placeholder="Input Achievement"
+                            isRequired
+                          />
+                          <div className="grid lg:grid-cols-2 gap-4">
+                            <Input
+                              label="Total Percentage Achieved"
+                              id="total_percentage"
+                              name="total_percentage"
+                              placeholder="% Auto Calculated"
+                              disabled
+                            />
+                          </div>
+                          <div className="space-x-5">
+                            <Button
+                              loading={isSubmitting}
+                              type="submit"
+                              disabled={isSubmitting}
+                              loadingText="Submit"
+                              className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none"
+                            >
+                              Submit
+                            </Button>
+                            <Button
+                              type="button"
+                              onClick={() => {
+                                setId(item?.id);
+                                setShowReportChallenge(true);
+                              }}
+                              className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
+                            >
+                              Report Challenge
+                            </Button>
+                          </div>
+                        </Form>
+                      )}
+                    </Formik>
                   )}
-                </Formik>
-              </main>
-            </section>
-          ))}
+                </main>
+              </section>
+            );
+          })}
         </div>
       )}
 

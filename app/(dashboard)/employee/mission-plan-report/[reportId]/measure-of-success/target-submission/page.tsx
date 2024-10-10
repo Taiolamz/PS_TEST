@@ -20,6 +20,7 @@ import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
+import { toast } from "sonner";
 
 export default function TargetSubmission({
   params,
@@ -93,6 +94,7 @@ export default function TargetSubmission({
       .unwrap()
       .then(() => {
         setSubmitting(false);
+        toast.success(`${getCurrentMonth()} target successfully submitted`);
       })
       .catch((err) => {
         // console.log(err, "error");
@@ -157,7 +159,9 @@ export default function TargetSubmission({
 
                       <p className=" col-span-4 text-xs">{item?.measure}</p>
                       <p className=" col-span-2 text-xs">{item?.weight}</p>
-                      <p className=" col-span-1 text-xs">{item?.unit}</p>
+                      <p className=" col-span-1 text-xs">
+                        {item?.unit?.slice(0, 1)}
+                      </p>
                       <p className=" col-span-2 text-xs">{item?.target}</p>
                     </div>
                     <div className="flex gap-x-3 mt-8">
