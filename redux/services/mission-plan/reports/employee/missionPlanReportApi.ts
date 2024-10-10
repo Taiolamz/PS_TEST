@@ -25,6 +25,13 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+    getOrgFiscalYear: builder.query<any, void>({
+      query: () => ({
+        url: "/mission-plan-report/organization-fiscal-year",
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -32,4 +39,5 @@ export const {
   useGetStaffMeasureOfSuccessQuery,
   useGetStaffSpecifiedTaskQuery,
   useGetMissionPlanReportCycleQuery,
+  useGetOrgFiscalYearQuery,
 } = missionPlanReportApi;
