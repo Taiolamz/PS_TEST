@@ -11,7 +11,7 @@ import Link from "next/link";
 import routesPath from "@/utils/routes";
 import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
 import { useRouter } from "next/navigation";
-import { useGetMissionPlanReportCycleQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useGetMissionPlanReportCycleQuery, useGetOrgFiscalYearQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 const { ADMIN } = routesPath
 
@@ -30,9 +30,23 @@ const OrganizationReports = () => {
         return cycles;
     };
 
+    const {
+        data: orgFiscalYearDrop,
+        isLoading: isLoadingOrgFiscalYearDrop,
+        isFetching: isFetchingOrgFiscalYearDrop,
+    } = useGetOrgFiscalYearQuery();
 
-
-    console.log(handleFormatCycle())
+    const handleFiscalYearDrop = () => {
+        const fiscalYearDrop = (
+            orgFiscalYearDrop?.data?.fiscal_years as any[]
+        )?.map((chi) => {
+            return {
+                label: chi?.title,
+                value: chi?.id,
+            };
+        });
+        return fiscalYearDrop;
+    };
 
     return (
         <div className="w-full">
@@ -82,14 +96,12 @@ const OrganizationReports = () => {
                             className="w-[9rem] rounded-none lg:border-r-0"
                         />
                         <CustomSelect
-                            options={[
-                                { label: 'All', value: 'All' },
-                                { label: 'Products', value: 'Finance' },
-                            ]}
+                            options={handleFiscalYearDrop()}
                             placeholder="Select FY"
                             selected=""
                             setSelected={() => null}
                             className="w-[9rem]  rounded-none lg:border-r-0"
+                            loading={isLoadingOrgFiscalYearDrop}
                         />
                         <CustomSelect
                             options={handleFormatCycle()}

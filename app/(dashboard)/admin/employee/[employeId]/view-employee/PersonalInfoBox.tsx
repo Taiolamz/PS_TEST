@@ -8,8 +8,9 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
+import { Dictionary } from "@/@types/dictionary";
 
-const PersonalInfoBox = () => {
+const PersonalInfoBox = ({ data }: { data: Dictionary }) => {
   const [editState, setEditState] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
@@ -61,7 +62,7 @@ const PersonalInfoBox = () => {
               }}
               type={`button`}
               className={` ${style.upload_label} font-light `}
-              //   disabled={!details?.profile_img ? true : false}
+            //   disabled={!details?.profile_img ? true : false}
             >
               Save Changes
               {/* {loading ? <ManceLoader /> :  "Save"} */}
@@ -69,7 +70,7 @@ const PersonalInfoBox = () => {
           </>
         ) : (
           <>
-          {/* {user?.role === "super-admin" &&  <div
+            {/* {user?.role === "super-admin" &&  <div
               onClick={() => {
                 router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
               }}
@@ -93,8 +94,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Timi"
                 id="first name"
                 name="first name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Last Name"
@@ -102,8 +103,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Ayeni"
                 id="last name"
                 name="last name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
 
               <Input
@@ -112,8 +113,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Timi"
                 id="maiden name"
                 name="maiden name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Middle Name"
@@ -121,8 +122,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Ayeni"
                 id="middle name"
                 name="middle name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <CustomDateInput
                 id="date_of_birth"
@@ -135,7 +136,7 @@ const PersonalInfoBox = () => {
                 error={""}
                 className="relative"
                 iconClass="top-[2rem]"
-                // isRequired
+              // isRequired
               />
               <CustomSelect
                 label="Gender"
@@ -149,9 +150,9 @@ const PersonalInfoBox = () => {
                 ]}
                 selected={`` as any}
                 setSelected={(value) => {
-                
+
                 }}
-                // labelClass={labelClassName}
+              // labelClass={labelClassName}
               />
               <Input
                 label="Work Email"
@@ -159,8 +160,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g aykehinde@gmail.com"
                 id="work email"
                 name="work email"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Phone number"
@@ -168,8 +169,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g 0816263...."
                 id="phone num"
                 name="phone num"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
             </div>
           </>
@@ -180,7 +181,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>First Name</p>
                 <p className={style.value}>
-                  {trimLongString(user?.name?.split(" ")[0], 30)}
+                  {trimLongString(data?.name?.split(" ")[0], 30)}
                 </p>
               </div>
               {/* label value box end */}
@@ -188,7 +189,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Last Name</p>
                 <p className={style.value}>
-                  {trimLongString(user?.name?.split(" ")[1], 30)}
+                  {trimLongString(data?.name?.split(" ")[1], 30)}
                 </p>
               </div>
               {/* label value box end */}
@@ -196,8 +197,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Maiden Name</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[0], 30)} */}
-                  ---
+                  {data?.maiden_name ? trimLongString(data?.maiden_name?.split(" ")[0], 30) : "---"}
                 </p>
               </div>
               {/* label value box end */}
@@ -205,8 +205,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Middle Name</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[1], 30)} */}
-                  ---
+                  {data?.middle_name ? trimLongString(data?.middle_name?.split(" ")[0], 30) : "---"}
                 </p>
               </div>
               {/* label value box end */}
@@ -214,8 +213,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Gender</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[0], 30)} */}
-                  ---
+                  {data?.gender ? trimLongString(data?.gender?.split(" ")[0], 30) : "---"}
                 </p>
               </div>
               {/* label value box end */}
@@ -223,8 +221,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>DOB</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[1], 30)} */}
-                  ---
+                  {data?.date_of_birth || "---"}
                 </p>
               </div>
               {/* label value box end */}
@@ -232,8 +229,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Email</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[0], 30)} */}
-                  ---
+                  {data?.email || "---"}
                 </p>
               </div>
               {/* label value box end */}
@@ -241,8 +237,7 @@ const PersonalInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Phone Number</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[1], 30)} */}
-                  ---
+                  {data?.phone_number || "---"}
                 </p>
               </div>
               {/* label value box end */}
