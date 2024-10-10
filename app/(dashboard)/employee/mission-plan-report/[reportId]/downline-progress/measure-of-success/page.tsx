@@ -147,14 +147,7 @@ export default function DownlineMOSReport({
   return (
     <DashboardLayout back headerTitle="Measure of Success Percentage Achieved">
       <div className="px-5 pb-10 flex flex-col gap-2">
-        <ReportFilter
-          fiscalYearVal={fiscalYear}
-          setFiscalYearVal={setFiscalYear}
-          missionCycleVal={missionCycle}
-          setMissionCycleVal={setMissionCycle}
-          fiscalOptions={options}
-          cycleOptions={options}
-        />
+        <ReportFilter />
         <div className="mt-4">
           <OrganizationTargetChart />
         </div>

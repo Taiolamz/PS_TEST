@@ -3,13 +3,12 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import React from "react";
 import MetricTableCard from "@/components/card/metric-table-card";
 import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
-import CustomSelect from "@/components/custom-select";
 import MetricFrame from "@/components/card/frame";
 import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
-
+import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 
 export default function SpecifiedTask({
   params,
@@ -28,48 +27,9 @@ export default function SpecifiedTask({
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
-      <div className="m-5">
+      <div className="m-5 overflow-x-hidden">
         {/* Filter Card Section */}
-        <div className="flex items-center mt-10 justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex gap-2 items-center cursor-pointer">
-              <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
-              <figure>{filterIcon}</figure>
-            </div>
-
-            <div className="flex items-center">
-              <CustomSelect
-                placeholder="FY"
-                options={[]}
-                selected={fiscalYear}
-                setSelected={(e: any) => {
-                  setFiscalYear(e);
-                }}
-                className="w-[150px] text-xs rounded-none rounded-l-[5px]"
-              />
-              <CustomSelect
-                placeholder="Cycle"
-                options={[]}
-                selected={missionCycle}
-                setSelected={(e: any) => {
-                  setMissionCycle(e);
-                }}
-                className="w-[150px] text-xs rounded-none rounded-r-[5px]"
-              />
-            </div>
-
-            <div className="flex gap-2 items-center cursor-pointer ml-2">
-              <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
-              <figure>{undoIcon}</figure>
-            </div>
-          </div>
-
-          {/* -----EXPORT---- */}
-          <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
-            <figure>{exportIcon}</figure>
-            <p className="text-medium text-xs text-[#6E7C87]">Export</p>
-          </div>
-        </div>
+        <ReportFilter />
         {/* Filter Card Section End */}
 
         {/* Team Performance task bar Start */}
@@ -1521,7 +1481,6 @@ const specifiedTaskDetails = [
     ],
   },
 ];
-
 
 const challengesData = [
   {

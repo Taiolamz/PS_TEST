@@ -1,28 +1,23 @@
 import CustomSelect from "@/components/custom-select";
-import React from "react";
+import {
+  resetFilter,
+  setFilteredFiscalYear,
+  setFilteredMissionCycle,
+} from "@/redux/features/mission-plan/report/employee/employeeMissionPlanReport";
+import {
+  useGetMissionPlanReportCycleQuery,
+  useGetOrgFiscalYearQuery,
+} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useAppSelector } from "@/redux/store";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface Options {
   label: string;
   value: string;
 }
 
-const ReportFilter = ({
-  fiscalYearVal,
-  setFiscalYearVal,
-  missionCycleVal,
-  setMissionCycleVal,
-  fiscalOptions,
-  cycleOptions,
-  loading,
-}: {
-  fiscalYearVal: string;
-  setFiscalYearVal: (e: any) => void;
-  missionCycleVal: string;
-  setMissionCycleVal: (e: any) => void;
-  fiscalOptions: Options[];
-  cycleOptions: Options[];
-  loading?: boolean;
-}) => {
+const ReportFilter = () => {
   const filterIcon = (
     <svg
       width="15"
@@ -54,8 +49,40 @@ const ReportFilter = ({
     </svg>
   );
 
-  //   const [fiscalYear, setFiscalYear] = useState("");
-  //   const [missionCycle, setMissionCycle] = useState("");
+  const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
+  const {
+    data: orgFiscalYearDrop,
+    isLoading: isLoadingOrgFiscalYearDrop,
+    isFetching: isFetchingOrgFiscalYearDrop,
+  } = useGetOrgFiscalYearQuery();
+
+  const handleFiscalYearDrop = () => {
+    const fiscalYearDrop = (
+      orgFiscalYearDrop?.data?.fiscal_years as any[]
+    )?.map((chi) => {
+      return {
+        label: chi?.title,
+        value: chi?.id,
+      };
+    });
+    return fiscalYearDrop;
+  };
+
+  const handleFormatCycle = () => {
+    const cycles = (data?.data?.cycles as any[])?.map((chi) => {
+      return {
+        label: chi,
+        value: chi,
+      };
+    });
+    return cycles;
+  };
+
+  const dispatch = useDispatch();
+
+  const { fiscal_year, mission_cycle } = useAppSelector(
+    (state) => state.employee_mission_plan_filter
+  );
 
   const exportIcon = (
     <svg
@@ -82,27 +109,26 @@ const ReportFilter = ({
         <div className="flex items-center">
           <CustomSelect
             placeholder="FY"
-            options={fiscalOptions}
-            selected={fiscalYearVal}
-            setSelected={(e: any) => {
-              setFiscalYearVal(e);
-            }}
+            options={handleFiscalYearDrop()}
+            selected={fiscal_year}
+            setSelected={(e) => dispatch(setFilteredFiscalYear(e))}
             className="w-[150px] text-xs rounded-none rounded-l-[5px]"
-            loading={loading}
+            loading={isLoading || isFetching}
           />
           <CustomSelect
             placeholder="Cycle"
-            options={cycleOptions}
-            selected={missionCycleVal}
-            setSelected={(e: any) => {
-              setMissionCycleVal(e);
-            }}
+            options={handleFormatCycle()}
+            selected={mission_cycle}
+            setSelected={(e) => dispatch(setFilteredMissionCycle(e))}
             className="w-[150px] text-xs rounded-none rounded-r-[5px]"
-            loading={loading}
+            loading={isLoadingOrgFiscalYearDrop || isFetchingOrgFiscalYearDrop}
           />
         </div>
 
-        <div className="flex gap-2 items-center cursor-pointer ml-2">
+        <div
+          className="flex gap-2 items-center cursor-pointer ml-2"
+          onClick={() => dispatch(resetFilter())}
+        >
           <p className="text-[#EC1410BF] font-medium text-[14px]">Reset</p>
           <figure>{undoIcon}</figure>
         </div>
