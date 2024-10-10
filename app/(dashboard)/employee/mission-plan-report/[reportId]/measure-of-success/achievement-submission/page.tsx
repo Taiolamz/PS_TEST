@@ -12,16 +12,19 @@ import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReportChallengeModal from "../../../_component/report-challenge-modal";
 import {
   useAddMOSAchievementMutation,
-  useAddMOSTargetMutation,
   useGetMOSMeasureofSuccessQuery,
   useLazyGetAchievementHistoyQuery,
-  useLazyGetMOSCommentQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 import { toast } from "sonner";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
+
 export default function AchievementSubmission({
   params,
 }: {
@@ -59,13 +62,17 @@ export default function AchievementSubmission({
 
   // fetch mos comment
   const [
-    getMOSComment,
+    getMssionPlanFetchComments,
     {
       isLoading: loadingComment,
       data: commentData,
       isFetching: fetchingComment,
     },
-  ] = useLazyGetMOSCommentQuery();
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
+
+  //Add comment on mos
+  const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
 
   //Mount when history or comment modal is opened
   useEffect(() => {
@@ -73,10 +80,14 @@ export default function AchievementSubmission({
       getAchievementHistoy(id);
     }
     if (showComment) {
-      getMOSComment(id);
+      getMssionPlanFetchComments({
+        component_id: id,
+        component_type: "success-measure",
+      });
     }
   }, [showHistory, showComment, id]);
 
+  // Handle form submission on each mos task
   const handleFormSubmit = (
     values: { achieved: string },
     id: string,
@@ -144,7 +155,24 @@ export default function AchievementSubmission({
                   </h3>
                   <h3 className="font-medium max-lg:mt-3 items-center gap-x-1 text-[var(--text-color4)]">
                     Percent Completed:{" "}
-                    <span className="font-semibold text-green-500">{74}%</span>
+                    <span
+                      className={cn(
+                        "font-semibold text-purple-500",
+                        Math?.round(
+                          Number(item?.fy_completion_percentage?.split("%")[0])
+                        ) >= 70
+                          ? "text-green-500"
+                          : Math?.round(
+                              Number(
+                                item?.fy_completion_percentage?.split("%")[0]
+                              )
+                            ) > 40
+                          ? "text-warning"
+                          : "text-[red]"
+                      )}
+                    >
+                      {item?.fy_completion_percentage}
+                    </span>
                   </h3>
                 </header>
                 <main className="mt-7 lg:flex gap-x-3">
@@ -216,11 +244,6 @@ export default function AchievementSubmission({
                           touched,
                           setFieldValue,
                         }) => {
-                          // useEffect(() => {
-                          //   if (vals?.achieved) {
-                          //     setFieldValue("achieved", vals?.achieved);
-                          //   }
-                          // }, []);
                           return (
                             <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
                               <Input
@@ -302,11 +325,19 @@ export default function AchievementSubmission({
         open={showComment}
         onClose={() => setShowComment(false)}
         id={id}
-        data={commentData?.data?.comments || []}
-        handleSubmit={() => {}}
+        data={commentData?.data || []}
+        handleSubmit={(response, resetForm) => {
+          addMssionPlanCommentOnComponent(response)
+            .unwrap()
+            .then(() => {
+              resetForm();
+            });
+        }}
         commentType={"success-measure"}
         loadingComment={loadingComment}
+        loadingAddComment={addingComment}
       />
+
       <HistoryDrawer
         open={showHistory}
         onClose={() => setShowHistory(false)}

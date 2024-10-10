@@ -9,18 +9,20 @@ import { cn } from "@/lib/utils";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import HistoryDrawer from "@/components/drawer/history-drawer";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import ReportChallengeModal from "../../../_component/report-challenge-modal";
 import {
   useAddMOSTargetMutation,
   useGetMOSMeasureofSuccessQuery,
   useLazyGetAchievementHistoyQuery,
-  useLazyGetMOSCommentQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 import { toast } from "sonner";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
 
 export default function TargetSubmission({
   params,
@@ -61,13 +63,13 @@ export default function TargetSubmission({
 
   // fetch mos comment
   const [
-    getMOSComment,
-    {
-      isLoading: loadingComment,
-      data: commentData,
-      isFetching: fetchingComment,
-    },
-  ] = useLazyGetMOSCommentQuery();
+    getMssionPlanFetchComments,
+    { isLoading: loadingComment, data: commentData },
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
+
+  //Add comment on mos
+  const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
 
   //Mount when history or comment modal is opened
   useEffect(() => {
@@ -75,7 +77,13 @@ export default function TargetSubmission({
       getAchievementHistoy(id);
     }
     if (showComment) {
-      getMOSComment(id);
+      getMssionPlanFetchComments(
+        {
+          component_id: id,
+          component_type: "success-measure",
+        },
+        true
+      );
     }
   }, [showHistory, showComment]);
 
@@ -144,7 +152,24 @@ export default function TargetSubmission({
                   </h3>
                   <h3 className="font-medium max-lg:mt-3 items-center gap-x-1 text-[var(--text-color4)]">
                     Percent Completed:{" "}
-                    <span className="font-semibold text-green-500">{74}%</span>
+                    <span
+                      className={cn(
+                        "font-semibold text-purple-500",
+                        Math?.round(
+                          Number(item?.fy_completion_percentage?.split("%")[0])
+                        ) >= 70
+                          ? "text-green-500"
+                          : Math?.round(
+                              Number(
+                                item?.fy_completion_percentage?.split("%")[0]
+                              )
+                            ) > 40
+                          ? "text-warning"
+                          : "text-[red]"
+                      )}
+                    >
+                      {item?.fy_completion_percentage}
+                    </span>
                   </h3>
                 </header>
                 <main className="mt-7 lg:flex gap-x-3">
@@ -264,11 +289,19 @@ export default function TargetSubmission({
         open={showComment}
         onClose={() => setShowComment(false)}
         id={id}
-        data={commentData?.data?.comments || []}
-        handleSubmit={() => {}}
+        data={commentData?.data || []}
+        handleSubmit={(response, resetForm) => {
+          addMssionPlanCommentOnComponent(response)
+            .unwrap()
+            .then(() => {
+              resetForm();
+            });
+        }}
         commentType={"success-measure"}
         loadingComment={loadingComment}
+        loadingAddComment={addingComment}
       />
+
       <HistoryDrawer
         open={showHistory}
         onClose={() => setShowHistory(false)}
@@ -279,109 +312,6 @@ export default function TargetSubmission({
     </DashboardLayout>
   );
 }
-
-// const dass = {
-//   status: "success",
-//   data: [
-//     {
-//       id: "01j96qxnhg5z6a3qeexjykmtty",
-//       measure: "completion of tsts",
-//       unit: "20",
-//       target: "1.00",
-//       status: "pending",
-//       weight: "20.00",
-//       target_achievements: [
-//         {
-//           id: "01j98nkrqczr7ank9m30fejwfh",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnhg5z6a3qeexjykmtty",
-//           target: "1.00",
-//           achieved: "1.00",
-//           month: "January",
-//           status: "pending",
-//           created_at: "2024-10-03T07:48:18.000000Z",
-//           updated_at: "2024-10-03T07:50:30.000000Z",
-//           achievement_submitted_at: "2024-10-03 07:50:30",
-//           deleted_at: null,
-//         },
-//         {
-//           id: "01j98nstrjepk1gyg50hqpbz7c",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnhg5z6a3qeexjykmtty",
-//           target: "2.00",
-//           achieved: "1.00",
-//           month: "June",
-//           status: "pending",
-//           created_at: "2024-10-03T07:51:36.000000Z",
-//           updated_at: "2024-10-03T07:51:55.000000Z",
-//           achievement_submitted_at: "2024-10-03 07:51:55",
-//           deleted_at: null,
-//         },
-//       ],
-//       fy_completion_percentage: [{ completion_percentage: null }],
-//     },
-//     {
-//       id: "01j96qxnwdf3b1qdyfw2anjha5",
-//       measure: "completion of aut tsts",
-//       unit: "20",
-//       target: "1.00",
-//       status: "pending",
-//       weight: "80.00",
-//       target_achievements: [
-//         {
-//           id: "01j98nc00p6e59ef4che5gn77w",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnwdf3b1qdyfw2anjha5",
-//           target: "1.00",
-//           achieved: "1.00",
-//           month: "January",
-//           status: "pending",
-//           created_at: "2024-10-03T07:44:03.000000Z",
-//           updated_at: "2024-10-03T07:44:50.000000Z",
-//           achievement_submitted_at: "2024-10-03 07:44:50",
-//           deleted_at: null,
-//         },
-//         {
-//           id: "01j9km46a45kne0spz41pyer8y",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnwdf3b1qdyfw2anjha5",
-//           target: "20.00",
-//           achieved: "15.00",
-//           month: "April",
-//           status: "pending",
-//           created_at: "2024-10-07T13:53:58.000000Z",
-//           updated_at: "2024-10-07T13:58:59.000000Z",
-//           achievement_submitted_at: "2024-10-07 13:58:59",
-//           deleted_at: null,
-//         },
-//         {
-//           id: "01j9p2k88jjh2vvvea0zvhe1h7",
-//           staff_member_id: "01j91fn4cg1d7mg38a7hd54h0y",
-//           fiscal_year_id: "01j91d89ddn4s6ejqcsmrh2g31",
-//           mission_plan_id: "01j96qpszq2vnztwkz6vma1rqh",
-//           success_measure_id: "01j96qxnwdf3b1qdyfw2anjha5",
-//           target: "20.00",
-//           achieved: "9.00",
-//           month: "May",
-//           status: "pending",
-//           created_at: "2024-10-08T12:45:20.000000Z",
-//           updated_at: "2024-10-08T12:45:56.000000Z",
-//           achievement_submitted_at: "2024-10-08 12:45:56",
-//           deleted_at: null,
-//         },
-//       ],
-//       fy_completion_percentage: [{ completion_percentage: null }],
-//     },
-//   ],
-// };
 
 const format_history_data = (data: any[]) => {
   return data?.map((item: any) => ({
