@@ -56,7 +56,16 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
         url: `/mission-plan-report/success-measure/${id}/comments`,
         method: "GET",
       }),
-      providesTags: ["MOSComment"],
+      providesTags: ["Comments"],
+    }),
+
+    addMOSTarget: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan-report/target`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlanReport"],
     }),
   }),
 });
@@ -69,4 +78,5 @@ export const {
   useGetMOSMeasureofSuccessQuery,
   useLazyGetAchievementHistoyQuery,
   useLazyGetMOSCommentQuery,
+  useAddMOSTargetMutation,
 } = missionPlanReportApi;

@@ -126,6 +126,5 @@ export const baseApi = createApi({
     "OrganizationFiscalYear",
     "MissionPlanReport",
     "TargetOutcomeSettings",
-    "MOSComment",
   ],
 });

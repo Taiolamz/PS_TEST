@@ -18,6 +18,7 @@ import {
 import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
+import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 
 export default function TargetSubmission({
   params,
@@ -77,14 +78,9 @@ export default function TargetSubmission({
 
   const formik = useFormik({
     initialValues: {
-      implied_task: [
-        {
-          expected: "",
-          actual_outcome: "",
-          contribution: "",
-          expected_outcome: "",
-        },
-      ],
+      success_measure_id: "",
+      target: "",
+      month: getCurrentMonth() || "",
     },
     // validationSchema:
     onSubmit: handleFormSubmit,
@@ -177,18 +173,18 @@ export default function TargetSubmission({
                 </section>
                 <section className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
                   <Input
-                    label="Jan Target"
+                    label={`${getCurrentMonth()?.slice(0, 3)} Target`}
                     id="target"
                     name="target"
                     placeholder="Target as set during period start"
-                    disabled
+                    isRequired
                   />
                   <Input
-                    label="Jan Achievement"
+                    label={`${getCurrentMonth()?.slice(0, 3)} Achievement`}
                     id="achievement"
                     name="achievement"
                     placeholder="Input Achievement"
-                    required
+                    disabled
                   />
                   <div className="grid lg:grid-cols-2 gap-4">
                     <Input
@@ -200,7 +196,10 @@ export default function TargetSubmission({
                     />
                   </div>
                   <div className="space-x-5">
-                    <Button className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary mt-6 shadow-none">
+                    <Button
+                      loading={false}
+                      className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary mt-6 shadow-none"
+                    >
                       Submit
                     </Button>
                   </div>
