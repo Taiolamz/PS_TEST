@@ -21,6 +21,14 @@ export const unitApi = baseApi.injectEndpoints({
       }),
     }),
 
+    updateUnit: builder.mutation({
+      query: (payload) => ({
+        url: `admin/unit/${payload?.id}`,
+        method: "PUT",
+        body: payload,
+      }),
+    }),
+
     getUnits: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/unit${generateQueryString({ ...params })}`,
@@ -68,4 +76,5 @@ export const {
   useLazyDownloadUnitTemplateQuery,
   useGetSingleUnitQuery,
   useDeleteUnitMutation,
+  useUpdateUnitMutation,
 } = unitApi;
