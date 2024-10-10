@@ -8,7 +8,6 @@ import CommentsIcon from "@/public/assets/icons/comments";
 import { cn } from "@/lib/utils";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import HistoryDrawer from "@/components/drawer/history-drawer";
-import { fakehistoryData } from "../../../_partials/_measure_of_success/_data/data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReportChallengeModal from "../../../_component/report-challenge-modal";
 import {
@@ -48,6 +47,7 @@ export default function TargetSubmission({
   const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
     params?.reportId
   );
+
   //fetch mos achievement history
   const [
     getAchievementHistoy,
@@ -99,18 +99,6 @@ export default function TargetSubmission({
         setSubmitting(false);
       });
   };
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     success_measure_id: "",
-  //     target: "",
-  //     month: getCurrentMonth() || "",
-  //   },
-  //   // validationSchema:
-  //   onSubmit: handleFormSubmit,
-  //   // validateOnChange: true,
-  //   // validateOnBlur: true,
-  // });
 
   return (
     <DashboardLayout back headerTitle="Period Target Submission">

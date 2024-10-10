@@ -67,6 +67,15 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["MissionPlanReport"],
     }),
+
+    addMOSAchievement: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan-report/achievement`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -79,4 +88,5 @@ export const {
   useLazyGetAchievementHistoyQuery,
   useLazyGetMOSCommentQuery,
   useAddMOSTargetMutation,
+  useAddMOSAchievementMutation,
 } = missionPlanReportApi;
