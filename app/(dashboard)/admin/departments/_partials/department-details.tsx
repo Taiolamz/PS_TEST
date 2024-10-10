@@ -7,7 +7,7 @@ import routesPath from "@/utils/routes";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import {
   BranchesTable,
-  DeptTable,
+  DepartmentTable,
   StaffTable,
   UnitTable,
 } from "../../subsidiary/_partials/_table";
@@ -143,7 +143,7 @@ const DepartmentDetails = () => {
         </div>
         <section className="">
           {tab === "branches" && <BranchesTable />}
-          {tab === "departments" && <DeptTable />}
+          {tab === "departments" && <DepartmentTable />}
           {tab === "units" && <UnitTable />}
           {tab === "staffs" && <StaffTable />}
         </section>

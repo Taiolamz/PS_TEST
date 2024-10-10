@@ -15,31 +15,34 @@ import { LottieAnimation } from "../fragment";
 import { LottieEmptyState } from "@/lottie";
 
 type COMMENT_DATA_TYPE = {
-  id: number | string,
-  staff_member: Dictionary,
-  created_at: string,
-  comment: string,
-}
+  id: number | string;
+  staff_member: Dictionary;
+  created_at: string;
+  comment: string;
+};
 
 interface CommentDrawerProp extends CustomDrawerProp {
   id: string;
   loadingAddComment?: boolean;
   loadingComment?: boolean;
   error?: any;
-  data: COMMENT_DATA_TYPE[],
-  handleSubmit: (value: {
-    comment: string;
-    component_type: string;
-    component_id: string;
-  }) => void;
+  data: COMMENT_DATA_TYPE[];
+  handleSubmit: (
+    value: {
+      comment: string;
+      component_type: string;
+      component_id: string;
+    },
+    resetForm?: any
+  ) => void;
   commentType:
-  | "mission-statement"
-  | "boundary"
-  | "strategic-intent"
-  | "specified-task"
-  | "implied-task"
-  | "strategic-pillar"
-  | "success-measure";
+    | "mission-statement"
+    | "boundary"
+    | "strategic-intent"
+    | "specified-task"
+    | "implied-task"
+    | "strategic-pillar"
+    | "success-measure";
 }
 
 export default function CustomCommentDrawer({
@@ -51,7 +54,7 @@ export default function CustomCommentDrawer({
   error,
   commentType,
   handleSubmit,
-  data
+  data,
 }: CommentDrawerProp) {
   const { user } = useAppSelector((state) => state.auth);
 
@@ -61,11 +64,14 @@ export default function CustomCommentDrawer({
     },
     validationSchema: commentSchema,
     onSubmit: (value) => {
-      handleSubmit({
-        comment: value.comment,
-        component_type: commentType,
-        component_id: id,
-      });
+      handleSubmit(
+        {
+          comment: value.comment,
+          component_type: commentType,
+          component_id: id,
+        },
+        formik.resetForm
+      );
     },
   });
 
@@ -99,7 +105,7 @@ export default function CustomCommentDrawer({
               <Textarea
                 rows={3}
                 id="comment"
-                disabled={loadingComment}
+                disabled={loadingComment || loadingAddComment}
                 name="comment"
                 placeholder="type here your comment"
                 className="mt-1 w-full !bg-white block px-3 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm"
@@ -136,54 +142,55 @@ export default function CustomCommentDrawer({
                 <PageLoader />
               </div>
             ) : (
-              <div className={cn(
-                "space-y-4",
-                data?.length === 0 && "place-content-center"
-              )}>
-                {
-                  data?.length ?
-                    data?.map((item: any) => (
-                      <div
-                        key={item?.id}
-                        className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
-                      >
-                        <div className="flex justify-between mb-2">
-                          <div className="flex items-center gap-x-[7px]">
-                            <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
-                              <span className="text-white font-semibold uppercase text-xs">
-                                {returnInitial(item?.staff_member?.name)}
-                              </span>
-                            </div>
-                            <div className="space-y-1">
-                              <h3 className="text-sm font-medium text-custom-dark-gray">
-                                {item?.staff_member?.name}
-                              </h3>
-                              <p className="text-[10px] font-light text-custom-gray-scale-400">
-                                {formatTimestamp(item?.created_at)}
-                              </p>
-                            </div>
+              <div
+                className={cn(
+                  "space-y-4",
+                  data?.length === 0 && "place-content-center"
+                )}
+              >
+                {data?.length ? (
+                  data?.toReversed()?.map((item: any) => (
+                    <div
+                      key={item?.id}
+                      className="border border-custom-divider w-full h-fit overflow-y-auto bg-custom-bg rounded-md p-[15px]"
+                    >
+                      <div className="flex justify-between mb-2">
+                        <div className="flex items-center gap-x-[7px]">
+                          <div className="size-6 rounded-full bg-[var(--primary-color)] grid place-content-center">
+                            <span className="text-white font-semibold uppercase text-xs">
+                              {returnInitial(item?.staff_member?.name)}
+                            </span>
                           </div>
-                          <span className="size-1.5 bg-custom-red rounded-full" />
+                          <div className="space-y-1">
+                            <h3 className="text-sm font-medium text-custom-dark-gray">
+                              {item?.staff_member?.name}
+                            </h3>
+                            <p className="text-[10px] font-light text-custom-gray-scale-400">
+                              {formatTimestamp(item?.created_at)}
+                            </p>
+                          </div>
                         </div>
-                        <div className="text-[13px] text-custom-ash">
-                          {item?.comment}
-                        </div>
+                        <span className="size-1.5 bg-custom-red rounded-full" />
                       </div>
-                    ))
-                    :
-                    <div className="overflow-hidden">
-                      <LottieAnimation
-                        animationData={LottieEmptyState}
-                        height={"8rem"}
-                      />
+                      <div className="text-[13px] text-custom-ash">
+                        {item?.comment}
+                      </div>
                     </div>
-                }
-          </div>
+                  ))
+                ) : (
+                  <div className="overflow-hidden">
+                    <LottieAnimation
+                      animationData={LottieEmptyState}
+                      height={"8rem"}
+                    />
+                  </div>
+                )}
+              </div>
             )}
+          </section>
+        </main>
       </section>
-    </main>
-      </section >
-    </CustomDrawer >
+    </CustomDrawer>
   );
 }
 

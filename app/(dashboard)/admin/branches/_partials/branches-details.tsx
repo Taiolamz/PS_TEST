@@ -29,7 +29,7 @@ import {
 } from "@/redux/services/checklist/branchApi";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
-import { DeptTable, StaffTable, UnitTable } from "./_table";
+import { DepartmentTable, StaffTable, UnitTable } from "./_table";
 import { PageLoader } from "@/components/custom-loader";
 
 const { ADMIN } = routesPath;
@@ -442,7 +442,7 @@ export default function BranchDetails() {
             <ParentModuleCard list={listToTest} />
           </div>
           <section className="">
-            {tab === "departments" && <DeptTable />}
+            {tab === "departments" && <DepartmentTable />}
             {tab === "units" && <UnitTable />}
             {tab === "staffs" && <StaffTable />}
           </section>

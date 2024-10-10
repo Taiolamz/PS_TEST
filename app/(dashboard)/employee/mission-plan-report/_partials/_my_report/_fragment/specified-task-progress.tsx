@@ -126,7 +126,7 @@ const SpecifiedTaskProgress = () => {
   const isButtonDisabled = isLoading || isFetching;
 
   return (
-    <MetricFrame className="flex flex-col gap-4 w-full relative">
+    <MetricFrame className="flex flex-col gap-4 w-full relative min-h-[700px]">
       <div className="flex justify-between ">
         <div className="flex flex-col gap-1">
           <p className="text-[#252C32] font-medium">

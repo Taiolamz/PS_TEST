@@ -203,9 +203,8 @@ const ModuleCard = ({
       onClick={() => {
         onClick && onClick();
       }}
-      className={`${style.module_card_metric_index_wrapper} ${
-        active ? style.module_card_metric_index_wrapper_active : ""
-      }`}
+      className={`${style.module_card_metric_index_wrapper} ${active ? style.module_card_metric_index_wrapper_active : ""
+        }`}
       style={
         {
           "--border-color": pending

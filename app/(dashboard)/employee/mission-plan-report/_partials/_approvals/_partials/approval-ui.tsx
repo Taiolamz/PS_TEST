@@ -80,7 +80,7 @@ const ApprovalUI = ({
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
               router.push(
-                EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT_SUCCESS_MISSION_SUBMISSION(
+                EMPLOYEE.REVIEW_MOS(
                   dataTwo?.name?.props?.children[0].props.children
                 )
               );
@@ -91,7 +91,7 @@ const ApprovalUI = ({
             color: "",
             onActionClick: (param: any, dataTwo: any) => {
               router.push(
-                EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT_TASK_SUBMISSION(
+                EMPLOYEE.REVIEW_TASK(
                   dataTwo?.name?.props?.children[0].props.children
                 )
               );

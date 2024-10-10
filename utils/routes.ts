@@ -75,7 +75,8 @@ const routesPath = {
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
     EMPLOYEES_INVITED: `/${admin_auth}/employee/invited`,
-    EMPLOYEE_VIEW: `/${admin_auth}/employee/view-employee`,
+    EMPLOYEE_VIEW: (employeId: string) =>
+      `/${admin_auth}/employee/${employeId}/view-employee`,
     EMPLOYEE_EDIT: `/${admin_auth}/employee/edit-employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
     // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
@@ -94,16 +95,14 @@ const routesPath = {
     MISSION_PLAN_REPORT: `/${employee_auth}/mission-plan-report?ui=my_report`,
     DOWNLINE_MISSION_PLAN_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/downline-progress`,
-    DOWNLINE_MOS_REPORT: (id: string) =>
-      `/${employee_auth}/mission-plan-report/${id}/downline-progress/measure-of-success`,
-    DOWNLINE_SPECIFIED_TASK_REPORT: (id: string) =>
-      `/${employee_auth}/mission-plan-report/${id}/downline-progress/specified-task`,
     REVIEW_MOS: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/review-mos`,
     REVIEW_TASK: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/review-task`,
-    MOS_TASK_SUBMISSION: (id: string) =>
+    MOS_TARGET_SUBMISSION: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/measure-of-success/target-submission`,
+    MOS_ACHIEVEMENT_SUBMISSION: (id: string) =>
+      `/${employee_auth}/mission-plan-report/${id}/measure-of-success/achievement-submission`,
     // route update
     MOS_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/measure-of-success`,
@@ -116,10 +115,6 @@ const routesPath = {
       `/${employee_auth}/mission-plan-report/${id}/my-report-progress/measure-of-success`,
     APPROVAL_MISSION_PLAN_REPORT: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/approval-progress`,
-    APPROVAL_MISSION_PLAN_REPORT_TASK_SUBMISSION: (id: string) =>
-      `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-tasks-submission`,
-    APPROVAL_MISSION_PLAN_REPORT_SUCCESS_MISSION_SUBMISSION: (id: string) =>
-      `/${employee_auth}/mission-plan-report/${id}/approval-progress/approval-measure-of-success`,
     ACTUAL_OUTCOME: (id: string) =>
       `/${employee_auth}/mission-plan-report/${id}/actual-outcome`,
     EXPECTED_OUTCOME: (id: string) =>

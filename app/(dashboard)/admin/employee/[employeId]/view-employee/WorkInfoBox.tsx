@@ -9,8 +9,10 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
+import { Dictionary } from "@/@types/dictionary";
+import { cn } from "@/lib/utils";
 
-const WorkInfoBox = () => {
+const WorkInfoBox = ({ data }: { data: Dictionary }) => {
   const [editState, setEditState] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
@@ -51,15 +53,15 @@ const WorkInfoBox = () => {
     >
       {/* title edit save box start */}
       <div className={style.title_btn_box}>
-        <p className={style.title}>Address Information</p>
+        <p className={style.title}>Work Information</p>
         {editState ? (
           <>
             {" "}
-           
+
           </>
         ) : (
           <>
-            {user?.role === "super-admin" &&  <div
+            {/* {user?.role === "super-admin" && <div
               onClick={() => {
                 router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
               }}
@@ -67,7 +69,7 @@ const WorkInfoBox = () => {
             >
               <p className={style.text}>Edit</p>
               <figure>{editIcon}</figure>
-            </div>}
+            </div>} */}
           </>
         )}
       </div>
@@ -88,8 +90,8 @@ const WorkInfoBox = () => {
                 error={""}
                 className="relative"
                 iconClass="top-[2rem]"
-                // isRequired
-                // disabled
+              // isRequired
+              // disabled
               />
               <Input
                 label="Work Email"
@@ -97,9 +99,9 @@ const WorkInfoBox = () => {
                 placeholder="Email"
                 id="work email"
                 name="work email"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <Input
                 label="Line Manger Name"
@@ -107,9 +109,9 @@ const WorkInfoBox = () => {
                 placeholder="Line Manger Name"
                 id="Line Manger Name"
                 name="line manager"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <Input
                 label="Line Manger Email"
@@ -117,9 +119,9 @@ const WorkInfoBox = () => {
                 placeholder="Line Manger Email"
                 id="Line Manger Email"
                 name="line manager email"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <CustomSelect
                 label="Grade Level"
@@ -132,95 +134,95 @@ const WorkInfoBox = () => {
                   },
                 ]}
                 selected={`` as any}
-                setSelected={(value) => {}}
-                // labelClass={labelClassName}
-                // disabled
+                setSelected={(value) => { }}
+              // labelClass={labelClassName}
+              // disabled
               />
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "subsidiary"
               ) && (
-                <CustomSelect
-                  label="Subsidiary"
-                  // isRequired
-                  placeholder="Select subsidiary"
-                  options={[
-                    {
-                      label: "Select subsidiary",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
+                  <CustomSelect
+                    label="Subsidiary"
+                    // isRequired
+                    placeholder="Select subsidiary"
+                    options={[
+                      {
+                        label: "Select subsidiary",
+                        value: "",
+                      },
+                    ]}
+                    selected={`` as any}
+                    setSelected={(value) => { }}
                   // labelClass={labelClassName}
                   //   disabled
-                />
-              )}
+                  />
+                )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "branch"
               ) && (
-                <CustomSelect
-                  label="Branch"
-                  // isRequired
-                  placeholder="Select branch"
-                  options={[
-                    {
-                      label: "Select branch",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
+                  <CustomSelect
+                    label="Branch"
+                    // isRequired
+                    placeholder="Select branch"
+                    options={[
+                      {
+                        label: "Select branch",
+                        value: "",
+                      },
+                    ]}
+                    selected={`` as any}
+                    setSelected={(value) => { }}
                   // labelClass={labelClassName}
                   //   disabled
-                />
-              )}
+                  />
+                )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "department"
               ) && (
-                <CustomSelect
-                  label="Department"
-                  // isRequired
-                  placeholder="Select department"
-                  options={[
-                    {
-                      label: "Select department",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
+                  <CustomSelect
+                    label="Department"
+                    // isRequired
+                    placeholder="Select department"
+                    options={[
+                      {
+                        label: "Select department",
+                        value: "",
+                      },
+                    ]}
+                    selected={`` as any}
+                    setSelected={(value) => { }}
                   // labelClass={labelClassName}
                   //   disabled
-                />
-              )}
+                  />
+                )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "unit"
               ) && (
-                <CustomSelect
-                  label="Unit"
-                  // isRequired
-                  placeholder="Select unit"
-                  options={[
-                    {
-                      label: "Select unit",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
+                  <CustomSelect
+                    label="Unit"
+                    // isRequired
+                    placeholder="Select unit"
+                    options={[
+                      {
+                        label: "Select unit",
+                        value: "",
+                      },
+                    ]}
+                    selected={`` as any}
+                    setSelected={(value) => { }}
                   // labelClass={labelClassName}
                   //   disabled
-                />
-              )}
+                  />
+                )}
               <Input
                 label="Staff Number"
                 type="text"
                 placeholder="staff number"
                 id="staff number"
                 name="staff number"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <Input
                 label="Current Job Title"
@@ -228,9 +230,9 @@ const WorkInfoBox = () => {
                 placeholder="Current Job Title"
                 id="Current Job Title"
                 name="Current Job Title"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <Input
                 label="Current Role"
@@ -238,9 +240,9 @@ const WorkInfoBox = () => {
                 placeholder="Current Role"
                 id="Current Role"
                 name="Current Role"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <Input
                 label="Former Job Title"
@@ -248,9 +250,9 @@ const WorkInfoBox = () => {
                 placeholder="Former Job Title"
                 id="Former Job Title"
                 name="Former Job Title"
-                // onChange={formik.handleChange}
-                // isRequired
-                // disabled
+              // onChange={formik.handleChange}
+              // isRequired
+              // disabled
               />
               <div
                 className=""
@@ -273,8 +275,8 @@ const WorkInfoBox = () => {
                   error={""}
                   className="relative"
                   iconClass="top-[2rem]"
-                  // isRequired
-                  //   disabled
+                // isRequired
+                //   disabled
                 />
                 <CustomDateInput
                   id="start_date"
@@ -287,8 +289,8 @@ const WorkInfoBox = () => {
                   error={""}
                   className="relative"
                   iconClass="top-[2rem]"
-                  // isRequired
-                  // disabled
+                // isRequired
+                // disabled
                 />
               </div>
             </div>
@@ -299,13 +301,14 @@ const WorkInfoBox = () => {
               className={`${style.view_content_box} ${style.view_content_box_two}`}
             >
               <CustomDateInput
-                id="date_of_birth_"
+                id="resumption_date"
                 label="Resumption Date"
+                showIcon={false}
                 // selected={new Date(formik.values.date_of_birth)}
                 handleChange={(date) => {
                   //   formik.setFieldValue("date_of_birth", formatDate(date));
                 }}
-                placeholder="Resumption Date"
+                placeholder={data?.resumption_date || "---"}
                 error={""}
                 className="relative"
                 iconClass="top-[2rem]"
@@ -318,6 +321,7 @@ const WorkInfoBox = () => {
                 placeholder="Email"
                 id="work email"
                 name="work email"
+                value={data?.work_email || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -328,6 +332,7 @@ const WorkInfoBox = () => {
                 placeholder="Line Manger Name"
                 id="Line Manger Name"
                 name="line manager"
+                value={data?.line_manager_name || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -338,107 +343,89 @@ const WorkInfoBox = () => {
                 placeholder="Line Manger Email"
                 id="Line Manger Email"
                 name="line manager email"
+                value={data?.line_manager_email || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
               />
-              <CustomSelect
-                label="Grade Level"
+              <Input
+                label="Grade"
+                type="text"
+                placeholder="Staff Level"
+                id="level"
+                name="level"
+                value={data?.level || "---"}
+                // onChange={formik.handleChange}
                 // isRequired
-                placeholder="Select grade level"
-                options={[
-                  {
-                    label: "Select grade level",
-                    value: "",
-                  },
-                ]}
-                selected={`` as any}
-                setSelected={(value) => {}}
-                // labelClass={labelClassName}
                 disabled
               />
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "subsidiary"
               ) && (
-                <CustomSelect
-                  label="Subsidiary"
-                  // isRequired
-                  placeholder="Select subsidiary"
-                  options={[
-                    {
-                      label: "Select subsidiary",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
-                  disabled
-                />
-              )}
+                  <Input
+                    label="Subsidiary"
+                    type="text"
+                    placeholder="Staff Subsidiary"
+                    id="subsidiary"
+                    name="subsidiary"
+                    value={data?.subsidiary_name || "---"}
+                    // onChange={formik.handleChange}
+                    // isRequired
+                    disabled
+                  />
+                )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "branch"
               ) && (
-                <CustomSelect
-                  label="Branch"
-                  // isRequired
-                  placeholder="Select branch"
-                  options={[
-                    {
-                      label: "Select branch",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
-                  disabled
-                />
-              )}
+                  <Input
+                    label="Branch"
+                    type="text"
+                    placeholder="Staff Branch"
+                    id="branch"
+                    name="branch"
+                    value={data?.branch_name || "---"}
+                    // onChange={formik.handleChange}
+                    // isRequired
+                    disabled
+                  />
+                )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "department"
               ) && (
-                <CustomSelect
-                  label="Department"
-                  // isRequired
-                  placeholder="Select department"
-                  options={[
-                    {
-                      label: "Select department",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
-                  disabled
-                />
-              )}
+                  <Input
+                    label="Department"
+                    type="text"
+                    placeholder="Staff Department"
+                    id="department"
+                    name="department"
+                    value={data?.department_name || "---"}
+                    // onChange={formik.handleChange}
+                    // isRequired
+                    disabled
+                  />
+                )}
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "unit"
               ) && (
-                <CustomSelect
-                  label="Unit"
-                  // isRequired
-                  placeholder="Select unit"
-                  options={[
-                    {
-                      label: "Select unit",
-                      value: "",
-                    },
-                  ]}
-                  selected={`` as any}
-                  setSelected={(value) => {}}
-                  // labelClass={labelClassName}
-                  disabled
-                />
-              )}
+                  <Input
+                    label="Unit"
+                    type="text"
+                    placeholder="Staff Unit"
+                    id="unit"
+                    name="unit"
+                    value={data?.unit_name || "---"}
+                    // onChange={formik.handleChange}
+                    // isRequired
+                    disabled
+                  />
+                )}
               <Input
                 label="Staff Number"
                 type="text"
                 placeholder="staff number"
                 id="staff number"
                 name="staff number"
+                value={data?.staff_number || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -449,6 +436,7 @@ const WorkInfoBox = () => {
                 placeholder="Current Job Title"
                 id="Current Job Title"
                 name="Current Job Title"
+                value={data?.staff_number || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -459,6 +447,7 @@ const WorkInfoBox = () => {
                 placeholder="Current Role"
                 id="Current Role"
                 name="Current Role"
+                value={data?.role || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -469,6 +458,7 @@ const WorkInfoBox = () => {
                 placeholder="Former Job Title"
                 id="Former Job Title"
                 name="Former Job Title"
+                value={data?.previous_job_title || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -483,40 +473,37 @@ const WorkInfoBox = () => {
                 }}
               >
                 {" "}
-                <CustomDateInput
-                  id="start_date"
+                <Input
                   label="Start Date"
-                  // selected={new Date(formik.values.date_of_birth)}
-                  handleChange={(date) => {
-                    //   formik.setFieldValue("date_of_birth", formatDate(date));
-                  }}
-                  placeholder="YYYY/MM/DD"
-                  error={""}
-                  className="relative"
-                  iconClass="top-[2rem]"
-                  // isRequired
-                  disabled
-                />
-                <CustomDateInput
+                  type="text"
+                  placeholder="Start Date"
                   id="start_date"
+                  name="start_date"
+                  value={data?.previous_start_date || "---"}
+                // onChange={formik.handleChange}
+                // isRequired
+                // disabled
+                />
+                <Input
                   label="End Date"
-                  // selected={new Date(formik.values.date_of_birth)}
-                  handleChange={(date) => {
-                    //   formik.setFieldValue("date_of_birth", formatDate(date));
-                  }}
-                  placeholder="YYYY/MM/DD"
-                  error={""}
-                  className="relative"
-                  iconClass="top-[2rem]"
-                  // isRequired
-                  disabled
+                  type="text"
+                  placeholder="End Date"
+                  id="end_date"
+                  name="end_date"
+                  value={data?.previous_end_date || "---"}
+                // onChange={formik.handleChange}
+                // isRequired
+                // disabled
                 />
               </div>
             </div>
           </>
         )}
         {/* approval flow box start */}
-        <div className={style.approval_flow_box_wrap}>
+        <div className={cn(
+          style.approval_flow_box_wrap,
+          "hidden"
+        )}>
           <p className={style.title}>Approval Flow</p>
           {/* list box start */}
           <div className={`${style.list_pos_box} ${listManagers?.length < 4 ? style.list_pos_box_small : ""}`}>

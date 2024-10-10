@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useAddChallangeMutation } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle, X } from "lucide-react";
 import { useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 
 interface ReportChallengeModalProps {
@@ -20,6 +20,8 @@ interface ReportChallengeModalProps {
   handleClick?: () => void;
   content?: React.ReactNode;
   loading?: boolean;
+  option?: "task-outcome" | "target-achievement";
+  id?: string;
 }
 
 export default function ReportChallengeModal({
@@ -28,30 +30,51 @@ export default function ReportChallengeModal({
   handleClose,
   content,
   modalClass,
-  loading,
+  id,
+  option = "task-outcome",
 }: ReportChallengeModalProps) {
-  const handleFormSubmit = () => {};
+  const [addChallange, { isLoading }] = useAddChallangeMutation();
 
   const formik = useFormik<any>({
     initialValues: {
       challenges: [
-        { title: "", risk_level: "", description: "", recommendations: "" },
+        { title: "", risk_level: "", description: "", recommendation: "" },
       ],
     },
-    onSubmit: handleFormSubmit,
+    onSubmit: (value) => handleFormSubmit(value),
     validationSchema: Yup.object({
       challenges: Yup.array().of(
         Yup.object({
           title: Yup.string(),
           riskLevel: Yup.string(),
           description: Yup.string(),
-          recommendations: Yup.string(),
+          recommendation: Yup.string(),
         })
       ),
     }),
     // validateOnMount: true,
     // enableReinitialize: true,
   });
+
+  //Submitting challenge
+  const handleFormSubmit = (value: any) => {
+    // console.log({
+    //   ...value,
+    //   challengeable_id: id || "",
+    //   challengeable_type: option,
+    // });
+    addChallange({
+      ...value,
+      challengeable_id: id || "",
+      challengeable_type: option,
+    })
+      .unwrap()
+      .then(() => {
+        formik.resetForm();
+        handleClose();
+      })
+      .catch(() => {});
+  };
 
   useEffect(() => {
     formik.resetForm();
@@ -180,18 +203,18 @@ export default function ReportChallengeModal({
                           </div>
                           <div className="w-full flex-1">
                             <Textarea
-                              label="Recommendations"
+                              label="Recommendation"
                               rows={3}
-                              placeholder="Enter Recommendations"
+                              placeholder="Enter Recommendation"
                               className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
                               // onChange={formik.handleChange}
                               // touched={formik.touched.description}
                               // value={formik.values.description}
                               // error={formik.errors.description}
-                              id={`challenges.${index}.recommendations`}
-                              name={`challenges.${index}.recommendations`}
+                              id={`challenges.${index}.recommendation`}
+                              name={`challenges.${index}.recommendation`}
                               value={
-                                formik.values.challenges[index].recommendations
+                                formik.values.challenges[index].recommendation
                               } // Accessing value
                               onChange={formik.handleChange} // Handling onChange event
                               onBlur={formik.handleBlur} // Handling onBlur event
@@ -209,7 +232,7 @@ export default function ReportChallengeModal({
                         title: "",
                         risk_level: "",
                         description: "",
-                        recommendations: "",
+                        recommendation: "",
                       })
                     }
                     className="flex items-center gap-2 mt-5 text-[var(--primary-color)] text-sm px-1"
@@ -231,8 +254,9 @@ export default function ReportChallengeModal({
                 //   isReassigning ||
                 //   isLoadingDeleteSpecifiedTask
                 // }
+                disabled={isLoading}
                 type="submit"
-                loading={loading}
+                loading={isLoading}
                 loadingText={"Submit"}
               >
                 Submit

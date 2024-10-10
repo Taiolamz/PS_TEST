@@ -59,7 +59,7 @@ const OverView = () => {
               <section className="bg-white rounded-lg px-[15px] py-[23px] grid gap-3 grid-cols-1 md:grid-cols-3">
                 <Link
                   href={"#"}
-                  className="border border-[var(--input-border2)] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                  className="border border-[#eef0f2] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
                 >
                   <Image
                     className="size-11"
@@ -70,7 +70,7 @@ const OverView = () => {
                 </Link>
                 <Link
                   href={"#"}
-                  className="border border-[var(--input-border2)] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                  className="border border-[#eef0f2] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
                 >
                   <Image
                     className="size-11"
@@ -81,7 +81,7 @@ const OverView = () => {
                 </Link>
                 <Link
                   href={"#"}
-                  className="border border-[var(--input-border2)] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+                  className="border border-[#eef0f2] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
                 >
                   <Image className="size-11" src={HelpIcon} alt="help icon" />
                   Help

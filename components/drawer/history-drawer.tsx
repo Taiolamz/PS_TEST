@@ -7,6 +7,7 @@ import { LottieEmptyState } from "@/lottie";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { SearchIcon } from "@/public/assets/icons";
+import { cn } from "@/lib/utils";
 
 interface HistoryCardProps {
   month: string;
@@ -71,8 +72,19 @@ export default function HistoryDrawer({
                       </p>
                       <p className="text-[#07A287] text-[8px]">{item.status}</p>
                     </div>
-                    <p className="text-[#EC1410] font-medium">
-                      {item.percentage}
+                    <p
+                      className={cn(
+                        Number(item?.percentage) <= 39 &&
+                          "text-[var(--bg-red-100)] ",
+                        Number(item?.percentage) >= 40 &&
+                          Number(item?.percentage) <= 69 &&
+                          "text-[var(--bg-yellow-400)] ",
+                        Number(item?.percentage) >= 70 &&
+                          "text-[rgb(var(--bg-green-100))] ",
+                        "font-medium"
+                      )}
+                    >
+                      {item?.percentage}%
                     </p>
                   </div>
                   <div>
@@ -100,3 +112,18 @@ export default function HistoryDrawer({
     </CustomDrawer>
   );
 }
+
+const progressRange = [
+  {
+    color: "#EC1410",
+    value: "0% - 35%",
+  },
+  {
+    color: "#FFC043",
+    value: "40% - 65%",
+  },
+  {
+    color: "#07A287",
+    value: "70% - 100%",
+  },
+];

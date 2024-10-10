@@ -5,12 +5,9 @@ import { useGetSubsidiaryInUnitQuery } from "@/redux/services/checklist/subsidia
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
 
 const { ADMIN } = routesPath;
-
-interface UnitTableProps {
-  data?: any[];
-}
 
 export default function UnitTable() {
   const router = useRouter();
@@ -24,6 +21,8 @@ export default function UnitTable() {
     params: { page, search },
   });
 
+  const { subDetailsData } = useSubsidiaryById(id ?? "");
+
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
     router.push(path);
@@ -36,7 +35,8 @@ export default function UnitTable() {
       tableheaderList={["Unit Name", "HOU", "Department", "Branch", "Action"]}
       hidePagination
       addText="New Unit"
-      hideNewBtnOne={false}
+      newBtnBulk={!subDetailsData?.deleted_at}
+      hideNewBtnOne={subDetailsData?.deleted_at}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       onSearch={(param) => {
@@ -49,7 +49,6 @@ export default function UnitTable() {
       dropDown
       hideFilter
       hideSort
-      newBtnBulk
       dropDownList={[
         {
           label: "View Details",

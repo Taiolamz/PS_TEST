@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import Routes from "@/lib/routes/routes";
@@ -25,10 +26,13 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
     {}
   );
 
-  const { formik, employees } = useEditSubsidiary({ id: params.subsidiaryId });
+  const { formik, employees, isUpdatingSubsidiary } = useEditSubsidiary({
+    id: params.subsidiaryId,
+  });
 
   // fetching initial value
   const { subDetailsData } = useSubsidiaryById(params?.subsidiaryId ?? "");
+
   // This sets the state dropdown from the initial value of country
   useEffect(() => {
     if (subDetailsData?.country) {
@@ -52,11 +56,11 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
 
     if (selectedEmployee) {
       formik.setFieldValue("head.name", selectedEmployee.name);
-      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head.email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
     } else {
       formik.setFieldValue("head.name", "");
-      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("head.email", "");
       formik.setFieldValue("head.id", "");
     }
   };
@@ -106,9 +110,9 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               label="Subsidiary Email"
               type="email"
               placeholder="Subsidiary Email Address"
-              id="email"
-              name="email"
-              value={formik?.values?.email}
+              id="work_email"
+              name="work_email"
+              value={formik?.values?.work_email}
               onChange={formik.handleChange}
             />
             <Input
@@ -182,19 +186,20 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               setSelected={handleHeadSelectChange}
               labelClass={labelClassName}
             />
+
             <Input
               label="Head of Subsidiary Email"
               type="text"
               placeholder="Work Email"
-              id="work_email"
-              value={formik.values.work_email}
-              name="work_email"
-              onChange={formik.handleChange}
+              id="hos_email"
+              value={formik.values.head.email}
+              name="hos_email"
               disabled
               className="disabled:opacity-100"
             />
+
             <LogoUpload
-              showFootNote={false}
+              showFootNote={formik.errors.logo ? true : false}
               handleLogoChange={handleLogoChange}
               logoName={logoName}
               setLogo={setLogo}
@@ -214,8 +219,26 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
               className=" w-full  block px-4 py-2 border outline-none border-gray-300 bg-[var(--input-bg)] rounded-md shadow-sm sm:text-sm bg-white"
               onChange={formik.handleChange}
             />
+
+            <div>
+              {subDetailsData?.logo && !logo && (
+                <img
+                  src={subDetailsData?.logo}
+                  alt="subsidiary logo"
+                  width={30}
+                  height={30}
+                  className="size-20 rounded object-contain"
+                />
+              )}
+            </div>
           </section>
-          <Button className="w-[170px] my-10" type="submit">
+          <Button
+            className="max-w-[200px] my-10"
+            type="submit"
+            loading={isUpdatingSubsidiary}
+            disabled={isUpdatingSubsidiary}
+            loadingText="Updating Information"
+          >
             Update Information
           </Button>
         </form>

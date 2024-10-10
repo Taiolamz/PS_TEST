@@ -57,7 +57,7 @@ const WorkInfoBox = () => {
             {" "}
             <div
               onClick={() => {
-                router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW)
+                router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW('snjsiwjh'))
               }}
               className={style.edit_btn}
               style={{ marginRight: "1rem" }}

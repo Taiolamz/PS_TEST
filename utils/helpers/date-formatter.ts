@@ -29,7 +29,7 @@ export const formatTimestamp = (timestamp: string | number | Date) => {
   const date = new Date(timestamp);
   if (isNaN(date.getTime())) {
     // throw new Error("Invalid time");
-    console.log("error")
+    console.log("error");
   }
   const options: Intl.DateTimeFormatOptions = {
     day: "2-digit",
@@ -118,3 +118,24 @@ export const formatToReadableDateShort = (isoDate: string): string => {
     throw new Error("Invalid date format");
   }
 };
+
+//Get current month eg () => 'September'
+export function getCurrentMonth() {
+  const date = new Date();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const monthIndex = date.getMonth();
+  return monthNames[monthIndex];
+}

@@ -5,6 +5,7 @@ import { useGetSubsidiaryInDeptQuery } from "@/redux/services/checklist/subsidia
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
 
 const { ADMIN } = routesPath;
 
@@ -12,7 +13,7 @@ interface DeptTableProps {
   data?: any[];
 }
 
-export default function DeptTable() {
+export default function DepartmentTable() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -24,6 +25,8 @@ export default function DeptTable() {
     router.push(path);
   };
 
+  const { subDetailsData } = useSubsidiaryById(id ?? "");
+
   const { data, isLoading, isFetching } = useGetSubsidiaryInDeptQuery({
     id: id,
     params: { page, search },
@@ -34,7 +37,8 @@ export default function DeptTable() {
     <TableWrapper
       tableheaderList={["Department", "HOD", "Subsidiary", "Branch", "Action"]}
       addText="New Department"
-      hideNewBtnOne={false}
+      newBtnBulk={!subDetailsData?.deleted_at}
+      hideNewBtnOne={subDetailsData?.deleted_at}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       perPage={data?.meta?.per_page}
@@ -53,7 +57,6 @@ export default function DeptTable() {
       dropDown
       hideFilter
       hideSort
-      newBtnBulk
       dropDownList={[
         {
           label: "View Details",

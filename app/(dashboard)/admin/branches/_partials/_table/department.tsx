@@ -10,7 +10,7 @@ interface DeptTableProps {
   data?: any[];
 }
 
-export default function DeptTable({ data }: DeptTableProps) {
+export default function DepartmentTable({ data }: DeptTableProps) {
   const router = useRouter();
   const handleAddDept = () => {
     const path = ADMIN.CREATE_DEPARTMENT;
