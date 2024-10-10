@@ -18,32 +18,32 @@ const steps: ApprovalStep[] = [
 
 const data = [
   {
-    id: 1,
-    fyName: "FY 2024",
-    status: "Ongoing",
-    approvalProgress: 1,
-    taskCompletionPercentage: 60,
+    id: "01j7gmrp88y0t5yrmfbbqybas5",
+    name: "NEW FY",
+    percentage: "50.00%",
+    status: "completed",
+    approval_progress: ["pending", "approved", "approved", "rejected"],
   },
   {
-    id: 1,
-    fyName: "Financial Year 2023",
-    status: "Closed",
-    approvalProgress: 4,
-    taskCompletionPercentage: 100,
+    id: "01j7gmrp88y0t5yrmfbbqybas5",
+    name: "SECOND FY",
+    percentage: "20.00%",
+    status: "completed",
+    approval_progress: ["pending", "rejected", "approved", "approved"],
   },
   {
-    id: 1,
-    fyName: "FY 2022",
-    status: "Ongoing",
-    approvalProgress: 5,
-    taskCompletionPercentage: 70,
+    id: "01j7gmrp88y0t5yrmfbbqybas5",
+    name: "NEW FY",
+    percentage: "72.00%",
+    status: "completed",
+    approval_progress: ["approved", "pending", "approved", "rejected"],
   },
   {
-    id: 1,
-    fyName: "FY 2021",
-    status: "Ongoing",
-    approvalProgress: 3,
-    taskCompletionPercentage: 39,
+    id: "01j7gmrp88y0t5yrmfbbqybas5",
+    name: "SECOND FY",
+    percentage: "90.21%",
+    status: "completed",
+    approval_progress: ["rejected", "approved", "pending", "approved"],
   },
 ];
 
@@ -60,32 +60,33 @@ const TaskOutcome = () => {
       name: (
         <>
           <span className="hidden">{item.id}</span>
-          <p>{item?.fyName}</p>
+          <p>{item?.name}</p>
         </>
       ),
       status: (
         <p
-          className={
-            item?.status === "Ongoing" ? "text-[#119C2B]" : "text-[#3E4345]"
-          }
+          className={` capitalize 
+            ${item?.status !== "active" ? "text-[#119C2B]" : "text-[#835101]"}`}
         >
           {item?.status}
         </p>
       ),
       approvalProgress: (
-        <ApprovalProgress steps={5} completedSteps={item?.approvalProgress} />
+        <ApprovalProgress progressSteps={item?.approval_progress} />
       ),
 
-      taskCompletionPercentage: (
+      percentage: (
         <div className="flex gap-x-1 items-center">
-          <p className="text-[10px]">{item?.taskCompletionPercentage}%</p>
+          <p className="text-[10px]">
+            {Math.round(Number(item?.percentage?.split("%")[0]))}%
+          </p>
           <Progress
-            value={item?.taskCompletionPercentage}
-            className={`w-[150px] h-2 `}
+            value={Math.round(Number(item?.percentage?.split("%")[0]))}
+            className={`w-[150px] h-1.5 `}
             indicatorClass={
-              item?.taskCompletionPercentage >= 70
+              Math.round(Number(item?.percentage?.split("%")[0])) >= 70
                 ? "bg-green-500"
-                : item?.taskCompletionPercentage > 40
+                : Math.round(Number(item?.percentage?.split("%")[0])) > 40
                 ? "bg-warning"
                 : "bg-[red]"
             }

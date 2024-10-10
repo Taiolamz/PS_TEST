@@ -124,7 +124,7 @@ const SpecifiedTaskProgress = () => {
     "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center";
 
   return (
-    <MetricFrame className="flex flex-col gap-4 w-full relative">
+    <MetricFrame className="flex flex-col gap-4 w-full relative min-h-[700px]">
       <div className="flex justify-between ">
         <div className="flex flex-col gap-1">
           <p className="text-[#252C32] font-medium">

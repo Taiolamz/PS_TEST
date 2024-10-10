@@ -5,6 +5,7 @@ import { useGetSubsidiaryInBranchQuery } from "@/redux/services/checklist/subsid
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
 
 const { ADMIN } = routesPath;
 
@@ -19,6 +20,7 @@ export default function BranchesTable() {
     id: id,
     params: { page, search },
   });
+  const { subDetailsData } = useSubsidiaryById(id ?? "");
 
   const handleAddBranch = () => {
     const path = ADMIN.CREATE_BRANCH;
@@ -43,7 +45,8 @@ export default function BranchesTable() {
         setPage(p);
       }}
       addText="New Branch"
-      hideNewBtnOne={false}
+      newBtnBulk={!subDetailsData?.deleted_at}
+      hideNewBtnOne={subDetailsData?.deleted_at}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       onSearch={(param) => {
@@ -56,7 +59,6 @@ export default function BranchesTable() {
       dropDown
       hideFilter
       hideSort
-      newBtnBulk
       dropDownList={[
         {
           label: "View Details",

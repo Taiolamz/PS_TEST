@@ -9,8 +9,9 @@ import { cn } from "@/lib/utils";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import HistoryDrawer from "@/components/drawer/history-drawer";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
+import ReportChallengeModal from "../../../_component/report-challenge-modal";
 import {
-  useAddMOSTargetMutation,
+  useAddMOSAchievementMutation,
   useGetMOSMeasureofSuccessQuery,
   useLazyGetAchievementHistoyQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
@@ -24,7 +25,7 @@ import {
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 
-export default function TargetSubmission({
+export default function AchievementSubmission({
   params,
 }: {
   params: {
@@ -34,17 +35,15 @@ export default function TargetSubmission({
   const [id, setId] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [showReportChallenge, setShowReportChallenge] = useState(false);
 
   // Defining the validation schema for target
   const validationSchema = Yup.object({
-    target: Yup.string().required(`${getCurrentMonth()} Target is required`),
+    achieved: Yup.string().required(`${getCurrentMonth()} Target is required`),
   });
 
   //Add MOS monthly target
-  const [
-    addMOSTarget,
-    { isLoading: addingTarget, data: tardata, error: errtar },
-  ] = useAddMOSTargetMutation();
+  const [addMOSAchievement] = useAddMOSAchievementMutation();
 
   // fetch measure of success
   const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
@@ -64,7 +63,11 @@ export default function TargetSubmission({
   // fetch mos comment
   const [
     getMssionPlanFetchComments,
-    { isLoading: loadingComment, data: commentData },
+    {
+      isLoading: loadingComment,
+      data: commentData,
+      isFetching: fetchingComment,
+    },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
   //Add comment on mos
@@ -77,41 +80,37 @@ export default function TargetSubmission({
       getAchievementHistoy(id);
     }
     if (showComment) {
-      getMssionPlanFetchComments(
-        {
-          component_id: id,
-          component_type: "success-measure",
-        },
-        true
-      );
+      getMssionPlanFetchComments({
+        component_id: id,
+        component_type: "success-measure",
+      });
     }
-  }, [showHistory, showComment]);
+  }, [showHistory, showComment, id]);
 
+  // Handle form submission on each mos task
   const handleFormSubmit = (
-    values: {
-      target: string;
-      month: string;
-    },
+    values: { achieved: string },
     id: string,
     setSubmitting: (isSubmitting: boolean) => void
   ) => {
-    addMOSTarget({
-      success_measure_id: id,
+    addMOSAchievement({
+      target_id: id,
       ...values,
     })
       .unwrap()
       .then(() => {
+        toast.success(
+          `${getCurrentMonth()} Achievement Successfully Submitted`
+        );
         setSubmitting(false);
-        toast.success(`${getCurrentMonth()} target successfully submitted`);
       })
       .catch((err) => {
-        // console.log(err, "error");
         setSubmitting(false);
       });
   };
 
   return (
-    <DashboardLayout back headerTitle="Period Target Submission">
+    <DashboardLayout back headerTitle="Period Achievement Submission">
       {isLoading ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />
@@ -126,6 +125,10 @@ export default function TargetSubmission({
       ) : (
         <div className="m-5 mt-7 space-y-7 pb-9">
           {mosData?.data?.map((item: any, index: number) => {
+            const filteredTarget = item?.target_achievements?.filter(
+              (item: any) =>
+                item?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
+            );
             return (
               <section
                 key={item?.id}
@@ -213,77 +216,113 @@ export default function TargetSubmission({
                       </Button>
                     </div>
                   </section>
-                  <Formik
-                    initialValues={{
-                      target: "",
-                      month: getCurrentMonth() || "",
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={(values, { setSubmitting }) =>
-                      handleFormSubmit(values, item.id, setSubmitting)
-                    }
-                  >
-                    {({
-                      values,
-                      handleChange,
-                      handleBlur,
-                      isSubmitting,
-                      errors,
-                      touched,
-                    }) => (
-                      <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
-                        <Input
-                          label={`${getCurrentMonth()?.slice(0, 3)} Target`}
-                          name="target"
-                          id={`target-${item.id}`}
-                          value={values.target}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          error={errors.target}
-                          touched={touched.target}
-                          placeholder="Target as set during period start"
-                          isRequired
-                          type="number"
-                        />
-                        <Input
-                          label={`${getCurrentMonth()?.slice(
-                            0,
-                            3
-                          )} Achievement`}
-                          id="achievement"
-                          name="achievement"
-                          placeholder="Input Achievement"
-                          disabled
-                        />
-                        <div className="grid lg:grid-cols-2 gap-4">
-                          <Input
-                            label="Total Percentage Achieved"
-                            id="total_percentage"
-                            name="total_percentage"
-                            placeholder="% Auto Calculated"
-                            disabled
-                          />
-                        </div>
-                        <div className="space-x-5">
-                          <Button
-                            loading={isSubmitting}
-                            type="submit"
-                            disabled={isSubmitting}
-                            loadingText="Submit"
-                            className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary mt-6 shadow-none"
-                          >
-                            Submit
-                          </Button>
-                        </div>
-                      </Form>
-                    )}
-                  </Formik>
+                  {filteredTarget?.length < 1 ? (
+                    <div className="border grid gap-y-4 border-[var(--input-border)] place-content-center  text-center h-[342px]  rounded-sm w-full py-5 px-4">
+                      <p className="text-[var(--text-color2)] font-xs">
+                        You have No Target For {getCurrentMonth()}
+                      </p>
+                    </div>
+                  ) : (
+                    filteredTarget?.map((vals: any) => (
+                      <Formik
+                        initialValues={{
+                          achieved: vals?.achieved || "",
+                        }}
+                        key={vals?.id}
+                        validateOnMount={true}
+                        validationSchema={validationSchema}
+                        onSubmit={(values, { setSubmitting }) =>
+                          handleFormSubmit(values, vals.id, setSubmitting)
+                        }
+                      >
+                        {({
+                          values,
+                          handleChange,
+                          handleBlur,
+                          isSubmitting,
+                          errors,
+                          touched,
+                          setFieldValue,
+                        }) => {
+                          return (
+                            <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
+                              <Input
+                                label={`${getCurrentMonth()?.slice(
+                                  0,
+                                  3
+                                )} Target`}
+                                name="target"
+                                id={`target`}
+                                value={vals?.target}
+                                placeholder="Target as set during period start"
+                                disabled
+                              />
+                              <Input
+                                label={`${getCurrentMonth()?.slice(
+                                  0,
+                                  3
+                                )} Achievement`}
+                                type="number"
+                                name="achieved"
+                                id={`achieved-${vals.id}`}
+                                value={values.achieved}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                // error={errors?.achieved}
+                                // touched={touched.achieved}
+                                placeholder="Input Achievement"
+                                isRequired
+                              />
+                              <div className="grid lg:grid-cols-2 gap-4">
+                                <Input
+                                  label="Total Percentage Achieved"
+                                  id="total_percentage"
+                                  name="total_percentage"
+                                  placeholder="% Auto Calculated"
+                                  disabled
+                                />
+                              </div>
+                              <div className="space-x-5 flex items-end ">
+                                <Button
+                                  loading={isSubmitting}
+                                  type="submit"
+                                  disabled={isSubmitting}
+                                  loadingText="Submit"
+                                  className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none"
+                                >
+                                  Submit
+                                </Button>
+                                <Button
+                                  type="button"
+                                  onClick={() => {
+                                    setId(vals?.id);
+                                    setShowReportChallenge(true);
+                                  }}
+                                  className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
+                                >
+                                  Report Challenge
+                                </Button>
+                              </div>
+                            </Form>
+                          );
+                        }}
+                      </Formik>
+                    ))
+                  )}
                 </main>
               </section>
             );
           })}
         </div>
       )}
+
+      <ReportChallengeModal
+        show={showReportChallenge}
+        id={id}
+        option={"target-achievement"}
+        handleClose={() => setShowReportChallenge(false)}
+        // loading
+      />
 
       <CustomCommentDrawer
         open={showComment}

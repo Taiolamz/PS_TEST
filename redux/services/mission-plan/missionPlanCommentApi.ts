@@ -24,12 +24,15 @@ export const missionPlanCommentApi = baseApi.injectEndpoints({
         url: `/comments/commentable-types`,
         method: "GET",
       }),
+      providesTags: ["Comments"],
+      keepUnusedDataFor: 2,
     }),
     getMssionPlanFetchComments: builder.query({
       query: ({ component_id, component_type }) => ({
         url: `/comments/fetch-comments?component_id=${component_id}&component_type=${component_type}`,
         method: "GET",
       }),
+      providesTags: ["Comments"],
     }),
     addMssionPlanCommentOnComponent: builder.mutation({
       query: (payload) => ({
