@@ -19,11 +19,14 @@ import ProceedModal from "../_components/proceed-modal";
 import BulkRequirementModal from "../_components/bulk-requrement-modal";
 import {
   useCreateBulkUnitsMutation,
+  useDeleteUnitMutation,
+  useGetSingleUnitQuery,
   useGetUnitsQuery,
   useLazyDownloadUnitTemplateQuery,
 } from "@/redux/services/checklist/unitApi";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
+import DeactivateOrgModal from "@/components/atoms/modals/deactivate-modal";
 
 const { ADMIN } = routesPath;
 
@@ -207,13 +210,55 @@ export default function UnitDetails() {
         });
       });
   };
+
+  const {
+    isOpen: openDeactivateModal,
+    open: onOpenDeactivateModal,
+    close: closeDeactivateModal,
+  } = useDisclosure();
+
+  const handleDeactivateModalChange = () => {
+    onOpenDeactivateModal();
+    if (openDeactivateModal) {
+      closeDeactivateModal();
+    }
+  };
+
+  const {
+    data: unitDetail,
+    error,
+    isLoading,
+  } = useGetSingleUnitQuery(id!, {
+    skip: !id,
+  });
+
+  const [deleteUnit, { isLoading: isDeletingUnit }] = useDeleteUnitMutation();
+
+  const handleDeleteUnit = async () => {
+    await deleteUnit(id)
+      .unwrap()
+      .then(() => {
+        toast.success(`Unit Deactivated Successfully`);
+        new Promise(() => {
+          setTimeout(() => {
+            handleDeactivateModalChange();
+            toast.dismiss();
+            router.push(ADMIN.UNIT);
+          }, 1000);
+        });
+      });
+  };
+
   return (
-    <DashboardLayout back headerTitle="Human Resource">
+    <DashboardLayout
+      back
+      headerTitle={unitDetail?.data?.unit?.name || "--- ---"}
+    >
       <section className="p-5">
         <div className="flex justify-between mb-10">
           <div className="">
             <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-              Human Resource
+              {unitDetail?.data?.unit?.name || "--- ---"}
             </h3>
 
             <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
@@ -221,19 +266,19 @@ export default function UnitDetails() {
                 <h4>
                   Head of Unit:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    Bryan Adamu
+                    {unitDetail?.data?.unit?.head_of_unit?.name || "--- ---"}
                   </span>
                 </h4>
                 <h4>
                   Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    zojatech@gmail.com
+                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
                   </span>
                 </h4>
                 <h4>
                   Head of Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    Martini@zojatech.com
+                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
                   </span>
                 </h4>
               </span>
@@ -241,19 +286,22 @@ export default function UnitDetails() {
                 <h4>
                   Address:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    9b, Akin Ogunmade Gbagada
+                    {"--- ---"}
+                    {/* { 9b, Akin Ogunmade Gbagada} */}
                   </span>
                 </h4>
                 <h4>
                   State:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    Lagos
+                    {/* Lagos */}
+                    {"--- ---"}
                   </span>
                 </h4>
                 <h4>
                   Country:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    Nigeria
+                    {/* Nigeria */}
+                    {"--- ---"}
                   </span>
                 </h4>
               </span>
@@ -272,7 +320,7 @@ export default function UnitDetails() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setModal(true)}
+              onClick={onOpenDeactivateModal}
               className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
             >
               Deactivate
@@ -330,7 +378,7 @@ export default function UnitDetails() {
           )}
         </section>
       </section>
-      <ModalContainer
+      {/* <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}
         modalClass="h-[220px] !w-[540px] rounded "
@@ -359,7 +407,18 @@ export default function UnitDetails() {
             </Button>
           </div>
         </div>
-      </ModalContainer>
+      </ModalContainer> */}
+
+      <DeactivateOrgModal
+        organization="Unit"
+        isLoading={isDeletingUnit}
+        onDeactivate={handleDeleteUnit}
+        onModalChange={handleDeactivateModalChange}
+        show={openDeactivateModal}
+        content={
+          "You’re about to deactivate this unit. the staffs under this unit would be inaccessible, Do you still want to deactivate?"
+        }
+      />
 
       <DashboardModal
         className={"w-[420px]"}

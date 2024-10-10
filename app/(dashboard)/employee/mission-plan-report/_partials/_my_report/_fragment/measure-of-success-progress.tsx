@@ -112,18 +112,33 @@ const MeasureOfSucessProgress = () => {
   const centeredClass =
     "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center";
 
+  const isButtonDisabled = isLoading || isFetching;
+
   return (
     <MetricFrame className="flex flex-col gap-4 relative min-h-[700px] ">
       <div className="flex justify-between ">
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
-        <Link href={EMPLOYEE.MOS_REPORT(data?.data?.measures?.mission_plan_id)}>
-          <Button className="flex gap-3 items-center group">
-            <p className="font-medium">See Details</p>
-            <figure className="group-hover:translate-x-1 transition-all ease-linear">
-              {arrowRight}
-            </figure>
-          </Button>
-        </Link>
+        {mosData && mosData.length > 0 ? (
+          <Link
+            href={
+              data?.data?.measures?.mission_plan_id
+                ? EMPLOYEE.MOS_REPORT(data?.data?.measures?.mission_plan_id)
+                : "#"
+            }
+            className={isButtonDisabled ? "cursor-not-allowed" : ""}
+            passHref
+          >
+            <Button
+              disabled={isButtonDisabled}
+              className="flex gap-3 items-center group"
+            >
+              <p className="font-medium">See Details</p>
+              <figure className="group-hover:translate-x-1 transition-all ease-linear">
+                {arrowRight}
+              </figure>
+            </Button>
+          </Link>
+        ) : null}
       </div>
 
       {isLoading || isFetching ? (
@@ -132,119 +147,96 @@ const MeasureOfSucessProgress = () => {
         </div>
       ) : (
         <>
-          <div className="flex gap-2 items-center">
-            <span
-              style={{
-                color: getProgressColorByValue(
-                  convertStringToNumber(achievedMos)
-                ),
-              }}
-              className="font-bold text-2xl"
-            >
-              {achievedMos as string}
-            </span>{" "}
-            <span className="text-[#6E7C87] font-bold text-sm">Achieved</span>
-          </div>
-
-          <div className="flex justify-between items-center mt-5">
-            <div className="flex gap-2 items-center">
-              <span className="bg-[#6B51DF] w-[30px] h-[6px] rounded-[1.06px]"></span>
-              <p className="text-[#6E7C87] font-normal text-xs">FY Target</p>
-            </div>
-
-            {/* -----PROGRESS RANGE(%) ------ */}
-            <div className="flex gap-3 items-center border rounded-[4px] border-[#E6E6E6] p-2 px-3">
-              {progressRange.map((chi, idx) => {
-                const { color, value } = chi;
-                return (
-                  <div key={idx} className="flex gap-2 items-center">
-                    <span
-                      style={{ backgroundColor: color }}
-                      className="w-[30px] h-[6px] rounded-[1.06px]"
-                    ></span>
-                    <p className="text-[#9AA6AC] text-[10px] font-normal">
-                      {value}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-            {/* -----PROGRESS RANGE(%) ------ */}
-          </div>
-
-          {/* ------- PROGRESS DETAILS --------- */}
-
-          <div className="flex flex-col gap-5 mt-5">
-            {/* {measureOfSuccessProgressDetails.map((chi, idx) => {
-          const { label, progress, value, color, value_color } = chi;
-          return (
-            <div key={idx}>
-              <div className="flex flex-col gap-1">
-                <p className="text-[#5A5B5F] font-medium text-sm">{label}</p>
-                <ReusableProgress
-                  color={color as "red"}
-                  valuePosition="float-right"
-                  value={progress}
-                  height={16}
-                  borderRadius={2}
-                  hasBackground={false}
-                  valueColor={value_color}
-                  progressClass="rounded-[2px]"
-                />
-                <ReusableProgress
-                  value={0}
-                  className="!bg-[#EBF7FF]"
-                  borderRadius={2}
-                />
-                <p className="text-[#6B51DF] text-xs font-medium">{value}</p>
+          {mosData && mosData.length > 0 ? (
+            <>
+              <div className="flex gap-2 items-center">
+                <span
+                  style={{
+                    color: getProgressColorByValue(
+                      convertStringToNumber(achievedMos)
+                    ),
+                  }}
+                  className="font-bold text-2xl"
+                >
+                  {(achievedMos || "0%") as string}
+                </span>
+                <span className="text-[#6E7C87] font-bold text-sm">
+                  Achieved
+                </span>
               </div>
-            </div>
-          );
-        })} */}
-            {mosData && mosData?.length > 0 ? (
-              mosData?.map((chi, idx) => {
-                const { achieved, measure, target, unit, weight, id } = chi;
-                return (
-                  <div key={idx || id}>
-                    <div className="flex flex-col gap-1">
-                      <p className="text-[#5A5B5F] font-medium text-sm">
-                        {capitalizeFirstLetter(measure)}
-                      </p>
-                      <ReusableProgress
-                        color={getProgressColorByValue(
-                          convertStringToNumber(achieved)
-                        )}
-                        // color={color as "red"}
-                        valuePosition="float-right"
-                        value={convertStringToNumber(achieved)}
-                        height={16}
-                        borderRadius={2}
-                        hasBackground={false}
-                        valueColor={getProgressColorByValue(
-                          convertStringToNumber(achieved)
-                        )}
-                        // valueColor={value_color}
-                        progressClass="rounded-[2px]"
-                      />
-                      <ReusableProgress
-                        value={0}
-                        className="!bg-[#EBF7FF]"
-                        borderRadius={2}
-                      />
-                      <p className="text-[#6B51DF] text-xs font-medium">{`${target}${unit}`}</p>
+
+              <div className="flex justify-between items-center mt-5">
+                <div className="flex gap-2 items-center">
+                  <span className="bg-[#6B51DF] w-[30px] h-[6px] rounded-[1.06px]"></span>
+                  <p className="text-[#6E7C87] font-normal text-xs">
+                    FY Target
+                  </p>
+                </div>
+
+                {/* -----PROGRESS RANGE(%) ------ */}
+                <div className="flex gap-3 items-center border rounded-[4px] border-[#E6E6E6] p-2 px-3">
+                  {progressRange.map((chi, idx) => {
+                    const { color, value } = chi;
+                    return (
+                      <div key={idx} className="flex gap-2 items-center">
+                        <span
+                          style={{ backgroundColor: color }}
+                          className="w-[30px] h-[6px] rounded-[1.06px]"
+                        ></span>
+                        <p className="text-[#9AA6AC] text-[10px] font-normal">
+                          {value}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* -----PROGRESS RANGE(%) ------ */}
+              </div>
+
+              {/* ------- PROGRESS DETAILS --------- */}
+              <div className="flex flex-col gap-5 mt-5">
+                {mosData.map((chi, idx) => {
+                  const { achieved, measure, target, unit, id } = chi;
+                  return (
+                    <div key={id || idx}>
+                      <div className="flex flex-col gap-1">
+                        <p className="text-[#5A5B5F] font-medium text-sm">
+                          {capitalizeFirstLetter(measure)}
+                        </p>
+                        <ReusableProgress
+                          color={getProgressColorByValue(
+                            convertStringToNumber(achieved)
+                          )}
+                          valuePosition="float-right"
+                          value={convertStringToNumber(achieved)}
+                          height={16}
+                          borderRadius={2}
+                          hasBackground={false}
+                          valueColor={getProgressColorByValue(
+                            convertStringToNumber(achieved)
+                          )}
+                          progressClass="rounded-[2px]"
+                        />
+                        <ReusableProgress
+                          value={0}
+                          className="!bg-[#EBF7FF]"
+                          borderRadius={2}
+                        />
+                        <p className="text-[#6B51DF] text-xs font-medium">{`${target}${unit}`}</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className={centeredClass}>
-                <Image src={FileIcon} alt="file" />
-                <p className="text-[var(--text-color2)] text-center font-light">
-                  No Record Found.
-                </p>
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <div className={centeredClass}>
+              <Image src={FileIcon} alt="file" />
+              <p className="text-[var(--text-color2)] text-center font-light">
+                No Record Found.
+              </p>
+            </div>
+          )}
         </>
       )}
 

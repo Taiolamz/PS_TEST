@@ -9,6 +9,7 @@ import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
+import { useGetSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 export default function SpecifiedTask({
   params,
@@ -24,6 +25,10 @@ export default function SpecifiedTask({
   const [challengeModal, setChallengeModal] = React.useState(false);
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
+
+  const { data, isLoading, isFetching } = useGetSpecifiedTaskProgressQuery();
+
+  console.log(data, "data check");
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
