@@ -83,6 +83,15 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["MissionPlanReport"],
     }),
+
+    addChallange: builder.mutation({
+      query: (payload) => ({
+        url: `/challenges/store`,
+        method: "POST",
+        body: payload,
+      }),
+      // invalidatesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -97,4 +106,5 @@ export const {
   useAddMOSTargetMutation,
   useAddMOSAchievementMutation,
   useGetOrgFiscalYearQuery,
+  useAddChallangeMutation,
 } = missionPlanReportApi;

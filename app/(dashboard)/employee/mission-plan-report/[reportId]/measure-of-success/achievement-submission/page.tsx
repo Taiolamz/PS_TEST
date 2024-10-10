@@ -318,7 +318,10 @@ export default function AchievementSubmission({
 
       <ReportChallengeModal
         show={showReportChallenge}
+        id={id}
+        option={"target-achievement"}
         handleClose={() => setShowReportChallenge(false)}
+        // loading
       />
 
       <CustomCommentDrawer
