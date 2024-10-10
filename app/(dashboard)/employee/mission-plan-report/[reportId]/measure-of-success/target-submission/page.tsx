@@ -29,7 +29,7 @@ export default function TargetSubmission({
   const [id, setId] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
-  const [showReportChallenge, setShowReportChallenge] = useState(false);
+
   // fetch measure of success
   const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
     params?.reportId
@@ -196,26 +196,12 @@ export default function TargetSubmission({
                       id="total_percentage"
                       name="total_percentage"
                       placeholder="% Auto Calculated"
-                    />
-                    <Input
-                      label="Downline Achievement"
-                      id="downline_achieved"
-                      name="downline_achieved"
-                      placeholder="Auto Generated"
+                      disabled
                     />
                   </div>
                   <div className="space-x-5">
-                    <Button className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary shadow-none">
+                    <Button className="text-white text-sm font-medium bg-primary p-2 px-5 borders border-primary mt-6 shadow-none">
                       Submit
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setId("dfdfdfdf12");
-                        setShowReportChallenge(true);
-                      }}
-                      className="bg-transparent shadow-none p-0 underline text-[var(--primary-color)] mt-6 text-xs"
-                    >
-                      Report Challenge
                     </Button>
                   </div>
                 </section>
@@ -224,11 +210,6 @@ export default function TargetSubmission({
           ))}
         </div>
       )}
-
-      <ReportChallengeModal
-        show={showReportChallenge}
-        handleClose={() => setShowReportChallenge(false)}
-      />
 
       <CustomCommentDrawer
         open={showComment}
