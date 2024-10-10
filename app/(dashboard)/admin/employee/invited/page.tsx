@@ -35,6 +35,7 @@ import { trimLongString } from "../../../_layout/Helper";
 import MetricCard from "@/components/card/metric-card";
 import ModuleCard from "@/components/card/module-cards/ModuleCard";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import { useGetAllStaffQuery, useGetInvitedStaffQuery } from "@/redux/services/employee/employeeApi";
 
 const { ADMIN } = routesPath;
 
@@ -172,6 +173,15 @@ const Employee = () => {
   const { employeerolesColumns, data, openDeleteModal, handleDeleteDialog } =
     useEmployeeRolesColumnData(isFetchingEmployees);
 
+  const { data: all_staff, isLoading: isLoadingAllStaff } = useGetAllStaffQuery({})
+  // const INVITED_STAFF_COUNT = invited_staff?.data?.total_staff ?? 0
+
+  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({})
+  const ALL_STAFF = invited_staff?.data?.data ?? []
+  const META_DATA = invited_staff?.data?.meta ?? {}
+
+  // console.log(ALL_STAFF)
+
   const employeesColumnData = useMemo(
     () => employeerolesColumns,
     [isFetchingEmployees]
@@ -264,7 +274,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => {} },
+    { label: "Implied Task", color: "red", onActionClick: () => { } },
   ];
   // tableBodyList={userData}
 
@@ -284,7 +294,7 @@ const Employee = () => {
       active: false,
       title: "Total Staffs",
       type: "staff",
-      count: 12,
+      count: all_staff?.data?.total_staff_count,
       accentColor: "",
       hide: false,
       icon: "",
@@ -298,11 +308,11 @@ const Employee = () => {
       active: pathname === routesPath?.ADMIN?.EMPLOYEES_INVITED,
       title: "Invited Staffs",
       type: "staff",
-      count: 4,
+      count: invited_staff?.data?.length,
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {},
+      onClick: () => { },
       pending: true,
       primaryColor: "",
     },

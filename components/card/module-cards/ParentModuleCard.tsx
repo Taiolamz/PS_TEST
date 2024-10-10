@@ -15,7 +15,7 @@ const listToTest = [
     accentColor: "",
     hide: false,
     icon: "",
-    onCLick: () => {},
+    onCLick: () => { },
     pending: false,
     primaryColor: "",
   },
@@ -27,7 +27,7 @@ const listToTest = [
     accentColor: "",
     hide: false,
     icon: "",
-    onCLick: () => {},
+    onCLick: () => { },
     pending: false,
     primaryColor: "",
   },
@@ -39,7 +39,7 @@ const listToTest = [
     accentColor: "",
     hide: false,
     icon: "",
-    onCLick: () => {},
+    onCLick: () => { },
     pending: false,
     primaryColor: "",
   },
@@ -51,7 +51,7 @@ const listToTest = [
     accentColor: "",
     hide: false,
     icon: "",
-    onCLick: () => {},
+    onCLick: () => { },
     pending: false,
     primaryColor: "",
   },
@@ -65,8 +65,8 @@ const ParentModuleCard = ({ list }: myComponentProps) => {
           list?.length < 4
             ? "repeat(auto-fit, minmax(15rem, 17rem))"
             : list?.length === 4
-            ? "repeat(4, 1fr)"
-            : "",
+              ? "repeat(4, 1fr)"
+              : "",
       }}
       className={style.parent_module_card_metric_index_wrapper}
     >
