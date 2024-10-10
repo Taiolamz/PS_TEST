@@ -13,7 +13,12 @@ import ModalContainer from "@/components/modal-container";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSubsidiaryById } from "../_hooks/useSubsidiaryById";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import { BranchesTable, DeptTable, StaffTable, UnitTable } from "./_table";
+import {
+  BranchesTable,
+  DepartmentTable,
+  StaffTable,
+  UnitTable,
+} from "./_table";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import {
   useCloseSubsidiariesMutation,
@@ -284,7 +289,7 @@ export default function SubsidiaryDetails() {
         </div>
         <section className="">
           {tab === "branches" && <BranchesTable />}
-          {tab === "departments" && <DeptTable />}
+          {tab === "departments" && <DepartmentTable />}
           {tab === "units" && <UnitTable />}
           {tab === "staffs" && <StaffTable />}
         </section>

@@ -13,7 +13,7 @@ interface DeptTableProps {
   data?: any[];
 }
 
-export default function DeptTable() {
+export default function DepartmentTable() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
