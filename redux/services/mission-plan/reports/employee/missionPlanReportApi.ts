@@ -42,6 +42,22 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getAchievementHistoy: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/achievement/history/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getMOSComment: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/success-measure/${id}/comments`,
+        method: "GET",
+      }),
+      providesTags: ["MOSComment"],
+    }),
   }),
 });
 
@@ -51,4 +67,6 @@ export const {
   useGetMissionPlanReportCycleQuery,
   useGetFiscalYearsProgressQuery,
   useGetMOSMeasureofSuccessQuery,
+  useLazyGetAchievementHistoyQuery,
+  useLazyGetMOSCommentQuery,
 } = missionPlanReportApi;

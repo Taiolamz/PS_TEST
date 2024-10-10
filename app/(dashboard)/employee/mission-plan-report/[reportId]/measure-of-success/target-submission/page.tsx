@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,11 @@ import HistoryDrawer from "@/components/drawer/history-drawer";
 import { fakehistoryData } from "../../../_partials/_measure_of_success/_data/data";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReportChallengeModal from "../../../_component/report-challenge-modal";
-import { useGetMOSMeasureofSuccessQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import {
+  useGetMOSMeasureofSuccessQuery,
+  useLazyGetAchievementHistoyQuery,
+  useLazyGetMOSCommentQuery,
+} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
@@ -22,6 +26,7 @@ export default function TargetSubmission({
     reportId: string | number;
   };
 }) {
+  const [id, setId] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [showReportChallenge, setShowReportChallenge] = useState(false);
@@ -29,8 +34,45 @@ export default function TargetSubmission({
   const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
     params?.reportId
   );
-  console.log({ mosData, isLoading });
-  const [id, setId] = useState("");
+  //fetch mos achievement history
+  const [
+    getAchievementHistoy,
+    {
+      isLoading: loadingHistory,
+      data: historyData,
+      isFetching: fetchingHistory,
+    },
+  ] = useLazyGetAchievementHistoyQuery();
+
+  // fetch mos comment
+  const [
+    getMOSComment,
+    {
+      isLoading: loadingComment,
+      data: commentData,
+      isFetching: fetchingComment,
+    },
+  ] = useLazyGetMOSCommentQuery();
+
+  //Mount when history or comment modal is opened
+  useEffect(() => {
+    if (showHistory) {
+      getAchievementHistoy(id);
+    }
+    if (showComment) {
+      getMOSComment(id);
+    }
+  }, [showHistory, showComment]);
+
+  console.log({
+    mosData,
+    isLoading,
+    loadingHistory,
+    historyData,
+    loadingComment,
+    commentData,
+    fetchingComment,
+  });
   const handleFormSubmit = () => {};
 
   const formik = useFormik({
@@ -49,6 +91,7 @@ export default function TargetSubmission({
     // validateOnChange: true,
     // validateOnBlur: true,
   });
+
   return (
     <DashboardLayout back headerTitle="Period Target Submission">
       {isLoading ? (
@@ -71,17 +114,21 @@ export default function TargetSubmission({
             >
               <header className="lg:flex items-center justify-between">
                 <h3 className="text-black max-lg:inline-block capitalize text-nowrap">
-                  {index + 1} .Measure of Success Title
+                  {index + 1} .
                 </h3>
                 <h3 className="inline-flex items-center max-lg:float-right gap-x-1 text-[var(--text-color4)] text-sm">
                   Approval Status :
                   <span
                     className={cn(
-                      "text-[rgb(var(--bg-green-100))]"
-                      // "text-[var(--bg-yellow-400)]"
+                      "capitalize",
+                      item?.status?.toLowerCase() === "pending"
+                        ? "text-[var(--bg-yellow-400)]"
+                        : item?.status?.toLowerCase() === "approved"
+                        ? "text-[rgb(var(--bg-green-100))]"
+                        : "text-[var(--bg-red-100)]"
                     )}
                   >
-                    Approved
+                    {item?.status}
                   </span>
                 </h3>
                 <h3 className="font-medium max-lg:mt-3 items-center gap-x-1 text-[var(--text-color4)]">
@@ -99,27 +146,27 @@ export default function TargetSubmission({
 
                     <hr className="my-3 col-span-12" />
 
-                    <p className=" col-span-4 text-xs">
-                      Achieve New user onboarding for over 50 new customers
-                    </p>
-                    <p className=" col-span-2 text-xs">80%</p>
-                    <p className=" col-span-1 text-xs">%</p>
-                    <p className=" col-span-2 text-xs">200</p>
+                    <p className=" col-span-4 text-xs">{item?.measure}</p>
+                    <p className=" col-span-2 text-xs">{item?.weight}</p>
+                    <p className=" col-span-1 text-xs">{item?.unit}</p>
+                    <p className=" col-span-2 text-xs">{item?.target}</p>
                   </div>
                   <div className="flex gap-x-3 mt-8">
                     <Button
-                      onClick={() => {
+                      onClick={async () => {
+                        await setShowComment(false);
                         setShowHistory(true);
-                        setId("213|f12dfe2334jh88er");
+                        setId(item?.id);
                       }}
                       className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                     >
                       View History
                     </Button>
                     <Button
-                      onClick={() => {
+                      onClick={async () => {
+                        await setShowHistory(false);
                         setShowComment(true);
-                        setId("213|f12dfe2334jh88er");
+                        setId(item?.id);
                       }}
                       className="text-[var(--footer-link-color)] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                     >
@@ -187,16 +234,17 @@ export default function TargetSubmission({
         open={showComment}
         onClose={() => setShowComment(false)}
         id={id}
-        data={[]}
+        data={commentData?.data?.comments || []}
         handleSubmit={() => {}}
         commentType={"success-measure"}
+        loadingComment={loadingComment}
       />
       <HistoryDrawer
         open={showHistory}
         onClose={() => setShowHistory(false)}
         id={id}
-        loading={false}
-        data={fakehistoryData}
+        loading={loadingHistory || fetchingHistory}
+        data={format_history_data(historyData?.data?.data || [])}
       />
     </DashboardLayout>
   );
@@ -304,3 +352,15 @@ export default function TargetSubmission({
 //     },
 //   ],
 // };
+
+const format_history_data = (data: any[]) => {
+  return data?.map((item: any) => ({
+    id: item?.id,
+    month: item?.month,
+    status: item?.status,
+    title: item?.success_measure?.measure,
+    percentage: item?.achievementPercentage,
+    target: item?.target,
+    achievement: item?.achieved,
+  }));
+};
