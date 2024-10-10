@@ -40,15 +40,7 @@ export default function ProgressReport({ id }: { id: string }) {
   return (
     <div className="m-5">
       {/* ----- FILTER/SELECT WRAP START------- */}
-      <ReportFilter
-        fiscalYearVal={fiscalYear}
-        setFiscalYearVal={setFiscalYear}
-        missionCycleVal={missionCycle}
-        setMissionCycleVal={setMissionCycle}
-        fiscalOptions={options}
-        cycleOptions={handleFormatCycle()}
-        loading={isLoading || isFetching}
-      />
+      <ReportFilter />
       {/* ----- FILTER/SELECT WRAP END------- */}
 
       {/* ----- USER INFO------- */}

@@ -75,7 +75,7 @@ export default function AchievementSubmission({
     if (showComment) {
       getMOSComment(id);
     }
-  }, [showHistory, showComment]);
+  }, [showHistory, showComment, id]);
 
   const handleFormSubmit = (
     values: { achieved: string },
@@ -198,8 +198,9 @@ export default function AchievementSubmission({
                     filteredTarget?.map((vals: any) => (
                       <Formik
                         initialValues={{
-                          achieved: "",
+                          achieved: vals?.achieved || "",
                         }}
+                        key={vals?.id}
                         validateOnMount={true}
                         validationSchema={validationSchema}
                         onSubmit={(values, { setSubmitting }) =>
@@ -215,11 +216,11 @@ export default function AchievementSubmission({
                           touched,
                           setFieldValue,
                         }) => {
-                          useEffect(() => {
-                            if (vals?.achieved) {
-                              setFieldValue("achieved", vals?.achieved);
-                            }
-                          }, []);
+                          // useEffect(() => {
+                          //   if (vals?.achieved) {
+                          //     setFieldValue("achieved", vals?.achieved);
+                          //   }
+                          // }, []);
                           return (
                             <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
                               <Input
@@ -244,8 +245,8 @@ export default function AchievementSubmission({
                                 value={values.achieved}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={errors?.achieved}
-                                touched={touched.achieved}
+                                // error={errors?.achieved}
+                                // touched={touched.achieved}
                                 placeholder="Input Achievement"
                                 isRequired
                               />
