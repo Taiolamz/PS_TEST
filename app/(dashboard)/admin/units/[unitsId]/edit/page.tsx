@@ -31,15 +31,9 @@ export default function Edit({ params }: { params: { unitsId: string } }) {
     isUpdating,
   } = useEditUnit({ id: params.unitsId });
 
-  const [selectedBranch, setSelectedBranch] = useState(
-    formik.values.branch_id || ""
-  );
-  const [selectedSubsidiary, setSelectedSubsidiary] = useState(
-    formik.values.subsidiary_id || ""
-  );
-  const [selectedDepartment, setSelectedDepartment] = useState(
-    formik.values.department_id || ""
-  );
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [selectedSubsidiary, setSelectedSubsidiary] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
 
   const BRANCH_OPTION = ({ obj, SubId }: { obj: any; SubId?: string }) => {
     let finalMapValue = [
@@ -155,13 +149,19 @@ export default function Edit({ params }: { params: { unitsId: string } }) {
     );
 
     if (selectedEmployee) {
-      formik.setFieldValue("head_of_department.name", selectedEmployee.name);
+      formik.setFieldValue("head_of_unit.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
-      formik.setFieldValue("head_of_department.id", selectedEmployee.id);
+      formik.setFieldValue("head_of_unit.id", selectedEmployee.id);
+      // formik.setFieldValue("head_of_department.name", selectedEmployee.name);
+      // formik.setFieldValue("work_email", selectedEmployee.email);
+      // formik.setFieldValue("head_of_department.id", selectedEmployee.id);
     } else {
-      formik.setFieldValue("head_of_department.name", "");
+      formik.setFieldValue("head_of_unit.name", "");
       formik.setFieldValue("work_email", "");
-      formik.setFieldValue("head_of_department.id", "");
+      formik.setFieldValue("head_of_unit.id", "");
+      // formik.setFieldValue("head_of_department.name", "");
+      // formik.setFieldValue("work_email", "");
+      // formik.setFieldValue("head_of_department.id", "");
     }
   };
 
@@ -287,170 +287,171 @@ export default function Edit({ params }: { params: { unitsId: string } }) {
         <FormLayout
           module="Unit"
           form={
-            <form
-              className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 "
-              onSubmit={formik.handleSubmit}
-              autoComplete="off"
-            >
-              <Input
-                label="Name of Unit"
-                type="text"
-                placeholder="Unit Name"
-                id="name"
-                name="name"
-                onChange={formik.handleChange}
-                value={formik.values.name}
-                isRequired
-              />
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
+              <div className="grid grid-cols-2 gap-x-10 gap-y-5 translate-y-3 ">
+                <Input
+                  label="Name of Unit"
+                  type="text"
+                  placeholder="Unit Name"
+                  id="name"
+                  name="name"
+                  onChange={formik.handleChange}
+                  value={formik.values.name}
+                  isRequired
+                />
 
-              <Input
-                label="Unit Email"
-                type="email"
-                placeholder="Unit Email"
-                value={formik.values.work_email}
-                id="unit_email"
-                name="unit_email"
-                onChange={formik.handleChange}
-              />
+                <Input
+                  label="Unit Email"
+                  type="email"
+                  placeholder="Unit Email"
+                  value={formik.values.unit_email}
+                  id="unit_email"
+                  name="unit_email"
+                  onChange={formik.handleChange}
+                />
 
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "subsidiary"
-              ) && (
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "subsidiary"
+                ) && (
+                  <CustomSelect
+                    label="Subsidiary"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary")}
+                    placeholder="Select Subsidiary"
+                    options={[
+                      {
+                        name: "",
+                        id: "",
+                        label: "Select Subsidiary",
+                        value: "",
+                      },
+                      ...subsidiaries,
+                    ]}
+                    selected={formik.values.subsidiary_id.name}
+                    setSelected={(selectedName) => {
+                      handleSubsidiaryChange(selectedName);
+                      setSelectedBranch("");
+                      setSelectedDepartment("");
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
+
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "branch"
+                ) && (
+                  <CustomSelect
+                    label="Branch"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("branch")}
+                    placeholder="Select Branch"
+                    options={BRANCH_OPTION({
+                      obj: branches,
+                      SubId: formik?.values?.subsidiary_id?.id,
+                    })}
+                    disabled={
+                      formik?.values.subsidiary_id.name?.length === 0 &&
+                      processInputAsArray(
+                        user?.organization?.hierarchy
+                      )?.includes("subsidiary")
+                    }
+                    selected={formik.values.branch_id || selectedBranch}
+                    setSelected={(value) => {
+                      setSelectedBranch(value);
+                      formik.setFieldValue("branch_id", value);
+                      setSelectedDepartment("");
+                      formik.setFieldValue("department_id", "");
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
+
+                {processInputAsArray(user?.organization?.hierarchy)?.includes(
+                  "department"
+                ) && (
+                  <CustomSelect
+                    label="Department"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("department")}
+                    placeholder="Select Department"
+                    options={DEPT_OPTION({
+                      obj: departments,
+                      SubId: formik?.values?.subsidiary_id?.id,
+                      BranId: formik?.values?.branch_id,
+                    })}
+                    disabled={
+                      (formik?.values.subsidiary_id.name?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("subsidiary")) ||
+                      (formik?.values.branch_id?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("branch"))
+                    }
+                    selected={formik.values.department_id || selectedDepartment}
+                    setSelected={(value) => {
+                      setSelectedDepartment(value);
+                      formik.setFieldValue("department_id", value);
+                    }}
+                    labelClass={labelClassName}
+                  />
+                )}
+
                 <CustomSelect
-                  label="Subsidiary"
-                  isRequired={processInputAsArray(
-                    user?.organization?.hierarchy
-                  )?.includes("subsidiary")}
-                  placeholder="Select Subsidiary"
+                  label="Head of Unit"
+                  placeholder="Head of Unit"
                   options={[
                     {
+                      label: "Head of Unit",
+                      value: "",
                       name: "",
                       id: "",
-                      label: "Select Subsidiary",
-                      value: "",
                     },
-                    ...subsidiaries,
+                    ...employees,
                   ]}
-                  selected={formik.values.subsidiary_id.name}
-                  setSelected={(selectedName) => {
-                    handleSubsidiaryChange(selectedName);
-                    setSelectedBranch("");
-                    setSelectedDepartment("");
-                  }}
+                  selected={formik.values.head_of_unit.name}
+                  setSelected={handleHeadSelectChange}
                   labelClass={labelClassName}
+                  // isRequired
                 />
-              )}
 
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "branch"
-              ) && (
-                <CustomSelect
-                  label="Branch"
-                  isRequired={processInputAsArray(
-                    user?.organization?.hierarchy
-                  )?.includes("branch")}
-                  placeholder="Select Branch"
-                  options={BRANCH_OPTION({
-                    obj: branches,
-                    SubId: formik?.values?.subsidiary_id?.id,
-                  })}
-                  disabled={
-                    formik?.values.subsidiary_id.name?.length === 0 &&
-                    processInputAsArray(
-                      user?.organization?.hierarchy
-                    )?.includes("subsidiary")
-                  }
-                  selected={selectedBranch}
-                  setSelected={(value) => {
-                    setSelectedBranch(value);
-                    formik.setFieldValue("branch_id", value);
-                    setSelectedDepartment("");
-                    formik.setFieldValue("department_id", "");
-                  }}
-                  labelClass={labelClassName}
+                <Input
+                  label="Work Email"
+                  type="text"
+                  placeholder="Work Email"
+                  id="work_email"
+                  value={formik.values.head_of_unit.email}
+                  name="work_email"
+                  onChange={formik.handleChange}
+                  // isRequired
+                  disabled
                 />
-              )}
 
-              {processInputAsArray(user?.organization?.hierarchy)?.includes(
-                "department"
-              ) && (
-                <CustomSelect
-                  label="Department"
-                  isRequired={processInputAsArray(
-                    user?.organization?.hierarchy
-                  )?.includes("department")}
-                  placeholder="Select Department"
-                  options={DEPT_OPTION({
-                    obj: departments,
-                    SubId: formik?.values?.subsidiary_id?.id,
-                    BranId: formik?.values?.branch_id,
-                  })}
-                  disabled={
-                    (formik?.values.subsidiary_id.name?.length === 0 &&
-                      processInputAsArray(
-                        user?.organization?.hierarchy
-                      )?.includes("subsidiary")) ||
-                    (formik?.values.branch_id?.length === 0 &&
-                      processInputAsArray(
-                        user?.organization?.hierarchy
-                      )?.includes("branch"))
-                  }
-                  selected={selectedDepartment}
-                  setSelected={(value) => {
-                    setSelectedDepartment(value);
-                    formik.setFieldValue("department_id", value);
-                  }}
-                  labelClass={labelClassName}
+                <Textarea
+                  label="Unit Description"
+                  rows={3}
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+                  className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
+                  onChange={formik.handleChange}
+                  touched={formik.touched.description as boolean}
+                  value={formik.values.description}
+                  error={formik.errors.description as string}
                 />
-              )}
+              </div>
+              <br />
 
-              <CustomSelect
-                label="Head of Unit"
-                placeholder="Head of Unit"
-                options={[
-                  {
-                    label: "Head of Unit",
-                    value: "",
-                    name: "",
-                    id: "",
-                  },
-                  ...employees,
-                ]}
-                selected={formik.values.head_of_unit.name}
-                setSelected={handleHeadSelectChange}
-                labelClass={labelClassName}
-                // isRequired
-              />
-
-              <Input
-                label="Work Email"
-                type="text"
-                placeholder="Work Email"
-                id="work_email"
-                value={formik.values.work_email}
-                name="work_email"
-                onChange={formik.handleChange}
-                // isRequired
-                disabled
-              />
-
-              <Textarea
-                label="Unit Description"
-                rows={3}
-                id="description"
-                name="description"
-                placeholder="Description"
-                className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
-                onChange={formik.handleChange}
-                touched={formik.touched.description as boolean}
-                value={formik.values.description}
-                error={formik.errors.description as string}
-              />
               <Button
                 className="w-[170px] my-10"
                 type="submit"
-                // onClick={handleSubmit}
+                onClick={handleSubmit}
                 disabled={isUpdating}
+                loadingText="Updating..."
               >
                 Update Information
               </Button>

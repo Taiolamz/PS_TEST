@@ -11,6 +11,9 @@ import { useContext } from "react";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
+import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
+import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
+import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
 
 type Prop = {
   cancelPath: string;
@@ -31,6 +34,38 @@ export const useUnit = ({ cancelPath }: Prop) => {
 
   const { data: employeesData, isLoading: isLoadingEmployees } =
     useGetAllEmployeesQuery();
+
+
+
+  const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
+    useGetSubsidiariesQuery({
+      to: 0,
+      total: 0,
+      per_page: 50,
+      currentPage: 0,
+      next_page_url: "",
+      prev_page_url: "",
+    });
+
+  const { data: branchesData, isLoading: isLoadingBranches } =
+    useGetBranchesQuery({
+      to: 0,
+      total: 0,
+      per_page: 50,
+      currentPage: 0,
+      next_page_url: "",
+      prev_page_url: "",
+    });
+
+  const { data: departmentData, isLoading: isLoadingDepartments } =
+    useGetDepartmentsQuery({
+      to: 0,
+      total: 0,
+      per_page: 50,
+      currentPage: 0,
+      next_page_url: "",
+      prev_page_url: "",
+    });
 
   const handleDropdown = (
     items: StateData[] | SubsidiaryData[] | DepartmentData[] | AllStaff[]
@@ -58,12 +93,31 @@ export const useUnit = ({ cancelPath }: Prop) => {
     return data;
   };
 
-  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
-  const branches = dropdownData?.organization_info?.branches ?? [];
-  const departments = dropdownData?.organization_info?.departments ?? [];
-  const employees = employeesData ?? [];
-  const employeeDrop = handleDropdown(employees);
+  // const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
+  // const branches = dropdownData?.organization_info?.branches ?? [];
+  // const departments = dropdownData?.organization_info?.departments ?? [];
+  // const employees = employeesData ?? [];
+  // const employeeDrop = handleDropdown(employees);
+  const handleBranchDropdown = (items: any[]) => {
+    const data = items?.map((chi) => {
+      return {
+        ...chi,
+        label: chi?.name,
+        value: chi?.branch_id,
+      };
+    });
+    return data;
+  };
 
+  const employees = employeesData ?? [];
+  const subsidiaries = subsidiariesData?.data?.data ?? [];
+  const branches = branchesData?.data.branches.data ?? [];
+  const departments = departmentData?.data ?? [];
+
+  const employeeDrop = handleDropdown(employees);
+  const subsidiaryDrop = handleDropdown(subsidiaries);
+  const branchDrop = handleBranchDropdown(branches);
+  const departmentDrop = handleDropdown(departments);
   const formSchema = yup.object().shape({
     name: yup.string().min(1, "Name is required").required("Name is required"),
     // head_of_unit: yup.string().min(1, "Head of Unit is required").optional(),
@@ -160,5 +214,9 @@ export const useUnit = ({ cancelPath }: Prop) => {
     employeeDrop,
     employees: handleFormatDropdown(employees),
     isLoadingDropdown,
+    subsidiaryDrop,
+    branchDrop,
+    departmentDrop,
+
   };
 };

@@ -154,7 +154,7 @@ export const useEditUnit = ({ id }: Prop) => {
 
   const employeeDrop = handleDropdown(employees);
   const subsidiaryDrop = handleDropdown(subsidiaries);
-  const branchDrop = handleBranchDropdown([]);
+  const branchDrop = handleBranchDropdown(branches);
   const departmentDrop = handleDropdown(departments);
 
   // const { data: orgData } = useGetOrgDetailsQuery();
@@ -168,10 +168,10 @@ export const useEditUnit = ({ id }: Prop) => {
   const handleSubmit = async () => {
     // const payload = new FormData();
     // const { hou, ...rest } = formik.values;
-    console.log("testing...");
     const payload = {
       // ...formik.values,
       // address: "lagos island",
+      name: formik.values.name,
       organization_id: organization?.id,
       head_of_unit: formik.values.head_of_unit.id,
       subsidiary_id: formik.values.subsidiary_id.id,
@@ -188,7 +188,7 @@ export const useEditUnit = ({ id }: Prop) => {
     // });
 
     // payload.append("head_of_department", hou);
-    console.log(payload, "payload", id);
+
     // return;
     await updateUnit(payload)
       .unwrap()
@@ -202,8 +202,6 @@ export const useEditUnit = ({ id }: Prop) => {
         });
       });
   };
-
-  console.log(unitDetail, "unit detail");
 
   const formik = useFormik({
     // initialValues: {
@@ -239,16 +237,15 @@ export const useEditUnit = ({ id }: Prop) => {
       unit_email: unitDetail?.data?.unit?.unit_email || "",
       head_of_unit: {
         name: unitDetail?.data?.unit?.head_of_unit?.name || "",
-        email: unitDetail?.data?.unit?.head_of_unit?.email || "",
+        email: unitDetail?.data?.unit?.head_of_unit?.work_email || "",
         id: unitDetail?.data?.unit?.head_of_unit?.id || "",
       },
-      work_email: unitDetail?.data?.unit?.unit_email,
+      work_email: unitDetail?.data?.unit?.unit_email || "",
       subsidiary_id: {
-        id: unitDetail?.subsidiary?.id || "",
-        name: unitDetail?.subsidiary?.name || "",
+        id: unitDetail?.data?.unit?.subsidiary?.id || "",
+        name: unitDetail?.data?.unit?.subsidiary?.name || "",
       },
-      branch_id: unitDetail?.branch?.id || "",
-
+      branch_id: unitDetail?.data?.unit?.branch?.id || "",
       department_id: unitDetail?.data?.unit?.deparment?.id || "",
       description: unitDetail?.data?.unit?.description || "",
     },
@@ -256,8 +253,6 @@ export const useEditUnit = ({ id }: Prop) => {
     onSubmit: handleSubmit,
     enableReinitialize: true,
   });
-
-  console.log(unitDetail, "unit detail");
 
   return {
     isUpdating,
@@ -271,6 +266,6 @@ export const useEditUnit = ({ id }: Prop) => {
     departmentDrop,
     isLoadingStates,
     employeeDrop,
-    employees,
+    employees: handleFormatDropdown(employees),
   };
 };
