@@ -28,8 +28,6 @@ export default function SpecifiedTask({
 
   // const { data, isLoading, isFetching } = useGetSpecifiedTaskProgressQuery();
 
-  // console.log(data, "data check");
-
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
       <div className="m-5 overflow-x-hidden">

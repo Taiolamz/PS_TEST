@@ -95,13 +95,13 @@ export default function UnitDetails() {
     return obj?.map((item: any, idx: number) => ({
       // idx: idx + 1,
       name: item?.name,
-      gender: item?.gender || "--- ---",
-      email: item?.work_email || "--- ---",
+      gender: item?.gender || "n/a",
+      email: item?.work_email || "n/a",
       // department: item?.department || "--",
       // line_manager_name: item?.line_manager_name || "--",
-      job_title: item?.job_title || "--- ---",
-      role: item?.role || "--- ---",
-      line_manager_name: item?.line_manager_name || "--- ---",
+      job_title: item?.job_title || "n/a",
+      role: item?.role || "n/a",
+      line_manager_name: item?.line_manager_name || "n/a",
       _slug: {
         id: item?.id,
       },
@@ -123,7 +123,7 @@ export default function UnitDetails() {
       active: tab === "staffs",
       title: "Total Staffs",
       type: "staff",
-      count: ALL_STAFF?.length || "--- ---",
+      count: ALL_STAFF?.length || "0",
       accentColor: "",
       hide: false,
       icon: "",
@@ -303,13 +303,13 @@ export default function UnitDetails() {
   return (
     <DashboardLayout
       back
-      headerTitle={unitDetail?.data?.unit?.name || "--- ---"}
+      headerTitle={unitDetail?.data?.unit?.name || "n/a"}
     >
       <section className="p-5">
         <div className="flex justify-between mb-10">
           <div className="">
             <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-              {unitDetail?.data?.unit?.name || "--- ---"}
+              {unitDetail?.data?.unit?.name || "n/a"}
             </h3>
 
             <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
@@ -317,19 +317,19 @@ export default function UnitDetails() {
                 <h4>
                   Head of Unit:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.head_of_unit?.name || "--- ---"}
+                    {unitDetail?.data?.unit?.head_of_unit?.name || "n/a"}
                   </span>
                 </h4>
                 <h4>
                   Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
+                    {unitDetail?.data?.unit?.unit_email || "n/a"}
                   </span>
                 </h4>
                 <h4>
                   Head of Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
+                    {unitDetail?.data?.unit?.unit_email || "n/a"}
                   </span>
                 </h4>
               </span>
@@ -337,7 +337,7 @@ export default function UnitDetails() {
                 <h4>
                   Address:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {"--- ---"}
+                    {"n/a"}
                     {/* { 9b, Akin Ogunmade Gbagada} */}
                   </span>
                 </h4>
@@ -345,14 +345,14 @@ export default function UnitDetails() {
                   State:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
                     {/* Lagos */}
-                    {"--- ---"}
+                    {"n/a"}
                   </span>
                 </h4>
                 <h4>
                   Country:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
                     {/* Nigeria */}
-                    {"--- ---"}
+                    {"n/a"}
                   </span>
                 </h4>
               </span>
