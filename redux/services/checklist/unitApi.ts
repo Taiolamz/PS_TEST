@@ -38,6 +38,22 @@ export const unitApi = baseApi.injectEndpoints({
       // transformResponse: (response: { data: { data: BranchData[] } }) =>
       //   response.data.data,
     }),
+    
+    getAllUnitStaffById: builder.query<
+      any,
+      { id: string; params: QueryParams }
+    >({
+      query: ({ id, params }) => ({
+        url: `/admin/unit/unit-staff/${id}${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["Units"],
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
+    }),
+
     getSingleUnit: builder.query<any, string>({
       query: (unit) => ({
         url: `/admin/unit/${unit}`,
@@ -77,4 +93,5 @@ export const {
   useGetSingleUnitQuery,
   useDeleteUnitMutation,
   useUpdateUnitMutation,
+  useGetAllUnitStaffByIdQuery,
 } = unitApi;

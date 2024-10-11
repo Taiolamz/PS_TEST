@@ -35,7 +35,11 @@ import { trimLongString } from "../../_layout/Helper";
 import MetricCard from "@/components/card/metric-card";
 import ModuleCard from "@/components/card/module-cards/ModuleCard";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
-import { useGetAllStaffQuery, useGetInvitedStaffQuery, useGetStaffCountQuery } from "@/redux/services/employee/employeeApi";
+import {
+  useGetAllStaffQuery,
+  useGetInvitedStaffQuery,
+  useGetStaffCountQuery,
+} from "@/redux/services/employee/employeeApi";
 import { Dictionary } from "@/@types/dictionary";
 
 const { ADMIN } = routesPath;
@@ -176,11 +180,14 @@ const Employee = () => {
   const { employeerolesColumns, data, openDeleteModal, handleDeleteDialog } =
     useEmployeeRolesColumnData(isFetchingEmployees);
 
-  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({})
+  const { data: invited_staff, isLoading: isLoadingInvitedStaff } =
+    useGetInvitedStaffQuery({});
 
-  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery({})
-  const ALL_STAFF = all_staff?.data?.data ?? []
-  const META_DATA = all_staff?.data?.meta ?? {}
+  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery(
+    {}
+  );
+  const ALL_STAFF = all_staff?.data?.data ?? [];
+  const META_DATA = all_staff?.data?.meta ?? {};
   // console.log(all_staff)
 
   const employeesColumnData = useMemo(
@@ -276,7 +283,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => { } },
+    { label: "Implied Task", color: "red", onActionClick: () => {} },
   ];
   // tableBodyList={userData}
 
@@ -300,7 +307,7 @@ const Employee = () => {
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => { },
+      onClick: () => {},
       pending: false,
       primaryColor: "",
     },
@@ -313,7 +320,7 @@ const Employee = () => {
       hide: false,
       icon: "",
       onClick: () => {
-        router?.push(routesPath?.ADMIN?.EMPLOYEES_INVITED)
+        router?.push(routesPath?.ADMIN?.EMPLOYEES_INVITED);
       },
       pending: true,
       primaryColor: "",
@@ -408,14 +415,16 @@ const Employee = () => {
                   label: "View Details",
                   color: "",
                   onActionClick: (param: any, data: any) => {
-                    router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id));
+                    router.push(
+                      routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id)
+                    );
                   },
                 },
               ]}
               onManualBtn={handleAddEmployee}
               onBulkUploadBtn={handleBulkUploadDialog}
               onCsvChange={() => handleImportChange("excel")}
-            // onPdfChange={}
+              // onPdfChange={}
             />
 
             {/* <TableWrapper
@@ -491,8 +500,8 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     job_title: item?.designation || "--",
     role: item?.role,
     _slug: {
-      id: item?.id
-    }
+      id: item?.id,
+    },
     // status: (
     //   <BadgeComponent
     //     text={item?.status ? "Active" : "Closed"}
