@@ -178,7 +178,9 @@ const Employee = () => {
 
   const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({})
 
-  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery({})
+  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery({
+    page: page
+  })
   const ALL_STAFF = all_staff?.data?.data ?? []
   const META_DATA = all_staff?.data?.meta ?? {}
   // console.log(all_staff)
@@ -308,7 +310,7 @@ const Employee = () => {
       // active: true,
       title: "Invited Staffs",
       type: "staff",
-      count: invited_staff?.data?.length,
+      count: invited_staff?.data?.data?.length,
       accentColor: "",
       hide: false,
       icon: "",
@@ -387,6 +389,7 @@ const Employee = () => {
               totalPage={META_DATA?.total}
               currentPage={META_DATA?.current_page}
               onPageChange={(p) => {
+                console.log(p)
                 setPage(p);
               }}
               hideNewBtnOne={false}
@@ -485,11 +488,11 @@ const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((item: any, idx: number) => ({
     idx: idx + 1,
     name: item?.name,
-    email: item?.work_email || "---",
+    email: item?.work_email || "--",
     department: item?.department || "--",
     line_manager_name: item?.line_manager_name || "--",
     job_title: item?.designation || "--",
-    role: item?.role,
+    role: item?.role || "--",
     _slug: {
       id: item?.id
     }

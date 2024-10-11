@@ -32,10 +32,11 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         response.data.staff_members,
     }),
     getAllStaff: builder.query({
-      query: () => ({
-        url: `/admin/staff/all-staff`,
+      query: ({ page }) => ({
+        url: `/admin/staff/all-staff?current_page=${page}`,
         method: "GET",
       }),
+      providesTags: ["Staff"],
     }),
     getStaffInfo: builder.query({
       query: ({ staff_id }) => ({
@@ -48,6 +49,7 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         url: `/admin/invitation`,
         method: "GET",
       }),
+      providesTags: ["Staff"],
     }),
     getStaffCount: builder.query({
       query: () => ({
