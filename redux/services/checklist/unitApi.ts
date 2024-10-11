@@ -30,6 +30,23 @@ export const unitApi = baseApi.injectEndpoints({
       // transformResponse: (response: { data: { data: BranchData[] } }) =>
       //   response.data.data,
     }),
+    getSingleUnit: builder.query<any, string>({
+      query: (unit) => ({
+        url: `/admin/unit/${unit}`,
+        method: "GET",
+      }),
+      providesTags: ["Units"],
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
+    }),
+
+    deleteUnit: builder.mutation({
+      query: (unit) => ({
+        url: `/admin/unit/close-unit/${unit}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Units"],
+    }),
 
     downloadUnitTemplate: builder.query<any, FileTemplateParam>({
       query: (params) => ({
@@ -49,4 +66,6 @@ export const {
   useCreateBulkUnitsMutation,
   useGetUnitsQuery,
   useLazyDownloadUnitTemplateQuery,
+  useGetSingleUnitQuery,
+  useDeleteUnitMutation,
 } = unitApi;

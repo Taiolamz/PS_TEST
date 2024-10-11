@@ -16,6 +16,7 @@ import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
 import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
+import { useGetSingleUnitQuery } from "@/redux/services/checklist/unitApi";
 
 type Prop = {
   id: string;
@@ -37,7 +38,7 @@ const COUNTRIES = COUNTRIES_STATES?.map((d) => {
 });
 
 const handleFormatArray = (items: SelectFormType) => {
-  const array = items.map((item) => item.label);
+  const array = items?.map((item) => item.label);
   return array;
 };
 
@@ -65,13 +66,21 @@ export const useEditUnit = ({ id }: Prop) => {
     {}
   );
 
-  const handleDropdown = (
-    items: any[]
-  ) => {
+  const {
+    data: unitDetail,
+    error,
+    isLoading,
+  } = useGetSingleUnitQuery(id!, {
+    skip: !id,
+  });
+
+  console.log(unitDetail, "unit Detail");
+
+  const handleDropdown = (items: any[]) => {
     console.log("items", items);
     const data =
       items.length !== 0
-        ? items.map((chi) => {
+        ? items?.map((chi) => {
             return {
               ...chi,
               label: chi?.name,
@@ -82,10 +91,8 @@ export const useEditUnit = ({ id }: Prop) => {
     return data;
   };
 
-  const handleFormatDropdown = (
-    items: SubsidiaryData[] | BranchData[] | DepartmentData[] | UnitData[]
-  ) => {
-    const data = items.map((chi) => {
+  const handleFormatDropdown = (items: any[]) => {
+    const data = items?.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
@@ -95,8 +102,8 @@ export const useEditUnit = ({ id }: Prop) => {
     return data;
   };
 
-  const handleBranchDropdown = (items: BranchData[]) => {
-    const data = items.map((chi) => {
+  const handleBranchDropdown = (items: any[]) => {
+    const data = items?.map((chi) => {
       return {
         ...chi,
         label: chi?.name,
@@ -141,12 +148,12 @@ export const useEditUnit = ({ id }: Prop) => {
 
   const employees = employeesData ?? [];
   const subsidiaries = subsidiariesData?.data?.data ?? [];
-  const branches = branchesData ?? [];
+  const branches = branchesData?.data.branches.data ?? [];
   const departments = departmentData?.data ?? [];
 
   const employeeDrop = handleDropdown(employees);
   const subsidiaryDrop = handleDropdown(subsidiaries);
-  const branchDrop = handleBranchDropdown(branches);
+  const branchDrop = handleBranchDropdown([]);
   const departmentDrop = handleDropdown(departments);
 
   // const { data: orgData } = useGetOrgDetailsQuery();
@@ -192,9 +199,9 @@ export const useEditUnit = ({ id }: Prop) => {
 
   return {
     formik,
-    subsidiaries: handleFormatDropdown(subsidiaries),
-    branches: handleFormatDropdown(branches),
-    departments: handleFormatDropdown(departments),
+    subsidiaries: handleFormatDropdown(subsidiaries ?? []),
+    branches: handleFormatDropdown(branches ?? []),
+    departments: handleFormatDropdown(departments ?? []),
     subsidiaryDrop,
     branchDrop,
     departmentDrop,

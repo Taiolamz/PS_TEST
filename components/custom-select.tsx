@@ -137,8 +137,8 @@ export default function CustomSelect({
               style={{ overflowY: "auto" }}
             >
               {loading ? (
-                <div className="flex flex-col justify-center items-center">
-                  <Loader2 className="w-6 h-6 animate-spin mt-6 mr-1" />
+                <div className="flex flex-col mt-5 justify-center items-center">
+                  <Loader2 className="w-6 h-6 animate-spin mr-1" />
                 </div>
               ) : (
                 <CommandList>
