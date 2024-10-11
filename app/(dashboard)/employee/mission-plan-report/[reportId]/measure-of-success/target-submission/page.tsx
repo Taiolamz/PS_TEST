@@ -110,6 +110,18 @@ export default function TargetSubmission({
       });
   };
 
+  const getInitialTarget: (item: any) => "" = (item) => {
+    let filtered = item?.target_achievements?.filter(
+      (data: any) =>
+        data?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
+    );
+    if (filtered.length > 0) {
+      return filtered[0].month;
+    } else {
+      return "";
+    }
+  };
+
   return (
     <DashboardLayout back headerTitle="Period Target Submission">
       {isLoading ? (
@@ -126,6 +138,10 @@ export default function TargetSubmission({
       ) : (
         <div className="m-5 mt-7 space-y-7 pb-9">
           {mosData?.data?.map((item: any, index: number) => {
+            const filteredTarget = item?.target_achievements?.filter(
+              (item: any) =>
+                item?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
+            );
             return (
               <section
                 key={item?.id}
@@ -215,10 +231,14 @@ export default function TargetSubmission({
                   </section>
                   <Formik
                     initialValues={{
-                      target: "",
+                      target:
+                        (filteredTarget?.length < 1
+                          ? ""
+                          : filteredTarget?.[0]?.target) || "",
                       month: getCurrentMonth() || "",
                     }}
                     validationSchema={validationSchema}
+                    validateOnMount={true}
                     onSubmit={(values, { setSubmitting }) =>
                       handleFormSubmit(values, item.id, setSubmitting)
                     }
@@ -239,8 +259,8 @@ export default function TargetSubmission({
                           value={values.target}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          error={errors.target}
-                          touched={touched.target}
+                          error={JSON.stringify(errors?.target)}
+                          touched={true}
                           placeholder="Target as set during period start"
                           isRequired
                           type="number"

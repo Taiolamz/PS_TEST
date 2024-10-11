@@ -279,6 +279,11 @@ export default function AchievementSubmission({
                                   id="total_percentage"
                                   name="total_percentage"
                                   placeholder="% Auto Calculated"
+                                  value={`${
+                                    Math.round(
+                                      (values.achieved / vals?.target) * 100
+                                    ) / 100
+                                  } %`}
                                   disabled
                                 />
                               </div>
