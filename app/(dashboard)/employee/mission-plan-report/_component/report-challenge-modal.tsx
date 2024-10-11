@@ -9,6 +9,7 @@ import { useAddChallangeMutation } from "@/redux/services/mission-plan/reports/e
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle, X } from "lucide-react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import * as Yup from "yup";
 
 interface ReportChallengeModalProps {
@@ -33,7 +34,7 @@ export default function ReportChallengeModal({
   id,
   option = "task-outcome",
 }: ReportChallengeModalProps) {
-  const [addChallange, { isLoading }] = useAddChallangeMutation();
+  const [addChallange, { isLoading, data }] = useAddChallangeMutation();
 
   const formik = useFormik<any>({
     initialValues: {
@@ -58,11 +59,6 @@ export default function ReportChallengeModal({
 
   //Submitting challenge
   const handleFormSubmit = (value: any) => {
-    // console.log({
-    //   ...value,
-    //   challengeable_id: id || "",
-    //   challengeable_type: option,
-    // });
     addChallange({
       ...value,
       challengeable_id: id || "",
@@ -70,6 +66,7 @@ export default function ReportChallengeModal({
     })
       .unwrap()
       .then(() => {
+        toast.success(data.message);
         formik.resetForm();
         handleClose();
       })

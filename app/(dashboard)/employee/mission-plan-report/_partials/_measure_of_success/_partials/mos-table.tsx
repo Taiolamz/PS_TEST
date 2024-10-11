@@ -115,6 +115,8 @@ const FORMAT_TABLE_DATA = (data: any) => {
     name: (
       <>
         <span className="hidden">{item?.id}</span>
+        <span className="hidden">{item?.set_target}</span>
+        <span className="hidden">{item?.set_outcome}</span>
         <p>{item?.name}</p>
       </>
     ),
