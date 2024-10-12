@@ -35,6 +35,8 @@ import { trimLongString } from "../../_layout/Helper";
 import MetricCard from "@/components/card/metric-card";
 import ModuleCard from "@/components/card/module-cards/ModuleCard";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import { useGetAllStaffQuery, useGetInvitedStaffQuery, useGetStaffCountQuery } from "@/redux/services/employee/employeeApi";
+import { Dictionary } from "@/@types/dictionary";
 
 const { ADMIN } = routesPath;
 
@@ -42,6 +44,8 @@ const Employee = () => {
   const router = useRouter();
   const [status, setStatus] = useState<string>("");
   const [bulkFile, setBulkFile] = useState<File | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>("");
   // console.log(status);
   const [fileType, setFileType] = useState("");
 
@@ -172,6 +176,15 @@ const Employee = () => {
   const { employeerolesColumns, data, openDeleteModal, handleDeleteDialog } =
     useEmployeeRolesColumnData(isFetchingEmployees);
 
+  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({})
+
+  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery({
+    page: page
+  })
+  const ALL_STAFF = all_staff?.data?.data ?? []
+  const META_DATA = all_staff?.data?.meta ?? {}
+  // console.log(all_staff)
+
   const employeesColumnData = useMemo(
     () => employeerolesColumns,
     [isFetchingEmployees]
@@ -265,7 +278,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => {} },
+    { label: "Implied Task", color: "red", onActionClick: () => { } },
   ];
   // tableBodyList={userData}
 
@@ -285,11 +298,11 @@ const Employee = () => {
       active: pathname === routesPath?.ADMIN?.EMPLOYEES,
       title: "Total Staffs",
       type: "staff",
-      count: 12,
+      count: all_staff?.data?.total_staff_count,
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {},
+      onClick: () => { },
       pending: false,
       primaryColor: "",
     },
@@ -297,7 +310,7 @@ const Employee = () => {
       // active: true,
       title: "Invited Staffs",
       type: "staff",
-      count: 4,
+      count: invited_staff?.data?.data?.length,
       accentColor: "",
       hide: false,
       icon: "",
@@ -337,7 +350,7 @@ const Employee = () => {
             {/* testing metrics card start */}
             <ParentModuleCard list={listToTest} />
             {/* testing metrics card end */}
-            <DashboardTable
+            {/* <DashboardTable
               header="Employee"
               isFilterDrop={false}
               filterOptions={["pending", "rejected"]}
@@ -360,6 +373,52 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onPdfChange={() => handleImportChange("pdf")}
               onCsvChange={() => handleImportChange("excel")}
+            /> */}
+            <TableWrapper
+              tableheaderList={[
+                "S/N",
+                "Name",
+                "Work Email",
+                "Department",
+                "Line Manager",
+                "Job Title",
+                "Role",
+                "Action",
+              ]}
+              perPage={META_DATA?.per_page}
+              totalPage={META_DATA?.total}
+              currentPage={META_DATA?.current_page}
+              onPageChange={(p) => {
+                console.log(p)
+                setPage(p);
+              }}
+              hideNewBtnOne={false}
+              tableBodyList={FORMAT_TABLE_DATA(ALL_STAFF)}
+              loading={isLoadingStaff}
+              onSearch={(param) => {
+                setTimeout(() => {
+                  // Delay api call after 3 seconds
+                  setPage(1);
+                  setSearch(param);
+                }, 3000);
+              }}
+              dropDown
+              hideFilter
+              hideSort
+              newBtnBulk
+              dropDownList={[
+                {
+                  label: "View Details",
+                  color: "",
+                  onActionClick: (param: any, data: any) => {
+                    router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id));
+                  },
+                },
+              ]}
+              onManualBtn={handleAddEmployee}
+              onBulkUploadBtn={handleBulkUploadDialog}
+              onCsvChange={() => handleImportChange("excel")}
+            // onPdfChange={}
             />
 
             {/* <TableWrapper
@@ -424,3 +483,24 @@ const Employee = () => {
 };
 
 export default Employee;
+
+const FORMAT_TABLE_DATA = (obj: any) => {
+  return obj?.map((item: any, idx: number) => ({
+    idx: idx + 1,
+    name: item?.name,
+    email: item?.work_email || "--",
+    department: item?.department || "--",
+    line_manager_name: item?.line_manager_name || "--",
+    job_title: item?.designation || "--",
+    role: item?.role || "--",
+    _slug: {
+      id: item?.id
+    }
+    // status: (
+    //   <BadgeComponent
+    //     text={item?.status ? "Active" : "Closed"}
+    //     color={item?.status ? "green" : "red"}
+    //   />
+    // ),
+  }));
+};

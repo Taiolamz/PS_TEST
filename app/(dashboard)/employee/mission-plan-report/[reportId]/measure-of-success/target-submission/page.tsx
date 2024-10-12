@@ -250,6 +250,13 @@ export default function TargetSubmission({
                       isSubmitting,
                       errors,
                       touched,
+                    }: {
+                      values?: any;
+                      handleChange?: any;
+                      handleBlur?: any;
+                      isSubmitting?: any;
+                      errors?: any;
+                      touched?: any;
                     }) => (
                       <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
                         <Input
@@ -259,8 +266,8 @@ export default function TargetSubmission({
                           value={values.target}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          error={JSON.stringify(errors?.target)}
-                          touched={true}
+                          error={errors?.target}
+                          touched={touched?.target}
                           placeholder="Target as set during period start"
                           isRequired
                           type="number"

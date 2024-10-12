@@ -8,8 +8,9 @@ import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import style from "./styles/ProfileStylesIndex.module.css";
+import { Dictionary } from "@/@types/dictionary";
 
-const AddressInfoBox = () => {
+const AddressInfoBox = ({ data }: { data: Dictionary }) => {
   const [editState, setEditState] = useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
@@ -45,8 +46,8 @@ const AddressInfoBox = () => {
         {editState ? (
           <>
             {" "}
-            
-          </>   
+
+          </>
         ) : (
           <>
             {/* <div
@@ -87,7 +88,7 @@ const AddressInfoBox = () => {
                   //   formik.setFieldValue("state", "");
                   //   setSelectedCountryData(countryData);
                 }}
-                // labelClass={labelClassName}
+              // labelClass={labelClassName}
               />{" "}
               <CustomSelect
                 label="State"
@@ -108,7 +109,7 @@ const AddressInfoBox = () => {
                   //   formik.setFieldValue("state", "");
                   //   setSelectedCountryData(countryData);
                 }}
-                // labelClass={labelClassName}
+              // labelClass={labelClassName}
               />
               <Input
                 label="City"
@@ -116,8 +117,8 @@ const AddressInfoBox = () => {
                 placeholder="E.g Lekki"
                 id="cituy name"
                 name="cituy name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Street Address"
@@ -125,8 +126,8 @@ const AddressInfoBox = () => {
                 placeholder="E.g ikoyi"
                 id="street add"
                 name="street add"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
             </div>
           </>
@@ -136,21 +137,20 @@ const AddressInfoBox = () => {
               {/* label value box start */}
               <div className={style.label_value_box}>
                 <p className={style.label}>Country</p>
-                <p className={style.value}>---</p>
+                <p className={style.value}>{data?.country || "---"}</p>
               </div>
               {/* label value box end */}
               {/* label value box start */}
               <div className={style.label_value_box}>
                 <p className={style.label}>State</p>
-                <p className={style.value}>---</p>
+                <p className={style.value}>{data?.state || "---"}</p>
               </div>
               {/* label value box end */}
               {/* label value box start */}
               <div className={style.label_value_box}>
                 <p className={style.label}>City</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[0], 30)} */}
-                  ---
+                  {data?.city || "---"}
                 </p>
               </div>
               {/* label value box end */}
@@ -158,8 +158,7 @@ const AddressInfoBox = () => {
               <div className={style.label_value_box}>
                 <p className={style.label}>Street</p>
                 <p className={style.value}>
-                  {/* {trimLongString(user?.name?.split(" ")[1], 30)} */}
-                  ---
+                  {data?.street || "---"}
                 </p>
               </div>
               {/* label value box end */}

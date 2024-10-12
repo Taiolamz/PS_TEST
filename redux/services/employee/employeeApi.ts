@@ -9,7 +9,6 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-
     rejectEmployeeInvitation: builder.mutation({
       query: ({ payload, id }) => ({
         url: `/invitation/${id}/reject`,
@@ -17,7 +16,6 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-
     getInvitedEmployees: builder.query<InvitedUser, string>({
       query: (id) => ({
         url: `/invitation/${id}`,
@@ -32,6 +30,32 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: { data: { staff_members: AllStaff[] } }) =>
         response.data.staff_members,
+    }),
+    getAllStaff: builder.query({
+      query: ({ page }) => ({
+        url: `/admin/staff/all-staff?current_page=${page}`,
+        method: "GET",
+      }),
+      providesTags: ["Staff"],
+    }),
+    getStaffInfo: builder.query({
+      query: ({ staff_id }) => ({
+        url: `/admin/staff/view/${staff_id}`,
+        method: "GET",
+      }),
+    }),
+    getInvitedStaff: builder.query({
+      query: () => ({
+        url: `/admin/invitation`,
+        method: "GET",
+      }),
+      providesTags: ["Staff"],
+    }),
+    getStaffCount: builder.query({
+      query: () => ({
+        url: `/admin/staff/staff-count`,
+        method: "GET",
+      }),
     }),
     getAllApproverList: builder.query<string[], void>({
       query: () => ({
@@ -58,4 +82,8 @@ export const {
   useGetAllEmployeesQuery,
   useGetAllApproverListQuery,
   useGetAllDownlinersQuery,
+  useGetAllStaffQuery,
+  useGetStaffCountQuery,
+  useGetInvitedStaffQuery,
+  useGetStaffInfoQuery,
 } = employeeInvitationApi;

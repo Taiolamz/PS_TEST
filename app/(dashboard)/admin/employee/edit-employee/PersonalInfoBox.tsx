@@ -47,7 +47,7 @@ const PersonalInfoBox = () => {
             {" "}
             <div
               onClick={() => {
-                router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW)
+                router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW('sjjsyw'))
               }}
               className={style.edit_btn}
               style={{ marginRight: "1rem" }}
@@ -61,7 +61,7 @@ const PersonalInfoBox = () => {
               }}
               type={`button`}
               className={` ${style.upload_label} font-light `}
-              //   disabled={!details?.profile_img ? true : false}
+            //   disabled={!details?.profile_img ? true : false}
             >
               Save Changes
               {/* {loading ? <ManceLoader /> :  "Save"} */}
@@ -93,8 +93,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Timi"
                 id="first name"
                 name="first name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Last Name"
@@ -102,8 +102,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Ayeni"
                 id="last name"
                 name="last name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
 
               <Input
@@ -112,8 +112,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Timi"
                 id="maiden name"
                 name="maiden name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Middle Name"
@@ -121,8 +121,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g Ayeni"
                 id="middle name"
                 name="middle name"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <CustomDateInput
                 id="date_of_birth"
@@ -135,7 +135,7 @@ const PersonalInfoBox = () => {
                 error={""}
                 className="relative"
                 iconClass="top-[2rem]"
-                // isRequired
+              // isRequired
               />
               <CustomSelect
                 label="Gender"
@@ -149,9 +149,9 @@ const PersonalInfoBox = () => {
                 ]}
                 selected={`` as any}
                 setSelected={(value) => {
-                
+
                 }}
-                // labelClass={labelClassName}
+              // labelClass={labelClassName}
               />
               <Input
                 label="Work Email"
@@ -159,8 +159,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g aykehinde@gmail.com"
                 id="work email"
                 name="work email"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
               <Input
                 label="Phone number"
@@ -168,8 +168,8 @@ const PersonalInfoBox = () => {
                 placeholder="E.g 0816263...."
                 id="phone num"
                 name="phone num"
-                // onChange={formik.handleChange}
-                // isRequired
+              // onChange={formik.handleChange}
+              // isRequired
               />
             </div>
           </>

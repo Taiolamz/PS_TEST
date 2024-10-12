@@ -28,6 +28,7 @@ import { downloadFile } from "@/utils/helpers/file-formatter";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import UnitDetails from "./_partials/units-details";
 import TableWrapper from "@/components/tables/TableWrapper";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const { ADMIN } = routesPath;
 
@@ -235,6 +236,12 @@ const Units = () => {
       head_of_unit: org?.organization?.name,
       department: org?.deparment?.name,
       branch: org?.branch?.name,
+      status: (
+        <BadgeComponent
+          text={!org?.deleted_at ? "Active" : "Closed"}
+          color={!org?.deleted_at ? "green" : "red"}
+        />
+      ),
     }));
   };
 
@@ -263,6 +270,7 @@ const Units = () => {
                     "Head of Unit",
                     "Department",
                     "Branch",
+                    "Status",
                     "Action",
                   ]}
                   perPage={units?.meta?.per_page}
