@@ -154,7 +154,7 @@ export const useEditUnit = ({ id }: Prop) => {
 
   const employeeDrop = handleDropdown(employees);
   const subsidiaryDrop = handleDropdown(subsidiaries);
-  const branchDrop = handleBranchDropdown(branches);
+  const branchDrop = handleBranchDropdown([]);
   const departmentDrop = handleDropdown(departments);
 
   // const { data: orgData } = useGetOrgDetailsQuery();
