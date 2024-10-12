@@ -285,7 +285,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => { } },
+    { label: "Implied Task", color: "red", onActionClick: () => {} },
   ];
   // tableBodyList={userData}
 
@@ -309,7 +309,7 @@ const Employee = () => {
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => { },
+      onClick: () => {},
       pending: false,
       primaryColor: "",
     },
@@ -426,7 +426,7 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onBulkUploadBtn={handleBulkUploadDialog}
               onCsvChange={() => handleImportChange("excel")}
-            // onPdfChange={}
+              // onPdfChange={}
             />
 
             {/* <TableWrapper
