@@ -35,7 +35,11 @@ import { trimLongString } from "../../_layout/Helper";
 import MetricCard from "@/components/card/metric-card";
 import ModuleCard from "@/components/card/module-cards/ModuleCard";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
-import { useGetAllStaffQuery, useGetInvitedStaffQuery, useGetStaffCountQuery } from "@/redux/services/employee/employeeApi";
+import {
+  useGetAllStaffQuery,
+  useGetInvitedStaffQuery,
+  useGetStaffCountQuery,
+} from "@/redux/services/employee/employeeApi";
 import { Dictionary } from "@/@types/dictionary";
 
 const { ADMIN } = routesPath;
@@ -176,13 +180,16 @@ const Employee = () => {
   const { employeerolesColumns, data, openDeleteModal, handleDeleteDialog } =
     useEmployeeRolesColumnData(isFetchingEmployees);
 
-  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({})
+  const { data: invited_staff, isLoading: isLoadingInvitedStaff } =
+    useGetInvitedStaffQuery({});
 
-  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery({
-    page: page
-  })
-  const ALL_STAFF = all_staff?.data?.data ?? []
-  const META_DATA = all_staff?.data?.meta ?? {}
+  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery(
+    {
+      page: page
+    }
+  );
+  const ALL_STAFF = all_staff?.data?.data ?? [];
+  const META_DATA = all_staff?.data?.meta ?? {};
   // console.log(all_staff)
 
   const employeesColumnData = useMemo(
@@ -315,7 +322,7 @@ const Employee = () => {
       hide: false,
       icon: "",
       onClick: () => {
-        router?.push(routesPath?.ADMIN?.EMPLOYEES_INVITED)
+        router?.push(routesPath?.ADMIN?.EMPLOYEES_INVITED);
       },
       pending: true,
       primaryColor: "",
@@ -389,7 +396,6 @@ const Employee = () => {
               totalPage={META_DATA?.total}
               currentPage={META_DATA?.current_page}
               onPageChange={(p) => {
-                console.log(p)
                 setPage(p);
               }}
               hideNewBtnOne={false}
@@ -408,10 +414,12 @@ const Employee = () => {
               newBtnBulk
               dropDownList={[
                 {
-                  label: "View Details",
+                  label: <span className="text-xs"> View Details </span>,
                   color: "",
                   onActionClick: (param: any, data: any) => {
-                    router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id));
+                    router.push(
+                      routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id)
+                    );
                   },
                 },
               ]}
@@ -494,8 +502,8 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     job_title: item?.designation || "--",
     role: item?.role || "--",
     _slug: {
-      id: item?.id
-    }
+      id: item?.id,
+    },
     // status: (
     //   <BadgeComponent
     //     text={item?.status ? "Active" : "Closed"}

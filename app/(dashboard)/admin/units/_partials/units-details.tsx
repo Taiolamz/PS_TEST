@@ -20,6 +20,7 @@ import BulkRequirementModal from "../_components/bulk-requrement-modal";
 import {
   useCreateBulkUnitsMutation,
   useDeleteUnitMutation,
+  useGetAllUnitStaffByIdQuery,
   useGetSingleUnitQuery,
   useGetUnitsQuery,
   useLazyDownloadUnitTemplateQuery,
@@ -27,6 +28,8 @@ import {
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import DeactivateOrgModal from "@/components/atoms/modals/deactivate-modal";
+import { PageLoader } from "@/components/custom-loader";
+import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 
 const { ADMIN } = routesPath;
 
@@ -67,12 +70,60 @@ export default function UnitDetails() {
 
   const { organization } = user;
 
+  const debounceSearch = useDebounce<string>(search, 500);
+
+  const { data: unitStaffs, isLoading: isLoadingUnitStaffs } =
+    useGetAllUnitStaffByIdQuery(
+      {
+        id: id as string,
+        params: {
+          to: 0,
+          total: 0,
+          per_page: 50,
+          currentPage: 0,
+          next_page_url: "",
+          prev_page_url: "",
+          search: debounceSearch,
+        },
+      },
+      {
+        skip: !id,
+      }
+    );
+
+  const FORMAT_TABLE_DATA = (obj: any) => {
+    return obj?.map((item: any, idx: number) => ({
+      // idx: idx + 1,
+      name: item?.name,
+      gender: item?.gender || "n/a",
+      email: item?.work_email || "n/a",
+      // department: item?.department || "--",
+      // line_manager_name: item?.line_manager_name || "--",
+      job_title: item?.job_title || "n/a",
+      role: item?.role || "n/a",
+      line_manager_name: item?.line_manager_name || "n/a",
+      _slug: {
+        id: item?.id,
+      },
+      // status: (
+      //   <BadgeComponent
+      //     text={item?.status ? "Active" : "Closed"}
+      //     color={item?.status ? "green" : "red"}
+      //   />
+      // ),
+    }));
+  };
+
+  const ALL_STAFF = unitStaffs?.data?.staff?.data ?? [];
+
+  const META_DATA = unitStaffs?.data?.staff?.meta ?? {};
+
   const listToTest = [
     {
       active: tab === "staffs",
       title: "Total Staffs",
       type: "staff",
-      count: 0,
+      count: ALL_STAFF?.length || "0",
       accentColor: "",
       hide: false,
       icon: "",
@@ -252,13 +303,13 @@ export default function UnitDetails() {
   return (
     <DashboardLayout
       back
-      headerTitle={unitDetail?.data?.unit?.name || "--- ---"}
+      headerTitle={unitDetail?.data?.unit?.name || "n/a"}
     >
       <section className="p-5">
         <div className="flex justify-between mb-10">
           <div className="">
             <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-              {unitDetail?.data?.unit?.name || "--- ---"}
+              {unitDetail?.data?.unit?.name || "n/a"}
             </h3>
 
             <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
@@ -266,19 +317,19 @@ export default function UnitDetails() {
                 <h4>
                   Head of Unit:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.head_of_unit?.name || "--- ---"}
+                    {unitDetail?.data?.unit?.head_of_unit?.name || "n/a"}
                   </span>
                 </h4>
                 <h4>
                   Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
+                    {unitDetail?.data?.unit?.unit_email || "n/a"}
                   </span>
                 </h4>
                 <h4>
                   Head of Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
+                    {unitDetail?.data?.unit?.unit_email || "n/a"}
                   </span>
                 </h4>
               </span>
@@ -286,7 +337,7 @@ export default function UnitDetails() {
                 <h4>
                   Address:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {"--- ---"}
+                    {"n/a"}
                     {/* { 9b, Akin Ogunmade Gbagada} */}
                   </span>
                 </h4>
@@ -294,14 +345,14 @@ export default function UnitDetails() {
                   State:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
                     {/* Lagos */}
-                    {"--- ---"}
+                    {"n/a"}
                   </span>
                 </h4>
                 <h4>
                   Country:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
                     {/* Nigeria */}
-                    {"--- ---"}
+                    {"n/a"}
                   </span>
                 </h4>
               </span>
@@ -330,53 +381,70 @@ export default function UnitDetails() {
         <div className="block mb-9">
           <ParentModuleCard list={listToTest} />
         </div>
-        <section className="">
-          {tab === "staffs" && (
-            <TableWrapper
-              tableheaderList={[
-                "Staff Name",
-                "Gender",
-                "Work Email",
-                "Job Title",
-                "Role",
-                "Line Manager",
-                "Action",
-              ]}
-              hidePagination
-              addText="New Staff"
-              hideNewBtnOne={false}
-              tableBodyList={[]}
-              loading={false}
-              onSearch={(param) => {
-                console.log(param);
-              }}
-              dropDown
-              hideFilter
-              hideSort
-              newBtnBulk
-              dropDownList={[
-                {
-                  label: "View Details",
-                  color: "",
-                  onActionClick: (param: any, dataTwo: any) => {
-                    // router.push(
-                    //   pathname +
-                    //     "?" +
-                    //     "ui=details" +
-                    //     "&" +
-                    //     "id=" +
-                    //     dataTwo?.name?.props.children[0].props.children
-                    // );
+        {isLoadingUnitStaffs ? (
+          <PageLoader />
+        ) : (
+          <section className="">
+            {tab === "staffs" && (
+              <TableWrapper
+                tableheaderList={[
+                  "Staff Name",
+                  "Gender",
+                  "Work Email",
+                  "Job Title",
+                  "Role",
+                  "Line Manager",
+                  "Action",
+                ]}
+                perPage={META_DATA?.per_page}
+                totalPage={META_DATA?.total}
+                currentPage={META_DATA?.current_page}
+                onPageChange={(p) => {
+                  setPage(p);
+                }}
+                // hidePagination
+                addText="New Staff"
+                hideNewBtnOne={false}
+                tableBodyList={FORMAT_TABLE_DATA(ALL_STAFF)}
+                loading={false}
+                // onSearch={(param) => {
+                //   console.log(param);
+                // }}
+                onSearch={(param) => {
+                  setTimeout(() => {
+                    // Delay api call after 3 seconds
+                    setPage(1);
+                    setSearch(param);
+                  }, 3000);
+                }}
+                dropDown
+                hideFilter
+                hideSort
+                newBtnBulk
+                dropDownList={[
+                  {
+                    label: "View Details",
+                    color: "",
+                    onActionClick: (param: any, dataTwo: any) => {
+                      // router.push(
+                      //   pathname +
+                      //     "?" +
+                      //     "ui=details" +
+                      //     "&" +
+                      //     "id=" +
+                      //     dataTwo?.name?.props.children[0].props.children
+                      // );
+                    },
                   },
-                },
-              ]}
-              onManualBtn={handleAddStaff}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              // onPdfChange={}
-              // onCsvChange={}
-            />
-          )}
-        </section>
+                ]}
+                onManualBtn={handleAddStaff}
+                onBulkUploadBtn={handleBulkUploadDialog}
+                // onPdfChange={}
+                // onCsvChange={}
+              />
+            )}
+          </section>
+        )}
       </section>
       {/* <ModalContainer
         show={modal}
