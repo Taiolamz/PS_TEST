@@ -187,9 +187,7 @@ export default function AchievementSubmission({
 
                       <p className=" col-span-4 text-xs">{item?.measure}</p>
                       <p className=" col-span-2 text-xs">{item?.weight}</p>
-                      <p className=" col-span-1 text-xs">
-                        {item?.unit?.slice(0, 1)}
-                      </p>
+                      <p className=" col-span-1 text-xs">{item?.unit}</p>
                       <p className=" col-span-2 text-xs">{item?.target}</p>
                     </div>
                     <div className="flex gap-x-3 mt-8">
@@ -285,11 +283,9 @@ export default function AchievementSubmission({
                                   id="total_percentage"
                                   name="total_percentage"
                                   placeholder="% Auto Calculated"
-                                  value={`${
-                                    Math.round(
-                                      (values.achieved / vals?.target) * 100
-                                    ) / 100
-                                  } %`}
+                                  value={`${Math.round(
+                                    (values.achieved / vals?.target) * 100
+                                  )} %`}
                                   disabled
                                 />
                               </div>
