@@ -20,6 +20,15 @@ export const branchApi = baseApi.injectEndpoints({
       }),
     }),
 
+    updateBranch: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/branch/update/${payload?.id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Branches"],
+    }),
+
     getBranches: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/branch${generateQueryString({ ...params })}`,
@@ -89,4 +98,5 @@ export const {
   useGetBranchStaffQuery,
   useGetBranchUnitQuery,
   useDeleteBranchMutation,
+  useUpdateBranchMutation,
 } = branchApi;

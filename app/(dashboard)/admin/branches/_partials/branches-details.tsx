@@ -362,7 +362,7 @@ export default function BranchDetails() {
   );
 
   return (
-    <DashboardLayout back headerTitle="Human Resource">
+    <DashboardLayout back headerTitle={branchInfo?.name || "N/A"}>
       {isLoadingBranch ? (
         <div className="h-full flex items-center justify-center">
           <PageLoader />
@@ -380,19 +380,19 @@ export default function BranchDetails() {
                   <h4>
                     Head of Branch:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.head?.name}
+                      {branchInfo?.head?.name || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     Branch Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.branch_email}
+                      {branchInfo?.branch_email || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     Head of Branch Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.work_email}
+                      {branchInfo?.work_email || "n/a"}
                     </span>
                   </h4>
                 </span>
@@ -400,19 +400,19 @@ export default function BranchDetails() {
                   <h4>
                     Address:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.address}
+                      {branchInfo?.address || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     State:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.state}
+                      {branchInfo?.state || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     Country:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.country}
+                      {branchInfo?.country || "n/a"}
                     </span>
                   </h4>
                 </span>
