@@ -42,6 +42,7 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
     getOrgFiscalYear: builder.query<any, void>({
       query: () => ({
         url: "/mission-plan-report/organization-fiscal-year",
@@ -92,6 +93,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       // invalidatesTags: ["MissionPlanReport"],
     }),
+
+    getTaskOutcomeTask: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/tasks/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -107,4 +116,5 @@ export const {
   useAddMOSAchievementMutation,
   useGetOrgFiscalYearQuery,
   useAddChallangeMutation,
+  useGetTaskOutcomeTaskQuery,
 } = missionPlanReportApi;

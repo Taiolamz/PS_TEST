@@ -12,11 +12,21 @@ import ImpliedTask from "./_partials/implied-task";
 import History from "../../_component/history";
 import Comment from "../../_component/comment";
 import ReportChallengeModal from "../../_component/report-challenge-modal";
+import { useGetTaskOutcomeTaskQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
-const ExpectedOutcome = () => {
+const ExpectedOutcome = ({
+  params,
+}: {
+  params: {
+    reportId: string | number;
+  };
+}) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
+
+  const {} = useGetTaskOutcomeTaskQuery(params.reportId);
+
   const handleFormSubmit = () => {};
 
   const formik = useFormik({
