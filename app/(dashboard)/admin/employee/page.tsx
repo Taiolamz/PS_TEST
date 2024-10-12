@@ -184,7 +184,9 @@ const Employee = () => {
     useGetInvitedStaffQuery({});
 
   const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery(
-    {}
+    {
+      page: page
+    }
   );
   const ALL_STAFF = all_staff?.data?.data ?? [];
   const META_DATA = all_staff?.data?.meta ?? {};
@@ -283,7 +285,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => {} },
+    { label: "Implied Task", color: "red", onActionClick: () => { } },
   ];
   // tableBodyList={userData}
 
@@ -307,7 +309,7 @@ const Employee = () => {
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {},
+      onClick: () => { },
       pending: false,
       primaryColor: "",
     },
@@ -315,7 +317,7 @@ const Employee = () => {
       // active: true,
       title: "Invited Staffs",
       type: "staff",
-      count: invited_staff?.data?.length,
+      count: invited_staff?.data?.data?.length,
       accentColor: "",
       hide: false,
       icon: "",
@@ -412,7 +414,7 @@ const Employee = () => {
               newBtnBulk
               dropDownList={[
                 {
-                  label: "View Details",
+                  label: <span className="text-xs"> View Details </span>,
                   color: "",
                   onActionClick: (param: any, data: any) => {
                     router.push(
@@ -424,7 +426,7 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onBulkUploadBtn={handleBulkUploadDialog}
               onCsvChange={() => handleImportChange("excel")}
-              // onPdfChange={}
+            // onPdfChange={}
             />
 
             {/* <TableWrapper
@@ -494,11 +496,11 @@ const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((item: any, idx: number) => ({
     idx: idx + 1,
     name: item?.name,
-    email: item?.work_email || "---",
+    email: item?.work_email || "--",
     department: item?.department || "--",
     line_manager_name: item?.line_manager_name || "--",
     job_title: item?.designation || "--",
-    role: item?.role,
+    role: item?.role || "--",
     _slug: {
       id: item?.id,
     },
