@@ -192,7 +192,19 @@ const ExpectedOutcome = ({
                       onSubmit={handleFormSubmit}
                       validationSchema={validationSchema}
                     >
-                      {(formik) => (
+                      {({
+                        isValid,
+                        errors,
+                        handleChange,
+                        touched,
+                        values,
+                      }: {
+                        isValid: boolean;
+                        handleChange: any;
+                        touched: any;
+                        values: any;
+                        errors: any;
+                      }) => (
                         <Form>
                           <FieldArray name="tasks">
                             {({ insert, remove, push }) => (
@@ -319,37 +331,17 @@ const ExpectedOutcome = ({
                                                 type="text"
                                                 id={`tasks.${idx}.expected_task_outcome`}
                                                 name={`tasks.${idx}.expected_task_outcome`}
-                                                onChange={(e) => {
-                                                  const value = e.target.value;
-                                                  formik.setFieldValue(
-                                                    `tasks.${idx}.expected_task_outcome`,
-                                                    value
-                                                  );
-                                                  if (
-                                                    formik?.values?.tasks?.[idx]
-                                                      ?.expected_task_outcome
-                                                      ?.length > 0
-                                                  ) {
-                                                    formik.setFieldValue(
-                                                      `tasks.${idx}.specified_task_id`,
-                                                      item?.id
-                                                    );
-                                                    formik.setFieldValue(
-                                                      `tasks.${idx}.implied_task_id`,
-                                                      val?.id
-                                                    );
-                                                  }
-                                                }}
+                                                onChange={handleChange}
                                                 value={
-                                                  formik?.values?.tasks?.[idx]
+                                                  values?.tasks?.[idx]
                                                     ?.expected_task_outcome
                                                 }
                                                 touched={
-                                                  formik?.touched?.tasks?.[idx]
+                                                  touched?.tasks?.[idx]
                                                     ?.expected_task_outcome
                                                 }
                                                 error={
-                                                  formik?.errors?.tasks?.[idx]
+                                                  errors?.tasks?.[idx]
                                                     ?.expected_task_outcome
                                                 }
                                                 placeholder="Input Expected Outcome"
@@ -407,7 +399,7 @@ const ExpectedOutcome = ({
                               loading={addingTask}
                               type="submit"
                               loadingText="Submitting"
-                              disabled={!formik.isValid || addingTask}
+                              disabled={!isValid || addingTask}
                               className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none"
                             >
                               Submit Input
