@@ -104,317 +104,316 @@ const ExpectedOutcome = ({
 
   return (
     <DashboardLayout back headerTitle="Expected Outcome">
-      <div className="mt-10 px-5">
-        {error ? (
-          <></>
-        ) : loadingTask ? (
+      {error ? (
+        <></>
+      ) : loadingTask ? (
+        <div className="h-[90%] grid place-content-center">
           <PageLoader />
-        ) : (
-          <>
-            <h1 className="text-[#222222b9] mb-5">
-              Set Specified Task Expected Outcomes
-            </h1>
+        </div>
+      ) : (
+        <div className="mt-10 px-5">
+          <h1 className="text-[#222222b9] mb-5">
+            Set Specified Task Expected Outcomes
+          </h1>
 
-            {taskData?.data?.tasks?.map((item: any, idx: number) => {
-              return (
-                <CustomAccordion
-                  key={idx}
-                  className="mb-4 flex flex-col gap-1"
-                  headerClassName="bg-white p-5 border border-custom-divider rounded"
-                  title={
-                    <div className="flex w-full gap-x-5">
-                      <p className="text-[#015858] text-lg">{idx + 1}.</p>
-                      <div className="flex justify-between items-center w-[80%]">
-                        <div className="w-[60%] text-left grid gap-y-2">
-                          <p className="text-[#222222ef] text-sm font-medium">
-                            Specified task
-                          </p>
-                          <p className="text-[#222222d2] font-medium text-xs">
-                            {item?.task}
-                          </p>
-                          <p className="text-[#222222ef] text-xs">
-                            {item?.start_date} - {item?.end_date}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[#222222ef] text-sm font-medium mb-2">
-                            Weight
-                          </p>
-                          <p className="font-medium text-[#222222ef] text-xs">
-                            {item?.weight}%
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[#222222ef] text-sm font-medium mb-2">
-                            Status
-                          </p>
-                          <p
-                            className={cn(
-                              "font-medium text-[#FFC043] text-xs capitalize",
-                              item?.status?.toLowerCase() === "approved"
-                                ? "text-[rgb(var(--bg-green-100))]"
-                                : item?.status?.toLowerCase() === "rejected"
-                                ? "text-[var(--error-color)]"
-                                : "text-[#FFC043]"
-                            )}
-                          >
-                            {item?.status}
-                          </p>
-                        </div>
+          {taskData?.data?.tasks?.map((item: any, idx: number) => {
+            return (
+              <CustomAccordion
+                key={idx}
+                className="mb-4 flex flex-col gap-1"
+                headerClassName="bg-white p-5 border border-custom-divider rounded"
+                title={
+                  <div className="flex w-full gap-x-5">
+                    <p className="text-[#015858] text-lg">{idx + 1}.</p>
+                    <div className="flex justify-between items-center w-[80%]">
+                      <div className="w-[60%] text-left grid gap-y-2">
+                        <p className="text-[#222222ef] text-sm font-medium">
+                          Specified task
+                        </p>
+                        <p className="text-[#222222d2] font-medium text-xs">
+                          {item?.task}
+                        </p>
+                        <p className="text-[#222222ef] text-xs">
+                          {item?.start_date} - {item?.end_date}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#222222ef] text-sm font-medium mb-2">
+                          Weight
+                        </p>
+                        <p className="font-medium text-[#222222ef] text-xs">
+                          {item?.weight}%
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[#222222ef] text-sm font-medium mb-2">
+                          Status
+                        </p>
+                        <p
+                          className={cn(
+                            "font-medium text-[#FFC043] text-xs capitalize",
+                            item?.status?.toLowerCase() === "approved"
+                              ? "text-[rgb(var(--bg-green-100))]"
+                              : item?.status?.toLowerCase() === "rejected"
+                              ? "text-[var(--error-color)]"
+                              : "text-[#FFC043]"
+                          )}
+                        >
+                          {item?.status}
+                        </p>
                       </div>
                     </div>
-                  }
-                  content={
-                    <Formik
-                      initialValues={{
-                        tasks: item?.implied_tasks?.map((task: any) => {
-                          const filteredTarget = task?.task_outcome?.filter(
-                            (item: any) =>
-                              item?.month?.toLowerCase() ===
-                              getCurrentMonth()?.toLowerCase()
-                          );
-                          if (filteredTarget?.length >= 1) {
-                            return {
-                              expected_task_outcome:
-                                task?.task_outcome?.[0]?.expected_outcome || "",
-                              implied_task_id: task?.id,
-                              specified_task_id: item?.id,
-                            };
-                          } else {
-                            return {
-                              expected_task_outcome: "",
-                              implied_task_id: task?.id,
-                              specified_task_id: item?.id,
-                            };
-                          }
-                        }),
-                      }}
-                      onSubmit={handleFormSubmit}
-                      validationSchema={validationSchema}
-                    >
-                      {({
-                        isValid,
-                        errors,
-                        handleChange,
-                        touched,
-                        values,
-                      }: {
-                        isValid: boolean;
-                        handleChange: any;
-                        touched: any;
-                        values: any;
-                        errors: any;
-                      }) => (
-                        <Form>
-                          <FieldArray name="tasks">
-                            {({ insert, remove, push }) => (
-                              <div className=" border border-[#E5E9EB] bg-white">
-                                <div className="grid mt-8">
-                                  {item?.implied_tasks?.map(
-                                    (val: any, idx: number) => {
-                                      return (
+                  </div>
+                }
+                content={
+                  <Formik
+                    initialValues={{
+                      tasks: item?.implied_tasks?.map((task: any) => {
+                        const filteredTarget = task?.task_outcome?.filter(
+                          (item: any) =>
+                            item?.month?.toLowerCase() ===
+                            getCurrentMonth()?.toLowerCase()
+                        );
+                        if (filteredTarget?.length >= 1) {
+                          return {
+                            expected_task_outcome:
+                              task?.task_outcome?.[0]?.expected_outcome || "",
+                            implied_task_id: task?.id,
+                            specified_task_id: item?.id,
+                          };
+                        } else {
+                          return {
+                            expected_task_outcome: "",
+                            implied_task_id: task?.id,
+                            specified_task_id: item?.id,
+                          };
+                        }
+                      }),
+                    }}
+                    onSubmit={handleFormSubmit}
+                    validationSchema={validationSchema}
+                  >
+                    {({
+                      isValid,
+                      errors,
+                      handleChange,
+                      touched,
+                      values,
+                    }: {
+                      isValid: boolean;
+                      handleChange: any;
+                      touched: any;
+                      values: any;
+                      errors: any;
+                    }) => (
+                      <Form>
+                        <FieldArray name="tasks">
+                          {({ insert, remove, push }) => (
+                            <div className=" border border-[#E5E9EB] bg-white">
+                              <div className="grid mt-8">
+                                {item?.implied_tasks?.map(
+                                  (val: any, idx: number) => {
+                                    return (
+                                      <div
+                                        key={idx}
+                                        className={cn(
+                                          "py-5 px-8",
+                                          val?.status?.toLowerCase() ===
+                                            "rejected"
+                                            ? "bg-[var(--bg-red-100-op)]"
+                                            : ""
+                                        )}
+                                      >
+                                        {idx > 0 && <hr />}
                                         <div
-                                          key={idx}
-                                          className={cn(
-                                            "py-5 px-8",
-                                            val?.status?.toLowerCase() ===
-                                              "rejected"
-                                              ? "bg-[var(--bg-red-100-op)]"
-                                              : ""
-                                          )}
+                                          className={`flex items-center justify-between ${
+                                            idx > 0 && "mt-7"
+                                          }`}
                                         >
-                                          {idx > 0 && <hr />}
-                                          <div
-                                            className={`flex items-center justify-between ${
-                                              idx > 0 && "mt-7"
-                                            }`}
-                                          >
-                                            <span className="flex items-center gap-x-1">
-                                              <DotFilledIcon />
-                                              <p className="text-[#1E1E1E] capitalize">
+                                          <span className="flex items-center gap-x-1">
+                                            <DotFilledIcon />
+                                            <p className="text-[#1E1E1E] capitalize">
+                                              {val?.task}
+                                            </p>
+                                          </span>
+                                          <span className="flex gap-x-1 items-center">
+                                            Approval Status:
+                                            <span
+                                              className={cn(
+                                                "font-medium text-[#FFC043] text-xs capitalize",
+                                                val?.status?.toLowerCase() ===
+                                                  "approved"
+                                                  ? "text-[rgb(var(--bg-green-100))]"
+                                                  : val?.status?.toLowerCase() ===
+                                                    "rejected"
+                                                  ? "text-[var(--error-color)]"
+                                                  : "text-[#FFC043]"
+                                              )}
+                                            >
+                                              {val?.status}
+                                            </span>
+                                          </span>
+                                          <span className="flex items-center gap-x-1 text-[#1E1E1E] text-sm">
+                                            Percent Completed:
+                                            <p className="text-base font-semibold text-red-500">
+                                              {" "}
+                                              {val.percentage}%{" "}
+                                            </p>
+                                          </span>
+                                        </div>
+                                        <div className="mt-7 flex gap-x-3">
+                                          <div className="w-full">
+                                            <div className="flex gap-x-2">
+                                              <p className="w-[36%] text-[#222222ef] text-sm">
+                                                Name of Task
+                                              </p>
+                                              <p className="w-[16%] text-[#222222ef] text-sm">
+                                                Weight
+                                              </p>
+                                              <p className="w-[40%] text-[#222222ef] text-sm">
+                                                Resource
+                                              </p>
+                                            </div>
+                                            <hr className="my-3" />
+                                            <div
+                                              key={idx}
+                                              className="flex gap-x-2"
+                                            >
+                                              <p className="w-[36%] text-[#222222da] text-xs">
                                                 {val?.task}
                                               </p>
-                                            </span>
-                                            <span className="flex gap-x-1 items-center">
-                                              Approval Status:
-                                              <span
-                                                className={cn(
-                                                  "font-medium text-[#FFC043] text-xs capitalize",
-                                                  val?.status?.toLowerCase() ===
-                                                    "approved"
-                                                    ? "text-[rgb(var(--bg-green-100))]"
-                                                    : val?.status?.toLowerCase() ===
-                                                      "rejected"
-                                                    ? "text-[var(--error-color)]"
-                                                    : "text-[#FFC043]"
-                                                )}
-                                              >
-                                                {val?.status}
-                                              </span>
-                                            </span>
-                                            <span className="flex items-center gap-x-1 text-[#1E1E1E] text-sm">
-                                              Percent Completed:
-                                              <p className="text-base font-semibold text-red-500">
-                                                {" "}
-                                                {val.percentage}%{" "}
+                                              <p className="w-[16%] text-[#222222da] text-xs">
+                                                {val.weight}%
                                               </p>
-                                            </span>
-                                          </div>
-                                          <div className="mt-7 flex gap-x-3">
-                                            <div className="w-full">
-                                              <div className="flex gap-x-2">
-                                                <p className="w-[36%] text-[#222222ef] text-sm">
-                                                  Name of Task
-                                                </p>
-                                                <p className="w-[16%] text-[#222222ef] text-sm">
-                                                  Weight
-                                                </p>
-                                                <p className="w-[40%] text-[#222222ef] text-sm">
-                                                  Resource
-                                                </p>
-                                              </div>
-                                              <hr className="my-3" />
-                                              <div
-                                                key={idx}
-                                                className="flex gap-x-2"
-                                              >
-                                                <p className="w-[36%] text-[#222222da] text-xs">
-                                                  {val?.task}
-                                                </p>
-                                                <p className="w-[16%] text-[#222222da] text-xs">
-                                                  {val.weight}%
-                                                </p>
-                                                <p className="w-[40%] text-[#222222da] text-xs">
-                                                  {val.resources
-                                                    ?.map(
-                                                      (element: any) =>
-                                                        element?.name
-                                                    )
-                                                    ?.join(", ")}
-                                                </p>
-                                              </div>
-                                              <div className="flex gap-x-3 mt-8">
-                                                <Button
-                                                  onClick={() => {
-                                                    setShowHistoryContent(
-                                                      val?.task_outcome
-                                                    );
-                                                    setShowHistory(true);
-                                                    setId(val?.id);
-                                                  }}
-                                                  className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
-                                                >
-                                                  View History
-                                                </Button>
-                                                <Button
-                                                  onClick={async () => {
-                                                    await setShowHistory(false);
-                                                    setShowComment(true);
-                                                    setId(val?.id);
-                                                  }}
-                                                  className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
-                                                >
-                                                  Comments
-                                                  <CommentsIcon />
-                                                </Button>
-                                              </div>
+                                              <p className="w-[40%] text-[#222222da] text-xs">
+                                                {val.resources
+                                                  ?.map(
+                                                    (element: any) =>
+                                                      element?.name
+                                                  )
+                                                  ?.join(", ")}
+                                              </p>
                                             </div>
-                                            <div className="border grid gap-y-5 border-[#E5E9EB] rounded-sm w-full py-5 px-4">
+                                            <div className="flex gap-x-3 mt-8">
+                                              <Button
+                                                type="button"
+                                                onClick={() => {
+                                                  setShowHistoryContent(
+                                                    val?.task_outcome
+                                                  );
+                                                  setShowHistory(true);
+                                                  setId(val?.id);
+                                                }}
+                                                className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                                              >
+                                                View History
+                                              </Button>
+                                              <Button
+                                                type="button"
+                                                onClick={async () => {
+                                                  await setShowHistory(false);
+                                                  setShowComment(true);
+                                                  setId(val?.id);
+                                                }}
+                                                className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
+                                              >
+                                                Comments
+                                                <CommentsIcon />
+                                              </Button>
+                                            </div>
+                                          </div>
+                                          <div className="border grid gap-y-5 border-[#E5E9EB] rounded-sm w-full py-5 px-4">
+                                            <Input
+                                              label={
+                                                getCurrentMonth().slice(0, 3) +
+                                                " Expected Outcome (Monthly)"
+                                              }
+                                              type="text"
+                                              id={`tasks.${idx}.expected_task_outcome`}
+                                              name={`tasks.${idx}.expected_task_outcome`}
+                                              onChange={handleChange}
+                                              value={
+                                                values?.tasks?.[idx]
+                                                  ?.expected_task_outcome
+                                              }
+                                              touched={
+                                                touched?.tasks?.[idx]
+                                                  ?.expected_task_outcome
+                                              }
+                                              error={
+                                                errors?.tasks?.[idx]
+                                                  ?.expected_task_outcome
+                                              }
+                                              placeholder="Input Expected Outcome"
+                                            />
+                                            <Input
+                                              label="Actual Outcome"
+                                              id="actual_outcome"
+                                              name="actual_outcome"
+                                              disabled
+                                              placeholder="Input Actual Outcome"
+                                            />
+                                            <div className="flex flex-wrap items-center gap-x-2">
                                               <Input
-                                                label={
-                                                  getCurrentMonth().slice(
-                                                    0,
-                                                    3
-                                                  ) +
-                                                  " Expected Outcome (Monthly)"
-                                                }
-                                                type="text"
-                                                id={`tasks.${idx}.expected_task_outcome`}
-                                                name={`tasks.${idx}.expected_task_outcome`}
-                                                onChange={handleChange}
-                                                value={
-                                                  values?.tasks?.[idx]
-                                                    ?.expected_task_outcome
-                                                }
-                                                touched={
-                                                  touched?.tasks?.[idx]
-                                                    ?.expected_task_outcome
-                                                }
-                                                error={
-                                                  errors?.tasks?.[idx]
-                                                    ?.expected_task_outcome
-                                                }
-                                                placeholder="Input Expected Outcome"
-                                              />
-                                              <Input
-                                                label="Actual Outcome"
-                                                id="actual_outcome"
-                                                name="actual_outcome"
+                                                label="My Contribution"
+                                                id="contribution"
+                                                name="contribution"
                                                 disabled
-                                                placeholder="Input Actual Outcome"
+                                                placeholder="Input Contribution"
                                               />
-                                              <div className="flex flex-wrap items-center gap-x-2">
-                                                <Input
-                                                  label="My Contribution"
-                                                  id="contribution"
-                                                  name="contribution"
-                                                  disabled
-                                                  placeholder="Input Contribution"
-                                                />
-                                              </div>
-                                              <div className="">
-                                                <p className="block relative text-xs  text-[#6E7C87] font-normal pb-2">
-                                                  Downline expectation
-                                                </p>
-                                                <div className="grid grid-cols-2 gap-x-2 justify-between">
-                                                  {val?.resources.map(
-                                                    (num: any, idx: number) => (
-                                                      <Input
-                                                        label={`${Math.round(
-                                                          num?.percentage
-                                                        )}% ${num?.name}`}
-                                                        key={idx}
-                                                        type="text"
-                                                        id="expected_outcome"
-                                                        name="expected_outcome"
-                                                        placeholder="Input Expected Outcome"
-                                                        disabled
-                                                      />
-                                                    )
-                                                  )}
-                                                </div>
+                                            </div>
+                                            <div className="">
+                                              <p className="block relative text-xs  text-[#6E7C87] font-normal pb-2">
+                                                Downline expectation
+                                              </p>
+                                              <div className="grid grid-cols-2 gap-x-2 justify-between">
+                                                {val?.resources.map(
+                                                  (num: any, idx: number) => (
+                                                    <Input
+                                                      label={`${Math.round(
+                                                        num?.percentage
+                                                      )}% ${num?.name}`}
+                                                      key={idx}
+                                                      type="text"
+                                                      id="expected_outcome"
+                                                      name="expected_outcome"
+                                                      placeholder="Input Expected Outcome"
+                                                      disabled
+                                                    />
+                                                  )
+                                                )}
                                               </div>
                                             </div>
                                           </div>
                                         </div>
-                                      );
-                                    }
-                                  )}
-                                </div>
+                                      </div>
+                                    );
+                                  }
+                                )}
                               </div>
-                            )}
-                          </FieldArray>
-                          <div className="bg-white p-8 rounded-b">
-                            <Button
-                              loading={addingTask}
-                              type="submit"
-                              loadingText="Submitting"
-                              disabled={!isValid || addingTask}
-                              className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none"
-                            >
-                              Submit Input
-                            </Button>
-                          </div>
-                        </Form>
-                      )}
-                    </Formik>
-                  }
-                />
-              );
-            })}
-          </>
-        )}
-      </div>
+                            </div>
+                          )}
+                        </FieldArray>
+                        <div className="bg-white p-8 rounded-b">
+                          <Button
+                            loading={addingTask}
+                            type="submit"
+                            loadingText="Submitting"
+                            disabled={!isValid || addingTask}
+                            className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none"
+                          >
+                            Submit Input
+                          </Button>
+                        </div>
+                      </Form>
+                    )}
+                  </Formik>
+                }
+              />
+            );
+          })}
+        </div>
+      )}
 
       <CustomCommentDrawer
         open={showComment}
@@ -450,8 +449,8 @@ const format_history_data = (data: any[]) => {
     month: item?.month,
     status: item?.status,
     title: item?.success_measure?.measure,
-    percentage: item?.achievementPercentage,
-    target: item?.target,
-    achievement: item?.achieved,
+    percentage: item?.completion_percent || 0,
+    target: item?.expected_outcome,
+    achievement: item?.actual_outcome || "No achievement yet",
   }));
 };

@@ -55,12 +55,11 @@ export default function HistoryDrawer({
               <Image
                 src={SearchIcon}
                 alt="search"
-                // onClick={handleSearchClick}
                 className="absolute right-0 mr-4 top-3"
               />
             </div>
             <div className="grid gap-y-3 m">
-              {data.map((item, idx) => (
+              {data?.map((item, idx) => (
                 <div
                   key={idx}
                   className="border border-[#E5E9EB] rounded-[5px] p-4"
@@ -68,9 +67,21 @@ export default function HistoryDrawer({
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-x-2">
                       <p className="#252C32 font-medium text-sm">
-                        {item.month}
+                        {item?.month}
                       </p>
-                      <p className="text-[#07A287] text-[8px]">{item.status}</p>
+                      <p
+                        className={cn(
+                          "text-[8px]",
+                          item?.status?.toLowerCase() === "rejected" &&
+                            "text-[var(--bg-red-100)] ",
+                          item?.status?.toLowerCase() === "pending"
+                            ? "text-[var(--bg-yellow-400)] "
+                            : "text-[rgb(var(--bg-green-100))] ",
+                          "font-medium"
+                        )}
+                      >
+                        {item?.status}
+                      </p>
                     </div>
                     <p
                       className={cn(
@@ -95,7 +106,7 @@ export default function HistoryDrawer({
                       </p>
                       <p className="text-[#008080] text-xs font-bold">
                         {" "}
-                        {item.achievement}
+                        {item?.achievement}
                       </p>
                     </div>
                   </div>
