@@ -75,47 +75,21 @@ const ExpectedOutcome = ({
 
   // Handle form submit
   const handleFormSubmit = (val: any) => {
-    console.log({
+    addTaskOutcome({
       fiscal_year_id: params?.reportId,
       month: getCurrentMonth(),
       ...val,
-    });
-    // addTaskOutcome({
-    //   fiscal_year_id: params?.reportId,
-    //   month: getCurrentMonth(),
-    //   ...val,
-    // })
-    //   .unwrap()
-    //   .then(() => {
-    //     toast.success(
-    //       `${getCurrentMonth()} expected outcome successfully submitted`
-    //     );
-    //   })
-    //   .catch((err) => {
-    //     // console.log(err, "error");
-    //   });
+    })
+      .unwrap()
+      .then(() => {
+        toast.success(
+          `${getCurrentMonth()} expected outcome successfully submitted`
+        );
+      })
+      .catch((err) => {
+        // console.log(err, "error");
+      });
   };
-
-  // Form handling
-  // const formik = useFormik({
-  //   initialValues: {
-  //     tasks: [
-  //       {
-  //         expected_task_outcome: "",
-  //       },
-  //     ],
-  //   },
-  //   validationSchema: Yup.object({
-  //     tasks: Yup.array().of(
-  //       Yup.object({
-  //         expected_task_outcome: Yup.string().required(
-  //           "Expected outcome is required"
-  //         ),
-  //       })
-  //     ),
-  //   }),
-  //   onSubmit: handleFormSubmit,
-  // });
 
   //validation schema
   const validationSchema = Yup.object({
@@ -226,10 +200,6 @@ const ExpectedOutcome = ({
                                 <div className="grid mt-8">
                                   {item?.implied_tasks?.map(
                                     (val: any, idx: number) => {
-                                      console.log(
-                                        formik?.initialValues,
-                                        "Fsfsf"
-                                      );
                                       return (
                                         <div
                                           key={idx}
@@ -370,7 +340,6 @@ const ExpectedOutcome = ({
                                                     );
                                                   }
                                                 }}
-                                                // onChange={formik.handleChange}
                                                 value={
                                                   formik?.values?.tasks?.[idx]
                                                     ?.expected_task_outcome
@@ -438,9 +407,7 @@ const ExpectedOutcome = ({
                               loading={addingTask}
                               type="submit"
                               loadingText="Submitting"
-                              disabled={
-                                !formik.isValid || !formik.dirty || addingTask
-                              }
+                              disabled={!formik.isValid || addingTask}
                               className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none"
                             >
                               Submit Input
