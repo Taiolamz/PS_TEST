@@ -23,12 +23,9 @@ const ApprovalUI = () => {
       ) : (
         <>
           {data?.data?.data?.length === 0 ? (
-            <EmptyState
-              icon={EmptyFileIcon}
-              text="Sorry, you have no downline report"
-            >
-              <p className="text-custom-gray-scale-400 font-normal text-[12px] -mt-2">
-                You are the resource
+            <EmptyState icon={EmptyFileIcon} text="Sorry, you don’t have an">
+              <p className="text-custom-gray-scale-400 font-medium text-sm -mt-3">
+                approval request yet
               </p>
             </EmptyState>
           ) : (
