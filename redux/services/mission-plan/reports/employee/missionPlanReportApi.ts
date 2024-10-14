@@ -101,6 +101,22 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getDownlineReport: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/downline`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getApprovalReport: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/approvals`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -117,4 +133,6 @@ export const {
   useGetOrgFiscalYearQuery,
   useAddChallangeMutation,
   useGetTaskOutcomeTaskQuery,
+  useGetDownlineReportQuery,
+  useGetApprovalReportQuery,
 } = missionPlanReportApi;

@@ -80,7 +80,7 @@ const ExpectedOutcome = ({
         true
       );
     }
-  }, [showHistory, showComment]);
+  }, [showHistory, showComment, id]);
 
   // Handle form submit
   const handleFormSubmit = (val: any) => {
