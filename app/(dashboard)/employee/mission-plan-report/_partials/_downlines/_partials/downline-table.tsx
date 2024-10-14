@@ -15,7 +15,7 @@ export default function DownlineTable() {
   const router = useRouter();
 
   const { data, isLoading, isFetching } = useGetDownlineReportQuery({});
-  console.log(data, isLoading);
+  // console.log(data, isLoading);
 
   return (
     <>

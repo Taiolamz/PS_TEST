@@ -14,7 +14,7 @@ const ApprovalUI = () => {
   const { EMPLOYEE } = routesPath;
 
   const { data, isLoading, isFetching } = useGetApprovalReportQuery({});
-  console.log(data, isLoading);
+  // console.log(data, isLoading);
 
   return (
     <>
