@@ -28,6 +28,10 @@ export function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
+export const abbreviateMonth = (month: string) => {
+  return month.slice(0, 3);
+};
+
 export const numberToWords = (num: number) => {
   const ones = [
     "",

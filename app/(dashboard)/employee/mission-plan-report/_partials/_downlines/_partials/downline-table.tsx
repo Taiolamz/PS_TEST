@@ -10,7 +10,6 @@ const { EMPLOYEE } = routesPath;
 
 export default function DownlineTable() {
   const router = useRouter();
-  
 
   return (
     <TableWrapper

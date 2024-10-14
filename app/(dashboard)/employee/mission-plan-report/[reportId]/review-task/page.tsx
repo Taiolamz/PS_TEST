@@ -16,7 +16,11 @@ import {
   useGetDownlinerExpectedOutcomeQuery,
   useGetMOSMeasureofSuccessQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
-import { numberToWords } from "@/app/(dashboard)/_layout/Helper";
+import {
+  abbreviateMonth,
+  numberToWords,
+} from "@/app/(dashboard)/_layout/Helper";
+import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 
 export default function ApproveTask({
   params,
@@ -63,7 +67,7 @@ export default function ApproveTask({
     <DashboardLayout back headerTitle="Downlines">
       <div className="m-5 mt-7">
         <h3 className="text-[var(--text-color4)] font-medium mb-5">
-          January Expected Outcome
+          {`${getCurrentMonth()} Expected Outcome`}
         </h3>
         <>
           {(data?.data?.specific_task as any[])?.map((item, idx) => (
@@ -183,7 +187,9 @@ export default function ApproveTask({
                         {/* right-side */}
                         <div className="border grid gap-y-5 border-[#E5E9EB] rounded-sm w-full py-5 px-4">
                           <Input
-                            label="Jan Expected Outcome (Monthly)"
+                            label={`${abbreviateMonth(
+                              getCurrentMonth()
+                            )} Expected Outcome (Monthly)`}
                             id="expected"
                             name="expected"
                             placeholder="Input Expected Outcome"
@@ -232,7 +238,7 @@ export default function ApproveTask({
               }
             />
           ))}
-          {Taskdata?.map((item, idx) => (
+          {/* {Taskdata?.map((item, idx) => (
             <CustomAccordion
               key={idx}
               className="mb-4 flex flex-col gap-1"
@@ -275,7 +281,7 @@ export default function ApproveTask({
               }
               content={
                 <div className="pt-8 border border-[#E5E9EB] p-8 bg-[#FAFAFA] space-y-10">
-                  {/* MAPPED OUT IMPLIED TASK */}
+         
                   {item.impliedTasks?.map((item, idx) => (
                     <main key={idx}>
                       <header className="flex items-center justify-between">
@@ -293,7 +299,7 @@ export default function ApproveTask({
                         </p>
                       </header>
                       <div className="mt-7 flex gap-x-3">
-                        {/* left-side */}
+                    
                         <div className="w-full">
                           <div className="grid grid-cols-11 gap-2">
                             <p className="col-span-5 text-[var(--footer-link-color)] text-sm">
@@ -342,7 +348,7 @@ export default function ApproveTask({
                             </Button>
                           </div>
                         </div>
-                        {/* right-side */}
+           
                         <div className="border grid gap-y-5 border-[#E5E9EB] rounded-sm w-full py-5 px-4">
                           <Input
                             label="Jan Expected Outcome (Monthly)"
@@ -393,7 +399,7 @@ export default function ApproveTask({
                 </div>
               }
             />
-          ))}
+          ))} */}
         </>
         {/* Approve MOS target MOdal */}
         <ApproveModal
