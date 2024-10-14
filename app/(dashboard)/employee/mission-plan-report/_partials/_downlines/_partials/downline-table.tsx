@@ -135,12 +135,12 @@ const FORMAT_TABLE_DATA = (data: any) => {
     staff_name: (
       <>
         <span className="hidden">{item.id}</span>
-        <p>{item?.staff_name}</p>
+        <p>{item?.name}</p>
       </>
     ),
-    job_title: item?.job_title,
-    work_email: item?.work_email,
-    created_at: formatDate(item?.created_at),
+    job_title: item?.designation,
+    work_email: item?.email,
+    created_at: formatDate(item?.date_submitted),
     status: (
       <BadgeComponent
         text={item?.status}

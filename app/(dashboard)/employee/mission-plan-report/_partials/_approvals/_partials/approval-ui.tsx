@@ -98,24 +98,24 @@ const ApprovalUI = () => {
 
 export default ApprovalUI;
 
-const FORMAT_TABLE_DATA = (obj: any) => {
-  return obj?.map((org: any) => ({
-    name: (
+const FORMAT_TABLE_DATA = (data: any) => {
+  return data?.map((item: any) => ({
+    staff_name: (
       <>
-        <span className="hidden">{org.id}</span>
-        <p>{org?.name}</p>
+        <span className="hidden">{item.id}</span>
+        <p>{item?.name}</p>
       </>
     ),
-    designation: org?.job_title,
-    email: org?.work_email,
-    created_at: formatDate(org?.created_at),
+    job_title: item?.designation,
+    work_email: item?.email,
+    created_at: formatDate(item?.date_submitted),
     status: (
       <BadgeComponent
-        text={org?.status}
+        text={item?.status}
         color={
-          org?.status?.toLowerCase() === "approved"
+          item?.status?.toLowerCase() === "approved"
             ? "green"
-            : org?.status?.toLowerCase() === "rejected"
+            : item?.status?.toLowerCase() === "rejected"
             ? "red"
             : "yellow"
         }
@@ -123,38 +123,3 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     ),
   }));
 };
-
-const data = [
-  {
-    id: 1,
-    name: "Oluwaseyi Ajayi",
-    job_title: "Product Designer",
-    work_email: "ony@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "pending",
-  },
-  {
-    id: 2,
-    name: "Bryan Adamu",
-    job_title: "Product Designer",
-    work_email: "ony@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "approved",
-  },
-  {
-    id: 3,
-    name: "Jerome Bell",
-    job_title: "Product Designer",
-    work_email: "ony@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "rejected",
-  },
-  {
-    id: 4,
-    name: "Amaka Johnson",
-    job_title: "Product Designer",
-    work_email: "amaka@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "pending",
-  },
-];

@@ -75,20 +75,25 @@ const ExpectedOutcome = ({
 
   // Handle form submit
   const handleFormSubmit = (val: any) => {
-    addTaskOutcome({
+    console.log({
       fiscal_year_id: params?.reportId,
       month: getCurrentMonth(),
       ...val,
-    })
-      .unwrap()
-      .then(() => {
-        toast.success(
-          `${getCurrentMonth()} expected outcome successfully submitted`
-        );
-      })
-      .catch((err) => {
-        // console.log(err, "error");
-      });
+    });
+    // addTaskOutcome({
+    //   fiscal_year_id: params?.reportId,
+    //   month: getCurrentMonth(),
+    //   ...val,
+    // })
+    //   .unwrap()
+    //   .then(() => {
+    //     toast.success(
+    //       `${getCurrentMonth()} expected outcome successfully submitted`
+    //     );
+    //   })
+    //   .catch((err) => {
+    //     // console.log(err, "error");
+    //   });
   };
 
   // Form handling
@@ -188,11 +193,27 @@ const ExpectedOutcome = ({
                   content={
                     <Formik
                       initialValues={{
-                        tasks: [
-                          {
-                            expected_task_outcome: "",
-                          },
-                        ],
+                        tasks: item?.implied_tasks?.map((task: any) => {
+                          const filteredTarget = task?.task_outcome?.filter(
+                            (item: any) =>
+                              item?.month?.toLowerCase() ===
+                              getCurrentMonth()?.toLowerCase()
+                          );
+                          if (filteredTarget?.length >= 1) {
+                            return {
+                              expected_task_outcome:
+                                task?.task_outcome?.[0]?.expected_outcome || "",
+                              implied_task_id: task?.id,
+                              specified_task_id: item?.id,
+                            };
+                          } else {
+                            return {
+                              expected_task_outcome: "",
+                              implied_task_id: task?.id,
+                              specified_task_id: item?.id,
+                            };
+                          }
+                        }),
                       }}
                       onSubmit={handleFormSubmit}
                       validationSchema={validationSchema}
@@ -205,22 +226,10 @@ const ExpectedOutcome = ({
                                 <div className="grid mt-8">
                                   {item?.implied_tasks?.map(
                                     (val: any, idx: number) => {
-                                      const filteredTarget =
-                                        val?.task_outcome?.filter(
-                                          (item: any) =>
-                                            item?.month?.toLowerCase() ===
-                                            getCurrentMonth()?.toLowerCase()
-                                        );
-                                      if (filteredTarget?.length > 1) {
-                                        console.log(
-                                          filteredTarget?.[0]?.expected_outcome,
-                                          `tasks.${idx}.expected_task_outcome`
-                                        );
-                                        formik.setFieldValue(
-                                          `tasks.${idx}.expected_task_outcome`,
-                                          filteredTarget?.[0]?.expected_outcome
-                                        );
-                                      }
+                                      console.log(
+                                        formik?.initialValues,
+                                        "Fsfsf"
+                                      );
                                       return (
                                         <div
                                           key={idx}
