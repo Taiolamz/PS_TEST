@@ -3,18 +3,14 @@ import * as Yup from "yup";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import History from "../../_component/history";
-import Comment from "../../_component/comment";
 import { Button } from "@/components/ui/button";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { PageLoader } from "@/components/custom-loader";
 import CommentsIcon from "@/public/assets/icons/comments";
 import { FieldArray, Form, Formik } from "formik";
-import { data } from "../../_partials/_task_outcome/_data/data";
 import { CustomAccordion } from "@/components/custom-accordion";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import ReportChallengeModal from "../../_component/report-challenge-modal";
 import {
   useAddTaskOutcomeMutation,
   useGetTaskOutcomeTaskQuery,
@@ -345,6 +341,7 @@ const ExpectedOutcome = ({
                                                   ?.expected_task_outcome
                                               }
                                               placeholder="Input Expected Outcome"
+                                              isRequired
                                             />
                                             <Input
                                               label="Actual Outcome"
