@@ -12,15 +12,16 @@ import {
 import { Button } from "@/components/ui/button";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import ApprovalFlowTwo from "../../../mission-plan/approval-flow/create/approval-flow-two";
-import { useMissionApprovalFlow } from "../../../checklist/_hooks/useMissionApprovalFlow";
+import ApprovalFlowTwo from "../../../../mission-plan/approval-flow/create/approval-flow-two";
+import { useMissionApprovalFlow } from "../../../../checklist/_hooks/useMissionApprovalFlow";
 import routesPath from "@/utils/routes";
 import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { useGetAllApproverListQuery } from "@/redux/services/employee/employeeApi";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const { ADMIN } = routesPath;
-const ApprovalCard = () => {
+function Edit({ params }: { params: { approvalsId: string } }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const divRef = useRef<any>(null);
   const cancelRoute = ADMIN.APPROVALS;
@@ -35,7 +36,10 @@ const ApprovalCard = () => {
     level,
     organization,
     isLoadingGradeLevel,
-  } = useMissionApprovalFlow({ cancelPath: cancelRoute });
+  } = useMissionApprovalFlow({
+    cancelPath: cancelRoute,
+    id: params.approvalsId,
+  });
 
   const { data: rolesData, isLoading: isLoadingroles } =
     useGetAllApproverListQuery();
@@ -62,6 +66,7 @@ const ApprovalCard = () => {
   const isBtnDisabled = !(formik.values.order_of_approvals as any[]).some(
     (chi) => chi.approvals.length > 0
   );
+  const router = useRouter();
 
   return (
     <DashboardLayout back headerTitle="Approval Flow">
@@ -103,6 +108,7 @@ const ApprovalCard = () => {
               <Button
                 variant="outline"
                 className={`text-[var(--primary-color)] py-5 px-2 rounded-sm bg-transparent border border-[var(--primary-color)] min-w-28`}
+                onClick={() => router.back()}
               >
                 Cancel
               </Button>
@@ -118,7 +124,9 @@ const ApprovalCard = () => {
                 //   loading={
                 //     isLoading || isReassigning || isLoadingDeleteSpecifiedTask
                 //   }
-                loadingText={"Save"}
+                loading={isCreatingMissionFlow}
+                onClick={formik.handleSubmit}
+                loadingText={"Updating..."}
                 className={`py-5 px-2 min-w-24`}
               >
                 Save
@@ -129,6 +137,6 @@ const ApprovalCard = () => {
       </div>
     </DashboardLayout>
   );
-};
+}
 
-export default ApprovalCard;
+export default Edit;

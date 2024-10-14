@@ -49,7 +49,7 @@ const routesPath = {
     TEAM_MANAGEMENT: `/${admin_auth}/team-management`,
     APPROVALS: `/${admin_auth}/team-management/approvals`,
     SINGLE_APPROVAL: (id: string) =>
-      `/${admin_auth}/team-management/approvals/${id}`,
+      `/${admin_auth}/team-management/approvals/${id}/edit`,
 
     SETTINGS: `/${admin_auth}/settings`,
     CHECKLIST: `/${admin_auth}/checklist`,

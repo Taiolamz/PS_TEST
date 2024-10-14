@@ -27,6 +27,7 @@ export const unitApi = baseApi.injectEndpoints({
         method: "PUT",
         body: payload,
       }),
+      invalidatesTags: ["Units"],
     }),
 
     getUnits: builder.query<any, QueryParams>({
@@ -38,7 +39,7 @@ export const unitApi = baseApi.injectEndpoints({
       // transformResponse: (response: { data: { data: BranchData[] } }) =>
       //   response.data.data,
     }),
-    
+
     getAllUnitStaffById: builder.query<
       any,
       { id: string; params: QueryParams }
