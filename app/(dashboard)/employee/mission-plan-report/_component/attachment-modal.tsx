@@ -37,8 +37,10 @@ export default function AttachmentModal({
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
-      //   formData.append("files", values?.files);
-      // formData.append("link", values.link);
+      if (values.files) {
+        formData.append("files", values.files);
+      }
+      formData.append("link", values.link);
 
       //   // Make your API call with formData
       //   try {
