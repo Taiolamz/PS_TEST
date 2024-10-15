@@ -23,6 +23,15 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  mos: {
+    title: "Measures of Success Submitted",
+    description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Continue Submissions",
+  },
+};
 
 export default function TargetSubmission({
   params,
@@ -34,6 +43,16 @@ export default function TargetSubmission({
   const [id, setId] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Defining the validation schema for target
   const validationSchema = Yup.object({
@@ -102,7 +121,8 @@ export default function TargetSubmission({
       .unwrap()
       .then(() => {
         setSubmitting(false);
-        toast.success(`${getCurrentMonth()} target successfully submitted`);
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.mos);
       })
       .catch((err) => {
         // console.log(err, "error");
@@ -333,6 +353,18 @@ export default function TargetSubmission({
         id={id}
         loading={loadingHistory || fetchingHistory}
         data={format_history_data(historyData?.data?.data || [])}
+      />
+
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
     </DashboardLayout>
   );

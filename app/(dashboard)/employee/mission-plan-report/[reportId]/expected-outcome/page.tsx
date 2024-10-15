@@ -3,8 +3,6 @@ import * as Yup from "yup";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
-import History from "../../_component/history";
-import Comment from "../../_component/comment";
 import { Button } from "@/components/ui/button";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { PageLoader } from "@/components/custom-loader";
@@ -14,7 +12,6 @@ import { data } from "../../_partials/_task_outcome/_data/data";
 import { CustomAccordion } from "@/components/custom-accordion";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import ReportChallengeModal from "../../_component/report-challenge-modal";
 import {
   useAddTaskOutcomeMutation,
   useGetTaskOutcomeTaskQuery,
@@ -25,7 +22,15 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
-import { toast } from "sonner";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  task: {
+    title: "Specific Task Outcomes Submitted",
+    description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Complete",
+  },
+};
 
 const ExpectedOutcome = ({
   params,
@@ -38,6 +43,16 @@ const ExpectedOutcome = ({
   const [showHistory, setShowHistory] = useState(false);
   const [showHistoryContent, setShowHistoryContent] = useState([]);
   const [showComment, setShowComment] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Fetch task data
   const {
@@ -82,9 +97,8 @@ const ExpectedOutcome = ({
     })
       .unwrap()
       .then(() => {
-        toast.success(
-          `${getCurrentMonth()} expected outcome successfully submitted`
-        );
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.task);
       })
       .catch((err) => {
         // console.log(err, "error");
@@ -430,6 +444,18 @@ const ExpectedOutcome = ({
         commentType={"implied-task"}
         loadingComment={loadingComment}
         loadingAddComment={addingComment}
+      />
+
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
 
       <HistoryDrawer
