@@ -35,8 +35,6 @@ export const useUnit = ({ cancelPath }: Prop) => {
   const { data: employeesData, isLoading: isLoadingEmployees } =
     useGetAllEmployeesQuery();
 
-
-
   const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
     useGetSubsidiariesQuery({
       to: 0,
@@ -110,9 +108,9 @@ export const useUnit = ({ cancelPath }: Prop) => {
   };
 
   const employees = employeesData ?? [];
-  const subsidiaries = subsidiariesData?.data?.data ?? [];
-  const branches = branchesData?.data.branches.data ?? [];
-  const departments = departmentData?.data ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
+  const branches = dropdownData?.organization_info?.branches ?? [];
+  const departments = dropdownData?.organization_info?.departments ?? [];
 
   const employeeDrop = handleDropdown(employees);
   const subsidiaryDrop = handleDropdown(subsidiaries);
@@ -217,6 +215,5 @@ export const useUnit = ({ cancelPath }: Prop) => {
     subsidiaryDrop,
     branchDrop,
     departmentDrop,
-
   };
 };

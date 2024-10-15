@@ -20,6 +20,7 @@ import {
   useUpdateBranchMutation,
 } from "@/redux/services/checklist/branchApi";
 import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
   id: string;
@@ -109,6 +110,9 @@ export const useEditBranch = ({ id }: Prop) => {
       prev_page_url: "",
     });
 
+  const { data: dropdownData, isLoading: isLoadingDropdown }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
+
   const { data: branchesData, isLoading: isLoadingBranches } =
     useGetBranchesQuery({
       to: 0,
@@ -139,7 +143,7 @@ export const useEditBranch = ({ id }: Prop) => {
   const branchInfo = branchData?.data?.branch ?? [];
 
   // const subsidiaries = subsidiariesData?.organization_info?.subsidiaries ?? [];
-  const subsidiaries = subsidiariesData?.data?.data ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
   const states = statesData ?? [];
   const employees = employeesData ?? [];
 

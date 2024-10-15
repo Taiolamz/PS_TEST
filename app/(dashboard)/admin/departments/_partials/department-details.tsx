@@ -14,7 +14,10 @@ import {
 import useDisclosure from "../_hooks/useDisclosure";
 import Hierarchy from "@/components/fragment/info/hierachy";
 import DeactivateOrgModal from "@/components/atoms/modals/deactivate-modal";
-import { useDeleteDepartmentMutation } from "@/redux/services/checklist/departmentApi";
+import {
+  useDeleteDepartmentMutation,
+  useGetDepartmentByIdQuery,
+} from "@/redux/services/checklist/departmentApi";
 import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
@@ -131,12 +134,29 @@ const DepartmentDetails = () => {
       });
   };
 
+  const {
+    data: departmentData,
+    isLoading: isLoadingDepartment,
+    isFetching: isFetchingDepartment,
+    refetch: refetchDepartment,
+  } = useGetDepartmentByIdQuery(deptId, { skip: !deptId });
+
+  // console.log(departmentData, "department data");
+
   return (
     <DashboardLayout headerTitle="Departments" back>
       <div className="p-5 ">
         <Hierarchy
           onDeactivate={onOpenDeactivateModal}
           editRef={ADMIN.EDIT_DEPARTMENT(id ?? "")}
+          headName={departmentData?.data?.head_of_department?.name || "n/a"}
+          deptEmail={departmentData?.data?.department_email || "n/a"}
+          headOrgEmail={
+            departmentData?.data?.head_of_department?.work_email || "n/a"
+          }
+          address={departmentData?.data?.address || "n/a"}
+          state={departmentData?.data?.state || "n/a"}
+          country={departmentData?.data?.country || "n/a"}
         />
         <div className="block mt-10 mb-9">
           <ParentModuleCard list={listToTest} />
