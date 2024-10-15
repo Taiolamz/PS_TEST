@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
 import { useAddChallangeMutation } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 import { LucidePlusCircle, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useDropzone } from "react-dropzone";
 
 interface ReportChallengeModalProps {
   show: boolean;
@@ -57,22 +57,21 @@ export default function AttachmentModal({
     },
   });
 
-  // Handle file changes
-  const handleFileChange = (event) => {
-    const selectedFiles = Array.from(event.target.files);
-    setFiles(selectedFiles);
-    formik.setFieldValue("files", selectedFiles);
-  };
+  const onDrop = useCallback((acceptedFiles: any[]) => {
+    acceptedFiles.forEach((file: Blob) => {
+      const reader = new FileReader();
 
-  // Handle file drag and drop
-  const onDragEnd = (result) => {
-    if (!result.destination) return;
-    const reorderedFiles = Array.from(files);
-    const [removed] = reorderedFiles.splice(result.source.index, 1);
-    reorderedFiles.splice(result.destination.index, 0, removed);
-    setFiles(reorderedFiles);
-    formik.setFieldValue("files", reorderedFiles);
-  };
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => {
+        // Do whatever you want with the file contents
+        const binaryStr = reader.result;
+        console.log(binaryStr);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleSubmit = () => {};
   return (
@@ -94,54 +93,32 @@ export default function AttachmentModal({
             document will be seen by approvers
           </p>
         </label>
-
-        <input
-          type="file"
-          onChange={handleFileChange}
-          multiple
-          accept=".csv,.pdf,.docx,.png,.jpg"
-        />
-        {formik.errors.files && <div>{formik.errors.files}</div>}
-
         {/* Drag and Drop for Files */}
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="files-droppable">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="border-dashed h-[128px] w-full border-[var(--input-border)] my-2 bg-[#f7f9fa] border"
-              >
-                {files.map((file, index) => (
-                  <Draggable
-                    key={file.name}
-                    draggableId={file.name}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          marginBottom: "8px",
-                          padding: "8px",
-                          border: "1px solid #ccc",
-                          backgroundColor: "#fafafa",
-                          ...provided.draggableProps.style,
-                        }}
-                      >
-                        {file.name}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <div className="border-dashed h-[128px] w-full border-[var(--input-border)] my-2 bg-[#f7f9fa] border"></div>
+        <div
+          {...getRootProps()}
+          className={cn(
+            `border-dashed h-[128px] w-full border-[var(--input-border)] my-2 place-content-center border`,
+            isDragActive ? "bg-[var(--primary-accent-color)]" : " bg-[#f7f9fa]"
+          )}
+        >
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <p className="text-center space-x-3">
+              <p className="text-xs text-[var(--text-color4)]">
+                Drag the file here...
+              </p>
+            </p>
+          ) : (
+            <p className="text-center space-x-3">
+              <p className="text-sm font-medium text-[var(--text-color)]">
+                Doc upload.csv
+              </p>
+              <p className="text-xs text-[var(--primary-accent-color)]">
+                Drag file here
+              </p>
+            </p>
+          )}
+        </div>
 
         <label htmlFor="" className="space-y-1">
           <p className="text-sm font-medium">Add Link</p>
