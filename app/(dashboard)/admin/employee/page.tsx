@@ -183,7 +183,7 @@ const Employee = () => {
   const { data: invited_staff, isLoading: isLoadingInvitedStaff } =
     useGetInvitedStaffQuery({});
 
-  const { data: all_staff, isLoading: isLoadingStaff } = useGetAllStaffQuery(
+  const { data: all_staff, isLoading: isLoadingStaff, isFetchingStaff } = useGetAllStaffQuery(
     {
       page: page
     }
@@ -285,7 +285,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => {} },
+    { label: "Implied Task", color: "red", onActionClick: () => { } },
   ];
   // tableBodyList={userData}
 
@@ -309,7 +309,7 @@ const Employee = () => {
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {},
+      onClick: () => { },
       pending: false,
       primaryColor: "",
     },
@@ -396,11 +396,12 @@ const Employee = () => {
               totalPage={META_DATA?.total}
               currentPage={META_DATA?.current_page}
               onPageChange={(p) => {
+                // console.log(p)
                 setPage(p);
               }}
               hideNewBtnOne={false}
               tableBodyList={FORMAT_TABLE_DATA(ALL_STAFF)}
-              loading={isLoadingStaff}
+              loading={isLoadingStaff || isFetchingStaff}
               onSearch={(param) => {
                 setTimeout(() => {
                   // Delay api call after 3 seconds
@@ -426,7 +427,7 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onBulkUploadBtn={handleBulkUploadDialog}
               onCsvChange={() => handleImportChange("excel")}
-              // onPdfChange={}
+            // onPdfChange={}
             />
 
             {/* <TableWrapper
@@ -497,7 +498,7 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     idx: idx + 1,
     name: item?.name,
     email: item?.work_email || "--",
-    department: item?.department || "--",
+    department: item?.department?.name || "--",
     line_manager_name: item?.line_manager_name || "--",
     job_title: item?.designation || "--",
     role: item?.role || "--",

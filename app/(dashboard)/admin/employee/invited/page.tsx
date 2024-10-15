@@ -1,52 +1,51 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useMemo, useState } from "react";
-import DashboardLayout from "../../../_layout/DashboardLayout";
-import routesPath from "@/utils/routes";
-import { usePathname, useRouter } from "next/navigation";
+import { Dictionary } from "@/@types/dictionary";
+import DeleteModal from "@/components/atoms/modals/delete";
+import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
+import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
+import TableWrapper from "@/components/tables/TableWrapper";
+import { UsersIcon } from "@/public/assets/icons";
+import { selectUser } from "@/redux/features/auth/authSlice";
 import {
   useCreateBulkEmployeesMutation,
   useGetEmployeesQuery,
   useLazyDownloadEmployeeDataQuery,
   useLazyDownloadEmployeeTemplateQuery,
 } from "@/redux/services/checklist/employeeApi";
+import { useDeleteInvitedStaffMutation, useGetAllStaffQuery, useGetInvitedStaffQuery } from "@/redux/services/employee/employeeApi";
+import { useAppSelector } from "@/redux/store";
+import { downloadFile } from "@/utils/helpers/file-formatter";
+import routesPath from "@/utils/routes";
+import { usePathname, useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import DashboardLayout from "../../../_layout/DashboardLayout";
+import BulkRequirementModal from "../_components/bulk-requrement-modal";
+import BulkUploadModal from "../_components/bulk-upload-modal";
+import CancelModal from "../_components/cancel-modal";
+import DashboardModal from "../_components/checklist-dashboard-modal";
+import ProceedModal from "../_components/proceed-modal";
+import useDisclosure from "../_hooks/useDisclosure";
 import {
   // employeerolesColumns,
   useEmployeeRolesColumnData,
 } from "../employee-role-column";
-import useDisclosure from "../_hooks/useDisclosure";
-import { UsersIcon } from "@/public/assets/icons";
-import DashboardTable from "../_components/checklist-dashboard-table";
-import DashboardModal from "../_components/checklist-dashboard-modal";
-import CancelModal from "../_components/cancel-modal";
-import ProceedModal from "../_components/proceed-modal";
-import BulkUploadModal from "../_components/bulk-upload-modal";
-import BulkRequirementModal from "../_components/bulk-requrement-modal";
-import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
-import ReusableEmptyState from "@/components/fragment/ReusableEmptyState";
-import { toast } from "sonner";
-import { useAppSelector } from "@/redux/store";
-import { selectUser } from "@/redux/features/auth/authSlice";
-import { downloadFile } from "@/utils/helpers/file-formatter";
-import TableWrapper from "@/components/tables/TableWrapper";
-import { allemployeeData } from "@/utils/data/dashboard/missionplan";
-import BadgeComponent from "@/components/badge/BadgeComponents";
-import { trimLongString } from "../../../_layout/Helper";
-import MetricCard from "@/components/card/metric-card";
-import ModuleCard from "@/components/card/module-cards/ModuleCard";
-import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
-import { useGetAllStaffQuery, useGetInvitedStaffQuery } from "@/redux/services/employee/employeeApi";
 
 const { ADMIN } = routesPath;
 
 const Employee = () => {
-  const router = useRouter();
   const [status, setStatus] = useState<string>("");
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   // console.log(status);
   const [fileType, setFileType] = useState("");
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
+  const [selectedStaff, setSelectedStaff] = useState<Dictionary>({})
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+  const navigate = useRouter()
+  const router = useRouter();
 
   const {
     isOpen: openProceedModal,
@@ -177,7 +176,9 @@ const Employee = () => {
 
   const { data: all_staff, isLoading: isLoadingAllStaff } = useGetAllStaffQuery({})
 
-  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({})
+  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({
+    page: page
+  })
   const ALL_STAFF = invited_staff?.data?.data ?? []
   const META_DATA = invited_staff?.data?.meta ?? {}
 
@@ -196,6 +197,17 @@ const Employee = () => {
 
   const [downloadEmployeeTemplate] = useLazyDownloadEmployeeTemplateQuery();
   const [downloadEmployeeData] = useLazyDownloadEmployeeDataQuery();
+
+  const [deleteStaff, { isLoading: isDeletingStaff }] = useDeleteInvitedStaffMutation()
+
+  const handleDeleteStaff = async (staff_id: string) => {
+    deleteStaff({ staffId: selectedStaff?._slug?.id })
+      .unwrap()
+      .then(() => {
+        setShowDeleteModal(false)
+        toast.success("Account Deleted Successfully")
+      })
+  }
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
@@ -277,19 +289,7 @@ const Employee = () => {
     },
     { label: "Implied Task", color: "red", onActionClick: () => { } },
   ];
-  // tableBodyList={userData}
 
-  // active={chi?.active}
-  // title={chi?.title}
-  // type={chi?.unit}
-  // count={chi?.count}
-  // accentColor={chi?.accentColor}
-  // hide={chi?.hide}
-  // icon={chi?.icon}
-  // onClick={chi?.onClick}
-  // pending={chi?.pending}
-  // primaryColor={chi?.primaryColor}
-  // const router = useRouter()
   const listToTest = [
     {
       active: false,
@@ -387,7 +387,7 @@ const Employee = () => {
               totalPage={META_DATA?.total}
               currentPage={META_DATA?.current_page}
               onPageChange={(p) => {
-                console.log(p)
+                // console.log(p)
                 setPage(p);
               }}
               hideNewBtnOne={false}
@@ -414,6 +414,8 @@ const Employee = () => {
                   label: <span className="text-xs text-red-500"> Delete </span>,
                   color: "",
                   onActionClick: (param: any, data: any) => {
+                    setSelectedStaff(data)
+                    setShowDeleteModal(true)
                     // router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id));
                   },
                 },
@@ -480,6 +482,19 @@ const Employee = () => {
             onCancel={handleBulkRequirementDialog}
           />
         </DashboardModal>
+
+        <DeleteModal
+          show={showDeleteModal}
+          handleClose={() => setShowDeleteModal(false)}
+          title="Delete Employee"
+          content={
+            <p className="my-4 text-[13px] text-gray-500 leading-5">You&apos;re about to delete this information. Deleting this would erase all information about this Employee
+              <p>Do you still want to delete?</p>
+            </p>
+          }
+          loading={isDeletingStaff}
+          handleClick={handleDeleteStaff}
+        />
       </section>
     </DashboardLayout>
   );
@@ -492,7 +507,7 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     idx: idx + 1,
     name: item?.name,
     email: item?.work_email || "--",
-    department: item?.department || "--",
+    department: item?.department?.name || "--",
     line_manager_name: item?.line_manager_name || "--",
     job_title: item?.designation || "--",
     role: item?.role || "--",

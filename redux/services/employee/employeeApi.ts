@@ -33,7 +33,7 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
     }),
     getAllStaff: builder.query({
       query: ({ page }) => ({
-        url: `/admin/staff/all-staff?current_page=${page}`,
+        url: `/admin/staff/all-staff?page=${page}`,
         method: "GET",
       }),
       providesTags: ["Staff"],
@@ -45,11 +45,25 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
     }),
     getInvitedStaff: builder.query({
-      query: () => ({
-        url: `/admin/invitation`,
+      query: ({ page }) => ({
+        url: `/admin/invitation?page=${page}`,
         method: "GET",
       }),
       providesTags: ["Staff"],
+    }),
+    deleteStaff: builder.mutation({
+      query: ({ staffId }) => ({
+        url: `/admin/staff/trash/${staffId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Staff"],
+    }),
+    deleteInvitedStaff: builder.mutation({
+      query: ({ staffId }) => ({
+        url: `/admin/invitation/delete/${staffId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Staff"],
     }),
     getStaffCount: builder.query({
       query: () => ({
@@ -86,4 +100,6 @@ export const {
   useGetStaffCountQuery,
   useGetInvitedStaffQuery,
   useGetStaffInfoQuery,
+  useDeleteStaffMutation,
+  useDeleteInvitedStaffMutation,
 } = employeeInvitationApi;
