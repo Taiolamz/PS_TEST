@@ -22,10 +22,25 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
-import { toast } from "sonner";
 import { MdOutlineAttachment } from "react-icons/md";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
+import AttachmentModal from "../../_component/attachment-modal";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  challenge: {
+    title: "Challenge Submitted",
+    description:
+      "Your Challenge on the following deliverable has been recorded and sent to the admin. Click on the button below to continue",
+    buttonText: "Complete",
+  },
+  task: {
+    title: "Specific Task Outcomes Submitted",
+    description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Continue Submissions",
+  },
+};
 
 const ActualOutcome = ({
   params,
@@ -40,6 +55,16 @@ const ActualOutcome = ({
   const [showComment, setShowComment] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showAttachmentModal, setShowAttachmentModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Fetch task data
   const {
@@ -90,9 +115,8 @@ const ActualOutcome = ({
     })
       .unwrap()
       .then(() => {
-        toast.success(
-          `${getCurrentMonth()} actual outcome successfully submitted`
-        );
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.task);
       })
       .catch((err) => {
         // console.log(err, "error");
@@ -518,11 +542,33 @@ const ActualOutcome = ({
         data={format_history_data(showHistoryContent)}
       />
 
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
+      />
+
       <ReportChallengeModal
         show={showChallengeModal}
         handleClose={() => setShowChallengeModal(false)}
         id={id}
+        handleSuccess={() => {
+          setSuccessContent(successMessage?.challenge);
+          setShowSuccessModal(true);
+        }}
         option={"task-outcome"}
+      />
+
+      <AttachmentModal
+        show={showAttachmentModal}
+        handleClose={() => setShowAttachmentModal(false)}
+        id={id}
       />
     </DashboardLayout>
   );

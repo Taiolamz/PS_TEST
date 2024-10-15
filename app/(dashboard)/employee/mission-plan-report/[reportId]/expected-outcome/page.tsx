@@ -27,7 +27,7 @@ const successMessage = {
   task: {
     title: "Specific Task Outcomes Submitted",
     description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
-    buttonText: "Complete",
+    buttonText: "Continue Submissions",
   },
 };
 
