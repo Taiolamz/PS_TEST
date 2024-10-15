@@ -39,6 +39,7 @@ const ActualOutcome = ({
   const [showHistoryContent, setShowHistoryContent] = useState([]);
   const [showComment, setShowComment] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [showAttachmentModal, setShowAttachmentModal] = useState(false);
 
   // Fetch task data
   const {
@@ -337,7 +338,7 @@ const ActualOutcome = ({
                                           {filteredTarget?.length < 1 ? (
                                             <div className="border grid gap-y-4 border-[var(--input-border)] place-content-center  text-center h-[342px]  rounded-sm w-full py-5 px-4">
                                               <p className="text-[var(--text-color2)] font-xs">
-                                                You Have No Task Outcome For{" "}
+                                                You Have No Expected Outcome For{" "}
                                                 {getCurrentMonth()}
                                               </p>
                                             </div>
@@ -405,6 +406,12 @@ const ActualOutcome = ({
                                                 )}
                                                 <Button
                                                   type="button"
+                                                  onClick={() => {
+                                                    setId(val?.id);
+                                                    setShowAttachmentModal(
+                                                      true
+                                                    );
+                                                  }}
                                                   className="flex items-center gap-x-1 mt-6 bg-transparent shadow-none p-0 text-xs"
                                                 >
                                                   <p className="text-[var(--primary-color)]">
