@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const trimLongString = (str: string | undefined, num: number) => {
   if (str && num) {
@@ -12,16 +12,16 @@ export const trimLongString = (str: string | undefined, num: number) => {
   }
 };
 
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+export function useDebounce(value: string, delay: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
-  useCallback(() => {
+  useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
 
     return () => {
-      clearTimeout(handler);
+      clearTimeout(handler); // Clear timeout if value changes (cleanup)
     };
   }, [value, delay]);
 

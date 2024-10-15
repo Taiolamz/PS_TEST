@@ -177,6 +177,7 @@ type SUBITEM = {
 } | null;
 
 type DepartmentData = {
+  deleted_at?: string;
   id: string;
   name: string;
   head_of_department: SUBITEM;

@@ -38,6 +38,36 @@ export const departmentApi = baseApi.injectEndpoints({
       providesTags: ["Departments"],
     }),
 
+    getAllDepartmentStaffById: builder.query<
+      any,
+      { id: string; params: QueryParams }
+    >({
+      query: ({ id, params }) => ({
+        url: `/admin/department/${id}/staff-members${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["Departments"],
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
+    }),
+
+    getAllDepartmentUnitById: builder.query<
+      any,
+      { id: string; params: QueryParams }
+    >({
+      query: ({ id, params }) => ({
+        url: `/admin/department/${id}/units${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["Departments"],
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
+    }),
+
     downloadDepartmentTemplate: builder.query<any, FileTemplateParam>({
       query: (params) => ({
         url: `/admin/downloadFile/${generateQueryString({
@@ -66,4 +96,6 @@ export const {
   // useGetSingleDepartmentQuery,
   useDeleteDepartmentMutation,
   useGetDepartmentByIdQuery,
+  useGetAllDepartmentStaffByIdQuery,
+  useGetAllDepartmentUnitByIdQuery,
 } = departmentApi;
