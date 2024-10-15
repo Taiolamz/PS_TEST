@@ -151,6 +151,7 @@ export default function Edit({ params }: { params: { unitsId: string } }) {
     if (selectedEmployee) {
       formik.setFieldValue("head_of_unit.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_unit.email", selectedEmployee.email);
       formik.setFieldValue("head_of_unit.id", selectedEmployee.id);
       // formik.setFieldValue("head_of_department.name", selectedEmployee.name);
       // formik.setFieldValue("work_email", selectedEmployee.email);
@@ -451,6 +452,7 @@ export default function Edit({ params }: { params: { unitsId: string } }) {
                 type="submit"
                 onClick={handleSubmit}
                 disabled={isUpdating}
+                loading={isUpdating}
                 loadingText="Updating..."
               >
                 Update Information

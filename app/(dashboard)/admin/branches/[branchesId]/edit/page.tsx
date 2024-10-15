@@ -73,11 +73,12 @@ export default function Edit({
 
     if (selectedEmployee) {
       formik.setFieldValue("head.name", selectedEmployee.name);
-      formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("", selectedEmployee.email);
+      formik.setFieldValue("head.email", selectedEmployee.email);
       formik.setFieldValue("head.id", selectedEmployee.id);
     } else {
       formik.setFieldValue("head.name", "");
-      formik.setFieldValue("work_email", "");
+      formik.setFieldValue("", "");
       formik.setFieldValue("head.id", "");
     }
   };
@@ -183,9 +184,9 @@ export default function Edit({
             label="Head of Branch Email"
             type="text"
             placeholder="Head of Branch"
-            id="work_email"
-            value={formik.values.work_email}
-            name="work_email"
+            id=""
+            value={formik.values.}
+            name=""
             onChange={formik.handleChange}
             // isRequired
             disabled
@@ -338,9 +339,9 @@ export default function Edit({
                   label="Head of Branch Email"
                   type="text"
                   placeholder="Head of Branch"
-                  id="work_email"
-                  value={formik.values.work_email}
-                  name="work_email"
+                  id=""
+                  value={formik.values.head.email}
+                  name=""
                   onChange={formik.handleChange}
                   // isRequired
                   disabled
@@ -416,6 +417,7 @@ export default function Edit({
                 type="submit"
                 onClick={handleSubmit}
                 disabled={isUpdating}
+                loading={isUpdating}
               >
                 Update Information
               </Button>
