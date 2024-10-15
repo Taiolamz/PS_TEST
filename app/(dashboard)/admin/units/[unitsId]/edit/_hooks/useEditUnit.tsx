@@ -20,6 +20,7 @@ import {
   useGetSingleUnitQuery,
   useUpdateUnitMutation,
 } from "@/redux/services/checklist/unitApi";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
   id: string;
@@ -127,6 +128,9 @@ export const useEditUnit = ({ id }: Prop) => {
       prev_page_url: "",
     });
 
+  const { data: dropdownData, isLoading: isLoadingDropdown }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
+
   const { data: branchesData, isLoading: isLoadingBranches } =
     useGetBranchesQuery({
       to: 0,
@@ -148,9 +152,9 @@ export const useEditUnit = ({ id }: Prop) => {
     });
 
   const employees = employeesData ?? [];
-  const subsidiaries = subsidiariesData?.data?.data ?? [];
-  const branches = branchesData?.data.branches.data ?? [];
-  const departments = departmentData?.data ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
+  const branches = dropdownData?.organization_info?.branches ?? [];
+  const departments = dropdownData?.organization_info?.departments ?? [];
 
   const employeeDrop = handleDropdown(employees);
   const subsidiaryDrop = handleDropdown(subsidiaries);

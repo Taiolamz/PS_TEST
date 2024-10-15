@@ -124,7 +124,7 @@ function Edit({ params }: { params: { approvalsId: string } }) {
                 //   loading={
                 //     isLoading || isReassigning || isLoadingDeleteSpecifiedTask
                 //   }
-                loading={isCreatingMissionFlow}
+                loading={isLoadingGradeLevel || isCreatingMissionFlow}
                 onClick={formik.handleSubmit}
                 loadingText={"Updating..."}
                 className={`py-5 px-2 min-w-24`}
