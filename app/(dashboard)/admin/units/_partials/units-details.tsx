@@ -70,7 +70,7 @@ export default function UnitDetails() {
 
   const { organization } = user;
 
-  const debounceSearch = useDebounce<string>(search, 500);
+  const debounceSearch = useDebounce(search, 500);
 
   const { data: unitStaffs, isLoading: isLoadingUnitStaffs } =
     useGetAllUnitStaffByIdQuery(

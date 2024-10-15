@@ -24,6 +24,21 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  challenge: {
+    title: "Challenge Submitted",
+    description:
+      "Your Challenge on the following deliverable has been recorded and sent to the admin. Click on the button below to continue",
+    buttonText: "Complete",
+  },
+  mos: {
+    title: "Measures of Success Submitted",
+    description: `You have successfully submitted your monthly achievement for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Continue Submissions",
+  },
+};
 
 export default function AchievementSubmission({
   params,
@@ -36,6 +51,16 @@ export default function AchievementSubmission({
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [showReportChallenge, setShowReportChallenge] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Defining the validation schema for target
   const validationSchema = Yup.object({
@@ -99,9 +124,8 @@ export default function AchievementSubmission({
     })
       .unwrap()
       .then(() => {
-        toast.success(
-          `${getCurrentMonth()} Achievement Successfully Submitted`
-        );
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.mos);
         setSubmitting(false);
       })
       .catch((err) => {
@@ -187,9 +211,7 @@ export default function AchievementSubmission({
 
                       <p className=" col-span-4 text-xs">{item?.measure}</p>
                       <p className=" col-span-2 text-xs">{item?.weight}</p>
-                      <p className=" col-span-1 text-xs">
-                        {item?.unit?.slice(0, 1)}
-                      </p>
+                      <p className=" col-span-1 text-xs">{item?.unit}</p>
                       <p className=" col-span-2 text-xs">{item?.target}</p>
                     </div>
                     <div className="flex gap-x-3 mt-8">
@@ -242,7 +264,13 @@ export default function AchievementSubmission({
                           isSubmitting,
                           errors,
                           touched,
-                          setFieldValue,
+                        }: {
+                          values?: any;
+                          handleChange?: any;
+                          handleBlur?: any;
+                          isSubmitting?: any;
+                          errors?: any;
+                          touched?: any;
                         }) => {
                           return (
                             <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
@@ -268,8 +296,8 @@ export default function AchievementSubmission({
                                 value={values.achieved}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                // error={errors?.achieved}
-                                // touched={touched.achieved}
+                                error={errors?.achieved}
+                                touched={touched?.achieved}
                                 placeholder="Input Achievement"
                                 isRequired
                               />
@@ -279,6 +307,9 @@ export default function AchievementSubmission({
                                   id="total_percentage"
                                   name="total_percentage"
                                   placeholder="% Auto Calculated"
+                                  value={`${Math.round(
+                                    (values.achieved / vals?.target) * 100
+                                  )} %`}
                                   disabled
                                 />
                               </div>
@@ -321,7 +352,10 @@ export default function AchievementSubmission({
         id={id}
         option={"target-achievement"}
         handleClose={() => setShowReportChallenge(false)}
-        // loading
+        handleSuccess={() => {
+          setSuccessContent(successMessage?.challenge);
+          setShowSuccessModal(true);
+        }}
       />
 
       <CustomCommentDrawer
@@ -347,6 +381,18 @@ export default function AchievementSubmission({
         id={id}
         loading={loadingHistory || fetchingHistory}
         data={format_history_data(historyData?.data?.data || [])}
+      />
+
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
     </DashboardLayout>
   );

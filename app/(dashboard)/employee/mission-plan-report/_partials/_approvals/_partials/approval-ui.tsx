@@ -1,108 +1,125 @@
+import BadgeComponent from "@/components/badge/BadgeComponents";
+import { EmptyState, TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
+import { EmptyFileIcon } from "@/public/assets/icons";
+import { useGetApprovalReportQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { formatDate } from "@/utils/helpers/date-formatter";
 import routesPath from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
 
 import React, { useCallback } from "react";
 
-interface ApprovalUIProps {
-  FORMAT_TABLE_DATA: (e: any) => void;
-  isFetchingEmployee: boolean;
-  employeeData: any;
-}
-const ApprovalUI = ({
-  FORMAT_TABLE_DATA,
-  isFetchingEmployee,
-  employeeData,
-}: ApprovalUIProps) => {
-  const pathname = usePathname();
-
+const ApprovalUI = () => {
   const router = useRouter();
   const { EMPLOYEE } = routesPath;
 
-  // const createQueryString = useCallback(
-  //   (name: string, id: string, approve: boolean) => {
-  //     const params = new URLSearchParams();
-  //     params.set("ui", name); // Set the 'name' param
-  //     params.set("empID", id); // Set the 'id' param
-  //     approve ? params.set("measure", "approval-successs") : params.set("measure", "approval-task"); // Set the 'id' param
-
-  //     return params.toString(); // Return the query string
-  //   },
-  //   [] // We are not dependent on `searchParams` now, so it's an empty dependency array
-  // );
+  const { data, isLoading, isFetching } = useGetApprovalReportQuery({});
+  // console.log(data, isLoading);
 
   return (
-    <div className="flex flex-col gap-5">
-      <div>
-        <h1 className="text-lg font-[700]">
-          Total: {isFetchingEmployee ? "---" : "3"}
-        </h1>
-      </div>
-      <TableWrapper
-        tableheaderList={[
-          "Staff Name",
-          "Staff Role",
-          "Email",
-          "Date Submitted",
-          "Approval Status",
-          "Action",
-        ]}
-        perPage={employeeData?.mission_plans?.meta?.per_page}
-        totalPage={employeeData?.mission_plans?.meta?.total}
-        currentPage={employeeData?.mission_plans?.meta?.current_page}
-        onPageChange={(p) => {
-          console.log(p);
-        }}
-        onRowClick={() => {
-          console.log(employeeData?.mission_plans?.meta);
-        }}
-        hideNewBtnOne={true}
-        tableBodyList={FORMAT_TABLE_DATA(
-          employeeData?.mission_plans?.data
-          // allemployeeData
-        )}
-        loading={isFetchingEmployee}
-        dropDown
-        dropDownList={[
-          {
-            label: "View Progress",
-            color: "",
-            onActionClick: (param: any, dataTwo: any) => {
-              router.push(
-                EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT(
-                  dataTwo?.name?.props?.children[0].props.children
-                )
-              );
-            },
-          },
-          {
-            label: "View Measure of Success Submission",
-            color: "",
-            onActionClick: (param: any, dataTwo: any) => {
-              router.push(
-                EMPLOYEE.REVIEW_MOS(
-                  dataTwo?.name?.props?.children[0].props.children
-                )
-              );
-            },
-          },
-          {
-            label: "View Tasks Submission",
-            color: "",
-            onActionClick: (param: any, dataTwo: any) => {
-              router.push(
-                EMPLOYEE.REVIEW_TASK(
-                  dataTwo?.name?.props?.children[0].props.children
-                )
-              );
-            },
-          },
-        ]}
-        hideSearchFilterBox
-        width="300px"
-      />
-    </div>
+    <>
+      {isLoading ? (
+        <TableLoader rows={8} columns={6} />
+      ) : (
+        <>
+          {data?.data?.data?.length === 0 ? (
+            <EmptyState icon={EmptyFileIcon} text="Sorry, you don’t have an">
+              <p className="text-custom-gray-scale-400 font-medium text-sm -mt-3">
+                approval request yet
+              </p>
+            </EmptyState>
+          ) : (
+            <TableWrapper
+              tableheaderList={[
+                "Staff Name",
+                "Staff Role",
+                "Email",
+                "Date Submitted",
+                "Approval Status",
+                "Action",
+              ]}
+              // perPage={employeeData?.mission_plans?.meta?.per_page}
+              // totalPage={employeeData?.mission_plans?.meta?.total}
+              // currentPage={employeeData?.mission_plans?.meta?.current_page}
+              TableTitle="Approval Progress"
+              perPage={"10"}
+              totalPage={"1"}
+              currentPage={"1"}
+              onPageChange={(p) => {}}
+              onRowClick={() => {}}
+              hideNewBtnOne={true}
+              tableBodyList={FORMAT_TABLE_DATA(data)}
+              loading={isFetching}
+              dropDown
+              dropDownList={[
+                {
+                  label: "View Progress",
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    router.push(
+                      EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT(
+                        dataTwo?.name?.props?.children[0].props.children
+                      )
+                    );
+                  },
+                },
+                {
+                  label: "View Measure of Success Submission",
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    router.push(
+                      EMPLOYEE.REVIEW_MOS(
+                        dataTwo?.name?.props?.children[0].props.children
+                      )
+                    );
+                  },
+                },
+                {
+                  label: "View Tasks Submission",
+                  color: "",
+                  onActionClick: (param: any, dataTwo: any) => {
+                    router.push(
+                      EMPLOYEE.REVIEW_TASK(
+                        dataTwo?.name?.props?.children[0].props.children
+                      )
+                    );
+                  },
+                },
+              ]}
+              hideSearchFilterBox
+              width="300px"
+            />
+          )}
+        </>
+      )}
+    </>
   );
 };
 
 export default ApprovalUI;
+
+const FORMAT_TABLE_DATA = (data: any) => {
+  return data?.map((item: any) => ({
+    staff_name: (
+      <>
+        <span className="hidden">{item.id}</span>
+        <p>{item?.name}</p>
+      </>
+    ),
+    job_title: item?.designation,
+    work_email: item?.email,
+    created_at: formatDate(item?.date_submitted),
+    status: (
+      <BadgeComponent
+        text={item?.status}
+        color={
+          item?.status?.toLowerCase() === "approved"
+            ? "green"
+            : item?.status?.toLowerCase() === "rejected"
+            ? "red"
+            : "yellow"
+        }
+      />
+    ),
+  }));
+};

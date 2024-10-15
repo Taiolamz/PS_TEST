@@ -60,6 +60,7 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
     getOrgFiscalYear: builder.query<any, void>({
       query: () => ({
         url: "/mission-plan-report/organization-fiscal-year",
@@ -110,6 +111,48 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       // invalidatesTags: ["MissionPlanReport"],
     }),
+
+    getTaskOutcomeTask: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/tasks/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getDownlineReport: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/downline`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getApprovalReport: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/approvals`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    addTaskOutcome: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan-report/expected-task-outcome`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlanReport"],
+    }),
+
+    addActualOutcome: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan-report/actual-task-outcome`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -125,6 +168,11 @@ export const {
   useAddMOSAchievementMutation,
   useGetOrgFiscalYearQuery,
   useAddChallangeMutation,
+  useGetTaskOutcomeTaskQuery,
+  useGetDownlineReportQuery,
+  useGetApprovalReportQuery,
+  useAddTaskOutcomeMutation,
+  useAddActualOutcomeMutation,
   useGetDownlinerExpectedOutcomeQuery,
   useGetDownlinerMissionPlanReportQuery,
 } = missionPlanReportApi;

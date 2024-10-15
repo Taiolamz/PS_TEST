@@ -76,7 +76,7 @@ const headOfDepartment = [
 
 const { ADMIN } = routesPath;
 
-export const useDepartment = ({ cancelPath }: Prop) => {
+export const useEditDepartment = ({ cancelPath }: Prop) => {
   // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
   //   useGetSubsidiariesQuery({
   //     to: 0,

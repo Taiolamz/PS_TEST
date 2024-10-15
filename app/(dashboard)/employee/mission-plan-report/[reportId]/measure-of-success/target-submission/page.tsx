@@ -23,6 +23,15 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  mos: {
+    title: "Measures of Success Submitted",
+    description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Continue Submissions",
+  },
+};
 
 export default function TargetSubmission({
   params,
@@ -34,6 +43,16 @@ export default function TargetSubmission({
   const [id, setId] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Defining the validation schema for target
   const validationSchema = Yup.object({
@@ -102,12 +121,25 @@ export default function TargetSubmission({
       .unwrap()
       .then(() => {
         setSubmitting(false);
-        toast.success(`${getCurrentMonth()} target successfully submitted`);
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.mos);
       })
       .catch((err) => {
         // console.log(err, "error");
         setSubmitting(false);
       });
+  };
+
+  const getInitialTarget: (item: any) => "" = (item) => {
+    let filtered = item?.target_achievements?.filter(
+      (data: any) =>
+        data?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
+    );
+    if (filtered.length > 0) {
+      return filtered[0].month;
+    } else {
+      return "";
+    }
   };
 
   return (
@@ -126,6 +158,10 @@ export default function TargetSubmission({
       ) : (
         <div className="m-5 mt-7 space-y-7 pb-9">
           {mosData?.data?.map((item: any, index: number) => {
+            const filteredTarget = item?.target_achievements?.filter(
+              (item: any) =>
+                item?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
+            );
             return (
               <section
                 key={item?.id}
@@ -184,9 +220,7 @@ export default function TargetSubmission({
 
                       <p className=" col-span-4 text-xs">{item?.measure}</p>
                       <p className=" col-span-2 text-xs">{item?.weight}</p>
-                      <p className=" col-span-1 text-xs">
-                        {item?.unit?.slice(0, 1)}
-                      </p>
+                      <p className=" col-span-1 text-xs">{item?.unit}</p>
                       <p className=" col-span-2 text-xs">{item?.target}</p>
                     </div>
                     <div className="flex gap-x-3 mt-8">
@@ -215,10 +249,14 @@ export default function TargetSubmission({
                   </section>
                   <Formik
                     initialValues={{
-                      target: "",
+                      target:
+                        (filteredTarget?.length < 1
+                          ? ""
+                          : filteredTarget?.[0]?.target) || "",
                       month: getCurrentMonth() || "",
                     }}
                     validationSchema={validationSchema}
+                    validateOnMount={true}
                     onSubmit={(values, { setSubmitting }) =>
                       handleFormSubmit(values, item.id, setSubmitting)
                     }
@@ -230,6 +268,13 @@ export default function TargetSubmission({
                       isSubmitting,
                       errors,
                       touched,
+                    }: {
+                      values?: any;
+                      handleChange?: any;
+                      handleBlur?: any;
+                      isSubmitting?: any;
+                      errors?: any;
+                      touched?: any;
                     }) => (
                       <Form className="border grid gap-y-4 border-[var(--input-border)] rounded-sm w-full py-5 px-4">
                         <Input
@@ -239,8 +284,8 @@ export default function TargetSubmission({
                           value={values.target}
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          error={errors.target}
-                          touched={touched.target}
+                          error={errors?.target}
+                          touched={touched?.target}
                           placeholder="Target as set during period start"
                           isRequired
                           type="number"
@@ -308,6 +353,18 @@ export default function TargetSubmission({
         id={id}
         loading={loadingHistory || fetchingHistory}
         data={format_history_data(historyData?.data?.data || [])}
+      />
+
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
     </DashboardLayout>
   );

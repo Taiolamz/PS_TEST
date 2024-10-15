@@ -98,7 +98,7 @@ const TaskOutcome = () => {
 
   return (
     <div className="mt-5">
-      <ReusableDrawer
+      {/* <ReusableDrawer
         title="Approval Status"
         show={showApprovalStatus}
         handleClose={() => setShowApprovalStatus(false)}
@@ -108,21 +108,8 @@ const TaskOutcome = () => {
         childrenContainerClass="py-0"
       >
         <ApprovalStatus steps={steps} />
-      </ReusableDrawer>
-      {ui === "task_outcome" && !id && (
-        <div className="">
-          <div className="flex justify-end">
-            <Button className="rounded-sm bg-[var(--primary-color)] text-xs">
-              Set January Actual Outcomes
-            </Button>
-          </div>
-          <TaskOutcomeTable
-            FORMAT_TABLE_DATA={FORMAT_TABLE_DATA}
-            outcomeData={data}
-            setShowApprovalStatus={setShowApprovalStatus}
-          />
-        </div>
-      )}
+      </ReusableDrawer> */}
+      {ui === "task_outcome" && !id && <TaskOutcomeTable />}
       {ui === "task_outcome" && id && type === "expected-outcome" && (
         <div> Expected Outcome </div>
       )}
