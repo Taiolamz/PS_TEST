@@ -29,20 +29,16 @@ export default function AttachmentModal({
   modalClass,
   id,
 }: ReportChallengeModalProps) {
-  const [files, setFiles] = useState([]);
-
-  const formik = useFormik({
+  const formik = useFormik<{ link: string; files: File | null }>({
     initialValues: {
       link: "",
-      files: [],
+      files: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
-      values.files.forEach((file) => {
-        formData.append("files", file);
-      });
-      formData.append("link", values.link);
+      //   formData.append("files", values?.files);
+      // formData.append("link", values.link);
 
       //   // Make your API call with formData
       //   try {
@@ -57,10 +53,16 @@ export default function AttachmentModal({
     },
   });
 
-  const onDrop = useCallback((acceptedFiles: any[]) => {
+  useEffect(() => {
+    if (show) {
+      formik.resetForm();
+    }
+  }, [show]);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file: Blob) => {
       const reader = new FileReader();
-
+      formik.setFieldValue("files", acceptedFiles[0]);
       reader.onabort = () => console.log("file reading was aborted");
       reader.onerror = () => console.log("file reading has failed");
       reader.onload = () => {
@@ -73,7 +75,6 @@ export default function AttachmentModal({
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  const handleSubmit = () => {};
   return (
     <ModalContainer
       show={show}
@@ -110,9 +111,15 @@ export default function AttachmentModal({
             </p>
           ) : (
             <p className="text-center space-x-3">
-              <p className="text-sm font-medium text-[var(--text-color)]">
-                Doc upload.csv
-              </p>
+              {formik.values.files ? (
+                <p className="text-sm font-medium text-[var(--text-color)]">
+                  {formik?.values?.files?.name}
+                </p>
+              ) : (
+                <p className="text-sm font-medium text-[var(--text-color)]">
+                  Doc upload.csv
+                </p>
+              )}
               <p className="text-xs text-[var(--primary-accent-color)]">
                 Drag file here
               </p>
