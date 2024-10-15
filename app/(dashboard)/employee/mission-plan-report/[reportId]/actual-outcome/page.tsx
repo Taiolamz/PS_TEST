@@ -69,6 +69,7 @@ const ActualOutcome = () => {
 
         <ReportChallengeModal
           show={showChallengeModal}
+          handleSuccess={() => {}}
           handleClose={() => setShowChallengeModal(false)}
         />
         {data?.map((item, idx) => (
