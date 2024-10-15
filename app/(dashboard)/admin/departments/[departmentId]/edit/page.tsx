@@ -2,13 +2,13 @@
 
 import Routes from "@/lib/routes/routes";
 import { useContext, useState } from "react";
-import { ChecklistLayout } from "../_components/checklist-layout";
-import FormLayout from "../_components/form-layout";
+import { ChecklistLayout } from "../../_components/checklist-layout";
+import FormLayout from "../../_components/form-layout";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import CustomSelect from "@/components/custom-select";
-import CancelModal from "../_components/cancel-modal";
-import DashboardModal from "../_components/checklist-dashboard-modal";
+import CancelModal from "../../_components/cancel-modal";
+import DashboardModal from "../../_components/checklist-dashboard-modal";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
@@ -16,11 +16,11 @@ import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { Button } from "@/components/ui/button";
-import { useEditDepartment } from "./hooks/useDepartment";
+import { useEditDepartment } from "../hooks/useEditDepartment";
 
 const { ADMIN } = routesPath;
 
-const EditDepartment = () => {
+const EditDepartment = ({ params }: { params: { departmentId: string } }) => {
   const actionCtx = useContext(ActionContext);
   const { user, checklist } = useAppSelector((state) => state.auth);
   const cancelRoute = ADMIN.CHECKLIST;
@@ -28,13 +28,13 @@ const EditDepartment = () => {
   const {
     formik,
     subsidiaries,
-    handleProceedCancel,
-    openCancelModal,
-    handleCancelDialog,
-    isCreatingDepartment,
     branches,
     employees,
-  } = useEditDepartment({ cancelPath: cancelRoute });
+    handleSubmit,
+    isUpdating,
+  } = useEditDepartment({
+    id: params.departmentId,
+  });
 
   const [selectedBranch, setSelectedBranch] = useState("");
 
@@ -46,6 +46,7 @@ const EditDepartment = () => {
     if (selectedEmployee) {
       formik.setFieldValue("head_of_department.name", selectedEmployee.name);
       formik.setFieldValue("work_email", selectedEmployee.email);
+      formik.setFieldValue("head_of_department.email", selectedEmployee.email);
       formik.setFieldValue("head_of_department.id", selectedEmployee.id);
     } else {
       formik.setFieldValue("head_of_department.name", "");
@@ -149,6 +150,7 @@ const EditDepartment = () => {
                   id="name"
                   name="name"
                   onChange={formik.handleChange}
+                  value={formik.values.name}
                   isRequired
                 />
 
@@ -158,6 +160,7 @@ const EditDepartment = () => {
                   placeholder="Department Email"
                   id="department_email"
                   name="department_email"
+                  value={formik.values.department_email}
                   onChange={formik.handleChange}
                 />
 
@@ -207,7 +210,7 @@ const EditDepartment = () => {
                         user?.organization?.hierarchy
                       )?.includes("subsidiary")
                     }
-                    selected={selectedBranch}
+                    selected={formik.values.branch_id || selectedBranch}
                     setSelected={(value) => {
                       setSelectedBranch(value);
                       formik.setFieldValue("branch_id", value);
@@ -238,7 +241,8 @@ const EditDepartment = () => {
                   type="text"
                   placeholder="Work Email"
                   id="work_email"
-                  value={formik.values.work_email}
+                  // value={formik.values.work_email}
+                  value={formik.values.head_of_department.email}
                   name="work_email"
                   onChange={formik.handleChange}
                   disabled
@@ -252,13 +256,20 @@ const EditDepartment = () => {
                   placeholder="Description"
                   className="mt-1 block px-3 py-2 border outline-none border-gray-300 rounded-md shadow-sm sm:text-sm"
                   onChange={formik.handleChange}
-                  touched={formik.touched.description}
+                  touched={formik.touched.description as boolean}
                   value={formik.values.description}
-                  error={formik.errors.description}
+                  error={formik.errors.description as string}
                 />
                 <br />
 
-                <Button className="w-[170px] my-10" type="submit">
+                <Button
+                  className="w-[170px] my-10"
+                  type="submit"
+                  onClick={handleSubmit}
+                  disabled={isUpdating}
+                  loading={isUpdating}
+                  loadingText="Updating..."
+                >
                   Update Information
                 </Button>
               </form>
