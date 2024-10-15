@@ -23,6 +23,7 @@ interface ReportChallengeModalProps {
   loading?: boolean;
   option?: "task-outcome" | "target-achievement";
   id?: string;
+  handleSuccess: () => void;
 }
 
 export default function ReportChallengeModal({
@@ -33,6 +34,7 @@ export default function ReportChallengeModal({
   modalClass,
   id,
   option = "task-outcome",
+  handleSuccess,
 }: ReportChallengeModalProps) {
   const [addChallange, { isLoading, data }] = useAddChallangeMutation();
 
@@ -66,9 +68,9 @@ export default function ReportChallengeModal({
     })
       .unwrap()
       .then(() => {
-        toast.success(data.message);
         formik.resetForm();
         handleClose();
+        handleSuccess();
       })
       .catch(() => {});
   };

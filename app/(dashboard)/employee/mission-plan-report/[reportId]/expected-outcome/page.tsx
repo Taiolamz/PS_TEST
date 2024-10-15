@@ -21,7 +21,15 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
-import { toast } from "sonner";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  task: {
+    title: "Specific Task Outcomes Submitted",
+    description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Complete",
+  },
+};
 
 const ExpectedOutcome = ({
   params,
@@ -34,6 +42,16 @@ const ExpectedOutcome = ({
   const [showHistory, setShowHistory] = useState(false);
   const [showHistoryContent, setShowHistoryContent] = useState([]);
   const [showComment, setShowComment] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Fetch task data
   const {
@@ -78,9 +96,8 @@ const ExpectedOutcome = ({
     })
       .unwrap()
       .then(() => {
-        toast.success(
-          `${getCurrentMonth()} expected outcome successfully submitted`
-        );
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.task);
       })
       .catch((err) => {
         // console.log(err, "error");
@@ -427,6 +444,18 @@ const ExpectedOutcome = ({
         commentType={"implied-task"}
         loadingComment={loadingComment}
         loadingAddComment={addingComment}
+      />
+
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
 
       <HistoryDrawer

@@ -24,6 +24,21 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+
+const successMessage = {
+  challenge: {
+    title: "Challenge Submitted",
+    description:
+      "Your Challenge on the following deliverable has been recorded and sent to the admin. Click on the button below to continue",
+    buttonText: "Complete",
+  },
+  mos: {
+    title: "Measures of Success Submitted",
+    description: `You have successfully submitted your monthly achievement for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
+    buttonText: "Continue Submissions",
+  },
+};
 
 export default function AchievementSubmission({
   params,
@@ -36,6 +51,16 @@ export default function AchievementSubmission({
   const [showHistory, setShowHistory] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [showReportChallenge, setShowReportChallenge] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successContent, setSuccessContent] = useState<{
+    title: string;
+    description: string;
+    buttonText: string;
+  }>({
+    title: "",
+    description: "",
+    buttonText: "",
+  });
 
   // Defining the validation schema for target
   const validationSchema = Yup.object({
@@ -99,9 +124,8 @@ export default function AchievementSubmission({
     })
       .unwrap()
       .then(() => {
-        toast.success(
-          `${getCurrentMonth()} Achievement Successfully Submitted`
-        );
+        setShowSuccessModal(true);
+        setSuccessContent(successMessage?.mos);
         setSubmitting(false);
       })
       .catch((err) => {
@@ -328,7 +352,10 @@ export default function AchievementSubmission({
         id={id}
         option={"target-achievement"}
         handleClose={() => setShowReportChallenge(false)}
-        // loading
+        handleSuccess={() => {
+          setSuccessContent(successMessage?.challenge);
+          setShowSuccessModal(true);
+        }}
       />
 
       <CustomCommentDrawer
@@ -354,6 +381,18 @@ export default function AchievementSubmission({
         id={id}
         loading={loadingHistory || fetchingHistory}
         data={format_history_data(historyData?.data?.data || [])}
+      />
+
+      <ConfirmationModal
+        icon="/assets/images/success.gif"
+        iconClass="w-40"
+        title={successContent?.title}
+        message={successContent?.description}
+        show={showSuccessModal}
+        handleClose={() => setShowSuccessModal(false)}
+        handleClick={() => setShowSuccessModal(false)}
+        actionBtnTitle={successContent?.buttonText}
+        modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
       />
     </DashboardLayout>
   );
