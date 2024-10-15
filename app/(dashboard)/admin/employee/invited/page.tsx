@@ -176,7 +176,7 @@ const Employee = () => {
 
   const { data: all_staff, isLoading: isLoadingAllStaff } = useGetAllStaffQuery({})
 
-  const { data: invited_staff, isLoading: isLoadingInvitedStaff } = useGetInvitedStaffQuery({
+  const { data: invited_staff, isLoading: isLoadingInvitedStaff, isFetching: isFetchingInvitedStaff } = useGetInvitedStaffQuery({
     page: page
   })
   const ALL_STAFF = invited_staff?.data?.data ?? []
@@ -392,7 +392,7 @@ const Employee = () => {
               }}
               hideNewBtnOne={false}
               tableBodyList={FORMAT_TABLE_DATA(ALL_STAFF)}
-              loading={isLoadingInvitedStaff}
+              loading={isLoadingInvitedStaff || isFetchingInvitedStaff}
               onSearch={(param) => {
                 setTimeout(() => {
                   // Delay api call after 3 seconds

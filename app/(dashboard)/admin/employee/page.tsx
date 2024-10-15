@@ -183,7 +183,7 @@ const Employee = () => {
   const { data: invited_staff, isLoading: isLoadingInvitedStaff } =
     useGetInvitedStaffQuery({});
 
-  const { data: all_staff, isLoading: isLoadingStaff, isFetchingStaff } = useGetAllStaffQuery(
+  const { data: all_staff, isLoading: isLoadingStaff, isFetching: isFetchingStaff } = useGetAllStaffQuery(
     {
       page: page
     }
