@@ -9,7 +9,6 @@ import { Textarea } from "@/components/ui/textarea";
 import CustomSelect from "@/components/custom-select";
 import CancelModal from "../_components/cancel-modal";
 import DashboardModal from "../_components/checklist-dashboard-modal";
-import { useDepartment } from "../_hooks/useDepartment";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import ReusableStepListBox from "@/components/fragment/reusable-step-fragment/ReusableStepListBox";
@@ -17,6 +16,7 @@ import { findObjectIndexByLabel, processInputAsArray } from "@/utils/helpers";
 import { useAppSelector } from "@/redux/store";
 import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { Button } from "@/components/ui/button";
+import { useEditDepartment } from "./hooks/useDepartment";
 
 const { ADMIN } = routesPath;
 
@@ -34,7 +34,7 @@ const EditDepartment = () => {
     isCreatingDepartment,
     branches,
     employees,
-  } = useDepartment({ cancelPath: cancelRoute });
+  } = useEditDepartment({ cancelPath: cancelRoute });
 
   const [selectedBranch, setSelectedBranch] = useState("");
 
