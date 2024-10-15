@@ -22,6 +22,8 @@ import {
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { LottieEmptyState } from "@/lottie";
+import { LottieAnimation } from "@/components/fragment";
 
 const successMessage = {
   task: {
@@ -118,7 +120,10 @@ const ExpectedOutcome = ({
   return (
     <DashboardLayout back headerTitle="Expected Outcome">
       {error ? (
-        <></>
+        <div className="h-[90%] grid place-content-center">
+          <LottieAnimation animationData={LottieEmptyState} height={"8rem"} />
+          <p className="text-[var(--text-color3)]">No Mission Plan found</p>
+        </div>
       ) : loadingTask ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />

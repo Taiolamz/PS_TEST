@@ -69,7 +69,6 @@ export default function TargetSubmission({
     data: mosData,
     isLoading,
     isError,
-    error,
   } = useGetMOSMeasureofSuccessQuery(params?.reportId);
 
   //fetch mos achievement history
@@ -135,7 +134,10 @@ export default function TargetSubmission({
   return (
     <DashboardLayout back headerTitle="Period Target Submission">
       {isError ? (
-        <p className="">{error?.data?.message?.error}</p>
+        <div className="h-[90%] grid place-content-center">
+          <LottieAnimation animationData={LottieEmptyState} height={"8rem"} />
+          <p className="text-[var(--text-color3)]">No Mission Plan found</p>
+        </div>
       ) : isLoading ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />

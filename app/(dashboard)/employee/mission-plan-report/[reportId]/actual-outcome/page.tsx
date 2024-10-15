@@ -27,6 +27,8 @@ import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import AttachmentModal from "../../_component/attachment-modal";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { LottieAnimation } from "@/components/fragment";
+import { LottieEmptyState } from "@/lottie";
 
 const successMessage = {
   challenge: {
@@ -140,7 +142,10 @@ const ActualOutcome = ({
   return (
     <DashboardLayout back headerTitle="Actual Outcome">
       {error ? (
-        <></>
+        <div className="h-[90%] grid place-content-center">
+          <LottieAnimation animationData={LottieEmptyState} height={"8rem"} />
+          <p className="text-[var(--text-color3)]">No Mission Plan found</p>
+        </div>
       ) : loadingTask ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />

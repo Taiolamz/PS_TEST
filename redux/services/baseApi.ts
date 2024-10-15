@@ -44,7 +44,7 @@ export const baseQueryInterceptor: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
   // console.log(result)
 
-  if (result.error) {
+  if (result?.error) {
     let res: any = result.error;
     if (res.status === 403) {
       if (res?.data?.message) {
@@ -71,7 +71,7 @@ export const baseQueryInterceptor: BaseQueryFn<
       }
     }
     if (res.status === 404) {
-      let message = res.data.error.message;
+      let message = res?.data?.error?.message || res?.data?.message;
       toast.error(message);
     }
     if (res.status === 422) {
@@ -100,7 +100,10 @@ export const baseQueryInterceptor: BaseQueryFn<
     }
 
     if (res.status === 400) {
-      let message = res.data.error.message;
+      let message = res?.data?.error?.message;
+      if (typeof message === "object") {
+        message = res.data?.error?.message?.error || JSON.stringify(message);
+      }
       toast.error(message);
     }
   }
