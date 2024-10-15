@@ -344,14 +344,11 @@ const ActualOutcome = ({
                                           ) : (
                                             <div className="border grid gap-y-5 border-[#E5E9EB] rounded-sm w-full py-5 px-4">
                                               <Input
-                                                label={
-                                                  getCurrentMonth().slice(
-                                                    0,
-                                                    3
-                                                  ) +
-                                                  " Expected Outcome (Monthly)"
-                                                }
                                                 type="text"
+                                                label={`${getCurrentMonth().slice(
+                                                  0,
+                                                  3
+                                                )} Expected Outcome (Monthly)`}
                                                 value={
                                                   val?.task_outcome?.[0]
                                                     ?.expected_outcome
@@ -384,7 +381,7 @@ const ActualOutcome = ({
                                               <div className="flex flex-wrap items-center gap-x-4">
                                                 {val?.resources.find(
                                                   (resource: any) =>
-                                                    resource.name === user
+                                                    resource.name === user.name
                                                 ) && (
                                                   <Input
                                                     label="My Contribution"
@@ -442,6 +439,14 @@ const ActualOutcome = ({
                                                         )}% ${num?.name}`}
                                                         key={idx}
                                                         type="text"
+                                                        value={
+                                                          num?.name ===
+                                                          user?.name
+                                                            ? val
+                                                                ?.task_outcome?.[0]
+                                                                ?.contribution
+                                                            : ""
+                                                        }
                                                         id="expected_outcome"
                                                         name="expected_outcome"
                                                         placeholder="Input Expected Outcome"
