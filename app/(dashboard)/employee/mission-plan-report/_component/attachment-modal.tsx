@@ -1,26 +1,22 @@
-import CustomSelect from "@/components/custom-select";
-import Icon from "@/components/icon/Icon";
 import ModalContainer from "@/components/modal-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { useAddChallangeMutation } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
-import { FieldArray, FormikProvider, useFormik } from "formik";
-import { LucidePlusCircle, X } from "lucide-react";
+import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useDropzone } from "react-dropzone";
+import { useAddTaskAttachmentMutation } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 interface ReportChallengeModalProps {
   show: boolean;
   handleClose: () => void;
+  handleSuccess: () => void;
   modalClass?: string;
   id?: string;
 }
 const validationSchema = Yup.object({
   link: Yup.string().url("Invalid URL").optional(),
-  files: Yup.array().optional().min(1, "At least one file is required"),
 });
 
 export default function AttachmentModal({
@@ -28,7 +24,11 @@ export default function AttachmentModal({
   handleClose,
   modalClass,
   id,
+  handleSuccess,
 }: ReportChallengeModalProps) {
+  const [addTaskAttachment, { isLoading: sending }] =
+    useAddTaskAttachmentMutation();
+
   const formik = useFormik<{ link: string; files: File | null }>({
     initialValues: {
       link: "",
@@ -37,24 +37,25 @@ export default function AttachmentModal({
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
+      if (id) {
+        formData.append("task_outcome_id", id);
+      }
       if (values.files) {
         formData.append("files", values.files);
       }
-      formData.append("link", values.link);
+      if (values.link) {
+        formData.append("link", values.link);
+      }
 
-      //   // Make your API call with formData
-      //   try {
-      //     const response = await fetch("/upload", {
-      //       method: "POST",
-      //       body: formData,
-      //     });
-      //     console.log(await response.json());
-      //   } catch (error) {
-      //     console.error("Error uploading files", error);
-      //   }
+      addTaskAttachment(formData)
+        .unwrap()
+        .then(() => {
+          handleSuccess();
+          handleClose();
+        })
+        .catch(() => {});
     },
   });
-
   useEffect(() => {
     if (show) {
       formik.resetForm();
@@ -65,17 +66,19 @@ export default function AttachmentModal({
     acceptedFiles.forEach((file: Blob) => {
       const reader = new FileReader();
       formik.setFieldValue("files", acceptedFiles[0]);
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        console.log(binaryStr);
-      };
       reader.readAsArrayBuffer(file);
     });
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
+      "text/csv": [".csv"],
+    },
+  });
 
   return (
     <ModalContainer
@@ -88,7 +91,10 @@ export default function AttachmentModal({
       )}
       hasCloseButton={false}
     >
-      <form className="px-7 py-5 h-[396px] max-h-[84vh] overflow-auto relative">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="px-7 py-5 h-[396px] max-h-[84vh] overflow-auto relative"
+      >
         <label htmlFor="" className="space-y-1">
           <p className="text-sm font-medium">Add Attachment</p>
           <p className="text-[10px] text-[var(--text-color)]">
@@ -106,13 +112,13 @@ export default function AttachmentModal({
         >
           <input {...getInputProps()} />
           {isDragActive ? (
-            <p className="text-center space-x-3">
+            <div className="text-center space-x-3">
               <p className="text-xs text-[var(--text-color4)]">
                 Drag the file here...
               </p>
-            </p>
+            </div>
           ) : (
-            <p className="text-center space-x-3">
+            <div className="text-center space-x-3">
               {formik.values.files ? (
                 <p className="text-sm font-medium text-[var(--text-color)]">
                   {formik?.values?.files?.name}
@@ -125,7 +131,7 @@ export default function AttachmentModal({
               <p className="text-xs text-[var(--primary-accent-color)]">
                 Drag file here
               </p>
-            </p>
+            </div>
           )}
         </div>
 
@@ -158,10 +164,9 @@ export default function AttachmentModal({
             Cancel
           </Button>
           <Button
-            loading={false}
+            loading={sending}
             loadingText="Upload"
-            disabled={false}
-            type="submit"
+            disabled={!formik?.isValid || !formik.dirty || sending}
             className={cn("font-light rounded")}
           >
             Upload

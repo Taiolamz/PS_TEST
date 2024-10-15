@@ -135,6 +135,15 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["MissionPlanReport"],
     }),
+
+    addTaskAttachment: builder.mutation({
+      query: (payload) => ({
+        url: `/mission-plan-report/outcome-attachement`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -155,4 +164,5 @@ export const {
   useGetApprovalReportQuery,
   useAddTaskOutcomeMutation,
   useAddActualOutcomeMutation,
+  useAddTaskAttachmentMutation,
 } = missionPlanReportApi;

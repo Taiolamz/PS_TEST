@@ -40,6 +40,11 @@ const successMessage = {
     description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
     buttonText: "Continue Submissions",
   },
+  attach: {
+    title: "Supporting Document Uploaded",
+    description: `You have successfully uploaded a supporting document or link to support your actual outcome`,
+    buttonText: "Continue",
+  },
 };
 
 const ActualOutcome = ({
@@ -375,7 +380,7 @@ const ActualOutcome = ({
                                                   3
                                                 )} Expected Outcome (Monthly)`}
                                                 value={
-                                                  val?.task_outcome?.[0]
+                                                  filteredTarget?.[0]
                                                     ?.expected_outcome
                                                 }
                                                 placeholder="Input Expected Outcome"
@@ -431,7 +436,9 @@ const ActualOutcome = ({
                                                 <Button
                                                   type="button"
                                                   onClick={() => {
-                                                    setId(val?.id);
+                                                    setId(
+                                                      filteredTarget?.[0]?.id
+                                                    );
                                                     setShowAttachmentModal(
                                                       true
                                                     );
@@ -449,7 +456,9 @@ const ActualOutcome = ({
                                                 <Button
                                                   type="button"
                                                   onClick={() => {
-                                                    setId(val?.id);
+                                                    setId(
+                                                      filteredTarget?.[0]?.id
+                                                    );
                                                     setShowChallengeModal(true);
                                                   }}
                                                   className="bg-transparent shadow-none p-0 underline text-[var(--error-color)] mt-6 text-xs"
@@ -569,6 +578,10 @@ const ActualOutcome = ({
         show={showAttachmentModal}
         handleClose={() => setShowAttachmentModal(false)}
         id={id}
+        handleSuccess={() => {
+          setShowSuccessModal(true);
+          setSuccessContent(successMessage?.attach);
+        }}
       />
     </DashboardLayout>
   );
