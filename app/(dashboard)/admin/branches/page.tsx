@@ -27,6 +27,7 @@ import {
   useLazyDownloadBranchTemplateQuery,
 } from "@/redux/services/checklist/branchApi";
 import { processInputAsArray } from "@/utils/helpers";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const { ADMIN } = routesPath;
 
@@ -230,6 +231,12 @@ const Branches = () => {
       country: org?.country,
       state: org?.state,
       address: org?.address,
+      status: (
+        <BadgeComponent
+          text={!org?.deleted_at ? "Active" : "Closed"}
+          color={!org?.deleted_at ? "green" : "red"}
+        />
+      ),
     }));
   };
 
@@ -261,6 +268,7 @@ const Branches = () => {
                     "Country",
                     "State",
                     "Address",
+                    "Status",
                     "Action",
                   ]}
                   perPage={branches?.data?.branches?.meta?.per_page}
