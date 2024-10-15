@@ -11,16 +11,21 @@ import AddressInfoBox from "./AddressInformation";
 import PersonalInfoBox from "./PersonalInfoBox";
 import style from "./styles/ProfileStylesIndex.module.css";
 import WorkInfoBox from "./WorkInfoBox";
-import { useGetStaffInfoQuery } from "@/redux/services/employee/employeeApi";
+import { useDeleteStaffMutation, useGetStaffInfoQuery } from "@/redux/services/employee/employeeApi";
 import { PageLoader } from "@/components/custom-loader";
 import { cn } from "@/lib/utils";
 import { Trash } from "iconsax-react";
+import ModalContainer from "@/components/modal-container";
+import DeleteModal from "@/components/atoms/modals/delete";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const ViewEmployee = ({
   params,
 }: {
   params: { employeId: string };
 }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const editIcon = (
     <svg
@@ -41,6 +46,8 @@ const ViewEmployee = ({
     </svg>
   );
 
+  const navigate = useRouter()
+
   const { user } = useAppSelector((state) => state.auth);
   type detailType = {
     profile_img: any;
@@ -51,8 +58,20 @@ const ViewEmployee = ({
 
   const STAFF_ID = params?.employeId ?? "";
 
+  const [deleteStaff, { isLoading: isDeletingStaff }] = useDeleteStaffMutation()
+
   const { data: staffInfo, isLoading, isFetching } = useGetStaffInfoQuery({ staff_id: STAFF_ID })
   const STAFF_INFO = staffInfo?.data ?? {}
+
+  const handleDeleteStaff = async (staff_id: string) => {
+    deleteStaff({ staffId: STAFF_ID })
+      .unwrap()
+      .then(() => {
+        setShowDeleteModal(false)
+        toast.success("Account Deleted Successfully")
+        navigate.back()
+      })
+  }
 
 
   return (
@@ -150,7 +169,7 @@ const ViewEmployee = ({
                           //   router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
                           // }}
                           >Edit</p>
-                          <Trash color="red" className="cursor-pointer" />
+                          <Trash color="red" className="cursor-pointer" onClick={() => setShowDeleteModal(true)} />
                         </div>
                       </div>}
                     </>
@@ -170,6 +189,18 @@ const ViewEmployee = ({
             </div>
         }
       </DashboardLayout>
+      <DeleteModal
+        show={showDeleteModal}
+        handleClose={() => setShowDeleteModal(false)}
+        title="Delete Employee"
+        content={
+          <p className="my-4 text-[13px] text-gray-500 leading-5">You&apos;re about to delete this information. Deleting this would erase all information about this Employee
+            <p>Do you still want to delete?</p>
+          </p>
+        }
+        loading={isDeletingStaff}
+        handleClick={handleDeleteStaff}
+      />
     </>
   );
 };
