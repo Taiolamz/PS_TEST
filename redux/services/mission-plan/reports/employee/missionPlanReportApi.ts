@@ -1,3 +1,4 @@
+import { generateQueryString } from "@/utils/helpers";
 import { baseApi } from "../../../baseApi";
 
 export const missionPlanReportApi = baseApi.injectEndpoints({
@@ -16,6 +17,23 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["MissionPlanReport"],
+    }),
+    getDownlinerExpectedOutcome: builder.query({
+      query: (user) => ({
+        url: `/mission-plan-report/task-submission/${user}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getDownlinerMissionPlanReport: builder.query({
+      query: (params) => ({
+        url: `/mission-plan-report/downline${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      transformResponse: (response: { data: any[] }) => response.data,
     }),
 
     getMissionPlanReportCycle: builder.query<any, void>({
@@ -107,4 +125,6 @@ export const {
   useAddMOSAchievementMutation,
   useGetOrgFiscalYearQuery,
   useAddChallangeMutation,
+  useGetDownlinerExpectedOutcomeQuery,
+  useGetDownlinerMissionPlanReportQuery,
 } = missionPlanReportApi;

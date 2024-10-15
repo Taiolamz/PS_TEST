@@ -127,10 +127,10 @@ export default function UnitDetails() {
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => {
-        id &&
-          router.replace(ADMIN.SUBSIDIARY_DETAILS({ id: id, tab: "staffs" }));
-      },
+      // onClick: () => {
+      //   id &&
+      //     router.replace(ADMIN.SUBSIDIARY_DETAILS({ id: id, tab: "staffs" }));
+      // },
       pending: false,
       primaryColor: "",
     },
