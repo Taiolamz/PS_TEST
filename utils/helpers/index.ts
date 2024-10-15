@@ -207,13 +207,13 @@ export const REPORT_PAGE_TABS = {
     },
     {
       id: 4,
-      title: "Approvals",
-      accessor: "approvals",
+      title: "Downlines",
+      accessor: "downlines",
     },
     {
       id: 5,
-      title: "Downlines",
-      accessor: "downlines",
+      title: "Approvals",
+      accessor: "approvals",
     },
   ],
 };
