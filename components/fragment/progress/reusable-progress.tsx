@@ -35,7 +35,15 @@ interface ReusableProgressProps {
   width?: number;
   height?: number;
   borderRadius?: number;
-  color?: "red" | "green" | "yellow" | "purple" | "brown" | "default" | "";
+  color?:
+    | "red"
+    | "green"
+    | "yellow"
+    | "purple"
+    | "brown"
+    | "default"
+    | "#FFC043E5"
+    | "";
   valueClass?: string;
   valueColor?: string;
   valuePosition?: POSITION_TYPE;
@@ -52,6 +60,7 @@ const COLORS = {
   brown: "#835101CC",
   blue: "#0452C8",
   default: "#6E7C87",
+  "#FFC043E5": "#FFC043E5",
 };
 
 const ReusableProgress = ({
