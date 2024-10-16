@@ -450,9 +450,21 @@ export const getProgressColorByValue = (value: number) => {
     case value <= 35:
       return "red";
     case value <= 65:
-      return "yellow";
+      return "#FFC043";
+    // return "yellow";
     default:
       return "green";
+  }
+};
+export const getColorByStatus = (value: string) => {
+  switch (true) {
+    case value === "approved":
+      return "green";
+    case value === "pending":
+      return "#FFC043";
+    // return "yellow";
+    default:
+      return "red";
   }
 };
 
