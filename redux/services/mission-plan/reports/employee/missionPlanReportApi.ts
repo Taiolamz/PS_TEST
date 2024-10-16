@@ -170,6 +170,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getMOSSubmission: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/success-measure-submission/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -194,4 +202,5 @@ export const {
   useGetStaffPhotoFiscalYearQuery,
   useGetDownlinerExpectedOutcomeQuery,
   useGetDownlinerMissionPlanReportQuery,
+  useGetMOSSubmissionQuery,
 } = missionPlanReportApi;
