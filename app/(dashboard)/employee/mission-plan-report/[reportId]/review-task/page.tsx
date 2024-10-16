@@ -73,7 +73,7 @@ export default function ApproveTask({
         </h3>
         <>
           {isLoading ? (
-            <div className="h-screen grid place-content-center">
+            <div className="h-[75vh] grid place-content-center">
               <PageLoader />
             </div>
           ) : (
