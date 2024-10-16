@@ -144,6 +144,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["MissionPlanReport"],
     }),
+
+    getStaffPhotoFiscalYear: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/mission-statement/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -165,4 +173,5 @@ export const {
   useAddTaskOutcomeMutation,
   useAddActualOutcomeMutation,
   useAddTaskAttachmentMutation,
+  useGetStaffPhotoFiscalYearQuery,
 } = missionPlanReportApi;
