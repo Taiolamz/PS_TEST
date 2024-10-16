@@ -4,8 +4,8 @@ import { baseApi } from "../../../baseApi";
 export const missionPlanReportApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStaffMeasureOfSuccess: builder.query({
-      query: ({ user, params }) => ({
-        url: `/mission-plan-report/measures/${user}${generateQueryString({
+      query: ({ id, params }) => ({
+        url: `/mission-plan-report/measures/${id}${generateQueryString({
           ...params,
         })}`,
         method: "GET",
@@ -14,10 +14,10 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
     }),
 
     getStaffSpecifiedTask: builder.query({
-      query: ({ user, params }) => ({
-        url: `/mission-plan-report/specified-tasks/${user}${generateQueryString(
-          { ...params }
-        )}`,
+      query: ({ id, params }) => ({
+        url: `/mission-plan-report/specified-tasks/${id}${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       providesTags: ["MissionPlanReport"],
