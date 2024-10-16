@@ -450,8 +450,8 @@ export const getProgressColorByValue = (value: number) => {
     case value <= 35:
       return "red";
     case value <= 65:
-      return "#FFC043";
-    // return "yellow";
+      // return "#FFC043";
+      return "yellow";
     default:
       return "green";
   }

@@ -35,7 +35,7 @@ interface ReusableProgressProps {
   width?: number;
   height?: number;
   borderRadius?: number;
-  color?: "red" | "green" | "yellow" | "purple" | "brown" | "default";
+  color?: "red" | "green" | "yellow" | "purple" | "brown" | "default" | "";
   valueClass?: string;
   valueColor?: string;
   valuePosition?: POSITION_TYPE;
