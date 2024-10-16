@@ -8,7 +8,11 @@ import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
 import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
-import { useCreateDepartmentMutation } from "@/redux/services/checklist/departmentApi";
+import {
+  useCreateDepartmentMutation,
+  useGetDepartmentByIdQuery,
+  useUpdateDepartmentMutation,
+} from "@/redux/services/checklist/departmentApi";
 import { useGetStatesQuery } from "@/redux/services/slug/statesApi";
 import routesPath from "@/utils/routes";
 import { useContext } from "react";
@@ -16,10 +20,6 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 import useDisclosure from "../../_hooks/useDisclosure";
-
-type Prop = {
-  cancelPath: string;
-};
 
 type Select = {
   label: string | number;
@@ -76,7 +76,11 @@ const headOfDepartment = [
 
 const { ADMIN } = routesPath;
 
-export const useDepartment = ({ cancelPath }: Prop) => {
+type Prop = {
+  id: string;
+};
+
+export const useEditDepartment = ({ id }: Prop) => {
   // const { data: subsidiariesData, isLoading: isLoadingSubsidiaries } =
   //   useGetSubsidiariesQuery({
   //     to: 0,
@@ -175,55 +179,100 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     description: yup.string().min(5, "Description too short").optional(),
   });
 
+  const {
+    data: departmentData,
+    isLoading: isLoadingDepartment,
+    isFetching: isFetchingDepartment,
+    refetch: refetchDepartment,
+  } = useGetDepartmentByIdQuery(id, { skip: !id });
+
   const router = useRouter();
   const actionCtx = useContext(ActionContext);
   const user = useAppSelector(selectUser);
   const { organization } = user;
   const DepartmentRoute = ADMIN.DEPARTMENT;
-  const [createDepartment, { isLoading: isCreatingDepartment }] =
-    useCreateDepartmentMutation();
+  const [updateDepartment, { isLoading: isUpdating }] =
+    useUpdateDepartmentMutation();
 
   const handleSubmit = async () => {
+    // const payload = new FormData();
+    // const { hou, ...rest } = formik.values;
     const payload = {
-      ...formik.values,
-      // address:formik.values.state_id,
+      // ...formik.values,
+      // address: "lagos island",
+      name: formik.values.name,
       organization_id: organization?.id,
       head_of_department: formik.values.head_of_department.id,
       subsidiary_id: formik.values.subsidiary_id.id,
-    }; 
-    await createDepartment(payload)
+      branch_id: formik.values.branch_id,
+      department_email: formik.values.department_email,
+      description: formik.values.description,
+      id: id,
+      // state_id: formik.values?.state_id.toString(),
+    };
+
+    // Object.entries(rest).forEach(([key, value]) => {
+    //   payload.append(key, value as string);
+    // });
+
+    // payload.append("head_of_department", hou);
+
+    // return;
+    await updateDepartment(payload)
       .unwrap()
       .then(() => {
-        actionCtx?.triggerUpdateChecklist();
-        toast.success("Department Created Successfully");
+        toast.success("Department Updated Successfully");
         router.push(DepartmentRoute);
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push(DepartmentRoute);
           }, 2000);
         });
       });
   };
+
+  // const handleSubmit = async () => {
+  //   const payload = {
+  //     ...formik.values,
+  //     // address:formik.values.state_id,
+  //     organization_id: organization?.id,
+  //     head_of_department: formik.values.head_of_department.id,
+  //     subsidiary_id: formik.values.subsidiary_id.id,
+  //   };
+  //   await createDepartment(payload)
+  //     .unwrap()
+  //     .then(() => {
+  //       actionCtx?.triggerUpdateChecklist();
+  //       toast.success("Department Created Successfully");
+  //       router.push(DepartmentRoute);
+  //       new Promise(() => {
+  //         setTimeout(() => {
+  //           toast.dismiss();
+  //           router.push(DepartmentRoute);
+  //         }, 2000);
+  //       });
+  //     });
+  // };
   const formik = useFormik({
     initialValues: {
-      name: "",
-      department_email: "",
+      name: departmentData?.data?.name || "",
+      department_email: departmentData?.data?.department_email || "",
       subsidiary_id: {
-        name: "",
-        id: "",
+        id: departmentData?.data?.subsidiary?.id || "",
+        name: departmentData?.data?.subsidiary?.name || "",
       },
-      branch_id: "",
+      branch_id: departmentData?.data?.branch?.id || "",
       head_of_department: {
-        name: "",
-        email: "",
-        id: "",
+        name: departmentData?.data?.head_of_department?.name || "",
+        email: departmentData?.data?.head_of_department?.work_email || "",
+        id: departmentData?.data?.head_of_department?.id || "",
       },
-      work_email: "",
-      description: "",
+      work_email: departmentData?.data?.department_email || "",
+      description: departmentData?.data?.description || "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
 
   const {
@@ -239,14 +288,10 @@ export const useDepartment = ({ cancelPath }: Prop) => {
     }
   };
 
-  const handleProceedCancel = () => {
-    router.push(cancelPath);
-  };
-
   return {
+    handleSubmit,
     formik,
-    isCreatingDepartment,
-    handleProceedCancel,
+    isUpdating,
     openCancelModal,
     onOpenCancelModal,
     closeCancelModal,

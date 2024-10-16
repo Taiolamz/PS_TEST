@@ -14,8 +14,13 @@ import ActionContext from "@/app/(dashboard)/context/ActionContext";
 import { useGetOrgDetailsQuery } from "@/redux/services/onboarding/organizationApi";
 import { useGetAllEmployeesQuery } from "@/redux/services/employee/employeeApi";
 import { useGetSubsidiariesQuery } from "@/redux/services/checklist/subsidiaryApi";
-import { useGetBranchesQuery } from "@/redux/services/checklist/branchApi";
+import {
+  useGetBranchByIdQuery,
+  useGetBranchesQuery,
+  useUpdateBranchMutation,
+} from "@/redux/services/checklist/branchApi";
 import { useGetDepartmentsQuery } from "@/redux/services/checklist/departmentApi";
+import { useGetAllOrganizationMissionPlanDropdownQuery } from "@/redux/services/mission-plan/allmissionplanApi";
 
 type Prop = {
   id: string;
@@ -66,7 +71,6 @@ export const useEditBranch = ({ id }: Prop) => {
   );
 
   const handleDropdown = (items: any[]) => {
-    console.log("items", items);
     const data =
       items.length !== 0
         ? items.map((chi) => {
@@ -106,6 +110,9 @@ export const useEditBranch = ({ id }: Prop) => {
       prev_page_url: "",
     });
 
+  const { data: dropdownData, isLoading: isLoadingDropdown }: any =
+    useGetAllOrganizationMissionPlanDropdownQuery({});
+
   const { data: branchesData, isLoading: isLoadingBranches } =
     useGetBranchesQuery({
       to: 0,
@@ -126,59 +133,107 @@ export const useEditBranch = ({ id }: Prop) => {
       prev_page_url: "",
     });
 
-  const subsidiaries = subsidiariesData?.organization_info?.subsidiaries ?? [];
+  const {
+    data: branchData,
+    isLoading: isLoadingBranch,
+    isFetching: isFetchingBranch,
+    refetch: refetchBranch,
+  } = useGetBranchByIdQuery(id);
+
+  const branchInfo = branchData?.data?.branch ?? [];
+
+  // const subsidiaries = subsidiariesData?.organization_info?.subsidiaries ?? [];
+  const subsidiaries = dropdownData?.organization_info?.subsidiaries ?? [];
   const states = statesData ?? [];
   const employees = employeesData ?? [];
 
   // const { data: orgData } = useGetOrgDetailsQuery();
   // console.log(orgData, "org-data");
 
+  // const handleSubmit = async () => {
+  //   const payload = new FormData();
+  //   const { hou, ...rest } = formik.values;
+
+  //   Object.entries(rest).forEach(([key, value]) => {
+  //     payload.append(key, value as string);
+  //   });
+
+  //   payload.append("head_of_department", hou);
+  //   // console.log(payload, "payload", id);
+  //   // await createSubsidiary(payload)
+  //   //   .unwrap()
+  //   //   .then(() => {
+  //   //     actionCtx?.triggerUpdateChecklist();
+  //   //     toast.success("Subsidiary Created Successfully");
+  //   //     router.push(SubsidiaryRoute);
+  //   //     new Promise(() => {
+  //   //       setTimeout(() => {
+  //   //         toast.dismiss();
+  //   //       }, 2000);
+  //   //     });
+  //   //   });
+  // };
+
+  const { organization } = user;
+
+  const [updateBranch, { isLoading: isUpdating }] = useUpdateBranchMutation();
+
+  const BranchRoute = ADMIN.BRANCHES;
   const handleSubmit = async () => {
-    const payload = new FormData();
-    const { hou, ...rest } = formik.values;
+    // const payload = new FormData();
+    // const { hou, ...rest } = formik.values;
+    const payload = {
+      ...formik.values,
+      subsidiary_id: formik.values.subsidiary_id.id,
+      head: formik.values.head.id,
+      organization_id: organization?.id,
+      id: id,
+      // state_id: formik.values?.state_id.toString(),
+    };
 
-    Object.entries(rest).forEach(([key, value]) => {
-      payload.append(key, value as string);
-    });
+    // Object.entries(rest).forEach(([key, value]) => {
+    //   payload.append(key, value as string);
+    // });
 
-    payload.append("head_of_department", hou);
-    // console.log(payload, "payload", id);
-    // await createSubsidiary(payload)
-    //   .unwrap()
-    //   .then(() => {
-    //     actionCtx?.triggerUpdateChecklist();
-    //     toast.success("Subsidiary Created Successfully");
-    //     router.push(SubsidiaryRoute);
-    //     new Promise(() => {
-    //       setTimeout(() => {
-    //         toast.dismiss();
-    //       }, 2000);
-    //     });
-    //   });
+    // payload.append("head_of_department", hou);
+
+    // return;
+    await updateBranch(payload)
+      .unwrap()
+      .then(() => {
+        toast.success("Branch Updated Successfully");
+        router.push(BranchRoute);
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+          }, 2000);
+        });
+      });
   };
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      name: branchInfo?.name || "",
       hou: "",
-      branch_email: "",
-      address: "",
-      country: "",
-      state: "",
+      branch_email: branchInfo?.branch_email || "",
+      address: branchInfo?.address || "",
+      country: branchInfo?.country || "",
+      state: branchInfo?.state || "",
       head: {
-        name: "",
-        email: "",
-        id: "",
+        name: branchInfo?.head?.name || "",
+        email: branchInfo?.head?.email || "",
+        id: branchInfo?.id || "",
       },
-      work_email: "",
+      work_email: branchInfo?.work_email || "",
       subsidiary_id: {
-        name: "",
-        id: "",
+        name: branchInfo?.subsidiary?.name || "",
+        id: branchInfo?.subsidiary?.id || "",
       },
-      description: "",
+      description: branchInfo?.description || "",
     },
     validationSchema: formSchema,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
 
   return {
@@ -187,5 +242,8 @@ export const useEditBranch = ({ id }: Prop) => {
     employees: handleFormatDropdown(employees),
     isLoadingSubsidiaries,
     isLoadingStates,
+    branchInfo,
+    handleSubmit,
+    isUpdating,
   };
 };

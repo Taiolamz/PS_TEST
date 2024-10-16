@@ -30,12 +30,43 @@ export const departmentApi = baseApi.injectEndpoints({
         response.data,
     }),
 
-    // getSingleDepartment: builder.query<string, void>({
-    //   query: (id) => ({
-    //     url: `/admin/department`,
-    //     method: "GET",
-    //   }),
-    // }),
+    getDepartmentById: builder.query({
+      query: (departmentId) => ({
+        url: `/admin/department/${departmentId}`,
+        method: "GET",
+      }),
+      providesTags: ["Departments"],
+    }),
+
+    getAllDepartmentStaffById: builder.query<
+      any,
+      { id: string; params: QueryParams }
+    >({
+      query: ({ id, params }) => ({
+        url: `/admin/department/${id}/staff-members${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["Departments"],
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
+    }),
+
+    getAllDepartmentUnitById: builder.query<
+      any,
+      { id: string; params: QueryParams }
+    >({
+      query: ({ id, params }) => ({
+        url: `/admin/department/${id}/units${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["Departments"],
+      // transformResponse: (response: { data: { data: BranchData[] } }) =>
+      //   response.data.data,
+    }),
 
     downloadDepartmentTemplate: builder.query<any, FileTemplateParam>({
       query: (params) => ({
@@ -54,6 +85,15 @@ export const departmentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Departments"],
     }),
+
+    updateDepartment: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/department/${payload?.id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Departments"],
+    }),
   }),
 });
 
@@ -64,4 +104,8 @@ export const {
   useLazyDownloadDepartmentTemplateQuery,
   // useGetSingleDepartmentQuery,
   useDeleteDepartmentMutation,
+  useGetDepartmentByIdQuery,
+  useGetAllDepartmentStaffByIdQuery,
+  useGetAllDepartmentUnitByIdQuery,
+  useUpdateDepartmentMutation,
 } = departmentApi;

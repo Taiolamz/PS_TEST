@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { GrayPlusIcon, StatsIcon } from "@/public/assets/icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,25 +15,30 @@ import { formatDate } from "@/utils/helpers/date-formatter";
 import routesPath from "@/utils/routes";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import YearMissionPlanCard from "./_components/year-mission-plan-card";
-import { allemployeeColumns, allemployeeData } from "./_data/all-employee-table-data";
+import {
+  allemployeeColumns,
+  allemployeeData,
+} from "./_data/all-employee-table-data";
 import { AllEmployees } from "./_tabs";
 
 // Mocking authenticated user role
-// ROLES = 
+// ROLES =
 const AUTH_USER_ROLE = {
   ADMIN: "admin",
   MANAGIN_DIRECTOR: "director",
   LINE_MANAGER: "line-manager",
   EMPLOYEE: "employee",
-
 };
 
-const { ADMIN } = routesPath
+const { ADMIN } = routesPath;
 
 export default function Page() {
-
   // const { data: allRoles, isLoading: isLoadingRoles } = useGetAllRolesQuery({})
-  const { data: all_mission_plans, isLoading: isLoadingMissionPlans, isFetching: isFetchingMissionPlans } = useGetOrganizationMissionPlansQuery({})
+  const {
+    data: all_mission_plans,
+    isLoading: isLoadingMissionPlans,
+    isFetching: isFetchingMissionPlans,
+  } = useGetOrganizationMissionPlansQuery({});
   const user_info = useAppSelector((state) => state?.auth?.user);
 
   // console.log(all_mission_plans?.data?.fiscal_years) KICK_START_MISSION_PLAN_SELECT_TEMPLATE
@@ -58,7 +63,7 @@ export default function Page() {
     </Link>
   );
 
-  const location = usePathname()
+  const location = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -70,67 +75,75 @@ export default function Page() {
       {/* <div className="p-5 w-full">
         <CustomTab options={PAGE_TABS.MANAGIN_DIRECTOR} slug="ui" />
       </div> */}
-      {
-        isLoadingMissionPlans || isFetchingMissionPlans ? (
-          <div className="h-full grid place-content-center">
-            <PageLoader />
-          </div>
-        ) :
-          <div className="flex flex-col p-5 w-full">
-            {
-              ui == "mission-plan" &&
-              (all_mission_plans?.data?.fiscal_years?.length === 0 ?
-                <>
-                  {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && (
-                    <EmptyState
-                      text="Create your Mission plan by using the button below"
-                      handleClick={() => router.push(ADMIN.KICK_START_MISSION_PLAN_SELECT_TEMPLATE)}
-                      btnText="Kickstart Financial Year"
-                    />
-                  )}
-                  {user_info?.role !== SUPER_ADMIN && (
-                    <EmptyState
-                      text="Fiscal Year not available"
-                    >
-                      {/* <div className="flex flex-col gap-3">
+      {isLoadingMissionPlans || isFetchingMissionPlans ? (
+        <div className="h-full grid place-content-center">
+          <PageLoader />
+        </div>
+      ) : (
+        <div className="flex flex-col p-5 w-full">
+          {ui == "mission-plan" &&
+            (all_mission_plans?.data?.fiscal_years?.length === 0 ? (
+              <>
+                {CAN_CREATE_FINANCIAL_YEAR?.includes(
+                  user_info?.role as string
+                ) && (
+                  <EmptyState
+                    text="Create your Mission plan by using the button below"
+                    handleClick={() =>
+                      router.push(ADMIN.KICK_START_MISSION_PLAN_SELECT_TEMPLATE)
+                    }
+                    btnText="Kickstart Financial Year"
+                  />
+                )}
+                {user_info?.role !== SUPER_ADMIN && (
+                  <EmptyState text="Fiscal Year not available">
+                    {/* <div className="flex flex-col gap-3">
                       <Button
                         onClick={() => router.push("mission-plan/create?ui=overview")}
                       >Create Mission Plan </Button>
                       {authUserRole === AUTH_USER_ROLE.MANAGIN_DIRECTOR && <Button variant="outline"> Assign Task </Button>}
                     </div> */}
-                    </EmptyState>
+                  </EmptyState>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="bg-white p-8 w-full grid grid-cols-4 gap-4">
+                  {CAN_CREATE_FINANCIAL_YEAR?.includes(
+                    user_info?.role as string
+                  ) && kickstartcard}
+                  {all_mission_plans?.data?.fiscal_years?.map(
+                    (item: Dictionary, idx: number) => (
+                      <YearMissionPlanCard
+                        key={idx}
+                        status={item?.status}
+                        title={item?.title}
+                        created_by={item?.created_by}
+                        date={formatDate(item?.created_at)}
+                        handleClick={() => {
+                          dispatch(
+                            updateMissionPlanDetails({
+                              slug: "active_fy_info",
+                              data: item,
+                            })
+                          );
+                          router.push(
+                            `${ADMIN.SINGLE_MISSION_PLAN}?id=${item?.id}`
+                          );
+                        }}
+                      />
+                    )
                   )}
+                </div>
+              </>
+            ))}
 
-                </>
-
-                :
-                <>
-                  <div className="bg-white p-8 w-full grid grid-cols-4 gap-4">
-                    {CAN_CREATE_FINANCIAL_YEAR?.includes(user_info?.role as string) && kickstartcard}
-                    {
-                      all_mission_plans?.data?.fiscal_years?.map((item: Dictionary, idx: number) => (
-                        <YearMissionPlanCard
-                          key={idx}
-                          status={item?.status}
-                          title={item?.title}
-                          created_by={item?.created_by}
-                          date={formatDate(item?.created_at)}
-                          handleClick={() => {
-                            dispatch(updateMissionPlanDetails({ slug: 'active_fy_info', data: item }))
-                            router.push(`${ADMIN.SINGLE_MISSION_PLAN}?id=${item?.id}`)
-                          }}
-                        />
-                      ))
-                    }
-                  </div>
-                </>
-              )
-            }
-
-            {/* This section shows screens base on active tab*/}
-            {ui == "all-employees" && <AllEmployees data={allemployeeData} columns={allemployeeColumns} />}
-          </div>
-      }
+          {/* This section shows screens base on active tab*/}
+          {ui == "all-employees" && (
+            <AllEmployees data={allemployeeData} columns={allemployeeColumns} />
+          )}
+        </div>
+      )}
     </DashboardLayout>
   );
 }

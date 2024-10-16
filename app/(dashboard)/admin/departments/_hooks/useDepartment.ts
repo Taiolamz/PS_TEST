@@ -201,7 +201,6 @@ export const useDepartment = ({ cancelPath }: Prop) => {
   //   skip: !deptId,
   // });
 
-
   const handleSubmit = async () => {
     const payload = {
       ...formik.values,

@@ -29,6 +29,7 @@ import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import DepartmentDetails from "./_partials/department-details";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { processInputAsArray } from "@/utils/helpers";
+import BadgeComponent from "@/components/badge/BadgeComponents";
 
 const { ADMIN } = routesPath;
 
@@ -256,6 +257,12 @@ const Departments = () => {
       head_of_department: org?.head_of_department?.name || "--- ---",
       subsidiary: org?.subsidiary?.name || "--- ---",
       branch: org?.branch?.name || "--- ---",
+      status: (
+        <BadgeComponent
+          text={!org?.deleted_at ? "Active" : "Closed"}
+          color={!org?.deleted_at ? "green" : "red"}
+        />
+      ),
     }));
   };
 
@@ -297,6 +304,7 @@ const Departments = () => {
                     "HOD",
                     "Subsidiary",
                     "Branch",
+                    "Status",
                     "Action",
                   ]}
                   addText="New Department"
@@ -403,16 +411,22 @@ const Departments = () => {
 
 export default Departments;
 
-const FORMAT_TABLE_DATA = (obj: DepartmentData[]) => {
-  return obj?.map((org) => ({
-    name: (
-      <>
-        <span className="hidden">{org.id}</span>
-        <p>{org?.name}</p>
-      </>
-    ),
-    head_of_department: org?.head_of_department?.name || "--- ---",
-    subsidiary: org?.subsidiary || "--- ---",
-    branch: org?.branch?.name || "--- ---",
-  }));
-};
+// const FORMAT_TABLE_DATA = (obj: DepartmentData[]) => {
+//   return obj?.map((org) => ({
+//     name: (
+//       <>
+//         <span className="hidden">{org.id}</span>
+//         <p>{org?.name}</p>
+//       </>
+//     ),
+//     head_of_department: org?.head_of_department?.name || "--- ---",
+//     subsidiary: org?.subsidiary || "--- ---",
+//     branch: org?.branch?.name || "--- ---",
+//     status: (
+//       <BadgeComponent
+//         text={!org?.deleted_at ? "Active" : "Closed"}
+//         color={!org?.deleted_at ? "green" : "red"}
+//       />
+//     ),
+//   }));
+// };

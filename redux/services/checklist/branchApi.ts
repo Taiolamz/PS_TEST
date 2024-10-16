@@ -20,6 +20,15 @@ export const branchApi = baseApi.injectEndpoints({
       }),
     }),
 
+    updateBranch: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/branch/update/${payload?.id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Branches"],
+    }),
+
     getBranches: builder.query<any, QueryParams>({
       query: (params) => ({
         url: `/admin/branch${generateQueryString({ ...params })}`,
@@ -39,27 +48,54 @@ export const branchApi = baseApi.injectEndpoints({
       providesTags: ["Branches"],
     }),
 
-    getBranchDepartment: builder.query({
-      query: (branchId) => ({
-        url: `/admin/branch/branch-department-entites/${branchId}`,
+    // getBranchDepartment: builder.query({
+    //   query: (branchId) => ({
+    //     url: `/admin/branch/branch-department-entites/${branchId}`,
+    //     method: "GET",
+    //   }),
+    //   providesTags: ["Branches"],
+    // }),
+    getBranchUnit: builder.query<any, { id: string; params: QueryParams }>({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-unit-entites/${id}${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       providesTags: ["Branches"],
     }),
-    getBranchUnit: builder.query({
-      query: (branchId) => ({
-        url: `/admin/branch/branch-unit-entites/${branchId}`,
+    getBranchDepartment: builder.query<
+      any,
+      { id: string; params: QueryParams }
+    >({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-department-entites/${id}${generateQueryString(
+          {
+            ...params,
+          }
+        )}`,
         method: "GET",
       }),
       providesTags: ["Branches"],
     }),
-    getBranchStaff: builder.query({
-      query: (branchId) => ({
-        url: `/admin/branch/branch-staff-entites/${branchId}`,
+
+    getBranchStaff: builder.query<any, { id: string; params: QueryParams }>({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-staff-entites/${id}${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       providesTags: ["Branches"],
     }),
+
+    // getBranchStaff: builder.query({
+    //   query: (branchId) => ({
+    //     url: `/admin/branch/branch-staff-entites/${branchId}`,
+    //     method: "GET",
+    //   }),
+    //   providesTags: ["Branches"],
+    // }),
 
     downloadBranchTemplate: builder.query({
       query: (format: string) => ({
@@ -89,4 +125,5 @@ export const {
   useGetBranchStaffQuery,
   useGetBranchUnitQuery,
   useDeleteBranchMutation,
+  useUpdateBranchMutation,
 } = branchApi;

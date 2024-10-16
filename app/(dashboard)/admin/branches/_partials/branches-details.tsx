@@ -29,8 +29,10 @@ import {
 } from "@/redux/services/checklist/branchApi";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
-import { DepartmentTable, StaffTable, UnitTable } from "./_table";
+// import { DepartmentTable, StaffTable, UnitTable } from "./_table";
 import { PageLoader } from "@/components/custom-loader";
+import { DepartmentTable, UnitTable, StaffTable } from "./_table";
+import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 
 const { ADMIN } = routesPath;
 
@@ -43,10 +45,12 @@ export default function BranchDetails() {
   const { user } = useAppSelector((state) => state.auth);
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
-  const [page, setPage] = useState<number>(1);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = React.useState<string>("");
+  const [page, setPage] = React.useState(1);
   const id = searchParams.get("id");
   const tab = searchParams.get("tab");
+
+  const debounceSearch = useDebounce(search, 500);
 
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
     useCreateBulkBranchesMutation();
@@ -75,25 +79,76 @@ export default function BranchDetails() {
     isLoading: isLoadingBranch,
     isFetching: isFetchingBranch,
     refetch: refetchBranch,
-  } = useGetBranchByIdQuery(id);
+  } = useGetBranchByIdQuery(id, { skip: !id });
 
   const {
     data: branchDataStaff,
     isLoading: isLoadingBranchStaff,
     isFetching: isFetchingBranchStaff,
-  } = useGetBranchStaffQuery(id);
+  } = useGetBranchStaffQuery(
+    {
+      id: id as string,
+      params: {
+        to: 0,
+        total: 0,
+        per_page: 50,
+        currentPage: 0,
+        next_page_url: "",
+        prev_page_url: "",
+        search: tab === "staffs" ? debounceSearch : "",
+        page: tab === "staffs" ? page : 1,
+      },
+    },
+    {
+      skip: !id,
+    }
+  );
 
   const {
     data: branchDataDepartment,
     isLoading: isLoadingBranchDepartment,
     isFetching: isFetchingBranchDepartment,
-  } = useGetBranchDepartmentQuery(id);
+  } = useGetBranchDepartmentQuery(
+    {
+      id: id as string,
+      params: {
+        to: 0,
+        total: 0,
+        per_page: 50,
+        currentPage: 0,
+        next_page_url: "",
+        prev_page_url: "",
+        search: tab === "departments" ? debounceSearch : "",
+        page: tab === "departments" ? page : 1,
+      },
+    },
+    {
+      skip: !id,
+    }
+  );
 
   const {
     data: branchDataUnit,
     isLoading: isLoadingBranchUnit,
     isFetching: isFetchingBranchUnit,
-  } = useGetBranchUnitQuery(id);
+  } = useGetBranchUnitQuery(
+    {
+      id: id as string,
+      params: {
+        to: 0,
+        total: 0,
+        per_page: 50,
+        currentPage: 0,
+        next_page_url: "",
+        prev_page_url: "",
+        search: tab === "units" ? debounceSearch : "",
+        page: tab === "units" ? page : 1,
+      },
+    },
+    {
+      skip: !id,
+    }
+  );
 
   const branches = branchesData ?? [];
   const branchInfo = branchData?.data?.branch ?? [];
@@ -282,87 +337,8 @@ export default function BranchDetails() {
       });
   };
 
-  // const FORMAT_DEPT_TABLE_DATA = () => {
-  //   return branchDepartments?.map((org: any) => ({
-  //     name: (
-  //       <>
-  //         <span className="hidden">{org.branch_id}</span>
-  //         <p>{org?.name}</p>
-  //       </>
-  //     ),
-  //     subsidiary: org?.subsidiary?.name,
-  //     country: org?.country,
-  //     state: org?.state,
-  //     address: org?.address,
-  //   }));
-  // };
-
-  const departmentTable = useMemo(
-    () =>
-      branchDataDepartment
-        ? branchDataDepartment?.data?.departments?.data?.map(
-            (item: any, index: any) => {
-              return {
-                name: (
-                  <>
-                    <span className="hidden">{item.id}</span>
-                    <p>{item?.name}</p>
-                  </>
-                ),
-                head_of_department: item?.head_of_department?.name ?? "-",
-                subsidiary: item?.subsidiary?.name ?? "-",
-                branch: item?.branch?.name ?? "-",
-              };
-            }
-          )
-        : [],
-    [branchDataDepartment]
-  );
-
-  const unitTable = useMemo(
-    () =>
-      branchDataUnit
-        ? branchDataUnit?.data?.units?.data?.map((item: any, index: any) => {
-            return {
-              name: (
-                <>
-                  <span className="hidden">{item.id}</span>
-                  <p>{item?.name}</p>
-                </>
-              ),
-              head_of_unit: item?.head_of_unit?.name ?? "-",
-              deparment: item?.deparment?.name ?? "-",
-              branch: item?.branch?.name ?? "-",
-            };
-          })
-        : [],
-    [branchDataUnit]
-  );
-
-  const staffTable = useMemo(
-    () =>
-      branchDataStaff
-        ? branchDataStaff?.data?.staffs?.data?.map((item: any, index: any) => {
-            return {
-              name: (
-                <>
-                  <span className="hidden">{item.id}</span>
-                  <p>{item?.name}</p>
-                </>
-              ),
-              gender: item?.gender ?? "-",
-              email: item?.email ?? "-",
-              job_title: item?.job_title ?? "-",
-              role: item?.role ?? "-",
-              line_manager_name: item?.line_manager_name ?? "-",
-            };
-          })
-        : [],
-    [branchDataStaff]
-  );
-
   return (
-    <DashboardLayout back headerTitle="Human Resource">
+    <DashboardLayout back headerTitle={branchInfo?.name || "N/A"}>
       {isLoadingBranch ? (
         <div className="h-full flex items-center justify-center">
           <PageLoader />
@@ -380,19 +356,19 @@ export default function BranchDetails() {
                   <h4>
                     Head of Branch:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.head?.name}
+                      {branchInfo?.head?.name || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     Branch Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.branch_email}
+                      {branchInfo?.branch_email || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     Head of Branch Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.work_email}
+                      {branchInfo?.work_email || "n/a"}
                     </span>
                   </h4>
                 </span>
@@ -400,19 +376,19 @@ export default function BranchDetails() {
                   <h4>
                     Address:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.address}
+                      {branchInfo?.address || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     State:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.state}
+                      {branchInfo?.state || "n/a"}
                     </span>
                   </h4>
                   <h4>
                     Country:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.country}
+                      {branchInfo?.country || "n/a"}
                     </span>
                   </h4>
                 </span>
@@ -442,9 +418,52 @@ export default function BranchDetails() {
             <ParentModuleCard list={listToTest} />
           </div>
           <section className="">
-            {tab === "departments" && <DepartmentTable />}
-            {tab === "units" && <UnitTable />}
-            {tab === "staffs" && <StaffTable />}
+            {tab === "departments" && (
+              <DepartmentTable
+                onSearch={(e) => {
+                  setSearch(e);
+                  setPage(1);
+                }}
+                isLoading={isLoadingBranchDepartment}
+                perPage={
+                  branchDataDepartment?.data?.departments?.meta?.per_page
+                }
+                totalPage={branchDataDepartment?.data?.departments?.meta?.total}
+                currentPage={
+                  branchDataDepartment?.data?.departments?.meta?.current_page
+                }
+                isFetching={isFetchingBranchUnit}
+                tableData={branchDataDepartment?.data?.departments?.data}
+              />
+            )}
+            {tab === "units" && (
+              <UnitTable
+                onSearch={(e) => {
+                  setSearch(e);
+                  setPage(1);
+                }}
+                isLoading={isLoadingBranchUnit}
+                perPage={branchDataUnit?.data?.units?.meta?.per_page}
+                totalPage={branchDataUnit?.data?.units?.meta?.total}
+                currentPage={branchDataUnit?.data?.units?.meta?.current_page}
+                isFetching={isFetchingBranchUnit}
+                tableData={branchDataUnit?.data?.units?.data}
+              />
+            )}
+            {tab === "staffs" && (
+              <StaffTable
+                onSearch={(e) => {
+                  setSearch(e);
+                  setPage(1);
+                }}
+                isLoading={isLoadingBranchStaff}
+                perPage={branchDataStaff?.data?.staffs?.meta?.per_page}
+                totalPage={branchDataStaff?.data?.staffs?.meta?.total}
+                currentPage={branchDataStaff?.data?.staffs?.meta?.current_page}
+                isFetching={isFetchingBranchUnit}
+                tableData={branchDataStaff?.data?.staffs?.data}
+              />
+            )}
           </section>
         </section>
       )}

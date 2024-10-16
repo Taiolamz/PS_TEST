@@ -12,6 +12,7 @@ import { useGetGradeLevelsQuery } from "@/redux/services/onboarding/gradeLevelAp
 
 type Prop = {
   cancelPath: string;
+  id?: string;
 };
 
 type Select = {
@@ -46,7 +47,7 @@ const formSchema = yup.object().shape({
     .required("Order of approvals is required"),
 });
 const { ADMIN } = routesPath;
-export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
+export const useMissionApprovalFlow = ({ cancelPath, id }: Prop) => {
   const handleFormatDropdown = (items: Select[]) => {
     const data = items.map((chi) => {
       return {
@@ -91,11 +92,15 @@ export const useMissionApprovalFlow = ({ cancelPath }: Prop) => {
     await createMissionFlow(payload)
       .unwrap()
       .then(() => {
-        toast.success("Approval Flow Created Successfully");
+        toast.success(
+          id
+            ? "Approval Flow Updated Successfully"
+            : "Approval Flow Created Successfully"
+        );
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
-            router.push(ADMIN.CHECKLIST);
+            router.push(id ? ADMIN.APPROVALS : ADMIN.CHECKLIST);
             // router.push(BranchRoute);
           }, 2000);
         });
