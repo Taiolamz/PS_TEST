@@ -23,7 +23,7 @@ type SpecifedTaskData = {
   completed: string;
 };
 
-const SpecifiedTaskProgress = () => {
+const SpecifiedTaskProgress = ({ id }: { id?: string }) => {
   const arrowRight = (
     <svg
       width="18"
@@ -112,7 +112,7 @@ const SpecifiedTaskProgress = () => {
   const user = useAppSelector(selectUser);
 
   const { data, isLoading, isFetching, refetch } =
-    useGetStaffSpecifiedTaskQuery(user?.id, {
+    useGetStaffSpecifiedTaskQuery(id ? id : user?.id, {
       skip: !user?.id,
     });
 
@@ -146,7 +146,8 @@ const SpecifiedTaskProgress = () => {
             href={
               data?.data?.specified_tasks?.mission_plan_id
                 ? EMPLOYEE.SPECIFIED_TASK_REPORT(
-                    data?.data?.specified_tasks?.mission_plan_id
+                    // data?.data?.specified_tasks?.mission_plan_id
+                    id || user?.id || ""
                   )
                 : "#"
             }

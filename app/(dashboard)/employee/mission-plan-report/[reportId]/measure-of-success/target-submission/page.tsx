@@ -18,7 +18,6 @@ import { PageLoader } from "@/components/custom-loader";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
-import { toast } from "sonner";
 import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
@@ -66,9 +65,11 @@ export default function TargetSubmission({
   ] = useAddMOSTargetMutation();
 
   // fetch measure of success
-  const { data: mosData, isLoading } = useGetMOSMeasureofSuccessQuery(
-    params?.reportId
-  );
+  const {
+    data: mosData,
+    isLoading,
+    isError,
+  } = useGetMOSMeasureofSuccessQuery(params?.reportId);
 
   //fetch mos achievement history
   const [
@@ -130,21 +131,14 @@ export default function TargetSubmission({
       });
   };
 
-  const getInitialTarget: (item: any) => "" = (item) => {
-    let filtered = item?.target_achievements?.filter(
-      (data: any) =>
-        data?.month?.toLowerCase() === getCurrentMonth()?.toLowerCase()
-    );
-    if (filtered.length > 0) {
-      return filtered[0].month;
-    } else {
-      return "";
-    }
-  };
-
   return (
     <DashboardLayout back headerTitle="Period Target Submission">
-      {isLoading ? (
+      {isError ? (
+        <div className="h-[90%] grid place-content-center">
+          <LottieAnimation animationData={LottieEmptyState} height={"8rem"} />
+          <p className="text-[var(--text-color3)]">No Mission Plan found</p>
+        </div>
+      ) : isLoading ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />
         </div>

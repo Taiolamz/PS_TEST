@@ -45,6 +45,7 @@
     "react-color-palette": "^6.2.0",
     "react-countup": "^6.5.3",
     "react-dom": "^18.3.1",
+    "react-dropzone": "^14.2.9",
     "react-icons": "^5.2.1",
     "react-loading-skeleton": "^3.5.0",
     "react-lottie": "^1.2.4",

@@ -66,7 +66,9 @@ const TaskOutcomeTable = () => {
               return [
                 {
                   label: `${currentMonth} Expected Outcome`,
-                  color: "",
+                  color: !row?.name?.props?.children[1]?.props?.children
+                    ? "opacity-20"
+                    : "",
                   onActionClick: (param: any, dataTwo: any) => {
                     if (row?.name?.props?.children[1]?.props?.children) {
                       router.push(
@@ -79,7 +81,9 @@ const TaskOutcomeTable = () => {
                 },
                 {
                   label: `${currentMonth} Actual Outcome`,
-                  color: "",
+                  color: !row?.name?.props?.children[2]?.props?.children
+                    ? "opacity-20"
+                    : "",
                   onActionClick: (param: any, dataTwo: any) => {
                     if (row?.name?.props?.children[2]?.props?.children) {
                       router.push(

@@ -33,7 +33,6 @@ export default function HistoryDrawer({
 }: HistoryDrawerProp) {
   return (
     <CustomDrawer title="Outcome History" open={open} onClose={onClose}>
-      <div className="sr-only">This is the id to fetch this challenge {id}</div>
       <div className="h-[calc(100vh-66px)] grid overflow-y-auto">
         {loading ? (
           <div className="place-content-center">
@@ -115,8 +114,11 @@ export default function HistoryDrawer({
             </div>
           </div>
         ) : (
-          <div className="overflow-hidden place-content-center">
+          <div className="overflow-hidden place-content-center text-center">
             <LottieAnimation animationData={LottieEmptyState} height={"8rem"} />
+            <p className="text-sm text-[var(--text-color2)]">
+              No History Available
+            </p>
           </div>
         )}
       </div>

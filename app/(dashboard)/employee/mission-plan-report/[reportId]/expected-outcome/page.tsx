@@ -8,7 +8,6 @@ import { DotFilledIcon } from "@radix-ui/react-icons";
 import { PageLoader } from "@/components/custom-loader";
 import CommentsIcon from "@/public/assets/icons/comments";
 import { FieldArray, Form, Formik } from "formik";
-import { data } from "../../_partials/_task_outcome/_data/data";
 import { CustomAccordion } from "@/components/custom-accordion";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
@@ -23,12 +22,14 @@ import {
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
+import { LottieEmptyState } from "@/lottie";
+import { LottieAnimation } from "@/components/fragment";
 
 const successMessage = {
   task: {
     title: "Specific Task Outcomes Submitted",
     description: `You have successfully submitted your monthly target for ${getCurrentMonth()?.toLowerCase()}. Click on the button below to continue`,
-    buttonText: "Complete",
+    buttonText: "Continue Submissions",
   },
 };
 
@@ -119,7 +120,10 @@ const ExpectedOutcome = ({
   return (
     <DashboardLayout back headerTitle="Expected Outcome">
       {error ? (
-        <></>
+        <div className="h-[90%] grid place-content-center">
+          <LottieAnimation animationData={LottieEmptyState} height={"8rem"} />
+          <p className="text-[var(--text-color3)]">No Mission Plan found</p>
+        </div>
       ) : loadingTask ? (
         <div className="h-[90%] grid place-content-center">
           <PageLoader />
@@ -359,6 +363,7 @@ const ExpectedOutcome = ({
                                                   ?.expected_task_outcome
                                               }
                                               placeholder="Input Expected Outcome"
+                                              isRequired
                                             />
                                             <Input
                                               label="Actual Outcome"
