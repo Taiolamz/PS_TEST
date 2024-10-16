@@ -13,10 +13,10 @@ export const subsidiaryApi = baseApi.injectEndpoints({
     }),
 
     updateSubsidiary: builder.mutation({
-      query: (payload) => ({
-        url: `/admin/subsidiary/update/${payload?.id}`,
+      query: ({ id, data }) => ({
+        url: `/admin/subsidiary/update/${id}`,
         method: "PUT",
-        body: payload?.data,
+        body: data,
       }),
       invalidatesTags: ["Subsidiaries"],
     }),

@@ -13,6 +13,16 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       providesTags: ["MissionPlanReport"],
     }),
 
+    getOrgTask: builder.query({
+      query: ({ params }) => ({
+        url: `/mission-plan-report/organization-target${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
     getStaffSpecifiedTask: builder.query({
       query: ({ id, params }) => ({
         url: `/mission-plan-report/specified-tasks/${id}${generateQueryString({
@@ -183,6 +193,23 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    // Dashboard endpoint
+    getMyMissionPlan: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/mission-plan-progress`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getMyMissionPlanReport: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/employee-mission-plan-report`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -208,4 +235,7 @@ export const {
   useGetDownlinerExpectedOutcomeQuery,
   useGetDownlinerMissionPlanReportQuery,
   useGetMOSSubmissionQuery,
+  useGetOrgTaskQuery,
+  useGetMyMissionPlanReportQuery,
+  useGetMyMissionPlanQuery,
 } = missionPlanReportApi;

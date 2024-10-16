@@ -9,6 +9,10 @@ import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
+import {
+  useGetOrgTaskQuery,
+  useGetStaffSpecifiedTaskQuery,
+} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 // import { useGetSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 export default function SpecifiedTask({
@@ -16,15 +20,23 @@ export default function SpecifiedTask({
 }: {
   params: { reportId: string };
 }) {
-  // Filter select input dropdown
-  const [fiscalYear, setFiscalYear] = React.useState("");
-  const [missionCycle, setMissionCycle] = React.useState("");
-
   // Open modal for challenge and Comment
   const [commentModal, setCommentModal] = React.useState(false);
   const [challengeModal, setChallengeModal] = React.useState(false);
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
+
+  const { data, isLoading } = useGetStaffSpecifiedTaskQuery({
+    id: params?.reportId,
+    params: { fiscal_year: "", cycle: "" },
+  });
+
+  const { data: orgData, isLoading: loadingOrg } = useGetOrgTaskQuery({
+    id: params?.reportId,
+    params: { fiscal_year: "", cycle: "" },
+  });
+
+  // console.log({ orgData, loadingOrg, data, isLoading });
 
   // const { data, isLoading, isFetching } = useGetSpecifiedTaskProgressQuery();
 
