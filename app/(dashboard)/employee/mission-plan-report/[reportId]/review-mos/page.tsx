@@ -35,6 +35,7 @@ export default function ApproveMOS() {
     // validateOnChange: true,
     // validateOnBlur: true,
   });
+  const [taskData, setTaskData] = useState<any>({});
   return (
     <DashboardLayout back headerTitle="Downlines">
       <div className="m-5 mt-7 space-y-7">
@@ -77,6 +78,7 @@ export default function ApproveMOS() {
                   onClick={() => {
                     setShowHistory(true);
                     setId("213|f12dfe2334jh88er");
+                    setTaskData({});
                   }}
                   className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                 >
@@ -86,6 +88,7 @@ export default function ApproveMOS() {
                   onClick={() => {
                     setShowComment(true);
                     setId("213|f12dfe2334jh88er");
+                    setTaskData({});
                   }}
                   className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                 >
@@ -150,20 +153,38 @@ export default function ApproveMOS() {
         </section>
         {/* Approve MOS target MOdal */}
         <ApproveModal
+          // show={showApprove}
+          // handleClose={() => setShowApprove(false)}
+          // handleSubmit={() => {
+          //   setShowApprove(false);
+          // }}
           show={showApprove}
           handleClose={() => setShowApprove(false)}
-          handleSubmit={() => {
-            setShowApprove(false);
-          }}
+          data={taskData}
+          approvableType="target_achievement"
+          approvableAction="achieved"
         />
         {/* Reject MOS target MOdal */}
         <RejectModal
+          // show={showReject}
+          // handleClose={() => setShowReject(false)}
+          // handleSubmit={(val) => {
+          //   setShowReject(false);
+          //   console.log(val);
+          // }}
           show={showReject}
           handleClose={() => setShowReject(false)}
-          handleSubmit={(val) => {
-            setShowReject(false);
-            console.log(val);
-          }}
+          // handleSubmit={(val) => {
+          //   setShowReject(false);
+          //   console.log(val);
+          // }}
+          data={taskData}
+          approvableType="target_achievement"
+          approvableAction="achieved"
+          // handleSubmit={(val) => {
+          //   setShowReject(false);
+          //   console.log(val);
+          // }}
         />
         {/* MOS comment drawer */}
         <CustomCommentDrawer
