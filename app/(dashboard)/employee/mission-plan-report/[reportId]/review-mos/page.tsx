@@ -199,7 +199,7 @@ export default function ApproveMOS({
                         setShowApprove(true);
                         setId(item?.target_achievement?.id);
                       }}
-                      className="text-[rgb(var(--bg-green-100))] w-[120px] text-sm font-medium bg-[rgb(var(--bg-green-100)/0.1)] p-2 px-5 rounded shadow-none"
+                      className="text-[rgb(var(--bg-green-100))] hover:opacity-85 w-[120px] text-sm font-medium bg-[rgb(var(--bg-green-100)/0.1)] p-2 px-5 rounded shadow-none"
                     >
                       Approve
                     </Button>
@@ -208,7 +208,7 @@ export default function ApproveMOS({
                         setShowReject(true);
                         setId(item?.target_achievement?.id);
                       }}
-                      className="text-[var(--bg-red-100)] w-[120px] text-sm font-medium bg-[var(--bg-red-100-op)] p-2 px-5 borders border-transparent rounded shadow-none"
+                      className="text-[var(--bg-red-100)] hover:opacity-85 w-[120px] text-sm font-medium bg-[var(--bg-red-100-op)] p-2 px-5 borders border-transparent rounded shadow-none"
                     >
                       Reject
                     </Button>
@@ -227,6 +227,8 @@ export default function ApproveMOS({
         handleSubmit={() => {
           setShowApprove(false);
         }}
+        id={id}
+        option="target_achievement"
       />
       {/* Reject MOS target MOdal */}
       <RejectModal
@@ -236,6 +238,8 @@ export default function ApproveMOS({
           setShowReject(false);
           console.log(val);
         }}
+        id={id}
+        option="target_achievement"
       />
       {/* MOS comment drawer */}
       <CustomCommentDrawer

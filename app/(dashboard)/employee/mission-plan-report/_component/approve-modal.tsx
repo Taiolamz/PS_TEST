@@ -11,13 +11,17 @@ export default function ApproveModal({
   loading,
   title,
   handleSubmit,
+  id,
+  option,
 }: {
   show: boolean;
   handleClose: () => void;
   handleSubmit: () => void;
   desc?: string;
   title?: string;
+  id?: string;
   loading?: boolean;
+  option?: "target_achievement" | "task_outcome";
 }) {
   return (
     <ModalContainer

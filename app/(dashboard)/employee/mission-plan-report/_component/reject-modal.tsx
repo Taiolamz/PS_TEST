@@ -11,11 +11,15 @@ export default function RejectModal({
   handleClose,
   loading,
   handleSubmit,
+  id,
+  option,
 }: {
   show: boolean;
   handleClose: () => void;
   loading?: boolean;
   handleSubmit: (value: { message: string }) => void;
+  id?: string;
+  option?: "target_achievement" | "task_outcome";
 }) {
   const formik = useFormik({
     initialValues: {
