@@ -505,8 +505,8 @@ export default Employee;
 const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((item: any, idx: number) => ({
     idx: idx + 1,
-    name: item?.name,
-    email: item?.work_email || "--",
+    name: `${item?.last_name} ${item?.last_name}`,
+    email: item?.email || "--",
     department: item?.department?.name || "--",
     line_manager_name: item?.line_manager_name || "--",
     job_title: item?.designation || "--",
