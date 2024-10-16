@@ -1,16 +1,20 @@
 import CustomSelect from "@/components/custom-select";
 import ReusableModalContainer from "@/components/reusable-modal-container";
 import { Button } from "@/components/ui/button";
-import { EXTEND_PERIOD_OPTIONS, REVIEW_PERIOD_OPTIONS } from "../../_data";
+import { EXTEND_PERIOD_OPTIONS, EXTENSION_PERIOD_OPTIONS, REVIEW_PERIOD_OPTIONS } from "../../_data";
 import { useFormik } from "formik";
 import { Textarea } from "@/components/ui/textarea";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import { useState } from "react";
 import { monthNames } from "@/utils/helpers";
+import * as yup from "yup"
+import { Dictionary } from "@/@types/dictionary";
+import { useExtendTargetSubmissionMutation } from "@/redux/services/mission-plan/reports/admin/targetOutcomeApi";
 
 interface ModalContainerProps {
     show: boolean;
     handleClose: () => void;
+    setShowSuccessModal: (arg: boolean) => void
     // loading?: boolean;
     // disabled?: boolean;
     // children?: React.ReactNode;
@@ -18,14 +22,29 @@ interface ModalContainerProps {
     // handleSubmit: () => void;
 }
 
-export default function ExtendSubmissionModal({ show, handleClose }: ModalContainerProps) {
-    const [showSuccessModal, setShowSuccessModal] = useState(false)
+export default function ExtendSubmissionModal({ show, handleClose, setShowSuccessModal }: ModalContainerProps) {
+
+    const [extendTargetSubmission, { isLoading }] = useExtendTargetSubmissionMutation()
+
+    const handleExendSubmission = async (values: Dictionary) => {
+        extendTargetSubmission(values)
+            .unwrap()
+            .then(() => {
+                setShowSuccessModal(true)
+                handleClose()
+            })
+    }
 
     const formik = useFormik({
         initialValues: {
-            period: ""
+            report_submission_new_duration: "",
+            note: ""
         },
-        onSubmit: (values) => { }
+        onSubmit: handleExendSubmission,
+        validationSchema: yup.object().shape({
+            report_submission_new_duration: yup.string().required('Choose new duration period'),
+            note: yup.string().required('Enter reason for extension')
+        })
     })
 
     return (
@@ -39,16 +58,18 @@ export default function ExtendSubmissionModal({ show, handleClose }: ModalContai
             >
 
                 <div className="px-6 pb-5">
-                    <form>
+                    <form onSubmit={formik.handleSubmit}>
                         <div className="mb-4">
                             <CustomSelect
                                 label="Period"
-                                options={EXTEND_PERIOD_OPTIONS}
-                                selected={formik.values?.period}
+                                options={EXTENSION_PERIOD_OPTIONS}
+                                selected={formik.values?.report_submission_new_duration}
                                 setSelected={(selected) => {
-                                    formik.setFieldValue('period', selected)
+                                    formik.setFieldValue('report_submission_new_duration', selected)
                                 }}
                                 className="w-1/2"
+                                error={formik.errors.report_submission_new_duration}
+                                touched={formik.touched.report_submission_new_duration}
                             />
                         </div>
                         <div className="mb-6">
@@ -57,19 +78,22 @@ export default function ExtendSubmissionModal({ show, handleClose }: ModalContai
                                 name="note"
                                 label="Add Note"
                                 rows={4}
-
+                                onChange={formik.handleChange}
+                                value={formik.values.note}
+                                error={formik.errors.note}
+                                touched={formik.touched.note}
                             />
                         </div>
                         <Button
                             className="w-fit rounded-sm p-5 px-9 font-normal transition-all duration-200"
-                            //   loading={loading}
-                            //   disabled={disabled || loading}
+                            loading={isLoading}
+                            disabled={isLoading}
                             loadingText="Extend Period"
-                            type="button"
-                            onClick={() => {
-                                handleClose()
-                                setShowSuccessModal(true)
-                            }}
+                            type="submit"
+                        // onClick={() => {
+                        //     handleClose()
+                        //     setShowSuccessModal(true)
+                        // }}
                         >
                             Submit
                         </Button>
@@ -77,17 +101,6 @@ export default function ExtendSubmissionModal({ show, handleClose }: ModalContai
                 </div>
             </ReusableModalContainer>
 
-            <ConfirmationModal
-                icon="/assets/images/success.gif"
-                iconClass="w-40"
-                title="Changes Have been Saved!"
-                message="Congratulations! your changes have been saved. Click below to continue"
-                show={showSuccessModal}
-                handleClose={() => setShowSuccessModal(false)}
-                handleClick={() => setShowSuccessModal(false)}
-                actionBtnTitle="Complete"
-                modalClass="lg:w-[30.5rem] lg:max-w-[30.5rem]"
-            />
         </>
     )
 }

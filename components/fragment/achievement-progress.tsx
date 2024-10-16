@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 interface AchievementProgressProps {
   title: string | React.ReactNode;
   progress_value: number;
-  color: "red" | "green" | "yellow" | "purple" | "brown" | "default" | "base";
+  color: "red" | "green" | "yellow" | "purple" | "#FFC043E5" | "brown" | "default" | "base";
   target?: string;
   targetColor?: string;
   titleClassName?: string;
