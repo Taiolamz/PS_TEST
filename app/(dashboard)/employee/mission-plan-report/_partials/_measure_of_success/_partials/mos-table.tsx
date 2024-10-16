@@ -65,24 +65,32 @@ export default function MOSTable() {
               return [
                 {
                   label: `${currentMonth} Achievements`,
-                  color: "",
+                  color: !row?.name?.props?.children[2]?.props?.children
+                    ? "opacity-20"
+                    : "",
                   onActionClick: (param: any, dataTwo: any) => {
-                    router.push(
-                      EMPLOYEE.MOS_ACHIEVEMENT_SUBMISSION(
-                        row?.name?.props?.children[0]?.props?.children
-                      )
-                    );
+                    if (row?.name?.props?.children[2]?.props?.children) {
+                      router.push(
+                        EMPLOYEE.MOS_ACHIEVEMENT_SUBMISSION(
+                          row?.name?.props?.children[0]?.props?.children
+                        )
+                      );
+                    }
                   },
                 },
                 {
                   label: `${currentMonth} Targets`,
-                  color: "",
+                  color: !row?.name?.props?.children[1]?.props?.children
+                    ? "opacity-20"
+                    : "",
                   onActionClick: (param: any, dataTwo: any) => {
-                    router.push(
-                      EMPLOYEE.MOS_TARGET_SUBMISSION(
-                        row?.name?.props?.children[0]?.props?.children
-                      )
-                    );
+                    if (row?.name?.props?.children[1]?.props?.children) {
+                      router.push(
+                        EMPLOYEE.MOS_TARGET_SUBMISSION(
+                          row?.name?.props?.children[0]?.props?.children
+                        )
+                      );
+                    }
                   },
                 },
                 {

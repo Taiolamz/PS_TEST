@@ -25,7 +25,7 @@ type MosData = {
   achieved: string;
 };
 
-const MeasureOfSucessProgress = () => {
+const MeasureOfSucessProgress = ({ id }: { id?: string }) => {
   const arrowRight = (
     <svg
       width="18"
@@ -100,7 +100,7 @@ const MeasureOfSucessProgress = () => {
   const user = useAppSelector(selectUser);
 
   const { data, isLoading, isFetching } = useGetStaffMeasureOfSuccessQuery(
-    user?.id,
+    id ? id : user?.id,
     {
       skip: !user?.id,
     }
@@ -120,11 +120,7 @@ const MeasureOfSucessProgress = () => {
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
         {mosData && mosData.length > 0 ? (
           <Link
-            href={
-              data?.data?.measures?.mission_plan_id
-                ? EMPLOYEE.MOS_REPORT(data?.data?.measures?.mission_plan_id)
-                : "#"
-            }
+            href={EMPLOYEE.MOS_REPORT(id || user?.id || "")}
             className={isButtonDisabled ? "cursor-not-allowed" : ""}
             passHref
           >

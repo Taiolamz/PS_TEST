@@ -35,6 +35,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { flexRender } from "@tanstack/react-table";
 import { iife } from "@/utils/helpers";
+import { cn } from "@/lib/utils";
 
 interface myComponentProps {
   children?: React.ReactNode;
@@ -344,7 +345,7 @@ const TableWrapper = ({
       //   key={row.id || idx}
       //   data-state={row.getIsSelected() && "selected"}
       className="transition-all duration-300"
-    //   key={row?.id}
+      //   key={row?.id}
     >
       {row?.map((cell: any, index: any) => (
         <TableCell
@@ -474,54 +475,58 @@ const TableWrapper = ({
                     // to ignore some data that might be needed when accessing row object, table row: value Object.values(item) is changed to FORMATTED_DATA?.map((data) => Object.values(data))
 
                     //  if tableBodyList object has _slug key it will be ignored when rendering table data
-                    const FORMATTED_DATA = Object?.entries(item).filter(([key, value]) => {
-                      return key !== "_slug";
-                    })?.map((d) => {
-                      return {
-                        [d[0]]: d[1]
-                      }
-                    })
+                    const FORMATTED_DATA = Object?.entries(item)
+                      .filter(([key, value]) => {
+                        return key !== "_slug";
+                      })
+                      ?.map((d) => {
+                        return {
+                          [d[0]]: d[1],
+                        };
+                      });
                     return (
-                      (
-                        <TableRowComponet
-                          key={rowIndex}
-                          row={FORMATTED_DATA?.map((data) => Object.values(data))}
-                          onClick={() => {
-                            if (onRowClick) {
-                              defaultBodyList?.length > 0
-                                ? onRowClick(handlePickObjFromDefaultList(rowIndex))
-                                : onRowClick(item);
-                            }
-                          }}
-                        >
-                          {dropDown && (
-                            <td className="border-b-2 border-t-2">
-                              <div
-                                style={{
-                                  width: "100%",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  height: "100%",
-                                }}
-                                className=""
-                              >
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger
-                                    asChild
-                                    className="cursor-pointer px-2"
-                                  >
-                                    <span>
-                                      <Image src={ActionIcon} alt="Action icon" />
-                                    </span>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent
-                                    className="border rounded-sm"
-                                    align="end"
-                                    style={{ width: width ? width : "170px" }}
-                                  >
-                                    {dropDownList?.length > 0 &&
-                                      dropDownList?.map((child: any, idx: any) => {
+                      <TableRowComponet
+                        key={rowIndex}
+                        row={FORMATTED_DATA?.map((data) => Object.values(data))}
+                        onClick={() => {
+                          if (onRowClick) {
+                            defaultBodyList?.length > 0
+                              ? onRowClick(
+                                  handlePickObjFromDefaultList(rowIndex)
+                                )
+                              : onRowClick(item);
+                          }
+                        }}
+                      >
+                        {dropDown && (
+                          <td className="border-b-2 border-t-2">
+                            <div
+                              style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100%",
+                              }}
+                              className=""
+                            >
+                              <DropdownMenu>
+                                <DropdownMenuTrigger
+                                  asChild
+                                  className="cursor-pointer px-2"
+                                >
+                                  <span>
+                                    <Image src={ActionIcon} alt="Action icon" />
+                                  </span>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                  className="border rounded-sm"
+                                  align="end"
+                                  style={{ width: width ? width : "170px" }}
+                                >
+                                  {dropDownList?.length > 0 &&
+                                    dropDownList?.map(
+                                      (child: any, idx: any) => {
                                         return (
                                           <DropdownMenuItem
                                             key={idx}
@@ -539,38 +544,41 @@ const TableWrapper = ({
                                             {child?.label}
                                           </DropdownMenuItem>
                                         );
-                                      })}
-                                    {dynamicDropDownList &&
-                                      dynamicDropDownList(item)?.length > 0 &&
-                                      dynamicDropDownList(item)?.map(
-                                        (child: any, idx: any) => {
-                                          return (
-                                            <DropdownMenuItem
-                                              key={idx}
-                                              onClick={() => {
-                                                child?.onActionClick &&
-                                                  child?.onActionClick(
-                                                    handlePickObjFromDefaultList(
-                                                      rowIndex
-                                                    ),
-                                                    item
-                                                  );
-                                              }}
-                                              className="font-light text-sm cursor-pointer text-custom-gray-scale-400"
-                                            >
-                                              {child?.label}
-                                            </DropdownMenuItem>
-                                          );
-                                        }
-                                      )}
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </div>
-                            </td>
-                          )}
-                        </TableRowComponet>
-                      )
-                    )
+                                      }
+                                    )}
+                                  {dynamicDropDownList &&
+                                    dynamicDropDownList(item)?.length > 0 &&
+                                    dynamicDropDownList(item)?.map(
+                                      (child: any, idx: any) => {
+                                        return (
+                                          <DropdownMenuItem
+                                            key={idx}
+                                            onClick={() => {
+                                              child?.onActionClick &&
+                                                child?.onActionClick(
+                                                  handlePickObjFromDefaultList(
+                                                    rowIndex
+                                                  ),
+                                                  item
+                                                );
+                                            }}
+                                            className={cn(
+                                              "font-light text-sm cursor-pointer text-custom-gray-scale-400",
+                                              child?.color
+                                            )}
+                                          >
+                                            {child?.label}
+                                          </DropdownMenuItem>
+                                        );
+                                      }
+                                    )}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </td>
+                        )}
+                      </TableRowComponet>
+                    );
                   })}
                 </>
               ) : (
@@ -595,8 +603,9 @@ const TableWrapper = ({
       {tableBodyList?.length > 0 && !hidePagination && (
         <div className="ml-auto">
           <div className="flex mt-4 gap-5 items-center pb-2 ">
-            <p className="text-custom-ash font-normal text-sm">{`${CurrentPage || "1"
-              } - ${TotalPage || "1"} of ${totalPage || "1"}`}</p>
+            <p className="text-custom-ash font-normal text-sm">{`${
+              CurrentPage || "1"
+            } - ${TotalPage || "1"} of ${totalPage || "1"}`}</p>
             <Button
               disabled={Number(currentPage) === 1}
               className=" bg-custom-gray-2 hover:bg-[--primary-color]"
