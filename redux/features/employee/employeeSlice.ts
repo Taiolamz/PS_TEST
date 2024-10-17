@@ -3,15 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Employee } from "./type";
 
 const initialState: Employee = {
-  employee: {
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    previous_designation: "",
-    previous_designation_end_date: "",
-    previous_designation_start_date: "",
-  },
+  employee: {},
 };
 
 const employeeSlice = createSlice({

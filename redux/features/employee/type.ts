@@ -32,13 +32,13 @@ type EmployeeData = {
   staff_number?: string;
   new_employee?: string;
   designation?: string;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
-  previous_designation: string;
-  previous_designation_end_date: string;
-  previous_designation_start_date: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  previous_designation?: string;
+  previous_designation_end_date?: string;
+  previous_designation_start_date?: string;
 };
 
 export type Employee = {
