@@ -32,7 +32,7 @@ export default function RejectModal({
 
   const handleSubmit = async () => {
     const payload = {
-      approvable_id: data?.task_outcome?.id,
+      approvable_id: data?.task_outcome?.id || data?.target_achievement.id,
       approvable_type: approvableType,
       status: "rejected",
       action: approvableAction,
@@ -43,7 +43,7 @@ export default function RejectModal({
       .then(() => {
         toast.success(
           `${getCurrentMonth()} (${trimLongString(
-            data?.task_outcome?.expected_outcome,
+            data?.task_outcome?.expected_outcome || data?.measure,
             15
           )}) Expected Outcome Rejected Successfully`
         );
