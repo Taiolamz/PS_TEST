@@ -1,6 +1,6 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,10 @@ import {
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
 import { PageLoader } from "@/components/custom-loader";
 import { getColorByStatus, getProgressColorByValue } from "@/utils/helpers";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
 import { toast } from "sonner";
 
 export default function ApproveTask({
@@ -95,27 +99,35 @@ export default function ApproveTask({
   // };
 
   // 01j91fn41cjb43nzwxaxngmw3p
-  const formik = useFormik({
-    initialValues: {
-      implied_task: [
-        {
-          expected: "",
-          actual_outcome: "",
-          contribution: "",
-          expected_outcome: "",
-        },
-      ],
-    },
-    // validationSchema:
-    onSubmit: handleFormSubmit,
-    // validateOnChange: true,
-    // validateOnBlur: true,
-  });
+  // fetch task comment
+  const [
+    getMssionPlanFetchComments,
+    { isLoading: loadingComment, data: commentData },
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
 
-  const { data, isLoading, isFetching, refetch } =
-    useGetDownlinerExpectedOutcomeQuery(params.reportId, {
+  //Add comment on task
+  const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
+
+  //Mount when history or comment modal is opened
+  useEffect(() => {
+    if (showComment) {
+      getMssionPlanFetchComments(
+        {
+          component_id: id,
+          component_type: "implied-task",
+        },
+        true
+      );
+    }
+  }, [showHistory, showComment, id]);
+
+  const { data, isLoading } = useGetDownlinerExpectedOutcomeQuery(
+    params.reportId,
+    {
       skip: !params.reportId,
-    });
+    }
+  );
   // const { data: mosData, isLoading: isLoadingMosData } =
   //   useGetMOSMeasureofSuccessQuery(params?.reportId, {
   //     skip: !params.reportId,
@@ -244,7 +256,7 @@ export default function ApproveTask({
                               <Button
                                 onClick={() => {
                                   setShowHistory(true);
-                                  setId("213|f12dfe2334jh88er");
+                                  setId(impliedItem?.id);
                                 }}
                                 className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                               >
@@ -253,7 +265,7 @@ export default function ApproveTask({
                               <Button
                                 onClick={() => {
                                   setShowComment(true);
-                                  setId("213|f12dfe2334jh88er");
+                                  setId(impliedItem?.id);
                                 }}
                                 className="text-[#6E7C87] text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
                               >
@@ -303,6 +315,7 @@ export default function ApproveTask({
                               <Button
                                 onClick={() => {
                                   setShowApprove(true);
+                                  setId(impliedItem?.task_outcome?.id);
                                   // setId("143ofd4345approveId");
                                   setTaskData(impliedItem);
                                 }}
@@ -319,6 +332,7 @@ export default function ApproveTask({
                               <Button
                                 onClick={() => {
                                   setShowReject(true);
+                                  setId(impliedItem?.task_outcome?.id);
                                   // setId("143ofd4345approveId");
                                   setTaskData(impliedItem);
                                 }}
@@ -535,9 +549,17 @@ export default function ApproveTask({
           open={showComment}
           onClose={() => setShowComment(false)}
           id={id}
-          data={[]}
-          handleSubmit={() => {}}
-          commentType={"success-measure"}
+          data={commentData?.data || []}
+          handleSubmit={(response, resetForm) => {
+            addMssionPlanCommentOnComponent(response)
+              .unwrap()
+              .then(() => {
+                resetForm();
+              });
+          }}
+          commentType={"implied-task"}
+          loadingComment={loadingComment}
+          loadingAddComment={addingComment}
         />
         {/* MOS history drawer */}
         <HistoryDrawer

@@ -99,8 +99,13 @@ const MeasureOfSucessProgress = ({ id }: { id?: string }) => {
 
   const user = useAppSelector(selectUser);
 
+  const userId = id ? id : user?.id;
+
   const { data, isLoading, isFetching } = useGetStaffMeasureOfSuccessQuery(
-    id ? id : user?.id,
+    {
+      id: userId,
+      params: { fiscal_year: "", cycle: "" },
+    },
     {
       skip: !user?.id,
     }

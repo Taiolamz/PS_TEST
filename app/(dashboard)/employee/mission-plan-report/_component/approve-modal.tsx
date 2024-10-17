@@ -24,6 +24,7 @@ export default function ApproveModal({
   // handleSubmit: () => void;
   desc?: string;
   title?: string;
+  id?: string;
   loading?: boolean;
   data?: any;
   approvableType?: string;

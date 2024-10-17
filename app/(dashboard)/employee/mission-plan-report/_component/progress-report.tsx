@@ -20,16 +20,6 @@ export default function ProgressReport({ id }: { id: string }) {
     useGetStaffPhotoFiscalYearQuery(id);
   const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
 
-  const handleFormatCycle = () => {
-    const cycle = (data?.data as any[])?.map((chi) => {
-      return {
-        label: chi,
-        value: chi,
-      };
-    });
-    return cycle;
-  };
-
   return (
     <div className="m-5">
       {/* ----- FILTER/SELECT WRAP START------- */}

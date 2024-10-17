@@ -4,20 +4,35 @@ import { baseApi } from "../../../baseApi";
 export const missionPlanReportApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStaffMeasureOfSuccess: builder.query({
-      query: (user) => ({
-        url: `/mission-plan-report/measures/${user}`,
+      query: ({ id, params }) => ({
+        url: `/mission-plan-report/measures/${id}${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getOrgTask: builder.query({
+      query: ({ params }) => ({
+        url: `/mission-plan-report/organization-target${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       providesTags: ["MissionPlanReport"],
     }),
 
     getStaffSpecifiedTask: builder.query({
-      query: (user) => ({
-        url: `/mission-plan-report/specified-tasks/${user}`,
+      query: ({ id, params }) => ({
+        url: `/mission-plan-report/specified-tasks/${id}${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
     getDownlinerExpectedOutcome: builder.query({
       query: (user) => ({
         url: `/mission-plan-report/task-submission/${user}`,
@@ -179,6 +194,31 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getMOSSubmission: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/success-measure-submission/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    // Dashboard endpoint
+    getMyMissionPlan: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/mission-plan-progress`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
+    getMyMissionPlanReport: builder.query({
+      query: () => ({
+        url: `/mission-plan-report/employee-mission-plan-report`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -203,5 +243,9 @@ export const {
   useGetStaffPhotoFiscalYearQuery,
   useGetDownlinerExpectedOutcomeQuery,
   useGetDownlinerMissionPlanReportQuery,
+  useGetMOSSubmissionQuery,
+  useGetOrgTaskQuery,
+  useGetMyMissionPlanReportQuery,
+  useGetMyMissionPlanQuery,
   useApproveORRejectTaskOutcomeMutation,
 } = missionPlanReportApi;

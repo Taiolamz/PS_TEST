@@ -111,10 +111,18 @@ const SpecifiedTaskProgress = ({ id }: { id?: string }) => {
 
   const user = useAppSelector(selectUser);
 
+  const userId = id ? id : user?.id;
+
   const { data, isLoading, isFetching, refetch } =
-    useGetStaffSpecifiedTaskQuery(id ? id : user?.id, {
-      skip: !user?.id,
-    });
+    useGetStaffSpecifiedTaskQuery(
+      {
+        id: userId,
+        params: { fiscal_year: "", cycle: "" },
+      },
+      {
+        skip: !user?.id,
+      }
+    );
 
   const specifiedTaskData: SpecifedTaskData[] =
     data?.data?.specified_tasks?.specified_tasks ?? [];
