@@ -53,20 +53,6 @@ export default function ProgressReport({ id }: { id: string }) {
         <>
           {/* ----- USER INFO------- */}
           <div className="mt-9 inline-flex items-center gap-x-4">
-            {/* {staffData?.data?.photo || staffData?.data?.photo?.length !== 0 ? (
-              <Image
-                src={staffData?.data?.photo}
-                width={160}
-                height={160}
-                alt={`${staffData?.data?.name} photo`}
-                className="!size-[160px] rounded-full bg-[var(--primary-color)] object-contain"
-              />
-            ) : (
-              <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
-                {returnInitial(staffData?.data?.name)}
-              </div>
-            )} */}
-
             <CheckUrlFragment
               url={staffData?.data?.photo as any}
               height={100}

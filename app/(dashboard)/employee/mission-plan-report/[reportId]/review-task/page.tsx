@@ -29,6 +29,7 @@ import {
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
 import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ApproveTask({
   params,
@@ -142,8 +143,10 @@ export default function ApproveTask({
       <div className="m-5 mt-7">
         <>
           {isLoading ? (
-            <div className="h-[75vh] grid place-content-center">
-              <PageLoader />
+            <div className="mt-10 px-5">
+              <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
+              <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
+              <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
             </div>
           ) : (
             (data?.data?.specific_task as any[])?.map((item, idx) => (

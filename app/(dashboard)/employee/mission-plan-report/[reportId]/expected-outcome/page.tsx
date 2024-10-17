@@ -24,6 +24,7 @@ import {
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import { LottieEmptyState } from "@/lottie";
 import { LottieAnimation } from "@/components/fragment";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const successMessage = {
   task: {
@@ -125,8 +126,13 @@ const ExpectedOutcome = ({
           <p className="text-[var(--text-color3)]">No Mission Plan found</p>
         </div>
       ) : loadingTask ? (
-        <div className="h-[90%] grid place-content-center">
-          <PageLoader />
+        <div className="mt-10 px-5">
+          <h1 className="text-[#222222b9] mb-5">
+            Set Specified Task Expected Outcomes
+          </h1>
+          <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
+          <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
+          <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
         </div>
       ) : (
         <div className="mt-10 px-5">
