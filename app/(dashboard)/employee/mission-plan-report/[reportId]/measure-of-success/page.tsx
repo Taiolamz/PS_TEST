@@ -150,9 +150,14 @@ export default function MOSReport({
     (state) => state.employee_mission_plan_filter
   );
 
+  const user = useAppSelector((state) => state.auth);
+  console.log(user, "user");
+
   const { data, isLoading } = useGetOrganiationSpecifiedTaskProgressQuery({
     fiscal_year: fiscal_year,
     cycle: mission_cycle,
+    is_admin: user?.user?.is_head_of_organization,
+    staff_id: user?.profile?.id,
   });
 
   return (
