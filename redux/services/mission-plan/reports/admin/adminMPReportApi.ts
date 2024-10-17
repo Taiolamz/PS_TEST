@@ -9,7 +9,17 @@ export const adminMPReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+    getTopLevelExecutiveMissonPlan: builder.query({
+      query: (payload) => ({
+        url: `/mission-plan-report/top-level-executives?fiscal_year_id=${payload.fiscal_year_id}`,
+        method: "GET",
+      }),
+      // providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
-export const { useGetOrganiationSpecifiedTaskProgressQuery } = adminMPReportApi;
+export const {
+  useGetOrganiationSpecifiedTaskProgressQuery,
+  useGetTopLevelExecutiveMissonPlanQuery,
+} = adminMPReportApi;
