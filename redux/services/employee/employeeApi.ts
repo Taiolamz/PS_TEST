@@ -58,6 +58,14 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Staff"],
     }),
+    updateStaff: builder.mutation({
+      query: ({ staffId, payload }) => ({
+        url: `/admin/staff/${staffId}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["Staff"],
+    }),
     deleteInvitedStaff: builder.mutation({
       query: ({ staffId }) => ({
         url: `/admin/invitation/delete/${staffId}`,
@@ -102,4 +110,5 @@ export const {
   useGetStaffInfoQuery,
   useDeleteStaffMutation,
   useDeleteInvitedStaffMutation,
+  useUpdateStaffMutation,
 } = employeeInvitationApi;
