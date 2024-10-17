@@ -36,7 +36,7 @@ export default function RejectModal({
       approvable_type: approvableType,
       status: "rejected",
       action: approvableAction,
-      comments: formik.values.message,
+      comments: Array(formik.values.message),
     };
     await approveORRejectTaskOutcome(payload)
       .unwrap()

@@ -4,7 +4,11 @@ export const adminMPReportApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrganiationSpecifiedTaskProgress: builder.query({
       query: (payload) => ({
-        url: `/admin/organization/target?fiscal_year=${payload.fiscal_year}&cycle=${payload.cycle}`,
+        url: `/admin/organization/target?fiscal_year=${
+          payload.fiscal_year || ""
+        }&cycle=${payload.cycle || ""}&is_admin=${
+          payload?.is_admin || ""
+        }&staff_id=${payload?.staff_id || ""}`,
         method: "GET",
       }),
       providesTags: ["MissionPlanReport"],
