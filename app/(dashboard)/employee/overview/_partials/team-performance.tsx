@@ -14,22 +14,22 @@ export default function TeamPerformance() {
         {/* content */}
         <main className="w-full pt-12">
           {/* Progree bar */}
-          <div className="flex h-1.5 w-full rounded bg-[var(--input-bg)] -space-x-1">
+          <div className="flex h-1.5 w-full rounded bg-[var(--input-bg)]">
             {/* in progress */}
             <span
-              className="block bg-[var(--bg-yellow-400)] h-full rounded"
+              className="block bg-[var(--bg-yellow-400)] h-full rounded-l"
               style={{ width: `${20}%` }}
             />
             <span
-              className="block bg-[rgb(var(--bg-green-100))] h-full rounded"
+              className="block bg-[rgb(var(--bg-green-100))] h-full"
               style={{ width: `${25}%` }}
             />
             <span
-              className="block bg-[rgb(var(--bg-blue-100))] h-full rounded"
+              className="block bg-[rgb(var(--bg-blue-100))] h-full"
               style={{ width: `${30}%` }}
             />
             <span
-              className="block bg-[var(--bg-red-100)] h-full rounded"
+              className="block bg-[var(--bg-red-100)] h-full rounded-r"
               style={{ width: `${25}%` }}
             />
           </div>
@@ -103,23 +103,23 @@ export default function TeamPerformance() {
         {/* content */}
         <main className="w-full pt-12">
           {/* Progree bar */}
-          <div className="flex h-1.5 w-full rounded bg-[var(--input-bg)] -space-x-1">
+          <div className="flex h-1.5 w-full rounded bg-[var(--input-bg)]">
             {/* in progress */}
             <span
-              className="block bg-[var(--bg-yellow-400)] h-full rounded"
-              style={{ width: `${2}%` }}
+              className="block bg-[var(--bg-yellow-400)] h-full rounded-l"
+              style={{ width: `${10}%` }}
             />
             <span
-              className="block bg-[rgb(var(--bg-green-100))] h-full rounded"
-              style={{ width: `${2}%` }}
+              className="block bg-[rgb(var(--bg-green-100))] h-full"
+              style={{ width: `${15}%` }}
             />
             <span
-              className="block bg-[rgb(var(--bg-blue-100))] h-full rounded"
-              style={{ width: `${2}%` }}
+              className="block bg-[rgb(var(--bg-blue-100))] h-full"
+              style={{ width: `${20}%` }}
             />
             <span
-              className="block bg-[var(--bg-red-100)] h-full rounded"
-              style={{ width: `${2}%` }}
+              className="block bg-[var(--bg-red-100)] h-full rounded-r"
+              style={{ width: `${5}%` }}
             />
           </div>
           {/* data */}
@@ -165,16 +165,16 @@ export default function TeamPerformance() {
             {/* Array of Initials */}
             <div className="inline-flex -space-x-3.5">
               <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
-                BD
-              </span>
-              <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
                 OI
               </span>
               <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
-                AA
+                BD
               </span>
               <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
                 CU
+              </span>
+              <span className="size-8 rounded-full border border-white bg-[var(--primary-color)] place-content-center grid text-white font-medium text-sm">
+                AA
               </span>
             </div>
           </div>
