@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { returnInitial } from "@/utils/helpers";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 
 export default function ProgressReport({ id }: { id: string }) {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function ProgressReport({ id }: { id: string }) {
         <>
           {/* ----- USER INFO------- */}
           <div className="mt-9 inline-flex items-center gap-x-4">
-            {staffData?.data?.photo || staffData?.data?.photo?.length !== 0 ? (
+            {/* {staffData?.data?.photo || staffData?.data?.photo?.length !== 0 ? (
               <Image
                 src={staffData?.data?.photo}
                 width={160}
@@ -64,7 +65,18 @@ export default function ProgressReport({ id }: { id: string }) {
               <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
                 {returnInitial(staffData?.data?.name)}
               </div>
-            )}
+            )} */}
+
+            <CheckUrlFragment
+              url={staffData?.data?.photo as any}
+              height={100}
+              width={100}
+              className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl"
+            >
+              <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
+                {returnInitial(staffData?.data?.name)}
+              </div>
+            </CheckUrlFragment>
             <div className="space-y-0.5">
               <p className="">{staffData?.data?.name}</p>
               <p className="text-[var(--text-color2)] text-sm">

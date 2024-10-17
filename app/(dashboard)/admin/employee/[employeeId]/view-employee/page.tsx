@@ -3,7 +3,7 @@
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 import { Button } from "@/components/ui/button";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { returnInitial } from "@/utils/helpers";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -19,11 +19,13 @@ import ModalContainer from "@/components/modal-container";
 import DeleteModal from "@/components/atoms/modals/delete";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import routesPath from "@/utils/routes";
+import { setEmployeeData } from "@/redux/features/employee/employeeSlice";
 
 const ViewEmployee = ({
   params,
 }: {
-  params: { employeId: string };
+  params: { employeeId: string };
 }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
@@ -47,6 +49,7 @@ const ViewEmployee = ({
   );
 
   const navigate = useRouter()
+  const dispatch = useAppDispatch()
 
   const { user } = useAppSelector((state) => state.auth);
   type detailType = {
@@ -56,7 +59,7 @@ const ViewEmployee = ({
     profile_img: "",
   });
 
-  const STAFF_ID = params?.employeId ?? "";
+  const STAFF_ID = params?.employeeId ?? "";
 
   const [deleteStaff, { isLoading: isDeletingStaff }] = useDeleteStaffMutation()
 
@@ -165,9 +168,12 @@ const ViewEmployee = ({
                       >
                         <div className="flex items-center gap-3">
                           <p className="text-sm border p-1.5 w-fit px-4 rounded-md cursor-pointer"
-                          // onClick={() => {
-                          //   router.push(routesPath?.ADMIN?.EMPLOYEE_EDIT)
-                          // }}
+                            onClick={() => {
+                              dispatch(setEmployeeData(STAFF_INFO))
+                              navigate.push(routesPath?.ADMIN?.UPDATE_EMPLOYEE({
+                                employeeId: STAFF_ID
+                              }))
+                            }}
                           >Edit</p>
                           <Trash color="red" className="cursor-pointer" onClick={() => setShowDeleteModal(true)} />
                         </div>

@@ -7,6 +7,8 @@ import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import { CHALLENGES_DATA } from "@/app/(dashboard)/admin/mission-plan/reports/_data";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import OrganizationTargetChart from "@/app/(dashboard)/admin/mission-plan/reports/_charts/organization-target";
+import { useGetOrganiationSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/admin/adminMPReportApi";
+import { useAppSelector } from "@/redux/store";
 
 export default function MOSReport({
   params,
@@ -144,12 +146,23 @@ export default function MOSReport({
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showCommentModal, setShowCommentModal] = useState(false);
 
+  const { fiscal_year, mission_cycle } = useAppSelector(
+    (state) => state.employee_mission_plan_filter
+  );
+
+  const { data, isLoading } = useGetOrganiationSpecifiedTaskProgressQuery({
+    fiscal_year: fiscal_year,
+    cycle: mission_cycle,
+  });
+
   return (
     <DashboardLayout back headerTitle="Measure of Success Percentage Achieved">
       <div className="px-5 pb-10 flex flex-col gap-2">
         <ReportFilter />
         <div className="mt-4">
-          <OrganizationTargetChart />
+          <OrganizationTargetChart
+            totalAchieveValue={data?.data?.achievement_average || "0"}
+          />
         </div>
         {mosDetails?.map((chi, idx) => {
           const {

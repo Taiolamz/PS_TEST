@@ -12,6 +12,10 @@ import routesPath from "@/utils/routes";
 import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
 import { useRouter } from "next/navigation";
 import { useGetMissionPlanReportCycleQuery, useGetOrgFiscalYearQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useGetTopLevelExecutiveMissonPlanQuery } from "@/redux/services/mission-plan/reports/admin/adminMPReportApi";
+import { FileIcon } from "@/public/assets/icons";
+import Image from "next/image";
+import { PageLoader } from "@/components/custom-loader";
 
 const { ADMIN } = routesPath
 
@@ -19,6 +23,10 @@ const OrganizationReports = () => {
     const router = useRouter()
 
     const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
+
+    const { data: executives_mission_plan, isLoading: isLoadingExecutivesMP, isFetching: isFetchingExecutivesMP } = useGetTopLevelExecutiveMissonPlanQuery({
+        fiscal_year_id: ""
+    })
 
     const handleFormatCycle = () => {
         const cycles = (data?.data?.cycles as any[])?.map((chi) => {
@@ -213,13 +221,32 @@ const OrganizationReports = () => {
                     <h1>Top Level Executive Mission Plan Progress</h1>
                 </div>
                 <div className="p-5">
-                    <SingleExcutiveProgress
-                        name="Joseph Oloyede"
-                        position="Head of Subsidiary (Zojatech)"
-                        url={ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao')}
-                        // onClick={() => router.push(ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao'))}
-                        progress={30}
-                    />
+                    {
+                        isLoadingExecutivesMP || isFetchingExecutivesMP ? (
+                            <div className="h-40 grid place-content-center">
+                                <PageLoader />
+                            </div>
+                        ) :
+                            executives_mission_plan?.data?.executives?.length !== 0 ? executives_mission_plan?.data?.executives?.map((item: Dictionary, idx: number) => {
+                                const { name, designation, achievement_percentage, email } = item
+                                console.log(executives_mission_plan?.data?.executives)
+                                return (
+                                    <SingleExcutiveProgress
+                                        key={idx}
+                                        name={name}
+                                        position={designation}
+                                        url={ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao')}
+                                        // onClick={() => router.push(ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao'))}
+                                        progress={Math.floor(Number(achievement_percentage?.split("%")?.[0]))}
+                                    />
+                                )
+                            }
+                            ) :
+                                <div className="flex flex-col justify-center items-center">
+                                    <div> <Image src={FileIcon} alt="empty icon" width={50} height={50} /></div>
+                                    <p className="text-xs">No data available</p>
+                                </div>
+                    }
                 </div>
             </CardContainer>
 
