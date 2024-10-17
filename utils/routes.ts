@@ -75,10 +75,12 @@ const routesPath = {
     CREATE_UNIT: `/${admin_auth}/units/add-unit`,
     EMPLOYEES: `/${admin_auth}/employee`,
     EMPLOYEES_INVITED: `/${admin_auth}/employee/invited`,
-    EMPLOYEE_VIEW: (employeId: string) =>
-      `/${admin_auth}/employee/${employeId}/view-employee`,
+    EMPLOYEE_VIEW: (employeeId: string) =>
+      `/${admin_auth}/employee/${employeeId}/view-employee`,
     EMPLOYEE_EDIT: `/${admin_auth}/employee/edit-employee`,
     ADD_EMPLOYEE: `/${admin_auth}/employee/add-employee`,
+    UPDATE_EMPLOYEE: ({ employeeId }: { employeeId: string }) =>
+      `/${admin_auth}/employee/${employeeId}/update`,
     // MISSION_PLAN_SINGLE: `/${admin_auth}/mission-plan/[missionplanid]/mission-plan`
     PRESENTATION: `/${admin_auth}/mission-plan/2023/approve`,
   },
