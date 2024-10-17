@@ -23,7 +23,7 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
         url: `/mission-plan-report/task-submission/${user}`,
         method: "GET",
       }),
-      providesTags: ["MissionPlanReport"],
+      providesTags: ["Downliners"],
     }),
 
     getDownlinerMissionPlanReport: builder.query({
@@ -92,6 +92,15 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
         body: payload,
       }),
       invalidatesTags: ["MissionPlanReport"],
+    }),
+
+    approveORRejectTaskOutcome: builder.mutation({
+      query: (payload) => ({
+        url: `/approvals/single`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Downliners"],
     }),
 
     addMOSAchievement: builder.mutation({
@@ -194,4 +203,5 @@ export const {
   useGetStaffPhotoFiscalYearQuery,
   useGetDownlinerExpectedOutcomeQuery,
   useGetDownlinerMissionPlanReportQuery,
+  useApproveORRejectTaskOutcomeMutation,
 } = missionPlanReportApi;
