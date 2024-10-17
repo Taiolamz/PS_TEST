@@ -218,7 +218,7 @@ export default function Edit({ params }: { params: { subsidiaryId: string } }) {
             />
 
             <div>
-              {subDetailsData?.logo && !logo && (
+              {subDetailsData?.logo && !logo && subDetailsData?.logo?.[0] && (
                 <img
                   src={subDetailsData?.logo}
                   alt="subsidiary logo"

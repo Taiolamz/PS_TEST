@@ -107,14 +107,19 @@ export const useEditSubsidiary = ({ id }: Prop) => {
     const payload = new FormData();
     const { logo, head, state, ...rest } = formik.values;
 
-    Object.entries(rest).forEach(([key, value]) => {
-      payload.append(key, value as string);
-    });
+    // Object.entries(rest).forEach(([key, value]) => {
+    //   payload.append(key, value as string);
+    // });
     if (logo instanceof File) {
       payload.append("logo", logo);
     }
     payload.append("head", head.id);
     payload.append("state", state);
+    payload.append("name", rest.name);
+    payload.append("address", rest.address);
+    payload.append("country", rest.country);
+    payload.append("description", rest.description);
+    payload.append("work_email", rest.work_email);
     updateSubsidiary({ data: payload, id: id })
       .unwrap()
       .then(() => {

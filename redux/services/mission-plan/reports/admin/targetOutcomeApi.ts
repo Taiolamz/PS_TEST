@@ -26,6 +26,14 @@ export const targetOutcomeApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["TargetOutcomeSettings"],
     }),
+    extendOutcomeSubmission: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/mission-plan-report/settings/re-open-outcome`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["TargetOutcomeSettings"],
+    }),
     fetchReportSubmissionSettings: builder.query({
       query: () => ({
         url: `/admin/mission-plan-report/settings`,
@@ -41,4 +49,5 @@ export const {
   useSetActualOutcomeSubmissionMutation,
   useFetchReportSubmissionSettingsQuery,
   useExtendTargetSubmissionMutation,
+  useExtendOutcomeSubmissionMutation,
 } = targetOutcomeApi;

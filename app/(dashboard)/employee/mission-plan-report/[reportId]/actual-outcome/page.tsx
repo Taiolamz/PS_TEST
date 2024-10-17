@@ -111,10 +111,6 @@ const ActualOutcome = ({
 
   // Handle form submit
   const handleFormSubmit = (val: any) => {
-    console.log({
-      fiscal_year_id: params?.reportId,
-      ...val,
-    });
     addActualOutcome({
       fiscal_year_id: params?.reportId,
       month: getCurrentMonth(),
@@ -240,12 +236,16 @@ const ActualOutcome = ({
                       handleChange,
                       touched,
                       values,
+                      setFieldValue,
+                      setFieldError,
                     }: {
                       isValid: boolean;
                       handleChange: any;
                       touched: any;
                       values: any;
                       errors: any;
+                      setFieldValue: any;
+                      setFieldError: any;
                     }) => (
                       <Form>
                         <FieldArray name="tasks">
@@ -420,9 +420,31 @@ const ActualOutcome = ({
                                                 ) && (
                                                   <Input
                                                     label="My Contribution"
+                                                    type="number"
+                                                    min={0}
+                                                    max={100}
+                                                    pattern="[0-9]*"
                                                     id={`tasks.${idx}.contribution`}
                                                     name={`tasks.${idx}.contribution`}
-                                                    onChange={handleChange}
+                                                    onChange={async (
+                                                      event: any
+                                                    ) => {
+                                                      if (
+                                                        event.target.value <
+                                                          0 ||
+                                                        event.target.value > 100
+                                                      ) {
+                                                        setFieldValue(
+                                                          `tasks.${idx}.contribution`,
+                                                          0
+                                                        );
+                                                      } else {
+                                                        await setFieldValue(
+                                                          `tasks.${idx}.contribution`,
+                                                          event.target.value
+                                                        );
+                                                      }
+                                                    }}
                                                     value={
                                                       values?.tasks?.[idx]
                                                         ?.contribution
@@ -436,6 +458,7 @@ const ActualOutcome = ({
                                                         ?.contribution
                                                     }
                                                     placeholder="Input Contribution"
+                                                    className="min-w-[190px]"
                                                   />
                                                 )}
                                                 <Button
