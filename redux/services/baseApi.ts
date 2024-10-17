@@ -130,5 +130,6 @@ export const baseApi = createApi({
     "MissionPlanReport",
     "TargetOutcomeSettings",
     "Staff",
+    "Downliners",
   ],
 });

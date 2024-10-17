@@ -13,6 +13,7 @@ import { CustomAccordion } from "@/components/custom-accordion";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { Taskdata } from "../../_partials/_downlines/_data/data";
 import {
+  useApproveORRejectTaskOutcomeMutation,
   useGetDownlinerExpectedOutcomeQuery,
   useGetMOSMeasureofSuccessQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
@@ -27,6 +28,7 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
+import { toast } from "sonner";
 
 export default function ApproveTask({
   params,
@@ -39,6 +41,63 @@ export default function ApproveTask({
   const [showReject, setShowReject] = useState(false);
   const [id, setId] = useState("");
   const handleFormSubmit = () => {};
+
+  // const [
+  //   approveORRejectTaskOutcome,
+  //   { isLoading: addingTarget, data: tardata, error: errtar },
+  // ] = useApproveORRejectTaskOutcomeMutation();
+
+  // const handleApproveTaskOutcome = async ({
+  //   approvableId,
+  // }: {
+  //   approvableId?: string;
+  // }) => {
+  //   const payload = {
+  //     "0": "approved",
+  //     approvable_id: approvableId,
+  //     approvable_type: "target_achievement",
+  //     status: "approved",
+  //     action: "expected-outcome",
+  //     comments: "",
+  //   };
+  //   await approveORRejectTaskOutcome(payload)
+  //     .unwrap()
+  //     .then(() => {
+  //       toast.success(
+  //         `${getCurrentMonth()} Expected Outcome Created Successfully`
+  //       );
+  //       new Promise(() => {
+  //         setTimeout(() => {
+  //           toast.dismiss();
+  //         }, 2000);
+  //       });
+  //     });
+  // };
+
+  // const handleFormSubmit = (
+  //   values: {
+  //     target: string;
+  //     month: string;
+  //   },
+  //   id: string,
+  //   setSubmitting: (isSubmitting: boolean) => void
+  // ) => {
+  //   addMOSTarget({
+  //     success_measure_id: id,
+  //     ...values,
+  //   })
+  //     .unwrap()
+  //     .then(() => {
+  //       setSubmitting(false);
+  //       setShowSuccessModal(true);
+  //       setSuccessContent(successMessage?.mos);
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err, "error");
+  //       setSubmitting(false);
+  //     });
+  // };
+
   // 01j91fn41cjb43nzwxaxngmw3p
   // fetch task comment
   const [
@@ -76,6 +135,7 @@ export default function ApproveTask({
   // console.log(mosData, "mos data");
 
   // console.log(data, "specified data");
+  const [taskData, setTaskData] = useState<any>({});
 
   return (
     <DashboardLayout back headerTitle="Downlines">
@@ -256,8 +316,16 @@ export default function ApproveTask({
                                 onClick={() => {
                                   setShowApprove(true);
                                   setId(impliedItem?.task_outcome?.id);
+                                  // setId("143ofd4345approveId");
+                                  setTaskData(impliedItem);
                                 }}
-                                className="text-[rgb(var(--bg-green-100))] w-[120px] text-sm font-medium bg-[rgb(var(--bg-green-100)/0.1)] p-2 px-5 rounded shadow-none"
+                                disabled={
+                                  impliedItem?.task_outcome?.status ===
+                                  "approved"
+                                }
+                                className={
+                                  "text-[rgb(var(--bg-green-100))] w-[120px] text-sm font-medium bg-[rgb(var(--bg-green-100)/0.1)] p-2 px-5 rounded shadow-none"
+                                }
                               >
                                 Approve
                               </Button>
@@ -265,7 +333,13 @@ export default function ApproveTask({
                                 onClick={() => {
                                   setShowReject(true);
                                   setId(impliedItem?.task_outcome?.id);
+                                  // setId("143ofd4345approveId");
+                                  setTaskData(impliedItem);
                                 }}
+                                disabled={
+                                  impliedItem?.task_outcome?.status ===
+                                  "rejected"
+                                }
                                 className="text-[var(--bg-red-100)] w-[120px] text-sm font-medium bg-[var(--bg-red-100-op)] p-2 px-5 borders border-transparent rounded shadow-none"
                               >
                                 Reject
@@ -447,18 +521,28 @@ export default function ApproveTask({
         <ApproveModal
           show={showApprove}
           handleClose={() => setShowApprove(false)}
-          handleSubmit={() => {
-            setShowApprove(false);
-          }}
+          // handleSubmit={() => {
+          //   setShowApprove(false);
+          // }}
+          data={taskData}
+          approvableType="task_outcome"
+          approvableAction="expected-outcome"
         />
         {/* Reject MOS target MOdal */}
         <RejectModal
           show={showReject}
           handleClose={() => setShowReject(false)}
-          handleSubmit={(val) => {
-            setShowReject(false);
-            console.log(val);
-          }}
+          // handleSubmit={(val) => {
+          //   setShowReject(false);
+          //   console.log(val);
+          // }}
+          data={taskData}
+          approvableType="task_outcome"
+          approvableAction="expected-outcome"
+          // handleSubmit={(val) => {
+          //   setShowReject(false);
+          //   console.log(val);
+          // }}
         />
         {/* MOS comment drawer */}
         <CustomCommentDrawer

@@ -75,6 +75,7 @@ export default function ApproveMOS({
     }
   }, [showHistory, showComment]);
 
+  const [taskData, setTaskData] = useState<any>({});
   return (
     <DashboardLayout back headerTitle="Review Measure of Success">
       {isError ? (
@@ -222,24 +223,38 @@ export default function ApproveMOS({
 
       {/* Approve MOS target MOdal */}
       <ApproveModal
+        // show={showApprove}
+        // handleClose={() => setShowApprove(false)}
+        // handleSubmit={() => {
+        //   setShowApprove(false);
+        // }}
         show={showApprove}
         handleClose={() => setShowApprove(false)}
-        handleSubmit={() => {
-          setShowApprove(false);
-        }}
-        id={id}
-        option="target_achievement"
+        data={taskData}
+        approvableType="target_achievement"
+        approvableAction="achieved"
       />
       {/* Reject MOS target MOdal */}
       <RejectModal
+        // show={showReject}
+        // handleClose={() => setShowReject(false)}
+        // handleSubmit={(val) => {
+        //   setShowReject(false);
+        //   console.log(val);
+        // }}
         show={showReject}
         handleClose={() => setShowReject(false)}
-        handleSubmit={(val) => {
-          setShowReject(false);
-          console.log(val);
-        }}
-        id={id}
-        option="target_achievement"
+        // handleSubmit={(val) => {
+        //   setShowReject(false);
+        //   console.log(val);
+        // }}
+        data={taskData}
+        approvableType="target_achievement"
+        approvableAction="achieved"
+        // handleSubmit={(val) => {
+        //   setShowReject(false);
+        //   console.log(val);
+        // }}
       />
       {/* MOS comment drawer */}
       <CustomCommentDrawer

@@ -6,26 +6,61 @@ import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ModalContainer from "@/components/modal-container";
+import { useApproveORRejectTaskOutcomeMutation } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { toast } from "sonner";
+import { getCurrentMonth } from "@/utils/helpers/date-formatter";
+import { trimLongString } from "@/app/(dashboard)/_layout/Helper";
 export default function RejectModal({
   show,
   handleClose,
   loading,
-  handleSubmit,
-  id,
-  option,
+  // handleSubmit,
+  data,
+  approvableType,
+  approvableAction,
 }: {
   show: boolean;
   handleClose: () => void;
   loading?: boolean;
-  handleSubmit: (value: { message: string }) => void;
-  id?: string;
-  option?: "target_achievement" | "task_outcome";
+  // handleSubmit: (value: { message: string }) => void;
+  data?: any;
+  approvableType?: string;
+  approvableAction?: string;
 }) {
+  const [approveORRejectTaskOutcome, { isLoading, data: taskData }] =
+    useApproveORRejectTaskOutcomeMutation();
+
+  const handleSubmit = async () => {
+    const payload = {
+      approvable_id: data?.task_outcome?.id,
+      approvable_type: approvableType,
+      status: "rejected",
+      action: approvableAction,
+      comments: formik.values.message,
+    };
+    await approveORRejectTaskOutcome(payload)
+      .unwrap()
+      .then(() => {
+        toast.success(
+          `${getCurrentMonth()} (${trimLongString(
+            data?.task_outcome?.expected_outcome,
+            15
+          )}) Expected Outcome Rejected Successfully`
+        );
+        handleClose();
+        new Promise(() => {
+          setTimeout(() => {
+            toast.dismiss();
+          }, 2000);
+        });
+      });
+  };
   const formik = useFormik({
     initialValues: {
       message: "",
     },
-    onSubmit: (value) => handleSubmit(value),
+    onSubmit: handleSubmit,
+    // onSubmit: (value) => handleSubmit(value),
     validationSchema: Yup.object({
       message: Yup.string()
         .min(10, "Message must be at least 10 characters") // Minimum 10 characters
@@ -78,8 +113,11 @@ export default function RejectModal({
             </Button>
             <Button
               type="submit"
-              loading={loading}
-              loadingText="Yes, Reject"
+              // loading={loading}
+              // onClick={handleSubmit}
+              loading={isLoading}
+              // loadingText="Yes, Reject"
+              loadingText="Rejecting..."
               disabled={loading}
               className={cn(
                 "font-light ml-4 rounded mt-5 bg-[var(--bg-red-100)]"
