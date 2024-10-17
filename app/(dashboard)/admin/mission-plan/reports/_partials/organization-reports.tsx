@@ -228,14 +228,14 @@ const OrganizationReports = () => {
                             </div>
                         ) :
                             executives_mission_plan?.data?.executives?.length !== 0 ? executives_mission_plan?.data?.executives?.map((item: Dictionary, idx: number) => {
-                                const { name, designation, achievement_percentage, email } = item
-                                console.log(executives_mission_plan?.data?.executives)
+                                const { user_id, staff_member_id, mission_plan_id, name, designation, achievement_percentage, email } = item
+                                // console.log(executives_mission_plan?.data?.executives)
                                 return (
                                     <SingleExcutiveProgress
-                                        key={idx}
+                                        key={user_id}
                                         name={name}
                                         position={designation}
-                                        url={ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao')}
+                                        url={ADMIN.MISSION_PLAN_REPORT_PROGRESS(user_id)}
                                         // onClick={() => router.push(ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao'))}
                                         progress={Math.floor(Number(achievement_percentage?.split("%")?.[0]))}
                                     />

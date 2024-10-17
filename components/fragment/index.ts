@@ -11,18 +11,18 @@ import MissionSingleItem from "./mission-single-item";
 import SpecifiedMission from "./specified-mission";
 import SpecifiedTasks from "./specified-task";
 import TableLoader from "./table-loader";
-import Legend from './legend/legend';
-import ReusableLabel from './labels/label';
+import Legend from "./legend/legend";
+import ReusableLabel from "./labels/label";
 import { ReusableProgress } from "./progress/reusable-progress";
-import AchievementProgress from './achievement-progress';
-import ReusableSegmentProgress from './progress/segment';
-import CardContainer from './card-container';
-import PercentageLabel from './labels/percentage';
-import SingleExcutiveProgress from './excutive-progress';
-import ActionLabel from './button/action-label';
-import GridLegend from './legend/grid-legend';
-import LottieAnimation from './lottie-animation';
-
+import AchievementProgress from "./achievement-progress";
+import ReusableSegmentProgress from "./progress/segment";
+import CardContainer from "./card-container";
+import PercentageLabel from "./labels/percentage";
+import SingleExcutiveProgress from "./excutive-progress";
+import ActionLabel from "./button/action-label";
+import GridLegend from "./legend/grid-legend";
+import LottieAnimation from "./lottie-animation";
+import ReusableProgressLabel from "./labels/progress-label";
 
 export {
   EmptyState,
@@ -46,5 +46,6 @@ export {
   SingleExcutiveProgress,
   ActionLabel,
   GridLegend,
-  LottieAnimation
+  LottieAnimation,
+  ReusableProgressLabel,
 };

@@ -5,19 +5,33 @@ import React from "react";
 import ApprovalSpecifiedTaskCard from "./_partials/approval-specified-task-card";
 import ApprovalMOSCard from "./_partials/approval-mos-card";
 import { CardContainer } from "@/components/fragment";
+import { useAppSelector } from "@/redux/store";
+import { useGetStaffPhotoFiscalYearQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { returnInitial } from "@/utils/helpers";
+import CheckUrlFragment from "@/components/fragment/ImageFallBack";
+import ReportFilter from "@/app/(dashboard)/employee/mission-plan-report/_partials/_my_report/_fragment/report-filter";
+import Skeleton from "react-loading-skeleton";
 
 export default function MissionPlanProgress({
   params,
 }: {
-  params: { reportId: string };
+  params: { staffId: string };
 }) {
   const [fiscalYear, setFiscalYear] = React.useState("");
   const [missionCycle, setMissionCycle] = React.useState("");
+
+  const { user } = useAppSelector((state) => state.auth)
+
+  const { data: staffData, isLoading: loadingStaffInfo } =
+    useGetStaffPhotoFiscalYearQuery(params?.staffId);
+  const mission_statement = staffData?.data?.mission_statement?.mission ?? ""
+
   return (
     <DashboardLayout back headerTitle="Mission Plan Report Overview">
       <div className="m-5 overflow-hidden">
         {/* ----- FILTER/SELECT WRAP START------- */}
-        <div className="flex items-center justify-between">
+
+        {/* <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex gap-2 items-center cursor-pointer">
               <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>
@@ -51,36 +65,66 @@ export default function MissionPlanProgress({
             </div>
           </div>
 
-          {/* -----EXPORT---- */}
           <div className="flex gap-3 items-center border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF] cursor-pointer">
             <figure>{exportIcon}</figure>
             <p className="text-medium text-xs text-[#6E7C87]">Export</p>
           </div>
-        </div>
-        {/* ----- FILTER/SELECT WRAP END------- */}
+        </div> */}
 
-        {/* ----- USER INFO------- */}
-        <div className="mt-9 inline-flex items-center gap-x-4">
-          <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
-            {"CU"}
-          </div>
-          <div className="space-y-0.5">
-            <p className="">Charles Uwaje</p>
-            <p className="text-[var(--text-color2)] text-sm">
-              cuwaje@zojatech.com
-            </p>
-          </div>
+        <ReportFilter />
+        <div className="">
+          {
+            loadingStaffInfo ?
+              <CardContainer className="mt-4 bg-white">
+                <div className="flex gap-3 items-center">
+                  <Skeleton width={150} height={150} className="!rounded-full" />
+                  <div>
+                    <Skeleton width={40} height={10} className="!rounded-none" />
+                    <Skeleton width={80} height={10} className="!rounded-none" />
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <Skeleton width={400} height={10} className="!rounded-none !w-1/3" />
+                  <Skeleton width={400} height={10} className="!rounded-none !w-2/3" />
+                </div>
+              </CardContainer> :
+              <>
+                {/* ----- FILTER/SELECT WRAP END------- */}
+
+                {/* ----- USER INFO------- */}
+                <div className="mt-9 inline-flex items-center gap-x-4">
+                  <CheckUrlFragment
+                    url={staffData?.data?.photo}
+                  >
+                    <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
+                      {returnInitial(staffData?.data?.name)}
+                    </div>
+                  </CheckUrlFragment>
+
+                  <div className="space-y-0.5">
+                    <p className="">{staffData?.data?.name}</p>
+                    <p className="text-[var(--text-color2)] text-sm">
+                      {staffData?.data?.email}
+                    </p>
+                  </div>
+                </div>
+              </>
+          }
         </div>
 
-        <CardContainer className="my-5">
-          <h1 className="text-lg">Mission Statement</h1>
-          <p className="mt-1 text-gray-400 font-light text-sm">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam impedit sunt, saepe fuga nesciunt soluta odio non, exercitationem sequi maxime praesentium quisquam molestias magnam. Sit autem labore quia illum eum.</p>
-        </CardContainer>
+
+        {mission_statement &&
+          <CardContainer className="my-5">
+            <h1 className="text-lg">Mission Statement</h1>
+            <p className="mt-1 text-gray-400 font-light text-sm">{mission_statement}</p>
+          </CardContainer>
+        }
 
         {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
         <div className="grid lg:grid-cols-12 mt-10 gap-5">
-          <ApprovalMOSCard id={params.reportId} />
-          <ApprovalSpecifiedTaskCard id={params.reportId} />
+          <ApprovalMOSCard id={params.staffId} />
+          <ApprovalSpecifiedTaskCard id={params.staffId} />
         </div>
       </div>
     </DashboardLayout>
