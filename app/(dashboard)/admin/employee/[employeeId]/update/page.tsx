@@ -758,7 +758,7 @@ export default function AddEmployee({
                                     labelClass={labelClassName}
                                 />
 
-                                <CustomSelect
+                                {/* <CustomSelect
                                     label="New Employee"
                                     placeholder="Select Status"
                                     options={newEmployeeStatuses}
@@ -772,7 +772,7 @@ export default function AddEmployee({
                                     }}
                                     // isRequired
                                     labelClass={labelClassName}
-                                />
+                                /> */}
                                 <Input
                                     label="Former Job Title"
                                     type="text"
@@ -891,7 +891,7 @@ export default function AddEmployee({
                                     value={formik.values.address}
                                 // onChange={formik.handleChange}
                                 // isRequired
-                                />
+                                /> <br />
                                 {/* formik.isValid || !formik.dirty */}
                                 <Button
                                     className="mt-4 px-6 w-fit"
