@@ -30,25 +30,24 @@ export default function ApproveModal({
   approvableType?: string;
   approvableAction?: string;
 }) {
-  console.log(data, "data check");
-
-  const [approveORRejectTaskOutcome, { isLoading, data: taskData }] =
+  const [approveORRejectTaskOutcome, { isLoading }] =
     useApproveORRejectTaskOutcomeMutation();
 
   const handleApproveTaskOutcome = async () => {
     const payload = {
-      approvable_id: data?.task_outcome?.id,
+      approvable_id: data?.task_outcome?.id || data?.target_achievement.id,
       approvable_type: approvableType,
       status: "approved",
       action: approvableAction,
       comments: "",
     };
+
     await approveORRejectTaskOutcome(payload)
       .unwrap()
       .then(() => {
         toast.success(
           `${getCurrentMonth()} (${trimLongString(
-            data?.task_outcome?.expected_outcome,
+            data?.task_outcome?.expected_outcome || data?.measure,
             15
           )}) Expected Outcome Approved Successfully`
         );
@@ -73,9 +72,11 @@ export default function ApproveModal({
             <h4 className="font-medium ">
               {title
                 ? title
-                : `Approve(${
-                    trimLongString(data?.task_outcome?.expected_outcome, 15) ||
-                    ""
+                : `Approve (${
+                    trimLongString(
+                      data?.task_outcome?.expected_outcome || data?.measure,
+                      15
+                    ) || ""
                   }) ?`}
             </h4>
             <X className="size-[18px] cursor-pointer" onClick={handleClose} />

@@ -96,14 +96,15 @@ export default function ApproveMOS({
         </div>
       ) : (
         <div className="m-5 mt-7 space-y-7">
-          {data?.data?.measure_of_success?.map((item: any) => (
+          {data?.data?.measure_of_success?.map((item: any, index: any) => (
             <section
               key={item?.id}
               className="border border-[var(--input-border)] bg-white px-6 py-5"
             >
               <header className="flex items-center justify-between">
                 <h3 className="text-black max-lg:inline-block capitalize text-nowrap">
-                  1 .
+                  {/* 1 . */}
+                  {index + 1}.
                 </h3>
                 <h3 className="inline-flex items-center max-lg:float-right gap-x-1 text-[var(--text-color4)] text-sm">
                   Approval Status :
@@ -142,6 +143,8 @@ export default function ApproveMOS({
                     <Button
                       onClick={() => {
                         setShowHistory(true);
+                        setTaskData(item);
+
                         setId(item?.id);
                       }}
                       className="text-primary text-sm font-medium bg-transparent p-2 border flex gap-x-2 border-primary shadow-none"
@@ -199,8 +202,10 @@ export default function ApproveMOS({
                       onClick={() => {
                         setShowApprove(true);
                         setId(item?.target_achievement?.id);
+                        setTaskData(item);
                       }}
                       className="text-[rgb(var(--bg-green-100))] hover:opacity-85 w-[120px] text-sm font-medium bg-[rgb(var(--bg-green-100)/0.1)] p-2 px-5 rounded shadow-none"
+                      disabled={item?.target_achievement?.status === "approved"}
                     >
                       Approve
                     </Button>
@@ -208,7 +213,9 @@ export default function ApproveMOS({
                       onClick={() => {
                         setShowReject(true);
                         setId(item?.target_achievement?.id);
+                        setTaskData(item);
                       }}
+                      disabled={item?.target_achievement?.status === "rejected"}
                       className="text-[var(--bg-red-100)] hover:opacity-85 w-[120px] text-sm font-medium bg-[var(--bg-red-100-op)] p-2 px-5 borders border-transparent rounded shadow-none"
                     >
                       Reject
