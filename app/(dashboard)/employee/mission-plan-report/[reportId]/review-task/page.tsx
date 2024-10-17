@@ -78,11 +78,8 @@ export default function ApproveTask({
   // console.log(data, "specified data");
 
   return (
-    <DashboardLayout back headerTitle="Downlines">
+    <DashboardLayout back headerTitle={`${getCurrentMonth()} Expected Outcome`}>
       <div className="m-5 mt-7">
-        <h3 className="text-[var(--text-color4)] font-medium mb-5">
-          {`${getCurrentMonth()} Expected Outcome`}
-        </h3>
         <>
           {isLoading ? (
             <div className="h-[75vh] grid place-content-center">
@@ -96,7 +93,7 @@ export default function ApproveTask({
                 headerClassName="bg-white p-5 border border-custom-divider rounded"
                 title={
                   <div className="flex w-full gap-x-5">
-                    <p className="text-[var(--primary-color)] text-2xl">
+                    <p className="text-[var(--primary-color)] text-lg">
                       {idx + 1}.
                     </p>
                     <div className="flex justify-between items-start w-[80%]">
@@ -104,10 +101,10 @@ export default function ApproveTask({
                         <p className="text-[var(--text-color)] text-sm font-medium">
                           Specified task
                         </p>
-                        <p className="text-[var(--footer-link-color)] font-medium">
+                        <p className="text-[var(--footer-link-color)] font-medium text-xs">
                           {item?.task}
                         </p>
-                        <p className="text-[var(--text-color)] text-sm">
+                        <p className="text-[var(--text-color)] text-xs">
                           {item?.start_date} - {item?.end_date}
                         </p>
                       </div>

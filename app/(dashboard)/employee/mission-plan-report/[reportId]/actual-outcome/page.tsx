@@ -160,7 +160,9 @@ const ActualOutcome = ({
                 headerClassName="bg-white p-5 border border-custom-divider rounded"
                 title={
                   <div className="flex w-full gap-x-5">
-                    <p className="text-[#015858] text-lg">{idx + 1}.</p>
+                    <p className="text-[var(--primary-color)] text-lg">
+                      {idx + 1}.
+                    </p>
                     <div className="flex justify-between items-center w-[80%]">
                       <div className="w-[60%] text-left grid gap-y-2">
                         <p className="text-[#222222ef] text-sm font-medium">

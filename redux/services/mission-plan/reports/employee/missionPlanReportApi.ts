@@ -210,6 +210,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getSpecifiedTaskDetails: builder.query({
+      query: () => ({
+        url: `/admin/mission-plan-report/organization-specified-task`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -238,4 +246,5 @@ export const {
   useGetOrgTaskQuery,
   useGetMyMissionPlanReportQuery,
   useGetMyMissionPlanQuery,
+  useGetSpecifiedTaskDetailsQuery,
 } = missionPlanReportApi;
