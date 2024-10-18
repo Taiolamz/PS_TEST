@@ -132,7 +132,7 @@ const StrategicIntent = ({
 
   // This sets the intial saved values
   useEffect(() => {
-    const intents = mission_plan_info?.mission_plan?.strategic_intents.map(
+    const intents = mission_plan_info?.mission_plan?.strategic_intents?.map(
       (intent: any) => ({
         intent: intent.intent,
         id: intent.id,
