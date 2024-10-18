@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { cn } from "@/lib/utils";
 
 // Define the type for the props
 interface CheckUrlFragmentProps {
@@ -13,6 +14,7 @@ interface CheckUrlFragmentProps {
   alt?: string; // Optional alt text for the image
   loadSize?: number;
   circleSkeleton?: boolean;
+  imgClassName?: string;
 }
 
 // Add type annotations to the `checkImageURL` function
@@ -41,6 +43,7 @@ const CheckUrlFragment: React.FC<CheckUrlFragmentProps> = ({
   alt,
   circleSkeleton,
   loadSize,
+  imgClassName,
 }) => {
   const [imageValid, setImageValid] = useState<boolean | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -81,7 +84,7 @@ const CheckUrlFragment: React.FC<CheckUrlFragmentProps> = ({
             alt={alt || "Image"} // Alt text is required for accessibility
             width={width}
             height={height}
-            className="img"
+            className={cn("img", imgClassName)}
           />
         </figure>
       ) : (

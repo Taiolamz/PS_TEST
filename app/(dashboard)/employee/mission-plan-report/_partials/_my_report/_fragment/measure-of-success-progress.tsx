@@ -125,7 +125,9 @@ const MeasureOfSucessProgress = ({ id }: { id?: string }) => {
         <p className="text-[#252C32] font-medium">My Measures Of Success</p>
         {mosData && mosData.length > 0 ? (
           <Link
-            href={EMPLOYEE.MOS_REPORT(id || user?.id || "")}
+            href={EMPLOYEE.MOS_REPORT(
+              data?.data?.measures?.staff_member_id || ""
+            )}
             className={isButtonDisabled ? "cursor-not-allowed" : ""}
             passHref
           >
