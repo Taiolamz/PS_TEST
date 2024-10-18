@@ -39,7 +39,6 @@ export default function DownlineTable() {
                 "Job Title",
                 "Email",
                 "Date Submitted",
-                "Approval Status",
                 "Action",
               ]}
               TableTitle="Downline Progress"
@@ -95,41 +94,6 @@ export default function DownlineTable() {
   );
 }
 
-const data = [
-  {
-    id: 1,
-    staff_name: "Oluwaseyi Ajayi",
-    job_title: "Product Designer",
-    work_email: "ony@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "pending",
-  },
-  {
-    id: 2,
-    staff_name: "Bryan Adamu",
-    job_title: "Product Designer",
-    work_email: "ony@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "approved",
-  },
-  {
-    id: 3,
-    staff_name: "Jerome Bell",
-    job_title: "Product Designer",
-    work_email: "ony@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "rejected",
-  },
-  {
-    id: 4,
-    staff_name: "Amaka Johnson",
-    job_title: "Product Designer",
-    work_email: "amaka@gmail.com",
-    created_at: "2024-09-17T16:46:36.000000Z",
-    status: "pending",
-  },
-];
-
 const FORMAT_TABLE_DATA = (data: any) => {
   return data?.map((item: any) => ({
     staff_name: (
@@ -141,17 +105,5 @@ const FORMAT_TABLE_DATA = (data: any) => {
     job_title: item?.designation,
     work_email: item?.email,
     created_at: formatDate(item?.date_submitted),
-    status: (
-      <BadgeComponent
-        text={item?.status}
-        color={
-          item?.status?.toLowerCase() === "approved"
-            ? "green"
-            : item?.status?.toLowerCase() === "rejected"
-            ? "red"
-            : "yellow"
-        }
-      />
-    ),
   }));
 };

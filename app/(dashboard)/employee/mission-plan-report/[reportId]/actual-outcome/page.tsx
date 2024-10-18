@@ -29,6 +29,7 @@ import AttachmentModal from "../../_component/attachment-modal";
 import ConfirmationModal from "@/components/atoms/modals/confirm";
 import { LottieAnimation } from "@/components/fragment";
 import { LottieEmptyState } from "@/lottie";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const successMessage = {
   challenge: {
@@ -143,8 +144,13 @@ const ActualOutcome = ({
           <p className="text-[var(--text-color3)]">No Mission Plan found</p>
         </div>
       ) : loadingTask ? (
-        <div className="h-[90%] grid place-content-center">
-          <PageLoader />
+        <div className="mt-10 px-5">
+          <h1 className="text-[#222222b9] mb-5">
+            Set Specified Task Actual Outcomes
+          </h1>
+          <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
+          <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
+          <Skeleton className="w-full h-[142px] bg-[var(--primary-accent-color)] rounded-sm mb-4 " />
         </div>
       ) : (
         <div className="mt-10 px-5">
@@ -160,7 +166,9 @@ const ActualOutcome = ({
                 headerClassName="bg-white p-5 border border-custom-divider rounded"
                 title={
                   <div className="flex w-full gap-x-5">
-                    <p className="text-[#015858] text-lg">{idx + 1}.</p>
+                    <p className="text-[var(--primary-color)] text-lg">
+                      {idx + 1}.
+                    </p>
                     <div className="flex justify-between items-center w-[80%]">
                       <div className="w-[60%] text-left grid gap-y-2">
                         <p className="text-[#222222ef] text-sm font-medium">
