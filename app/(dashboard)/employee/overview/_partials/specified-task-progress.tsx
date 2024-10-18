@@ -11,7 +11,6 @@ export default function SpecifiedTaskProgress() {
   const { data, isLoading, isError } = useGetStaffSpecifiedTaskQuery({
     id: user?.id,
   });
-  console.log({ data, isLoading, isError });
   return isError ? (
     <section className="bg-white rounded-[5px] max-h-[350px] h-full w-full text-sm text-center place-content-center grid text-[var(--text-color2)]">
       No Specified Task Progress
