@@ -35,8 +35,8 @@ export default function UnitTable() {
       tableheaderList={["Unit Name", "HOU", "Department", "Branch", "Action"]}
       hidePagination
       addText="New Unit"
-      newBtnBulk={!subDetailsData?.deleted_at}
-      hideNewBtnOne={subDetailsData?.deleted_at}
+      newBtnBulk={subDetailsData?.status.toLowerCase() === "active"}
+      hideNewBtnOne={subDetailsData?.status.toLowerCase() !== "active"}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       onSearch={(param) => {

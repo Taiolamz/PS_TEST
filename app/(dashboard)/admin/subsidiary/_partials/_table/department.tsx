@@ -37,8 +37,8 @@ export default function DepartmentTable() {
     <TableWrapper
       tableheaderList={["Department", "HOD", "Subsidiary", "Branch", "Action"]}
       addText="New Department"
-      newBtnBulk={!subDetailsData?.deleted_at}
-      hideNewBtnOne={subDetailsData?.deleted_at}
+      newBtnBulk={subDetailsData?.status.toLowerCase() === "active"}
+      hideNewBtnOne={subDetailsData?.status.toLowerCase() !== "active"}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       perPage={data?.meta?.per_page}
