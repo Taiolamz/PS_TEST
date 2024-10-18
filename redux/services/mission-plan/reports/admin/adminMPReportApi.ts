@@ -2,7 +2,15 @@ import { baseApi } from "../../../baseApi";
 
 export const adminMPReportApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getOrganiationSpecifiedTaskProgress: builder.query({
+    getAdminOrganizationTarget: builder.query({
+      query: (payload) => ({
+        url: `/admin/organization/target`,
+        method: "GET",
+        params: payload.params
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+    getOrganizationSpecifiedTaskProgress: builder.query({
       query: (payload) => ({
         url: `/admin/organization/target?fiscal_year=${
           payload.fiscal_year || ""
@@ -24,6 +32,7 @@ export const adminMPReportApi = baseApi.injectEndpoints({
 });
 
 export const {
-  useGetOrganiationSpecifiedTaskProgressQuery,
+  useGetOrganizationSpecifiedTaskProgressQuery,
   useGetTopLevelExecutiveMissonPlanQuery,
+  useGetAdminOrganizationTargetQuery,
 } = adminMPReportApi;

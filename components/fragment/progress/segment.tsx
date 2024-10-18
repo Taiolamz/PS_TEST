@@ -17,7 +17,7 @@ import React from "react";
 
 type ReusableSegmentProgressProps = {
     value: number;
-    segments: { percentage: number; color: string }[];
+    segments: { percentage?: number; color?: string }[];
     width?: number,
     height?: number,
     borderRadius?: number,

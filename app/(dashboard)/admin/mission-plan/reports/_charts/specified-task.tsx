@@ -1,20 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { Dictionary } from "@/@types/dictionary";
+import { toWholeNumber } from "@/utils/helpers";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const SpecifiedTaskChart = ({ width }: { width?: string }) => {
+const SpecifiedTaskChart = ({ width, data }: { width?: string, data?: Dictionary[] }) => {
   const [chartData, setChartData] = useState({
-    series: [20, 35, 40, 5],
+    series: [20, 24, 10, 4],
     options: {
       chart: {
         width: "100%",
         height: "100%",
         // type: 'pie',
       },
-      labels: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+      labels: ['In Progress', 'Completed', 'Not Started', 'Overdue'],
       // theme: {
       //     monochrome: {
       //         enabled: true,
@@ -52,10 +54,32 @@ const SpecifiedTaskChart = ({ width }: { width?: string }) => {
         show: false,
       },
       fill: {
-        colors: ["#22c55e", "#eab308", "#ef4444", "#835101cc"],
+        colors: data?.map((item: Dictionary) => item?.color),
       },
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      setChartData((prevData) => {
+        return {
+          ...prevData,
+          series: data?.map((item: Dictionary) => toWholeNumber(item?.percentage)),
+          options: {
+            ...prevData.options,
+            labels: data?.map((item: Dictionary) => item?.status),
+            fill: {
+              ...prevData.options.fill,
+              colors: data?.map((item: Dictionary) => item?.color),
+            }
+
+          }
+        }
+      })
+    }
+  }, [data])
+
+
   return (
     <div>
       <ReactApexChart

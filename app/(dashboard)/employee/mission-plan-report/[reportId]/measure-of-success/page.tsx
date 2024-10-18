@@ -7,7 +7,7 @@ import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import { CHALLENGES_DATA } from "@/app/(dashboard)/admin/mission-plan/reports/_data";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import OrganizationTargetChart from "@/app/(dashboard)/admin/mission-plan/reports/_charts/organization-target";
-import { useGetOrganiationSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/admin/adminMPReportApi";
+import { useGetOrganizationSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/admin/adminMPReportApi";
 import { useAppSelector } from "@/redux/store";
 
 export default function MOSReport({
@@ -153,7 +153,7 @@ export default function MOSReport({
   const user = useAppSelector((state) => state.auth);
   console.log(user, "user");
 
-  const { data, isLoading } = useGetOrganiationSpecifiedTaskProgressQuery({
+  const { data, isLoading } = useGetOrganizationSpecifiedTaskProgressQuery({
     fiscal_year: fiscal_year,
     cycle: mission_cycle,
     is_admin: user?.user?.is_head_of_organization,
