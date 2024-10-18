@@ -1,8 +1,8 @@
 import MetricFrame from "@/components/card/frame";
 import { PageLoader } from "@/components/custom-loader";
-import { ReusableProgress } from "@/components/fragment";
+import { LottieAnimation, ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
-import { FileIcon } from "@/public/assets/icons";
+import { LottieEmptyState } from "@/lottie";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStaffMeasureOfSuccessQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useAppSelector } from "@/redux/store";
@@ -12,7 +12,6 @@ import {
   getProgressColorByValue,
 } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -234,9 +233,12 @@ const MeasureOfSucessProgress = ({ id }: { id?: string }) => {
             </>
           ) : (
             <div className={centeredClass}>
-              <Image src={FileIcon} alt="file" />
-              <p className="text-[var(--text-color2)] text-center font-light">
-                No Record Found.
+              <LottieAnimation
+                animationData={LottieEmptyState}
+                height={"8rem"}
+              />
+              <p className="text-sm text-[var(--text-color2)]">
+                No Measure of Success
               </p>
             </div>
           )}
