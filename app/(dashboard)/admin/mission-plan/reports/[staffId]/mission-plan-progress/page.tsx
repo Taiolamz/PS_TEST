@@ -96,6 +96,7 @@ export default function MissionPlanProgress({
                 <div className="mt-9 inline-flex items-center gap-x-4">
                   <CheckUrlFragment
                     url={staffData?.data?.photo}
+                    className="!rounded-full"
                   >
                     <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
                       {returnInitial(staffData?.data?.name)}
