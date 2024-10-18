@@ -46,7 +46,7 @@ const MetricTableCard = ({
     </svg>
   );
 
-  const [dropDetail, setDropDetail] = useState(false);
+  const [dropDetail, setDropDetail] = useState(true);
   const angleUp = (
     <svg
       width="13"

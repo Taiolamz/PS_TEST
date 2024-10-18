@@ -451,7 +451,7 @@ export const getProgressColorByValue = (value: number) => {
       return "red";
     case value <= 65:
       return "#FFC043E5";
-      // return "yellow";
+    // return "yellow";
     default:
       return "green";
   }
@@ -566,3 +566,13 @@ export const validatePasswordNumber = (password: any) => {
     return false;
   }
 };
+
+//Use to return a number if passed as 65 or "65.00%"
+export function toWholeNumber(value: string | number): number {
+  // Check if the value is a percentage string (e.g. '100.00%')
+  if (typeof value === "string" && value.includes("%")) {
+    // Parse the number part and convert to a whole number
+    return Math.round(parseFloat(value));
+  }
+  return Math.round(Number(value));
+}

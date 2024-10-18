@@ -11,24 +11,22 @@ import ApproveModal from "../../_component/approve-modal";
 import RejectModal from "../../_component/reject-modal";
 import { CustomAccordion } from "@/components/custom-accordion";
 import { DotFilledIcon } from "@radix-ui/react-icons";
-import { Taskdata } from "../../_partials/_downlines/_data/data";
 import {
   useApproveORRejectTaskOutcomeMutation,
   useGetDownlinerExpectedOutcomeQuery,
   useGetMOSMeasureofSuccessQuery,
+  useLazyGetImpliedTaskHistoryQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import {
   abbreviateMonth,
   numberToWords,
 } from "@/app/(dashboard)/_layout/Helper";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
-import { PageLoader } from "@/components/custom-loader";
 import { getColorByStatus, getProgressColorByValue } from "@/utils/helpers";
 import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
-import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ApproveTask({
@@ -99,13 +97,18 @@ export default function ApproveTask({
   //     });
   // };
 
-  // 01j91fn41cjb43nzwxaxngmw3p
   // fetch task comment
   const [
     getMssionPlanFetchComments,
     { isLoading: loadingComment, data: commentData },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
+  // fetch task history
+  const [
+    getSpecifiedTaskDetails,
+    { isLoading: loadingHistory, data: historyData },
+  ] = useLazyGetImpliedTaskHistoryQuery();
+  console.log({ historyData });
   //Add comment on task
   const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
     useAddMssionPlanCommentOnComponentMutation();
@@ -120,6 +123,9 @@ export default function ApproveTask({
         },
         true
       );
+    }
+    if (showHistory) {
+      getSpecifiedTaskDetails(id, true);
     }
   }, [showHistory, showComment, id]);
 
@@ -566,9 +572,9 @@ export default function ApproveTask({
           open={showHistory}
           onClose={() => setShowHistory(false)}
           id={id}
-          loading={false}
-          data={[]}
-          // data={fakehistoryData}
+          loading={loadingHistory}
+          // data={[]}
+          data={historyData?.data?.history}
         />
       </div>
     </DashboardLayout>

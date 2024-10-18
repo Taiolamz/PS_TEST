@@ -203,6 +203,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       providesTags: ["MissionPlanReport"],
     }),
 
+    getImpliedTaskHistory: builder.query({
+      query: (id) => ({
+        url: `/mission-plan-report/implied-task/history/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
+
     // Dashboard endpoint
     getMyMissionPlan: builder.query({
       query: () => ({
@@ -261,4 +269,5 @@ export const {
   useGetMyMissionPlanQuery,
   useGetSpecifiedTaskDetailsQuery,
   useApproveORRejectTaskOutcomeMutation,
+  useLazyGetImpliedTaskHistoryQuery,
 } = missionPlanReportApi;
