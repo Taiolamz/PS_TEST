@@ -2,7 +2,7 @@ import { convertStringToNumber, getProgressColorByValue } from "@/utils/helpers"
 
 interface ReusableProgressLabelProps {
     value: number;
-    title: string
+    title?: string
 }
 export default function ReusableProgressLabel({ value, title }: ReusableProgressLabelProps) {
     return (
@@ -15,9 +15,9 @@ export default function ReusableProgressLabel({ value, title }: ReusableProgress
             >
                 {`${value}%`}
             </span>
-            <span className="text-[#6E7C87] font-bold text-sm">
+            {title && <span className="text-[#6E7C87] font-bold text-sm">
                 {title}
-            </span>
+            </span>}
         </div>
     )
 }

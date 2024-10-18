@@ -229,6 +229,7 @@ type ARG_TYPES = {
   role: string;
   isLineManager: boolean;
 };
+
 export const getAvailableTabs = (arg: ARG_TYPES) => {
   if (arg.role === SUPER_ADMIN) {
     return PAGE_TABS.SUPER_ADMIN;
@@ -576,3 +577,32 @@ export function toWholeNumber(value: string | number): number {
   }
   return Math.round(Number(value));
 }
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Completed":
+      return { color: "#22c55e", status: "Completed" };
+    case "In Progress":
+      return { color: "#eab308", status: "In Progress" };
+    case "Overdue":
+      return { color: "#ef4444", status: "Overdue" };
+    case "Not Started":
+      return { color: "#835101cc", status: "Not Started" };
+    default:
+      return { color: "#0000000", status: "Default" }; // Default color
+  }
+};
+
+export const getTotalByKey = (data: Dictionary[], key: string): number => {
+  return data.reduce((acc, current) => acc + toWholeNumber(current[key]), 0);
+};
+
+export const getStatusData = (arr: Dictionary[]) => {
+  // const sumTotal = arr.reduce((acc, item) => acc + item.total, 0);
+  return arr.map((item) => ({
+    percentage: toWholeNumber(item.percentage),
+    color: getStatusColor(item.status)?.color,
+    status: getStatusColor(item.status).status,
+    total: item.total,
+  }));
+};
