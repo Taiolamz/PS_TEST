@@ -361,8 +361,8 @@ const FORMAT_TABLE_DATA = (obj: any) => {
     address: org?.address,
     status: (
       <BadgeComponent
-        text={!org?.deleted_at ? "Active" : "Closed"}
-        color={!org?.deleted_at ? "green" : "red"}
+        text={org?.status}
+        color={org?.status.toLowerCase() === "active" ? "green" : "red"}
       />
     ),
   }));

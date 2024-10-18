@@ -11,8 +11,10 @@ import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 import {
   useGetOrgTaskQuery,
+  useGetSpecifiedTaskDetailsQuery,
   useGetStaffSpecifiedTaskQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useSearchParams } from "next/navigation";
 // import { useGetSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 
 export default function SpecifiedTask({
@@ -26,15 +28,20 @@ export default function SpecifiedTask({
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
 
+  const searchParams = useSearchParams();
+  const fy = searchParams.get("fy");
+
   const { data, isLoading } = useGetStaffSpecifiedTaskQuery({
     id: params?.reportId,
     params: { fiscal_year: "", cycle: "" },
   });
 
-  const { data: orgData, isLoading: loadingOrg } = useGetOrgTaskQuery({
-    id: params?.reportId,
-    params: { fiscal_year: "", cycle: "" },
-  });
+  const { data: orgData, isLoading: loadingOrg } =
+    useGetSpecifiedTaskDetailsQuery({
+      is_admin: false,
+      staff_id: params?.reportId,
+      fiscal_year: fy || "",
+    });
 
   // console.log({ orgData, loadingOrg, data, isLoading });
 

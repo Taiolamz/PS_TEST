@@ -254,7 +254,7 @@ export default function SubsidiaryDetails() {
               </div>
             </div>
             <div className="inline-flex justify-end gap-x-3">
-              {!subDetailsData?.deleted_at ? (
+              {subDetailsData?.status.toLowerCase() === "active" ? (
                 <>
                   <Link href={ADMIN.EDIT_SUBSIDIARY(id ?? "")}>
                     <Button

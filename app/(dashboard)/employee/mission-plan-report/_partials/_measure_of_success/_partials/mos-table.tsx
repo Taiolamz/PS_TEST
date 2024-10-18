@@ -9,6 +9,7 @@ import ApprovalDrawer from "@/components/drawer/approval-drawer";
 import ApprovalProgress from "@/components/fragment/progress/approval-progress";
 import { useGetFiscalYearsProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
+import { useAppSelector } from "@/redux/store";
 
 const { EMPLOYEE } = routesPath;
 export default function MOSTable() {
@@ -18,7 +19,7 @@ export default function MOSTable() {
   const [page, setPage] = React.useState(1);
 
   const currentMonth = useMemo(() => getCurrentMonth(), []); //Get the current month name
-
+  const { user } = useAppSelector((state) => state.auth);
   const { data, isLoading, isFetching } = useGetFiscalYearsProgressQuery({
     type: "measures",
     page,
@@ -53,11 +54,11 @@ export default function MOSTable() {
                 {
                   label: "View My Report",
                   onActionClick: (param: any, dataTwo: any) => {
-                    router.push(
-                      EMPLOYEE.MOS_REPORT(
-                        row?.name?.props?.children[0]?.props?.children
-                      )
-                    );
+                    router.push(`
+                      ${EMPLOYEE.MOS_REPORT(user?.id || "")}?fy=${
+                      row?.name?.props?.children[0]?.props?.children
+                    }
+                    `);
                   },
                 },
               ];

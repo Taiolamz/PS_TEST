@@ -148,14 +148,10 @@ const SpecifiedTaskProgress = ({ id }: { id?: string }) => {
         </div>
         {specifiedTaskData && specifiedTaskData.length > 0 ? (
           <Link
-            // href={EMPLOYEE.SPECIFIED_TASK_REPORT(
-            //   data?.data?.specified_tasks?.mission_plan_id
-            // )}
             href={
-              data?.data?.specified_tasks?.mission_plan_id
+              data?.data?.specified_tasks?.staff_member_id
                 ? EMPLOYEE.SPECIFIED_TASK_REPORT(
-                    // data?.data?.specified_tasks?.mission_plan_id
-                    id || user?.id || ""
+                    data?.data?.specified_tasks?.staff_member_id || ""
                   )
                 : "#"
             }

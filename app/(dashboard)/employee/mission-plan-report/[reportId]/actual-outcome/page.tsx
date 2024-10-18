@@ -111,7 +111,10 @@ const ActualOutcome = ({
   const user = useAppSelector(selectUser);
 
   // Handle form submit
-  const handleFormSubmit = (val: any) => {
+  const handleFormSubmit = (
+    val: any,
+    { setSubmitting }: { setSubmitting: any }
+  ) => {
     addActualOutcome({
       fiscal_year_id: params?.reportId,
       month: getCurrentMonth(),
@@ -121,9 +124,11 @@ const ActualOutcome = ({
       .then(() => {
         setShowSuccessModal(true);
         setSuccessContent(successMessage?.task);
+        setSubmitting(false);
       })
       .catch((err) => {
         // console.log(err, "error");
+        setSubmitting(false);
       });
   };
 
@@ -245,7 +250,7 @@ const ActualOutcome = ({
                       touched,
                       values,
                       setFieldValue,
-                      setFieldError,
+                      isSubmitting,
                     }: {
                       isValid: boolean;
                       handleChange: any;
@@ -253,7 +258,7 @@ const ActualOutcome = ({
                       values: any;
                       errors: any;
                       setFieldValue: any;
-                      setFieldError: any;
+                      isSubmitting: boolean;
                     }) => (
                       <Form>
                         <FieldArray name="tasks">
@@ -545,10 +550,10 @@ const ActualOutcome = ({
                         </FieldArray>
                         <div className="bg-white p-8 rounded-b">
                           <Button
-                            loading={addingTask}
+                            loading={isSubmitting}
                             type="submit"
                             loadingText="Submitting"
-                            disabled={!isValid || addingTask}
+                            disabled={!isValid || isSubmitting}
                             className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none"
                           >
                             Submit Input
