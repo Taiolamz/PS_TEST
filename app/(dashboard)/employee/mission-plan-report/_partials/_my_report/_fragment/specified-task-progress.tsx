@@ -1,7 +1,8 @@
 import MetricFrame from "@/components/card/frame";
 import { PageLoader } from "@/components/custom-loader";
-import { ReusableProgress } from "@/components/fragment";
+import { LottieAnimation, ReusableProgress } from "@/components/fragment";
 import { Button } from "@/components/ui/button";
+import { LottieEmptyState } from "@/lottie";
 import { FileIcon } from "@/public/assets/icons";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { useGetStaffSpecifiedTaskQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
@@ -245,9 +246,12 @@ const SpecifiedTaskProgress = ({ id }: { id?: string }) => {
             </>
           ) : (
             <div className={centeredClass}>
-              <Image src={FileIcon} alt="file" />
-              <p className="text-[var(--text-color2)] text-center font-light">
-                No Record Found.
+              <LottieAnimation
+                animationData={LottieEmptyState}
+                height={"8rem"}
+              />
+              <p className="text-sm text-[var(--text-color2)]">
+                No Specified Task
               </p>
             </div>
           )}

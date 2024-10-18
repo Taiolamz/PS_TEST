@@ -40,7 +40,7 @@ export default function ReportChallengeModal({
   const formik = useFormik<any>({
     initialValues: {
       challenges: [
-        { title: "", risk_level: "", description: "", recommendation: "" },
+        { title: "", risk_level: "", description: "", recommendations: "" },
       ],
     },
     onSubmit: (value) => handleFormSubmit(value),
@@ -195,8 +195,8 @@ export default function ReportChallengeModal({
                               value={
                                 formik.values.challenges[index].description
                               } // Accessing value
-                              onChange={formik.handleChange} // Handling onChange event
-                              onBlur={formik.handleBlur} // Handling onBlur event
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
                             />
                           </div>
                           <div className="w-full flex-1">
@@ -209,13 +209,13 @@ export default function ReportChallengeModal({
                               // touched={formik.touched.description}
                               // value={formik.values.description}
                               // error={formik.errors.description}
-                              id={`challenges.${index}.recommendation`}
-                              name={`challenges.${index}.recommendation`}
+                              id={`challenges.${index}.recommendations`}
+                              name={`challenges.${index}.recommendations`}
                               value={
-                                formik.values.challenges[index].recommendation
-                              } // Accessing value
-                              onChange={formik.handleChange} // Handling onChange event
-                              onBlur={formik.handleBlur} // Handling onBlur event
+                                formik.values.challenges[index].recommendations
+                              }
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
                             />
                           </div>
                         </div>
