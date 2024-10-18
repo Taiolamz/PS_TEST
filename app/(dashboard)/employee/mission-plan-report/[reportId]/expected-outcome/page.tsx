@@ -91,7 +91,10 @@ const ExpectedOutcome = ({
     useAddTaskOutcomeMutation();
 
   // Handle form submit
-  const handleFormSubmit = (val: any) => {
+  const handleFormSubmit = (
+    val: any,
+    { setSubmitting }: { setSubmitting: any }
+  ) => {
     addTaskOutcome({
       fiscal_year_id: params?.reportId,
       month: getCurrentMonth(),
@@ -101,9 +104,11 @@ const ExpectedOutcome = ({
       .then(() => {
         setShowSuccessModal(true);
         setSuccessContent(successMessage?.task);
+        setSubmitting(false);
       })
       .catch((err) => {
         // console.log(err, "error");
+        setSubmitting(false);
       });
   };
 
@@ -214,7 +219,9 @@ const ExpectedOutcome = ({
                         }
                       }),
                     }}
-                    onSubmit={handleFormSubmit}
+                    onSubmit={(values, { setSubmitting }) => {
+                      handleFormSubmit(values, { setSubmitting });
+                    }}
                     validationSchema={validationSchema}
                   >
                     {({
@@ -223,12 +230,14 @@ const ExpectedOutcome = ({
                       handleChange,
                       touched,
                       values,
+                      isSubmitting,
                     }: {
                       isValid: boolean;
                       handleChange: any;
                       touched: any;
                       values: any;
                       errors: any;
+                      isSubmitting: boolean;
                     }) => (
                       <Form>
                         <FieldArray name="tasks">
@@ -421,10 +430,10 @@ const ExpectedOutcome = ({
                         </FieldArray>
                         <div className="bg-white p-8 rounded-b">
                           <Button
-                            loading={addingTask}
+                            loading={isSubmitting}
                             type="submit"
                             loadingText="Submitting"
-                            disabled={!isValid || addingTask}
+                            disabled={!isValid || isSubmitting}
                             className="text-white text-sm font-medium bg-primary p-2 border flex gap-x-2 border-primary shadow-none"
                           >
                             Submit Input

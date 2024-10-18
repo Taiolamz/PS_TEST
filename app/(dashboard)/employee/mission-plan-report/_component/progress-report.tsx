@@ -55,9 +55,10 @@ export default function ProgressReport({ id }: { id: string }) {
           <div className="mt-9 inline-flex items-center gap-x-4">
             <CheckUrlFragment
               url={staffData?.data?.photo as any}
-              height={100}
-              width={100}
-              className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl"
+              height={160}
+              width={160}
+              imgClassName="rounded-full"
+              className="size-[160px] rounded-full bg-[var(--primary-accent-color)] text-white place-content-center grid text-6xl"
             >
               <div className="size-[160px] rounded-full bg-[var(--primary-color)] text-white place-content-center grid text-6xl">
                 {returnInitial(staffData?.data?.name)}

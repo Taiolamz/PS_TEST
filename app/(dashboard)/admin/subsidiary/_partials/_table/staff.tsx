@@ -52,8 +52,8 @@ export default function StaffTable() {
         setPage(p);
       }}
       addText="New Staff"
-      newBtnBulk={!subDetailsData?.deleted_at}
-      hideNewBtnOne={subDetailsData?.deleted_at}
+      newBtnBulk={subDetailsData?.status.toLowerCase() === "active"}
+      hideNewBtnOne={subDetailsData?.status.toLowerCase() !== "active"}
       tableBodyList={FORMAT_TABLE_DATA(data?.data)}
       loading={isFetching}
       onSearch={(param) => {
