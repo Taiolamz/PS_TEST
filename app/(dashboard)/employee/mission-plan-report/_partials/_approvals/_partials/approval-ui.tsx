@@ -35,7 +35,6 @@ const ApprovalUI = () => {
                 "Staff Role",
                 "Email",
                 "Date Submitted",
-                "Approval Status",
                 "Action",
               ]}
               // perPage={employeeData?.mission_plans?.meta?.per_page}
@@ -109,17 +108,5 @@ const FORMAT_TABLE_DATA = (data: any) => {
     job_title: item?.designation,
     work_email: item?.email,
     created_at: formatDate(item?.date_submitted),
-    status: (
-      <BadgeComponent
-        text={item?.status}
-        color={
-          item?.status?.toLowerCase() === "approved"
-            ? "green"
-            : item?.status?.toLowerCase() === "rejected"
-            ? "red"
-            : "yellow"
-        }
-      />
-    ),
   }));
 };
