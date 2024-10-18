@@ -156,9 +156,9 @@ const AddressInfoBox = ({ data }: { data: Dictionary }) => {
               {/* label value box end */}
               {/* label value box start */}
               <div className={style.label_value_box}>
-                <p className={style.label}>Street</p>
+                <p className={style.label}>Address</p>
                 <p className={style.value}>
-                  {data?.street || "---"}
+                  {data?.address || "---"}
                 </p>
               </div>
               {/* label value box end */}

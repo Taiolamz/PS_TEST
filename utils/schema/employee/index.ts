@@ -15,19 +15,19 @@ export const formSchema = yup.object().shape({
   // unit_id: yup.string().required("Unit is required"),
   designation: yup.string().optional(),
   staff_number: yup.string().optional(),
-  new_employee: yup.string().required("New employee status is required"),
+  // new_employee: yup.string().required("New employee status is required"),
   email: yup
     .string()
     .min(1, "Work Email is required")
     .email("Invalid email address")
     .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
     .required("work Email is required"),
-  line_manager_email: yup
-    .string()
-    .min(1, "Line Manager Email is required")
-    .email("Invalid email address")
-    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
-    .required("Line Manager Email is required"),
+  // line_manager_email: yup
+  //   .string()
+  //   .min(1, "Line Manager Email is required")
+  //   .email("Invalid email address")
+  //   .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email address")
+  //   .required("Line Manager Email is required"),
   phone_number: yup
     .string()
     .optional()

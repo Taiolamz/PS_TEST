@@ -295,7 +295,7 @@ const Employee = () => {
       active: false,
       title: "Total Staffs",
       type: "staff",
-      count: all_staff?.data?.total_staff_count,
+      count: all_staff?.data?.data?.length,
       accentColor: "",
       hide: false,
       icon: "",
@@ -505,7 +505,7 @@ export default Employee;
 const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((item: any, idx: number) => ({
     idx: idx + 1,
-    name: `${item?.last_name} ${item?.last_name}`,
+    name: `${item?.last_name} ${item?.first_name}`,
     email: item?.email || "--",
     department: item?.department?.name || "--",
     line_manager_name: item?.line_manager_name || "--",
