@@ -91,6 +91,7 @@ export default function SpecifiedTask({
                         width: `${toWholeNumber(percentage)}%`,
                         backgroundColor: returnStatusColor(status),
                       }}
+                      key={idx}
                     />
                   );
                 })}
