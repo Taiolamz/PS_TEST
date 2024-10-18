@@ -86,7 +86,7 @@ export default function AddEmployee({
                 name: employee?.subsidiary?.name || "",
                 id: employee?.subsidiary?.id || "",
             },
-            subsidiary_id: employee?.subsidiary_id || "",
+            subsidiary_id: employee?.subsidiary?.id || "",
             line_manager: {
                 name: employee?.line_manager_name || "",
                 email: employee?.line_manager_email || "",
@@ -94,9 +94,23 @@ export default function AddEmployee({
                 value: "",
                 label: "",
             },
+            department: {
+                id: employee?.department?.id || "",
+                name: employee?.department?.name || "",
+            },
             department_id: employee?.department?.id || "",
+            branch: {
+                name: employee?.branch?.name || "",
+                id: employee?.branch?.id || ""
+            },
             branch_id: employee?.branch?.id || "",
+            branch_name: employee?.branch?.name || "",
             unit_id: employee?.unit?.id || "",
+            unit: {
+                name: employee?.unit?.name || "",
+                id: employee?.unit?.id || ""
+            },
+            unit_name: employee?.unit?.name || "",
             designation: employee?.designation || "",
             staff_number: employee?.staff_number || "",
             new_employee: employee?.new_employee || "",
@@ -392,10 +406,17 @@ export default function AddEmployee({
     useEffect(() => {
         if (rolesData?.data) {
             const roleObj = rolesData?.data?.filter((f: Dictionary) => f.name === employee?.role)?.[0] ?? {}
+
             setSelectedRole(roleObj?.name)
             formik.setFieldValue('role_id', roleObj?.id)
         }
-    }, [rolesData])
+        const countryData = COUNTRIES_STATES?.filter(
+            (f: Dictionary) => f.name === employee.country
+        )?.[0];
+        setSelectedCountryData(countryData);
+    }, [rolesData, employee])
+
+    // console.log(formik.isValid)
 
     return (
         <>
@@ -514,6 +535,7 @@ export default function AddEmployee({
                                     placeholder="Work Email"
                                     id="work_email"
                                     name="work_email"
+                                    value={formik.values.email}
                                     onChange={formik.handleChange}
                                     isRequired
                                 />
@@ -529,14 +551,14 @@ export default function AddEmployee({
                                 />
 
                                 {/* <CustomSelect
-                  label="Line Manager name"
-                  placeholder="Grade Level"
-                  options={gradeLevels}
-                  selected={formik.values.level}
-                  setSelected={(value) => formik.setFieldValue("level", value)}
-                  labelClass={labelClassName}
-                  isRequired
-                /> */}
+                                label="Line Manager name"
+                                placeholder="Grade Level"
+                                options={gradeLevels}
+                                selected={formik.values.level}
+                                setSelected={(value) => formik.setFieldValue("level", value)}
+                                labelClass={labelClassName}
+                                isRequired
+                                /> */}
 
                                 <CustomSelect
                                     label="Line Manager name"
@@ -551,7 +573,6 @@ export default function AddEmployee({
                                     //   ...employees as any),
                                     // ]}
                                     options={handleFormatNameLabel(employees)}
-                                    isRequired
                                     selected={formik.values.line_manager.label}
                                     setSelected={handleHeadSelectChange}
                                     selectTwo={formik.values.line_manager.name}
@@ -571,7 +592,7 @@ export default function AddEmployee({
                                     disabled
                                     value={formik.values.line_manager_email}
                                     onChange={formik.handleChange}
-                                    isRequired
+                                // isRequired
                                 />
 
                                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
@@ -619,9 +640,10 @@ export default function AddEmployee({
                                                     user?.organization?.hierarchy
                                                 )?.includes("subsidiary")
                                             }
-                                            selected={selectedBranch}
+                                            selected={formik.values.branch.id}
                                             setSelected={(value) => {
                                                 setSelectedBranch(value);
+                                                formik.setFieldValue("branch.id", value);
                                                 formik.setFieldValue("branch_id", value);
                                                 setSelectedDepartment("");
                                                 formik.setFieldValue("department_id", "");
@@ -654,9 +676,10 @@ export default function AddEmployee({
                                                         user?.organization?.hierarchy
                                                     )?.includes("branch"))
                                             }
-                                            selected={selectedDepartment}
+                                            selected={formik.values.department.id}
                                             setSelected={(value) => {
                                                 setSelectedDepartment(value);
+                                                formik.setFieldValue("department.id", value);
                                                 formik.setFieldValue("department_id", value);
                                                 setSelectedUnit("");
                                                 formik.setFieldValue("unit_id", "");
@@ -692,9 +715,10 @@ export default function AddEmployee({
                                                         user?.organization?.hierarchy
                                                     )?.includes("department"))
                                             }
-                                            selected={selectedUnit}
+                                            selected={formik.values.unit.id}
                                             setSelected={(value) => {
                                                 setSelectedUnit(value);
+                                                formik.setFieldValue("unit.id", value);
                                                 formik.setFieldValue("unit_id", value);
                                             }}
                                             labelClass={labelClassName}
@@ -707,6 +731,7 @@ export default function AddEmployee({
                                     placeholder="Job Title"
                                     id="designation"
                                     name="designation"
+                                    value={formik.values.designation}
                                     onChange={formik.handleChange}
                                 // isRequired
                                 />
@@ -733,6 +758,7 @@ export default function AddEmployee({
                                     placeholder="Staff Number"
                                     id="staff_number"
                                     name="staff_number"
+                                    value={formik.values.staff_number}
                                     onChange={formik.handleChange}
                                 // isRequired
                                 />

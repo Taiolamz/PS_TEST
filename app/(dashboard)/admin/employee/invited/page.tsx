@@ -295,7 +295,7 @@ const Employee = () => {
       active: false,
       title: "Total Staffs",
       type: "staff",
-      count: all_staff?.data?.total_staff_count,
+      count: all_staff?.data?.data?.length,
       accentColor: "",
       hide: false,
       icon: "",

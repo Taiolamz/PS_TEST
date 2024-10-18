@@ -308,7 +308,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                 handleChange={(date) => {
                   //   formik.setFieldValue("date_of_birth", formatDate(date));
                 }}
-                placeholder={data?.resumption_date || "---"}
+                placeholder={data?.resumption_date || ""}
                 error={""}
                 className="relative"
                 iconClass="top-[2rem]"
@@ -321,7 +321,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                 placeholder="Email"
                 id="work email"
                 name="work email"
-                value={data?.work_email || "---"}
+                value={data?.email || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -368,7 +368,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                     placeholder="Staff Subsidiary"
                     id="subsidiary"
                     name="subsidiary"
-                    value={data?.subsidiary_name || "---"}
+                    value={data?.subsidiary?.name || "---"}
                     // onChange={formik.handleChange}
                     // isRequired
                     disabled
@@ -383,7 +383,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                     placeholder="Staff Branch"
                     id="branch"
                     name="branch"
-                    value={data?.branch_name || "---"}
+                    value={data?.branch?.name || "---"}
                     // onChange={formik.handleChange}
                     // isRequired
                     disabled
@@ -398,7 +398,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                     placeholder="Staff Department"
                     id="department"
                     name="department"
-                    value={data?.department_name || "---"}
+                    value={data?.department?.name || "---"}
                     // onChange={formik.handleChange}
                     // isRequired
                     disabled
@@ -413,7 +413,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                     placeholder="Staff Unit"
                     id="unit"
                     name="unit"
-                    value={data?.unit_name || "---"}
+                    value={data?.unit?.name || "---"}
                     // onChange={formik.handleChange}
                     // isRequired
                     disabled
@@ -458,7 +458,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                 placeholder="Former Job Title"
                 id="Former Job Title"
                 name="Former Job Title"
-                value={data?.previous_job_title || "---"}
+                value={data?.previous_designation || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 disabled
@@ -479,7 +479,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                   placeholder="Start Date"
                   id="start_date"
                   name="start_date"
-                  value={data?.previous_start_date || "---"}
+                  value={data?.previous_designation_start_date || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 // disabled
@@ -490,7 +490,7 @@ const WorkInfoBox = ({ data }: { data: Dictionary }) => {
                   placeholder="End Date"
                   id="end_date"
                   name="end_date"
-                  value={data?.previous_end_date || "---"}
+                  value={data?.previous_designation_end_date || "---"}
                 // onChange={formik.handleChange}
                 // isRequired
                 // disabled
