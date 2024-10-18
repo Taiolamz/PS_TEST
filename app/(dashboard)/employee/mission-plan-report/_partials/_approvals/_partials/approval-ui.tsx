@@ -14,7 +14,7 @@ const ApprovalUI = () => {
   const { EMPLOYEE } = routesPath;
 
   const { data, isLoading, isFetching } = useGetApprovalReportQuery({});
-  // console.log(data, isLoading);
+  console.log(data, isLoading);
 
   return (
     <>
@@ -47,7 +47,7 @@ const ApprovalUI = () => {
               onPageChange={(p) => {}}
               onRowClick={() => {}}
               hideNewBtnOne={true}
-              tableBodyList={FORMAT_TABLE_DATA(data)}
+              tableBodyList={FORMAT_TABLE_DATA(data?.data?.data)}
               loading={isFetching}
               dropDown
               dropDownList={[
