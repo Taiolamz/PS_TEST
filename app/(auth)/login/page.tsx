@@ -1,39 +1,97 @@
 "use client";
 
+import { Dictionary } from "@/@types/dictionary";
+import ConfirmationModal from "@/components/atoms/modals/confirm";
+import LoadingModal from "@/components/atoms/modals/loading";
+import { InputOTPGenerator } from "@/components/otp-generator";
 import TogglePassword from "@/components/toggle-password";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useLoginMutation } from "@/redux/services/auth/authApi";
-import { checkUserRole } from "@/utils/helpers";
+import { useAdminResendOTPMutation, useAdminVerifyOTPMutation, useLoginMutation } from "@/redux/services/auth/authApi";
+import { checkUserRole, timeToMinuteSecond } from "@/utils/helpers";
+import useTimeout from "@/utils/hooks/useTimeout";
 import routesPath from "@/utils/routes";
 import { LoginSchema } from "@/utils/schema";
 import { useFormik } from "formik";
+import { ArrowRightIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
-const { REGISTER, FORGOT_PASSWORD, ADMIN, EMPLOYEE } = routesPath;
+const { REGISTER, FORGOT_PASSWORD, ADMIN, EMPLOYEE, ONBOARDING } = routesPath;
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showVerifyOTP, setShowVerifyOTP] = useState(false);
+  const [authUser, setAuthUser] = useState<Dictionary>({});
 
   const [login, { isLoading, error: apiError }]: any = useLoginMutation();
 
   const router = useRouter();
+
+  const { timeLeft, startTimer, isTimerElapsed } = useTimeout({
+    initialTime: 300,
+  });
+
+  const navigateToAuthScreen = (role: string) => {
+    if (checkUserRole(role as string) === "ADMIN") {
+      router.push(ADMIN.OVERVIEW);
+    } else {
+      router.push(EMPLOYEE.OVERVIEW);
+    }
+  }
+
+
+  const [
+    adminVerifyOTP,
+    {
+      isLoading: isVerifyingOTP,
+      isSuccess: OTPVerified,
+      reset: resetVerifyOTP,
+    },
+  ] = useAdminVerifyOTPMutation();
+  const [
+    resendOTP,
+    { isLoading: isResendingOTP, isSuccess: OTPResent, reset: resetResendOTP },
+  ] = useAdminResendOTPMutation();
+  const [OTP, setOTP] = useState<any>("");
+
+  const handleVerifyOTP = (OTP: any) => {
+    adminVerifyOTP({ code: OTP })
+      .unwrap()
+      .then(() => {
+        setShowVerifyOTP(false);
+      });
+  };
+
+  const handleResendOTP = async () => {
+    resendOTP({})
+      .unwrap()
+      .then(() => {
+        toast.success(
+          "Verification code has been successfully sent to your email address"
+        );
+        startTimer();
+      });
+  };
 
   const handleFormSubmit = async () => {
     login({ ...values })
       .unwrap()
       .then((param: any) => {
         const role = param?.data?.user?.role;
-
-        if (checkUserRole(role as string) === "ADMIN") {
-          router.push(ADMIN.OVERVIEW);
-        } else {
-          router.push(EMPLOYEE.OVERVIEW);
+        const hasVerifiedEmail = param?.data?.user?.email_verified_at;
+        setAuthUser(param?.data)
+        if (!hasVerifiedEmail) {
+          setShowVerifyOTP(true)
+          startTimer();
+          return
         }
+        navigateToAuthScreen(role)
+
       })
       .catch(() => {
         // console.log(apiError)
@@ -149,6 +207,80 @@ export default function Login() {
           </span>
         </div>
       </form>
+      <ConfirmationModal
+        show={showVerifyOTP}
+        handleClose={() => setShowVerifyOTP(false)}
+        hasCloseButton={false}
+        title="Verify your email address"
+        message={
+          <span>
+            A Six digit OTP code has been sent to your email{" "}
+            <span className="font-semibold">{values.email}</span>
+          </span>
+        }
+        handleClick={() => {
+          handleVerifyOTP(OTP);
+        }}
+        actionBtnTitle="Verify OTP"
+        actionBtnLoading={isVerifyingOTP}
+        disableActionBtn={OTP.length < 6 || isVerifyingOTP}
+        content={
+          <div className="my-8 flex justify-center flex-col items-center">
+            <InputOTPGenerator length={6} onChange={(code) => setOTP(code)} />
+            <div className="text-[#CC0905] text-center text-sm font-normal mt-8">
+              {timeToMinuteSecond(timeLeft)} mins remaining
+            </div>
+          </div>
+        }
+        footerContent={
+          <>
+            <span className="block text-center font-normal mt-8 text-sm text-[#6E7C87]">
+              Didn’t get the code?{" "}
+              <Button
+                disabled={isResendingOTP || !isTimerElapsed}
+                variant="link"
+                className="px-0 text-primary font-normal"
+                onClick={() => handleResendOTP()}
+              >
+                Resend
+              </Button>{" "}
+            </span>
+          </>
+        }
+      />
+      <ConfirmationModal
+        show={OTPVerified}
+        handleClose={() => resetVerifyOTP()}
+        hasCloseButton={false}
+        icon="/svgs/mail-verified.svg"
+        title="Welcome, You’re all set !"
+        message={
+          <span>
+            Your email address <span className="font-semibold">{values.email}</span> has
+            been verified. Now, this will be associated with your account. Click
+            on the button below to continue
+          </span>
+        }
+        handleClick={() => {
+          resetVerifyOTP();
+          setShowVerifyOTP(false)
+          // navigateToAuthScreen(authUser?.user?.role)
+          router.push(`${ONBOARDING}?ui=get-started&step=1`);
+        }}
+        actionBtnTitle={
+          <div className="flex items-center gap-1">
+            <span>Setup Organization</span>
+            <ArrowRightIcon />
+          </div>
+        }
+        footerContent={
+          <p className="mt-6 font-normal text-[#9AA6AC] text-[11px] text-center">
+            For more enquiries, contact support
+            <span className="text-primary">@mancesupport.com</span>
+          </p>
+        }
+      />
+      <LoadingModal show={isResendingOTP} handleClose={() => null} />
     </div>
   );
 }
