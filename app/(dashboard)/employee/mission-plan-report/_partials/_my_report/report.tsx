@@ -12,16 +12,14 @@ const MyReport = () => {
 
       {/* ----- FILTER/SELECT WRAP END------- */}
       <TeamPerformanceBar />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.8fr 2fr",
-          gap: "3rem",
-        }}
-        className="mt-5"
-      >
-        <MeasureOfSucessProgress />
-        <SpecifiedTaskProgress />
+      {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
+      <div className="grid lg:grid-cols-11 mt-5 gap-5">
+        <div className="col-span-5">
+          <MeasureOfSucessProgress />
+        </div>
+        <div className="col-span-6">
+          <SpecifiedTaskProgress />
+        </div>
       </div>
     </div>
   );
