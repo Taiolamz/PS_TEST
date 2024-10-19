@@ -74,6 +74,7 @@ export default function SpecifiedTaskProgress() {
             target={item?.implied_task?.task || ""}
             targetColor="var(--text-color)"
             targetClassName="!h-4 pl-2 mt-3 bg-[var(--primary-accent-color)]"
+            key={idx}
           />
         ))}
       </div>
