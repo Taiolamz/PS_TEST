@@ -6,7 +6,7 @@ export default function SideContent() {
   const { user } = useAppSelector((state) => state.auth);
 
   return (
-    <div className="bg-[var(--btn-solid-color)] absolute top-0 right-0 w-[350px] h-full z-10 custom-scrollbar px-5 py-8 space-y-7">
+    <div className="bg-[var(--btn-solid-color)] absolute top-0 right-0 w-[400px] h-full z-10 custom-scrollbar px-5 py-8 space-y-7">
       {/* Mission and Vision Statement */}
       {(user.organization?.mission || user.organization?.vision) && (
         <section className="custom-shadow rounded w-full px-3 py-6 space-y-7">

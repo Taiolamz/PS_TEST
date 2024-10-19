@@ -1,9 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetMyMissionPlanQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
-import {
-  formatDate,
-  formatToReadableDate,
-} from "@/utils/helpers/date-formatter";
+import { formatToReadableDate } from "@/utils/helpers/date-formatter";
 import React from "react";
 
 export default function MyMissionPlanCard() {
