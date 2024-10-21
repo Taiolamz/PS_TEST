@@ -11,6 +11,7 @@ import {
   capitalizeFirstLetter,
   convertStringToNumber,
   getProgressColorByValue,
+  toWholeNumber,
 } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import Image from "next/image";
@@ -190,7 +191,7 @@ const SpecifiedTaskProgress = ({ id }: { id?: string }) => {
                     }}
                     className="text-[#EC1410] font-bold text-2xl"
                   >
-                    {completedTask || "0%"}
+                    {toWholeNumber(completedTask) || 0}%
                   </span>
                   <span className="text-[#6E7C87] font-bold text-sm">
                     Completed

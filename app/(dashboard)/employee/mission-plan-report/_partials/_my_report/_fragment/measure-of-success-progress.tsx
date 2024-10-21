@@ -10,6 +10,7 @@ import {
   capitalizeFirstLetter,
   convertStringToNumber,
   getProgressColorByValue,
+  toWholeNumber,
 } from "@/utils/helpers";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
@@ -160,7 +161,7 @@ const MeasureOfSucessProgress = ({ id }: { id?: string }) => {
                   }}
                   className="font-bold text-2xl"
                 >
-                  {(achievedMos || "0%") as string}
+                  {toWholeNumber(achievedMos) || 0}%
                 </span>
                 <span className="text-[#6E7C87] font-bold text-sm">
                   Achieved

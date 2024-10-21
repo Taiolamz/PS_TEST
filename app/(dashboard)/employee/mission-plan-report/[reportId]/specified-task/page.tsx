@@ -69,7 +69,7 @@ export default function SpecifiedTask({
                 {orgData?.data?.task_activity?.reduce(
                   (acc: number, curr: any) => acc + curr.total,
                   0
-                )}
+                ) || 0}
               </p>
             </div>
 

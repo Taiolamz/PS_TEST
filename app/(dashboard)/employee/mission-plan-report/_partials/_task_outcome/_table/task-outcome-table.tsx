@@ -56,7 +56,7 @@ const TaskOutcomeTable = () => {
                   label: "View My Report",
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(`
-                      ${EMPLOYEE.MOS_REPORT(user?.id || "")}?fy=${
+                      ${EMPLOYEE.SPECIFIED_TASK_REPORT(user?.id || "")}?fy=${
                       row?.name?.props?.children[0]?.props?.children
                     }
                     `);

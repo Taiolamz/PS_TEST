@@ -73,13 +73,13 @@ export default function ProgressReport({ id }: { id: string }) {
           </div>
 
           {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
-          <div className="grid lg:grid-cols-12 mt-10 gap-5">
+          <div className="grid lg:grid-cols-11 mt-10 gap-5">
             {/* <MOSCard id={params.reportId} />
       <SpecifiedTaskCard id={params.reportId} /> */}
             <div className="col-span-5">
               <MeasureOfSucessProgress id={id} />
             </div>
-            <div className="col-span-7">
+            <div className="col-span-6">
               <SpecifiedTaskProgress id={id} />
             </div>
           </div>
