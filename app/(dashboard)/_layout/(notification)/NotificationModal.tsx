@@ -4,6 +4,8 @@ import { styleText } from "util";
 import style from "../styles/NotificationModal.module.css";
 import NotifyBox from "./NotifyBox";
 import { notiList } from "./noti_junks";
+import { useGetAllNotificationQuery } from "@/redux/services/notification/notificationApi";
+import { PageLoader } from "@/components/custom-loader";
 
 interface myComponentProps {
   visible?: boolean;
@@ -34,7 +36,7 @@ const NotificationModal = ({ visible, onClose }: myComponentProps) => {
     </svg>
   );
 
- 
+  const { data: notifyData, isLoading } = useGetAllNotificationQuery({});
 
   return (
     <>
@@ -54,19 +56,26 @@ const NotificationModal = ({ visible, onClose }: myComponentProps) => {
           </div>
           {/* notitifcation header end */}
           {/* notify body start */}
-          <div className={style.notification_body}>
-            {notiList?.map((chi, idx) => {
-              return (
-                <NotifyBox
-                  key={idx}
-                  id={`${chi?.id}-${idx}`}
-                  text={chi?.text}
-                  title={chi?.title}
-                  date={chi?.date}
-                />
-              );
-            })}
-          </div>
+          {isLoading ? (
+            <div className="flex justify-center flex-1 items-center -scale-75">
+              <PageLoader />
+            </div>
+          ) : (
+            <div className={style.notification_body}>
+              {notifyData?.data?.map((chi: any, idx: number) => {
+                return (
+                  <NotifyBox
+                    key={idx}
+                    id={chi?.id}
+                    text={chi?.notification_information?.body}
+                    title={chi?.notification_information?.title}
+                    date={chi?.notification_information?.date}
+                    url={chi?.notification_information?.url}
+                  />
+                );
+              })}
+            </div>
+          )}
           {/* notify body end */}
         </div>
       </ReusableDrawer>

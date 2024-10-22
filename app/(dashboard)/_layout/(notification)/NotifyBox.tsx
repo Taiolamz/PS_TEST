@@ -6,6 +6,7 @@ interface myComponentProps {
   title?: string;
   text?: string;
   date?: string;
+  url?: string;
   onView?: () => void;
   id?: any;
 }
@@ -26,7 +27,15 @@ const checkIcon = (
   </svg>
 );
 
-const NotifyBox = ({ children, onView, text, title, id, date }: myComponentProps) => {
+const NotifyBox = ({
+  children,
+  onView,
+  text,
+  title,
+  id,
+  date,
+  url,
+}: myComponentProps) => {
   const [showView, setShowView] = useState("");
   return (
     <div
@@ -52,7 +61,7 @@ const NotifyBox = ({ children, onView, text, title, id, date }: myComponentProps
               "Create strategic pillars for staff in the organization to run their mission plan for the financial year."}
           </p>
           <div className={style.date}>
-           <span>{date}</span>
+            <span>{date}</span>
           </div>
         </div>
         {/* dot here */}
@@ -66,7 +75,7 @@ const NotifyBox = ({ children, onView, text, title, id, date }: myComponentProps
         }`}
       >
         <div className={style.view_box}>
-            <p className={style.text}>View</p>
+          <p className={style.text}>View</p>
         </div>
       </div>
     </div>
