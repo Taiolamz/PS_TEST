@@ -55,7 +55,7 @@ export default function MOSTable() {
                   label: "View My Report",
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(`
-                      ${EMPLOYEE.MOS_REPORT(user?.id || "")}?fy=${
+                      ${EMPLOYEE.MOS_REPORT(user?.staff_member_id || "")}?fy=${
                       row?.name?.props?.children[0]?.props?.children
                     }
                     `);
