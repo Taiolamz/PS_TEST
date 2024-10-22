@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import MetricTableCard from "@/components/card/metric-table-card";
-import CustomSelect from "@/components/custom-select";
-import ChallengeDrawer from "@/components/drawer/challenge-drawer";
-import CustomCommentDrawer from "@/components/drawer/comment-drawer";
-import { ActionLabel, CardContainer } from "@/components/fragment";
-import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
-import { getProgressColorByValue } from "@/utils/helpers";
-import React from "react";
-import { CHALLENGES_DATA, MOS_DATA } from "../../_data";
-import OrganizationTargetChart from "../../_charts/organization-target";
-import MeasureOfSucessMetricTableCard from "@/components/card/mos-table-card";
-import { Dictionary } from "@/@types/dictionary";
+import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
+import MetricTableCard from '@/components/card/metric-table-card';
+import CustomSelect from '@/components/custom-select';
+import ChallengeDrawer from '@/components/drawer/challenge-drawer';
+import CustomCommentDrawer from '@/components/drawer/comment-drawer';
+import { ActionLabel, CardContainer } from '@/components/fragment';
+import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
+import { getProgressColorByValue } from '@/utils/helpers';
+import React from 'react';
+import { CHALLENGES_DATA, MOS_DATA } from '../../_data';
+import OrganizationTargetChart from '../../_charts/organization-target';
+import MeasureOfSucessMetricTableCard from '@/components/card/mos-table-card';
+import { Dictionary } from '@/@types/dictionary';
 
 export default function OrganizationMeasureOfSuccess() {
   const [showChallengeModal, setShowChallengeModal] = React.useState(false);
@@ -1340,16 +1340,15 @@ export default function OrganizationMeasureOfSuccess() {
   ];
 
   return (
-    <DashboardLayout headerTitle="Measure of Success Overview" back>
-      <section className="p-5">
+    <DashboardLayout
+      headerTitle='Measure of Success Overview'
+      back
+    >
+      <section className='p-5'>
         <CardContainer className="mb-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <ActionLabel
-                label="Filter"
-                icon={filterIcon}
-                iconPosition="right"
-              />
+              <ActionLabel label='Filter' icon={filterIcon} iconPosition='right' />
 
               <div className="flex items-center">
                 <CustomSelect
@@ -1371,29 +1370,17 @@ export default function OrganizationMeasureOfSuccess() {
                   className="w-[150px] text-xs rounded-none rounded-r-[15px]"
                 />
               </div>
-              <ActionLabel
-                label="Reset"
-                icon={undoIcon}
-                className="text-red-500"
-                iconPosition="right"
-                labelClass="text-red-500"
-              />
+              <ActionLabel label='Reset' icon={undoIcon} className='text-red-500' iconPosition='right' labelClass='text-red-500' />
             </div>
 
             {/* -----EXPORT---- */}
-            <ActionLabel
-              label="Export"
-              icon={exportIcon}
-              iconPosition="left"
-              className="border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF]"
-              labelClass="text-xs text-[#6E7C87]"
-            />
+            <ActionLabel label='Export' icon={exportIcon} iconPosition='left' className='border border-[#E5E9EB] p-3 rounded-[6px] bg-[#FFFFFF]' labelClass='text-xs text-[#6E7C87]' />
           </div>
         </CardContainer>
 
-        <OrganizationTargetChart />
-
-        {MOS_DATA?.map((item: Dictionary, idx: number) => {
+       <OrganizationTargetChart/>
+        
+       {MOS_DATA?.map((item: Dictionary, idx: number) => {
           const {
             title,
             fy_target,
@@ -1422,6 +1409,7 @@ export default function OrganizationMeasureOfSuccess() {
             />
           );
         })}
+        
       </section>
       <ChallengeDrawer
         open={showChallengeModal}
@@ -1431,7 +1419,7 @@ export default function OrganizationMeasureOfSuccess() {
       <CustomCommentDrawer
         open={showCommentModal}
         onClose={() => setShowCommentModal(false)}
-        id={"modalId"}
+        id={'modalId'}
         data={[]}
         handleSubmit={(value) => {
           // console.log(value, "comment");
@@ -1439,5 +1427,5 @@ export default function OrganizationMeasureOfSuccess() {
         commentType="specified-task"
       />
     </DashboardLayout>
-  );
+  )
 }
