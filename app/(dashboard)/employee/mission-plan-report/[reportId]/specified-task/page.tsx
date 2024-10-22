@@ -1,18 +1,13 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import React, { useEffect } from "react";
-import MetricTableCard from "@/components/card/metric-table-card";
-import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
 import MetricFrame from "@/components/card/frame";
-import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 import {
-  useGetOrgTaskQuery,
   useGetSpecifiedTaskDetailsQuery,
-  useGetStaffSpecifiedTaskQuery,
   useLazyGetParentEntityChallengesQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useSearchParams } from "next/navigation";
@@ -20,7 +15,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toWholeNumber } from "@/utils/helpers";
 import { cn } from "@/lib/utils";
 import MetricTableCardTwo from "@/components/card/metric-table-card-two";
-// import { useGetSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
 
 export default function SpecifiedTask({
   params,
@@ -43,18 +41,36 @@ export default function SpecifiedTask({
       fiscal_year: fy || "",
     });
 
+  //fetch challenges
   const [
     getParentEntityChallenges,
     { data: challengeData, isLoading: loadingChallenges },
   ] = useLazyGetParentEntityChallengesQuery();
 
+  // fetch mos comment
+  const [
+    getMssionPlanFetchComments,
+    { isLoading: loadingComment, data: commentData },
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
+
+  //Add comment on mos
+  const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
+
   useEffect(() => {
     if (challengeModal) {
       getParentEntityChallenges({ type: "specified-task", id: modalId });
     }
+    if (commentModal) {
+      getMssionPlanFetchComments(
+        {
+          component_id: modalId,
+          component_type: "specified-task",
+        },
+        true
+      );
+    }
   }, [commentModal, challengeModal]);
-
-  console.log({ orgData, loadingOrg });
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
@@ -164,13 +180,6 @@ export default function SpecifiedTask({
                 measure_of_success,
                 id,
               } = chi;
-              console.log(
-                measure_of_success?.map((item: any) => ({
-                  label: item?.measure,
-                  textColor: "var(--primary-color)",
-                  bgColor: "var(--primary-accent-color)",
-                }))
-              );
               return (
                 <MetricTableCardTwo
                   key={idx}
@@ -215,17 +224,24 @@ export default function SpecifiedTask({
         open={challengeModal}
         onClose={() => setChallengeModal(false)}
         id={modalId}
-        data={[]}
+        loading={loadingChallenges}
+        data={challengeData?.data?.challenges}
       />
       <CustomCommentDrawer
         open={commentModal}
         onClose={() => setCommentModal(false)}
         id={modalId}
-        handleSubmit={(value) => {
-          // console.log(value, "comment");
-        }}
         commentType="specified-task"
-        data={allComment}
+        data={commentData?.data || []}
+        handleSubmit={(response, resetForm) => {
+          addMssionPlanCommentOnComponent(response)
+            .unwrap()
+            .then(() => {
+              resetForm();
+            });
+        }}
+        loadingComment={loadingComment}
+        loadingAddComment={addingComment}
       />
     </DashboardLayout>
   );
@@ -1541,42 +1557,6 @@ const specifiedTaskDetails = [
         ],
       },
     ],
-  },
-];
-
-const challengesData = [
-  {
-    id: 1,
-    title: "Incomplete Implied Tasks for Q1",
-    priority: "High",
-    priorityColor: "red", // Can be used to set the background of the status label
-    description:
-      "Please look through your implied tasks, not complete. I have informed OED to decline it",
-    recommendation: "remove user from the team",
-  },
-  {
-    id: 2,
-    title: "Incomplete Implied Tasks for Q2",
-    priority: "Mid",
-    priorityColor: "yellow",
-    description: "Please look through your implied tasks, not complete",
-    recommendation: "remove user from the team",
-  },
-  {
-    id: 3,
-    title: "Incomplete Implied Tasks for Q3",
-    priority: "Low",
-    priorityColor: "green",
-    description: "Please look through your implied tasks, not complete",
-    recommendation: "remove user from the team",
-  },
-  {
-    id: 4,
-    title: "Incomplete Implied Tasks for Q4",
-    priority: "High",
-    priorityColor: "red",
-    description: "Please look through your implied tasks, not complete",
-    recommendation: "remove user from the team",
   },
 ];
 
