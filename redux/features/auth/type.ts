@@ -29,7 +29,7 @@ type LineManager = {
 };
 
 type User = {
-  staff_member_id: string;
+  staff_member_id?: string;
   role?: string;
   designation?: string;
   email?: string;
