@@ -47,7 +47,7 @@ const OrganizationReports = () => {
     const TASK_COMPLETION = org_mission_plan?.data?.task_completion ?? []
     const TARGET_MOS = org_mission_plan?.data?.target_measure_of_success ?? []
 
-    console.log(TASK_COMPLETION)
+    // console.log(TASK_COMPLETION)
 
     const handleFormatCycle = () => {
         const cycles = (data?.data?.cycles as any[])?.map((chi) => {
