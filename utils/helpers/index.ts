@@ -606,3 +606,14 @@ export const getStatusData = (arr: Dictionary[]) => {
     total: item.total,
   }));
 };
+
+// return the color for the pecentage
+export const getPercentageColor = (number: number): string => {
+  if (number >= 70) {
+    return "#339e8d";
+  } else if (number >= 40 && number <= 69) {
+    return "#ffdc5d";
+  } else {
+    return "#ec1410";
+  }
+};
