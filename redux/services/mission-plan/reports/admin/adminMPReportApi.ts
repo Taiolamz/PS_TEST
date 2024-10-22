@@ -4,9 +4,9 @@ export const adminMPReportApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAdminOrganizationTarget: builder.query({
       query: (payload) => ({
-        url: `/admin/organization/target`,
+        url: `/mission-plan-report/organization-target`,
         method: "GET",
-        params: payload.params
+        params: payload.params,
       }),
       providesTags: ["MissionPlanReport"],
     }),
