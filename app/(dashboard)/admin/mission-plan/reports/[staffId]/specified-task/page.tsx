@@ -1443,7 +1443,7 @@ export default function OrganizationSpecifiedTask() {
       <ChallengeDrawer
         open={showChallengeModal}
         onClose={() => setShowChallengeModal(false)}
-        data={CHALLENGES_DATA}
+        data={[]}
       />
       <CustomCommentDrawer
         open={showCommentModal}

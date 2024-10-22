@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MeasureOfSucessProgress from "../_partials/_my_report/_fragment/measure-of-success-progress";
 import SpecifiedTaskProgress from "../_partials/_my_report/_fragment/specified-task-progress";
 import ReportFilter from "../_partials/_my_report/_fragment/report-filter";
@@ -6,20 +6,32 @@ import {
   useGetMissionPlanReportCycleQuery,
   useGetStaffPhotoFiscalYearQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { returnInitial } from "@/utils/helpers";
-import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import CheckUrlFragment from "@/components/fragment/ImageFallBack";
+import { useDispatch } from "react-redux";
+import {
+  resetFilter,
+  setFilteredFiscalYear,
+} from "@/redux/features/mission-plan/report/employee/employeeMissionPlanReport";
 
 export default function ProgressReport({ id }: { id: string }) {
-  const router = useRouter();
-  const [fiscalYear, setFiscalYear] = React.useState("");
-  const [missionCycle, setMissionCycle] = React.useState("");
-
   const { data: staffData, isLoading: loadingStaffPhoto } =
     useGetStaffPhotoFiscalYearQuery(id);
-  const { data, isLoading, isFetching } = useGetMissionPlanReportCycleQuery();
+
+  const dispatch = useDispatch();
+
+  const searchParams = useSearchParams();
+  const fy = searchParams.get("fy");
+
+  useEffect(() => {
+    if (fy) {
+      dispatch(setFilteredFiscalYear(fy));
+    } else {
+      dispatch(resetFilter());
+    }
+  }, []);
 
   return (
     <div className="m-5">
@@ -74,8 +86,6 @@ export default function ProgressReport({ id }: { id: string }) {
 
           {/* ----- SPECIFIED TASK/MEASURE OF SUCCESS------- */}
           <div className="grid lg:grid-cols-11 mt-10 gap-5">
-            {/* <MOSCard id={params.reportId} />
-      <SpecifiedTaskCard id={params.reportId} /> */}
             <div className="col-span-5">
               <MeasureOfSucessProgress id={id} />
             </div>

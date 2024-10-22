@@ -1414,7 +1414,7 @@ export default function OrganizationMeasureOfSuccess() {
       <ChallengeDrawer
         open={showChallengeModal}
         onClose={() => setShowChallengeModal(false)}
-        data={CHALLENGES_DATA}
+        data={[]}
       />
       <CustomCommentDrawer
         open={showCommentModal}

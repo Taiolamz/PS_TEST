@@ -247,6 +247,14 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
       }),
       providesTags: ["MissionPlanReport"],
     }),
+
+    getParentEntityChallenges: builder.query({
+      query: (params: { type: string; id: string }) => ({
+        url: `/challenges/components?parent_type=${params?.type}&parent_id=${params?.id}`,
+        method: "GET",
+      }),
+      providesTags: ["MissionPlanReport"],
+    }),
   }),
 });
 
@@ -279,4 +287,5 @@ export const {
   useApproveORRejectTaskOutcomeMutation,
   useLazyGetImpliedTaskHistoryQuery,
   useGetDashboardSpecifiedTaskSummaryQuery,
+  useLazyGetParentEntityChallengesQuery,
 } = missionPlanReportApi;

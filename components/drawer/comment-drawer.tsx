@@ -178,11 +178,14 @@ export default function CustomCommentDrawer({
                     </div>
                   ))
                 ) : (
-                  <div className="overflow-hidden">
+                  <div className="overflow-hidden place-content-center text-center">
                     <LottieAnimation
                       animationData={LottieEmptyState}
                       height={"8rem"}
                     />
+                    <p className="text-sm text-[var(--text-color2)]">
+                      No Comment Available
+                    </p>
                   </div>
                 )}
               </div>

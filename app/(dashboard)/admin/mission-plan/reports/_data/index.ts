@@ -122,7 +122,7 @@ export const CHALLENGES_DATA = [
   {
     id: 1,
     title: "Incomplete Implied Tasks for Q1",
-    priority: "High",
+    risk_level: "High",
     priorityColor: "red", // Can be used to set the background of the status label
     description:
       "Please look through your implied tasks, not complete. I have informed OED to decline it",
@@ -131,7 +131,7 @@ export const CHALLENGES_DATA = [
   {
     id: 2,
     title: "Incomplete Implied Tasks for Q2",
-    priority: "Mid",
+    risk_level: "Mid",
     priorityColor: "yellow",
     description: "Please look through your implied tasks, not complete",
     recommendation: "remove user from the team",
@@ -139,7 +139,7 @@ export const CHALLENGES_DATA = [
   {
     id: 3,
     title: "Incomplete Implied Tasks for Q3",
-    priority: "Low",
+    risk_level: "Low",
     priorityColor: "green",
     description: "Please look through your implied tasks, not complete",
     recommendation: "remove user from the team",
@@ -147,7 +147,7 @@ export const CHALLENGES_DATA = [
   {
     id: 4,
     title: "Incomplete Implied Tasks for Q4",
-    priority: "High",
+    risk_level: "High",
     priorityColor: "red",
     description: "Please look through your implied tasks, not complete",
     recommendation: "remove user from the team",

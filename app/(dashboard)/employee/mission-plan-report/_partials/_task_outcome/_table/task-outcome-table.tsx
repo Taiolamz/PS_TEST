@@ -56,9 +56,9 @@ const TaskOutcomeTable = () => {
                   label: "View My Report",
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(`
-                      ${EMPLOYEE.SPECIFIED_TASK_REPORT(user?.id || "")}?fy=${
-                      row?.name?.props?.children[0]?.props?.children
-                    }
+                      ${EMPLOYEE.SPECIFIED_TASK_REPORT(
+                        user?.staff_member_id || ""
+                      )}?fy=${row?.name?.props?.children[0]?.props?.children}
                     `);
                   },
                 },

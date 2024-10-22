@@ -56,75 +56,25 @@ const SpecifiedTaskProgress = ({ id }: { id?: string }) => {
     },
   ];
 
-  // const specifiedTaskProgressDetails = [
-  //   {
-  //     label: "Create a new Process flow for Zojatech",
-  //     progress: 25,
-  //     value_color: "#EC1410",
-  //     color: "red",
-  //   },
-  //   {
-  //     label:
-  //       "Achieve revenue from selling Zojatech Software Product to the open Market",
-  //     progress: 5,
-  //     value_color: "#EC1410",
-  //     color: "red",
-  //   },
-  //   {
-  //     label: "Onboard 200 new clients on Mance",
-  //     progress: 35,
-  //     value_color: "#EC1410",
-  //     color: "red",
-  //   },
-  //   {
-  //     label: "Get 2 Technology Partners",
-  //     progress: 40,
-  //     value_color: "#EC1410",
-  //     color: "red",
-  //   },
-  //   {
-  //     label: "Onboard 200 new clients on Revvex",
-  //     progress: 50,
-  //     value_color: "#FFC043",
-  //     color: "yellow",
-  //   },
-  //   {
-  //     label: "Onboard 200 new clients on Revvex",
-  //     progress: 50,
-  //     value_color: "#FFC043",
-  //     color: "yellow",
-  //   },
-  //   {
-  //     label: "Achieve 70% OLA Adherence",
-  //     progress: 10,
-  //     value_color: "#EC1410",
-  //     color: "red",
-  //   },
-  //   {
-  //     label: "Achieve 70% OLA Adherence",
-  //     progress: 5,
-  //     value_color: "#EC1410",
-  //     color: "red",
-  //   },
-  // ];
-
-  // const id = "344ac"; //dummy ID;
   const { EMPLOYEE } = routesPath;
 
   const user = useAppSelector(selectUser);
+  // Filter
+  const { fiscal_year, mission_cycle } = useAppSelector(
+    (state) => state.employee_mission_plan_filter
+  );
 
   const userId = id ? id : user?.id;
 
-  const { data, isLoading, isFetching, refetch } =
-    useGetStaffSpecifiedTaskQuery(
-      {
-        id: userId,
-        params: { fiscal_year: "", cycle: "" },
-      },
-      {
-        skip: !user?.id,
-      }
-    );
+  const { data, isLoading, isFetching } = useGetStaffSpecifiedTaskQuery(
+    {
+      id: userId,
+      params: { fiscal_year: fiscal_year, cycle: mission_cycle },
+    },
+    {
+      skip: !user?.id,
+    }
+  );
 
   const specifiedTaskData: SpecifedTaskData[] =
     data?.data?.specified_tasks?.specified_tasks ?? [];

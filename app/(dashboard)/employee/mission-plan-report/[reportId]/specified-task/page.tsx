@@ -1,24 +1,30 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import React from "react";
-import MetricTableCard from "@/components/card/metric-table-card";
-import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
+import React, { useEffect } from "react";
 import MetricFrame from "@/components/card/frame";
-import { ReusableSegmentProgress } from "@/components/fragment";
 import Image from "next/image";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 import {
-  useGetOrgTaskQuery,
   useGetSpecifiedTaskDetailsQuery,
-  useGetStaffSpecifiedTaskQuery,
+  useLazyGetParentEntityChallengesQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useSearchParams } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toWholeNumber } from "@/utils/helpers";
 import { cn } from "@/lib/utils";
-// import { useGetSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import MetricTableCardTwo from "@/components/card/metric-table-card-two";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
+import { useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  resetFilter,
+  setFilteredFiscalYear,
+} from "@/redux/features/mission-plan/report/employee/employeeMissionPlanReport";
 
 export default function SpecifiedTask({
   params,
@@ -31,24 +37,64 @@ export default function SpecifiedTask({
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
 
+  const dispatch = useDispatch();
+
+  // Filter
+  const { fiscal_year, mission_cycle } = useAppSelector(
+    (state) => state.employee_mission_plan_filter
+  );
   const searchParams = useSearchParams();
   const fy = searchParams.get("fy");
 
-  // const { data, isLoading } = useGetStaffSpecifiedTaskQuery({
-  //   id: params?.reportId,
-  //   params: { fiscal_year: "", cycle: "" },
-  // });
+  useEffect(() => {
+    if (fy) {
+      dispatch(setFilteredFiscalYear(fy));
+    } else {
+      dispatch(resetFilter());
+    }
+  }, []);
 
-  const { data: orgData, isLoading: loadingOrg } =
-    useGetSpecifiedTaskDetailsQuery({
-      is_admin: false,
-      staff_id: params?.reportId,
-      fiscal_year: fy || "",
-    });
+  const {
+    data: orgData,
+    isLoading: loadingOrg,
+    isFetching: fetchingOrg,
+  } = useGetSpecifiedTaskDetailsQuery({
+    is_admin: false,
+    staff_id: params?.reportId,
+    fiscal_year: fiscal_year || "",
+    cycle: mission_cycle || "",
+  });
 
-  // console.log({ orgData, loadingOrg });
+  //fetch challenges
+  const [
+    getParentEntityChallenges,
+    { data: challengeData, isLoading: loadingChallenges },
+  ] = useLazyGetParentEntityChallengesQuery();
 
-  // const { data, isLoading, isFetching } = useGetSpecifiedTaskProgressQuery();
+  // fetch task comment
+  const [
+    getMssionPlanFetchComments,
+    { isLoading: loadingComment, data: commentData },
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
+
+  //Add comment on task
+  const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
+
+  useEffect(() => {
+    if (challengeModal) {
+      getParentEntityChallenges({ type: "specified-task", id: modalId });
+    }
+    if (commentModal) {
+      getMssionPlanFetchComments(
+        {
+          component_id: modalId,
+          component_type: "specified-task",
+        },
+        true
+      );
+    }
+  }, [commentModal, challengeModal]);
 
   return (
     <DashboardLayout back headerTitle="Specified Task Overview">
@@ -58,7 +104,7 @@ export default function SpecifiedTask({
         {/* Filter Card Section End */}
 
         {/* Team Performance task bar Start */}
-        {loadingOrg ? (
+        {loadingOrg || fetchingOrg ? (
           <Skeleton className="w-full h-[198px] bg-[var(--primary-accent-color)] rounded-sm mt-10" />
         ) : (
           <MetricFrame className="flex flex-col gap-4 mt-10">
@@ -144,38 +190,50 @@ export default function SpecifiedTask({
 
         {/*   Specified Task Details Section Start */}
         <div className="mt-7">
-          {loadingOrg ? (
+          {loadingOrg || fetchingOrg ? (
             <>
               <Skeleton className="w-full h-[177px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
               <Skeleton className="w-full h-[177px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
             </>
           ) : (
-            specifiedTaskDetails.map((chi, idx) => {
+            orgData?.data?.specified_task?.map((chi: any, idx: number) => {
               const {
-                title,
-                weight,
-                percentage,
-                tasks,
-                measureOfSuccessDetails,
-                color,
+                task,
+                measure_of_success_percentage_completion,
+                implied_tasks,
+                measure_of_success,
                 id,
               } = chi;
               return (
-                <MetricTableCard
+                <MetricTableCardTwo
                   key={idx}
                   id={id}
-                  title={title}
-                  percentage={percentage}
-                  measureOfSuccessDetails={measureOfSuccessDetails}
-                  tasks={tasks}
-                  progressValue={percentage}
-                  progressColor={color as "red"}
+                  title={task}
+                  percentage={toWholeNumber(
+                    measure_of_success_percentage_completion
+                  )}
+                  measureOfSuccessDetails={measure_of_success?.map(
+                    (item: any) => ({
+                      label: item?.measure,
+                      textColor: "var(--primary-color)",
+                      bgColor: "var(--primary-accent-color)",
+                    })
+                  )}
+                  tasks={implied_tasks}
+                  progressValue={toWholeNumber(
+                    measure_of_success_percentage_completion
+                  )}
+                  progressColor={valueColor(
+                    toWholeNumber(measure_of_success_percentage_completion)
+                  )}
                   onClickComment={(id) => {
                     id && setModalId(id);
+                    setChallengeModal(false);
                     setCommentModal(true);
                   }}
                   onClickViewChallenge={(id) => {
                     id && setModalId(id);
+                    setCommentModal(false);
                     setChallengeModal(true);
                   }}
                 />
@@ -190,17 +248,24 @@ export default function SpecifiedTask({
         open={challengeModal}
         onClose={() => setChallengeModal(false)}
         id={modalId}
-        data={challengesData}
+        loading={loadingChallenges}
+        data={challengeData?.data?.challenges}
       />
       <CustomCommentDrawer
         open={commentModal}
         onClose={() => setCommentModal(false)}
         id={modalId}
-        handleSubmit={(value) => {
-          // console.log(value, "comment");
-        }}
         commentType="specified-task"
-        data={allComment}
+        data={commentData?.data || []}
+        handleSubmit={(response, resetForm) => {
+          addMssionPlanCommentOnComponent(response)
+            .unwrap()
+            .then(() => {
+              resetForm();
+            });
+        }}
+        loadingComment={loadingComment}
+        loadingAddComment={addingComment}
       />
     </DashboardLayout>
   );
@@ -211,6 +276,16 @@ const statusColors: { [key: string]: string } = {
   Completed: "#008000",
   "Under Review": "#FFD700",
   Overdue: "#FF0000",
+};
+
+const valueColor = (number: number): "red" | "yellow" | "green" => {
+  if (number >= 70) {
+    return "green";
+  } else if (number >= 40 && number <= 69) {
+    return "yellow";
+  } else {
+    return "red";
+  }
 };
 
 const returnStatusColor = (status: string): string => {
@@ -1506,42 +1581,6 @@ const specifiedTaskDetails = [
         ],
       },
     ],
-  },
-];
-
-const challengesData = [
-  {
-    id: 1,
-    title: "Incomplete Implied Tasks for Q1",
-    priority: "High",
-    priorityColor: "red", // Can be used to set the background of the status label
-    description:
-      "Please look through your implied tasks, not complete. I have informed OED to decline it",
-    recommendation: "remove user from the team",
-  },
-  {
-    id: 2,
-    title: "Incomplete Implied Tasks for Q2",
-    priority: "Mid",
-    priorityColor: "yellow",
-    description: "Please look through your implied tasks, not complete",
-    recommendation: "remove user from the team",
-  },
-  {
-    id: 3,
-    title: "Incomplete Implied Tasks for Q3",
-    priority: "Low",
-    priorityColor: "green",
-    description: "Please look through your implied tasks, not complete",
-    recommendation: "remove user from the team",
-  },
-  {
-    id: 4,
-    title: "Incomplete Implied Tasks for Q4",
-    priority: "High",
-    priorityColor: "red",
-    description: "Please look through your implied tasks, not complete",
-    recommendation: "remove user from the team",
   },
 ];
 
