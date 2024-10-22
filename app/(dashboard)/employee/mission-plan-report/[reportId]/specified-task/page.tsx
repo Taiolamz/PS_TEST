@@ -71,13 +71,13 @@ export default function SpecifiedTask({
     { data: challengeData, isLoading: loadingChallenges },
   ] = useLazyGetParentEntityChallengesQuery();
 
-  // fetch mos comment
+  // fetch task comment
   const [
     getMssionPlanFetchComments,
     { isLoading: loadingComment, data: commentData },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
-  //Add comment on mos
+  //Add comment on task
   const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
     useAddMssionPlanCommentOnComponentMutation();
 

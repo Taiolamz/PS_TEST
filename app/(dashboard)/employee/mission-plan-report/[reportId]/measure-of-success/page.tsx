@@ -1,6 +1,6 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReportFilter from "../../_partials/_my_report/_fragment/report-filter";
 import MeasureOfSucessMetricTableCard from "@/components/card/mos-table-card";
 import ChallengeDrawer from "@/components/drawer/challenge-drawer";
@@ -9,30 +9,28 @@ import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import OrganizationTargetChart from "@/app/(dashboard)/admin/mission-plan/reports/_charts/organization-target";
 import { useGetOrganizationSpecifiedTaskProgressQuery } from "@/redux/services/mission-plan/reports/admin/adminMPReportApi";
 import { useAppSelector } from "@/redux/store";
+import {
+  useGetSpecifiedTaskDetailsQuery,
+  useLazyGetParentEntityChallengesQuery,
+} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "next/navigation";
+import {
+  resetFilter,
+  setFilteredFiscalYear,
+} from "@/redux/features/mission-plan/report/employee/employeeMissionPlanReport";
+import { Skeleton } from "@/components/ui/skeleton";
+import { toWholeNumber } from "@/utils/helpers";
 
 export default function MOSReport({
   params,
 }: {
   params: { reportId: string };
 }) {
-  const [fiscalYear, setFiscalYear] = useState("");
-  const [missionCycle, setMissionCycle] = useState("");
-
-  const options = [
-    {
-      label: "Option one",
-      value: "Option one",
-    },
-    {
-      label: "Option two",
-      value: "Option two",
-    },
-    {
-      label: "Option three",
-      value: "Option three",
-    },
-  ];
-
   const mosDetails = [
     {
       title: "Revenue",
@@ -150,68 +148,143 @@ export default function MOSReport({
     (state) => state.employee_mission_plan_filter
   );
 
-  const user = useAppSelector((state) => state.auth);
-  console.log(user, "user");
-
-  const { data, isLoading } = useGetOrganizationSpecifiedTaskProgressQuery({
-    fiscal_year: fiscal_year,
-    cycle: mission_cycle,
-    is_admin: user?.user?.is_head_of_organization,
-    staff_id: user?.profile?.id,
+  const {
+    data: orgData,
+    isLoading: loadingOrg,
+    isFetching: fetchingOrg,
+  } = useGetOrganizationSpecifiedTaskProgressQuery({
+    is_admin: false,
+    staff_id: params?.reportId,
+    fiscal_year: fiscal_year || "",
+    cycle: mission_cycle || "",
   });
 
+  // Specified task Id for the modal
+  const [modalId, setModalId] = React.useState("");
+
+  const dispatch = useDispatch();
+
+  const searchParams = useSearchParams();
+  const fy = searchParams.get("fy");
+
+  useEffect(() => {
+    if (fy) {
+      dispatch(setFilteredFiscalYear(fy));
+    } else {
+      dispatch(resetFilter());
+    }
+  }, []);
+
+  //fetch challenges
+  const [
+    getParentEntityChallenges,
+    { data: challengeData, isLoading: loadingChallenges },
+  ] = useLazyGetParentEntityChallengesQuery();
+
+  // fetch mos comment
+  const [
+    getMssionPlanFetchComments,
+    { isLoading: loadingComment, data: commentData },
+  ] = useLazyGetMssionPlanFetchCommentsQuery();
+
+  //Add comment on mos
+  const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
+    useAddMssionPlanCommentOnComponentMutation();
+
+  useEffect(() => {
+    if (showChallengeModal) {
+      getParentEntityChallenges({ type: "measure-of-success", id: modalId });
+    }
+    if (showCommentModal) {
+      getMssionPlanFetchComments(
+        {
+          component_id: modalId,
+          component_type: "specified-task",
+        },
+        true
+      );
+    }
+  }, [showCommentModal, showChallengeModal]);
   return (
     <DashboardLayout back headerTitle="Measure of Success Percentage Achieved">
       <div className="px-5 pb-10 flex flex-col gap-2">
         <ReportFilter />
         <div className="mt-4">
           <OrganizationTargetChart
-            totalAchieveValue={data?.data?.achievement_average || "0"}
+            totalAchieveValue={
+              orgData?.data?.target_chart?.total_achievement_average || "0"
+            }
           />
         </div>
-        {mosDetails?.map((chi, idx) => {
-          const {
-            title,
-            fy_target,
-            unit,
-            weight,
-            fy_achieved,
-            amount,
-            id,
-            table_details,
-            percentage,
-          } = chi;
-          return (
-            <MeasureOfSucessMetricTableCard
-              num={idx + 1}
-              key={id || idx}
-              title={title}
-              fy_target={fy_target}
-              unit={unit}
-              weight={weight}
-              percentage={percentage}
-              fy_achieved={fy_achieved}
-              amount={amount}
-              table_details={table_details}
-              onClickViewChallenge={() => setShowChallengeModal(true)}
-              onClickComment={() => setShowCommentModal(true)}
-            />
-          );
-        })}
+        {loadingOrg || fetchingOrg ? (
+          <>
+            <Skeleton className="w-full h-[128px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
+            <Skeleton className="w-full h-[128px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
+          </>
+        ) : (
+          orgData?.data?.target_measure_of_success?.map(
+            (chi: any, idx: number) => {
+              const {
+                measure,
+                target,
+                unit,
+                weight,
+                fy_achieved,
+                amount,
+                id,
+                target_achievements,
+                percentage,
+              } = chi;
+              return (
+                <MeasureOfSucessMetricTableCard
+                  num={idx + 1}
+                  key={id || idx}
+                  title={measure}
+                  fy_target={target}
+                  unit={unit}
+                  weight={toWholeNumber(weight)}
+                  percentage={percentage}
+                  fy_achieved={fy_achieved}
+                  amount={amount}
+                  table_details={target_achievements}
+                  onClickComment={(id) => {
+                    id && setModalId(id);
+                    setShowChallengeModal(false);
+                    setShowCommentModal(true);
+                  }}
+                  onClickViewChallenge={(id) => {
+                    id && setModalId(id);
+                    setShowCommentModal(false);
+                    setShowChallengeModal(true);
+                  }}
+                />
+              );
+            }
+          )
+        )}
+
         <ChallengeDrawer
           open={showChallengeModal}
           onClose={() => setShowChallengeModal(false)}
-          data={CHALLENGES_DATA}
+          id={modalId}
+          loading={loadingChallenges}
+          data={challengeData?.data?.challenges}
         />
         <CustomCommentDrawer
           open={showCommentModal}
           onClose={() => setShowCommentModal(false)}
-          id={"modalId"}
-          data={[]}
-          handleSubmit={(value) => {
-            // console.log(value, "comment");
+          id={modalId}
+          commentType="success-measure"
+          data={commentData?.data || []}
+          handleSubmit={(response, resetForm) => {
+            addMssionPlanCommentOnComponent(response)
+              .unwrap()
+              .then(() => {
+                resetForm();
+              });
           }}
-          commentType="specified-task"
+          loadingComment={loadingComment}
+          loadingAddComment={addingComment}
         />
       </div>
     </DashboardLayout>

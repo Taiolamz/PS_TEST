@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MetricFrame from "./frame";
 import { ReusableProgress } from "../fragment";
+import { getPercentageColor, toWholeNumber } from "@/utils/helpers";
 
 const MeasureOfSucessMetricTableCard = ({
   title,
@@ -21,7 +22,7 @@ const MeasureOfSucessMetricTableCard = ({
   onClickComment?: (id?: string) => void;
   id?: string;
   fy_target?: string | number;
-  unit?: string | number;
+  unit?: string;
   weight?: string | number;
   fy_achieved?: string | number;
   amount?: string | number;
@@ -29,7 +30,7 @@ const MeasureOfSucessMetricTableCard = ({
   table_details?: any[];
   num?: number;
 }) => {
-  const [dropDetail, setDropDetail] = useState(false);
+  const [dropDetail, setDropDetail] = useState(true);
 
   const mosTableHead = [
     "Review Period",
@@ -82,7 +83,7 @@ const MeasureOfSucessMetricTableCard = ({
     >
       <div className="flex justify-between items-center border-b border-[#E5E9EB] pb-2">
         <p className="text-primary font-normal text-[17.52px]">
-          {num || 1}. {title || "Revenue"}
+          {num || 1}. {title || "---- ----"}
         </p>
         <div className={`${rowCenterClass} !gap-5`}>
           <p
@@ -118,28 +119,35 @@ const MeasureOfSucessMetricTableCard = ({
       </div>
 
       <div className="flex justify-between mt-4 items-center">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="flex gap-3 items-center">
             <p className="text-[#162238] font-medium text-sm">FY Target</p>
             <p className="text-primary font-medium">
-              {fy_target || "150,000,000"}
+              {fy_target || "---- ----"}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <p className="text-[#162238] font-medium text-sm">Unit</p>
-            <p className="text-primary font-medium">{unit || "$"}</p>
+            <p className="text-primary font-medium">
+              {unit?.split(" ")?.[0] || "$"}
+            </p>
           </div>
           <div className="flex gap-3 items-center">
             <p className="text-[#162238] font-medium text-sm">Weight</p>
-            <p className="text-primary font-medium">{weight || 20}%</p>
+            <p className="text-primary font-medium">{weight || 0}%</p>
           </div>
         </div>
 
         <div className="flex gap-3 items-center">
           <p className="text-[#3E4345]">FY Achieved :</p>
-          <p className="text-primary font-semibold">
-            {percentage || 67}%
-            <span>{`(${amount || "100,234,000"}${unit || "$"})`}</span>
+          <p
+            className="text-primary font-semibold"
+            style={{
+              color: getPercentageColor(toWholeNumber(percentage || 0)),
+            }}
+          >
+            {percentage || 0}
+            {/* <span>{`(${amount || "100,234,000"}${unit || "$"})`}</span> */}
           </p>
         </div>
       </div>
@@ -151,7 +159,7 @@ const MeasureOfSucessMetricTableCard = ({
         }`}
       >
         <table className="w-full table-auto mt-5 border-collapse">
-          <thead className="grid grid-cols-4 mb-5">
+          <thead className="grid grid-cols-4 gap-x-2 mb-5">
             {mosTableHead.map((chi, idx) => (
               <tr
                 className="mt-5 text-left text-[#162238] font-medium text-sm"
@@ -164,27 +172,28 @@ const MeasureOfSucessMetricTableCard = ({
 
           <tbody className="flex flex-col gap-5 customScrollbar">
             {table_details?.map((chi, idx) => {
-              const { review_period, target, achieved_target, percentage } =
-                chi;
+              const { month, target, achieved, achievementPercentage } = chi;
               return (
-                <tr className="grid grid-cols-4" key={idx}>
+                <tr className="grid grid-cols-4 gap-x-2" key={idx}>
                   <td className="text-[#6E7C87] text-sm p-1">
-                    {review_period}
+                    {month || "---- ----"}
                   </td>
-                  <td className="text-[#6E7C87] text-sm p-1">{target}</td>
                   <td className="text-[#6E7C87] text-sm p-1">
-                    {achieved_target}
+                    {target || "---- ----"}
+                  </td>
+                  <td className="text-[#6E7C87] text-sm p-1">
+                    {achieved || "---- ----"}
                   </td>
                   <td>
                     {" "}
                     <ReusableProgress
                       valuePosition="left"
-                      value={percentage}
+                      value={Math.round(achievementPercentage || 0) as number}
                       height={6}
                       className="w-[70px]"
                       noFloatValueClass="12px"
                       valueColor={"#6E7C87"}
-                      color="red"
+                      color={valueColor(achievementPercentage || 0)}
                       progressClass="rounded-full"
                     />
                   </td>
@@ -199,3 +208,13 @@ const MeasureOfSucessMetricTableCard = ({
 };
 
 export default MeasureOfSucessMetricTableCard;
+
+const valueColor = (number: number): "red" | "yellow" | "green" => {
+  if (number >= 70) {
+    return "green";
+  } else if (number >= 40 && number <= 69) {
+    return "yellow";
+  } else {
+    return "red";
+  }
+};
