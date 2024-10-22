@@ -19,6 +19,12 @@ import {
   useAddMssionPlanCommentOnComponentMutation,
   useLazyGetMssionPlanFetchCommentsQuery,
 } from "@/redux/services/mission-plan/missionPlanCommentApi";
+import { useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  resetFilter,
+  setFilteredFiscalYear,
+} from "@/redux/features/mission-plan/report/employee/employeeMissionPlanReport";
 
 export default function SpecifiedTask({
   params,
@@ -31,15 +37,33 @@ export default function SpecifiedTask({
   // Specified task Id for the modal
   const [modalId, setModalId] = React.useState("");
 
+  const dispatch = useDispatch();
+
+  // Filter
+  const { fiscal_year, mission_cycle } = useAppSelector(
+    (state) => state.employee_mission_plan_filter
+  );
   const searchParams = useSearchParams();
   const fy = searchParams.get("fy");
 
-  const { data: orgData, isLoading: loadingOrg } =
-    useGetSpecifiedTaskDetailsQuery({
-      is_admin: false,
-      staff_id: params?.reportId,
-      fiscal_year: fy || "",
-    });
+  useEffect(() => {
+    if (fy) {
+      dispatch(setFilteredFiscalYear(fy));
+    } else {
+      dispatch(resetFilter());
+    }
+  }, []);
+
+  const {
+    data: orgData,
+    isLoading: loadingOrg,
+    isFetching: fetchingOrg,
+  } = useGetSpecifiedTaskDetailsQuery({
+    is_admin: false,
+    staff_id: params?.reportId,
+    fiscal_year: fiscal_year || "",
+    cycle: mission_cycle || "",
+  });
 
   //fetch challenges
   const [
@@ -80,7 +104,7 @@ export default function SpecifiedTask({
         {/* Filter Card Section End */}
 
         {/* Team Performance task bar Start */}
-        {loadingOrg ? (
+        {loadingOrg || fetchingOrg ? (
           <Skeleton className="w-full h-[198px] bg-[var(--primary-accent-color)] rounded-sm mt-10" />
         ) : (
           <MetricFrame className="flex flex-col gap-4 mt-10">
@@ -166,7 +190,7 @@ export default function SpecifiedTask({
 
         {/*   Specified Task Details Section Start */}
         <div className="mt-7">
-          {loadingOrg ? (
+          {loadingOrg || fetchingOrg ? (
             <>
               <Skeleton className="w-full h-[177px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
               <Skeleton className="w-full h-[177px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
