@@ -98,13 +98,17 @@ const MeasureOfSucessProgress = ({ id }: { id?: string }) => {
   const { EMPLOYEE } = routesPath;
 
   const user = useAppSelector(selectUser);
+  // Filter
+  const { fiscal_year, mission_cycle } = useAppSelector(
+    (state) => state.employee_mission_plan_filter
+  );
 
   const userId = id ? id : user?.id;
 
   const { data, isLoading, isFetching } = useGetStaffMeasureOfSuccessQuery(
     {
       id: userId,
-      params: { fiscal_year: "", cycle: "" },
+      params: { fiscal_year: fiscal_year, cycle: mission_cycle },
     },
     {
       skip: !user?.id,
