@@ -43,9 +43,10 @@ const OrganizationReports = () => {
         fiscal_year_id: payload.fiscal_year
     })
 
-    const ACHIEVEMENT_AVERAGE = org_mission_plan?.data?.achievement_average ?? 0
-    const TASK_COMPLETION = org_mission_plan?.data?.task_completion ?? []
-    const TARGET_MOS = org_mission_plan?.data?.target_measure_of_success ?? []
+    const GRAND_TOTAL = org_mission_plan?.data?.specified_task?.grand_total ?? 0
+    const ACHIEVEMENT_AVERAGE = org_mission_plan?.data?.achieved_average ?? 0
+    const TASK_COMPLETION = org_mission_plan?.data?.specified_task?.task_completion ?? []
+    const TARGET_MOS = org_mission_plan?.data?.organization_measure_of_success ?? []
 
     // console.log(TASK_COMPLETION)
 
@@ -76,6 +77,8 @@ const OrganizationReports = () => {
         });
         return fiscalYearDrop;
     };
+
+    console.log(TARGET_MOS)
 
     return (
         <div className="w-full">
@@ -190,7 +193,7 @@ const OrganizationReports = () => {
                                             </div>
                                             <div className="flex flex-col items-end">
                                                 <span className="text-xs text-gray-400 font-light">Organization Mission Plan Progress</span>
-                                                <ReusableProgressLabel value={toWholeNumber(ACHIEVEMENT_AVERAGE)} />
+                                                <ReusableProgressLabel value={toWholeNumber(GRAND_TOTAL)} />
                                             </div>
                                         </div>
                                         <div className="my-6">
@@ -248,7 +251,7 @@ const OrganizationReports = () => {
                                         <div className="flex items-center justify-between">
                                             <div className="flex flex-col">
                                                 <h1>Organization Measure of Success</h1>
-                                                {TARGET_MOS?.length ? <ReusableProgressLabel value={(toWholeNumber(getTotalByKey(TARGET_MOS, "achieved_percentage") / TARGET_MOS?.length))} /> : ""}
+                                                {TARGET_MOS?.length ? <ReusableProgressLabel value={ACHIEVEMENT_AVERAGE?.split("%")?.[0]} /> : ""}
                                                 {/* <PercentageLabel color="yellow" value={52} label="Archieved" /> */}
                                             </div>
                                             <Link href={(TARGET_MOS.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS('sjnakdkbkbmam') : ""}>
