@@ -12,7 +12,7 @@ const MissionHeader = ({ title, link, index }: missionHeaderProp) => {
     <div className="w-full flex justify-between text-sm text-[var(--primary-color)] bg-[var(--primary-accent-color)] p-[10px]">
       <div>
         <h4 className="text-sm font-normal">
-          <span>{index}. </span>
+          <span>{index} </span>
           <span>{title}</span>
         </h4>
       </div>
