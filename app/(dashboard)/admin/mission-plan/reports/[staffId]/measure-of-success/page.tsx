@@ -71,13 +71,13 @@ export default function OrganizationMeasureOfSuccess({
   //fetch challenges
   const [
     getParentEntityChallenges,
-    { data: challengeData, isLoading: loadingChallenges },
+    { data: challengeData, isLoading: loadingChallenges, isFetching: isFetchingChallenge },
   ] = useLazyGetParentEntityChallengesQuery();
 
   // fetch mos comment
   const [
     getMssionPlanFetchComments,
-    { isLoading: loadingComment, data: commentData },
+    { isLoading: loadingComment, isFetching: isFetchingComment, data: commentData },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
   //Add comment on mos
@@ -92,7 +92,7 @@ export default function OrganizationMeasureOfSuccess({
       getMssionPlanFetchComments(
         {
           component_id: modalId,
-          component_type: "specified-task",
+          component_type: "success-measure",
         },
         true
       );
@@ -190,7 +190,7 @@ export default function OrganizationMeasureOfSuccess({
         open={showChallengeModal}
         onClose={() => setShowChallengeModal(false)}
         id={modalId}
-        loading={loadingChallenges}
+        loading={loadingChallenges || isFetchingChallenge}
         data={challengeData?.data?.challenges}
       />
       <CustomCommentDrawer
@@ -206,7 +206,7 @@ export default function OrganizationMeasureOfSuccess({
               resetForm();
             });
         }}
-        loadingComment={loadingComment}
+        loadingComment={loadingComment || isFetchingComment}
         loadingAddComment={addingComment}
       />
       {/* <ChallengeDrawer
