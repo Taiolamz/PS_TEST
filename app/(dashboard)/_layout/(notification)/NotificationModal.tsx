@@ -67,7 +67,8 @@ const NotificationModal = ({ visible, onClose }: myComponentProps) => {
                 You don’t have any notifications
               </p>
               <p className="text-[var(--text-color2)] text-xs w-1/2">
-                But as soon as something happens, you'll find it right here.
+                But as soon as something happens, you&lsquo;ll find it right
+                here.
               </p>
             </div>
           ) : (
