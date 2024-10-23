@@ -75,7 +75,10 @@ export default function TeamPerformance() {
               <div className="flex -space-x-4">
                 {data?.data?.my_team?.team_members?.map(
                   (chi: any, idx: number) => (
-                    <div className="mt-9 inline-flex items-center gap-x-4">
+                    <div
+                      key={idx}
+                      className="mt-9 inline-flex items-center gap-x-4"
+                    >
                       <CheckUrlFragment
                         url={chi?.photo as any}
                         height={160}
@@ -166,7 +169,10 @@ export default function TeamPerformance() {
               <div className="flex -space-x-4">
                 {data?.data?.downline_team?.team_members?.map(
                   (chi: any, idx: number) => (
-                    <div className="mt-9 inline-flex items-center gap-x-4">
+                    <div
+                      key={idx}
+                      className="mt-9 inline-flex items-center gap-x-4"
+                    >
                       <CheckUrlFragment
                         url={chi?.photo as any}
                         height={160}
