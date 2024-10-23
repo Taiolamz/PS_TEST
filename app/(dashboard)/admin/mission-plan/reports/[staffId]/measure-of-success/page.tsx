@@ -1,25 +1,31 @@
-"use client"
+"use client";
 
-import DashboardLayout from '@/app/(dashboard)/_layout/DashboardLayout';
-import MetricTableCard from '@/components/card/metric-table-card';
-import CustomSelect from '@/components/custom-select';
-import ChallengeDrawer from '@/components/drawer/challenge-drawer';
-import CustomCommentDrawer from '@/components/drawer/comment-drawer';
-import { ActionLabel, CardContainer } from '@/components/fragment';
-import { exportIcon, filterIcon, undoIcon } from '@/public/svgs';
-import { getProgressColorByValue, toWholeNumber } from '@/utils/helpers';
-import React, { useEffect } from 'react';
-import { CHALLENGES_DATA, MOS_DATA } from '../../_data';
-import OrganizationTargetChart from '../../_charts/organization-target';
-import MeasureOfSucessMetricTableCard from '@/components/card/mos-table-card';
-import { Dictionary } from '@/@types/dictionary';
-import { useGetAdminOrganizationSpecifiedTaskQuery, useGetOrganizationSpecifiedTaskProgressQuery } from '@/redux/services/mission-plan/reports/admin/adminMPReportApi';
-import { useAppSelector } from '@/redux/store';
-import ReportFilter from '@/app/(dashboard)/employee/mission-plan-report/_partials/_my_report/_fragment/report-filter';
-import CardSkeletonLoader from '@/components/card-loader';
-import { useLazyGetParentEntityChallengesQuery } from '@/redux/services/mission-plan/reports/employee/missionPlanReportApi';
-import { useAddMssionPlanCommentOnComponentMutation, useLazyGetMssionPlanFetchCommentsQuery } from '@/redux/services/mission-plan/missionPlanCommentApi';
-import BarChartSkeleton from '@/components/loader/barchart';
+import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
+import MetricTableCard from "@/components/card/metric-table-card";
+import CustomSelect from "@/components/custom-select";
+import ChallengeDrawer from "@/components/drawer/challenge-drawer";
+import CustomCommentDrawer from "@/components/drawer/comment-drawer";
+import { ActionLabel, CardContainer } from "@/components/fragment";
+import { exportIcon, filterIcon, undoIcon } from "@/public/svgs";
+import { getProgressColorByValue, toWholeNumber } from "@/utils/helpers";
+import React, { useEffect } from "react";
+import { CHALLENGES_DATA, MOS_DATA } from "../../_data";
+import OrganizationTargetChart from "../../_charts/organization-target";
+import MeasureOfSucessMetricTableCard from "@/components/card/mos-table-card";
+import { Dictionary } from "@/@types/dictionary";
+import {
+  useGetAdminOrganizationSpecifiedTaskQuery,
+  useGetOrganizationSpecifiedTaskProgressQuery,
+} from "@/redux/services/mission-plan/reports/admin/adminMPReportApi";
+import { useAppSelector } from "@/redux/store";
+import ReportFilter from "@/app/(dashboard)/employee/mission-plan-report/_partials/_my_report/_fragment/report-filter";
+import CardSkeletonLoader from "@/components/card-loader";
+import { useLazyGetParentEntityChallengesQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import {
+  useAddMssionPlanCommentOnComponentMutation,
+  useLazyGetMssionPlanFetchCommentsQuery,
+} from "@/redux/services/mission-plan/missionPlanCommentApi";
+import BarChartSkeleton from "@/components/loader/barchart";
 
 export default function OrganizationMeasureOfSuccess({
   params,
@@ -40,13 +46,13 @@ export default function OrganizationMeasureOfSuccess({
     if (params.staffId === "organization") {
       return {
         is_admin: true,
-      }
+      };
     }
     return {
       is_admin: false,
-      staff_id: params.staffId
-    }
-  }
+      staff_id: params.staffId,
+    };
+  };
 
   const {
     data: orgData,
@@ -56,11 +62,11 @@ export default function OrganizationMeasureOfSuccess({
     params: {
       fiscal_year: fiscal_year || "",
       cycle: mission_cycle || "",
-      ...getParams()
-    }
+      ...getParams(),
+    },
   });
 
-  const CHART_DATA = orgData?.data?.target_chart ?? {}
+  const CHART_DATA = orgData?.data?.target_chart ?? {};
 
   //fetch challenges
   const [
@@ -94,13 +100,10 @@ export default function OrganizationMeasureOfSuccess({
   }, [showCommentModal, showChallengeModal]);
 
   return (
-    <DashboardLayout
-      headerTitle='Measure of Success Overview'
-      back
-    >
-      <section className='p-5'>
+    <DashboardLayout headerTitle="Measure of Success Overview" back>
+      <section className="p-5">
         <CardContainer className="mb-5">
-          <ReportFilter className='mt-0' />
+          <ReportFilter className="mt-0" />
           {/* <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <ActionLabel label='Filter' icon={filterIcon} iconPosition='right' />
@@ -140,46 +143,48 @@ export default function OrganizationMeasureOfSuccess({
           </CardContainer>
         ) : (
           <>
-            {orgData?.data?.target_measure_of_success?.map((item: Dictionary, idx: number) => {
-              const {
-                measure,
-                target,
-                unit,
-                weight,
-                fy_achieved,
-                amount,
-                id,
-                target_achievements,
-                percentage,
-              } = item;
-              return (
-                <MeasureOfSucessMetricTableCard
-                  num={idx + 1}
-                  key={id || idx}
-                  title={measure}
-                  fy_target={target}
-                  unit={unit}
-                  weight={toWholeNumber(weight)}
-                  percentage={percentage}
-                  fy_achieved={fy_achieved}
-                  amount={amount}
-                  table_details={target_achievements}
-                  onClickComment={(id) => {
-                    id && setModalId(id);
-                    setShowChallengeModal(false);
-                    setShowCommentModal(true);
-                  }}
-                  onClickViewChallenge={(id) => {
-                    id && setModalId(id);
-                    setShowCommentModal(false);
-                    setShowChallengeModal(true);
-                  }}
-                />
-              );
-            })}
+            {orgData?.data?.target_measure_of_success?.map(
+              (item: Dictionary, idx: number) => {
+                const {
+                  measure,
+                  target,
+                  unit,
+                  weight,
+                  fy_achieved,
+                  amount,
+                  id,
+                  target_achievements,
+                  percentage,
+                } = item;
+                return (
+                  <MeasureOfSucessMetricTableCard
+                    num={idx + 1}
+                    key={id || idx}
+                    title={measure}
+                    id={id}
+                    fy_target={target}
+                    unit={unit}
+                    weight={toWholeNumber(weight)}
+                    percentage={percentage}
+                    fy_achieved={fy_achieved}
+                    amount={amount}
+                    table_details={target_achievements}
+                    onClickComment={(id) => {
+                      id && setModalId(id);
+                      setShowChallengeModal(false);
+                      setShowCommentModal(true);
+                    }}
+                    onClickViewChallenge={(id) => {
+                      id && setModalId(id);
+                      setShowCommentModal(false);
+                      setShowChallengeModal(true);
+                    }}
+                  />
+                );
+              }
+            )}
           </>
         )}
-
       </section>
       <ChallengeDrawer
         open={showChallengeModal}
@@ -220,5 +225,5 @@ export default function OrganizationMeasureOfSuccess({
         commentType="specified-task"
       /> */}
     </DashboardLayout>
-  )
+  );
 }

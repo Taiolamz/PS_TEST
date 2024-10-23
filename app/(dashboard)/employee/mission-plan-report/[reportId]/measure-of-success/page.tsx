@@ -240,6 +240,7 @@ export default function MOSReport({
               return (
                 <MeasureOfSucessMetricTableCard
                   num={idx + 1}
+                  id={id}
                   key={id || idx}
                   title={measure}
                   fy_target={target}

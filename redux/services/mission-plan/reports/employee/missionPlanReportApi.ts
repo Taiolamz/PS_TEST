@@ -221,8 +221,10 @@ export const missionPlanReportApi = baseApi.injectEndpoints({
     }),
 
     getTeamPerformance: builder.query({
-      query: () => ({
-        url: `/dashboard/team-task-completion`,
+      query: (params) => ({
+        url: `/dashboard/team-task-completion${generateQueryString({
+          ...params,
+        })}`,
         method: "GET",
       }),
       providesTags: ["MissionPlanReport"],

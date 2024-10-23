@@ -70,7 +70,7 @@ export default function HistoryDrawer({
                       </p>
                       <p
                         className={cn(
-                          "text-[8px]",
+                          "text-[8px] capitalize",
                           item?.status?.toLowerCase() === "rejected" &&
                             "text-[var(--bg-red-100)] ",
                           item?.status?.toLowerCase() === "pending"
