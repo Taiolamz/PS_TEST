@@ -173,16 +173,15 @@ const OutcomeTargetSettings = () => {
                 ) :
                     <>
                         <div className="flex justify-end gap-2">
-                            <Button
+                            {/* <Button
                                 className={cn(
                                     "border border-[var(--primary-color)] text-[var(--primary-color)] hover:text-primary/5 disabled:opacity-30"
                                 )}
                                 variant="outline"
-                                // disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}
                                 onClick={() => setShowReopenSubmissionModal(true)}
                             >
                                 Reopen Submission Period
-                            </Button>
+                            </Button> */}
                             <Button
                                 className={cn(
                                     "border border-[var(--primary-color)] text-[var(--primary-color)] hover:text-primary/5 disabled:opacity-30"

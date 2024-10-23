@@ -34,6 +34,7 @@ export default function MOSCard({ id }: { id: string }) {
 
   const mosData: MosData[] = data?.data?.measures?.measures_of_success ?? [];
   const achievedMos = data?.data?.measures?.achieved_total;
+  const staff_member_id = data?.data?.measures?.staff_member_id;
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function MOSCard({ id }: { id: string }) {
       <MetricFrame className="flex flex-col gap-4 lg:col-span-5">
         <div className="flex justify-between ">
           <p className="text-[#252C32] font-medium">My Measures Of Success</p>
-          <Link href={(mosData.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS(id) : ""}>
+          <Link href={(mosData.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS(staff_member_id) : ""}>
             <Button disabled={isLoading || isFetching || !mosData.length} className="flex gap-3 items-center group">
               <p className="font-medium">See Details</p>
               <figure className="group-hover:translate-x-1 transition-all">

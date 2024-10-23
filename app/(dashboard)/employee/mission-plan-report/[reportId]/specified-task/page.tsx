@@ -68,13 +68,13 @@ export default function SpecifiedTask({
   //fetch challenges
   const [
     getParentEntityChallenges,
-    { data: challengeData, isLoading: loadingChallenges },
+    { data: challengeData, isLoading: loadingChallenges, isFetching: isFetchingChallenges },
   ] = useLazyGetParentEntityChallengesQuery();
 
   // fetch task comment
   const [
     getMssionPlanFetchComments,
-    { isLoading: loadingComment, data: commentData },
+    { isLoading: loadingComment, isFetching: isFetchingComment, data: commentData },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
   //Add comment on task
@@ -131,7 +131,7 @@ export default function SpecifiedTask({
                         "block h-full",
                         idx === 0 && "rounded-l",
                         idx === orgData?.data?.task_activity.length - 1 &&
-                          "rounded-l"
+                        "rounded-l"
                       )}
                       style={{
                         width: `${toWholeNumber(percentage)}%`,
@@ -196,14 +196,14 @@ export default function SpecifiedTask({
               <Skeleton className="w-full h-[177px] bg-[var(--primary-accent-color)] rounded-sm mt-5" />
             </>
           ) : (
-            orgData?.data?.specified_task?.map((chi: any, idx: number) => {
+            orgData?.data?.specified_task?.map((item: any, idx: number) => {
               const {
                 task,
                 measure_of_success_percentage_completion,
                 implied_tasks,
                 measure_of_success,
                 id,
-              } = chi;
+              } = item;
               return (
                 <MetricTableCardTwo
                   key={idx}
@@ -248,7 +248,7 @@ export default function SpecifiedTask({
         open={challengeModal}
         onClose={() => setChallengeModal(false)}
         id={modalId}
-        loading={loadingChallenges}
+        loading={loadingChallenges || isFetchingChallenges}
         data={challengeData?.data?.challenges}
       />
       <CustomCommentDrawer
@@ -264,7 +264,7 @@ export default function SpecifiedTask({
               resetForm();
             });
         }}
-        loadingComment={loadingComment}
+        loadingComment={loadingComment || isFetchingComment}
         loadingAddComment={addingComment}
       />
     </DashboardLayout>

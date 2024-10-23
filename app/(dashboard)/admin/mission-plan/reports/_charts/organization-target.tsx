@@ -72,17 +72,24 @@ export default function OrganizationTargetChart({
   const TARGET = data?.chart?.map((item: Dictionary) => item.target) ?? []
   const ARCHIEVED = data?.chart?.map((item: Dictionary) => item.achieved) ?? []
   const MOS_TITLE = data?.chart?.map((item: Dictionary) => item.measure_of_success?.measure) ?? []
+  const YAXIS = MOS_TITLE?.map((item: Dictionary, idx: number) => {
+    return {
+      seriesName: MOS_TITLE[idx]
+    }
+  })
+
+
 
   const GRAPH = [
     {
       data: ARCHIEVED,
+      // name: ['Success', 'Great', 'Good']
     },
     {
       data: TARGET,
+      // name: MOS_TITLE[(ARCHIEVED.length / MOS_TITLE.length) - 1]
     },
   ]
-
-  console.log(data)
 
   useEffect(() => {
     if (data) {
@@ -95,6 +102,20 @@ export default function OrganizationTargetChart({
             xaxis: {
               ...prevState.options.xaxis,
               categories: MOS_TITLE,
+            },
+            tooltip: {
+              ...prevState.options.tooltip,
+              custom: function ({ series, seriesIndex, dataPointIndex, w }: any) {
+                // console.log(seriesIndex)
+                // Mapping each data point to its respective title
+                const titles = MOS_TITLE; // Titles for the tooltip
+                const value = series[seriesIndex][dataPointIndex]; // Value of the hovered bar
+                return `<div style="padding: 10px;">
+                            <strong>${titles[dataPointIndex]}</strong>: ${value}
+                            </div>`;
+              }
+              // <strong>${MOS_TITLE}</strong>: ${value} <br/>
+              // <strong>Series</strong>: ${w.globals.seriesNames[seriesIndex]}
             }
           }
         }
