@@ -56,7 +56,7 @@ const ApprovalUI = () => {
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(
                       EMPLOYEE.APPROVAL_MISSION_PLAN_REPORT(
-                        dataTwo?.name?.props?.children[0].props.children
+                        dataTwo?.staff_name?.props?.children[0].props.children
                       )
                     );
                   },

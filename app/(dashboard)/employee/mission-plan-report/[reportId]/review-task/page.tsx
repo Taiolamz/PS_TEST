@@ -1,7 +1,6 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CommentsIcon from "@/public/assets/icons/comments";
@@ -12,9 +11,7 @@ import RejectModal from "../../_component/reject-modal";
 import { CustomAccordion } from "@/components/custom-accordion";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import {
-  useApproveORRejectTaskOutcomeMutation,
   useGetDownlinerExpectedOutcomeQuery,
-  useGetMOSMeasureofSuccessQuery,
   useLazyGetImpliedTaskHistoryQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import {
@@ -39,7 +36,6 @@ export default function ApproveTask({
   const [showApprove, setShowApprove] = useState(false);
   const [showReject, setShowReject] = useState(false);
   const [id, setId] = useState("");
-  const handleFormSubmit = () => {};
 
   // const [
   //   approveORRejectTaskOutcome,
@@ -106,9 +102,13 @@ export default function ApproveTask({
   // fetch task history
   const [
     getSpecifiedTaskDetails,
-    { isLoading: loadingHistory, data: historyData },
+    {
+      isLoading: loadingHistory,
+      data: historyData,
+      isFetching: fetchingHistory,
+    },
   ] = useLazyGetImpliedTaskHistoryQuery();
-  console.log({ historyData });
+
   //Add comment on task
   const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
     useAddMssionPlanCommentOnComponentMutation();
@@ -135,13 +135,6 @@ export default function ApproveTask({
       skip: !params.reportId,
     }
   );
-  // const { data: mosData, isLoading: isLoadingMosData } =
-  //   useGetMOSMeasureofSuccessQuery(params?.reportId, {
-  //     skip: !params.reportId,
-  //   });
-  // console.log(mosData, "mos data");
-
-  // console.log(data, "specified data");
   const [taskData, setTaskData] = useState<any>({});
 
   return (
@@ -572,11 +565,22 @@ export default function ApproveTask({
           open={showHistory}
           onClose={() => setShowHistory(false)}
           id={id}
-          loading={loadingHistory}
-          // data={[]}
-          data={historyData?.data?.history}
+          loading={loadingHistory || fetchingHistory}
+          data={format_history_data(historyData?.data?.history)}
         />
       </div>
     </DashboardLayout>
   );
 }
+
+const format_history_data = (data: any[]) => {
+  return data?.map((item: any) => ({
+    id: item?.id,
+    month: item?.month,
+    status: item?.status,
+    title: item?.success_measure?.measure,
+    percentage: item?.completion_percent || 0,
+    target: item?.expected_outcome,
+    achievement: item?.actual_outcome || "--- ---",
+  }));
+};

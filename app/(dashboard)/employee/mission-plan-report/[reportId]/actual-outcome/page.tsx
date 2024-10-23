@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { DotFilledIcon } from "@radix-ui/react-icons";
-import { PageLoader } from "@/components/custom-loader";
 import CommentsIcon from "@/public/assets/icons/comments";
 import { FieldArray, Form, Formik } from "formik";
 import { CustomAccordion } from "@/components/custom-accordion";
@@ -15,6 +14,7 @@ import ReportChallengeModal from "../../_component/report-challenge-modal";
 import {
   useAddActualOutcomeMutation,
   useGetTaskOutcomeTaskQuery,
+  useLazyGetImpliedTaskHistoryQuery,
 } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import CustomCommentDrawer from "@/components/drawer/comment-drawer";
 import HistoryDrawer from "@/components/drawer/history-drawer";
@@ -59,7 +59,6 @@ const ActualOutcome = ({
 }) => {
   const [id, setId] = useState("");
   const [showHistory, setShowHistory] = useState(false);
-  const [showHistoryContent, setShowHistoryContent] = useState([]);
   const [showComment, setShowComment] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
   const [showAttachmentModal, setShowAttachmentModal] = useState(false);
@@ -84,29 +83,42 @@ const ActualOutcome = ({
   // fetch task comment
   const [
     getMssionPlanFetchComments,
-    { isLoading: loadingComment, data: commentData },
+    {
+      isLoading: loadingComment,
+      data: commentData,
+      isFetching: fetchingComment,
+    },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
   //Add comment on task
   const [addMssionPlanCommentOnComponent, { isLoading: addingComment }] =
     useAddMssionPlanCommentOnComponentMutation();
 
+  // fetch task history
+  const [
+    getSpecifiedTaskDetails,
+    {
+      isLoading: loadingHistory,
+      data: historyData,
+      isFetching: fetchingHistory,
+    },
+  ] = useLazyGetImpliedTaskHistoryQuery();
+
   //Mount when history or comment modal is opened
   React.useEffect(() => {
     if (showComment) {
-      getMssionPlanFetchComments(
-        {
-          component_id: id,
-          component_type: "implied-task",
-        },
-        true
-      );
+      getMssionPlanFetchComments({
+        component_id: id,
+        component_type: "implied-task",
+      });
+    }
+    if (showHistory) {
+      getSpecifiedTaskDetails(id);
     }
   }, [showHistory, showComment, id]);
 
   //Add Task outcome
-  const [addActualOutcome, { isLoading: addingTask }] =
-    useAddActualOutcomeMutation();
+  const [addActualOutcome, { isLoading }] = useAddActualOutcomeMutation();
 
   const user = useAppSelector(selectUser);
 
@@ -358,9 +370,6 @@ const ActualOutcome = ({
                                               <Button
                                                 type="button"
                                                 onClick={() => {
-                                                  setShowHistoryContent(
-                                                    val?.task_outcome
-                                                  );
                                                   setShowHistory(true);
                                                   setId(val?.id);
                                                 }}
@@ -582,14 +591,16 @@ const ActualOutcome = ({
             });
         }}
         commentType={"implied-task"}
-        loadingComment={loadingComment}
+        loadingComment={loadingComment || fetchingComment}
         loadingAddComment={addingComment}
       />
 
       <HistoryDrawer
         open={showHistory}
         onClose={() => setShowHistory(false)}
-        data={format_history_data(showHistoryContent)}
+        id={id}
+        loading={loadingHistory || fetchingHistory}
+        data={format_history_data(historyData?.data?.history)}
       />
 
       <ConfirmationModal
@@ -638,6 +649,6 @@ const format_history_data = (data: any[]) => {
     title: item?.success_measure?.measure,
     percentage: item?.completion_percent || 0,
     target: item?.expected_outcome,
-    achievement: item?.actual_outcome || "No achievement yet",
+    achievement: item?.actual_outcome || "--- ---",
   }));
 };
