@@ -1,4 +1,5 @@
 import CustomSelect from "@/components/custom-select";
+import { cn } from "@/lib/utils";
 import {
   resetFilter,
   setFilteredFiscalYear,
@@ -12,12 +13,17 @@ import { useAppSelector } from "@/redux/store";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
+interface ReportFilterProps {
+  className?: string;
+}
+
 interface Options {
   label: string;
   value: string;
 }
 
-const ReportFilter = () => {
+const ReportFilter = ({ className }: ReportFilterProps) => {
+
   const filterIcon = (
     <svg
       width="15"
@@ -99,7 +105,10 @@ const ReportFilter = () => {
     </svg>
   );
   return (
-    <div className="flex items-center mt-10 justify-between">
+    <div className={cn(
+      "flex items-center mt-10 justify-between",
+      className
+    )}>
       <div className="flex items-center gap-3">
         <div className="flex gap-2 items-center cursor-pointer">
           <p className="text-[#1E1E1E] font-medium text-[14px]">Filters</p>

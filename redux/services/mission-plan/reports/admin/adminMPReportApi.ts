@@ -8,7 +8,15 @@ export const adminMPReportApi = baseApi.injectEndpoints({
         method: "GET",
         params: payload.params,
       }),
-      providesTags: ["MissionPlanReport"],
+      // providesTags: ["MissionPlanReport"],
+    }),
+    getAdminOrganizationSpecifiedTask: builder.query({
+      query: (payload) => ({
+        url: `/admin/organization/target`,
+        method: "GET",
+        params: payload.params,
+      }),
+      // providesTags: ["MissionPlanReport"],
     }),
     getOrganizationSpecifiedTaskProgress: builder.query({
       query: (payload) => ({
@@ -35,4 +43,5 @@ export const {
   useGetOrganizationSpecifiedTaskProgressQuery,
   useGetTopLevelExecutiveMissonPlanQuery,
   useGetAdminOrganizationTargetQuery,
+  useGetAdminOrganizationSpecifiedTaskQuery,
 } = adminMPReportApi;
