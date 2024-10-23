@@ -9,6 +9,7 @@ interface myComponentProps {
   url?: string;
   onView?: () => void;
   id?: any;
+  read_at: string;
 }
 
 const checkIcon = (
@@ -35,6 +36,7 @@ const NotifyBox = ({
   id,
   date,
   url,
+  read_at,
 }: myComponentProps) => {
   const [showView, setShowView] = useState("");
   return (
@@ -65,7 +67,7 @@ const NotifyBox = ({
           </div>
         </div>
         {/* dot here */}
-        <div className={style.dot_box}></div>
+        {typeof read_at !== "string" && <div className={style.dot_box} />}
         {/* dot here end */}
       </div>
       {/* text content dot end */}

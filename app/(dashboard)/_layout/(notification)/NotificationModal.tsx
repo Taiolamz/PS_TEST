@@ -82,6 +82,7 @@ const NotificationModal = ({ visible, onClose }: myComponentProps) => {
                     title={chi?.notification_information?.title}
                     date={chi?.notification_information?.date}
                     url={chi?.notification_information?.url}
+                    read_at={chi?.read_at}
                   />
                 );
               })}
