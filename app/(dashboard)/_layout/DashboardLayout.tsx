@@ -1,7 +1,10 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 // import ActionContext from "../context/ActionContext";
-import { useLazyGetAuthUserDetailsQuery, useLazyGetProfileDetailsQuery } from "@/redux/services/auth/authApi";
+import {
+  useLazyGetAuthUserDetailsQuery,
+  useLazyGetProfileDetailsQuery,
+} from "@/redux/services/auth/authApi";
 import { useLazyGetChecklistQuery } from "@/redux/services/onboarding/checkListApi";
 import { useGetAllRolesQuery } from "@/redux/services/role/rolesApi";
 import { useAppSelector } from "@/redux/store";
@@ -59,9 +62,7 @@ const DashboardLayout = ({
   const [getAuthUserDetails, { isLoading }] = useLazyGetAuthUserDetailsQuery(
     {}
   );
-  const [getProfileDetails] = useLazyGetProfileDetailsQuery(
-    {}
-  );
+  const [getProfileDetails] = useLazyGetProfileDetailsQuery({});
   const [getChecklist] = useLazyGetChecklistQuery({});
 
   // This fuction update user records
@@ -90,7 +91,7 @@ const DashboardLayout = ({
     // }
     handleGetChecklist();
     //  console.log(user);
-    handleGetProfileDetails()
+    handleGetProfileDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 

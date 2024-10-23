@@ -67,7 +67,7 @@ const ApprovalUI = () => {
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(
                       EMPLOYEE.REVIEW_MOS(
-                        dataTwo?.name?.props?.children[0].props.children
+                        dataTwo?.staff_name?.props?.children[0].props.children
                       )
                     );
                   },
@@ -78,7 +78,7 @@ const ApprovalUI = () => {
                   onActionClick: (param: any, dataTwo: any) => {
                     router.push(
                       EMPLOYEE.REVIEW_TASK(
-                        dataTwo?.name?.props?.children[0].props.children
+                        dataTwo?.staff_name?.props?.children[0].props.children
                       )
                     );
                   },

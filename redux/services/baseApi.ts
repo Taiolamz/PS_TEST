@@ -110,26 +110,27 @@ export const baseQueryInterceptor: BaseQueryFn<
 
   return result;
 };
-
+export const TAG_TYPES = [
+  "Subsidiaries",
+  "Branches",
+  "Departments",
+  "Units",
+  "Employees",
+  "MissionPlanTemplates",
+  "Comments",
+  "MissionPlan",
+  "MissionPlanExtension",
+  "Approvables",
+  "OrganizationFiscalYear",
+  "MissionPlanReport",
+  "TargetOutcomeSettings",
+  "Staff",
+  "Downliners",
+  "Notification",
+];
 export const baseApi = createApi({
   baseQuery: baseQueryInterceptor,
   endpoints: () => ({}),
   reducerPath: "baseApi",
-  tagTypes: [
-    "Subsidiaries",
-    "Branches",
-    "Departments",
-    "Units",
-    "Employees",
-    "MissionPlanTemplates",
-    "Comments",
-    "MissionPlan",
-    "MissionPlanExtension",
-    "Approvables",
-    "OrganizationFiscalYear",
-    "MissionPlanReport",
-    "TargetOutcomeSettings",
-    "Staff",
-    "Downliners",
-  ],
+  tagTypes: TAG_TYPES,
 });

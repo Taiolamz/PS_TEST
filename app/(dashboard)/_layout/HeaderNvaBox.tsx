@@ -18,6 +18,7 @@ import LogoutModal from "./logout-folder/LogoutModal";
 import { sideMenuList } from "./SideMenuList";
 import { notiList } from "./(notification)/noti_junks";
 import CheckUrlFragment from "@/components/fragment/ImageFallBack";
+import { useGetAllNotificationQuery } from "@/redux/services/notification/notificationApi";
 
 interface myComponentProps {
   headerListTitle?: any;
@@ -55,6 +56,8 @@ const HeaderNavBox = ({
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [dropProfile, setDropProfile] = useState<boolean>(false);
   const pathname = usePathname();
+
+  const { data: notifyData } = useGetAllNotificationQuery({});
 
   const searchIcon = (
     <svg
@@ -237,7 +240,7 @@ const HeaderNavBox = ({
             </>
           ) : (
             <>
-              <p className={style.title}>{headerTitle || "Welcome "}</p>
+              <p className={style.title}>{headerTitle || "Welcome!"}</p>
             </>
           )}
         </div>
@@ -260,7 +263,7 @@ const HeaderNavBox = ({
         >
           <figure className={style.img_box}>{notifyIcon}</figure>
           <div className={style.red_dot}>
-            <span>{notiList?.length}</span>
+            <span>{(notifyData?.data?.length as number) || 0}</span>
           </div>
         </div>
         {/* notification box end */}
