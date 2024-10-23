@@ -18,6 +18,7 @@ export default function UnitTable({
   totalPage,
   currentPage,
   onPageChange,
+  isActive,
 }: {
   perPage?: number;
   totalPage?: number;
@@ -28,6 +29,7 @@ export default function UnitTable({
   isFetching?: boolean;
   onSearch?: (param: string) => void;
   onPageChange?: (param: string) => void;
+  isActive: boolean;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -48,8 +50,8 @@ export default function UnitTable({
       currentPage={currentPage}
       onPageChange={onPageChange}
       addText="New Unit"
-      newBtnBulk={!subDetailsData?.deleted_at}
-      hideNewBtnOne={subDetailsData?.deleted_at}
+      newBtnBulk={isActive}
+      hideNewBtnOne={!isActive}
       tableBodyList={FORMAT_TABLE_DATA(tableData)}
       loading={isFetching}
       onSearch={onSearch}

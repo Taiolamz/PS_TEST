@@ -18,6 +18,7 @@ export default function StaffTable({
   totalPage,
   currentPage,
   onPageChange,
+  isActive,
 }: {
   perPage?: number;
   totalPage?: number;
@@ -28,6 +29,7 @@ export default function StaffTable({
   isFetching?: boolean;
   onSearch?: (param: string) => void;
   onPageChange?: (param: string) => void;
+  isActive: boolean;
 }) {
   const router = useRouter();
 
@@ -54,8 +56,8 @@ export default function StaffTable({
       currentPage={currentPage}
       onPageChange={onPageChange}
       addText="New Staff"
-      newBtnBulk={!subDetailsData?.deleted_at}
-      hideNewBtnOne={subDetailsData?.deleted_at}
+      newBtnBulk={isActive}
+      hideNewBtnOne={!isActive}
       tableBodyList={FORMAT_TABLE_DATA(tableData)}
       loading={isFetching}
       onSearch={onSearch}

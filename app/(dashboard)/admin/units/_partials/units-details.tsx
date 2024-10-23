@@ -95,13 +95,13 @@ export default function UnitDetails() {
     return obj?.map((item: any, idx: number) => ({
       // idx: idx + 1,
       name: item?.name,
-      gender: item?.gender || "n/a",
-      email: item?.work_email || "n/a",
+      gender: item?.gender || "--- ---",
+      email: item?.work_email || "--- ---",
       // department: item?.department || "--",
       // line_manager_name: item?.line_manager_name || "--",
-      job_title: item?.job_title || "n/a",
-      role: item?.role || "n/a",
-      line_manager_name: item?.line_manager_name || "n/a",
+      job_title: item?.job_title || "--- ---",
+      role: item?.role || "--- ---",
+      line_manager_name: item?.line_manager_name || "--- ---",
       _slug: {
         id: item?.id,
       },
@@ -303,13 +303,13 @@ export default function UnitDetails() {
   return (
     <DashboardLayout
       back
-      headerTitle={unitDetail?.data?.unit?.name || "n/a"}
+      headerTitle={unitDetail?.data?.unit?.name || "--- ---"}
     >
       <section className="p-5">
         <div className="flex justify-between mb-10">
           <div className="">
             <h3 className="text-2xl font-medium text-[var(--text-color3)]">
-              {unitDetail?.data?.unit?.name || "n/a"}
+              {unitDetail?.data?.unit?.name || "--- ---"}
             </h3>
 
             <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
@@ -317,19 +317,19 @@ export default function UnitDetails() {
                 <h4>
                   Head of Unit:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.head_of_unit?.name || "n/a"}
+                    {unitDetail?.data?.unit?.head_of_unit?.name || "--- ---"}
                   </span>
                 </h4>
                 <h4>
                   Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.unit_email || "n/a"}
+                    {unitDetail?.data?.unit?.unit_email || "--- ---"}
                   </span>
                 </h4>
                 <h4>
                   Head of Unit Email:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {unitDetail?.data?.unit?.unit_email || "n/a"}
+                    {unitDetail?.data?.unit?.head_of_unit?.email || "--- ---"}
                   </span>
                 </h4>
               </span>
@@ -337,45 +337,55 @@ export default function UnitDetails() {
                 <h4>
                   Address:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
-                    {"n/a"}
-                    {/* { 9b, Akin Ogunmade Gbagada} */}
+                    {"--- ---"}
+                    {/* 9b, Akin Ogunmade Gbagada */}
                   </span>
                 </h4>
                 <h4>
                   State:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
                     {/* Lagos */}
-                    {"n/a"}
+                    {"--- ---"}
                   </span>
                 </h4>
                 <h4>
-                  Country:{" "}
+                  description:{" "}
                   <span className="text-[var(--text-color4)] font-medium ml-2">
                     {/* Nigeria */}
-                    {"n/a"}
+                    {"--- ---"}
                   </span>
                 </h4>
               </span>
             </div>
           </div>
           <div className="inline-flex justify-end gap-x-3">
-            <Link href={ADMIN.EDIT_UNIT(id ?? "")}>
+            {unitDetail?.data?.unit?.status.toLowerCase() === "active" ? (
+              <>
+                <Link href={ADMIN.EDIT_UNIT(id ?? "")}>
+                  <Button
+                    variant="outline"
+                    className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                  >
+                    Edit
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline"
+                  onClick={onOpenDeactivateModal}
+                  className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
+                >
+                  Deactivate
+                </Button>
+              </>
+            ) : (
               <Button
                 variant="outline"
-                className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
-                size="sm"
+                // onClick={() => setReopen(true)}
+                className="rounded border-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] hover:bg-white"
               >
-                Edit
+                Activate
               </Button>
-            </Link>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onOpenDeactivateModal}
-              className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
-            >
-              Deactivate
-            </Button>
+            )}
           </div>
         </div>{" "}
         <div className="block mb-9">
@@ -404,7 +414,6 @@ export default function UnitDetails() {
                 }}
                 // hidePagination
                 addText="New Staff"
-                hideNewBtnOne={false}
                 tableBodyList={FORMAT_TABLE_DATA(ALL_STAFF)}
                 loading={false}
                 // onSearch={(param) => {
@@ -420,7 +429,12 @@ export default function UnitDetails() {
                 dropDown
                 hideFilter
                 hideSort
-                newBtnBulk
+                newBtnBulk={
+                  unitDetail?.data?.unit?.status.toLowerCase() === "active"
+                }
+                hideNewBtnOne={
+                  unitDetail?.data?.unit?.status.toLowerCase() !== "active"
+                }
                 dropDownList={[
                   {
                     label: "View Details",

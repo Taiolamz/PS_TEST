@@ -1,6 +1,6 @@
 import DashboardLayout from "@/app/(dashboard)/_layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -11,7 +11,6 @@ import { useAppSelector } from "@/redux/store";
 import { processInputAsArray } from "@/utils/helpers";
 import ParentModuleCard from "@/components/card/module-cards/ParentModuleCard";
 import useDisclosure from "../_hooks/useDisclosure";
-import TableWrapper from "@/components/tables/TableWrapper";
 import DashboardModal from "../_components/checklist-dashboard-modal";
 import CancelModal from "../_components/cancel-modal";
 import BulkUploadModal from "../_components/bulk-upload-modal";
@@ -38,9 +37,7 @@ const { ADMIN } = routesPath;
 
 export default function BranchDetails() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [view, setView] = React.useState("");
   const [modal, setModal] = React.useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const [bulkFile, setBulkFile] = useState<File | null>(null);
@@ -338,7 +335,7 @@ export default function BranchDetails() {
   };
 
   return (
-    <DashboardLayout back headerTitle={branchInfo?.name || "N/A"}>
+    <DashboardLayout back headerTitle={branchInfo?.name || "--- ---"}>
       {isLoadingBranch ? (
         <div className="h-full flex items-center justify-center">
           <PageLoader />
@@ -356,19 +353,19 @@ export default function BranchDetails() {
                   <h4>
                     Head of Branch:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.head?.name || "n/a"}
+                      {branchInfo?.head?.name || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     Branch Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.branch_email || "n/a"}
+                      {branchInfo?.branch_email || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     Head of Branch Email:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.work_email || "n/a"}
+                      {branchInfo?.work_email || "--- ---"}
                     </span>
                   </h4>
                 </span>
@@ -376,44 +373,56 @@ export default function BranchDetails() {
                   <h4>
                     Address:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.address || "n/a"}
+                      {branchInfo?.address || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     State:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.state || "n/a"}
+                      {branchInfo?.state || "--- ---"}
                     </span>
                   </h4>
                   <h4>
                     Country:{" "}
                     <span className="text-[var(--text-color4)] font-medium ml-2">
-                      {branchInfo?.country || "n/a"}
+                      {branchInfo?.country || "--- ---"}
                     </span>
                   </h4>
                 </span>
               </div>
             </div>
             <div className="inline-flex justify-end gap-x-3">
-              <Link href={ADMIN.EDIT_BRANCHES(id ?? "")}>
+              {branchInfo?.status.toLowerCase() === "active" ? (
+                <>
+                  <Link href={ADMIN.EDIT_BRANCHES(id ?? "")}>
+                    <Button
+                      variant="outline"
+                      className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
+                      size="sm"
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setModal(true)}
+                    className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
+                  >
+                    Deactivate
+                  </Button>
+                </>
+              ) : (
                 <Button
                   variant="outline"
-                  className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
-                  size="sm"
+                  // onClick={() => setReopen(true)}
+                  className="rounded border-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] hover:bg-white"
                 >
-                  Edit
+                  Activate
                 </Button>
-              </Link>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setModal(true)}
-                className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
-              >
-                Deactivate
-              </Button>
+              )}
             </div>
-          </div>{" "}
+          </div>
           <div className="block mb-9">
             <ParentModuleCard list={listToTest} />
           </div>
@@ -434,6 +443,7 @@ export default function BranchDetails() {
                 }
                 isFetching={isFetchingBranchUnit}
                 tableData={branchDataDepartment?.data?.departments?.data}
+                isActive={branchInfo?.status.toLowerCase() === "active"}
               />
             )}
             {tab === "units" && (
@@ -448,6 +458,7 @@ export default function BranchDetails() {
                 currentPage={branchDataUnit?.data?.units?.meta?.current_page}
                 isFetching={isFetchingBranchUnit}
                 tableData={branchDataUnit?.data?.units?.data}
+                isActive={branchInfo?.status.toLowerCase() === "active"}
               />
             )}
             {tab === "staffs" && (
@@ -462,6 +473,7 @@ export default function BranchDetails() {
                 currentPage={branchDataStaff?.data?.staffs?.meta?.current_page}
                 isFetching={isFetchingBranchUnit}
                 tableData={branchDataStaff?.data?.staffs?.data}
+                isActive={branchInfo?.status.toLowerCase() === "active"}
               />
             )}
           </section>
