@@ -126,6 +126,7 @@ export const TAG_TYPES = [
   "TargetOutcomeSettings",
   "Staff",
   "Downliners",
+  "Notification",
 ];
 export const baseApi = createApi({
   baseQuery: baseQueryInterceptor,

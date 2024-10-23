@@ -10,6 +10,28 @@ export const notificationApi = baseApi.injectEndpoints({
       // transformResponse: (response: { data: any[] }) => response.data,
       providesTags: TAG_TYPES,
     }),
+    getNotificationById: builder.query({
+      query: (id) => ({
+        url: `/notifications/${id}`,
+        method: "GET",
+      }),
+      // transformResponse: (response: { data: any[] }) => response.data,
+      providesTags: TAG_TYPES,
+    }),
+    markNotificationAsRead: builder.mutation({
+      query: (id) => ({
+        url: `/notifications/read/${id}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Notification"],
+    }),
+    deleteNotificationAsRead: builder.mutation({
+      query: (id) => ({
+        url: `/notifications/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Notification"],
+    }),
   }),
 });
 
