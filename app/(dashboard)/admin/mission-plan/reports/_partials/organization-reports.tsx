@@ -78,8 +78,6 @@ const OrganizationReports = () => {
         return fiscalYearDrop;
     };
 
-    console.log(TARGET_MOS)
-
     return (
         <div className="w-full">
             {
@@ -209,7 +207,7 @@ const OrganizationReports = () => {
                                                         <div className="flex">
                                                             <div className="pt-10 flex flex-col">
                                                                 <span className="font-light">Specified Task Activity Breakdown</span>
-                                                                <Link href={ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK('ksksbsmdsadoao')} className="mt-2 block text-[14px] font-medium !text-[var(--primary-color)]">Click here to see All Tasks</Link>
+                                                                <Link href={ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK('organization')} className="mt-2 block text-[14px] font-medium text-[var(--primary-color)] underline">Click here to see All Tasks</Link>
                                                             </div>
                                                             <SpecifiedTaskChart data={getStatusData(TASK_COMPLETION)} />
                                                         </div>
@@ -254,7 +252,7 @@ const OrganizationReports = () => {
                                                 {TARGET_MOS?.length ? <ReusableProgressLabel value={ACHIEVEMENT_AVERAGE?.split("%")?.[0]} /> : ""}
                                                 {/* <PercentageLabel color="yellow" value={52} label="Archieved" /> */}
                                             </div>
-                                            <Link href={(TARGET_MOS.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS('sjnakdkbkbmam') : ""}>
+                                            <Link href={(TARGET_MOS.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_MEASURE_OF_SUCCESS('organization') : ""}>
                                                 <Button disabled={isLoading || isFetching || !TARGET_MOS.length} className="flex gap-3 items-center group">
                                                     <p className="font-medium">See Details</p>
                                                     <figure className="group-hover:translate-x-1 transition-all">
@@ -320,7 +318,6 @@ const OrganizationReports = () => {
                                                     name={name}
                                                     position={designation}
                                                     url={ADMIN.MISSION_PLAN_REPORT_PROGRESS(user_id)}
-                                                    // onClick={() => router.push(ADMIN.MISSION_PLAN_REPORT_PROGRESS('ksksbsmdsadoao'))}
                                                     progress={Math.floor(Number(achievement_percentage?.split("%")?.[0]))}
                                                 />
                                             )
