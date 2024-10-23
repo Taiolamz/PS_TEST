@@ -21,18 +21,6 @@ const TeamPerformanceBar = () => {
 
   const user = useAppSelector((state) => state.auth.user);
 
-  // fetching specified task details to get the team performance
-  // const {
-  //   data: orgData,
-  //   isLoading: loadingOrg,
-  //   isFetching: fetchingOrg,
-  // } = useGetSpecifiedTaskDetailsQuery({
-  //   is_admin: false,
-  //   staff_id: user?.staff_member_id,
-  //   fiscal_year: fiscal_year || "",
-  //   cycle: mission_cycle || "",
-  // });
-
   const {
     data: orgData,
     isLoading: loadingOrg,
