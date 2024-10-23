@@ -5,6 +5,8 @@ interface myComponentProps {
   children?: React.ReactNode;
   title?: string;
   text?: string;
+  body?: string;
+  message?: string;
   date?: string;
   url?: string;
   onView?: () => void;
@@ -37,6 +39,8 @@ const NotifyBox = ({
   date,
   url,
   read_at,
+  body,
+  message,
 }: myComponentProps) => {
   const [showView, setShowView] = useState("");
   return (
@@ -58,10 +62,7 @@ const NotifyBox = ({
         </div>
         <div className={style.title_text_box}>
           <p className={style.title}>{title || "Mission Plan!"}</p>
-          <p className={style.text}>
-            {text ||
-              "Create strategic pillars for staff in the organization to run their mission plan for the financial year."}
-          </p>
+          <p className={style.text}>{text || message || body || ""}</p>
           <div className={style.date}>
             <span>{date}</span>
           </div>
@@ -76,9 +77,9 @@ const NotifyBox = ({
           showView === id && style.view_box_wrap_show
         }`}
       >
-        <div className={style.view_box}>
+        {/* <div className={style.view_box}>
           <p className={style.text}>View</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
