@@ -78,7 +78,9 @@ const NotificationModal = ({ visible, onClose }: myComponentProps) => {
                   <NotifyBox
                     key={idx}
                     id={chi?.id}
-                    text={chi?.notification_information?.body}
+                    text={chi?.notification_information?.text}
+                    body={chi?.notification_information?.body}
+                    message={chi?.notification_information?.message}
                     title={chi?.notification_information?.title}
                     date={chi?.notification_information?.date}
                     url={chi?.notification_information?.url}

@@ -18,6 +18,7 @@ export default function DepartmentTable({
   totalPage,
   currentPage,
   onPageChange,
+  isActive,
 }: {
   perPage?: number;
   totalPage?: number;
@@ -28,6 +29,7 @@ export default function DepartmentTable({
   isFetching?: boolean;
   onSearch?: (param: string) => void;
   onPageChange?: (param: string) => void;
+  isActive: boolean;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,8 +47,8 @@ export default function DepartmentTable({
       tableheaderList={["Department", "HOD", "Subsidiary", "Branch", "Action"]}
       addText="New Department"
       loading={isFetching}
-      newBtnBulk={!subDetailsData?.deleted_at}
-      hideNewBtnOne={subDetailsData?.deleted_at}
+      newBtnBulk={isActive}
+      hideNewBtnOne={!isActive}
       tableBodyList={FORMAT_TABLE_DATA(tableData)}
       onSearch={onSearch}
       dropDown
