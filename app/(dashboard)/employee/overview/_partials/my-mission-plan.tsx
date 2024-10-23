@@ -5,7 +5,6 @@ import React from "react";
 
 export default function MyMissionPlanCard() {
   const { data, isLoading, isError } = useGetMyMissionPlanQuery({});
-  console.log({ data, isLoading, isError });
 
   return isError ? (
     <section className="bg-white rounded-[5px] h-[156px] w-full text-sm text-center place-content-center grid text-[var(--text-color2)]">

@@ -5,9 +5,13 @@ interface myComponentProps {
   children?: React.ReactNode;
   title?: string;
   text?: string;
+  body?: string;
+  message?: string;
   date?: string;
+  url?: string;
   onView?: () => void;
   id?: any;
+  read_at: string;
 }
 
 const checkIcon = (
@@ -26,7 +30,18 @@ const checkIcon = (
   </svg>
 );
 
-const NotifyBox = ({ children, onView, text, title, id, date }: myComponentProps) => {
+const NotifyBox = ({
+  children,
+  onView,
+  text,
+  title,
+  id,
+  date,
+  url,
+  read_at,
+  body,
+  message,
+}: myComponentProps) => {
   const [showView, setShowView] = useState("");
   return (
     <div
@@ -47,16 +62,13 @@ const NotifyBox = ({ children, onView, text, title, id, date }: myComponentProps
         </div>
         <div className={style.title_text_box}>
           <p className={style.title}>{title || "Mission Plan!"}</p>
-          <p className={style.text}>
-            {text ||
-              "Create strategic pillars for staff in the organization to run their mission plan for the financial year."}
-          </p>
+          <p className={style.text}>{text || message || body || ""}</p>
           <div className={style.date}>
-           <span>{date}</span>
+            <span>{date}</span>
           </div>
         </div>
         {/* dot here */}
-        <div className={style.dot_box}></div>
+        {typeof read_at !== "string" && <div className={style.dot_box} />}
         {/* dot here end */}
       </div>
       {/* text content dot end */}
@@ -65,9 +77,9 @@ const NotifyBox = ({ children, onView, text, title, id, date }: myComponentProps
           showView === id && style.view_box_wrap_show
         }`}
       >
-        <div className={style.view_box}>
-            <p className={style.text}>View</p>
-        </div>
+        {/* <div className={style.view_box}>
+          <p className={style.text}>View</p>
+        </div> */}
       </div>
     </div>
   );

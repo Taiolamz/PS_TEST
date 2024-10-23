@@ -214,6 +214,8 @@ export default function MOSReport({
             totalAchieveValue={
               orgData?.data?.target_chart?.total_achievement_average || "0"
             }
+            data={orgData?.data?.target_chart ?? {}}
+            loading={loadingOrg || fetchingOrg}
           />
         </div>
         {loadingOrg || fetchingOrg ? (
