@@ -104,7 +104,10 @@ const TeamPerformanceBar = () => {
             <div className="flex -space-x-4">
               {orgData?.data?.my_team?.team_members?.map(
                 (chi: any, idx: number) => (
-                  <div className="mt-9 inline-flex items-center gap-x-4">
+                  <div
+                    key={idx}
+                    className="mt-9 inline-flex items-center gap-x-4"
+                  >
                     <CheckUrlFragment
                       url={chi?.photo as any}
                       height={160}
