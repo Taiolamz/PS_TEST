@@ -233,7 +233,7 @@ const AddMissionPlanTemplate: React.FC = () => {
               )
             }
             className="relative"
-            iconClass="cursor-not-allowed"
+            iconClass="cursor-not-allowed top-7"
             inputClass="text-[#d3d3d3] cursor-not-allowed"
             error={""}
             disabled
@@ -250,7 +250,7 @@ const AddMissionPlanTemplate: React.FC = () => {
             }
             placeholder="sdfsdf"
             error={""}
-            iconClass="cursor-not-allowed"
+            iconClass="cursor-not-allowed top-7"
             className="relative"
             inputClass="text-[#d3d3d3] cursor-not-allowed"
             disabled
@@ -455,9 +455,8 @@ const AddMissionPlanTemplate: React.FC = () => {
             {sections.map((section, index) => (
               <div
                 key={section.id}
-                className={`mt-5 border  rounded-lg p-8 ${
-                  section.isRequired ? "cursor-not-allowed" : "cursor-pointer"
-                } pb-10 pt-10 bg-white`}
+                className={`mt-5 border  rounded-lg p-8 ${section.isRequired ? "cursor-not-allowed" : "cursor-pointer"
+                  } pb-10 pt-10 bg-white`}
                 draggable={!section.isRequired}
                 onDragStart={(e) =>
                   !section.isRequired && handleDragStart(e, index)

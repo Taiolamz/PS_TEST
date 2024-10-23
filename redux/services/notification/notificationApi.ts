@@ -6,6 +6,7 @@ export const notificationApi = baseApi.injectEndpoints({
       query: () => ({
         url: `/notifications`,
         method: "GET",
+        pollingInterval: 60000,
       }),
       // transformResponse: (response: { data: any[] }) => response.data,
       providesTags: TAG_TYPES,

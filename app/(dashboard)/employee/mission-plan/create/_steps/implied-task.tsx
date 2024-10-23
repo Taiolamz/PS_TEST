@@ -36,6 +36,7 @@ import TransferSpecifiedTask from "./transfer-specified-task";
 import ImpliedTaskNotify from "./implied-task-notify";
 import TransferImpliedTaskOrWeight from "./transfer-implied-task";
 import routesPath from "@/utils/routes";
+import MissionDetailPreview from "./preview";
 
 interface SubItem {
   task: string;
@@ -625,6 +626,7 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
+  const step = searchParams.get("step");
 
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -640,606 +642,611 @@ const ImpliedTask = ({ onNextStep }: myComponentProps) => {
 
   return (
     <>
-      {isLoadingMissionPlan || isFetchingMissionPlan ? (
-        <div className="h-[75vh] grid place-content-center">
-          <PageLoader />
-        </div>
-      ) : (
-        <div className="pr-4">
-          <div className="flex gap-2">
-            <h2>Set Implied Task</h2>
-            <figure>{infoIcon}</figure>
-          </div>
+      {
+        step !== "preview" &&
+        <>
+          {isLoadingMissionPlan || isFetchingMissionPlan ? (
+            <div className="h-[75vh] grid place-content-center">
+              <PageLoader />
+            </div>
+          ) : (
+            <div className="pr-4">
+              <div className="flex gap-2">
+                <h2>Set Implied Task</h2>
+                <figure>{infoIcon}</figure>
+              </div>
 
-          <form onSubmit={formik.handleSubmit} className="mt-7">
-            <FormikProvider value={formik}>
-              <FieldArray name="tasks">
-                {({ insert, remove, push }) => (
-                  <div>
-                    {formik.values.tasks &&
-                      formik.values.tasks.length > 0 &&
-                      formik.values.tasks?.map((task: any, index: number) => (
-                        <div
-                          key={task.id}
-                          className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative"
-                        >
-                          <div className="flex justify-between">
-                            <p className="text-[#6E7C87] text-xs font-normal">
-                              {index + 1}. Specified Task
-                            </p>
-                            {user?.role === "ceo" ||
-                            (user as any)?.is_line_manager ? (
-                              <p
-                                className="text-red-500 text-xs ml-auto cursor-pointer"
-                                onClick={() => {
-                                  setChildData({
-                                    taskIndex: index,
-                                    ...task,
-                                  });
-                                  onOpenDeleteModal();
-                                  // onOpenTransferModal();
-                                }}
-                              >
-                                Remove Specified task
-                              </p>
-                            ) : null}
-                          </div>
-                          <CustomAccordion
-                            type="multiple"
-                            defaultValue={["item-1"]}
-                            key={task.implied_task_id}
-                            triggerClass="border border-custom-divider px-4 py-2 rounded-sm mb-4"
-                            className="mb-4 rounded w-full flex flex-col gap-1"
-                            contentClass="border border-custom-divider px-5 py-6 rounded-sm"
-                            contentWrapperClass="overflow-visible"
-                            title={
-                              <p className="font-medium text-sm text-graySecondary">
-                                {`${index + 1}. ${
-                                  task?.task + " " + `| (${task?.weight}%)` ||
-                                  "Specified Task"
-                                } `}
-                              </p>
-                            }
-                            content={
-                              <div className="flex flex-col gap-3 mr-10 relative">
-                                <div className="flex flex-col gap-5">
-                                  {task.implied_tasks &&
-                                    task.implied_tasks.length > 0 &&
-                                    (task.implied_tasks as SubItem[]).map(
-                                      (subItem, subIndex) => {
-                                        return (
-                                          <div key={subIndex}>
-                                            <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
-                                              <div className="col-span-full">
-                                                <Input
-                                                  type="text"
-                                                  id={`tasks.${index}.implied_tasks.${subIndex}.task`}
-                                                  label={`Implied Task ${
-                                                    subIndex + 1
-                                                  }`}
-                                                  labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                                  onBlur={formik.handleBlur}
-                                                  onChange={formik.handleChange}
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.task`}
-                                                  placeholder="Input task"
-                                                  className="mr-2 w-full"
-                                                  value={
-                                                    formik.values.tasks[index]
-                                                      .implied_tasks[subIndex]
-                                                      .task
-                                                  }
-                                                  isRequired
-                                                />
-                                                <ErrorMessage
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.task`}
-                                                  className="text-red-500 text-xs mt-1 absolute"
-                                                  component={"div"}
-                                                />
-                                              </div>
-                                              <div className="relative">
-                                                <Input
-                                                  type="number"
-                                                  id={`tasks.${index}.implied_tasks.${subIndex}.weight`}
-                                                  label="Input Weight (%)"
-                                                  labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                                  onBlur={formik.handleBlur}
-                                                  // onChange={(e) => {
-                                                  //   const { value } = e.target;
-                                                  //   if (Number(value) <= 100) {
-                                                  //     formik.handleChange(e);
-                                                  //   }
-                                                  // }}
-                                                  onChange={(e) =>
-                                                    handleWeightChange(
-                                                      e,
-                                                      index,
-                                                      subIndex
-                                                      // formik
-                                                    )
-                                                  }
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.weight`}
-                                                  placeholder="Input Weight"
-                                                  className="mr-2 w-full"
-                                                  value={
-                                                    formik.values.tasks[index]
-                                                      .implied_tasks[subIndex]
-                                                      .weight
-                                                  }
-                                                  isRequired
-                                                  max={100}
-                                                />
-                                                <div>
-                                                  {!weightSumErrors[index] ? (
+              <form onSubmit={formik.handleSubmit} className="mt-7">
+                <FormikProvider value={formik}>
+                  <FieldArray name="tasks">
+                    {({ insert, remove, push }) => (
+                      <div>
+                        {formik.values.tasks &&
+                          formik.values.tasks.length > 0 &&
+                          formik.values.tasks?.map((task: any, index: number) => (
+                            <div
+                              key={task.id}
+                              className="grid gap-y-5 items-center space-x-2 w-full mb-5 relative"
+                            >
+                              <div className="flex justify-between">
+                                <p className="text-[#6E7C87] text-xs font-normal">
+                                  {index + 1}. Specified Task
+                                </p>
+                                {user?.role === "ceo" ||
+                                  (user as any)?.is_line_manager ? (
+                                  <p
+                                    className="text-red-500 text-xs ml-auto cursor-pointer"
+                                    onClick={() => {
+                                      setChildData({
+                                        taskIndex: index,
+                                        ...task,
+                                      });
+                                      onOpenDeleteModal();
+                                      // onOpenTransferModal();
+                                    }}
+                                  >
+                                    Remove Specified task
+                                  </p>
+                                ) : null}
+                              </div>
+                              <CustomAccordion
+                                type="multiple"
+                                defaultValue={["item-1"]}
+                                key={task.implied_task_id}
+                                triggerClass="border border-custom-divider px-4 py-2 rounded-sm mb-4"
+                                className="mb-4 rounded w-full flex flex-col gap-1"
+                                contentClass="border border-custom-divider px-5 py-6 rounded-sm"
+                                contentWrapperClass="overflow-visible"
+                                title={
+                                  <p className="font-medium text-sm text-graySecondary">
+                                    {`${index + 1}. ${task?.task + " " + `| (${task?.weight}%)` ||
+                                      "Specified Task"
+                                      } `}
+                                  </p>
+                                }
+                                content={
+                                  <div className="flex flex-col gap-3 mr-10 relative">
+                                    <div className="flex flex-col gap-5">
+                                      {task.implied_tasks &&
+                                        task.implied_tasks.length > 0 &&
+                                        (task.implied_tasks as SubItem[]).map(
+                                          (subItem, subIndex) => {
+                                            return (
+                                              <div key={subIndex}>
+                                                <div className="grid lg:grid-cols-3 gap-x-3 gap-y-4">
+                                                  <div className="col-span-full">
+                                                    <Input
+                                                      type="text"
+                                                      id={`tasks.${index}.implied_tasks.${subIndex}.task`}
+                                                      label={`Implied Task ${subIndex + 1
+                                                        }`}
+                                                      labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                      onBlur={formik.handleBlur}
+                                                      onChange={formik.handleChange}
+                                                      name={`tasks.${index}.implied_tasks.${subIndex}.task`}
+                                                      placeholder="Input task"
+                                                      className="mr-2 w-full"
+                                                      value={
+                                                        formik.values.tasks[index]
+                                                          .implied_tasks[subIndex]
+                                                          .task
+                                                      }
+                                                      isRequired
+                                                    />
                                                     <ErrorMessage
-                                                      name={`tasks.${index}.implied_tasks.${subIndex}.weight`}
+                                                      name={`tasks.${index}.implied_tasks.${subIndex}.task`}
                                                       className="text-red-500 text-xs mt-1 absolute"
                                                       component={"div"}
                                                     />
-                                                  ) : (
-                                                    <p className="text-red-500 text-xs mt-1 absolute">
-                                                      {weightSumErrors[index]}
-                                                    </p>
-                                                  )}
-                                                </div>
-                                              </div>
-                                              {/* <div className="relative">
-                                                <Input
-                                                  type="number"
-                                                  id={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
-                                                  label="Input Percentage (%)"
-                                                  labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
-                                                  onBlur={formik.handleBlur}
-                                                  onChange={formik.handleChange}
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
-                                                  placeholder="Input Percentage"
-                                                  className="mr-2 w-full"
-                                                  value={
-                                                    formik.values.tasks[index]
-                                                      .implied_tasks[subIndex]
-                                                      .percentage
-                                                  }
-                                                  isRequired
-                                                />
-                                                <ErrorMessage
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
-                                                  className="text-red-500 text-xs mt-1 absolute"
-                                                  component={"div"}
-                                                />
-                                              </div> */}
-                                              <div className="mt-1 relative">
-                                                <CustomMultipleSelect
-                                                  options={
-                                                    formattedEmployeesDrop
-                                                  }
-                                                  // onValueChange={(values) =>
-                                                  //   formik.setFieldValue(
-                                                  //     `tasks.${index}.implied_tasks.${subIndex}.resources`,
-                                                  //     values.map((value) => {
-                                                  //       const selectedResource =
-                                                  //         formattedEmployeesDrop.find(
-                                                  //           (opt) =>
-                                                  //             opt.id === value
-                                                  //         );
-                                                  //       return {
-                                                  //         id: value,
-                                                  //         name:
-                                                  //           selectedResource?.name ||
-                                                  //           "",
-                                                  //       };
-                                                  //     })
-                                                  //   )
-                                                  // }
-                                                  onValueChange={(values) =>
-                                                    handleResourceChange(
-                                                      values,
-                                                      index,
-                                                      subIndex
-                                                    )
-                                                  }
-                                                  label="Select Resources"
-                                                  name={`tasks.${index}.implied_tasks.${subIndex}.resources`}
-                                                  defaultValue={formik.values.tasks[
-                                                    index
-                                                  ].implied_tasks[
-                                                    subIndex
-                                                  ].resources.map(
-                                                    (resource: any) =>
-                                                      resource.id
-                                                  )}
-                                                  placeholder="Select Resources"
-                                                  badgeClassName="rounded-[20px] text-[10px] font-normal"
-                                                  triggerClassName="min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1"
-                                                  placeholderClass="font-light text-sm text-[#6E7C87] opacity-70"
-                                                  labelClass="block text-xs text-[#6E7C87] font-normal  p-0 pb-[9px]"
-                                                  error={
-                                                    errorTasks?.[index]
-                                                      ?.implied_tasks?.[
-                                                      subIndex
-                                                    ]?.resources?.id
-                                                  }
-                                                  touched={
-                                                    touchedTasks?.[index]
-                                                      ?.implied_tasks?.[
-                                                      subIndex
-                                                    ]?.resources?.id
-                                                  }
-                                                  maxCount={6}
-                                                  onBlur={() =>
-                                                    formik.setFieldTouched(
-                                                      `tasks.${index}.implied_tasks.${subIndex}.resources`,
-                                                      true
-                                                    )
-                                                  }
-                                                  isRequired
-                                                />
-                                              </div>
-                                              {subItem.resources.map(
-                                                (resource: any, idx) => (
-                                                  <div
-                                                    className="relative"
-                                                    key={idx}
-                                                  >
+                                                  </div>
+                                                  <div className="relative">
                                                     <Input
                                                       type="number"
-                                                      id={`tasks.${index}.implied_tasks.${subIndex}.percentage[${idx}]`}
-                                                      label={`Input task percentage (%) (${
-                                                        resource.name ||
-                                                        "Resource"
-                                                      })`}
+                                                      id={`tasks.${index}.implied_tasks.${subIndex}.weight`}
+                                                      label="Input Weight (%)"
                                                       labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
                                                       onBlur={formik.handleBlur}
                                                       // onChange={(e) => {
-                                                      //   const { value } =
-                                                      //     e.target;
-                                                      //   if (
-                                                      //     Number(value) <= 100
-                                                      //   ) {
-                                                      //     formik.handleChange(
-                                                      //       e
-                                                      //     );
+                                                      //   const { value } = e.target;
+                                                      //   if (Number(value) <= 100) {
+                                                      //     formik.handleChange(e);
                                                       //   }
                                                       // }}
-                                                      // onChange={(e) => {
-                                                      //   const { value } =
-                                                      //     e.target;
-                                                      //   const sanitizedValue =
-                                                      //     Math.max(
-                                                      //       0,
-                                                      //       Number(value) || 0
-                                                      //     ); // Ensure value is non-negative
-                                                      //   formik.setFieldValue(
-                                                      //     e.target.name,
-                                                      //     sanitizedValue
-                                                      //   ); // Update Formik value
-                                                      // }}
                                                       onChange={(e) =>
-                                                        handlePercentChange(
+                                                        handleWeightChange(
                                                           e,
-                                                          formik
+                                                          index,
+                                                          subIndex
+                                                          // formik
                                                         )
                                                       }
-                                                      name={`tasks.${index}.implied_tasks.${subIndex}.percentage[${idx}]`}
+                                                      name={`tasks.${index}.implied_tasks.${subIndex}.weight`}
+                                                      placeholder="Input Weight"
+                                                      className="mr-2 w-full"
+                                                      value={
+                                                        formik.values.tasks[index]
+                                                          .implied_tasks[subIndex]
+                                                          .weight
+                                                      }
+                                                      isRequired
+                                                      max={100}
+                                                    />
+                                                    <div>
+                                                      {!weightSumErrors[index] ? (
+                                                        <ErrorMessage
+                                                          name={`tasks.${index}.implied_tasks.${subIndex}.weight`}
+                                                          className="text-red-500 text-xs mt-1 absolute"
+                                                          component={"div"}
+                                                        />
+                                                      ) : (
+                                                        <p className="text-red-500 text-xs mt-1 absolute">
+                                                          {weightSumErrors[index]}
+                                                        </p>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  {/* <div className="relative">
+                                                    <Input
+                                                      type="number"
+                                                      id={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
+                                                      label="Input Percentage (%)"
+                                                      labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                      onBlur={formik.handleBlur}
+                                                      onChange={formik.handleChange}
+                                                      name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
                                                       placeholder="Input Percentage"
                                                       className="mr-2 w-full"
                                                       value={
-                                                        formik.values.tasks[
-                                                          index
-                                                        ].implied_tasks[
-                                                          subIndex
-                                                        ].percentage[idx] || ""
+                                                        formik.values.tasks[index]
+                                                          .implied_tasks[subIndex]
+                                                          .percentage
                                                       }
                                                       isRequired
                                                     />
                                                     <ErrorMessage
                                                       name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
                                                       className="text-red-500 text-xs mt-1 absolute"
-                                                      component="div"
+                                                      component={"div"}
+                                                    />
+                                                  </div> */}
+                                                  <div className="mt-1 relative">
+                                                    <CustomMultipleSelect
+                                                      options={
+                                                        formattedEmployeesDrop
+                                                      }
+                                                      // onValueChange={(values) =>
+                                                      //   formik.setFieldValue(
+                                                      //     `tasks.${index}.implied_tasks.${subIndex}.resources`,
+                                                      //     values.map((value) => {
+                                                      //       const selectedResource =
+                                                      //         formattedEmployeesDrop.find(
+                                                      //           (opt) =>
+                                                      //             opt.id === value
+                                                      //         );
+                                                      //       return {
+                                                      //         id: value,
+                                                      //         name:
+                                                      //           selectedResource?.name ||
+                                                      //           "",
+                                                      //       };
+                                                      //     })
+                                                      //   )
+                                                      // }
+                                                      onValueChange={(values) =>
+                                                        handleResourceChange(
+                                                          values,
+                                                          index,
+                                                          subIndex
+                                                        )
+                                                      }
+                                                      label="Select Resources"
+                                                      name={`tasks.${index}.implied_tasks.${subIndex}.resources`}
+                                                      defaultValue={formik.values.tasks[
+                                                        index
+                                                      ].implied_tasks[
+                                                        subIndex
+                                                      ].resources.map(
+                                                        (resource: any) =>
+                                                          resource.id
+                                                      )}
+                                                      placeholder="Select Resources"
+                                                      badgeClassName="rounded-[20px] text-[10px] font-normal"
+                                                      triggerClassName="min-h-[37px] rounded-[6px] border bg-transparent text-sm bg-[#ffffff] border-gray-300 shadow-sm p-1"
+                                                      placeholderClass="font-light text-sm text-[#6E7C87] opacity-70"
+                                                      labelClass="block text-xs text-[#6E7C87] font-normal  p-0 pb-[9px]"
+                                                      error={
+                                                        errorTasks?.[index]
+                                                          ?.implied_tasks?.[
+                                                          subIndex
+                                                        ]?.resources?.id
+                                                      }
+                                                      touched={
+                                                        touchedTasks?.[index]
+                                                          ?.implied_tasks?.[
+                                                          subIndex
+                                                        ]?.resources?.id
+                                                      }
+                                                      maxCount={6}
+                                                      onBlur={() =>
+                                                        formik.setFieldTouched(
+                                                          `tasks.${index}.implied_tasks.${subIndex}.resources`,
+                                                          true
+                                                        )
+                                                      }
+                                                      isRequired
                                                     />
                                                   </div>
-                                                )
-                                              )}
+                                                  {subItem.resources.map(
+                                                    (resource: any, idx) => (
+                                                      <div
+                                                        className="relative"
+                                                        key={idx}
+                                                      >
+                                                        <Input
+                                                          type="number"
+                                                          id={`tasks.${index}.implied_tasks.${subIndex}.percentage[${idx}]`}
+                                                          label={`Input task percentage (%) (${resource.name ||
+                                                            "Resource"
+                                                            })`}
+                                                          labelClass="text-[#6E7C87] text-[13px] pb-[6px]"
+                                                          onBlur={formik.handleBlur}
+                                                          // onChange={(e) => {
+                                                          //   const { value } =
+                                                          //     e.target;
+                                                          //   if (
+                                                          //     Number(value) <= 100
+                                                          //   ) {
+                                                          //     formik.handleChange(
+                                                          //       e
+                                                          //     );
+                                                          //   }
+                                                          // }}
+                                                          // onChange={(e) => {
+                                                          //   const { value } =
+                                                          //     e.target;
+                                                          //   const sanitizedValue =
+                                                          //     Math.max(
+                                                          //       0,
+                                                          //       Number(value) || 0
+                                                          //     ); // Ensure value is non-negative
+                                                          //   formik.setFieldValue(
+                                                          //     e.target.name,
+                                                          //     sanitizedValue
+                                                          //   ); // Update Formik value
+                                                          // }}
+                                                          onChange={(e) =>
+                                                            handlePercentChange(
+                                                              e,
+                                                              formik
+                                                            )
+                                                          }
+                                                          name={`tasks.${index}.implied_tasks.${subIndex}.percentage[${idx}]`}
+                                                          placeholder="Input Percentage"
+                                                          className="mr-2 w-full"
+                                                          value={
+                                                            formik.values.tasks[
+                                                              index
+                                                            ].implied_tasks[
+                                                              subIndex
+                                                            ].percentage[idx] || ""
+                                                          }
+                                                          isRequired
+                                                        />
+                                                        <ErrorMessage
+                                                          name={`tasks.${index}.implied_tasks.${subIndex}.percentage`}
+                                                          className="text-red-500 text-xs mt-1 absolute"
+                                                          component="div"
+                                                        />
+                                                      </div>
+                                                    )
+                                                  )}
 
-                                              <div className="grid grid-cols-2 gap-2">
-                                                <div className="flex flex-col gap-1">
-                                                  <CustomDateInput
-                                                    onBlur={() =>
-                                                      formik.setFieldTouched(
-                                                        `tasks.${index}.implied_tasks.${subIndex}.start_date`,
-                                                        true
-                                                      )
-                                                    }
-                                                    id={`tasks.${index}.implied_tasks.${subIndex}.start_date`}
-                                                    label="Start Date"
-                                                    labelClass="-mt-1"
-                                                    selected={
-                                                      formik.values.tasks[index]
-                                                        .implied_tasks[subIndex]
-                                                        .start_date as any
-                                                    }
-                                                    handleChange={(date) =>
-                                                      formik.setFieldValue(
-                                                        `tasks.${index}.implied_tasks.${subIndex}.start_date`,
-                                                        formatDate(date)
-                                                      )
-                                                    }
-                                                    error={
-                                                      errorTasks?.[index]
-                                                        ?.implied_tasks?.[
-                                                        subIndex
-                                                      ]?.start_date
-                                                    }
-                                                    touched={
-                                                      touchedTasks?.[index]
-                                                        ?.implied_tasks?.[
-                                                        subIndex
-                                                      ]?.start_date
-                                                    }
-                                                    className="relative pr-8 w-full "
-                                                    iconClass="top-[2.7rem] right-3"
-                                                    inputClass=" "
-                                                    isRequired
-                                                  />
+                                                  <div className="grid grid-cols-2 gap-2">
+                                                    <div className="flex flex-col gap-1">
+                                                      <CustomDateInput
+                                                        onBlur={() =>
+                                                          formik.setFieldTouched(
+                                                            `tasks.${index}.implied_tasks.${subIndex}.start_date`,
+                                                            true
+                                                          )
+                                                        }
+                                                        id={`tasks.${index}.implied_tasks.${subIndex}.start_date`}
+                                                        label="Start Date"
+                                                        labelClass="-mt-1"
+                                                        selected={
+                                                          formik.values.tasks[index]
+                                                            .implied_tasks[subIndex]
+                                                            .start_date as any
+                                                        }
+                                                        handleChange={(date) =>
+                                                          formik.setFieldValue(
+                                                            `tasks.${index}.implied_tasks.${subIndex}.start_date`,
+                                                            formatDate(date)
+                                                          )
+                                                        }
+                                                        error={
+                                                          errorTasks?.[index]
+                                                            ?.implied_tasks?.[
+                                                            subIndex
+                                                          ]?.start_date
+                                                        }
+                                                        touched={
+                                                          touchedTasks?.[index]
+                                                            ?.implied_tasks?.[
+                                                            subIndex
+                                                          ]?.start_date
+                                                        }
+                                                        className="relative pr-8 w-full "
+                                                        iconClass="top-[2.7rem] right-3"
+                                                        inputClass=" "
+                                                        isRequired
+                                                      />
+                                                    </div>
+                                                    <div className="flex flex-col gap-1">
+                                                      <CustomDateInput
+                                                        id={`tasks.${index}.implied_tasks.${subIndex}.end_date`}
+                                                        label="End Date"
+                                                        selected={
+                                                          formik.values.tasks[index]
+                                                            .implied_tasks[subIndex]
+                                                            .end_date as any
+                                                        }
+                                                        labelClass="-mt-1"
+                                                        handleChange={(date) =>
+                                                          formik.setFieldValue(
+                                                            `tasks.${index}.implied_tasks.${subIndex}.end_date`,
+                                                            formatDate(date)
+                                                          )
+                                                        }
+                                                        onBlur={() =>
+                                                          formik.setFieldTouched(
+                                                            `tasks.${index}.implied_tasks.${subIndex}.end_date`,
+                                                            true
+                                                          )
+                                                        }
+                                                        error={
+                                                          errorTasks?.[index]
+                                                            ?.implied_tasks?.[
+                                                            subIndex
+                                                          ]?.end_date
+                                                        }
+                                                        touched={
+                                                          touchedTasks?.[index]
+                                                            ?.implied_tasks?.[
+                                                            subIndex
+                                                          ]?.end_date
+                                                        }
+                                                        className="relative pr-8"
+                                                        iconClass="top-[2.7rem] right-3"
+                                                        isRequired
+                                                      />
+                                                    </div>
+                                                  </div>
                                                 </div>
-                                                <div className="flex flex-col gap-1">
-                                                  <CustomDateInput
-                                                    id={`tasks.${index}.implied_tasks.${subIndex}.end_date`}
-                                                    label="End Date"
-                                                    selected={
-                                                      formik.values.tasks[index]
-                                                        .implied_tasks[subIndex]
-                                                        .end_date as any
-                                                    }
-                                                    labelClass="-mt-1"
-                                                    handleChange={(date) =>
-                                                      formik.setFieldValue(
-                                                        `tasks.${index}.implied_tasks.${subIndex}.end_date`,
-                                                        formatDate(date)
-                                                      )
-                                                    }
-                                                    onBlur={() =>
-                                                      formik.setFieldTouched(
-                                                        `tasks.${index}.implied_tasks.${subIndex}.end_date`,
-                                                        true
-                                                      )
-                                                    }
-                                                    error={
-                                                      errorTasks?.[index]
-                                                        ?.implied_tasks?.[
-                                                        subIndex
-                                                      ]?.end_date
-                                                    }
-                                                    touched={
-                                                      touchedTasks?.[index]
-                                                        ?.implied_tasks?.[
-                                                        subIndex
-                                                      ]?.end_date
-                                                    }
-                                                    className="relative pr-8"
-                                                    iconClass="top-[2.7rem] right-3"
-                                                    isRequired
+
+                                                <div
+                                                  className="absolute -right-11 -mt-7 cursor-pointer"
+                                                  onClick={() => {
+                                                    setChildData({
+                                                      taskIndex: index,
+                                                      impliedTaskIndex: subIndex,
+                                                      ...subItem,
+                                                    });
+                                                    onOpenDeleteImpliedTask();
+                                                  }}
+                                                >
+                                                  <Icon
+                                                    name="remove"
+                                                    width={14.28}
+                                                    height={18.63}
                                                   />
                                                 </div>
                                               </div>
-                                            </div>
+                                            );
+                                          }
+                                        )}
+                                    </div>
 
-                                            <div
-                                              className="absolute -right-11 -mt-7 cursor-pointer"
-                                              onClick={() => {
-                                                setChildData({
-                                                  taskIndex: index,
-                                                  impliedTaskIndex: subIndex,
-                                                  ...subItem,
-                                                });
-                                                onOpenDeleteImpliedTask();
-                                              }}
-                                            >
-                                              <Icon
-                                                name="remove"
-                                                width={14.28}
-                                                height={18.63}
-                                              />
-                                            </div>
-                                          </div>
-                                        );
-                                      }
-                                    )}
-                                </div>
-
-                                <div className="flex gap-2 items-center mt-3 ">
-                                  <div
-                                    className="flex gap-2 items-center cursor-pointer"
-                                    onClick={() =>
-                                      handleAddMoreImpliedTasks(index)
-                                    }
-                                  >
-                                    <LucidePlusCircle
-                                      size={28}
-                                      className="mr-2 text-primary"
-                                    />
-                                    <p className="text-primary">Add new Task</p>
+                                    <div className="flex gap-2 items-center mt-3 ">
+                                      <div
+                                        className="flex gap-2 items-center cursor-pointer"
+                                        onClick={() =>
+                                          handleAddMoreImpliedTasks(index)
+                                        }
+                                      >
+                                        <LucidePlusCircle
+                                          size={28}
+                                          className="mr-2 text-primary"
+                                        />
+                                        <p className="text-primary">Add new Task</p>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
-                            }
-                          />
-                        </div>
-                      ))}
-                    {/* 
-                    <button
-                      type="button"
-                      onClick={() =>
-                        push({
-                          task: "",
-                          user_id: "",
-                          specified_task_id: "",
-                          implied_task_id: "", //uuidv4()
-                          weight: "",
-                          percentage: "",
-                          start_date: "",
-                          end_date: "",
-                          resources: [],
-                          expected_outcomes: [""],
-                          implied_tasks: [
-                            {
+                                }
+                              />
+                            </div>
+                          ))}
+                        {/* 
+                        <button
+                          type="button"
+                          onClick={() =>
+                            push({
                               task: "",
                               user_id: "",
                               specified_task_id: "",
-                              implied_task_id: "",
+                              implied_task_id: "", //uuidv4()
                               weight: "",
                               percentage: "",
                               start_date: "",
                               end_date: "",
                               resources: [],
                               expected_outcomes: [""],
-                            },
-                          ],
-                        })
-                      }
-                      className="flex items-center gap-2 mt-8 text-primary text-sm"
+                              implied_tasks: [
+                                {
+                                  task: "",
+                                  user_id: "",
+                                  specified_task_id: "",
+                                  implied_task_id: "",
+                                  weight: "",
+                                  percentage: "",
+                                  start_date: "",
+                                  end_date: "",
+                                  resources: [],
+                                  expected_outcomes: [""],
+                                },
+                              ],
+                            })
+                          }
+                          className="flex items-center gap-2 mt-8 text-primary text-sm"
+                        >
+                          Add more level
+                        </button> */}
+                      </div>
+                    )}
+                  </FieldArray>
+                  <div className="mt-8 flex gap-x-2 items-center">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
+                      onClick={router.back}
                     >
-                      Add more level
-                    </button> */}
+                      Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={
+                        isCreatingImpliedTask ||
+                        !formik.isValid ||
+                        !formik.dirty ||
+                        isWeightSumValid
+                      }
+                      loading={isCreatingImpliedTask}
+                      loadingText="Save & Continue"
+                      className={cn(
+                        "w-full",
+                        !formik.isValid ||
+                          !formik.dirty ||
+                          isCreatingImpliedTask ||
+                          isWeightSumValid
+                          ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
+                          : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
+                      )}
+                    >
+                      Save & Continue
+                    </Button>
                   </div>
-                )}
-              </FieldArray>
-              <div className="mt-8 flex gap-x-2 items-center">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={`text-primary py-5 px-2 rounded-sm bg-transparent border border-primary min-w-28`}
-                  onClick={router.back}
-                >
-                  Back
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={
-                    isCreatingImpliedTask ||
-                    !formik.isValid ||
-                    !formik.dirty ||
-                    isWeightSumValid
-                  }
-                  loading={isCreatingImpliedTask}
-                  loadingText="Save & Continue"
-                  className={cn(
-                    "w-full",
-                    !formik.isValid ||
-                      !formik.dirty ||
-                      isCreatingImpliedTask ||
-                      isWeightSumValid
-                      ? "opacity-50 cursor-not-allowed w-max py-5 px-2 rounded-sm "
-                      : "cursor-pointer text-white py-5 px-2 rounded-sm bg-[var(--primary-color)] border border-[var(--primary-color)] w-max"
-                  )}
-                >
-                  Save & Continue
-                </Button>
-              </div>
-            </FormikProvider>
-          </form>
-          <div></div>
-          <div className="mt-7"></div>
-        </div>
+                </FormikProvider>
+              </form>
+              <div></div>
+              <div className="mt-7"></div>
+            </div>
+          )}
+
+          {/* delete specified modal */}
+          <DashboardModal
+            className={"w-[600px] max-w-full"}
+            open={openDeleteModal}
+            onOpenChange={handleDeleteDialog}
+          >
+            <DeleteSpecifiedTask
+              onReAssign={() => {
+                handleDeleteDialog();
+                handleTransferSpecifiedTask();
+                setChildData(childData);
+              }}
+              data={childData}
+              isLoading={isDeletingSpecifiedTask}
+              onDelete={() =>
+                handleDeleteSpecifiedTask(childData?.specified_task_id, childData)
+              }
+            // onDelete={() =>
+            //   handleDeleteSpecifiedTask(
+            //     childData.taskIndex,
+            //     childData?.specified_task_id
+            //   )
+            // }
+            />
+          </DashboardModal>
+
+          {/* delete implied modal */}
+          <DashboardModal
+            className={"w-[500px] max-w-full"}
+            open={openDeleteImpliedTask}
+            onOpenChange={handleDeleteImpliedTaskDialog}
+          >
+            <DeleteImpliedTaskModal
+              data={childData}
+              onCancel={handleDeleteImpliedTaskDialog}
+              onDelete={() =>
+                handleDeleteImpliedTask(
+                  childData?.implied_task_id,
+                  childData.taskIndex,
+                  childData.impliedTaskIndex
+                )
+              }
+              // onDelete={() => handleDeleteImpliedTask(childData?.implied_task_id)}
+              isLoading={isDeletingImpliedTask}
+            />
+          </DashboardModal>
+
+          {/* transfer specified task modal */}
+          <DashboardModal
+            className={"w-[600px] max-w-full"}
+            open={openTransferModal}
+            onOpenChange={handleTransferSpecifiedTask}
+          >
+            <TransferSpecifiedTask
+              onTaskWeightTransfer={() => {
+                handleTransferSpecifiedTask();
+                handleTransferImpliedTask();
+                setChildData(childData);
+                setIsWeightTransfer(true);
+              }}
+              data={childData}
+              onTaskTransfer={() => {
+                handleTransferSpecifiedTask();
+                handleTransferImpliedTask();
+                setChildData(childData);
+              }}
+            />
+          </DashboardModal>
+
+          {/* notify task modal */}
+          <DashboardModal
+            className={"w-[500px] max-w-full"}
+            open={isModalOpen}
+            onOpenChange={handleNotifyModal}
+          >
+            <ImpliedTaskNotify
+              onProceed={handleNotifyModal}
+              taskTitle="Implied tasks"
+            />
+          </DashboardModal>
+
+          {/* transfer implied modal */}
+          <DashboardModal
+            className={"w-[950px] max-w-full"}
+            open={openTransferImpliedTask}
+            onOpenChange={handleTransferImpliedTask}
+          >
+            <TransferImpliedTaskOrWeight
+              onCloseModal={handleTransferImpliedTask}
+              isWeightTransfer={isWeightTransfer}
+              data={childData}
+              onWeightNotify={setWeightNotify}
+              // onProceed={() => {
+              //   console.log("proceed");
+              // }}
+              allSpecifiedTask={formik.values.tasks}
+              onCancel={handleTransferImpliedTask}
+            />
+          </DashboardModal>
+        </>
+      }
+      {step === "preview" && (
+        <MissionDetailPreview />
       )}
-
-      {/* delete specified modal */}
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openDeleteModal}
-        onOpenChange={handleDeleteDialog}
-      >
-        <DeleteSpecifiedTask
-          onReAssign={() => {
-            handleDeleteDialog();
-            handleTransferSpecifiedTask();
-            setChildData(childData);
-          }}
-          data={childData}
-          isLoading={isDeletingSpecifiedTask}
-          onDelete={() =>
-            handleDeleteSpecifiedTask(childData?.specified_task_id, childData)
-          }
-          // onDelete={() =>
-          //   handleDeleteSpecifiedTask(
-          //     childData.taskIndex,
-          //     childData?.specified_task_id
-          //   )
-          // }
-        />
-      </DashboardModal>
-
-      {/* delete implied modal */}
-      <DashboardModal
-        className={"w-[500px] max-w-full"}
-        open={openDeleteImpliedTask}
-        onOpenChange={handleDeleteImpliedTaskDialog}
-      >
-        <DeleteImpliedTaskModal
-          data={childData}
-          onCancel={handleDeleteImpliedTaskDialog}
-          onDelete={() =>
-            handleDeleteImpliedTask(
-              childData?.implied_task_id,
-              childData.taskIndex,
-              childData.impliedTaskIndex
-            )
-          }
-          // onDelete={() => handleDeleteImpliedTask(childData?.implied_task_id)}
-          isLoading={isDeletingImpliedTask}
-        />
-      </DashboardModal>
-
-      {/* transfer specified task modal */}
-      <DashboardModal
-        className={"w-[600px] max-w-full"}
-        open={openTransferModal}
-        onOpenChange={handleTransferSpecifiedTask}
-      >
-        <TransferSpecifiedTask
-          onTaskWeightTransfer={() => {
-            handleTransferSpecifiedTask();
-            handleTransferImpliedTask();
-            setChildData(childData);
-            setIsWeightTransfer(true);
-          }}
-          data={childData}
-          onTaskTransfer={() => {
-            handleTransferSpecifiedTask();
-            handleTransferImpliedTask();
-            setChildData(childData);
-          }}
-        />
-      </DashboardModal>
-
-      {/* notify task modal */}
-      <DashboardModal
-        className={"w-[500px] max-w-full"}
-        open={isModalOpen}
-        onOpenChange={handleNotifyModal}
-      >
-        <ImpliedTaskNotify
-          onProceed={handleNotifyModal}
-          taskTitle="Implied tasks"
-        />
-      </DashboardModal>
-
-      {/* transfer implied modal */}
-      <DashboardModal
-        className={"w-[950px] max-w-full"}
-        open={openTransferImpliedTask}
-        onOpenChange={handleTransferImpliedTask}
-      >
-        <TransferImpliedTaskOrWeight
-          onCloseModal={handleTransferImpliedTask}
-          isWeightTransfer={isWeightTransfer}
-          data={childData}
-          onWeightNotify={setWeightNotify}
-          // onProceed={() => {
-          //   console.log("proceed");
-          // }}
-          allSpecifiedTask={formik.values.tasks}
-          onCancel={handleTransferImpliedTask}
-        />
-      </DashboardModal>
     </>
   );
 };

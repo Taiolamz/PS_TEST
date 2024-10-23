@@ -16,10 +16,12 @@ import {
 } from "./_steps";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import ShowLineManager from "./_component/show-line-manager";
+import { Dictionary } from "@/@types/dictionary";
 
 const { EMPLOYEE } = routesPath;
 
 const CreateMissionPlan = () => {
+
   const router = useRouter();
   const queryParams = useSearchParams();
   const ui = queryParams.get("ui");
@@ -28,9 +30,74 @@ const CreateMissionPlan = () => {
     (state) => state?.mission_plan?.mission_plan
   );
 
+
+  const TEMPLATE = active_fy_info?.template
+  // console.log(TEMPLATE)
+
   const user = useAppSelector(selectUser);
 
   const { line_manager } = user;
+
+  const RANDOM_LIST = [
+    {
+      title: "Mission Statement",
+      path: "?ui=mission-statement",
+      accessor: "mission-statement",
+      slug: "mission_statement",
+      hide: !active_fy_info?.template?.mission_statement,
+      onNextStep: () => {
+        getNextLinkVal(`mission-statement`);
+      },
+    },
+    {
+      title: "Set Strategic Intent",
+      path: "?ui=strategic-intent",
+      accessor: "strategic-intent",
+      slug: "strategic_intents",
+      hide: !active_fy_info?.template?.strategic_intents,
+      onNextStep: () => {
+        getNextLinkVal(`strategic-intent`);
+      },
+    },
+    {
+      title: "Freedom & Constraints",
+      path: "?ui=boundaries",
+      accessor: "boundaries",
+      slug: "boundaries",
+      hide: !active_fy_info?.template?.boundaries,
+      onNextStep: () => {
+        getNextLinkVal(`boundaries`);
+      },
+    },
+  ]
+
+  const getDynamicStepList = () => {
+    // check if duration exist in the template
+    // subtract 1 from the order number if it exist and DURATION_ORDER is less than order
+    const DURATION_ORDER = TEMPLATE?.duration?.order
+
+    const MAPPED_DATA = RANDOM_LIST?.map((item) => {
+      const DYNAMIC_LIST = []
+      const { title, path, accessor, slug, hide, onNextStep } = item
+      if (TEMPLATE?.[item?.slug]?.order) {
+        const ORDER = Number(TEMPLATE?.[item.slug]?.order)
+        const newObj = {
+          id: Number(DURATION_ORDER) < ORDER ? ORDER - 1 : ORDER,
+          title,
+          path,
+          accessor,
+          slug,
+          hide,
+          onNextStep,
+        }
+        DYNAMIC_LIST.push(newObj)
+      }
+      return DYNAMIC_LIST
+    })
+    return MAPPED_DATA.flat().sort((a, b) => a.id < b.id ? - 1 : Number(a.id > b.id))
+  }
+
+  // console.log(getDynamicStepList())
 
   const stepList = [
     {
@@ -38,70 +105,78 @@ const CreateMissionPlan = () => {
       title: "Mission Plan Overview",
       path: "?ui=overview",
       accessor: "overview",
+      slug: "financial_year",
       onNextStep: () => {
         getNextLinkVal(`overview`);
       },
     },
     {
       id: 2,
-      title: "Mission Statement",
-      path: "?ui=mission-statement",
-      accessor: "mission-statement",
-      hide: !active_fy_info?.template?.mission_statement,
-      onNextStep: () => {
-        getNextLinkVal(`mission-statement`);
-      },
-    },
-    {
-      id: 3,
       title: "Measure of Success",
       path: "?ui=measure-success",
       accessor: "measure-success",
+      slug: "success_measures",
       hide: !active_fy_info?.template?.success_measures,
       onNextStep: () => {
         getNextLinkVal(`measure-success`);
       },
     },
     {
-      id: 4,
-      title: "Set Strategic Intent",
-      path: "?ui=strategic-intent",
-      accessor: "strategic-intent",
-      hide: !active_fy_info?.template?.strategic_intents,
-      onNextStep: () => {
-        getNextLinkVal(`strategic-intent`);
-      },
-    },
-    {
-      id: 5,
+      id: 3,
       title: "Specified Task",
       path: "?ui=specified-task",
       accessor: "specified-task",
+      slug: "specified_tasks",
       hide: !active_fy_info?.template?.specified_tasks,
       onNextStep: () => {
         getNextLinkVal(`specified-task`);
       },
     },
     {
-      id: 6,
+      id: 4,
       title: "Implied Task",
       path: "?ui=implied-task",
       accessor: "implied-task",
+      slug: "implied_tasks",
       hide: !active_fy_info?.template?.implied_tasks,
       onNextStep: () => {
         getNextLinkVal(`implied-task`);
       },
     },
-    {
-      id: 7,
-      title: "Freedom & Constraints",
-      path: "?ui=boundaries",
-      accessor: "boundaries",
-      hide: !active_fy_info?.template?.boundaries,
-      onNextStep: () => {
-        getNextLinkVal(`boundaries`);
-      },
-    },
+    ...getDynamicStepList()
+    // {
+    //   id: 5,
+    //   title: "Mission Statement",
+    //   path: "?ui=mission-statement",
+    //   accessor: "mission-statement",
+    //   slug: "mission_statement",
+    //   hide: !active_fy_info?.template?.mission_statement,
+    //   onNextStep: () => {
+    //     getNextLinkVal(`mission-statement`);
+    //   },
+    // },
+    // {
+    //   id: 6,
+    //   title: "Set Strategic Intent",
+    //   path: "?ui=strategic-intent",
+    //   accessor: "strategic-intent",
+    //   slug: "strategic_intents",
+    //   hide: !active_fy_info?.template?.strategic_intents,
+    //   onNextStep: () => {
+    //     getNextLinkVal(`strategic-intent`);
+    //   },
+    // },
+    // {
+    //   id: 7,
+    //   title: "Freedom & Constraints",
+    //   path: "?ui=boundaries",
+    //   accessor: "boundaries",
+    //   slug: "boundaries",
+    //   hide: !active_fy_info?.template?.boundaries,
+    //   onNextStep: () => {
+    //     getNextLinkVal(`boundaries`);
+    //   },
+    // },
   ];
 
   const getListToUse = () => {
@@ -141,7 +216,7 @@ const CreateMissionPlan = () => {
       const val = obj?.path;
       router?.push(`${path}${val}`);
     } else {
-      router?.push(`${path}?ui=boundaries&step=preview`);
+      router?.push(`${path}?ui=${param}&step=preview`);
     }
 
     // return actualPath;
@@ -151,7 +226,7 @@ const CreateMissionPlan = () => {
     <DashboardLayout
       headerTitle={active_fy_info?.title}
       back
-      // onBack={() => router.push(ADMIN.MISSION_PLAN)}
+    // onBack={() => router.push(ADMIN.MISSION_PLAN)}
     >
       <section
         // onClick={() => {
