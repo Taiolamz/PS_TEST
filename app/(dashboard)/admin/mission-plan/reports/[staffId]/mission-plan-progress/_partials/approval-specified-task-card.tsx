@@ -34,6 +34,7 @@ export default function SpecifiedTaskCard({ id }: { id: string }) {
   const specifiedTaskData: SpecifedTaskData[] =
     data?.data?.specified_tasks?.specified_tasks ?? [];
   const completedTask = data?.data?.specified_tasks?.completed_total;
+  const staff_member_id = data?.data?.specified_tasks?.staff_member_id;
 
   return (
     <MetricFrame className="flex flex-col gap-4 w-full lg:col-span-7">
@@ -46,7 +47,7 @@ export default function SpecifiedTaskCard({ id }: { id: string }) {
             FY 2023, Q1 Progress
           </p> */}
         </div>
-        <Link href={(specifiedTaskData.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK(id) : ""}>
+        <Link href={(specifiedTaskData.length || isLoading || isFetching) ? ADMIN.MISSION_PLAN_REPORT_SPECIFIED_TASK(staff_member_id) : ""}>
           <Button disabled={isLoading || isFetching || !specifiedTaskData.length} className="flex gap-3 items-center group">
             <p className="font-medium">See Progress Details</p>
             <figure className="group-hover:translate-x-1 transition-all">
