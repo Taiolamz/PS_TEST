@@ -36,6 +36,7 @@ import {
   useLazyGetMyMissionPlanQuery,
 } from "@/redux/services/mission-plan/missionPlanApi";
 import { PageLoader } from "@/components/custom-loader";
+import CustomSelect from "@/components/custom-select";
 
 // const { EMPLOYEE } = routesPath;
 
@@ -70,7 +71,7 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
     const payload = { id: FISCAL_YEAR_ID };
     getMyMissionPlan(payload)
       .unwrap()
-      .then((payload) => {});
+      .then((payload) => { });
   };
 
   const [createMeasureOfSuccess, { isLoading, isSuccess, isError }] =
@@ -256,7 +257,25 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                                   >
                                     Unit
                                   </Label>
-                                  <Select>
+                                  <CustomSelect
+                                    id={`success-${measure.id}`}
+                                    options={MEASURE_OF_SUCCESS_UNITS?.map(
+                                      (item) => {
+                                        return {
+                                          label: item,
+                                          value: item
+                                        }
+                                      }
+                                    )}
+                                    selected={formik.values.measures[index].unit}
+                                    setSelected={(value) => {
+                                      console.log(value)
+                                      formik.setFieldValue(`measures.${index}.unit`, value)
+                                    }}
+                                    className="bg-gray-100 mt-1.5"
+                                  // error={formik.errors.measures}
+                                  />
+                                  {/* <Select>
                                     <SelectTrigger
                                       className="border px-2 h-fit outline-0 bg-[#F6F8F9] mt-3"
                                       error={errorAllSuccess?.measure}
@@ -306,7 +325,7 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                                     name={`measures.${index}.unit`}
                                     className="text-red-500 text-xs"
                                     component={"div"}
-                                  />
+                                  /> */}
                                 </div>
                                 <div className="col-span-1">
                                   <Input
@@ -326,9 +345,9 @@ const MeasureofSuccess = ({ onNextStep }: myComponentProps) => {
                                     }
                                     className="border p-2 bg-[#F6F8F9]"
                                     value={formik.values.measures[index].target}
-                                    // value={formik.values.measures[
-                                    //   index
-                                    // ].target}
+                                  // value={formik.values.measures[
+                                  //   index
+                                  // ].target}
                                   />
                                   <ErrorMessage
                                     name={`measures.${index}.target`}
