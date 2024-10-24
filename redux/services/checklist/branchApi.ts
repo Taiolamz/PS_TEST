@@ -48,13 +48,6 @@ export const branchApi = baseApi.injectEndpoints({
       providesTags: ["Branches"],
     }),
 
-    // getBranchDepartment: builder.query({
-    //   query: (branchId) => ({
-    //     url: `/admin/branch/branch-department-entites/${branchId}`,
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["Branches"],
-    // }),
     getBranchUnit: builder.query<any, { id: string; params: QueryParams }>({
       query: ({ id, params }) => ({
         url: `/admin/branch/branch-unit-entites/${id}${generateQueryString({
@@ -64,6 +57,7 @@ export const branchApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Branches"],
     }),
+
     getBranchDepartment: builder.query<
       any,
       { id: string; params: QueryParams }
@@ -89,14 +83,6 @@ export const branchApi = baseApi.injectEndpoints({
       providesTags: ["Branches"],
     }),
 
-    // getBranchStaff: builder.query({
-    //   query: (branchId) => ({
-    //     url: `/admin/branch/branch-staff-entites/${branchId}`,
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["Branches"],
-    // }),
-
     downloadBranchTemplate: builder.query({
       query: (format: string) => ({
         url: `/admin/branch/BulkUpload-template?format=${format}`,
@@ -105,10 +91,19 @@ export const branchApi = baseApi.injectEndpoints({
         cache: "no-cache",
       }),
     }),
+
     deleteBranch: builder.mutation({
       query: (id) => ({
         url: `/admin/branch/branches/${id}/close`,
         method: "DELETE",
+      }),
+      invalidatesTags: ["Branches"],
+    }),
+
+    reopenBranch: builder.mutation({
+      query: (id: string) => ({
+        url: `/admin/branch/branches/${id}/reopen`,
+        method: "POST",
       }),
       invalidatesTags: ["Branches"],
     }),
@@ -126,4 +121,5 @@ export const {
   useGetBranchUnitQuery,
   useDeleteBranchMutation,
   useUpdateBranchMutation,
+  useReopenBranchMutation,
 } = branchApi;

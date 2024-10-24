@@ -21,6 +21,7 @@ import {
   useDeleteBranchMutation,
   useGetBranchByIdQuery,
   useLazyDownloadBranchTemplateQuery,
+  useReopenBranchMutation,
 } from "@/redux/services/checklist/branchApi";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
@@ -34,11 +35,16 @@ export default function BranchDetails() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [modal, setModal] = React.useState(false);
+  const [reopen, setReopen] = React.useState(false);
   const { user } = useAppSelector((state) => state.auth);
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
   const id = searchParams.get("id");
   const tab = searchParams.get("tab");
+
+  // Reopen Subsidiary
+  const [reopenBranch, { data: reopenData, isLoading: isReopening }] =
+    useReopenBranchMutation();
 
   // Bulk upload
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
@@ -48,8 +54,10 @@ export default function BranchDetails() {
   const [downloadBranchesTemplate] = useLazyDownloadBranchTemplateQuery();
 
   // Delete Branch
-  const [deleteBranch, { isLoading: isDeletingdeleteBranch }] =
-    useDeleteBranchMutation();
+  const [
+    deleteBranch,
+    { data: clooseBranchData, isLoading: isDeletingdeleteBranch },
+  ] = useDeleteBranchMutation();
 
   // branch details
   const { data: branchData, isLoading: isLoadingBranch } =
@@ -185,10 +193,20 @@ export default function BranchDetails() {
   //   }
   // };
 
-  const handleDeleteBranch = async () => {
-    await deleteBranch(id);
-    setModal(false);
-    router?.back();
+  const handleDeleteBranch = () => {
+    deleteBranch(id)
+      .unwrap()
+      .then(() => {
+        toast.success(
+          clooseBranchData?.data?.message ??
+            clooseBranchData?.data.message ??
+            "Branch successfully closed."
+        );
+        setModal(false);
+      })
+      .catch((err) => {
+        // toast.error(err?.data.message || "Unable to handle your request.");
+      });
   };
 
   // const handleBtnDrop = () => {
@@ -236,6 +254,21 @@ export default function BranchDetails() {
       });
   };
 
+  // Handle reopen branch
+  const handleReopen = () => {
+    reopenBranch(id || "")
+      .unwrap()
+      .then(() => {
+        setReopen(false);
+        toast.success(
+          reopenData?.data?.message ??
+            reopenData?.data?.data?.message ??
+            "Branch successfully reopened."
+        );
+      })
+      .catch(() => {});
+  };
+  console.log({ reopenData });
   return (
     <DashboardLayout back headerTitle={"Branches"}>
       <section className="p-5">
@@ -338,7 +371,7 @@ export default function BranchDetails() {
               ) : (
                 <Button
                   variant="outline"
-                  // onClick={() => setReopen(true)}
+                  onClick={() => setReopen(true)}
                   className="rounded border-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] hover:bg-white"
                 >
                   Activate
@@ -369,6 +402,7 @@ export default function BranchDetails() {
           )}
         </section>
       </section>
+      {/* Close Branch */}
       <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}
@@ -397,6 +431,53 @@ export default function BranchDetails() {
             >
               Yes, Deactivate
             </Button>
+          </div>
+        </div>
+      </ModalContainer>
+
+      {/* Reopen Branch */}
+      <ModalContainer
+        show={reopen}
+        handleClose={() => setReopen(false)}
+        modalClass="h-[190px] !w-[540px] rounded "
+        title="Reopen Subsidairy"
+      >
+        <div className="w-full absolute top-0 text-right">
+          <div className="  w-full p-4 px-6 ">
+            <div className="flex justify-between items-center w-full mt-3 mb-5">
+              <h4 className="text-[rgb(var(--bg-green-100))]">
+                Reactivate Branch
+              </h4>
+              <button disabled={isReopening} onClick={() => setReopen(false)}>
+                <X className="size-[18px] cursor-pointer" />
+              </button>
+            </div>
+            <p className="text-[var(--text-color4)] text-sm text-left">
+              You’re about to activate this Branch. Continue to proceed.
+            </p>
+            <div className="space-x-3 pt-6 inline-flex items-center">
+              <Button
+                variant={"outline"}
+                disabled={isReopening}
+                className={cn(
+                  "font-light border-[rgb(var(--bg-green-100))] hover:text-[rgb(var(--bg-green-100))] text-[rgb(var(--bg-green-100))] hover:bg-white rounded"
+                )}
+                onClick={() => setReopen(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                loading={isReopening}
+                loadingText="Activating"
+                disabled={isReopening}
+                className={cn(
+                  "font-light bg-[rgb(var(--bg-green-100))] rounded"
+                )}
+                onClick={handleReopen}
+              >
+                Activate
+              </Button>
+            </div>
           </div>
         </div>
       </ModalContainer>
