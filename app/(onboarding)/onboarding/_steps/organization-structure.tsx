@@ -15,9 +15,9 @@ export type CheckboxOption = {
 
 const currentHierarchy: CheckboxOption[] = [
   { name: "subsidiary", label: "Subsidiary", id: 1 },
-  { name: "branch", label: "Branches", id: 2 },
-  { name: "department", label: "Departments", id: 3 },
-  { name: "unit", label: "Units", id: 4 },
+  { name: "branch", label: "Branch", id: 2 },
+  { name: "department", label: "Department", id: 3 },
+  { name: "unit", label: "Unit", id: 4 },
 ];
 
 const OrganizationStructure = ({ formik }: OrganizationStructureProps) => {

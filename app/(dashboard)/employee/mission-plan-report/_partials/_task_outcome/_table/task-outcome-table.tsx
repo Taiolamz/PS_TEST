@@ -8,7 +8,6 @@ import ApprovalDrawer from "@/components/drawer/approval-drawer";
 import ApprovalProgress from "@/components/fragment/progress/approval-progress";
 import { useGetFiscalYearsProgressQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { getCurrentMonth } from "@/utils/helpers/date-formatter";
-import { fakeApprovalStep } from "../../_measure_of_success/_data/data";
 import { useAppSelector } from "@/redux/store";
 
 const { EMPLOYEE } = routesPath;
@@ -95,14 +94,14 @@ const TaskOutcomeTable = () => {
                     }
                   },
                 },
-                {
-                  label: "Approval Status",
-                  color: "",
-                  onActionClick: (param: any, dataTwo: any) => {
-                    setOpen(true);
-                    setFyId(row?.name?.props?.children[0]?.props?.children);
-                  },
-                },
+                // {
+                //   label: "Approval Status",
+                //   color: "",
+                //   onActionClick: (param: any, dataTwo: any) => {
+                //     setOpen(true);
+                //     setFyId(row?.name?.props?.children[0]?.props?.children);
+                //   },
+                // },
               ];
             }
           }}
@@ -113,7 +112,7 @@ const TaskOutcomeTable = () => {
       <ApprovalDrawer
         open={open}
         onClose={() => setOpen(false)}
-        data={fakeApprovalStep}
+        data={[]}
         id={fyId}
       />
     </div>

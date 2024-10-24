@@ -19,7 +19,7 @@ const OverView = () => {
         <ProfileBanner />
         {/* Main Content */}
         <div className="flex-1 relative">
-          <div className="h-full pb-10 pl-5 w-[calc(100%-400px)] absolute top-0 left-0 space-y-6 custom-scrollbar">
+          <div className="h-full pb-10 pl-5 w-full lg:w-[calc(100%-400px)] max-lg:pr-5 absolute top-0 left-0 space-y-6 custom-scrollbar">
             {/* Quick access */}
             <QuickAccess />
 

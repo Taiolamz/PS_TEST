@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import routesPath from "@/utils/routes";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ModalContainer from "@/components/modal-container";
 import { cn } from "@/lib/utils";
 import { X } from "lucide-react";
@@ -335,7 +335,7 @@ export default function BranchDetails() {
   };
 
   return (
-    <DashboardLayout back headerTitle={branchInfo?.name || "--- ---"}>
+    <DashboardLayout back headerTitle={"Branches"}>
       {isLoadingBranch ? (
         <div className="h-full flex items-center justify-center">
           <PageLoader />

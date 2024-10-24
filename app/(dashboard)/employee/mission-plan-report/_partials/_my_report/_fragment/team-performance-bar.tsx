@@ -1,25 +1,17 @@
 import MetricFrame from "@/components/card/frame";
-import MetricCard from "@/components/card/metric-card";
-import { ReusableSegmentProgress } from "@/components/fragment";
 import CheckUrlFragment from "@/components/fragment/ImageFallBack";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import {
-  useGetSpecifiedTaskDetailsQuery,
-  useGetTeamPerformanceQuery,
-} from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
+import { useGetTeamPerformanceQuery } from "@/redux/services/mission-plan/reports/employee/missionPlanReportApi";
 import { useAppSelector } from "@/redux/store";
 import { returnInitial, toWholeNumber } from "@/utils/helpers";
-import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 
 const TeamPerformanceBar = () => {
   // Filter
   const { fiscal_year, mission_cycle } = useAppSelector(
     (state) => state.employee_mission_plan_filter
   );
-
-  const user = useAppSelector((state) => state.auth.user);
 
   const {
     data: orgData,
@@ -90,8 +82,9 @@ const TeamPerformanceBar = () => {
             </div>
             {/* ------PROFILE IMAGE DISPLAY -------- */}
             <div className="flex -space-x-4">
-              {orgData?.data?.my_team?.team_members?.map(
-                (chi: any, idx: number) => (
+              {orgData?.data?.my_team?.team_members
+                ?.slice(0, 4)
+                ?.map((chi: any, idx: number) => (
                   <div
                     key={idx}
                     className="mt-9 inline-flex items-center gap-x-4"
@@ -108,8 +101,7 @@ const TeamPerformanceBar = () => {
                       </div>
                     </CheckUrlFragment>
                   </div>
-                )
-              )}
+                ))}
             </div>
             {/* ------PROFILE IMAGE DISPLAY -------- */}
           </div>

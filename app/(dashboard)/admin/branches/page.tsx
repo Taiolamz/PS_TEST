@@ -10,7 +10,6 @@ import { useBranchColumnData } from "./branch-column";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
-import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";

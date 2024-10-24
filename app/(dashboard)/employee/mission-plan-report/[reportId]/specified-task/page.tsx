@@ -68,13 +68,21 @@ export default function SpecifiedTask({
   //fetch challenges
   const [
     getParentEntityChallenges,
-    { data: challengeData, isLoading: loadingChallenges, isFetching: isFetchingChallenges },
+    {
+      data: challengeData,
+      isLoading: loadingChallenges,
+      isFetching: isFetchingChallenges,
+    },
   ] = useLazyGetParentEntityChallengesQuery();
 
   // fetch task comment
   const [
     getMssionPlanFetchComments,
-    { isLoading: loadingComment, isFetching: isFetchingComment, data: commentData },
+    {
+      isLoading: loadingComment,
+      isFetching: isFetchingComment,
+      data: commentData,
+    },
   ] = useLazyGetMssionPlanFetchCommentsQuery();
 
   //Add comment on task
@@ -131,7 +139,7 @@ export default function SpecifiedTask({
                         "block h-full",
                         idx === 0 && "rounded-l",
                         idx === orgData?.data?.task_activity.length - 1 &&
-                        "rounded-l"
+                          "rounded-l"
                       )}
                       style={{
                         width: `${toWholeNumber(percentage)}%`,
@@ -169,7 +177,7 @@ export default function SpecifiedTask({
                 </div>
                 {/* ------PROFILE IMAGE DISPLAY -------- */}
                 <div className="flex">
-                  {profileImages.map((chi, idx) => (
+                  {/* {profileImages.map((chi, idx) => (
                     <Image
                       width={35}
                       height={35}
@@ -178,7 +186,7 @@ export default function SpecifiedTask({
                       src={chi}
                       alt="profile image"
                     />
-                  ))}
+                  ))} */}
                 </div>
                 {/* ------PROFILE IMAGE DISPLAY -------- */}
               </div>
