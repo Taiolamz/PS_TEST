@@ -20,18 +20,13 @@ import {
   useCreateBulkBranchesMutation,
   useDeleteBranchMutation,
   useGetBranchByIdQuery,
-  useGetBranchDepartmentQuery,
-  useGetBranchesQuery,
-  useGetBranchStaffQuery,
-  useGetBranchUnitQuery,
   useLazyDownloadBranchTemplateQuery,
 } from "@/redux/services/checklist/branchApi";
 import { toast } from "sonner";
 import { downloadFile } from "@/utils/helpers/file-formatter";
-// import { DepartmentTable, StaffTable, UnitTable } from "./_table";
-import { PageLoader } from "@/components/custom-loader";
 import { DepartmentTable, UnitTable, StaffTable } from "./_table";
 import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const { ADMIN } = routesPath;
 
@@ -42,112 +37,24 @@ export default function BranchDetails() {
   const { user } = useAppSelector((state) => state.auth);
   const [bulkFile, setBulkFile] = useState<File | null>(null);
   const [fileType, setFileType] = useState("");
-  const [search, setSearch] = React.useState<string>("");
-  const [page, setPage] = React.useState(1);
   const id = searchParams.get("id");
   const tab = searchParams.get("tab");
 
-  const debounceSearch = useDebounce(search, 500);
-
+  // Bulk upload
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
     useCreateBulkBranchesMutation();
+
+  //Download branch template
   const [downloadBranchesTemplate] = useLazyDownloadBranchTemplateQuery();
 
+  // Delete Branch
   const [deleteBranch, { isLoading: isDeletingdeleteBranch }] =
     useDeleteBranchMutation();
 
-  const {
-    data: branchesData,
-    isLoading: isLoadingBranches,
-    isFetching: isFetchingBranches,
-    refetch: refetchBranches,
-  } = useGetBranchesQuery({
-    // to: 0,
-    // total: 0,
-    per_page: 50,
-    currentPage: page,
-    search: search,
-    // next_page_url: "",
-    // prev_page_url: "",
-  });
+  // branch details
+  const { data: branchData, isLoading: isLoadingBranch } =
+    useGetBranchByIdQuery(id, { skip: !id });
 
-  const {
-    data: branchData,
-    isLoading: isLoadingBranch,
-    isFetching: isFetchingBranch,
-    refetch: refetchBranch,
-  } = useGetBranchByIdQuery(id, { skip: !id });
-
-  const {
-    data: branchDataStaff,
-    isLoading: isLoadingBranchStaff,
-    isFetching: isFetchingBranchStaff,
-  } = useGetBranchStaffQuery(
-    {
-      id: id as string,
-      params: {
-        to: 0,
-        total: 0,
-        per_page: 50,
-        currentPage: 0,
-        next_page_url: "",
-        prev_page_url: "",
-        search: tab === "staffs" ? debounceSearch : "",
-        page: tab === "staffs" ? page : 1,
-      },
-    },
-    {
-      skip: !id,
-    }
-  );
-
-  const {
-    data: branchDataDepartment,
-    isLoading: isLoadingBranchDepartment,
-    isFetching: isFetchingBranchDepartment,
-  } = useGetBranchDepartmentQuery(
-    {
-      id: id as string,
-      params: {
-        to: 0,
-        total: 0,
-        per_page: 50,
-        currentPage: 0,
-        next_page_url: "",
-        prev_page_url: "",
-        search: tab === "departments" ? debounceSearch : "",
-        page: tab === "departments" ? page : 1,
-      },
-    },
-    {
-      skip: !id,
-    }
-  );
-
-  const {
-    data: branchDataUnit,
-    isLoading: isLoadingBranchUnit,
-    isFetching: isFetchingBranchUnit,
-  } = useGetBranchUnitQuery(
-    {
-      id: id as string,
-      params: {
-        to: 0,
-        total: 0,
-        per_page: 50,
-        currentPage: 0,
-        next_page_url: "",
-        prev_page_url: "",
-        search: tab === "units" ? debounceSearch : "",
-        page: tab === "units" ? page : 1,
-      },
-    },
-    {
-      skip: !id,
-    }
-  );
-
-  const branches = branchesData ?? [];
   const branchInfo = branchData?.data?.branch ?? [];
 
   const { organization } = user;
@@ -167,7 +74,7 @@ export default function BranchDetails() {
         id &&
           router.replace(ADMIN.BRANCH_DETAILS({ id: id, tab: "departments" }));
       },
-      pending: false,
+      pending: isLoadingBranch,
       primaryColor: "",
     },
     {
@@ -183,7 +90,7 @@ export default function BranchDetails() {
       onClick: () => {
         id && router.replace(ADMIN.BRANCH_DETAILS({ id: id, tab: "units" }));
       },
-      pending: false,
+      pending: isLoadingBranch,
       primaryColor: "",
     },
     {
@@ -197,7 +104,7 @@ export default function BranchDetails() {
       onClick: () => {
         id && router.replace(ADMIN.BRANCH_DETAILS({ id: id, tab: "staffs" }));
       },
-      pending: false,
+      pending: isLoadingBranch,
       primaryColor: "",
     },
   ];
@@ -226,11 +133,11 @@ export default function BranchDetails() {
     close: closeBulkRequirementModal,
   } = useDisclosure();
 
-  const {
-    isOpen: openNewBtn,
-    open: onOpenNewBtnDrop,
-    close: closeNewBtnDrop,
-  } = useDisclosure();
+  // const {
+  //   isOpen: openNewBtn,
+  //   open: onOpenNewBtnDrop,
+  //   close: closeNewBtnDrop,
+  // } = useDisclosure();
 
   const handleProceedCancel = () => {
     const checklistPath = ADMIN.CHECKLIST;
@@ -272,11 +179,11 @@ export default function BranchDetails() {
     }
   };
 
-  const handleBulkModal = () => {
-    if (openBulkUploadModal) {
-      onOpenNewBtnDrop();
-    }
-  };
+  // const handleBulkModal = () => {
+  //   if (openBulkUploadModal) {
+  //     onOpenNewBtnDrop();
+  //   }
+  // };
 
   const handleDeleteBranch = async () => {
     await deleteBranch(id);
@@ -284,18 +191,14 @@ export default function BranchDetails() {
     router?.back();
   };
 
-  const handleBtnDrop = () => {
-    onOpenNewBtnDrop();
-    if (openNewBtn) {
-      closeNewBtnDrop();
-    }
-    handleBulkModal();
-  };
+  // const handleBtnDrop = () => {
+  //   onOpenNewBtnDrop();
+  //   if (openNewBtn) {
+  //     closeNewBtnDrop();
+  //   }
+  //   handleBulkModal();
+  // };
 
-  const handleAddStaff = () => {
-    const path = ADMIN.ADD_EMPLOYEE;
-    router.push(path);
-  };
   const handleTemplateDownload = async (file: string) => {
     toast.loading("downloading...");
     downloadBranchesTemplate(file)
@@ -325,7 +228,6 @@ export default function BranchDetails() {
       .then(() => {
         toast.success("Branches Uploaded Successfully");
         handleBulkUploadDialog();
-        refetchBranches();
         new Promise(() => {
           setTimeout(() => {
             toast.dismiss();
@@ -336,19 +238,42 @@ export default function BranchDetails() {
 
   return (
     <DashboardLayout back headerTitle={"Branches"}>
-      {isLoadingBranch ? (
-        <div className="h-full flex items-center justify-center">
-          <PageLoader />
-        </div>
-      ) : (
-        <section className="p-5">
-          <div className="flex justify-between mb-10">
-            <div className="">
+      <section className="p-5">
+        {/* Details */}
+        {isLoadingBranch ? (
+          <div className="flex max-lg:flex-col-reverse justify-between mb-10">
+            <div className="w-full">
+              <span className="flex items-center gap-8">
+                <Skeleton className=" h-[18px] w-[138px] rounded-sm bg-[var(--primary-accent-color)]" />
+              </span>
+              <div className="grid lg:grid-cols-2 gap-4 w-full text-[var(--text-color)] text-xs mt-5">
+                <span className="space-y-3">
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                </span>
+                <span className="space-y-3">
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                  <Skeleton className=" h-[16px] w-[270px] rounded-sm bg-[var(--primary-accent-color)]" />
+                </span>
+              </div>
+            </div>
+            <div className="inline-flex justify-end gap-x-3">
+              <>
+                <Skeleton className=" h-[36px] w-[110px] rounded-sm bg-[var(--primary-accent-color)]" />
+                <Skeleton className=" h-[36px] w-[110px] rounded-sm bg-[var(--primary-accent-color)]" />
+              </>
+            </div>
+          </div>
+        ) : (
+          <div className="flex max-lg:flex-col-reverse justify-between mb-10">
+            <div className="w-full">
               <h3 className="text-2xl font-medium text-[var(--text-color3)]">
                 {branchInfo?.name}
               </h3>
 
-              <div className="inline-flex gap-x-[80px] text-[var(--text-color)] text-xs mt-5">
+              <div className="grid lg:grid-cols-2 gap-4 w-full text-[var(--text-color)] text-xs mt-5">
                 <span className="space-y-3">
                   <h4>
                     Head of Branch:{" "}
@@ -398,14 +323,12 @@ export default function BranchDetails() {
                     <Button
                       variant="outline"
                       className="rounded border-[var(--primary-color)] text-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-white"
-                      size="sm"
                     >
                       Edit
                     </Button>
                   </Link>
                   <Button
                     variant="outline"
-                    size="sm"
                     onClick={() => setModal(true)}
                     className="rounded border-[var(--bg-red-100)] text-[var(--bg-red-100)] hover:text-[var(--bg-red-100)] hover:bg-white"
                   >
@@ -423,62 +346,29 @@ export default function BranchDetails() {
               )}
             </div>
           </div>
-          <div className="block mb-9">
-            <ParentModuleCard list={listToTest} />
-          </div>
-          <section className="">
-            {tab === "departments" && (
-              <DepartmentTable
-                onSearch={(e) => {
-                  setSearch(e);
-                  setPage(1);
-                }}
-                isLoading={isLoadingBranchDepartment}
-                perPage={
-                  branchDataDepartment?.data?.departments?.meta?.per_page
-                }
-                totalPage={branchDataDepartment?.data?.departments?.meta?.total}
-                currentPage={
-                  branchDataDepartment?.data?.departments?.meta?.current_page
-                }
-                isFetching={isFetchingBranchUnit}
-                tableData={branchDataDepartment?.data?.departments?.data}
-                isActive={branchInfo?.status.toLowerCase() === "active"}
-              />
-            )}
-            {tab === "units" && (
-              <UnitTable
-                onSearch={(e) => {
-                  setSearch(e);
-                  setPage(1);
-                }}
-                isLoading={isLoadingBranchUnit}
-                perPage={branchDataUnit?.data?.units?.meta?.per_page}
-                totalPage={branchDataUnit?.data?.units?.meta?.total}
-                currentPage={branchDataUnit?.data?.units?.meta?.current_page}
-                isFetching={isFetchingBranchUnit}
-                tableData={branchDataUnit?.data?.units?.data}
-                isActive={branchInfo?.status.toLowerCase() === "active"}
-              />
-            )}
-            {tab === "staffs" && (
-              <StaffTable
-                onSearch={(e) => {
-                  setSearch(e);
-                  setPage(1);
-                }}
-                isLoading={isLoadingBranchStaff}
-                perPage={branchDataStaff?.data?.staffs?.meta?.per_page}
-                totalPage={branchDataStaff?.data?.staffs?.meta?.total}
-                currentPage={branchDataStaff?.data?.staffs?.meta?.current_page}
-                isFetching={isFetchingBranchUnit}
-                tableData={branchDataStaff?.data?.staffs?.data}
-                isActive={branchInfo?.status.toLowerCase() === "active"}
-              />
-            )}
-          </section>
+        )}
+
+        <div className="block mb-9">
+          <ParentModuleCard list={listToTest} />
+        </div>
+        <section className="">
+          {tab === "departments" && (
+            <DepartmentTable
+              isActive={branchInfo?.status?.toLowerCase() === "active"}
+            />
+          )}
+          {tab === "units" && (
+            <UnitTable
+              isActive={branchInfo?.status?.toLowerCase() === "active"}
+            />
+          )}
+          {tab === "staffs" && (
+            <StaffTable
+              isActive={branchInfo?.status?.toLowerCase() === "active"}
+            />
+          )}
         </section>
-      )}
+      </section>
       <ModalContainer
         show={modal}
         handleClose={() => setModal(false)}

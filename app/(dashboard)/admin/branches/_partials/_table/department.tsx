@@ -1,79 +1,74 @@
 "use client";
+import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInDeptQuery } from "@/redux/services/checklist/subsidiaryApi";
+import { useGetBranchDepartmentQuery } from "@/redux/services/checklist/branchApi";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const { ADMIN } = routesPath;
 
-export default function DepartmentTable({
-  isLoading,
-  subDetailsData,
-  tableData,
-  isFetching,
-  onSearch,
-  perPage,
-  totalPage,
-  currentPage,
-  onPageChange,
-  isActive,
-}: {
-  perPage?: number;
-  totalPage?: number;
-  currentPage?: number;
-  isLoading?: boolean;
-  subDetailsData?: any;
-  tableData?: any[];
-  isFetching?: boolean;
-  onSearch?: (param: string) => void;
-  onPageChange?: (param: string) => void;
-  isActive: boolean;
-}) {
+export default function DepartmentTable({ isActive }: { isActive: boolean }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const [search, setSearch] = React.useState<string>("");
+  const [page, setPage] = React.useState(1);
+  const debounceSearch = useDebounce(search, 500);
 
   const handleAddDept = () => {
     const path = ADMIN.CREATE_DEPARTMENT;
     router.push(path);
   };
 
-  return isLoading ? (
+  const {
+    data: branchDataDepartment,
+    isLoading: isLoadingBranchDepartment,
+    isFetching: isFetchingBranchDepartment,
+  } = useGetBranchDepartmentQuery(
+    {
+      id: id as string,
+      params: {
+        to: 0,
+        total: 0,
+        per_page: 50,
+        currentPage: 0,
+        next_page_url: "",
+        prev_page_url: "",
+        search: debounceSearch || "",
+        page: page || 1,
+      },
+    },
+    {
+      skip: !id,
+    }
+  );
+
+  return isLoadingBranchDepartment ? (
     <TableLoader rows={8} columns={8} />
   ) : (
     <TableWrapper
       tableheaderList={["Department", "HOD", "Subsidiary", "Branch", "Action"]}
       addText="New Department"
-      loading={isFetching}
+      loading={isFetchingBranchDepartment}
       newBtnBulk={isActive}
       hideNewBtnOne={!isActive}
-      tableBodyList={FORMAT_TABLE_DATA(tableData)}
-      onSearch={onSearch}
+      tableBodyList={FORMAT_TABLE_DATA(
+        branchDataDepartment?.data?.departments?.data
+      )}
       dropDown
       hideFilter
       hideSort
-      perPage={perPage}
-      totalPage={totalPage}
-      currentPage={currentPage}
-      onPageChange={onPageChange}
-      // dropDownList={[
-      //   {
-      //     label: "View Details",
-      //     color: "",
-      //     onActionClick: (param: any, dataTwo: any) => {
-      //       // router.push(
-      //       //   pathname +
-      //       //     "?" +
-      //       //     "ui=details" +
-      //       //     "&" +
-      //       //     "id=" +
-      //       //     dataTwo?.name?.props.children[0].props.children
-      //       // );
-      //     },
-      //   },
-      // ]}
+      onSearch={(e) => {
+        setSearch(e);
+      }}
+      perPage={branchDataDepartment?.data?.departments?.meta?.per_page}
+      totalPage={branchDataDepartment?.data?.departments?.meta?.total}
+      currentPage={branchDataDepartment?.data?.departments?.meta?.current_page}
+      onPageChange={(p) => {
+        setPage(p);
+      }}
       dropDownList={[
         {
           label: "View Details",
