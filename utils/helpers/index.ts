@@ -607,6 +607,20 @@ export const getStatusData = (arr: Dictionary[]) => {
   }));
 };
 
+export const getLegendData = (arr: Dictionary[]) => {
+  // const sumTotal = arr.reduce((acc, item) => acc + item.total, 0);
+  return arr.map((item) => ({
+    // percentage: toWholeNumber(item.percentage),
+    color: getStatusColor(item.status)?.color,
+    label: getStatusColor(item.status).status,
+    value: item.total,
+  }));
+};
+
+// label: "Completed",
+//     color: "#119C2BE5",
+//     value: 24,
+
 // return the color for the pecentage
 export const getPercentageColor = (number: number): string => {
   if (number >= 70) {

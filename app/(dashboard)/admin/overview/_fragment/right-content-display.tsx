@@ -4,13 +4,15 @@ import {
   ArrowRightIcon,
   arrowRight,
   checklistItems,
+  missionIcon,
   missionPlanSubmissionProgress,
-  missionstatement,
   sideTodoIcon,
   todoLists,
+  visionIcon,
 } from "./items";
 import { ReusableProgress } from "@/components/fragment";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/store";
 
 const RightContentDisplay = () => {
   const Frame = ({
@@ -39,6 +41,23 @@ const RightContentDisplay = () => {
       </div>
     </div>
   );
+
+  const { organization } = useAppSelector((state) => state.auth.user)
+  const MISSION = organization?.mission ?? "No Record Found"
+  const VISION = organization?.vision ?? "No Record Found"
+
+  const missionstatement = [
+    {
+      icon: missionIcon,
+      label: "Mission Statement",
+      content: MISSION
+    },
+    {
+      icon: visionIcon,
+      label: "Vision Statement",
+      content: VISION,
+    },
+  ];
 
   return (
     <div className="h-full fixed w-[391px] overflow-auto pt-20 scroll-hidden  right-0 bg-[var(--btn-solid-color)] top-0">
@@ -89,7 +108,7 @@ const RightContentDisplay = () => {
       </Frame>
 
       {/* mission plan submission progress */}
-      <Frame className="flex flex-col gap-5 px-8 ">
+      {/* <Frame className="flex flex-col gap-5 px-8 ">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between items-center">
             <div className="flex flex-col gap-2  mb-2">
@@ -111,7 +130,7 @@ const RightContentDisplay = () => {
             progressClass="rounded-[2px]"
           />
         </div>
-      </Frame>
+      </Frame> */}
 
       {/* to do list */}
       <Frame className="min-h-[450px] flex flex-col">
@@ -121,8 +140,8 @@ const RightContentDisplay = () => {
           </p>
         </div>
         {/* {todoListEmptyState} */}
-        {todoLists?.length > 0 ? (
-          <div className=" flex flex-col gap-3 mt-5">
+        {todoLists?.length === 0 ? (
+          <div className="flex flex-col gap-3 mt-5">
             {todoLists.map((chi, idx) => {
               const { label, content, date, due_date, bgColor, color } = chi;
               return (

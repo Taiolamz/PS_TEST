@@ -322,7 +322,7 @@ export const activeIcon = (
   </svg>
 );
 
-const missionIcon = (
+export const missionIcon = (
   <svg
     width="23"
     height="24"
@@ -338,7 +338,7 @@ const missionIcon = (
   </svg>
 );
 
-const visionIcon = (
+export const visionIcon = (
   <svg
     width="20"
     height="20"
