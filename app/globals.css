@@ -313,6 +313,8 @@ input[type=radio]:checked::before {
   .date-picker .rmdp-day:not(.rmdp-day-hidden) span:hover,
   .rmdp-day.rmdp-selected span:not(.highlight) {
     background-color: var(--primary-color) !important;
+    margin-left: -3px !important;
+    margin-right: -3px !important;
   }
 }
 

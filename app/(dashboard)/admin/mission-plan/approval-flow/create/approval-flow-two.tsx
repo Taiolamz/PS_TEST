@@ -136,9 +136,9 @@ const ApprovalFlowTwo = ({
                           type="multiple"
                           defaultValue={["item-1"]}
                           key={idx}
-                          className="mb-4 p-5 border border-custom-divider rounded flex flex-col gap-1"
+                          className="mb-4 p-5 border border-custom-divider bg-white rounded flex flex-col gap-1"
                           title={
-                            <p className="font-medium text-sm mb-2">
+                            <p className="font-base text-sm mb-2">
                               {idx + 1}. How many levels of approval should be
                               for{" "}
                               <span className="text-primary capitalize">

@@ -16,7 +16,7 @@ export default function SpecifiedTaskProgress() {
     </section>
   ) : isLoading ? (
     <Skeleton className="rounded-[5px] max-h-[426px] h-full w-full bg-[var(--primary-accent-color)]" />
-  ) : data.data.specified_tasks?.length === 0 ? (
+  ) : data?.data?.specified_tasks?.length === 0 ? (
     <section className="bg-white rounded-[5px] max-h-[426px] h-full w-full text-sm text-center place-content-center grid text-[var(--text-color2)]">
       No Specified Task Progress
     </section>

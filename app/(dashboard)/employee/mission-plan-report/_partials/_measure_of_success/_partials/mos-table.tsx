@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import routesPath from "@/utils/routes";
 import { useRouter } from "next/navigation";
-import { fakeApprovalStep } from "../_data/data";
 import { Progress } from "@/components/ui/progress";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
@@ -94,14 +93,14 @@ export default function MOSTable() {
                     }
                   },
                 },
-                {
-                  label: "Approval Status",
-                  color: "",
-                  onActionClick: (param: any, dataTwo: any) => {
-                    setOpen(true);
-                    setFyId(row?.name?.props?.children[0]?.props?.children);
-                  },
-                },
+                // {
+                //   label: "Approval Status",
+                //   color: "",
+                //   onActionClick: (param: any, dataTwo: any) => {
+                //     setOpen(true);
+                //     setFyId(row?.name?.props?.children[0]?.props?.children);
+                //   },
+                // },
               ];
             }
           }}
@@ -112,7 +111,7 @@ export default function MOSTable() {
       <ApprovalDrawer
         open={open}
         onClose={() => setOpen(false)}
-        data={fakeApprovalStep}
+        data={[]}
         id={fyId}
       />
     </div>

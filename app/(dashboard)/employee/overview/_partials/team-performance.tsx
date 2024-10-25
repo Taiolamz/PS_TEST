@@ -73,8 +73,9 @@ export default function TeamPerformance() {
               </div>
               {/* ------PROFILE IMAGE DISPLAY -------- */}
               <div className="flex -space-x-4">
-                {data?.data?.my_team?.team_members?.map(
-                  (chi: any, idx: number) => (
+                {data?.data?.my_team?.team_members
+                  ?.slice(0, 4)
+                  ?.map((chi: any, idx: number) => (
                     <div
                       key={idx}
                       className="mt-9 inline-flex items-center gap-x-4"
@@ -91,8 +92,7 @@ export default function TeamPerformance() {
                         </div>
                       </CheckUrlFragment>
                     </div>
-                  )
-                )}
+                  ))}
               </div>
               {/* ------PROFILE IMAGE DISPLAY -------- */}
             </div>
@@ -167,8 +167,9 @@ export default function TeamPerformance() {
               </div>
               {/* ------PROFILE IMAGE DISPLAY -------- */}
               <div className="flex -space-x-4">
-                {data?.data?.downline_team?.team_members?.map(
-                  (chi: any, idx: number) => (
+                {data?.data?.downline_team?.team_members
+                  ?.slice(0, 4)
+                  ?.map((chi: any, idx: number) => (
                     <div
                       key={idx}
                       className="mt-9 inline-flex items-center gap-x-4"
@@ -185,8 +186,7 @@ export default function TeamPerformance() {
                         </div>
                       </CheckUrlFragment>
                     </div>
-                  )
-                )}
+                  ))}
               </div>
               {/* ------PROFILE IMAGE DISPLAY -------- */}
             </div>

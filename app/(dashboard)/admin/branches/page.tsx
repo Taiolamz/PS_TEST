@@ -1,16 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../_layout/DashboardLayout";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDisclosure from "./_hooks/useDisclosure";
 import routesPath from "@/utils/routes";
-
-import { useBranchColumnData } from "./branch-column";
 import { useAppSelector } from "@/redux/store";
 import { selectUser } from "@/redux/features/auth/authSlice";
 import { toast } from "sonner";
-import DashboardTable from "./_components/checklist-dashboard-table";
 import DashboardModal from "./_components/checklist-dashboard-modal";
 import CancelModal from "./_components/cancel-modal";
 import ProceedModal from "./_components/proceed-modal";
@@ -143,24 +140,14 @@ const Branches = () => {
     isFetching: isFetchingBranches,
     refetch: refetchBranches,
   } = useGetBranchesQuery({
-    // to: 0,
-    // total: 0,
-    per_page: 50,
-    currentPage: page,
+    page: page,
     search: search,
-    // next_page_url: "",
-    // prev_page_url: "",
   });
 
   const branches = branchesData ?? [];
 
   const user = useAppSelector(selectUser);
   const { organization } = user;
-
-  const { branchColumns, data, openDeleteModal, handleDeleteDialog } =
-    useBranchColumnData(isFetchingBranches);
-
-  const branchesColumnData = useMemo(() => branchColumns, [isFetchingBranches]);
 
   const [createBulkBranches, { isLoading: isCreatingBulkBranches }] =
     useCreateBulkBranchesMutation();
@@ -209,7 +196,7 @@ const Branches = () => {
       active: true,
       title: "Total Branches",
       type: "branch",
-      count: branches?.data?.branches?.data?.length ?? 0,
+      count: branches?.data?.branches?.meta?.total ?? 0,
       accentColor: "",
       hide: false,
       icon: "",
@@ -218,27 +205,6 @@ const Branches = () => {
       primaryColor: "",
     },
   ];
-
-  const FORMAT_TABLE_DATA = (obj: any) => {
-    return obj?.map((org: any) => ({
-      name: (
-        <>
-          <span className="hidden">{org.branch_id}</span>
-          <p>{org?.name}</p>
-        </>
-      ),
-      subsidiary: org?.subsidiary?.name,
-      country: org?.country,
-      state: org?.state,
-      address: org?.address,
-      status: (
-        <BadgeComponent
-          text={org?.status}
-          color={org?.status.toLowerCase() === "active" ? "green" : "red"}
-        />
-      ),
-    }));
-  };
 
   return (
     <>
@@ -374,3 +340,24 @@ const Branches = () => {
 };
 
 export default Branches;
+
+const FORMAT_TABLE_DATA = (obj: any) => {
+  return obj?.map((org: any) => ({
+    name: (
+      <>
+        <span className="hidden">{org.branch_id}</span>
+        <p>{org?.name}</p>
+      </>
+    ),
+    subsidiary: org?.subsidiary?.name,
+    country: org?.country,
+    state: org?.state,
+    address: org?.address,
+    status: (
+      <BadgeComponent
+        text={org?.status}
+        color={org?.status.toLowerCase() === "active" ? "green" : "red"}
+      />
+    ),
+  }));
+};

@@ -50,7 +50,7 @@ export default function CustomDateInput({
   onBlur,
 }: CustomDateInputProps) {
   return (
-    <div className="relative" onBlur={onBlur}>
+    <div className="" onBlur={onBlur}>
       {label && (
         <label
           htmlFor={label}
@@ -68,33 +68,40 @@ export default function CustomDateInput({
           )}{" "}
         </label>
       )}
-      <DatePicker
-        id={id}
-        name={name}
-        format={format ? format : ""}
-        placeholder={placeholder ? placeholder : "MM/DD/YYYY"}
-        inputClass={cn(
-          "border rounded-[4px] bg-white px-3 py-[7px] text-sm w-full focus:outline-none focus:border-[var(--primary-color)]",
-          inputClass,
-          error && touched && "border-red-500"
-        )}
-        containerClassName="w-full"
-        onOpenPickNewDate={onOpenPickNewDate}
-        onChange={handleChange}
-        value={selected}
-        className={cn("date-picker", className)}
-        disabled={disabled}
-        onlyMonthPicker={showOnlyMonth}
-        highlightToday={false}
-        portal={portal}
-      />
-      {showIcon && (
-        <Calendar
-          size={16}
-          className={cn("absolute right-3 top-10 text-isGray400", iconClass)}
+      <div className="size-fit relative">
+        <DatePicker
+          id={id}
+          name={name}
+          format={format ? format : ""}
+          placeholder={placeholder ? placeholder : "MM/DD/YYYY"}
+          inputClass={cn(
+            "border rounded-[4px] bg-white px-3 py-[7px] text-sm w-full focus:outline-none focus:border-[var(--primary-color)]",
+            inputClass,
+            error && touched && "border-red-500"
+          )}
+          containerClassName="w-full"
+          onOpenPickNewDate={onOpenPickNewDate}
+          onChange={handleChange}
+          value={selected}
+          className={cn("date-picker custom-calendar", className)}
+          disabled={disabled}
+          onlyMonthPicker={showOnlyMonth}
+          highlightToday={false}
+          portal={portal}
         />
-      )}
-      <span className={cn("text-xs text-red-500 hidden", error && "block absolute")}>
+        {showIcon && (
+          <Calendar
+            size={16}
+            className={cn(
+              "absolute right-3 top-1/2 transform -translate-y-1/2 text-isGray400",
+              iconClass
+            )}
+          />
+        )}
+      </div>
+      <span
+        className={cn("text-xs text-red-500 hidden", error && "block absolute")}
+      >
         {error && touched && error}
       </span>
     </div>

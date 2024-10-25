@@ -13,10 +13,10 @@ export default function QuickAccess() {
       <h3 className="text-[var(--footer-link-color)] font-medium text-lg mb-2.5">
         Quick Access
       </h3>
-      <section className="bg-white rounded-lg px-[15px] py-[23px] grid gap-3 grid-cols-1 md:grid-cols-3">
+      <section className="bg-white rounded-lg px-[15px] py-[23px] flex flex-wrap lg:flex-nowrap gap-3 overflow-x-auto customScrollbar">
         <Link
           href={"#"}
-          className="border border-[#eef0f2] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+          className="border border-[#eef0f2] min-w-[180px] w-full px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
         >
           <Image
             className="size-11"
@@ -27,7 +27,7 @@ export default function QuickAccess() {
         </Link>
         <Link
           href={"#"}
-          className="border border-[#eef0f2] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+          className="border border-[#eef0f2] min-w-[180px] w-full px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
         >
           <Image
             className="size-11"
@@ -38,7 +38,7 @@ export default function QuickAccess() {
         </Link>
         <Link
           href={"#"}
-          className="border border-[#eef0f2] px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
+          className="border border-[#eef0f2] min-w-[180px] w-full px-2.5 py-3.5 text-sm rounded-lg inline-flex gap-x-1 items-center text-[var(--text-color4)] font-medium shadow-sm"
         >
           <Image className="size-11" src={HelpIcon} alt="help icon" />
           Help

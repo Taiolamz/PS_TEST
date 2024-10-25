@@ -1,42 +1,43 @@
 "use client";
+import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInStaffQuery } from "@/redux/services/checklist/subsidiaryApi";
+import { useGetBranchStaffQuery } from "@/redux/services/checklist/branchApi";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const { ADMIN } = routesPath;
 
-export default function StaffTable({
-  isLoading,
-  subDetailsData,
-  tableData,
-  isFetching,
-  onSearch,
-  perPage,
-  totalPage,
-  currentPage,
-  onPageChange,
-  isActive,
-}: {
-  perPage?: number;
-  totalPage?: number;
-  currentPage?: number;
-  isLoading?: boolean;
-  subDetailsData?: any;
-  tableData?: any[];
-  isFetching?: boolean;
-  onSearch?: (param: string) => void;
-  onPageChange?: (param: string) => void;
-  isActive: boolean;
-}) {
+export default function StaffTable({ isActive }: { isActive: boolean }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const [search, setSearch] = React.useState<string>("");
+  const [page, setPage] = React.useState(1);
+  const debounceSearch = useDebounce(search, 500);
 
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);
   };
+
+  const {
+    data: branchDataStaff,
+    isLoading,
+    isFetching,
+  } = useGetBranchStaffQuery(
+    {
+      id: id as string,
+      params: {
+        search: debounceSearch || "",
+        page: page || 1,
+      },
+    },
+    {
+      skip: !id,
+    }
+  );
 
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
@@ -51,35 +52,23 @@ export default function StaffTable({
         "Line Manager",
         "Action",
       ]}
-      perPage={perPage}
-      totalPage={totalPage}
-      currentPage={currentPage}
-      onPageChange={onPageChange}
       addText="New Staff"
       newBtnBulk={isActive}
       hideNewBtnOne={!isActive}
-      tableBodyList={FORMAT_TABLE_DATA(tableData)}
       loading={isFetching}
-      onSearch={onSearch}
+      onSearch={(e) => {
+        setSearch(e);
+      }}
+      perPage={branchDataStaff?.data?.staffs?.meta?.per_page}
+      totalPage={branchDataStaff?.data?.staffs?.meta?.total}
+      currentPage={branchDataStaff?.data?.staffs?.meta?.current_page}
+      onPageChange={(p) => {
+        setPage(p);
+      }}
+      tableBodyList={FORMAT_TABLE_DATA(branchDataStaff?.data?.staffs?.data)}
       dropDown
       hideFilter
       hideSort
-      // dropDownList={[
-      //   {
-      //     label: "View Details",
-      //     color: "",
-      //     onActionClick: (param: any, dataTwo: any) => {
-      //       // router.push(
-      //       //   pathname +
-      //       //     "?" +
-      //       //     "ui=details" +
-      //       //     "&" +
-      //       //     "id=" +
-      //       //     dataTwo?.name?.props.children[0].props.children
-      //       // );
-      //     },
-      //   },
-      // ]}
       dropDownList={[
         {
           label: <span className="text-xs"> View Details </span>,

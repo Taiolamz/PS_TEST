@@ -253,12 +253,11 @@ const TableWrapper = ({
         align="end"
         style={{ width: "10rem" }}
       >
-        <DropdownMenuItem className={newBtnClass} onClick={onPdfChange}>
-          {/* <Link href={href} className="flex gap-3"> */}
+        {/* -------- Not required for now ------ */}
+        {/* <DropdownMenuItem className={newBtnClass} onClick={onPdfChange}>
           PDF
-          {/* </Link> */}
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator /> */}
         <DropdownMenuItem className={newBtnClass} onClick={onCsvChange}>
           CSV
         </DropdownMenuItem>

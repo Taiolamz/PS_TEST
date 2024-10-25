@@ -83,7 +83,7 @@ export default function CustomSelect({
             role="combobox"
             aria-expanded={open}
             className={cn(
-              "w-full justify-between bg-white relative",
+              "w-full justify-between items-center bg-white relative truncate",
               className,
               selected ? "text-[#162238]" : "!text-[#9AA6AC] !font-light ",
               error && touched && "border-red-500"
@@ -92,9 +92,19 @@ export default function CustomSelect({
             disabled={disabled}
             onBlur={onBlur}
           >
-            {options && options[0]?.label === options[0]?.value
-              ? selectTwo
+            <span className="truncate">
+              {options && options[0]?.label === options[0]?.value
                 ? selectTwo
+                  ? selectTwo
+                  : selected
+                  ? options?.filter(
+                      (option) =>
+                        option?.value?.toString().toLowerCase() ===
+                        selected?.toString().toLowerCase()
+                    )[0]?.label
+                  : placeholder
+                  ? placeholder
+                  : "Select..."
                 : selected
                 ? options?.filter(
                     (option) =>
@@ -103,20 +113,12 @@ export default function CustomSelect({
                   )[0]?.label
                 : placeholder
                 ? placeholder
-                : "Select..."
-              : selected
-              ? options?.filter(
-                  (option) =>
-                    option?.value?.toString().toLowerCase() ===
-                    selected?.toString().toLowerCase()
-                )[0]?.label
-              : placeholder
-              ? placeholder
-              : "Select..."}
+                : "Select..."}
+            </span>
             {/* {
                             selected ? options?.filter((option) => (option?.value?.toString().toLowerCase() || option?.label?.toString().toLowerCase()) === selected?.toString().toLowerCase())[0]?.label : "Select..."
                         } */}
-            <ChevronDown className="absolute right-2 ml-2 h-6 w-6 text-[#8F8F8F] shrink-0 opacity-50" />
+            <ChevronDown className="absolute right-2 ml-2 h-6 w-6 text-[#8F8F8F] bg-inherit shrink-0 " />
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -133,11 +135,11 @@ export default function CustomSelect({
               </CommandEmpty>
             ) : null}
             <CommandGroup
-              className="h-56 overflow-y-auto scroll-hidden"
+              className="max-h-56 h-full overflow-y-auto scroll-hidden"
               style={{ overflowY: "auto" }}
             >
               {loading ? (
-                <div className="flex flex-col mt-5 justify-center items-center">
+                <div className="flex flex-col mt-5 p-1 justify-center items-center">
                   <Loader2 className="w-6 h-6 animate-spin mr-1" />
                 </div>
               ) : (
