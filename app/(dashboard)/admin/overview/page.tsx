@@ -91,7 +91,7 @@ const OverView = () => {
 
   const orgTaskCompletionDisplay = (
     <div>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center mr-4">
         <p className="text-[#3E4345] font-medium">
           Total:{" "}
           <span className="text-[#6E7C87] font-light">{getTotalByKey(getStatusData(TASK_COMPLETION), "total")} Specified Tasks</span>
