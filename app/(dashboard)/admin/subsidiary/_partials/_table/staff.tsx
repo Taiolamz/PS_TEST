@@ -48,7 +48,7 @@ export default function StaffTable() {
         if (payload) {
           downloadFile({
             file: payload,
-            filename: "staff_data",
+            filename: "staff_information",
             fileExtension: "csv",
           });
         }

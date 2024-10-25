@@ -1,11 +1,16 @@
 "use client";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInDeptQuery } from "@/redux/services/checklist/subsidiaryApi";
+import {
+  useGetSubsidiaryInDeptQuery,
+  useLazyExportSubsidiaryInDeptQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
+import { toast } from "sonner";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
@@ -31,6 +36,27 @@ export default function DepartmentTable() {
     id: id,
     params: { page, search },
   });
+
+  const [exportSubsidiaryInDept] = useLazyExportSubsidiaryInDeptQuery();
+
+  const handleExportDept = () => {
+    toast.loading("downloading...");
+    exportSubsidiaryInDept({ id: id, params: { export: true } })
+      .unwrap()
+      .then((payload) => {
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "department_information",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => toast.dismiss());
+  };
+
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
   ) : (
@@ -76,7 +102,7 @@ export default function DepartmentTable() {
       onManualBtn={handleAddDept}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={handleExportDept}
     />
   );
 }

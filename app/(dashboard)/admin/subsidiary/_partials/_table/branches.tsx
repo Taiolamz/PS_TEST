@@ -1,11 +1,16 @@
 "use client";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInBranchQuery } from "@/redux/services/checklist/subsidiaryApi";
+import {
+  useGetSubsidiaryInBranchQuery,
+  useLazyExportSubsidiaryInBranchQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
+import { toast } from "sonner";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
@@ -26,6 +31,27 @@ export default function BranchesTable() {
     const path = ADMIN.CREATE_BRANCH;
     router.push(path);
   };
+
+  const [exportSubsidiaryInBranch] = useLazyExportSubsidiaryInBranchQuery();
+
+  const handleExportBranch = () => {
+    toast.loading("downloading...");
+    exportSubsidiaryInBranch({ id: id, params: { export: true } })
+      .unwrap()
+      .then((payload) => {
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "branch_information",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => toast.dismiss());
+  };
+
   return isLoading ? (
     <TableLoader rows={8} columns={8} />
   ) : (
@@ -77,8 +103,7 @@ export default function BranchesTable() {
       ]}
       onManualBtn={handleAddBranch}
       // onBulkUploadBtn={handleBulkUploadDialog}
-      // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={handleExportBranch}
     />
   );
 }

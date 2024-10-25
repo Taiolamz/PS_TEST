@@ -44,7 +44,7 @@ export default function UnitTable() {
         if (payload) {
           downloadFile({
             file: payload,
-            filename: "unit_data",
+            filename: "unit_information",
             fileExtension: "csv",
           });
         }
