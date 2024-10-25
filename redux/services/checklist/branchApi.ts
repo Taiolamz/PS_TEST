@@ -40,6 +40,17 @@ export const branchApi = baseApi.injectEndpoints({
       // }) => response?.data?.branches?.data,
     }),
 
+    getBranchesExport: builder.query<any, QueryParams>({
+      query: (params) => ({
+        url: `/admin/branch${generateQueryString({ ...params })}`,
+        method: "GET",
+      }),
+      providesTags: ["Branches"],
+      // transformResponse: (response: {
+      //   data: { branches: { data: BranchData[] } };
+      // }) => response?.data?.branches?.data,
+    }),
+
     getBranchById: builder.query({
       query: (branchId) => ({
         url: `/admin/branch/${branchId}`,
@@ -122,4 +133,5 @@ export const {
   useDeleteBranchMutation,
   useUpdateBranchMutation,
   useReopenBranchMutation,
+  useLazyGetBranchesExportQuery,
 } = branchApi;

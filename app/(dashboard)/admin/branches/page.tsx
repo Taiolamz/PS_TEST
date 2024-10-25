@@ -22,6 +22,7 @@ import {
   useCreateBulkBranchesMutation,
   useGetBranchesQuery,
   useLazyDownloadBranchTemplateQuery,
+  useLazyGetBranchesExportQuery,
 } from "@/redux/services/checklist/branchApi";
 import { processInputAsArray } from "@/utils/helpers";
 import BadgeComponent from "@/components/badge/BadgeComponents";
@@ -144,6 +145,10 @@ const Branches = () => {
     search: search,
   });
 
+  // Export branches
+  const [getBranchesExport, { data: exportData, isLoading: isExporting }] =
+    useLazyGetBranchesExportQuery();
+
   const branches = branchesData ?? [];
 
   const user = useAppSelector(selectUser);
@@ -185,6 +190,24 @@ const Branches = () => {
             file: payload,
             filename: "branch_template",
             fileExtension: fileType,
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
+  };
+
+  const handleExportDownload = async () => {
+    toast.loading("downloading...");
+    getBranchesExport({ export: true })
+      .unwrap()
+      .then((payload: any) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "organization branches",
+            fileExtension: "xlsx",
           });
         }
       })
@@ -277,7 +300,7 @@ const Branches = () => {
                   onManualBtn={handleAddBranch}
                   onBulkUploadBtn={handleBulkUploadDialog}
                   // onPdfChange={}
-                  // onCsvChange={}
+                  onCsvChange={() => handleExportDownload()}
                 />
               </>
             )}
