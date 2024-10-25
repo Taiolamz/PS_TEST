@@ -1,11 +1,16 @@
 "use client";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInStaffQuery } from "@/redux/services/checklist/subsidiaryApi";
+import {
+  useGetSubsidiaryInStaffQuery,
+  useLazyExportSubsidiaryInStaffQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
+import { toast } from "sonner";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
@@ -30,6 +35,26 @@ export default function StaffTable() {
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);
+  };
+
+  const [exportSubsidiaryInStaff, {}] = useLazyExportSubsidiaryInStaffQuery();
+
+  const handleExportStaff = () => {
+    toast.loading("downloading...");
+    exportSubsidiaryInStaff({ id: id, params: { export: true } })
+      .unwrap()
+      .then((payload) => {
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "staff_data",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => toast.dismiss());
   };
 
   return isLoading ? (
@@ -85,7 +110,7 @@ export default function StaffTable() {
       onManualBtn={handleAddStaff}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={() => handleExportStaff()}
     />
   );
 }
