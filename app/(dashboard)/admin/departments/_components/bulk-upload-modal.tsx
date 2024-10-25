@@ -39,9 +39,9 @@ const BulkUploadModal = ({
 
   const expectedFormat = {
     0: { name: "name", required: true, key: "name" },
-    1: { name: "head_of_department", required: false, key: "head_of_department" },
-    2: { name: "subsidiary", required: false, key: "subsidiary" },
-    3: { name: "branch", required: false, key: "branch" },
+    1: { name: "subsidiary", required: false, key: "subsidiary" },
+    2: { name: "branch", required: false, key: "branch" },
+    3: { name: "head_of_department", required: false, key: "head_of_department" },
   };
   const tableHeadlist = [
     "Name",
@@ -53,7 +53,6 @@ const BulkUploadModal = ({
   const [validFormat, setValideFormat] = useState(false);
   const handleUploadTest = async (e: any) => {
     const data = await getDataFromFileUpload(e, expectedFormat, 200);
-    // console.log(data);
     if (data?.status === "failed") {
       toast.error(data?.message);
       setValideFormat(false);
@@ -62,6 +61,7 @@ const BulkUploadModal = ({
       setUploadedFile("");
     }
     if (data?.status === "success") {
+      // console.log(data?.array)
       setTableBodyList(data?.array);
       setValideFormat(true);
     }
@@ -91,11 +91,10 @@ const BulkUploadModal = ({
       >
         <Button
           onClick={onBulkUpload}
-          className={`${btnClass}  font-light ${
-            !uploadedFile || loading
-              ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
-              : ""
-          } `}
+          className={`${btnClass}  font-light ${!uploadedFile || loading
+            ? "border  border-custom-divider font-medium  bg-custom-bg  text-custom-gray-scale-300 hover:bg-transparent cursor-not-allowed"
+            : ""
+            } `}
           // disabled={!uploadedFile || !}
           disabled={!uploadedFile || !validFormat}
         >
@@ -162,9 +161,8 @@ const BulkUploadModal = ({
           <div className="preview-reusable-box-table">
             {" "}
             <TableWrapper
-              TableTitle={`Preview Department${
-                tableBodyList?.length > 1 ? "s" : ""
-              } ( ${tableBodyList?.length} )`}
+              TableTitle={`Preview Department${tableBodyList?.length > 1 ? "s" : ""
+                } ( ${tableBodyList?.length} )`}
               tableBodyList={replaceEmptyValuesWithPlaceholder(
                 tableBodyList,
                 "-----"
