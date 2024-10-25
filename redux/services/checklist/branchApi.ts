@@ -44,11 +44,10 @@ export const branchApi = baseApi.injectEndpoints({
       query: (params) => ({
         url: `/admin/branch${generateQueryString({ ...params })}`,
         method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
       }),
       providesTags: ["Branches"],
-      // transformResponse: (response: {
-      //   data: { branches: { data: BranchData[] } };
-      // }) => response?.data?.branches?.data,
     }),
 
     getBranchById: builder.query({
@@ -80,6 +79,18 @@ export const branchApi = baseApi.injectEndpoints({
           }
         )}`,
         method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+
+    getBranchesDeptExport: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-department-entites/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
       }),
       providesTags: ["Branches"],
     }),
@@ -134,4 +145,5 @@ export const {
   useUpdateBranchMutation,
   useReopenBranchMutation,
   useLazyGetBranchesExportQuery,
+  useLazyGetBranchesDeptExportQuery,
 } = branchApi;

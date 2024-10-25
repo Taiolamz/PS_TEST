@@ -268,7 +268,6 @@ export default function BranchDetails() {
       })
       .catch(() => {});
   };
-  console.log({ reopenData });
   return (
     <DashboardLayout back headerTitle={"Branches"}>
       <section className="p-5">

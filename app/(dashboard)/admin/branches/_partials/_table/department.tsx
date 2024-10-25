@@ -2,10 +2,15 @@
 import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetBranchDepartmentQuery } from "@/redux/services/checklist/branchApi";
+import {
+  useGetBranchDepartmentQuery,
+  useLazyGetBranchesDeptExportQuery,
+} from "@/redux/services/checklist/branchApi";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
 
@@ -44,6 +49,25 @@ export default function DepartmentTable({ isActive }: { isActive: boolean }) {
       skip: !id,
     }
   );
+
+  const [getBranchesDeptExport] = useLazyGetBranchesDeptExportQuery();
+  const handleExportDownload = async () => {
+    toast.loading("downloading...");
+    getBranchesDeptExport({ export: true })
+      .unwrap()
+      .then((payload: any) => {
+        toast.dismiss();
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "department_information",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => toast.dismiss());
+  };
 
   return isLoadingBranchDepartment ? (
     <TableLoader rows={8} columns={8} />

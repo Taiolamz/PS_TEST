@@ -146,8 +146,7 @@ const Branches = () => {
   });
 
   // Export branches
-  const [getBranchesExport, { data: exportData, isLoading: isExporting }] =
-    useLazyGetBranchesExportQuery();
+  const [getBranchesExport] = useLazyGetBranchesExportQuery();
 
   const branches = branchesData ?? [];
 
@@ -207,7 +206,7 @@ const Branches = () => {
           downloadFile({
             file: payload,
             filename: "organization branches",
-            fileExtension: "xlsx",
+            fileExtension: "csv",
           });
         }
       })
