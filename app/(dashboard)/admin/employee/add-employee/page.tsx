@@ -314,7 +314,7 @@ export default function AddEmployee() {
           btnDisabled={!formik.isValid || !formik.dirty}
           loading={isCreatingEmployee}
           onSave={formik.handleSubmit}
-          // onCancel={handleCancelDialog}
+        // onCancel={handleCancelDialog}
         />
         <div
           className=""
@@ -346,7 +346,7 @@ export default function AddEmployee() {
                   id="middle_name"
                   name="middle_name"
                   onChange={formik.handleChange}
-                  // isRequired
+                // isRequired
                 />
 
                 <Input
@@ -366,7 +366,7 @@ export default function AddEmployee() {
                   id="maiden_name"
                   name="maiden_name"
                   onChange={formik.handleChange}
-                  // isRequired
+                // isRequired
                 />
 
                 <CustomSelect
@@ -389,8 +389,8 @@ export default function AddEmployee() {
                   placeholder="YYYY/MM/DD"
                   error={""}
                   className="relative"
-                  iconClass="top-[2rem]"
-                  // isRequired
+                // iconClass="top-[2rem]"
+                // isRequired
                 />
 
                 <CustomDateInput
@@ -401,10 +401,10 @@ export default function AddEmployee() {
                     formik.setFieldValue("resumption_date", formatDate(date));
                   }}
                   placeholder="YYYY/MM/DD"
-                  iconClass="top-[2rem]"
+                  // iconClass="top-[2rem]"
                   error={""}
                   className="relative"
-                  // isRequired
+                // isRequired
                 />
                 <Input
                   label="Work Email"
@@ -457,7 +457,7 @@ export default function AddEmployee() {
                   //   console.log(handleFormatNameLabel(employees));
                   // }}
                   labelClass={labelClassName}
-                  // isRequired
+                // isRequired
                 />
 
                 <Input
@@ -475,129 +475,129 @@ export default function AddEmployee() {
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "subsidiary"
                 ) && (
-                  <CustomSelect
-                    label="Subsidiary"
-                    isRequired
-                    placeholder="Select Subsidiary"
-                    options={[
-                      {
-                        name: "",
-                        id: "",
-                        label: "Select Subsidiary",
-                        value: "",
-                      },
-                      ...subsidiaries,
-                    ]}
-                    // selected={selectedSubsidiary}
-                    selected={formik.values.subsidiary_id.name}
-                    setSelected={(value) => {
-                      handleSubsidiaryChange(value);
-                      setSelectedBranch("");
-                      setSelectedDepartment("");
-                      setSelectedUnit("");
-                    }}
-                    labelClass={labelClassName}
-                  />
-                )}
+                    <CustomSelect
+                      label="Subsidiary"
+                      isRequired
+                      placeholder="Select Subsidiary"
+                      options={[
+                        {
+                          name: "",
+                          id: "",
+                          label: "Select Subsidiary",
+                          value: "",
+                        },
+                        ...subsidiaries,
+                      ]}
+                      // selected={selectedSubsidiary}
+                      selected={formik.values.subsidiary_id.name}
+                      setSelected={(value) => {
+                        handleSubsidiaryChange(value);
+                        setSelectedBranch("");
+                        setSelectedDepartment("");
+                        setSelectedUnit("");
+                      }}
+                      labelClass={labelClassName}
+                    />
+                  )}
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "branch"
                 ) && (
-                  <CustomSelect
-                    label="Branch"
-                    isRequired
-                    placeholder="Select Branch"
-                    options={BRANCH_OPTION({
-                      obj: branches,
-                      SubId: formik?.values?.subsidiary_id?.id,
-                    })}
-                    disabled={
-                      formik?.values.subsidiary_id.name?.length === 0 &&
-                      processInputAsArray(
-                        user?.organization?.hierarchy
-                      )?.includes("subsidiary")
-                    }
-                    selected={selectedBranch}
-                    setSelected={(value) => {
-                      setSelectedBranch(value);
-                      formik.setFieldValue("branch_id", value);
-                      setSelectedDepartment("");
-                      formik.setFieldValue("department_id", "");
-                      setSelectedUnit("");
-                      formik.setFieldValue("unit_id", "");
-                    }}
-                    labelClass={labelClassName}
-                  />
-                )}
+                    <CustomSelect
+                      label="Branch"
+                      isRequired
+                      placeholder="Select Branch"
+                      options={BRANCH_OPTION({
+                        obj: branches,
+                        SubId: formik?.values?.subsidiary_id?.id,
+                      })}
+                      disabled={
+                        formik?.values.subsidiary_id.name?.length === 0 &&
+                        processInputAsArray(
+                          user?.organization?.hierarchy
+                        )?.includes("subsidiary")
+                      }
+                      selected={selectedBranch}
+                      setSelected={(value) => {
+                        setSelectedBranch(value);
+                        formik.setFieldValue("branch_id", value);
+                        setSelectedDepartment("");
+                        formik.setFieldValue("department_id", "");
+                        setSelectedUnit("");
+                        formik.setFieldValue("unit_id", "");
+                      }}
+                      labelClass={labelClassName}
+                    />
+                  )}
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "department"
                 ) && (
-                  <CustomSelect
-                    label="Department"
-                    isRequired
-                    placeholder="Select Department"
-                    options={DEPT_OPTION({
-                      obj: departments,
-                      SubId: formik?.values?.subsidiary_id?.id,
-                      BranId: formik?.values?.branch_id,
-                    })}
-                    disabled={
-                      (formik?.values.subsidiary_id.name?.length === 0 &&
-                        processInputAsArray(
-                          user?.organization?.hierarchy
-                        )?.includes("subsidiary")) ||
-                      (formik?.values.branch_id?.length === 0 &&
-                        processInputAsArray(
-                          user?.organization?.hierarchy
-                        )?.includes("branch"))
-                    }
-                    selected={selectedDepartment}
-                    setSelected={(value) => {
-                      setSelectedDepartment(value);
-                      formik.setFieldValue("department_id", value);
-                      setSelectedUnit("");
-                      formik.setFieldValue("unit_id", "");
-                    }}
-                    labelClass={labelClassName}
-                  />
-                )}
+                    <CustomSelect
+                      label="Department"
+                      isRequired
+                      placeholder="Select Department"
+                      options={DEPT_OPTION({
+                        obj: departments,
+                        SubId: formik?.values?.subsidiary_id?.id,
+                        BranId: formik?.values?.branch_id,
+                      })}
+                      disabled={
+                        (formik?.values.subsidiary_id.name?.length === 0 &&
+                          processInputAsArray(
+                            user?.organization?.hierarchy
+                          )?.includes("subsidiary")) ||
+                        (formik?.values.branch_id?.length === 0 &&
+                          processInputAsArray(
+                            user?.organization?.hierarchy
+                          )?.includes("branch"))
+                      }
+                      selected={selectedDepartment}
+                      setSelected={(value) => {
+                        setSelectedDepartment(value);
+                        formik.setFieldValue("department_id", value);
+                        setSelectedUnit("");
+                        formik.setFieldValue("unit_id", "");
+                      }}
+                      labelClass={labelClassName}
+                    />
+                  )}
 
                 {processInputAsArray(user?.organization?.hierarchy)?.includes(
                   "unit"
                 ) && (
-                  <CustomSelect
-                    label="Unit"
-                    isRequired
-                    placeholder="Select Unit"
-                    options={UNIT_OPTION({
-                      obj: units,
-                      SubId: formik?.values?.subsidiary_id?.id,
-                      BranId: formik?.values?.branch_id,
-                      DeptId: formik?.values?.department_id,
-                    })}
-                    disabled={
-                      (formik?.values.subsidiary_id.name?.length === 0 &&
-                        processInputAsArray(
-                          user?.organization?.hierarchy
-                        )?.includes("subsidiary")) ||
-                      (formik?.values.branch_id?.length === 0 &&
-                        processInputAsArray(
-                          user?.organization?.hierarchy
-                        )?.includes("branch")) ||
-                      (formik?.values.department_id?.length === 0 &&
-                        processInputAsArray(
-                          user?.organization?.hierarchy
-                        )?.includes("department"))
-                    }
-                    selected={selectedUnit}
-                    setSelected={(value) => {
-                      setSelectedUnit(value);
-                      formik.setFieldValue("unit_id", value);
-                    }}
-                    labelClass={labelClassName}
-                  />
-                )}
+                    <CustomSelect
+                      label="Unit"
+                      isRequired
+                      placeholder="Select Unit"
+                      options={UNIT_OPTION({
+                        obj: units,
+                        SubId: formik?.values?.subsidiary_id?.id,
+                        BranId: formik?.values?.branch_id,
+                        DeptId: formik?.values?.department_id,
+                      })}
+                      disabled={
+                        (formik?.values.subsidiary_id.name?.length === 0 &&
+                          processInputAsArray(
+                            user?.organization?.hierarchy
+                          )?.includes("subsidiary")) ||
+                        (formik?.values.branch_id?.length === 0 &&
+                          processInputAsArray(
+                            user?.organization?.hierarchy
+                          )?.includes("branch")) ||
+                        (formik?.values.department_id?.length === 0 &&
+                          processInputAsArray(
+                            user?.organization?.hierarchy
+                          )?.includes("department"))
+                      }
+                      selected={selectedUnit}
+                      setSelected={(value) => {
+                        setSelectedUnit(value);
+                        formik.setFieldValue("unit_id", value);
+                      }}
+                      labelClass={labelClassName}
+                    />
+                  )}
 
                 <Input
                   label="Job Title"
@@ -606,7 +606,7 @@ export default function AddEmployee() {
                   id="designation"
                   name="designation"
                   onChange={formik.handleChange}
-                  // isRequired
+                // isRequired
                 />
 
                 <Input
@@ -622,7 +622,7 @@ export default function AddEmployee() {
                     formik.setFieldValue("phone_number", filteredValue);
                   }}
                   value={formik.values.phone_number}
-                  // isRequired
+                // isRequired
                 />
 
                 <Input
@@ -632,7 +632,7 @@ export default function AddEmployee() {
                   id="staff_number"
                   name="staff_number"
                   onChange={formik.handleChange}
-                  // isRequired
+                // isRequired
                 />
 
                 <CustomSelect

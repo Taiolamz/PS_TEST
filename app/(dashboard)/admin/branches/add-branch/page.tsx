@@ -146,7 +146,7 @@ const AddBranch = () => {
                   formik.setFieldValue("state", "");
                   setSelectedCountryData(countryData);
                 }}
-                // labelClass={labelClassName}
+              // labelClass={labelClassName}
               />
 
               <CustomSelect
@@ -181,7 +181,7 @@ const AddBranch = () => {
                 selected={formik.values.head.name}
                 setSelected={handleHeadSelectChange}
                 labelClass={labelClassName}
-                // isRequired
+              // isRequired
               />
               <Input
                 label="Head of Branch Email"
@@ -197,29 +197,29 @@ const AddBranch = () => {
               {processInputAsArray(user?.organization?.hierarchy)?.includes(
                 "subsidiary"
               ) && (
-                <CustomSelect
-                  label="Subsidiary"
-                  isRequired={processInputAsArray(
-                    user?.organization?.hierarchy
-                  )?.includes("subsidiary")}
-                  placeholder="Select subsidiary"
-                  options={[
-                    {
-                      name: "",
-                      id: "",
-                      label: "Select subsidiary",
-                      value: "",
-                    },
-                    ...subsidiaries,
-                  ]}
-                  selected={formik.values.subsidiary_id.name}
-                  setSelected={handleSubsidiaryChange}
-                  // setSelected={(value) =>
-                  //   formik.setFieldValue("subsidiary.", value)
-                  // }
-                  labelClass={labelClassName}
-                />
-              )}
+                  <CustomSelect
+                    label="Subsidiary"
+                    isRequired={processInputAsArray(
+                      user?.organization?.hierarchy
+                    )?.includes("subsidiary")}
+                    placeholder="Select subsidiary"
+                    options={[
+                      {
+                        name: "",
+                        id: "",
+                        label: "Select subsidiary",
+                        value: "",
+                      },
+                      ...subsidiaries,
+                    ]}
+                    selected={formik.values.subsidiary_id.name}
+                    setSelected={handleSubsidiaryChange}
+                    // setSelected={(value) =>
+                    //   formik.setFieldValue("subsidiary.", value)
+                    // }
+                    labelClass={labelClassName}
+                  />
+                )}
               <Textarea
                 label="Branch Description"
                 rows={3}
