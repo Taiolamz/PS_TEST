@@ -51,9 +51,10 @@ export default function DepartmentTable({ isActive }: { isActive: boolean }) {
   );
 
   const [getBranchesDeptExport] = useLazyGetBranchesDeptExportQuery();
+
   const handleExportDownload = async () => {
     toast.loading("downloading...");
-    getBranchesDeptExport({ export: true })
+    getBranchesDeptExport({ id: id, params: { export: true } })
       .unwrap()
       .then((payload: any) => {
         toast.dismiss();
@@ -109,8 +110,7 @@ export default function DepartmentTable({ isActive }: { isActive: boolean }) {
       ]}
       onManualBtn={handleAddDept}
       // onBulkUploadBtn={handleBulkUploadDialog}
-      // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={handleExportDownload}
     />
   );
 }

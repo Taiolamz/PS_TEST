@@ -68,6 +68,18 @@ export const branchApi = baseApi.injectEndpoints({
       providesTags: ["Branches"],
     }),
 
+    getBranchUnitExport: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-unit-entites/${id}${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Branches"],
+    }),
+
     getBranchDepartment: builder.query<
       any,
       { id: string; params: QueryParams }
@@ -101,6 +113,18 @@ export const branchApi = baseApi.injectEndpoints({
           ...params,
         })}`,
         method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+
+    getBranchStaffExport: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-staff-entites/${id}${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
       }),
       providesTags: ["Branches"],
     }),
@@ -146,4 +170,6 @@ export const {
   useReopenBranchMutation,
   useLazyGetBranchesExportQuery,
   useLazyGetBranchesDeptExportQuery,
+  useLazyGetBranchStaffExportQuery,
+  useLazyGetBranchUnitExportQuery,
 } = branchApi;

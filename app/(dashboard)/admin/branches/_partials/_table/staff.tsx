@@ -2,10 +2,15 @@
 import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetBranchStaffQuery } from "@/redux/services/checklist/branchApi";
+import {
+  useGetBranchStaffQuery,
+  useLazyGetBranchStaffExportQuery,
+} from "@/redux/services/checklist/branchApi";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
 
@@ -20,6 +25,26 @@ export default function StaffTable({ isActive }: { isActive: boolean }) {
   const handleAddStaff = () => {
     const path = ADMIN.ADD_EMPLOYEE;
     router.push(path);
+  };
+
+  const [getBranchStaffExport] = useLazyGetBranchStaffExportQuery();
+
+  const handleExportStaff = () => {
+    toast.loading("downloading...");
+    getBranchStaffExport({ id: id, params: { export: true } })
+      .unwrap()
+      .then((payload) => {
+        toast.success("Download completed");
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "staff_information",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => toast.dismiss());
   };
 
   const {
@@ -84,8 +109,7 @@ export default function StaffTable({ isActive }: { isActive: boolean }) {
       ]}
       onManualBtn={handleAddStaff}
       // onBulkUploadBtn={handleBulkUploadDialog}
-      // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={handleExportStaff}
     />
   );
 }
@@ -98,10 +122,10 @@ const FORMAT_TABLE_DATA = (obj: any) => {
         <p>{org?.name}</p>
       </>
     ),
-    gender: org?.gender || "n/a",
-    email: org?.email || "n/a",
-    job_title: org?.job_title || "n/a",
-    role: org?.role || "n/a",
-    line_manager_name: org?.line_manager_name || "n/a",
+    gender: org?.gender || "--- ---",
+    email: org?.email || "--- ---",
+    job_title: org?.job_title || "--- ---",
+    role: org?.role || "--- ---",
+    line_manager_name: org?.line_manager_name || "--- ---",
   }));
 };
