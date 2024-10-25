@@ -3,10 +3,12 @@ import { ManceLoader } from "@/components/custom-loader";
 import TableWrapper from "@/components/tables/TableWrapper";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { extractNamesFromFormat, replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
+import { useAppSelector } from "@/redux/store";
+import { extractNamesFromFormat, filterHiddenFields, replaceEmptyValuesWithPlaceholder } from "@/utils/helpers";
 import { getDataFromFileUpload } from "@/utils/helpers/extract-data-bulk";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { object } from "yup";
 
 interface FileUploadType {
   onSampleCsvDownload: () => void;
@@ -26,6 +28,13 @@ const BulkUploadModal = ({
   loading,
 }: FileUploadType) => {
   const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+
+  const { organization } = useAppSelector(
+    (state) => state?.auth.user
+  );
+
+  const HEIRARCHY: any = organization?.hierarchy ?? []
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && setFile) {
@@ -38,21 +47,26 @@ const BulkUploadModal = ({
   };
 
   const expectedFormat = {
-    0: { name: "name", required: true, key: "name" },
-    1: { name: "subsidiary", required: false, key: "subsidiary" },
-    2: { name: "branch", required: false, key: "branch" },
-    3: { name: "head_of_department", required: false, key: "head_of_department" },
+    0: { name: "name", required: true, key: "name", hide: false },
+    1: { name: "subsidiary", required: false, key: "subsidiary", hide: !HEIRARCHY?.includes('subsidiary') },
+    2: { name: "branch", required: false, key: "branch", hide: !HEIRARCHY?.includes('branch') },
+    3: { name: "head_of_department", required: false, key: "head_of_department", hide: false },
   };
+
+  // console.log(filterHiddenFields(expectedFormat))
+
   const tableHeadlist = [
     "Name",
     "Head of Dept.",
     "Subsidiary",
     "Branch",
   ];
+
   const [tableBodyList, setTableBodyList] = useState<any>([]);
   const [validFormat, setValideFormat] = useState(false);
+
   const handleUploadTest = async (e: any) => {
-    const data = await getDataFromFileUpload(e, expectedFormat, 200);
+    const data = await getDataFromFileUpload(e, filterHiddenFields(expectedFormat), 200);
     if (data?.status === "failed") {
       toast.error(data?.message);
       setValideFormat(false);
@@ -168,7 +182,7 @@ const BulkUploadModal = ({
                 "-----"
               )}
               hideSearchFilterBox
-              tableheaderList={extractNamesFromFormat(expectedFormat)}
+              tableheaderList={extractNamesFromFormat(filterHiddenFields(expectedFormat))}
               hidePagination
             />
           </div>

@@ -631,3 +631,10 @@ export const getPercentageColor = (number: number): string => {
     return "#ec1410";
   }
 };
+
+// data must have a key of {hide} with a boolean value
+export const filterHiddenFields = (data: Dictionary) => {
+  return Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => !value.hide)
+  );
+};
