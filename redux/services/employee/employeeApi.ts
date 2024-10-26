@@ -1,3 +1,4 @@
+import { generateQueryString } from "@/utils/helpers";
 import { baseApi } from "../baseApi";
 
 export const employeeInvitationApi = baseApi.injectEndpoints({
@@ -32,11 +33,11 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         response.data.staff_members,
     }),
     getAllStaff: builder.query({
-      query: ({ page }) => ({
-        url: `/admin/staff/all-staff?page=${page}`,
+      query: (params) => ({
+        url: `/admin/staff/all-staff${generateQueryString({ ...params })}`,
         method: "GET",
       }),
-      providesTags: ["Staff"],
+      providesTags: ["Staff", "Employees"],
     }),
     getStaffInfo: builder.query({
       query: ({ staff_id }) => ({
@@ -45,18 +46,29 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
       }),
     }),
     getInvitedStaff: builder.query({
-      query: ({ page }) => ({
-        url: `/admin/invitation?page=${page}`,
+      query: (params) => ({
+        url: `/admin/invitation${generateQueryString({ ...params })}`,
         method: "GET",
       }),
-      providesTags: ["Staff"],
+      providesTags: ["Staff", "Employees"],
     }),
+
+    exportAllStaffs: builder.query({
+      query: () => ({
+        url: `/admin/staff/export`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Staff", "Employees"],
+    }),
+
     deleteStaff: builder.mutation({
       query: ({ staffId }) => ({
         url: `/admin/staff/trash/${staffId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Staff"],
+      invalidatesTags: ["Staff", "Employees"],
     }),
     updateStaff: builder.mutation({
       query: ({ staffId, payload }) => ({
@@ -64,14 +76,14 @@ export const employeeInvitationApi = baseApi.injectEndpoints({
         method: "PUT",
         body: payload,
       }),
-      invalidatesTags: ["Staff"],
+      invalidatesTags: ["Staff", "Employees"],
     }),
     deleteInvitedStaff: builder.mutation({
       query: ({ staffId }) => ({
         url: `/admin/invitation/delete/${staffId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Staff"],
+      invalidatesTags: ["Staff", "Employees"],
     }),
     getStaffCount: builder.query({
       query: () => ({
@@ -111,4 +123,5 @@ export const {
   useDeleteStaffMutation,
   useDeleteInvitedStaffMutation,
   useUpdateStaffMutation,
+  useLazyExportAllStaffsQuery,
 } = employeeInvitationApi;
