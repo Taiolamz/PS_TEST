@@ -52,7 +52,7 @@ export default function SpecifiedTaskProgress() {
       </div>
       {/* Content */}
       <div className="space-y-6">
-        {data.data.specified_tasks?.map((item: any, idx: number) => (
+        {data?.data?.specified_tasks?.map((item: any, idx: number) => (
           <AchievementProgress
             title={
               <span className="inline-flex items-center gap-x-2 !text-black mb-3">

@@ -77,12 +77,7 @@ export default function UnitDetails() {
       {
         id: id as string,
         params: {
-          to: 0,
-          total: 0,
-          per_page: 50,
-          currentPage: 0,
-          next_page_url: "",
-          prev_page_url: "",
+          page: page,
           search: debounceSearch,
         },
       },

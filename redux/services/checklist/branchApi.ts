@@ -40,6 +40,16 @@ export const branchApi = baseApi.injectEndpoints({
       // }) => response?.data?.branches?.data,
     }),
 
+    getBranchesExport: builder.query<any, QueryParams>({
+      query: (params) => ({
+        url: `/admin/branch${generateQueryString({ ...params })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Branches"],
+    }),
+
     getBranchById: builder.query({
       query: (branchId) => ({
         url: `/admin/branch/${branchId}`,
@@ -54,6 +64,18 @@ export const branchApi = baseApi.injectEndpoints({
           ...params,
         })}`,
         method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+
+    getBranchUnitExport: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-unit-entites/${id}${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
       }),
       providesTags: ["Branches"],
     }),
@@ -73,12 +95,36 @@ export const branchApi = baseApi.injectEndpoints({
       providesTags: ["Branches"],
     }),
 
+    getBranchesDeptExport: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-department-entites/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Branches"],
+    }),
+
     getBranchStaff: builder.query<any, { id: string; params: QueryParams }>({
       query: ({ id, params }) => ({
         url: `/admin/branch/branch-staff-entites/${id}${generateQueryString({
           ...params,
         })}`,
         method: "GET",
+      }),
+      providesTags: ["Branches"],
+    }),
+
+    getBranchStaffExport: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/branch/branch-staff-entites/${id}${generateQueryString({
+          ...params,
+        })}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
       }),
       providesTags: ["Branches"],
     }),
@@ -122,4 +168,8 @@ export const {
   useDeleteBranchMutation,
   useUpdateBranchMutation,
   useReopenBranchMutation,
+  useLazyGetBranchesExportQuery,
+  useLazyGetBranchesDeptExportQuery,
+  useLazyGetBranchStaffExportQuery,
+  useLazyGetBranchUnitExportQuery,
 } = branchApi;

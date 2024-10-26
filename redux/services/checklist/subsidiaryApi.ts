@@ -60,6 +60,18 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       transformResponse: (response: any) => response.data.branch,
     }),
 
+    exportSubsidiaryInBranch: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/branch/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Subsidiaries", "Branches"],
+    }),
+
     getSubsidiaryInDept: builder.query({
       query: ({ id, params }) => ({
         url: `/admin/subsidiary/subsidiary-entities/department/${id}${generateQueryString(
@@ -69,6 +81,18 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Subsidiaries", "Departments"],
       transformResponse: (response: any) => response.data.department,
+    }),
+
+    exportSubsidiaryInDept: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/department/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Subsidiaries", "Departments"],
     }),
 
     getSubsidiaryInUnit: builder.query({
@@ -82,6 +106,18 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       transformResponse: (response: any) => response.data.unit,
     }),
 
+    exportSubsidiaryInUnit: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities/unit/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Subsidiaries", "Units"],
+    }),
+
     getSubsidiaryInStaff: builder.query({
       query: ({ id, params }) => ({
         url: `/admin/subsidiary/subsidiary-entities-staff/${id}${generateQueryString(
@@ -91,6 +127,18 @@ export const subsidiaryApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Subsidiaries", "Employees"],
       transformResponse: (response: any) => response.data.staff,
+    }),
+
+    exportSubsidiaryInStaff: builder.query({
+      query: ({ id, params }) => ({
+        url: `/admin/subsidiary/subsidiary-entities-staff/${id}${generateQueryString(
+          { ...params }
+        )}`,
+        method: "GET",
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
+      providesTags: ["Subsidiaries", "Employees"],
     }),
 
     reopenSubsidiary: builder.mutation({
@@ -142,4 +190,8 @@ export const {
   useReopenSubsidiaryMutation,
   useCloseSubsidiariesMutation,
   useUpdateSubsidiaryMutation,
+  useLazyExportSubsidiaryInStaffQuery,
+  useLazyExportSubsidiaryInUnitQuery,
+  useLazyExportSubsidiaryInDeptQuery,
+  useLazyExportSubsidiaryInBranchQuery,
 } = subsidiaryApi;

@@ -1,11 +1,16 @@
 "use client";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetSubsidiaryInUnitQuery } from "@/redux/services/checklist/subsidiaryApi";
+import {
+  useGetSubsidiaryInUnitQuery,
+  useLazyExportSubsidiaryInUnitQuery,
+} from "@/redux/services/checklist/subsidiaryApi";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useSubsidiaryById } from "../../_hooks/useSubsidiaryById";
+import { toast } from "sonner";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 
 const { ADMIN } = routesPath;
 
@@ -26,6 +31,25 @@ export default function UnitTable() {
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
     router.push(path);
+  };
+
+  const [exportSubsidiaryInUnit] = useLazyExportSubsidiaryInUnitQuery();
+
+  const handleExportUnit = () => {
+    toast.loading("downloading...");
+    exportSubsidiaryInUnit({ id: id, params: { export: true } })
+      .unwrap()
+      .then((payload) => {
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "unit_information",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => toast.dismiss());
   };
 
   return isLoading ? (
@@ -68,7 +92,7 @@ export default function UnitTable() {
       onManualBtn={handleAddUnit}
       // onBulkUploadBtn={handleBulkUploadDialog}
       // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={handleExportUnit}
     />
   );
 }
