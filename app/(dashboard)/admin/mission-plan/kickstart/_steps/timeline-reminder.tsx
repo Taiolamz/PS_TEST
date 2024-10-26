@@ -65,7 +65,7 @@ const TimelineAndReminder = () => {
       approval_reminder: (timeline_reminder?.approval_reminder as string) || "",
       before_start_reminder:
         (timeline_reminder?.before_start_reminder as string) || "",
-      fiscal_year_id: (financial_year?.financial_year_id as string) || "",
+      fiscal_year_id: (financial_year?.financial_year_id as string) || (timeline_reminder?.fiscal_year_id as string) || "",
     },
     validationSchema: timelineReminderSchema(),
     onSubmit: handleFormSubmit,
@@ -101,7 +101,7 @@ const TimelineAndReminder = () => {
               error={formik.errors.creation_start_date as string}
               placeholder="YYYY-MM-DD"
               isRequired
-              iconClass="top-10"
+            // iconClass="top-10"
             />
             <CustomDateInput
               label="End Period"
@@ -114,7 +114,7 @@ const TimelineAndReminder = () => {
               error={formik.errors.creation_end_date as string}
               placeholder="YYYY-MM-DD"
               isRequired
-              iconClass="top-10"
+            // iconClass="top-10"
             />
           </div>
         </div>
@@ -135,7 +135,7 @@ const TimelineAndReminder = () => {
               error={formik.errors.approval_start_date as string}
               placeholder="YYYY-MM-DD"
               isRequired
-              iconClass="top-10"
+            // iconClass="top-10"
             />
             <CustomDateInput
               label="End Period"
@@ -148,7 +148,7 @@ const TimelineAndReminder = () => {
               error={formik.errors.approval_end_date as string}
               placeholder="YYYY-MM-DD"
               isRequired
-              iconClass="top-10"
+            // iconClass="top-10"
             />
           </div>
         </div>
