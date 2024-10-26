@@ -35,6 +35,7 @@ import {
   // employeerolesColumns,
   useEmployeeRolesColumnData,
 } from "../employee-role-column";
+import { init } from "aos";
 
 const { ADMIN } = routesPath;
 
@@ -46,7 +47,9 @@ const Employee = () => {
   const [selectedStaff, setSelectedStaff] = useState<Dictionary>({});
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   // Inital count of employees
-  const [initialCount, setInitialCount] = useState<number>(NaN);
+  const [initialCount, setInitialCount] = useState<number | undefined>(
+    undefined
+  );
   const router = useRouter();
 
   const {
@@ -196,7 +199,7 @@ const Employee = () => {
   const META_DATA = invited_staff?.data?.meta ?? {};
 
   useEffect(() => {
-    if (invited_staff && Number.isNaN(initialCount)) {
+    if (invited_staff && initialCount === undefined) {
       setInitialCount(META_DATA?.total);
     }
   }, [invited_staff, initialCount]);
@@ -297,7 +300,8 @@ const Employee = () => {
       active: pathname === routesPath?.ADMIN?.EMPLOYEES_INVITED,
       title: "Invited Staffs",
       type: "staff",
-      count: initialCount,
+      // count: initialCount,
+      count: Number(initialCount),
       accentColor: "",
       hide: false,
       icon: "",
@@ -310,7 +314,7 @@ const Employee = () => {
   return (
     <DashboardLayout headerTitle="Employee">
       <section className="p-5">
-        {initialCount < 0 || Number.isNaN(initialCount) ? (
+        {initialCount === undefined || Number(initialCount) < 0 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
             textTitle="New Staff"

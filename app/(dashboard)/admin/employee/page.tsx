@@ -37,7 +37,9 @@ const Employee = () => {
   const [search, setSearch] = useState<string>("");
   const [fileType, setFileType] = useState("");
   // Inital count of employees
-  const [initialCount, setInitialCount] = useState<number>(NaN);
+  const [initialCount, setInitialCount] = useState<number | undefined>(
+    undefined
+  );
 
   const {
     isOpen: openProceedModal,
@@ -177,7 +179,7 @@ const Employee = () => {
   const META_DATA = all_staff?.data?.meta ?? {};
 
   useEffect(() => {
-    if (all_staff && Number.isNaN(initialCount)) {
+    if (all_staff && initialCount === undefined) {
       setInitialCount(META_DATA?.total);
     }
   }, [all_staff, initialCount]);
@@ -218,7 +220,6 @@ const Employee = () => {
       .unwrap()
       .then((payload) => {
         toast.dismiss();
-        toast.success("Download completed");
         if (payload) {
           downloadFile({
             file: payload,
@@ -235,7 +236,7 @@ const Employee = () => {
       active: pathname === routesPath?.ADMIN?.EMPLOYEES,
       title: "Total Staffs",
       type: "staff",
-      count: initialCount,
+      count: initialCount || 0,
       accentColor: "",
       hide: false,
       icon: "",
@@ -244,6 +245,7 @@ const Employee = () => {
       primaryColor: "",
     },
     {
+      // active: true,
       title: "Invited Staffs",
       type: "staff",
       count: invited_staff?.data?.data?.length,
@@ -261,7 +263,7 @@ const Employee = () => {
   return (
     <DashboardLayout headerTitle="Employee">
       <section className="p-5">
-        {initialCount < 0 || Number.isNaN(initialCount) ? (
+        {initialCount === undefined || Number(initialCount) < 0 ? (
           <ReusableEmptyState
             loading={isLoadingStaff}
             textTitle="New Staff"
