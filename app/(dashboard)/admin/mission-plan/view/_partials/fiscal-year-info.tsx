@@ -4,7 +4,7 @@ import CustomDateInput from "@/components/custom-date-input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
+import { updateFinancialYearDetails, updateMissionPlanDetails } from "@/redux/features/mission-plan/missionPlanSlice";
 import { useExtendFinancialYearMutation } from "@/redux/services/mission-plan/allmissionplanApi";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { formatDate } from "@/utils/helpers/date-formatter";
@@ -44,12 +44,12 @@ const FiscalYearInfo = () => {
       let APPROVAL_LEVELS = typeof (organization?.approval_flows) === 'string' ? JSON.parse(organization?.approval_flows) : organization?.approval_flows
       // console.log(active_fy_info)
       const LEVELS = APPROVAL_LEVELS?.map((item: any, idx: number) => {
-          return {
-              title: item.title,
-              approvals: item?.approvals || [],
-              approval_levels: item?.approvals?.length,
-              level: STAFF_LEVELS?.[idx]?.level
-          }
+        return {
+          title: item.title,
+          approvals: item?.approvals || [],
+          approval_levels: item?.approvals?.length,
+          level: STAFF_LEVELS?.[idx]?.level
+        }
       })
       setApprovalFlowData({ staff_levels: LEVELS });
 
@@ -124,8 +124,67 @@ const FiscalYearInfo = () => {
     }
   };
 
-  const handleEndFinancialYearClick = () => {
-    setShowSuccessModal(true);
+  const handleEditFiscalYear = () => {
+    const { id, title, start_date, end_date, review_period, template, mission, vision, strategic_pillars, creation_start_date, creation_end_date, approval_start_date, approval_end_date, setup_reminder, approval_reminder, before_start_reminder } = active_fy_info
+    // console.log(active_fy_info)
+    // return
+    const fy_data = {
+      title,
+      start_date,
+      end_date,
+      review_period,
+      template_id: template?.id,
+    }
+    const FY_KEYS = [
+      {
+        slug: 'financial_year',
+        data: fy_data
+      },
+      {
+        slug: 'mission_vision',
+        data: { mission, vision }
+      },
+      {
+        slug: 'strategic_pillars',
+        data: {
+          strategic_pillars: strategic_pillars?.map((item: Dictionary) => {
+            return {
+              pillar: item?.title
+            }
+          })
+        }
+      },
+      {
+        slug: 'timeline_reminder',
+        data: {
+          creation_start_date,
+          creation_end_date,
+          approval_start_date,
+          approval_end_date,
+          setup_reminder,
+          approval_reminder,
+          before_start_reminder,
+          fiscal_year_id: id
+        }
+      },
+      // {
+      //   slug: 'order_of_approvals',
+      //   data: 'payload'
+      // },
+
+    ]
+    // financial_year, mission_vision, strategic_pillars, timeline_reminder, order_of_approvals
+    FY_KEYS.forEach((item: Dictionary, idx: number) => {
+      // if (idx < 4) {
+      dispatch(updateFinancialYearDetails({
+        slug: item.slug,
+        data: item.data,
+      }))
+      // }
+    });
+    router.push(
+      `${ADMIN.KICK_START_MISSION_PLAN}?ui=financial-year`
+    );
   };
   const handleCloseModal = () => {
     setShowSuccessModal(false);
@@ -141,6 +200,17 @@ const FiscalYearInfo = () => {
     <div className="space-y-5 mb-6 px-5 mt-1 text-[var(--text-color3)]">
       {/* Financial Year */}
       <div className="flex gap-[10px] justify-end ">
+        <Button
+          className={cn(
+            btn,
+            "disabled:opacity-30",
+            active_fy_info?.status !== "pending" && "hidden"
+          )}
+          disabled={active_fy_info?.status !== "pending" || HAS_NO_PERMISSION()}
+          onClick={handleEditFiscalYear}
+        >
+          Edit Financial Year
+        </Button>
         <Button
           className={cn(btn, "disabled:opacity-30")}
           disabled={active_fy_info?.status !== "active" || HAS_NO_PERMISSION()}

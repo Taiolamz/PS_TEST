@@ -25,8 +25,6 @@ const FinancialYear = () => {
     mission_plan,
   } = useAppSelector((state) => state.mission_plan);
 
-  // console.log(mission_plan?.active_fy_info?.template_id)
-
   const location = usePathname();
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -63,7 +61,7 @@ const FinancialYear = () => {
       start_date: (financial_year?.start_date as string) || "",
       end_date: (financial_year?.end_date as string) || "",
       review_period: (financial_year?.review_period as string) || "",
-      template_id: mission_plan?.active_fy_info?.template_id || "",
+      template_id: mission_plan?.active_fy_info?.template_id || (financial_year?.template_id as string) || "",
     },
     validationSchema: fiscalYearSchema,
     onSubmit: handleFormSubmit,
@@ -118,7 +116,7 @@ const FinancialYear = () => {
               error={formik.errors.start_date as string}
               placeholder="YYYY-MM-DD"
               isRequired
-              iconClass="top-10"
+            // iconClass="top-10"
             />
             <CustomDateInput
               label="End Period"
@@ -131,7 +129,7 @@ const FinancialYear = () => {
               error={formik.errors.end_date as string}
               placeholder="YYYY-MM-DD"
               isRequired
-              iconClass="top-10"
+            // iconClass="top-10"
             />
           </div>
         </div>
