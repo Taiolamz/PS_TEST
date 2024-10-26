@@ -35,12 +35,6 @@ export default function DepartmentTable({ isActive }: { isActive: boolean }) {
     {
       id: id as string,
       params: {
-        to: 0,
-        total: 0,
-        per_page: 50,
-        currentPage: 0,
-        next_page_url: "",
-        prev_page_url: "",
         search: debounceSearch || "",
         page: page || 1,
       },
@@ -58,7 +52,6 @@ export default function DepartmentTable({ isActive }: { isActive: boolean }) {
       .unwrap()
       .then((payload: any) => {
         toast.dismiss();
-        toast.success("Download completed");
         if (payload) {
           downloadFile({
             file: payload,

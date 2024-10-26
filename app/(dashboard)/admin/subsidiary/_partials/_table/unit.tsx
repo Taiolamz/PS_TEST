@@ -40,7 +40,6 @@ export default function UnitTable() {
     exportSubsidiaryInUnit({ id: id, params: { export: true } })
       .unwrap()
       .then((payload) => {
-        toast.success("Download completed");
         if (payload) {
           downloadFile({
             file: payload,

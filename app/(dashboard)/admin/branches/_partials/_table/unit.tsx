@@ -34,7 +34,6 @@ export default function UnitTable({ isActive }: { isActive: boolean }) {
     getBranchUnitExport({ id: id, params: { export: true } })
       .unwrap()
       .then((payload) => {
-        toast.success("Download completed");
         if (payload) {
           downloadFile({
             file: payload,
@@ -79,6 +78,9 @@ export default function UnitTable({ isActive }: { isActive: boolean }) {
       loading={isFetchingBranchUnit}
       onSearch={(e) => setSearch(e)}
       dropDown
+      onPageChange={(p) => {
+        setPage(p);
+      }}
       hideFilter
       hideSort
       dropDownList={[
