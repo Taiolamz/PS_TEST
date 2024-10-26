@@ -2,11 +2,15 @@
 import { useDebounce } from "@/app/(dashboard)/_layout/Helper";
 import { TableLoader } from "@/components/fragment";
 import TableWrapper from "@/components/tables/TableWrapper";
-import { useGetBranchUnitQuery } from "@/redux/services/checklist/branchApi";
-import { useGetSubsidiaryInUnitQuery } from "@/redux/services/checklist/subsidiaryApi";
+import {
+  useGetBranchUnitQuery,
+  useLazyGetBranchUnitExportQuery,
+} from "@/redux/services/checklist/branchApi";
+import { downloadFile } from "@/utils/helpers/file-formatter";
 import routesPath from "@/utils/routes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 const { ADMIN } = routesPath;
 
@@ -21,6 +25,25 @@ export default function UnitTable({ isActive }: { isActive: boolean }) {
   const handleAddUnit = () => {
     const path = ADMIN.CREATE_UNIT;
     router.push(path);
+  };
+
+  const [getBranchUnitExport] = useLazyGetBranchUnitExportQuery();
+
+  const handleExportUnit = () => {
+    toast.loading("downloading...");
+    getBranchUnitExport({ id: id, params: { export: true } })
+      .unwrap()
+      .then((payload) => {
+        if (payload) {
+          downloadFile({
+            file: payload,
+            filename: "unit_information",
+            fileExtension: "csv",
+          });
+        }
+      })
+      .catch(() => {})
+      .finally(() => toast.dismiss());
   };
 
   const {
@@ -55,24 +78,11 @@ export default function UnitTable({ isActive }: { isActive: boolean }) {
       loading={isFetchingBranchUnit}
       onSearch={(e) => setSearch(e)}
       dropDown
+      onPageChange={(p) => {
+        setPage(p);
+      }}
       hideFilter
       hideSort
-      // dropDownList={[
-      //   {
-      //     label: "View Details",
-      //     color: "",
-      //     onActionClick: (param: any, dataTwo: any) => {
-      //       // router.push(
-      //       //   pathname +
-      //       //     "?" +
-      //       //     "ui=details" +
-      //       //     "&" +
-      //       //     "id=" +
-      //       //     dataTwo?.name?.props.children[0].props.children
-      //       // );
-      //     },
-      //   },
-      // ]}
       dropDownList={[
         {
           label: "View Details",
@@ -89,8 +99,7 @@ export default function UnitTable({ isActive }: { isActive: boolean }) {
       ]}
       onManualBtn={handleAddUnit}
       // onBulkUploadBtn={handleBulkUploadDialog}
-      // onPdfChange={}
-      // onCsvChange={}
+      onCsvChange={handleExportUnit}
     />
   );
 }
@@ -103,8 +112,8 @@ const FORMAT_TABLE_DATA = (obj: any) => {
         <p>{org?.name}</p>
       </>
     ),
-    head_of_unit: org?.head_of_unit?.name ?? "n/a",
-    department: org?.deparment?.name ?? "n/a",
-    branch: org?.branch?.name ?? "n/a",
+    head_of_unit: org?.head_of_unit?.name ?? "--- ---",
+    department: org?.deparment?.name ?? "--- ---",
+    branch: org?.branch?.name ?? "--- ---",
   }));
 };

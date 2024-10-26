@@ -9,7 +9,7 @@ export const employeeApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Employees"],
+      invalidatesTags: ["Employees", "Staff"],
     }),
 
     createBulkEmployees: builder.mutation({
@@ -25,7 +25,7 @@ export const employeeApi = baseApi.injectEndpoints({
         url: `/admin/invitation${generateQueryString({ ...params })}`,
         method: "GET",
       }),
-      providesTags: ["Employees"],
+      providesTags: ["Employees", "Staff"],
       transformResponse: (response: { data: EmployeeRolesData[] }) =>
         response.data,
     }),

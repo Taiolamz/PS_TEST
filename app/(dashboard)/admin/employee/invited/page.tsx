@@ -13,12 +13,16 @@ import {
   useLazyDownloadEmployeeDataQuery,
   useLazyDownloadEmployeeTemplateQuery,
 } from "@/redux/services/checklist/employeeApi";
-import { useDeleteInvitedStaffMutation, useGetAllStaffQuery, useGetInvitedStaffQuery } from "@/redux/services/employee/employeeApi";
+import {
+  useDeleteInvitedStaffMutation,
+  useGetAllStaffQuery,
+  useGetInvitedStaffQuery,
+} from "@/redux/services/employee/employeeApi";
 import { useAppSelector } from "@/redux/store";
 import { downloadFile } from "@/utils/helpers/file-formatter";
 import routesPath from "@/utils/routes";
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import DashboardLayout from "../../../_layout/DashboardLayout";
 import BulkRequirementModal from "../_components/bulk-requrement-modal";
@@ -31,20 +35,21 @@ import {
   // employeerolesColumns,
   useEmployeeRolesColumnData,
 } from "../employee-role-column";
+import { init } from "aos";
 
 const { ADMIN } = routesPath;
 
 const Employee = () => {
-  const [status, setStatus] = useState<string>("");
   const [bulkFile, setBulkFile] = useState<File | null>(null);
-  // console.log(status);
   const [fileType, setFileType] = useState("");
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const [selectedStaff, setSelectedStaff] = useState<Dictionary>({})
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-
-  const navigate = useRouter()
+  const [selectedStaff, setSelectedStaff] = useState<Dictionary>({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  // Inital count of employees
+  const [initialCount, setInitialCount] = useState<number | undefined>(
+    undefined
+  );
   const router = useRouter();
 
   const {
@@ -140,7 +145,7 @@ const Employee = () => {
         if (payload) {
           downloadFile({
             file: payload,
-            filename: "all_employee",
+            filename: "invited_staff",
             fileExtension: format === "pdf" ? "pdf" : "xlsx",
           });
         }
@@ -174,13 +179,30 @@ const Employee = () => {
   const { employeerolesColumns, data, openDeleteModal, handleDeleteDialog } =
     useEmployeeRolesColumnData(isFetchingEmployees);
 
-  const { data: all_staff, isLoading: isLoadingAllStaff } = useGetAllStaffQuery({})
+  const { data: all_staff, isLoading: isLoadingAllStaff } = useGetAllStaffQuery(
+    {
+      page: 1,
+      search: "",
+    }
+  );
 
-  const { data: invited_staff, isLoading: isLoadingInvitedStaff, isFetching: isFetchingInvitedStaff } = useGetInvitedStaffQuery({
-    page: page
-  })
-  const ALL_STAFF = invited_staff?.data?.data ?? []
-  const META_DATA = invited_staff?.data?.meta ?? {}
+  const {
+    data: invited_staff,
+    isLoading: isLoadingInvitedStaff,
+    isFetching: isFetchingInvitedStaff,
+  } = useGetInvitedStaffQuery({
+    page: page,
+    search: search,
+  });
+
+  const ALL_STAFF = invited_staff?.data?.data ?? [];
+  const META_DATA = invited_staff?.data?.meta ?? {};
+
+  useEffect(() => {
+    if (invited_staff && initialCount === undefined) {
+      setInitialCount(META_DATA?.total);
+    }
+  }, [invited_staff, initialCount]);
 
   // console.log(ALL_STAFF)
 
@@ -198,16 +220,17 @@ const Employee = () => {
   const [downloadEmployeeTemplate] = useLazyDownloadEmployeeTemplateQuery();
   const [downloadEmployeeData] = useLazyDownloadEmployeeDataQuery();
 
-  const [deleteStaff, { isLoading: isDeletingStaff }] = useDeleteInvitedStaffMutation()
+  const [deleteStaff, { isLoading: isDeletingStaff }] =
+    useDeleteInvitedStaffMutation();
 
   const handleDeleteStaff = async (staff_id: string) => {
     deleteStaff({ staffId: selectedStaff?._slug?.id })
       .unwrap()
       .then(() => {
-        setShowDeleteModal(false)
-        toast.success("Account Deleted Successfully")
-      })
-  }
+        setShowDeleteModal(false);
+        toast.success("Account Deleted Successfully");
+      });
+  };
 
   const handleSubmitBulkUpload = async () => {
     if (!bulkFile) return;
@@ -246,38 +269,6 @@ const Employee = () => {
       .catch(() => toast.dismiss());
   };
 
-  const thlist = [
-    "Staff Name",
-    "Gender",
-    "Work email",
-    "Resumption Date",
-    "Line Manager",
-    "Job Title",
-    "Status",
-    "Action",
-  ];
-
-  const userData = [
-    {
-      name: "tolu",
-      gebder: "female",
-      email: "gmani@2.com",
-      date: "Jun, 20 2023",
-      line: "Peter",
-      title: "QA",
-      stat: "active",
-    },
-    {
-      name: "kenny",
-      gebder: "female",
-      email: "gmani@2.com",
-      date: "Jun, 20 2023",
-      line: "Peter",
-      title: "QA",
-      stat: "active",
-    },
-  ];
-
   const dropDowList = [
     {
       // label: getStatus(param) === "active" ? "Deactivate" :  "Active",
@@ -287,7 +278,7 @@ const Employee = () => {
         console.log(dataTwo);
       },
     },
-    { label: "Implied Task", color: "red", onActionClick: () => { } },
+    { label: "Implied Task", color: "red", onActionClick: () => {} },
   ];
 
   const listToTest = [
@@ -302,18 +293,19 @@ const Employee = () => {
       onClick: () => {
         router.push(routesPath?.ADMIN?.EMPLOYEES);
       },
-      pending: false,
+      pending: isLoadingAllStaff,
       primaryColor: "",
     },
     {
       active: pathname === routesPath?.ADMIN?.EMPLOYEES_INVITED,
       title: "Invited Staffs",
       type: "staff",
-      count: invited_staff?.data?.data?.length,
+      // count: initialCount,
+      count: Number(initialCount),
       accentColor: "",
       hide: false,
       icon: "",
-      onClick: () => { },
+      onClick: () => {},
       pending: true,
       primaryColor: "",
     },
@@ -321,18 +313,8 @@ const Employee = () => {
 
   return (
     <DashboardLayout headerTitle="Employee">
-      {/* <ReusableStepListBox
-        btnText="Continue"
-        activeStep="1"
-        totalStep="1"
-        title="Employee"
-        btnDisabled={employees?.length < 1}
-        onSave={handleProceed}
-        onCancel={handleCancelDialog}
-      /> */}
-
       <section className="p-5">
-        {employees?.length < 0 ? (
+        {initialCount === undefined || Number(initialCount) < 0 ? (
           <ReusableEmptyState
             loading={isLoadingEmployees}
             textTitle="New Staff"
@@ -346,32 +328,7 @@ const Employee = () => {
           <>
             {/* testing metrics card start */}
             <ParentModuleCard list={listToTest} />
-            {/* testing metrics card end */}
-            {/* <DashboardTable
-              header="Employee"
-              isFilterDrop={false}
-              filterOptions={["pending", "rejected"]}
-              filterCheck={(val: string) => {
-                return val === status;
-              }}
-              filterOnCheck={(value: string) => {
-                if (value === status) {
-                  setStatus("");
-                } else {
-                  setStatus(value);
-                }
-              }}
-              data={employees}
-              columns={employeesColumnData}
-              onBulkUploadBtn={handleBulkUploadDialog}
-              onOpenBtnChange={handleBtnDrop}
-              newBtnOpen={openNewBtn}
-              isLoading={isFetchingEmployees}
-              onManualBtn={handleAddEmployee}
-              onPdfChange={() => handleImportChange("pdf")}
-              onCsvChange={() => handleImportChange("excel")}
-            />
-            */}
+
             <TableWrapper
               tableheaderList={[
                 "S/N",
@@ -408,14 +365,14 @@ const Employee = () => {
                 {
                   label: <span className="text-xs text-gray-300"> Edit </span>,
                   color: "",
-                  onActionClick: (param: any, data: any) => { },
+                  onActionClick: (param: any, data: any) => {},
                 },
                 {
                   label: <span className="text-xs text-red-500"> Delete </span>,
                   color: "",
                   onActionClick: (param: any, data: any) => {
-                    setSelectedStaff(data)
-                    setShowDeleteModal(true)
+                    setSelectedStaff(data);
+                    setShowDeleteModal(true);
                     // router.push(routesPath?.ADMIN?.EMPLOYEE_VIEW(data?._slug?.id));
                   },
                 },
@@ -423,16 +380,7 @@ const Employee = () => {
               onManualBtn={handleAddEmployee}
               onBulkUploadBtn={handleBulkUploadDialog}
               onCsvChange={() => handleImportChange("excel")}
-            // onPdfChange={}
             />
-
-            {/* <TableWrapper
-              dropDown={true}
-              tableBodyList={userData}
-              tableheaderList={thlist}
-              defaultBodyList={allemployeeData}
-              dropDownList={dropDowList}
-            /> */}
           </>
         )}
 
@@ -488,7 +436,9 @@ const Employee = () => {
           handleClose={() => setShowDeleteModal(false)}
           title="Delete Employee"
           content={
-            <p className="my-4 text-[13px] text-gray-500 leading-5">You&apos;re about to delete this information. Deleting this would erase all information about this Employee
+            <p className="my-4 text-[13px] text-gray-500 leading-5">
+              You&apos;re about to delete this information. Deleting this would
+              erase all information about this Employee
               <p>Do you still want to delete?</p>
             </p>
           }
@@ -506,13 +456,13 @@ const FORMAT_TABLE_DATA = (obj: any) => {
   return obj?.map((item: any, idx: number) => ({
     idx: idx + 1,
     name: `${item?.first_name} ${item?.last_name}`,
-    email: item?.email || "--",
-    department: item?.department?.name || "--",
-    line_manager_name: item?.line_manager_name || "--",
-    job_title: item?.designation || "--",
-    role: item?.role || "--",
+    email: item?.email || "--- ---",
+    department: item?.department?.name || "--- ---",
+    line_manager_name: item?.line_manager_name || "--- ---",
+    job_title: item?.designation || "--- ---",
+    role: item?.role || "--- ---",
     _slug: {
-      id: item?.id
-    }
+      id: item?.id,
+    },
   }));
 };
