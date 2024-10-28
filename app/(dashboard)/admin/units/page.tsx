@@ -143,13 +143,8 @@ const Units = () => {
     isFetching: isFetchingUnits,
     refetch: refetchUnits,
   } = useGetUnitsQuery({
-    // to: 0,
-    // total: 0,
-    per_page: 50,
-    currentPage: page,
+    page: page,
     search: search,
-    // next_page_url: "",
-    // prev_page_url: "",
   });
 
   const units = unitsData ?? [];
@@ -272,9 +267,9 @@ const Units = () => {
                     "Status",
                     "Action",
                   ]}
-                  perPage={units?.meta?.per_page}
-                  totalPage={units?.meta?.total}
-                  currentPage={units?.meta?.current_page}
+                  perPage={units?.data?.meta?.per_page}
+                  totalPage={units?.data?.meta?.total}
+                  currentPage={units?.data?.meta?.current_page}
                   onPageChange={(p) => {
                     setPage(p);
                   }}
