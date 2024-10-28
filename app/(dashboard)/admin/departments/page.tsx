@@ -6,7 +6,6 @@ import DashboardModal from "./_components/checklist-dashboard-modal";
 import BulkUploadModal from "./_components/bulk-upload-modal";
 import ProceedModal from "./_components/proceed-modal";
 import CancelModal from "./_components/cancel-modal";
-import DashboardTable from "./_components/checklist-dashboard-table";
 import { toast } from "sonner";
 import {
   useCreateBulkDepartmentsMutation,
@@ -236,7 +235,7 @@ const Departments = () => {
       active: true,
       title: "Total Departments",
       type: "department",
-      count: departments?.length,
+      count: metaData?.total,
       accentColor: "",
       hide: false,
       icon: "",
